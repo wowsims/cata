@@ -301,14 +301,14 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 
 	paladin.EnableManaBar()
 	paladin.HolyPower = HolyPowerBar{
-		resourceBar: paladin.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
+		DefaultSecondaryResourceBarImpl: paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
 			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
 			Max:     3,
-			Default: float64(paladin.StartingHolyPower),
+			Default: paladin.StartingHolyPower,
 		}),
 		paladin: paladin,
 	}
-	paladin.Unit.SecondaryResourceBar = paladin.HolyPower
+	paladin.RegisterSecondaryResourceBar(paladin.HolyPower)
 
 	// Only retribution and holy are actually pets performing some kind of action
 	if paladin.Spec != proto.Spec_SpecProtectionPaladin {

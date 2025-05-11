@@ -71,37 +71,20 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62290, // Seafood Magnifique Feast
 	potId: 57192, // Mythical Mana Potion
 });
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	bloodlust: true,
-	markOfTheWild: true,
-	icyTalons: true,
-	moonkinForm: true,
-	leaderOfThePack: true,
-	powerWordFortitude: true,
-	strengthOfEarthTotem: true,
-	trueshotAura: true,
-	wrathOfAirTotem: true,
-	demonicPact: true,
-	blessingOfKings: true,
-	blessingOfMight: true,
-	communion: true,
-});
+export const DefaultRaidBuffs = RaidBuffs.create({});
 
-export const DefaultIndividualBuffs = IndividualBuffs.create({
-	vampiricTouch: true,
-});
+export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
+	// bloodFrenzy: true,
+	// sunderArmor: true,
+	// ebonPlaguebringer: true,
+	// mangle: true,
+	// criticalMass: true,
+	// demoralizingShout: true,
+	// frostFever: true,
 });
 
 export const OtherDefaults = {

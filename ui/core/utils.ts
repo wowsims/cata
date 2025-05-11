@@ -19,7 +19,7 @@ export const fragmentToString = (element: Node | Element) => {
 	return div.innerHTML;
 };
 
-export const sanitizeId = (id: string) => id.split(' ').join('');
+export const sanitizeId = (id: string) => id.split(' ').join('').toLocaleLowerCase();
 
 export const omitDeep = <T>(collection: T, excludeKeys: string[]): T => {
 	const clonedCollection = cloneDeep(collection);

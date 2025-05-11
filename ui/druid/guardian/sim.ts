@@ -106,23 +106,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			powerWordFortitude: true,
-			markOfTheWild: true,
-			bloodlust: true,
-			strengthOfEarthTotem: true,
-			abominationsMight: true,
-			windfuryTotem: true,
-			communion: true,
-			devotionAura: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			ebonPlaguebringer: true,
-			criticalMass: true,
-			bloodFrenzy: true,
-			frostFever: true,
+			// ebonPlaguebringer: true,
+			// criticalMass: true,
+			// bloodFrenzy: true,
+			// frostFever: true,
 		}),
 	},
 
@@ -131,7 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DruidInputs.GuardianDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellCritDebuff, BuffDebuffInputs.SpellDamageDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -143,7 +134,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			OtherInputs.HealingCadenceVariation,
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
-			OtherInputs.InspirationUptime,
 			OtherInputs.HpPercentForDefensives,
 			DruidInputs.StartingRage,
 			OtherInputs.InFrontOfTarget,

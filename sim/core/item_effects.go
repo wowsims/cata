@@ -176,3 +176,9 @@ func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, durati
 		}
 	}, nil)
 }
+
+// Applies 3% Crit Damage effect
+// https://www.wowhead.com/mop-classic/spell=44797/3-increased-critical-effect
+func ApplyMetaGemCriticalDamageEffect(agent Agent) {
+	agent.GetCharacter().PseudoStats.CritDamageMultiplier *= 1.03
+}

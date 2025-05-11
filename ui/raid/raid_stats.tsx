@@ -308,11 +308,16 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 			label: 'Buffs',
 			categories: [
 				{
-					label: 'Bloodlust',
+					label: 'Major Haste',
 					effects: [
 						{
 							label: 'Bloodlust',
 							actionId: ActionId.fromSpellId(2825),
+							playerData: playerClass(Class.ClassShaman),
+						},
+						{
+							label: 'Heroism',
+							actionId: ActionId.fromSpellId(32182),
 							playerData: playerClass(Class.ClassShaman),
 						},
 						{
@@ -323,7 +328,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					],
 				},
 				{
-					label: 'Stats %',
+					label: 'Stats',
 					effects: [
 						{
 							label: 'Mark of the Wild',
@@ -335,23 +340,15 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(20217),
 							playerData: playerClass(Class.ClassPaladin),
 						},
-						{
-							label: 'Drums of the Burning Wild',
-							actionId: ActionId.fromItemId(63140),
-							raidData: raidBuff('drumsOfTheBurningWild'),
-						},
 					],
 				},
 				{
-					label: 'Strength/Agility',
+					label: 'Attack Power',
 					effects: [
 						{
-							label: 'Strength of Earth Totem',
-							actionId: ActionId.fromSpellId(8075),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
-							),
+							label: 'Trueshot Aura',
+							actionId: ActionId.fromSpellId(19506),
+							playerData: playerClass(Class.ClassHunter),
 						},
 						{
 							label: 'Horn of Winter',
@@ -366,178 +363,107 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					],
 				},
 				{
-					label: 'Armor',
+					label: 'Attack Speed',
 					effects: [
 						{
-							label: 'Devotion Aura',
-							actionId: ActionId.fromSpellId(465),
-							playerData: playerClass(Class.ClassPaladin),
+							label: 'Unholy Aura',
+							actionId: ActionId.fromSpellId(55610),
+							playerData: playerClass(Class.ClassDeathKnight),
 						},
 						{
-							label: 'Stoneskin Totem',
-							actionId: ActionId.fromSpellId(8071),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
-							),
-						},
-					],
-				},
-				{
-					label: 'Attack Power %',
-					effects: [
-						{
-							label: 'Blessing of Might',
-							actionId: ActionId.fromSpellId(19740),
-							playerData: playerClass(Class.ClassPaladin),
-						},
-						// {
-						// 	label: 'Abominations Might',
-						// 	actionId: ActionId.fromSpellId(53138),
-						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'abominationsMight'),
-						// },
-						// {
-						// 	label: 'Unleashed Rage',
-						// 	actionId: ActionId.fromSpellId(30808),
-						// 	playerData: playerClassAndTalent(Class.ClassShaman, 'unleashedRage'),
-						// },
-						{
-							label: 'Trueshot Aura',
-							actionId: ActionId.fromSpellId(19506),
+							label: "Serpent's Swiftness",
+							actionId: ActionId.fromSpellId(128433),
 							playerData: playerClass(Class.ClassHunter),
+						},
+						{
+							label: "Swiftblade's Cunning",
+							actionId: ActionId.fromSpellId(113742),
+							playerData: playerClass(Class.ClassRogue),
+						},
+						{
+							label: 'Unleashed Rage',
+							actionId: ActionId.fromSpellId(30809),
+							playerData: playerClass(Class.ClassShaman),
 						},
 					],
 				},
 				{
 					label: 'Spell Power',
 					effects: [
-						// {
-						// 	label: 'Demonic Pact',
-						// 	actionId: ActionId.fromSpellId(47236),
-						// 	playerData: playerClassAndTalent(Class.ClassWarlock, 'demonicPact'),
-						// },
-						// {
-						// 	label: 'Totemic Wrath',
-						// 	actionId: ActionId.fromSpellId(77746),
-						// 	playerData: playerClassAndTalent(Class.ClassShaman, 'totemicWrath'),
-						// },
 						{
 							label: 'Arcane Brilliance',
 							actionId: ActionId.fromSpellId(1459),
 							playerData: playerClass(Class.ClassMage),
 						},
 						{
-							label: 'Flametongue Totem',
-							actionId: ActionId.fromSpellId(8227),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
-							),
+							label: 'Still Water',
+							actionId: ActionId.fromSpellId(126309),
+							playerData: playerClass(Class.ClassPriest),
 						},
-					],
-				},
-				{
-					label: '+3% Damage',
-					effects: [
-						// {
-						// 	label: 'Communion',
-						// 	actionId: ActionId.fromSpellId(31876),
-						// 	playerData: playerClassAndTalent(Class.ClassPaladin, 'communion'),
-						// },
-						// {
-						// 	label: 'Arcane Tactics',
-						// 	actionId: ActionId.fromSpellId(82930),
-						// 	playerData: playerClassAndTalent(Class.ClassMage, 'arcaneTactics'),
-						// },
-						// {
-						// 	label: 'Ferocious Inspiration',
-						// 	actionId: ActionId.fromSpellId(34460),
-						// 	playerData: playerClassAndTalent(Class.ClassHunter, 'ferociousInspiration'),
-						// },
-					],
-				},
-				{
-					label: 'Melee Haste',
-					effects: [
-						// {
-						// 	label: 'Icy Talons',
-						// 	actionId: ActionId.fromSpellId(55610),
-						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTalons'),
-						// },
-						// {
-						// 	label: 'Hunting Party',
-						// 	actionId: ActionId.fromSpellId(53290),
-						// 	playerData: playerClassAndTalent(Class.ClassHunter, 'huntingParty'),
-						// },
 						{
-							label: 'Windfury Totem',
-							actionId: ActionId.fromSpellId(8512),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem),
+							label: 'Burning Wrath',
+							actionId: ActionId.fromSpellId(77747),
+							playerData: playerClass(Class.ClassShaman),
+						},
+						{
+							label: 'Dark Intent',
+							actionId: ActionId.fromSpellId(109773),
+							playerData: playerClass(Class.ClassWarlock),
 						},
 					],
 				},
 				{
 					label: 'Spell Haste',
 					effects: [
-						// {
-						// 	label: 'Shadow Form',
-						// 	actionId: ActionId.fromSpellId(15473),
-						// 	playerData: playerClassAndTalent(Class.ClassPriest, 'shadowform'),
-						// },
-						// {
-						// 	label: 'Moonkin Form',
-						// 	actionId: ActionId.fromSpellId(24858),
-						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'moonkinForm'),
-						// },
 						{
-							label: 'Wrath of Air Totem',
-							actionId: ActionId.fromSpellId(3738),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WrathOfAirTotem),
+							label: 'Shadow Form',
+							actionId: ActionId.fromSpellId(15473),
+							playerData: playerClass(Class.ClassPriest),
+						},
+						{
+							label: 'Moonkin Aura',
+							actionId: ActionId.fromSpellId(24907),
+							playerData: playerClass(Class.ClassDruid),
+						},
+						{
+							label: 'Mind Quickening',
+							actionId: ActionId.fromSpellId(49868),
+							playerData: playerClass(Class.ClassPriest),
+						},
+						{
+							label: 'Elemental Oath',
+							actionId: ActionId.fromSpellId(51470),
+							playerData: playerClass(Class.ClassShaman),
 						},
 					],
 				},
 				{
-					label: '+5% Crit',
-					effects: [
-						// {
-						// 	label: 'Leader of the Pack',
-						// 	actionId: ActionId.fromSpellId(17007),
-						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'leaderOfThePack'),
-						// },
-						// {
-						// 	label: 'Elemental Oath',
-						// 	actionId: ActionId.fromSpellId(51470),
-						// 	playerData: playerClassAndTalent(Class.ClassShaman, 'elementalOath'),
-						// },
-						// {
-						// 	label: 'Honor Among Thieves',
-						// 	actionId: ActionId.fromSpellId(51701),
-						// 	playerData: playerClassAndTalent(Class.ClassRogue, 'honorAmongThieves'),
-						// },
-						// {
-						// 	label: 'Rampage',
-						// 	actionId: ActionId.fromSpellId(29801),
-						// 	playerData: playerClassAndTalent(Class.ClassWarrior, 'rampage'),
-						// },
-					],
-				},
-				{
-					label: 'Mana',
+					label: 'Crit %',
 					effects: [
 						{
-							label: 'Arcane Brilliance',
-							actionId: ActionId.fromSpellId(1459),
-							playerData: playerClass(Class.ClassMage),
+							label: 'Leader of the Pack',
+							actionId: ActionId.fromSpellId(17007),
+							playerData: playerClass(Class.ClassDruid),
 						},
 						{
-							label: 'Fel Intelligence',
-							actionId: ActionId.fromSpellId(54424),
-							playerData: playerClass(Class.ClassWarlock),
+							label: 'Furious Howl',
+							actionId: ActionId.fromSpellId(24604),
+							playerData: playerClass(Class.ClassHunter),
+						},
+						{
+							label: 'Terrifying Roar',
+							actionId: ActionId.fromSpellId(90309),
+							playerData: playerClass(Class.ClassHunter),
+						},
+						{
+							label: 'Legacy of the White Tiger',
+							actionId: ActionId.fromSpellId(116781),
+							playerData: playerClass(Class.ClassMonk),
 						},
 					],
 				},
 				{
-					label: 'MP5',
+					label: 'Mastery',
 					effects: [
 						{
 							label: 'Blessing of Might',
@@ -545,62 +471,34 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClass(Class.ClassPaladin),
 						},
 						{
-							label: 'Fel Intelligence',
-							actionId: ActionId.fromSpellId(54424),
-							playerData: playerClass(Class.ClassWarlock),
+							label: 'Roar of Courage',
+							actionId: ActionId.fromSpellId(93435),
+							playerData: playerClass(Class.ClassHunter),
 						},
 						{
-							label: 'Mana Spring Totem',
-							actionId: ActionId.fromSpellId(5675),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
-							),
+							label: 'Spirit Beast Blessing',
+							actionId: ActionId.fromSpellId(128997),
+							playerData: playerClass(Class.ClassHunter),
 						},
-					],
-				},
-				{
-					label: 'Replenishment',
-					effects: [
-						// {
-						// 	label: 'Vampiric Touch',
-						// 	actionId: ActionId.fromSpellId(34914),
-						// 	playerData: playerClassAndTalent(Class.ClassPriest, 'vampiricTouch'),
-						// },
-						// {
-						// 	label: 'Communion',
-						// 	actionId: ActionId.fromSpellId(31876),
-						// 	playerData: playerClassAndTalent(Class.ClassPaladin, 'communion'),
-						// },
-						// {
-						// 	label: 'Revitalize',
-						// 	actionId: ActionId.fromSpellId(48544),
-						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'revitalize'),
-						// },
-						// {
-						// 	label: 'Soul Leach',
-						// 	actionId: ActionId.fromSpellId(30295),
-						// 	playerData: playerClassAndTalent(Class.ClassWarlock, 'soulLeech'),
-						// },
-						// {
-						// 	label: 'Enduring Winter',
-						// 	actionId: ActionId.fromSpellId(86508),
-						// 	playerData: playerClassAndTalent(Class.ClassMage, 'enduringWinter'),
-						// },
+						{
+							label: 'Grace of Air',
+							actionId: ActionId.fromSpellId(116956),
+							playerData: playerClass(Class.ClassShaman),
+						},
 					],
 				},
 				{
 					label: 'Stamina',
 					effects: [
 						{
-							label: 'Power Word Fortitude',
+							label: 'Power Word: Fortitude',
 							actionId: ActionId.fromSpellId(21562),
 							playerData: playerClass(Class.ClassPriest),
 						},
 						{
-							label: 'Blood Pact',
-							actionId: ActionId.fromSpellId(6307),
-							playerData: playerClass(Class.ClassWarlock),
+							label: 'Qiraji Fortitude',
+							actionId: ActionId.fromSpellId(90364),
+							playerData: playerClass(Class.ClassHunter),
 						},
 						{
 							label: 'Commanding Shout',
@@ -610,40 +508,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					],
 				},
 				{
-					label: 'Resistances',
+					label: 'Mana Regen',
 					effects: [
 						{
-							label: 'Resistance Aura',
-							actionId: ActionId.fromSpellId(19891),
-							playerData: playerClass(Class.ClassPaladin),
-						},
-						{
-							label: 'Elemental Resistance Totem',
-							actionId: ActionId.fromSpellId(8184),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ElementalResistanceTotem,
-							),
-						},
-						{
-							label: 'Aspect of the Wild',
-							actionId: ActionId.fromSpellId(20043),
-							playerData: playerClass(Class.ClassHunter),
-						},
-						{
-							label: 'Shadow Protection',
-							actionId: ActionId.fromSpellId(27683),
-							playerData: playerClass(Class.ClassPriest),
-						},
-						{
-							label: 'Blessing of Kings',
-							actionId: ActionId.fromSpellId(20217),
-							playerData: playerClass(Class.ClassPaladin),
-						},
-						{
-							label: 'Mark of the Wild',
-							actionId: ActionId.fromSpellId(1126),
-							playerData: playerClass(Class.ClassDruid),
+							label: 'Mana Tide Totem',
+							actionId: ActionId.fromSpellId(5675),
+							playerData: playerClass(Class.ClassShaman),
 						},
 					],
 				},
@@ -660,26 +530,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(29166),
 							playerData: playerClass(Class.ClassDruid),
 						},
-					],
-				},
-				{
-					label: 'Power Infusion',
-					effects: [
-						{
-							label: 'Power Infusion',
-							actionId: ActionId.fromSpellId(10060),
-							playerData: playerClassAndTalent(Class.ClassPriest, 'powerInfusion'),
-						},
-					],
-				},
-				{
-					label: 'Focus Magic',
-					effects: [
-						// {
-						// 	label: 'Focus Magic',
-						// 	actionId: ActionId.fromSpellId(54648),
-						// 	playerData: playerClassAndTalent(Class.ClassMage, 'focusMagic'),
-						// },
 					],
 				},
 				{

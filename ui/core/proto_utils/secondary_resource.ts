@@ -1,11 +1,12 @@
-import { SecondaryResourceType, Spec } from '../proto/common';
+import { Spec } from '../proto/common';
+import { SecondaryResourceType } from '../proto/spell';
 
 export interface SecondaryResourceConfig {
 	name: string;
 	icon: string;
 }
 
-const SECONDARY_RESOURCES = new Map<SecondaryResourceType, SecondaryResourceConfig>([
+export const SECONDARY_RESOURCES = new Map<SecondaryResourceType, SecondaryResourceConfig>([
 	[
 		SecondaryResourceType.SecondaryResourceTypeArcaneCharges,
 		{
@@ -21,14 +22,7 @@ const SECONDARY_RESOURCES = new Map<SecondaryResourceType, SecondaryResourceConf
 		},
 	],
 	[
-		SecondaryResourceType.SecondaryResourceTypeChi,
-		{
-			name: 'Chi',
-			icon: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_championsgrace.jpg',
-		},
-	],
-	[
-		SecondaryResourceType.SecondaryResourceTypeChi,
+		SecondaryResourceType.SecondaryResourceTypeDemonicFury,
 		{
 			name: 'Demonic Fury',
 			icon: 'https://wow.zamimg.com/images/wow/icons/medium/ability_warlock_eradication.jpg',
@@ -48,6 +42,13 @@ const SECONDARY_RESOURCES = new Map<SecondaryResourceType, SecondaryResourceConf
 			icon: 'https://wow.zamimg.com/images/wow/icons/medium/inv_mace_2h_pvp410_c_01.jpg',
 		},
 	],
+	[
+		SecondaryResourceType.SecondaryResourceTypeSoulShards,
+		{
+			name: 'Soul Shards',
+			icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_amethyst_02.jpg',
+		},
+	],
 ]);
 
 const RESOURCE_TYPE_PER_SPEC = new Map<Spec, SecondaryResourceType>([
@@ -55,10 +56,6 @@ const RESOURCE_TYPE_PER_SPEC = new Map<Spec, SecondaryResourceType>([
 	[Spec.SpecRetributionPaladin, SecondaryResourceType.SecondaryResourceTypeHolyPower],
 	[Spec.SpecProtectionPaladin, SecondaryResourceType.SecondaryResourceTypeHolyPower],
 	[Spec.SpecHolyPaladin, SecondaryResourceType.SecondaryResourceTypeHolyPower],
-	// Monk
-	[Spec.SpecWindwalkerMonk, SecondaryResourceType.SecondaryResourceTypeChi],
-	[Spec.SpecBrewmasterMonk, SecondaryResourceType.SecondaryResourceTypeChi],
-	[Spec.SpecMistweaverMonk, SecondaryResourceType.SecondaryResourceTypeChi],
 	// Warlock
 	[Spec.SpecAfflictionWarlock, SecondaryResourceType.SecondaryResourceTypeSoulShards],
 	[Spec.SpecDemonologyWarlock, SecondaryResourceType.SecondaryResourceTypeDemonicFury],

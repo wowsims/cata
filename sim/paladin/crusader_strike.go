@@ -38,7 +38,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				holyPowerGain := core.TernaryFloat64(paladin.ZealotryAura.IsActive(), 3, 1)
+				holyPowerGain := core.TernaryInt32(paladin.ZealotryAura.IsActive(), 3, 1)
 				paladin.HolyPower.Gain(holyPowerGain, actionId, sim)
 			}
 
