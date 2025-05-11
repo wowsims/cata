@@ -30,13 +30,13 @@ func AddDefaultPresetEncounter() {
 		Config: &proto.Target{
 			Id:        31146,
 			Name:      "Raid Target",
-			Level:     88,
+			Level:     93,
 			MobType:   proto.MobType_MobTypeMechanical,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
 				stats.Health:      120_016_403,
-				stats.Armor:       11977,
+				stats.Armor:       24835,
 				stats.AttackPower: 650,
 			}.ToProtoArray(),
 

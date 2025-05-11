@@ -34,7 +34,7 @@ const LongDuration = 300
 var DefaultTargetProto = &proto.Target{
 	Level: CharacterLevel + 3,
 	Stats: stats.Stats{
-		stats.Armor:       11977,
+		stats.Armor:       24835,
 		stats.AttackPower: 650,
 	}.ToProtoArray(),
 	MobType: proto.MobType_MobTypeMechanical,
