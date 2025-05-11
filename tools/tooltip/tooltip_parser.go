@@ -761,7 +761,9 @@ func (s SimpleSpellValue) String(ctx *TooltipContext) string {
 	case "b":
 		fallthrough
 	case "k":
-		return fmt.Sprintf("%.0f", value)
+
+		// Apparently spell ref values are always positive and explicitly prefixed by '-' in the tooltip
+		return fmt.Sprintf("%.0f", math.Abs(value))
 	default:
 		return "{UNK: " + s.Selector.EffectColumn + "}"
 	}

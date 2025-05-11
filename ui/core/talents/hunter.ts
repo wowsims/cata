@@ -7,17 +7,17 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 	majorGlyphs: {
 		[HunterMajorGlyph.GlyphOfCamouflage]: {
 			name: "Glyph of Camouflage",
-			description: "Your Camouflage ability now provides stealth even while moving, but your movement speed while Camouflage is active is reduced by $119450s3%.",
+			description: "Your Camouflage ability now provides stealth even while moving, but your movement speed while Camouflage is active is reduced by 50%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_displacement.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfLiberation]: {
 			name: "Glyph of Liberation",
-			description: "When you Disengage, you are healed for $115927s1% of your total health.",
+			description: "When you Disengage, you are healed for 5% of your total health.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/achievement_bg_returnxflags_def_wsg.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfMending]: {
 			name: "Glyph of Mending",
-			description: "Your Mend Pet now heals every $s3 sec, and heals for an additional $s4% of your pet\'s health over its duration.",
+			description: "Your Mend Pet now heals every 1 sec, and heals for an additional 25% of your pet\'s health over its duration.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bandage_15.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfDistractingShot]: {
@@ -32,7 +32,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfDeterrence]: {
 			name: "Glyph of Deterrence",
-			description: "Increases the damage reduction granted by Deterrence by $s1%.",
+			description: "Increases the damage reduction granted by Deterrence by 20%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_whirlwind.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfDisengage]: {
@@ -42,12 +42,12 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfFreezingTrap]: {
 			name: "Glyph of Freezing Trap",
-			description: "When your Freezing Trap breaks, the victim\'s movement speed is reduced by $61394s1% for $61394d.",
+			description: "When your Freezing Trap breaks, the victim\'s movement speed is reduced by 70% for 0ms.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_chainsofice.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfIceTrap]: {
 			name: "Glyph of Ice Trap",
-			description: "Increases the radius of the effect from your Ice Trap by $56847s1 yards.",
+			description: "Increases the radius of the effect from your Ice Trap by 2 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_hunter_icetrap.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfMisdirection]: {
@@ -62,22 +62,22 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfAnimalBond]: {
 			name: "Glyph of Animal Bond",
-			description: "While your pet is active, all healing done to you and your pet is increased by $24529s1%.",
+			description: "While your pet is active, all healing done to you and your pet is increased by 10%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_demoralizingroar.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfNoEscape]: {
 			name: "Glyph of No Escape",
-			description: "Increases the ranged critical strike chance of all of your attacks on targets affected by your Freezing Trap by $s1%.",
+			description: "Increases the ranged critical strike chance of all of your attacks on targets affected by your Freezing Trap by 100%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pointofnoescape.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfPathfinding]: {
 			name: "Glyph of Pathfinding",
-			description: "Increases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by $s1%, and increases your speed while mounted by $s2%. The mounted movement speed increase does not stack with other effects.",
+			description: "Increases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by 8%, and increases your speed while mounted by 10%. The mounted movement speed increase does not stack with other effects.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pathfinding2.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfSnakeTrap]: {
 			name: "Glyph of Snake Trap",
-			description: "Snakes from your Snake Trap take $56849s1% reduced damage from area of effect attacks.",
+			description: "Snakes from your Snake Trap take 90% reduced damage from area of effect attacks.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_snaketrap.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfAimedShot]: {
@@ -87,7 +87,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfMendPet]: {
 			name: "Glyph of Mend Pet",
-			description: "Gives your Mend Pet ability a $s1% chance of cleansing $24406s1 Curse, Disease, Magic or Poison effect from your pet each tick.",
+			description: "Gives your Mend Pet ability a 100% chance of cleansing 1 Curse, Disease, Magic or Poison effect from your pet each tick.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_mendpet.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfSolace]: {
@@ -97,59 +97,59 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfChimeraShot]: {
 			name: "Glyph of Chimera Shot",
-			description: "Increases the healing you receive from Chimera Shot by an additional $s1% of your maximum health.",
+			description: "Increases the healing you receive from Chimera Shot by an additional 2% of your maximum health.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_chimerashot2.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfTranquilizingShot]: {
 			name: "Glyph of Tranquilizing Shot",
-			description: "Your Tranquilizing Shot no longer costs Focus, but has a ${$m1/1000} sec cooldown.",
+			description: "Your Tranquilizing Shot no longer costs Focus, but has a 10 sec cooldown.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_drowsy.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfMastersCall]: {
 			name: "Glyph of Master's Call",
-			description: "Increases the duration of your Master\'s Call by $/1000;S1 sec.",
+			description: "Increases the duration of your Master\'s Call by 4.0 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_masterscall.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfScatterShot]: {
 			name: "Glyph of Scatter Shot",
-			description: "Increases the range of Scatter Shot by $63069s1 yards.",
+			description: "Increases the range of Scatter Shot by 3 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_golemstormbolt.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfMirroredBlades]: {
 			name: "Glyph of Mirrored Blades",
-			description: "When attacked by a spell while in Deterrence, you have a $s1% chance to reflect it back at the attacker.",
+			description: "When attacked by a spell while in Deterrence, you have a 100% chance to reflect it back at the attacker.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_99.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfBlackIce]: {
 			name: "Glyph of Black Ice",
-			description: "While you move through the area affected by your Ice Trap you gain $83559s1% movement speed.",
+			description: "While you move through the area affected by your Ice Trap you gain 50% movement speed.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_hunter_blackicetrap.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfTheLeanPack]: {
 			name: "Glyph of the Lean Pack",
-			description: "Reduces the radius of Aspect of the Pack by $s1 yards.",
+			description: "Reduces the radius of Aspect of the Pack by 33 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aspectmastery.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfEnduringDeceit]: {
 			name: "Glyph of Enduring Deceit",
-			description: "Camouflage also reduces spell damage taken by $s1%.",
+			description: "Camouflage also reduces spell damage taken by 10%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_camouflage.jpg",
 		},
 	},
 	minorGlyphs: {
 		[HunterMinorGlyph.GlyphOfAspects]: {
 			name: "Glyph of Aspects",
-			description: "Each time you activate a new Aspect, an animal companion representing that Aspect will follow you for $122489d.",
+			description: "Each time you activate a new Aspect, an animal companion representing that Aspect will follow you for 0ms.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aspectmastery.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfTameBeast]: {
 			name: "Glyph of Tame Beast",
-			description: "Reduces the time required to complete Tame Beast by ${$m1/-1000} sec.",
+			description: "Reduces the time required to complete Tame Beast by 4 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_beasttaming.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfRevivePet]: {
 			name: "Glyph of Revive Pet",
-			description: "Reduces the pushback suffered from damaging attacks while casting Revive Pet by $57866s1%.",
+			description: "Reduces the pushback suffered from damaging attacks while casting Revive Pet by 100%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_beastsoothe.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfLesserProportion]: {
@@ -159,12 +159,12 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMinorGlyph.GlyphOfFireworks]: {
 			name: "Glyph of Fireworks",
-			description: "Teaches you the ability Fireworks.\u000D\u000A\u000D\u000ALaunch fireworks from your gun, bow or crossbow.",
+			description: "Teaches you the ability Fireworks.\u000D\u000A\u000D\u000A Launch fireworks from your gun, bow or crossbow.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_missilelargecluster_red.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfAspectOfThePack]: {
 			name: "Glyph of Aspect of the Pack",
-			description: "Increases the range of your Aspect of the Pack ability by $57904s1 yards.",
+			description: "Increases the range of your Aspect of the Pack ability by 15 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mount_whitetiger.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfStampedeHunter]: {
@@ -174,12 +174,12 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMinorGlyph.GlyphOfAspectOfTheCheetah]: {
 			name: "Glyph of Aspect of the Cheetah",
-			description: "Your Aspect of the Cheetah no longer causes you to be dazed when struck.  Instead, the effect is cancelled and all your Aspects are placed on a $m1 sec cooldown.",
+			description: "Your Aspect of the Cheetah no longer causes you to be dazed when struck. Instead, the effect is cancelled and all your Aspects are placed on a 4 sec cooldown.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mount_jungletiger.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfAspectOfTheBeast]: {
 			name: "Glyph of Aspect of the Beast",
-			description: "Teaches you the ability Aspect of the Beast.\u000D\u000A\u000D\u000AThe Hunter takes on the aspects of a beast, becoming untrackable.  Only one Aspect can be active at a time.",
+			description: "Teaches you the ability Aspect of the Beast.\u000D\u000A\u000D\u000A The Hunter takes on the aspects of a beast, becoming untrackable. Only one Aspect can be active at a time.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mount_pinktiger.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfDirection]: {
@@ -194,7 +194,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMinorGlyph.GlyphOfFetch]: {
 			name: "Glyph of Fetch",
-			description: "Teaches you the ability Fetch.\u000D\u000A\u000D\u000ACommand your pet to retrieve the loot from a nearby corpse within $125050A1 yards.",
+			description: "Teaches you the ability Fetch.\u000D\u000A\u000D\u000A Command your pet to retrieve the loot from a nearby corpse within 40 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_01.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfFocusedFire]: {
