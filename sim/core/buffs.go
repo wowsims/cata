@@ -140,9 +140,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	if raidBuffs.MindQuickening {
 		MindQuickeningAura(u)
 	}
-	if raidBuffs.ShadowForm {
-		ShadowFormAura(u)
-	}
+
 	if raidBuffs.ElementalOath {
 		ElementalOath(u)
 	}
