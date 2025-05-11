@@ -58,7 +58,6 @@ export const SpellPowerBuff = InputHelpers.makeMultiIconInput(
 
 export const SpellHasteBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(15473), fieldName: 'shadowForm' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(24907), fieldName: 'moonkinAura' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(49868), fieldName: 'mindQuickening' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(51470), fieldName: 'elementalOath' }),
