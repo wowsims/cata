@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const ExpertisePerQuarterPercentReduction = 340.000000
+const ExpertisePerQuarterPercentReduction = 85.0
 const HasteRatingPerHastePercent = 425.000000
 const CritRatingPerCritPercent = 600.000000
 const PhysicalHitRatingPerHitPercent = 340.000000
