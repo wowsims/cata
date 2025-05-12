@@ -62,7 +62,6 @@ enum PriestMajorGlyph {
     GlyphOfMindFlay = 79513;
     GlyphOfShadowWordDeath = 79514;
     GlyphOfVampiricEmbrace = 79515;
-    ZzoldGlyphOfVampiricTouch = 85708;
     GlyphOfLightspring = 87875;
     GlyphOfLightwell = 87902;
 }

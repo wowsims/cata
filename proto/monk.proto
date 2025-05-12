@@ -59,13 +59,11 @@ enum MonkMajorGlyph {
 enum MonkMinorGlyph {
     MonkMinorGlyphNone = 0;
     GlyphOfSpinningFireBlossom = 85698;
-    ZzoldGlyphOfFlyingSerpentKick = 85712;
     GlyphOfCracklingTigerLightning = 87881;
     GlyphOfFlyingSerpentKick = 87882;
     GlyphOfHonor = 87883;
     GlyphOfJab = 87884;
     GlyphOfRisingTigerKick = 87885;
-    ZzoldGlyphOfSpinningFireBlossom = 87886;
     GlyphOfSpiritRoll = 87887;
     GlyphOfFightingPose = 87888;
     GlyphOfWaterRoll = 87889;
