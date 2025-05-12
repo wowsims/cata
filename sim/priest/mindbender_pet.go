@@ -17,7 +17,7 @@ type MindBender struct {
 
 func (priest *Priest) NewMindBender() *MindBender {
 	mindbender := &MindBender{
-		Pet:    core.NewPet("MindBender", &priest.Character, baseStats, priest.mindbenderStatInheritance(), false, false),
+		Pet:    core.NewPet("Mindbender", &priest.Character, baseStats, priest.mindbenderStatInheritance(), false, false),
 		Priest: priest,
 	}
 

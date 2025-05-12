@@ -122,7 +122,11 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents)
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()
-	priest.MindbenderPet = priest.NewMindBender()
+
+	if priest.Talents.Mindbender {
+		priest.MindbenderPet = priest.NewMindBender()
+	}
+
 	return priest
 }
 

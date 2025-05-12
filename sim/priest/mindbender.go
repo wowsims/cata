@@ -33,7 +33,7 @@ func (priest *Priest) registerMindbenderSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute,
 			},
 		},
 

@@ -1063,6 +1063,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
 	'Rune Weapon': ActionId.fromSpellId(49028),
 	Shadowfiend: ActionId.fromSpellId(34433),
+	Mindbender: ActionId.fromSpellId(123040),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 	Valkyr: ActionId.fromSpellId(71844),

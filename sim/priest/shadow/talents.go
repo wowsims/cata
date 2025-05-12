@@ -8,39 +8,11 @@ import (
 )
 
 func (shadow *ShadowPriest) registerSurgeOfDarkness() {
-	castTimeMod := shadow.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  priest.PriestSpellMindSpike,
-		Kind:       core.SpellMod_CastTime_Pct,
-		FloatValue: -1,
-	})
-
-	costMod := shadow.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  priest.PriestSpellMindSpike,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-	})
-
-	damageMod := shadow.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  priest.PriestSpellMindSpike,
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.5,
-	})
-
 	shadow.SurgeOfDarkness = shadow.RegisterAura(core.Aura{
 		Label:     "Surge of Darkness",
 		ActionID:  core.ActionID{SpellID: 87160},
 		MaxStacks: 2,
 		Duration:  core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Activate()
-			costMod.Activate()
-			damageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Deactivate()
-			costMod.Deactivate()
-			damageMod.Deactivate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell != shadow.MindSpike {
 				return
@@ -48,6 +20,18 @@ func (shadow *ShadowPriest) registerSurgeOfDarkness() {
 
 			aura.RemoveStack(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  priest.PriestSpellMindSpike,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.5,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  priest.PriestSpellMindSpike,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  priest.PriestSpellMindSpike,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1,
 	})
 
 	// Always register the auras above, or else APL might behave funky
@@ -77,6 +61,57 @@ func (shadow *ShadowPriest) registerSolaceAndInstanity() {
 	if !shadow.Talents.SolaceAndInsanity {
 		return
 	}
+
+	shadow.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 129197},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: priest.PriestSpellMindFlay,
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 1,
+		},
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
+		CritMultiplier:           shadow.DefaultCritMultiplier(),
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "MindFlay-Insanity",
+			},
+			NumberOfTicks:        3,
+			TickLength:           time.Second * 1,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: true,
+			BonusCoefficient:     MfCoeff,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, shadow.CalcScalingSpellDmg(MfScale))
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+			if result.Landed() {
+				spell.Dot(target).Apply(sim)
+				spell.DealOutcome(sim, result)
+			}
+		},
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			return spell.CalcPeriodicDamage(sim, target, shadow.CalcScalingSpellDmg(MfScale), spell.OutcomeExpectedMagicCrit)
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return shadow.DevouringPlague.Dot(target).IsActive()
+		},
+	})
 
 	dmgMod := shadow.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
