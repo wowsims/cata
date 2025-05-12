@@ -1202,7 +1202,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: character.DefaultCritMultiplier(),
 		CritMultiplier:   1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -1215,13 +1215,13 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 	}
 
 	handler := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-		if spell.ActionID.SpellID == 120687 || !aura.Icd.IsReady(sim) || !sim.Proc(0.5, "Stormlash") || !result.Landed() || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) {
+		if !aura.Icd.IsReady(sim) || !result.Landed() || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) || !sim.Proc(0.5, "Stormlash") {
 			return
 		}
 
 		baseMultiplierExtension := getStormLashSpellOverride(spell)
-		ap := spell.Unit.GetStat(stats.AttackPower)
-		sp := spell.Unit.GetStat(stats.SpellPower)
+		ap := max(spell.MeleeAttackPower(), spell.RangedAttackPower(result.Target))
+		sp := spell.SpellPower() - spell.BonusSpellPower
 
 		baseDamage := max(ap*0.2, sp*0.3)
 		baseMultiplier := 2.0

@@ -77,12 +77,11 @@ func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64
 }
 
 func (spell *Spell) MeleeAttackPower() float64 {
-	return spell.Unit.stats[stats.AttackPower] + spell.Unit.PseudoStats.MobTypeAttackPower
+	return spell.Unit.stats[stats.AttackPower]
 }
 
 func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 	return spell.Unit.stats[stats.RangedAttackPower] +
-		spell.Unit.PseudoStats.MobTypeAttackPower +
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
