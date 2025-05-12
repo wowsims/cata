@@ -1,10 +1,13 @@
-package monk
+package windwalker
 
 import (
+	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/monk"
 )
 
 func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, target *core.Unit) {
@@ -24,16 +27,14 @@ func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, targ
 	}
 }
 
-func (ww *WindwalkerMonk) registerDancingRuneWeaponSpell() {
-	duration := time.Second * 12
-
+func (ww *WindwalkerMonk) registerStormEarthAndFire() {
 	sefAura := ww.RegisterAura(core.Aura{
 		Label:    "Storm, Earth, and Fire",
 		ActionID: core.ActionID{SpellID: 137639},
 		Duration: core.NeverExpires,
 		// Casts copy
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			copySpell := ww.RuneWeapon.runeWeaponSpells[spell.ActionID]
+			copySpell := ww.SefController.GetCopySpell(spell.ActionID)
 			if copySpell == nil {
 				return
 			}
@@ -43,17 +44,17 @@ func (ww *WindwalkerMonk) registerDancingRuneWeaponSpell() {
 			copySpell.Cast(sim, ww.CurrentTarget)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-
+			ww.SefController.Activate(sim, ww.CurrentTarget)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-
+			ww.SefController.Deactivate(sim)
 		},
 	})
 
-	spell := ww.RegisterSpell(core.SpellConfig{
+	ww.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 137639},
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MonkSpellStormEarthAndFire,
+		ClassSpellMask: monk.MonkSpellStormEarthAndFire,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 10,
@@ -65,129 +66,160 @@ func (ww *WindwalkerMonk) registerDancingRuneWeaponSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			ww.RuneWeapon.EnableWithTimeout(sim, ww.RuneWeapon, duration)
-			ww.RuneWeapon.CancelGCDTimer(sim)
-			dancingRuneWeaponAura.Activate(sim)
+			sefAura.Activate(sim)
 		},
 	})
+}
 
-	ww.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
-		Type:  core.CooldownTypeDPS,
-	})
+type StormEarthAndFireController struct {
+	pets       []*StormEarthAndFirePet
+	spells     map[core.ActionID]*core.Spell
+	sefTargets map[int32]*StormEarthAndFirePet
+}
+
+func (controller *StormEarthAndFireController) AddCopySpell(actionId core.ActionID, spell *core.Spell) {
+	controller.spells[actionId] = spell
+}
+
+func (controller *StormEarthAndFireController) GetCopySpell(actionId core.ActionID) *core.Spell {
+	return controller.spells[actionId]
+}
+
+func (controller *StormEarthAndFireController) Activate(sim *core.Simulation, target *core.Unit) {
+	targetUnixIndex := target.UnitIndex
+	activeSef := controller.sefTargets[targetUnixIndex]
+	// If the target already has an active clone, disable it
+	if activeSef != nil {
+		activeSef.Disable(sim)
+		return
+	}
+	// Pick a random pet to spawn
+	petIndex := int32(math.Round(sim.Roll(0, 2)))
+	pet := controller.pets[petIndex]
+	fmt.Println("Activating SEF for target", len(controller.sefTargets), targetUnixIndex, petIndex)
+	// petUnitIndex := pet.UnitIndex
+	pet.EnableWithStartAttackDelay(sim, pet, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
+	pet.AutoAttacks.SwapTarget(sim, target)
+
+}
+
+func (controller *StormEarthAndFireController) Deactivate(sim *core.Simulation) {
+	for _, pet := range controller.pets {
+		pet.Disable(sim)
+	}
+}
+
+func (ww *WindwalkerMonk) registerSEFPets() {
+	ww.SefController = &StormEarthAndFireController{
+		spells:     make(map[core.ActionID]*core.Spell),
+		pets:       make([]*StormEarthAndFirePet, 0, 3),
+		sefTargets: make(map[int32]*StormEarthAndFirePet),
+	}
+
+	ww.SefController.pets = append(ww.SefController.pets, ww.NewSEFPet("Storm Spirit", 2.7))
+	ww.SefController.pets = append(ww.SefController.pets, ww.NewSEFPet("Earth Spirit", 3.6))
+	ww.SefController.pets = append(ww.SefController.pets, ww.NewSEFPet("Fire Spirit", 2.7))
 }
 
 type StormEarthAndFirePet struct {
 	core.Pet
 
-	dkOwner *DeathKnight
-
-	// Diseases
-	FrostFeverSpell  *core.Spell
-	BloodPlagueSpell *core.Spell
-
-	drwDmgSnapshot  float64
-	drwPhysSnapshot float64
-
-	runeWeaponSpells map[core.ActionID]*core.Spell
+	owner *WindwalkerMonk
 }
 
-func (runeWeapon *StormEarthAndFirePet) Initialize() {
-	runeWeapon.dkOwner.registerDrwFrostFever()
-	runeWeapon.dkOwner.registerDrwBloodPlague()
-	runeWeapon.AddCopySpell(OutbreakActionID, runeWeapon.dkOwner.registerDrwOutbreakSpell())
-	runeWeapon.AddCopySpell(IcyTouchActionID, runeWeapon.dkOwner.registerDrwIcyTouchSpell())
-	runeWeapon.AddCopySpell(BloodBoilActionID, runeWeapon.dkOwner.registerDrwBloodBoilSpell())
-	runeWeapon.AddCopySpell(DeathCoilActionID, runeWeapon.dkOwner.registerDrwDeathCoilSpell())
-	runeWeapon.AddCopySpell(PlagueStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwPlagueStrikeSpell())
-	runeWeapon.AddCopySpell(DeathStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwDeathStrikeSpell())
-	runeWeapon.AddCopySpell(RuneStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwRuneStrikeSpell())
-	runeWeapon.AddCopySpell(FesteringStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwFesteringStrikeSpell())
-	runeWeapon.AddCopySpell(BloodStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwBloodStrikeSpell())
+func (sefClone *StormEarthAndFirePet) Initialize() {
 }
 
-func (runeWeapon *StormEarthAndFirePet) AddCopySpell(actionId core.ActionID, spell *core.Spell) {
-	runeWeapon.runeWeaponSpells[actionId] = spell
-}
-
-func (dk *WindwalkerMonk) NewRuneWeapon() *StormEarthAndFirePet {
-	runeWeapon := &StormEarthAndFirePet{
-		Pet: core.NewPet("Rune Weapon", &ww.Character, stats.Stats{
-			stats.Stamina: 100,
-		}, func(ownerStats stats.Stats) stats.Stats {
+func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarthAndFirePet {
+	sefClone := &StormEarthAndFirePet{
+		Pet: core.NewPet(name, &ww.Character, stats.Stats{}, func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
+				stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
 				stats.AttackPower: ownerStats[stats.AttackPower],
 				stats.HasteRating: ownerStats[stats.HasteRating],
 
 				stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
-				stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent] * HitCapRatio,
+				stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
 
-				stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
+				stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent],
 
 				stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 				stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 			}
-		}, false, true),
-		dkOwner: dk,
+		}, false, false),
+		owner: ww,
 	}
 
-	runeWeapon.runeWeaponSpells = map[core.ActionID]*core.Spell{}
-
-	runeWeapon.OnPetEnable = runeWeapon.enable
-	runeWeapon.OnPetDisable = runeWeapon.disable
-
+	isDualWielding := swingSpeed == 2.7
 	mhWeapon := ww.WeaponFromMainHand(ww.DefaultCritMultiplier())
+	mhAvgDPS := mhWeapon.AverageDamage()
 
-	baseDamage := mhWeapon.AverageDamage() / mhWeapon.SwingSpeed * 3.5
-	mhWeapon.BaseDamageMin = baseDamage - 150
-	mhWeapon.BaseDamageMax = baseDamage + 150
+	// This number is derived from naked Dummy testing and using multiple
+	// other weapons. This was the constant difference between them.
+	baseCloneDamage := 161.0
 
-	mhWeapon.SwingSpeed = 3.5
-	mhWeapon.NormalizedSwingSpeed = 3.3
+	avgMhDamage := 0.0
+	avgOhDamage := 0.0
 
-	runeWeapon.EnableAutoAttacks(runeWeapon, core.AutoAttackOptions{
-		MainHand:       mhWeapon,
+	var cloneOhWeapon core.Weapon
+	if isDualWielding {
+		ohWeapon := ww.WeaponFromOffHand(ww.DefaultCritMultiplier())
+		ohAvgDPS := ohWeapon.AverageDamage()
+
+		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * monk.DualWieldModifier
+		avgOhDamage = avgMhDamage / 2
+		cloneOhWeapon = core.Weapon{
+			// The clone has a tiny variance in auto attack damage
+			BaseDamageMin:  baseCloneDamage - 1 + avgOhDamage,
+			BaseDamageMax:  baseCloneDamage + 1 + avgOhDamage,
+			SwingSpeed:     swingSpeed,
+			CritMultiplier: ww.DefaultCritMultiplier(),
+		}
+	} else {
+		avgMhDamage = mhAvgDPS * swingSpeed
+	}
+
+	cloneMhWeapon := core.Weapon{
+		BaseDamageMin:  baseCloneDamage + avgMhDamage,
+		BaseDamageMax:  baseCloneDamage + avgMhDamage,
+		SwingSpeed:     swingSpeed,
+		CritMultiplier: ww.DefaultCritMultiplier(),
+	}
+
+	sefClone.EnableAutoAttacks(sefClone, core.AutoAttackOptions{
+		MainHand:       cloneMhWeapon,
+		OffHand:        cloneOhWeapon,
 		AutoSwingMelee: true,
 	})
 
-	runeWeapon.PseudoStats.DamageTakenMultiplier = 0
+	sefClone.OnPetEnable = sefClone.enable
+	sefClone.OnPetDisable = sefClone.disable
 
-	ww.AddPet(runeWeapon)
+	ww.AddPet(sefClone)
 
-	return runeWeapon
+	return sefClone
 }
 
-func (runeWeapon *StormEarthAndFirePet) GetPet() *core.Pet {
-	return &runeWeapon.Pet
+func (sefClone *StormEarthAndFirePet) GetPet() *core.Pet {
+	return &sefClone.Pet
 }
 
-func (runeWeapon *StormEarthAndFirePet) Reset(_ *core.Simulation) {
+func (sefClone *StormEarthAndFirePet) Reset(_ *core.Simulation) {
 }
 
-func (runeWeapon *StormEarthAndFirePet) ExecuteCustomRotation(_ *core.Simulation) {
+func (sefClone *StormEarthAndFirePet) ExecuteCustomRotation(_ *core.Simulation) {
 }
 
-func (runeWeapon *StormEarthAndFirePet) enable(sim *core.Simulation) {
-	// Snapshot extra % speed modifiers from dk owner
-	runeWeapon.PseudoStats.MeleeSpeedMultiplier = 1
-	runeWeapon.MultiplyMeleeSpeed(sim, runeWeapon.dkOwner.PseudoStats.MeleeSpeedMultiplier)
+func (sefClone *StormEarthAndFirePet) enable(sim *core.Simulation) {
+	sefClone.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ monk.Stance) {
+		sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
+	})
 
-	runeWeapon.drwDmgSnapshot = runeWeapon.dkOwner.PseudoStats.DamageDealtMultiplier * 0.5
-	runeWeapon.PseudoStats.DamageDealtMultiplier *= runeWeapon.drwDmgSnapshot
-
-	runeWeapon.drwPhysSnapshot = runeWeapon.dkOwner.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
-	runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= runeWeapon.drwPhysSnapshot
-
+	sefClone.EnableDynamicMeleeSpeed(func(amount float64) {
+		sefClone.MultiplyCastSpeed(amount)
+		sefClone.MultiplyMeleeSpeed(sim, amount)
+	})
 }
 
-func (runeWeapon *StormEarthAndFirePet) disable(sim *core.Simulation) {
-	// Clear snapshot speed
-	runeWeapon.PseudoStats.MeleeSpeedMultiplier = 1
-	runeWeapon.MultiplyMeleeSpeed(sim, 1)
-
-	// Clear snapshot damage multipliers
-	runeWeapon.PseudoStats.DamageDealtMultiplier /= runeWeapon.drwDmgSnapshot
-	runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= runeWeapon.drwPhysSnapshot
-	runeWeapon.drwPhysSnapshot = 1
-	runeWeapon.drwDmgSnapshot = 1
+func (sefClone *StormEarthAndFirePet) disable(sim *core.Simulation) {
 }

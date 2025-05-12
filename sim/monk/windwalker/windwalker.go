@@ -34,6 +34,8 @@ func NewWindwalkerMonk(character *core.Character, options *proto.Player) *Windwa
 	ww.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	ww.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 
+	ww.registerSEFPets()
+
 	return ww
 }
 
@@ -44,6 +46,8 @@ type WindwalkerMonk struct {
 
 	outstandingChi           int32
 	tigereyeBrewT164PTracker int32
+
+	SefController *StormEarthAndFireController
 }
 
 func (ww *WindwalkerMonk) GetMonk() *monk.Monk {
@@ -73,6 +77,7 @@ func (ww *WindwalkerMonk) RegisterSpecializationEffects() {
 	ww.registerRisingSunKick()
 	ww.registerTigereyeBrew()
 	ww.registerSpinningFireBlossom()
+	ww.registerStormEarthAndFire()
 }
 
 func (ww *WindwalkerMonk) getMasteryPercent() float64 {

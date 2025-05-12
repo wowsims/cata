@@ -278,6 +278,7 @@ const (
 	MonkSpellTigereyeBrew
 	MonkSpellTigerStrikes
 	MonkSpellSpinningFireBlossom
+	MonkSpellStormEarthAndFire
 
 	// Brewmaster
 	MonkSpellElusiveBrew
