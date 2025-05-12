@@ -10,7 +10,7 @@ import (
 type Xuen struct {
 	core.Pet
 
-	Monk                    *Monk
+	owner                   *Monk
 	CracklingTigerLightning *core.Spell
 }
 
@@ -25,14 +25,11 @@ var baseStats = stats.Stats{
 
 func (monk *Monk) NewXuen() *Xuen {
 	xuen := &Xuen{
-		Pet:  core.NewPet("Xuen, The White Tiger", &monk.Character, baseStats, monk.xuenStatInheritance(), false, false),
-		Monk: monk,
+		Pet:   core.NewPet("Xuen, The White Tiger", &monk.Character, baseStats, monk.xuenStatInheritance(), false, false),
+		owner: monk,
 	}
 
-	xuen.OnPetEnable = func(sim *core.Simulation) {
-		xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
-	}
-
+	xuen.OnPetEnable = xuen.enable
 	xuen.DelayInitialInheritance(time.Millisecond * 500)
 
 	actionID := core.ActionID{SpellID: 123996}
@@ -121,7 +118,17 @@ func (xuen *Xuen) Reset(sim *core.Simulation) {
 	xuen.Disable(sim)
 }
 
-func (xuen *Xuen) OnPetDisable(sim *core.Simulation) {
+func (xuen *Xuen) enable(sim *core.Simulation) {
+	xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
+
+	xuen.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
+		xuen.PseudoStats.DamageDealtMultiplier = xuen.owner.PseudoStats.DamageDealtMultiplier
+	})
+
+	xuen.EnableDynamicMeleeSpeed(func(amount float64) {
+		xuen.MultiplyCastSpeed(amount)
+		xuen.MultiplyMeleeSpeed(sim, amount)
+	})
 }
 
 func (xuen *Xuen) GetPet() *core.Pet {
