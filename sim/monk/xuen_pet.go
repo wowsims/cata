@@ -83,10 +83,6 @@ func (monk *Monk) NewXuen() *Xuen {
 	xuen.AutoAttacks.MHConfig().BonusCoefficient = 0
 	xuen.AutoAttacks.MHConfig().Flags |= core.SpellFlagIgnoreTargetModifiers
 
-	monk.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
-		xuen.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
-	})
-
 	monk.AddPet(xuen)
 
 	return xuen

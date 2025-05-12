@@ -1,7 +1,6 @@
 package windwalker
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -28,10 +27,14 @@ func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, targ
 }
 
 func (ww *WindwalkerMonk) registerStormEarthAndFire() {
+	var sefTarget *core.Unit
+	damageMultiplier := []float64{1, 0.70, 0.55}
+
 	sefAura := ww.RegisterAura(core.Aura{
-		Label:    "Storm, Earth, and Fire",
-		ActionID: core.ActionID{SpellID: 137639},
-		Duration: core.NeverExpires,
+		Label:     "Storm, Earth, and Fire",
+		ActionID:  core.ActionID{SpellID: 137639},
+		Duration:  core.NeverExpires,
+		MaxStacks: 2,
 		// Casts copy
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			copySpell := ww.SefController.GetCopySpell(spell.ActionID)
@@ -43,11 +46,25 @@ func (ww *WindwalkerMonk) registerStormEarthAndFire() {
 
 			copySpell.Cast(sim, ww.CurrentTarget)
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			ww.SefController.Activate(sim, ww.CurrentTarget)
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			if newStacks > oldStacks {
+				ww.SefController.Activate(sim, sefTarget)
+				ww.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
+				ww.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
+				for _, pet := range ww.SefController.pets {
+					pet.PseudoStats.DamageDealtMultiplier = ww.PseudoStats.DamageDealtMultiplier
+				}
+			} else {
+				ww.SefController.Reset(sim)
+				ww.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
+				for _, pet := range ww.SefController.pets {
+					pet.PseudoStats.DamageDealtMultiplier = ww.PseudoStats.DamageDealtMultiplier
+				}
+				aura.Deactivate(sim)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			ww.SefController.Deactivate(sim)
+			ww.SefController.Reset(sim)
 		},
 	})
 
@@ -65,13 +82,16 @@ func (ww *WindwalkerMonk) registerStormEarthAndFire() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+			sefTarget = target
 			sefAura.Activate(sim)
+			sefAura.AddStack(sim)
 		},
 	})
 }
 
 type StormEarthAndFireController struct {
+	owner      *WindwalkerMonk
 	pets       []*StormEarthAndFirePet
 	spells     map[core.ActionID]*core.Spell
 	sefTargets map[int32]*StormEarthAndFirePet
@@ -86,31 +106,66 @@ func (controller *StormEarthAndFireController) GetCopySpell(actionId core.Action
 }
 
 func (controller *StormEarthAndFireController) Activate(sim *core.Simulation, target *core.Unit) {
-	targetUnixIndex := target.UnitIndex
-	activeSef := controller.sefTargets[targetUnixIndex]
+	clone := controller.GetCloneFromTarget(sim, target)
 	// If the target already has an active clone, disable it
-	if activeSef != nil {
-		activeSef.Disable(sim)
+	if clone != nil {
+		controller.Deactivate(sim, clone, target)
 		return
 	}
-	// Pick a random pet to spawn
-	petIndex := int32(math.Round(sim.Roll(0, 2)))
-	pet := controller.pets[petIndex]
-	fmt.Println("Activating SEF for target", len(controller.sefTargets), targetUnixIndex, petIndex)
-	// petUnitIndex := pet.UnitIndex
-	pet.EnableWithStartAttackDelay(sim, pet, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
-	pet.AutoAttacks.SwapTarget(sim, target)
 
+	// Pick a random clone to spawn from the clones that are not already enabled
+	if controller.GetActiveCloneCount() == 3 {
+		controller.Deactivate(sim, clone, target)
+		return
+	}
+
+	validClones := controller.GetInactiveClones()
+	cloneIndex := int32(math.Round(sim.Roll(0, float64(len(validClones)-1))))
+	controller.Enable(sim, validClones[cloneIndex], target)
 }
 
-func (controller *StormEarthAndFireController) Deactivate(sim *core.Simulation) {
+func (controller *StormEarthAndFireController) GetCloneFromTarget(sim *core.Simulation, target *core.Unit) *StormEarthAndFirePet {
+	targetUnixIndex := target.UnitIndex
+	return controller.sefTargets[targetUnixIndex]
+}
+
+func (controller *StormEarthAndFireController) Enable(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
+	clone.CurrentTarget = target
+	clone.EnableWithStartAttackDelay(sim, clone, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
+	controller.sefTargets[target.UnitIndex] = clone
+}
+
+func (controller *StormEarthAndFireController) Deactivate(sim *core.Simulation, pet *StormEarthAndFirePet, target *core.Unit) {
+	pet.Disable(sim)
+	controller.sefTargets[target.UnitIndex] = nil
+}
+
+func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
 	for _, pet := range controller.pets {
 		pet.Disable(sim)
 	}
+	controller.sefTargets = make(map[int32]*StormEarthAndFirePet)
+}
+
+func (controller *StormEarthAndFireController) GetInactiveClones() []*StormEarthAndFirePet {
+	return core.FilterSlice(controller.pets, func(pet *StormEarthAndFirePet) bool {
+		return !pet.IsEnabled()
+	})
+}
+
+func (controller *StormEarthAndFireController) GetActiveClones() []*StormEarthAndFirePet {
+	return core.FilterSlice(controller.pets, func(pet *StormEarthAndFirePet) bool {
+		return pet.IsEnabled()
+	})
+}
+
+func (controller *StormEarthAndFireController) GetActiveCloneCount() int32 {
+	return int32(len(controller.GetActiveClones()) - 1)
 }
 
 func (ww *WindwalkerMonk) registerSEFPets() {
 	ww.SefController = &StormEarthAndFireController{
+		owner:      ww,
 		spells:     make(map[core.ActionID]*core.Spell),
 		pets:       make([]*StormEarthAndFirePet, 0, 3),
 		sefTargets: make(map[int32]*StormEarthAndFirePet),
@@ -135,7 +190,7 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 		Pet: core.NewPet(name, &ww.Character, stats.Stats{}, func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
 				stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
-				stats.AttackPower: ownerStats[stats.AttackPower],
+				stats.AttackPower: ownerStats[stats.AttackPower] * 0,
 				stats.HasteRating: ownerStats[stats.HasteRating],
 
 				stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
@@ -152,11 +207,11 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 
 	isDualWielding := swingSpeed == 2.7
 	mhWeapon := ww.WeaponFromMainHand(ww.DefaultCritMultiplier())
-	mhAvgDPS := mhWeapon.AverageDamage()
+	mhAvgDPS := mhWeapon.DPS()
 
 	// This number is derived from naked Dummy testing and using multiple
 	// other weapons. This was the constant difference between them.
-	baseCloneDamage := 161.0
+	baseCloneDamage := 266.0
 
 	avgMhDamage := 0.0
 	avgOhDamage := 0.0
@@ -164,7 +219,7 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 	var cloneOhWeapon core.Weapon
 	if isDualWielding {
 		ohWeapon := ww.WeaponFromOffHand(ww.DefaultCritMultiplier())
-		ohAvgDPS := ohWeapon.AverageDamage()
+		ohAvgDPS := ohWeapon.DPS()
 
 		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * monk.DualWieldModifier
 		avgOhDamage = avgMhDamage / 2
