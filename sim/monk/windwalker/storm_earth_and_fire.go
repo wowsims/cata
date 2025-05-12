@@ -1,6 +1,7 @@
 package windwalker
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -214,19 +215,17 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 	baseCloneDamage := 266.0
 
 	avgMhDamage := 0.0
-	avgOhDamage := 0.0
 
 	var cloneOhWeapon core.Weapon
 	if isDualWielding {
 		ohWeapon := ww.WeaponFromOffHand(ww.DefaultCritMultiplier())
 		ohAvgDPS := ohWeapon.DPS()
 
-		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * monk.DualWieldModifier
-		avgOhDamage = avgMhDamage / 2
+		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * core.TernaryFloat64(ohAvgDPS > 0, monk.DualWieldModifier, 1.0)
 		cloneOhWeapon = core.Weapon{
 			// The clone has a tiny variance in auto attack damage
-			BaseDamageMin:  baseCloneDamage - 1 + avgOhDamage,
-			BaseDamageMax:  baseCloneDamage + 1 + avgOhDamage,
+			BaseDamageMin:  baseCloneDamage - 1 + avgMhDamage,
+			BaseDamageMax:  baseCloneDamage + 1 + avgMhDamage,
 			SwingSpeed:     swingSpeed,
 			CritMultiplier: ww.DefaultCritMultiplier(),
 		}
@@ -240,6 +239,8 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 		SwingSpeed:     swingSpeed,
 		CritMultiplier: ww.DefaultCritMultiplier(),
 	}
+
+	fmt.Println(cloneMhWeapon.AverageDamage(), cloneOhWeapon.AverageDamage())
 
 	sefClone.EnableAutoAttacks(sefClone, core.AutoAttackOptions{
 		MainHand:       cloneMhWeapon,
