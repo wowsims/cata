@@ -72,7 +72,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			totalDamage := (shaman.ClassSpellScaling*0.56499999762 + 0.38800001144*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 1)
+			totalDamage := (shaman.CalcScalingSpellDmg(0.56499999762) + 0.38800001144*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 1)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},
@@ -178,7 +178,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		Label:           "Lava Surge Proc Aura",
 		ActionIDForProc: core.ActionID{SpellID: 77762},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.2, "LavaSurge") {
+			if !spell.Matches(SpellMaskFlameShockDot) || !sim.Proc(0.2, "LavaSurge") {
 				return
 			}
 
@@ -208,7 +208,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != SpellMaskLavaBurst || !procAura.IsActive() {
+			if !spell.Matches(SpellMaskLavaBurst) || !procAura.IsActive() {
 				return
 			}
 			//If lava surge procs during LvB cast time, it is not consumed and lvb does not go on cd

@@ -21,7 +21,7 @@ func (elemental *ElementalShaman) registerEarthquakeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Casts-- // Do not count pulses as casts
 			// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage
-			baseDamage := elemental.ClassSpellScaling*0.32400000095 + 0.1099999994*spell.SpellPower()
+			baseDamage := elemental.CalcScalingSpellDmg(0.32400000095) + 0.1099999994*spell.SpellPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

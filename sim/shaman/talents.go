@@ -87,7 +87,7 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 		ActionID: core.ActionID{SpellID: 16188},
 		Duration: core.NeverExpires,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&affectedSpells == 0 {
+			if !spell.Matches(affectedSpells) {
 				return
 			}
 			asCdTimer.Set(sim.CurrentTime + asCd)
@@ -172,10 +172,10 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 	}
 
 	unleashedFuryDDBCHandler := func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
-		if spell.ClassSpellMask&(SpellMaskLightningBolt|SpellMaskLightningBoltOverload) > 0 {
+		if spell.Matches(SpellMaskLightningBolt | SpellMaskLightningBoltOverload) {
 			return 1.3
 		}
-		if spell.ClassSpellMask&(SpellMaskLavaBurst|SpellMaskLavaBurstOverload) > 0 {
+		if spell.Matches(SpellMaskLavaBurst | SpellMaskLavaBurstOverload) {
 			return 1.1
 		}
 		return 1.0

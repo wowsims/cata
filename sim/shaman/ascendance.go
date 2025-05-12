@@ -22,7 +22,7 @@ func (shaman *Shaman) registerAscendanceSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			//Lava Beam cast gets cancelled if ascendance fades during it
-			if (shaman.Hardcast.ActionID == core.ActionID{SpellID: 114074}) && shaman.Hardcast.Expires > sim.CurrentTime {
+			if (shaman.Hardcast.ActionID.SpellID == 114074) && shaman.Hardcast.Expires > sim.CurrentTime {
 				shaman.CancelHardcast(sim)
 			}
 		},

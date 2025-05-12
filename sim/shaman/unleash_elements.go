@@ -16,7 +16,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 		ActionID: core.ActionID{SpellID: 73683},
 		Duration: time.Second * 8,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spellMask&spell.ClassSpellMask > 0 && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) { // In case unleash element is used during LvB/EB travel time
+			if spell.Matches(spellMask) && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) { // In case unleash element is used during LvB/EB travel time
 
 				//Unleash flame applies to both direct damage and dot,
 				//As the 2 parts are separated we wait to deactivate the aura
@@ -146,7 +146,7 @@ func (shaman *Shaman) registerUnleashLife() {
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: 0.28600001335,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHeal := shaman.ClassSpellScaling * 2.82999992371
+			baseHeal := shaman.CalcScalingSpellDmg(2.82999992371)
 			result := spell.CalcAndDealHealing(sim, target, baseHeal, spell.OutcomeHealingCrit)
 
 			if result.Outcome.Matches(core.OutcomeCrit) {

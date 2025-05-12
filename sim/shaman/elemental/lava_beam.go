@@ -16,7 +16,18 @@ func (ele *ElementalShaman) registerLavaBeamSpell() {
 }
 
 func (ele *ElementalShaman) newLavaBeamSpell(isElementalOverload bool) *core.Spell {
-	spellConfig := ele.NewChainSpellConfig(114074, isElementalOverload, 1.1, 0.57099997997, 1.08800005913, 0.13300000131, core.SpellSchoolFire, 8.3, &ele.LavaBeamOverloads)
+	shamConfig := shaman.ShamSpellConfig{
+		ActionID:            core.ActionID{SpellID: 114074},
+		IsElementalOverload: isElementalOverload,
+		BaseCostPercent:     8.3,
+		BonusCoefficient:    0.57099997997,
+		Coeff:               1.08800005913,
+		Variance:            0.13300000131,
+		SpellSchool:         core.SpellSchoolFire,
+		Overloads:           &ele.LavaBeamOverloads,
+		BounceReduction:     1.1,
+	}
+	spellConfig := ele.NewChainSpellConfig(shamConfig)
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, shaman.SpellMaskLavaBeamOverload, shaman.SpellMaskLavaBeam)
 	spellConfig.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
 		return ele.GetAura("Ascendance").IsActive()

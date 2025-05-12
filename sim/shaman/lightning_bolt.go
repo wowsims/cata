@@ -12,7 +12,14 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 }
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
-	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 7.1, time.Millisecond*2500, isElementalOverload, 0.73900002241)
+	shamConfig := ShamSpellConfig{
+		ActionID:            core.ActionID{SpellID: 403},
+		IsElementalOverload: isElementalOverload,
+		BaseCostPercent:     7.1,
+		BonusCoefficient:    0.73900002241,
+		BaseCastTime:        time.Millisecond * 2500,
+	}
+	spellConfig := shaman.newElectricSpellConfig(shamConfig)
 
 	spellConfig.Flags |= core.SpellFlagCanCastWhileMoving
 

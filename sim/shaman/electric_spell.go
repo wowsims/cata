@@ -12,11 +12,25 @@ const (
 	CastTagLightningOverload int32 = 6
 )
 
+type ShamSpellConfig struct {
+	ActionID            core.ActionID
+	BaseCostPercent     float64
+	BaseCastTime        time.Duration
+	IsElementalOverload bool
+	BonusCoefficient    float64
+	BounceReduction     float64
+	Coeff               float64
+	Variance            float64
+	SpellSchool         core.SpellSchool
+	Overloads           *[]*core.Spell
+}
+
 // Shared precomputation logic for LB and CL.
-func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCostPercent float64, baseCastTime time.Duration, isElementalOverload bool, bonusCoefficient float64) core.SpellConfig {
+// Needs isElementalOverload, actionID, baseCostPercent, baseCastTime, bonusCoefficient fields of the shamSpellConfig
+func (shaman *Shaman) newElectricSpellConfig(config ShamSpellConfig) core.SpellConfig {
 	mask := core.ProcMaskSpellDamage
 	flags := SpellFlagShamanSpell | SpellFlagFocusable
-	if isElementalOverload {
+	if config.IsElementalOverload {
 		mask = core.ProcMaskSpellProc
 		flags |= core.SpellFlagPassiveSpell
 	} else {
@@ -24,19 +38,19 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCostPer
 	}
 
 	spell := core.SpellConfig{
-		ActionID:     actionID,
+		ActionID:     config.ActionID,
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     mask,
 		Flags:        flags,
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryFloat64(isElementalOverload, 0, baseCostPercent),
+			BaseCostPercent: core.TernaryFloat64(config.IsElementalOverload, 0, config.BaseCostPercent),
 			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: baseCastTime,
+				CastTime: config.BaseCastTime,
 				GCD:      core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -50,10 +64,10 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCostPer
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
-		BonusCoefficient: bonusCoefficient,
+		BonusCoefficient: config.BonusCoefficient,
 	}
 
-	if isElementalOverload {
+	if config.IsElementalOverload {
 		spell.ActionID.Tag = CastTagLightningOverload
 		spell.ManaCost.BaseCostPercent = 0
 		spell.Cast.DefaultCast.CastTime = 0

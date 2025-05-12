@@ -71,7 +71,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.20999999344,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				baseDamage := shaman.ClassSpellScaling * 0.26100000739
+				baseDamage := shaman.CalcScalingSpellDmg(0.26100000739)
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -85,7 +85,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	})
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.ClassSpellScaling * 0.97399997711
+		baseDamage := shaman.CalcScalingSpellDmg(0.97399997711)
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
 			spell.RelatedDotSpell.Cast(sim, target)

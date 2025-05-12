@@ -133,14 +133,14 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		ClassSpellMask: SpellMaskFlametongueWeapon,
 		Flags:          core.SpellFlagPassiveSpell,
 
-		DamageMultiplier: weapon.SwingSpeed / 2.6,
+		DamageMultiplier: weapon.SwingSpeed / 2.6, //WIll be updated on item swap L232
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.05799999833,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
-				scalingDamage := shaman.ClassSpellScaling * 7.75
+				scalingDamage := shaman.CalcScalingSpellDmg(7.75)
 				baseDamage := (scalingDamage/77 + scalingDamage/25) / 2
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -229,6 +229,17 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 			},
 		})
 
+		shaman.RegisterItemSwapCallback([]proto.ItemSlot{itemSlot}, func(s *core.Simulation, is proto.ItemSlot) {
+			if is == proto.ItemSlot_ItemSlotMainHand {
+				flameTongueSpell.DamageMultiplier /= shaman.ItemSwap.GetUnequippedItemBySlot(is).SwingSpeed / 2.6
+				flameTongueSpell.DamageMultiplier *= shaman.MainHand().SwingSpeed / 2.6
+			}
+			if is == proto.ItemSlot_ItemSlotOffHand {
+				flameTongueSpell.DamageMultiplier /= shaman.ItemSwap.GetUnequippedItemBySlot(is).SwingSpeed / 2.6
+				flameTongueSpell.DamageMultiplier *= shaman.OffHand().SwingSpeed / 2.6
+			}
+		})
+
 	}
 
 	// Currently Imbues are carried over on item swap
@@ -261,7 +272,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.10000000149,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := shaman.ClassSpellScaling * 0.60900002718 //spell id 8034
+			baseDamage := shaman.CalcScalingSpellDmg(0.60900002718) //spell id 8034
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -323,7 +334,7 @@ func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (shaman.ClassSpellScaling*0.57400000095 + (0.038 * dot.Spell.HealingPower(target)))
+				dot.SnapshotBaseDamage = (shaman.CalcScalingSpellDmg(0.57400000095) + (0.038 * dot.Spell.HealingPower(target)))
 				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

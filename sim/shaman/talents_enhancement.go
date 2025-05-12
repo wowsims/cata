@@ -91,7 +91,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 			llmod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&SpellMaskLavaLash == 0 {
+			if !spell.Matches(SpellMaskLavaLash) {
 				return
 			}
 			aura.Deactivate(sim)
@@ -154,7 +154,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 			mwManaCostmod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&mwAffectedSpells == 0 {
+			if !spell.Matches(mwAffectedSpells) {
 				return
 			}
 			shaman.MaelstromWeaponAura.Deactivate(sim)

@@ -24,7 +24,7 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: 0.38800001144,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := shaman.ClassSpellScaling * 0.56499999762
+			baseDamage := shaman.CalcScalingSpellDmg(0.56499999762)
 			result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 			spell.DealDamage(sim, result)
 		},
