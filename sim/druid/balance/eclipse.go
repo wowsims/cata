@@ -65,6 +65,8 @@ func getEclipseMasteryBonus(masteryPoints float64) float64 {
 }
 
 func (moonkin *BalanceDruid) RegisterEclipseAuras() {
+	manaMetrics := moonkin.NewManaMetrics(core.ActionID{SpellID: 79577 /* Eclipse */})
+
 	baselineEclipsePct := 0.15
 	initialEclipseMasteryBonus := getEclipseMasteryBonus(moonkin.GetMasteryPoints())
 
@@ -131,6 +133,11 @@ func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 	})
 
 	moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+		if gained {
+			// Moonkins are energized for 50% maximum mana every time they enter eclipse.
+			moonkin.AddMana(sim, moonkin.MaxMana()*0.5, manaMetrics)
+		}
+
 		if eclipse == LunarEclipse {
 			if gained {
 				lunarEclipse.Activate(sim)
@@ -159,6 +166,7 @@ func (moonkin *BalanceDruid) RegisterEclipseEnergyGainAura() {
 			aura.Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+
 			if energyGain := moonkin.GetSpellEclipseEnergy(spell.ClassSpellMask, moonkin.currentEclipse != NoEclipse); energyGain != 0 {
 				switch spell.ClassSpellMask {
 				case druid.DruidSpellStarfire:
@@ -166,21 +174,11 @@ func (moonkin *BalanceDruid) RegisterEclipseEnergyGainAura() {
 				case druid.DruidSpellWrath:
 					moonkin.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
 				case druid.DruidSpellStarsurge:
-					if moonkin.CanGainEnergy(SolarEnergy) {
-						moonkin.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
+					if moonkin.CanGainEnergy(SolarAndLunarEnergy) {
+						moonkin.AddEclipseEnergy(energyGain, LunarEnergy, sim, solarMetric, spell)
 					} else {
-						moonkin.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
+						moonkin.AddEclipseEnergy(energyGain, SolarEnergy, sim, lunarMetric, spell)
 					}
-				}
-			}
-		},
-		OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Astral Communion handling
-			if !spell.Matches(druid.DruidSpellAstralCommunion) {
-				if moonkin.CanGainEnergy(SolarEnergy) {
-					moonkin.AddEclipseEnergy(25, SolarEnergy, sim, solarMetric, spell)
-				} else {
-					moonkin.AddEclipseEnergy(25, LunarEnergy, sim, lunarMetric, spell)
 				}
 			}
 		},

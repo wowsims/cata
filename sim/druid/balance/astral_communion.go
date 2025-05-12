@@ -13,14 +13,19 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 	channelTickLength := time.Second * 1
 	numberOfTicks := 4
 
+	solarMetric := moonkin.NewSolarEnergyMetrics(actionID)
+	lunarMetric := moonkin.NewLunarEnergyMetrics(actionID)
+
 	moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolArcane,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: druid.DruidSpellAstralCommunion,
 
-		Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{GCD: core.GCDDefault},
+		},
+
 		Hot: core.DotConfig{
 			SelfOnly:            true,
 			Aura:                core.Aura{Label: "Astral Communion"},
@@ -29,6 +34,11 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 			AffectedByCastSpeed: false,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 
+				if moonkin.CanGainEnergy(SolarAndLunarEnergy) {
+					moonkin.AddEclipseEnergy(25, LunarEnergy, sim, lunarMetric, dot.Spell)
+				} else {
+					moonkin.AddEclipseEnergy(25, SolarEnergy, sim, solarMetric, dot.Spell)
+				}
 			},
 		},
 
