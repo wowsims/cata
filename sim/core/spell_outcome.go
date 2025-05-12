@@ -232,14 +232,11 @@ func (spell *Spell) outcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance) {
-			if result.applyAttackTableGlance(spell, attackTable, roll, &chance) {
+			if result.applyAttackTableGlance(spell, attackTable, roll, &chance) ||
+				result.applyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
 				result.applyAttackTableBlock(sim, spell, attackTable)
-			} else if result.applyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
-				result.applyAttackTableBlock(sim, spell, attackTable)
-			} else {
-				if !result.applyAttackTableBlock(sim, spell, attackTable) {
-					result.applyAttackTableHit(spell, countHits)
-				}
+			} else if !result.applyAttackTableBlock(sim, spell, attackTable) {
+				result.applyAttackTableHit(spell, countHits)
 			}
 		}
 	} else {
@@ -263,10 +260,8 @@ func (spell *Spell) OutcomeMeleeWhiteNoGlance(sim *Simulation, result *SpellResu
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance) {
 			if result.applyAttackTableCrit(spell, attackTable, roll, &chance, true) {
 				result.applyAttackTableBlock(sim, spell, attackTable)
-			} else {
-				if !result.applyAttackTableBlock(sim, spell, attackTable) {
-					result.applyAttackTableHit(spell, true)
-				}
+			} else if !result.applyAttackTableBlock(sim, spell, attackTable) {
+				result.applyAttackTableHit(spell, true)
 			}
 		}
 	} else {
@@ -321,10 +316,8 @@ func (spell *Spell) outcomeMeleeSpecialHitAndCrit(sim *Simulation, result *Spell
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance) {
 			if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 				result.applyAttackTableBlock(sim, spell, attackTable)
-			} else {
-				if !result.applyAttackTableBlock(sim, spell, attackTable) {
-					result.applyAttackTableHit(spell, countHits)
-				}
+			} else if !result.applyAttackTableBlock(sim, spell, attackTable) {
+				result.applyAttackTableHit(spell, countHits)
 			}
 		}
 	} else {
@@ -440,7 +433,7 @@ func (spell *Spell) outcomeMeleeSpecialBlockAndCrit(sim *Simulation, result *Spe
 	if spell.Unit.PseudoStats.InFrontOfTarget {
 		if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 			result.applyAttackTableBlock(sim, spell, attackTable)
-		} else {
+		} else if !result.applyAttackTableBlock(sim, spell, attackTable) {
 			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
@@ -574,10 +567,12 @@ func (spell *Spell) outcomeEnemyMeleeWhite(sim *Simulation, result *SpellResult,
 
 	if !result.applyEnemyAttackTableMiss(spell, attackTable, roll, &chance) &&
 		!result.applyEnemyAttackTableDodge(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) &&
-		!result.applyEnemyAttackTableBlock(sim, spell, attackTable) {
-		result.applyAttackTableHit(spell, countHits)
+		!result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance) {
+		if result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
+			result.applyEnemyAttackTableBlock(sim, spell, attackTable)
+		} else if !result.applyEnemyAttackTableBlock(sim, spell, attackTable) {
+			result.applyAttackTableHit(spell, countHits)
+		}
 	}
 }
 
