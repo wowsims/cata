@@ -44,7 +44,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower(aoeTarget))
+				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower())
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 
 				results[i] = fokSpell.CalcDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)

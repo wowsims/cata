@@ -441,10 +441,7 @@ type PseudoStats struct {
 
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
-	BonusSpellCritPercentTaken float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
-
-	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
-	BonusHealingTaken        float64 // Talisman of Troll Divinity
+	BonusHealingTaken float64 // Talisman of Troll Divinity
 
 	DamageTakenMultiplier       float64            // All damage
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc.)

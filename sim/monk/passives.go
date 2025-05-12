@@ -60,7 +60,7 @@ func (monk *Monk) registerSwiftReflexes() {
 		ActionID:    core.ActionID{SpellID: 124335},
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		MaxRange:    core.MaxMeleeRange,
 
 		DamageMultiplier: 0.3 * 7.5,

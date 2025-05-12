@@ -80,7 +80,7 @@ func (spell *Spell) MeleeAttackPower() float64 {
 	return spell.Unit.stats[stats.AttackPower]
 }
 
-func (spell *Spell) RangedAttackPower(target *Unit) float64 {
+func (spell *Spell) RangedAttackPower() float64 {
 	return spell.Unit.stats[stats.RangedAttackPower]
 }
 
@@ -137,7 +137,6 @@ func (spell *Spell) SpellCritChance(target *Unit) float64 {
 	attackTable := spell.Unit.AttackTables[target.UnitIndex]
 	critPercent := spell.Unit.stats[stats.SpellCritPercent] +
 		spell.BonusCritPercent +
-		target.PseudoStats.BonusSpellCritPercentTaken +
 		attackTable.BonusSpellCritPercent
 	return critPercent/100 - attackTable.SpellCritSuppression
 }
@@ -489,10 +488,6 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 func (result *SpellResult) applyTargetModifiers(sim *Simulation, spell *Spell, attackTable *AttackTable, isPeriodic bool) {
 	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
 		return
-	}
-
-	if spell.SpellSchool.Matches(SpellSchoolPhysical) && spell.Flags.Matches(SpellFlagIncludeTargetBonusDamage) {
-		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
 	}
 
 	result.Damage *= spell.TargetDamageMultiplier(sim, attackTable, isPeriodic)

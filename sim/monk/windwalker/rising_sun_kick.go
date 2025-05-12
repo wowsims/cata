@@ -46,7 +46,7 @@ func (ww *WindwalkerMonk) registerRisingSunKick() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | monk.SpellFlagSpender | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | monk.SpellFlagSpender | core.SpellFlagAPL,
 		ClassSpellMask: monk.MonkSpellRisingSunKick,
 		MaxRange:       core.MaxMeleeRange,
 

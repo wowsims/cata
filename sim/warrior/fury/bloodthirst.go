@@ -13,7 +13,7 @@ func (war *FuryWarrior) RegisterBloodthirst() {
 		ActionID:       core.ActionID{SpellID: 23881},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskBloodthirst | warrior.SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

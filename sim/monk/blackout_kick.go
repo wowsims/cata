@@ -43,7 +43,7 @@ func (monk *Monk) registerBlackoutKick() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagSpender | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSpender | core.SpellFlagAPL,
 		ClassSpellMask: MonkSpellBlackoutKick,
 		MaxRange:       core.MaxMeleeRange,
 
