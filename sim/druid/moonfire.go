@@ -37,7 +37,12 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 				Label: "Moonfire",
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.Landed() && result.DidCrit() && spell.Matches(DruidSpellStarfire|DruidSpellStarsurge) {
+						oldDuration := druid.Moonfire.Dot(aura.Unit).RemainingDuration(sim)
 						druid.Moonfire.Dot(aura.Unit).AddTick()
+
+						if sim.Log != nil {
+							druid.Log(sim, "[DEBUG]: %s extended %s. Old Duration: %0.0f, new duration: %0.0f.", spell.ActionID, druid.Moonfire.ActionID, oldDuration.Seconds(), druid.Moonfire.Dot(aura.Unit).RemainingDuration(sim).Seconds())
+						}
 					}
 				},
 			},
