@@ -27,6 +27,8 @@ $offhigh=$?!s124146[${$MWB/2/$mws}][${$OWB/2/$ows}]
 $low=${$<stnc>*($<bm>*$<dwm>*(($mwb)/($MWS)+$<offm>*$<offlow>)+$<apc>-1)}
 $high=${$<stnc>*($<bm>*$<dwm>*(($MWB)/($MWS)+$<offm>*$<offhigh>)+$<apc>+1)}
 */
+var DualWieldModifier = 0.898882275
+
 func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Spell) float64 {
 	totalDamage := 0.0
 	ap := spell.MeleeAttackPower()
@@ -61,9 +63,9 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 		}
 	}
 
-	// When not wielding a staff or polearm, total damage is multiplied by 0.898882275.
+	// When not wielding a staff or polearm, total damage is multiplied by DualWieldModifier.
 	if !staffOrPolearm {
-		totalDamage *= 0.898882275
+		totalDamage *= DualWieldModifier
 	}
 
 	apMod := monk.GetAttackPowerPerDPS()
