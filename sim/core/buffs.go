@@ -1220,10 +1220,12 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		}
 
 		baseMultiplierExtension := getStormLashSpellOverride(spell)
-		ap := Ternary(spell.ProcMask.Matches(ProcMaskRanged), stormlashSpell.RangedAttackPower(result.Target), stormlashSpell.MeleeAttackPower())
+		ap := Ternary(spell.IsMelee(), stormlashSpell.MeleeAttackPower(), stormlashSpell.RangedAttackPower(result.Target))
 		sp := stormlashSpell.SpellPower()
+		scaledAP := ap * 0.2
+		scaledSP := sp * 0.3
 
-		baseDamage := max(ap*0.2, sp*0.3)
+		baseDamage := max(scaledAP, scaledSP)
 		baseMultiplier := 2.0
 		speedMultiplier := 1.0
 		if baseMultiplierExtension != 0 {
@@ -1236,6 +1238,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		if spell.ProcMask.Matches(ProcMaskWhiteHit) {
 			swingSpeed := 0.0
 			baseMultiplier *= 0.4
+
 			if spell.IsMH() {
 				mh := spell.Unit.AutoAttacks.MH()
 				if mh != nil {
@@ -1248,6 +1251,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 					swingSpeed = oh.SwingSpeed
 				}
 			}
+
 			speedMultiplier = swingSpeed / 2.6
 		} else {
 			speedMultiplier = max(spell.DefaultCast.CastTime.Seconds(), 1.5) / 1.5
@@ -1258,10 +1262,10 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		damage = sim.RollWithLabel(min, max, StormLashAuraTag)
 
 		if sim.Log != nil {
-			var chosenStat = Ternary(ap > sp, stats.AttackPower, stats.SpellPower)
+			var chosenStat = Ternary(scaledAP > scaledSP, stats.AttackPower, stats.SpellPower)
 			var statValue = Ternary(chosenStat == stats.AttackPower, ap, sp)
 
-			character.Log(sim, "[DEBUG] Damage portion for Stormlash procced by %s: Stat=%s, StatValue=%0.2f, BaseDamage=%0.2f, BaseMultiplier=%0.2f, SpeedMultiplier=%0.2f, PreOutcomeDamageAvg=%0.2f, PreOutcomeDamageMin=%0.2f, PreOutcomeDamageMax=%0.2f, PreOutcomeDamageActual=%0.2f",
+			character.Log(sim, "[DEBUG] Damage portion for Stormlash procced by %s: Stat=%s, BaseStatValue=%0.2f, BaseDamage=%0.2f, BaseMultiplier=%0.2f, SpeedMultiplier=%0.2f, PreOutcomeDamageAvg=%0.2f, PreOutcomeDamageMin=%0.2f, PreOutcomeDamageMax=%0.2f, PreOutcomeDamageActual=%0.2f",
 				spell.ActionID, chosenStat.StatName(), statValue, baseDamage, baseMultiplier, speedMultiplier, avg, min, max, damage)
 		}
 		stormlashSpell.Cast(sim, result.Target)
