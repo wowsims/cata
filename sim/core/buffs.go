@@ -1220,7 +1220,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		}
 
 		baseMultiplierExtension := getStormLashSpellOverride(spell)
-		ap := max(stormlashSpell.MeleeAttackPower(), stormlashSpell.RangedAttackPower(result.Target))
+		ap := Ternary(spell.ProcMask.Matches(ProcMaskRanged), stormlashSpell.RangedAttackPower(result.Target), stormlashSpell.MeleeAttackPower())
 		sp := stormlashSpell.SpellPower()
 
 		baseDamage := max(ap*0.2, sp*0.3)
@@ -1239,13 +1239,13 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 			if spell.IsMH() {
 				mh := spell.Unit.AutoAttacks.MH()
 				if mh != nil {
-					swingSpeed = spell.Unit.AutoAttacks.MH().SwingSpeed
+					swingSpeed = mh.SwingSpeed
 				}
 			} else {
 				baseMultiplier /= 2
 				oh := spell.Unit.AutoAttacks.OH()
 				if oh != nil {
-					swingSpeed = spell.Unit.AutoAttacks.OH().SwingSpeed
+					swingSpeed = oh.SwingSpeed
 				}
 			}
 			speedMultiplier = swingSpeed / 2.6

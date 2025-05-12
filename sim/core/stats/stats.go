@@ -441,8 +441,7 @@ type PseudoStats struct {
 
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
-	BonusRangedAttackPowerTaken float64 // Hunters mark
-	BonusSpellCritPercentTaken  float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
+	BonusSpellCritPercentTaken float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
 
 	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
 	BonusHealingTaken        float64 // Talisman of Troll Divinity

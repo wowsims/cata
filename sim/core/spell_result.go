@@ -81,8 +81,7 @@ func (spell *Spell) MeleeAttackPower() float64 {
 }
 
 func (spell *Spell) RangedAttackPower(target *Unit) float64 {
-	return spell.Unit.stats[stats.RangedAttackPower] +
-		target.PseudoStats.BonusRangedAttackPowerTaken
+	return spell.Unit.stats[stats.RangedAttackPower]
 }
 
 func (spell *Spell) DodgeParrySuppression() float64 {
