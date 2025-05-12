@@ -292,8 +292,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 
 	dpm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
 
-	mhSpell := shaman.newFrostbrandImbueSpell()
-	//ohSpell := shaman.newFrostbrandImbueSpell() Is there a difference ?
+	fbSpell := shaman.newFrostbrandImbueSpell()
 
 	fbDebuffAuras := shaman.NewEnemyAuraArray(shaman.FrostbrandDebuffAura)
 
@@ -303,11 +302,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		Outcome:  core.OutcomeLanded,
 		DPM:      dpm,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.IsMH() {
-				mhSpell.Cast(sim, result.Target)
-			} else {
-				mhSpell.Cast(sim, result.Target)
-			}
+			fbSpell.Cast(sim, result.Target)
 			fbDebuffAuras.Get(result.Target).Activate(sim)
 		},
 	})
