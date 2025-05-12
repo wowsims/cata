@@ -30,7 +30,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !rogue.PseudoStats.InFrontOfTarget && (rogue.IsStealthed() || rogue.HasActiveAura("Shadowmeld"))
+			return !rogue.PseudoStats.InFrontOfTarget && (rogue.IsStealthed() || rogue.HasActiveAura("Shadowmeld") || rogue.HasActiveAura("Sleight of Hand"))
 		},
 
 		DamageMultiplier:         core.TernaryFloat64(rogue.HasDagger(core.MainHand), weaponDamage*daggerModifier, weaponDamage),

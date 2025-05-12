@@ -105,6 +105,9 @@ type Rogue struct {
 	WoundPoisonDebuffAuras    core.AuraArray
 
 	T12ToTLastBuff int
+	Has2PT15       bool
+	T16EnergyAura  *core.Aura
+	T16SpecMod     *core.SpellMod
 
 	ruthlessnessMetrics      *core.ResourceMetrics
 	relentlessStrikesMetrics *core.ResourceMetrics
@@ -337,6 +340,7 @@ const (
 	RogueSpellRecuperate
 	RogueSpellRupture
 	RogueSpellCrimsonTempest
+	RogueSpellCrimsonTempestDoT
 	RogueSpellShiv
 	RogueSpellSinisterStrike
 	RogueSpellSliceAndDice
@@ -357,6 +361,7 @@ const (
 	RogueSpellRevealingStrike
 	RogueSpellColdBlood
 	RogueSpellMutilate
+	RogueSpellMutilateHit
 	RogueSpellDispatch
 	RogueSpellVendetta
 	RogueSpellVenomousWounds
@@ -370,6 +375,8 @@ const (
 	RogueSpellsAll = RogueSpellLast<<1 - 1
 
 	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellDeadlyPoison
+	RogueSpellGenerator        = RogueSpellBackstab | RogueSpellHemorrhage | RogueSpellSinisterStrike | RogueSpellRevealingStrike | RogueSpellMutilate | RogueSpellDispatch | RogueSpellAmbush | RogueSpellGarrote
 	RogueSpellDamagingFinisher = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture | RogueSpellCrimsonTempest
 	RogueSpellWeightedBlades   = RogueSpellSinisterStrike | RogueSpellRevealingStrike
+	RogueSpellActives          = RogueSpellGenerator | RogueSpellDamagingFinisher
 )

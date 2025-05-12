@@ -69,6 +69,9 @@ func (rogue *Rogue) registerRupture() {
 			if result.Landed() {
 				dot := spell.Dot(target)
 				dot.BaseTickCount = 2 + (2 * rogue.ComboPoints())
+				if rogue.Has2PT15 {
+					dot.BaseTickCount += 2
+				}
 				dot.Apply(sim)
 				rogue.ApplyFinisher(sim, spell)
 				spell.DealOutcome(sim, result)

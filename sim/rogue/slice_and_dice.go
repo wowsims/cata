@@ -81,6 +81,9 @@ func (rogue *Rogue) registerSliceAndDice() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			spell.RelatedSelfBuff.Duration = rogue.sliceAndDiceDurations[rogue.ComboPoints()]
+			if rogue.Has2PT15 {
+				spell.RelatedSelfBuff.Duration += time.Second * 6
+			}
 			rogue.ApplyFinisher(sim, spell)
 			spell.RelatedSelfBuff.Activate(sim)
 

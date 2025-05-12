@@ -71,11 +71,22 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 					}
 					mhWeaponSwing.Cast(sim, target)
 					ohWeaponSwing.Cast(sim, target)
+					if comRogue.T16SpecMod != nil {
+						if comRogue.T16SpecMod.IsActive {
+							newMod := comRogue.T16SpecMod.GetFloatValue() * 1.1
+							comRogue.T16SpecMod.UpdateFloatValue(newMod)
+						}
+						comRogue.T16SpecMod.Activate()
+					}
 				},
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			comRogue.PseudoStats.DamageDealtMultiplier /= auraDamageMult
+			if comRogue.T16SpecMod != nil {
+				comRogue.T16SpecMod.UpdateFloatValue(0.1)
+				comRogue.T16SpecMod.Deactivate()
+			}
 		},
 	})
 	comRogue.KillingSpree = comRogue.RegisterSpell(core.SpellConfig{

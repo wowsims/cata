@@ -12,10 +12,22 @@ func (asnRogue *AssassinationRogue) registerAllPassives() {
 }
 
 func (asnRogue *AssassinationRogue) registerBlindsidePassive() {
+	energyMod := asnRogue.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: rogue.RogueSpellDispatch,
+		IntValue:  -100,
+	})
+
 	blindsideProc := asnRogue.RegisterAura(core.Aura{
 		Label:    "Blindside",
 		ActionID: core.ActionID{SpellID: 121153},
 		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			energyMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			energyMod.Deactivate()
+		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.SpellID == 111240 {

@@ -18,10 +18,11 @@ func (rogue *Rogue) registerCrimsonTempest() {
 
 	// The DoT does not benefit from any external buff/debuff/passive
 	rogue.CrimsonTempestDoT = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 121411, Tag: 7},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagIgnoreTargetModifiers | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 121411, Tag: 7},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagIgnoreTargetModifiers | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagPassiveSpell,
+		ClassSpellMask: RogueSpellCrimsonTempestDoT,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   rogue.CritMultiplier(false),
@@ -29,9 +30,8 @@ func (rogue *Rogue) registerCrimsonTempest() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:    "Crimson Tempest",
-				Tag:      RogueBleedTag,
-				Duration: time.Second * 12,
+				Label: "Crimson Tempest",
+				Tag:   RogueBleedTag,
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 2,

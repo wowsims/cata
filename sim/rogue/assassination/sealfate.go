@@ -30,6 +30,11 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 			if icd.IsReady(sim) && (procChance == 1 || sim.Proc(procChance, "Seal Fate")) {
 				sinRogue.AddComboPoints(sim, 1, cpMetrics)
 				icd.Use(sim)
+
+				if sinRogue.T16EnergyAura != nil {
+					sinRogue.T16EnergyAura.Activate(sim)
+					sinRogue.T16EnergyAura.AddStack(sim)
+				}
 			}
 		},
 	}))

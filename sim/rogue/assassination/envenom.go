@@ -60,6 +60,9 @@ func (asnRogue *AssassinationRogue) registerEnvenom() {
 			// - the aura is applied before the hit effect
 			// See: https://github.com/where-fore/rogue-wotlk/issues/32
 			asnRogue.EnvenomAura.Duration = time.Second * time.Duration(1+comboPoints)
+			if asnRogue.Has2PT15 {
+				asnRogue.EnvenomAura.Duration += time.Second * 1
+			}
 			asnRogue.EnvenomAura.Activate(sim)
 
 			baseDamage := baseDamage*float64(comboPoints) +

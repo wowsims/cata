@@ -37,6 +37,11 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 				if result.Landed() && spell.ClassSpellMask == rogue.RogueSpellSinisterStrike {
 					if sim.Proc(0.2, "Revealing Strike Extra Combo Point") {
 						comRogue.AddComboPoints(sim, 1, cpMetric)
+
+						if comRogue.T16EnergyAura != nil {
+							comRogue.T16EnergyAura.Activate(sim)
+							comRogue.T16EnergyAura.AddStack(sim)
+						}
 					}
 				}
 			},
