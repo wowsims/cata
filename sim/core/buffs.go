@@ -1202,8 +1202,8 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
 
-		DamageMultiplier: character.DefaultCritMultiplier(),
-		CritMultiplier:   1,
+		DamageMultiplier: 1,
+		CritMultiplier:   character.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
@@ -1220,8 +1220,8 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		}
 
 		baseMultiplierExtension := getStormLashSpellOverride(spell)
-		ap := max(spell.MeleeAttackPower(), spell.RangedAttackPower(result.Target))
-		sp := spell.SpellPower() - spell.BonusSpellPower
+		ap := max(stormlashSpell.MeleeAttackPower(), stormlashSpell.RangedAttackPower(result.Target))
+		sp := stormlashSpell.SpellPower()
 
 		baseDamage := max(ap*0.2, sp*0.3)
 		baseMultiplier := 2.0
