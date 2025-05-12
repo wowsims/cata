@@ -15,7 +15,7 @@ func (subRogue *SubtletyRogue) applyPassives() {
 
 	// Apply Mastery
 	masteryMod := subRogue.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  rogue.RogueSpellDamagingFinisher,
 		FloatValue: subRogue.GetMasteryBonus(),
 	})

@@ -31,7 +31,7 @@ var Tier6 = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage dealt by your Backstab, Sinister Strike, Mutilate, and Hemorrhage abilities by 6%.
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
+				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  RogueSpellBackstab | RogueSpellSinisterStrike | RogueSpellMutilate | RogueSpellHemorrhage,
 				FloatValue: .06,
 			})
@@ -418,17 +418,17 @@ var Tier14 = core.NewItemSet(core.ItemSet{
 			// increases the damage done by your Sinister Strike ability by 15%,
 			// and increases the damage done by your Backstab ability by 10%.
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
+				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  RogueSpellVenomousWounds,
 				FloatValue: 0.2,
 			})
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
+				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  RogueSpellSinisterStrike,
 				FloatValue: 0.15,
 			})
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
+				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  RogueSpellBackstab,
 				FloatValue: 0.1,
 			})

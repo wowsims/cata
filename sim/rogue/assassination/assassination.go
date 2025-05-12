@@ -47,7 +47,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	// Apply Mastery
 	masteryMod := sinRogue.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  rogue.RogueSpellWoundPoison | rogue.RogueSpellDeadlyPoison | rogue.RogueSpellEnvenom | rogue.RogueSpellVenomousWounds,
 		FloatValue: sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating)),
 	})
