@@ -12,12 +12,12 @@ import (
 func Test_PartialResistsVsPlayer(t *testing.T) {
 	attacker := &Unit{
 		Type:  EnemyUnit,
-		Level: 88,
+		Level: 93,
 		stats: stats.Stats{},
 	}
 	defender := &Unit{
 		Type:  PlayerUnit,
-		Level: 85,
+		Level: 90,
 		stats: stats.Stats{},
 	}
 
@@ -50,7 +50,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 			chance = th.cumulativeChance
 		}
 
-		expectedAr := float64(resist) / (587.5 + float64(resist))
+		expectedAr := float64(resist) / (825 + float64(resist))
 
 		if math.Abs(resultingAr-expectedAr) > 1e-9 {
 			t.Errorf("resist = %d, thresholds = %s, resultingAr = %.2f%%, expectedAr = %.2f%%", resist, thresholds, resultingAr, expectedAr)
@@ -82,12 +82,12 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 func Test_PartialResistsVsBoss(t *testing.T) {
 	attacker := &Unit{
 		Type:  PlayerUnit,
-		Level: 85,
+		Level: 90,
 		stats: stats.Stats{},
 	}
 	defender := &Unit{
 		Type:  EnemyUnit,
-		Level: 88,
+		Level: 93,
 		stats: stats.Stats{},
 	}
 
@@ -120,8 +120,9 @@ func Test_PartialResistsVsBoss(t *testing.T) {
 			chance = th.cumulativeChance
 		}
 
+		// TODO: Verify that resists are still a thing in MoP
 		// no more level based resists
-		expectedAr := resist / (724 + resist)
+		expectedAr := resist / (991.5 + resist)
 
 		if math.Abs(resultingAr-expectedAr) > 1e-9 {
 			t.Errorf("resist = %.2f, thresholds = %s, resultingAr = %.2f%%, expectedAr = %.2f%%", resist, thresholds, resultingAr, expectedAr)
