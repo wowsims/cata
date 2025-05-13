@@ -10,6 +10,7 @@ const VtScaleCoeff = 0.071
 const VtSpellCoeff = 0.415
 
 func (priest *Priest) registerVampiricTouchSpell() {
+	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 34914})
 	priest.VampiricTouch = priest.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 34914},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -48,6 +49,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				priest.AddMana(sim, priest.MaxMana()*0.02, manaMetric)
 			},
 		},
 
