@@ -1239,7 +1239,12 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 			swingSpeed := 0.0
 			baseMultiplier *= 0.4
 
-			if spell.IsMH() {
+			if spell.IsRanged() {
+				ranged := spell.Unit.AutoAttacks.Ranged()
+				if ranged != nil {
+					swingSpeed = ranged.SwingSpeed
+				}
+			} else if spell.IsMH() {
 				mh := spell.Unit.AutoAttacks.MH()
 				if mh != nil {
 					swingSpeed = mh.SwingSpeed

@@ -199,6 +199,11 @@ func (spell *Spell) IsMelee() bool {
 	return spell.ProcMask.Matches(ProcMaskMelee)
 }
 
+// Returns whether this hit effect is associated with a ranged weapon.
+func (spell *Spell) IsRanged() bool {
+	return spell.ProcMask.Matches(ProcMaskRanged)
+}
+
 func (aa *AutoAttacks) MH() *Weapon {
 	return aa.mh.getWeapon()
 }
