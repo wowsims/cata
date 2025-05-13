@@ -47,19 +47,6 @@ func newWeaponFromUnarmed(critMultiplier float64) Weapon {
 	}
 }
 
-func getWeaponMinRange(item *Item) float64 {
-	switch item.RangedWeaponType {
-	case proto.RangedWeaponType_RangedWeaponTypeThrown:
-	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
-	case proto.RangedWeaponType_RangedWeaponTypeWand:
-		return 0.
-	default:
-		return 5
-	}
-
-	return 0
-}
-
 func getWeaponMaxRange(item *Item) float64 {
 	switch item.RangedWeaponType {
 	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
@@ -91,7 +78,7 @@ func newWeaponFromItem(item *Item, critMultiplier float64, bonusDps float64) Wea
 		NormalizedSwingSpeed: normalizedWeaponSpeed,
 		CritMultiplier:       critMultiplier,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
-		MinRange:             getWeaponMinRange(item),
+		MinRange:             0, // no more deadzone in MoP
 		MaxRange:             getWeaponMaxRange(item),
 	}
 }

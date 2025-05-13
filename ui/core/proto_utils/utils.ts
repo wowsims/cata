@@ -1862,7 +1862,6 @@ const itemTypeToSlotsMap: Partial<Record<ItemType, Array<ItemSlot>>> = {
 	[ItemType.ItemTypeFeet]: [ItemSlot.ItemSlotFeet],
 	[ItemType.ItemTypeFinger]: [ItemSlot.ItemSlotFinger1, ItemSlot.ItemSlotFinger2],
 	[ItemType.ItemTypeTrinket]: [ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
-	[ItemType.ItemTypeRanged]: [ItemSlot.ItemSlotRanged],
 };
 
 export function getEligibleItemSlots(item: Item, isFuryWarrior?: boolean): Array<ItemSlot> {
@@ -1882,6 +1881,10 @@ export function getEligibleItemSlots(item: Item, isFuryWarrior?: boolean): Array
 		} else {
 			return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand];
 		}
+	}
+
+	if (item.type == ItemType.ItemTypeRanged) {
+		return [ItemSlot.ItemSlotMainHand];
 	}
 
 	// Should never reach here
@@ -1927,6 +1930,11 @@ export function getEligibleEnchantSlots(enchant: Enchant): Array<ItemSlot> {
 
 			if (type == ItemType.ItemTypeWeapon) {
 				return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand];
+			}
+
+			// For compatability map scopes to main hand
+			if (type == ItemType.ItemTypeRanged) {
+				return [ItemSlot.ItemSlotRanged];
 			}
 
 			// Should never reach here

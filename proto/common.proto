@@ -364,7 +364,6 @@ enum RangedWeaponType {
 	RangedWeaponTypeBow = 1;
 	RangedWeaponTypeCrossbow = 2;
 	RangedWeaponTypeGun = 3;
-	RangedWeaponTypeRelic = 4;
 	RangedWeaponTypeThrown = 5;
 	RangedWeaponTypeWand = 6;
 }

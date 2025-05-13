@@ -67,16 +67,6 @@ abstract class BaseGear {
 			.some(id => itemIds.includes(id));
 	}
 
-	hasRelic(itemId: number): boolean {
-		const relicItem = this.getEquippedItem(ItemSlot.ItemSlotRanged);
-
-		if (!relicItem) {
-			return false;
-		}
-
-		return relicItem!.item.id == itemId;
-	}
-
 	/**
 	 * Returns a new Gear set with the item equipped.
 	 *

@@ -106,14 +106,10 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	rangedWeapon := hunter.WeaponFromRanged(0)
 
 	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
-		// We don't know crit multiplier until later when we see the target so just
-		// use 0 for now.
-		MainHand: hunter.WeaponFromMainHand(0),
-		OffHand:  hunter.WeaponFromOffHand(0),
-		Ranged:   rangedWeapon,
+		Ranged: rangedWeapon,
 		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
-		AutoSwingMelee:  true,
+		AutoSwingMelee:  false,
 	})
 
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
