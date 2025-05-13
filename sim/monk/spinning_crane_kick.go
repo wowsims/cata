@@ -41,7 +41,7 @@ func (monk *Monk) registerSpinningCraneKick() {
 		ActionID:       debuffActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellSpinningCraneKick,
 		MaxRange:       8,
 

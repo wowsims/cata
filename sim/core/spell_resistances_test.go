@@ -120,6 +120,7 @@ func Test_PartialResistsVsBoss(t *testing.T) {
 			chance = th.cumulativeChance
 		}
 
+		// TODO: Verify that resists are still a thing in MoP
 		// no more level based resists
 		expectedAr := resist / (991.5 + resist)
 

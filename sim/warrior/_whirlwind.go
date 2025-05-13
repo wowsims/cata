@@ -20,7 +20,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 			SpellSchool:    core.SpellSchoolPhysical,
 			ProcMask:       core.ProcMaskMeleeOHSpecial, //TODO: needs testing to check if it procs auras, according to pre-cata it didn't
 			ClassSpellMask: SpellMaskWhirlwindOh,
-			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: 1.0,
 			ThreatMultiplier: 1.25,
@@ -50,7 +50,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskWhirlwind | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{

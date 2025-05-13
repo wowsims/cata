@@ -12,12 +12,12 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfAmbush]: {
 			name: "Glyph of Ambush",
-			description: "Increases the range of Ambush by $56813s1 yards.",
+			description: "Increases the range of Ambush by 5 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_ambush.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfBladeFlurry]: {
 			name: "Glyph of Blade Flurry",
-			description: "Your attacks have a $56818s1% higher chance of applying Non-Lethal poisons while Blade Flurry is active.",
+			description: "Your attacks have a 30% higher chance of applying Non-Lethal poisons while Blade Flurry is active.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_punishingblow.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfSharpKnives]: {
@@ -27,17 +27,17 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfRecuperate]: {
 			name: "Glyph of Recuperate",
-			description: "Increases the healing of your Recuperate ability by an additional ${$m1/1000}.1% of your maximum health.",
+			description: "Increases the healing of your Recuperate ability by an additional 1.0% of your maximum health.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_recuperate.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfEvasion]: {
 			name: "Glyph of Evasion",
-			description: "Increases the duration of Evasion by ${$56799m1/1000} sec.",
+			description: "Increases the duration of Evasion by 5 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowward.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfRecovery]: {
 			name: "Glyph of Recovery",
-			description: "While Recuperate is active, you receive $s1% increased healing from other sources.",
+			description: "While Recuperate is active, you receive 20% increased healing from other sources.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_sturdyrecuperate.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfExposeArmor]: {
@@ -47,12 +47,12 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfFeint]: {
 			name: "Glyph of Feint",
-			description: "Increases the duration of Feint by ${$56804m1/1000} sec.",
+			description: "Increases the duration of Feint by 2 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_feint.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfGarrote]: {
 			name: "Glyph of Garrote",
-			description: "Increases the duration of your Garrote ability\'s silence effect by ${$56812m1/1000}.1 sec.",
+			description: "Increases the duration of your Garrote ability\'s silence effect by 1.0 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_garrote.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfGouge]: {
@@ -62,12 +62,12 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfSmokeBomb]: {
 			name: "Glyph of Smoke Bomb",
-			description: "Increases the duration of your Smoke Bomb by ${$m1/1000} sec.",
+			description: "Increases the duration of your Smoke Bomb by 2 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_smoke.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfCheapShot]: {
 			name: "Glyph of Cheap Shot",
-			description: "Increases the duration of your Cheap Shot by ${$m1/1000}.1 sec.",
+			description: "Increases the duration of your Cheap Shot by 0.5 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_cheapshot.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfHemorraghingVeins]: {
@@ -77,32 +77,32 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfKick]: {
 			name: "Glyph of Kick",
-			description: "Increases the cooldown of your Kick ability by ${$56805m1/1000} sec, but this cooldown is reduced by ${$56805m2/1000} sec when your Kick successfully interrupts a spell.",
+			description: "Increases the cooldown of your Kick ability by 4 sec, but this cooldown is reduced by 6 sec when your Kick successfully interrupts a spell.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_kick.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfRedirect]: {
 			name: "Glyph of Redirect",
-			description: "Reduces the cooldown of Redirect by ${$m1/-1000} seconds.",
+			description: "Reduces the cooldown of Redirect by 50 seconds.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_redirect.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfShiv]: {
 			name: "Glyph of Shiv",
-			description: "Reduces the cooldown of your Shiv ability by ${$m1/-1000} sec.",
+			description: "Reduces the cooldown of your Shiv ability by 3 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_throwingknife_04.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfSprint]: {
 			name: "Glyph of Sprint",
-			description: "Increases the movement speed of your Sprint ability by an additional $56811s1%.",
+			description: "Increases the movement speed of your Sprint ability by an additional 30%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_sprint.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfVendetta]: {
 			name: "Glyph of Vendetta",
-			description: "Reduces the damage bonus of your Vendetta ability by $s1% but increases its duration by ${$63249m2/1000} sec.",
+			description: "Reduces the damage bonus of your Vendetta ability by 5% but increases its duration by 10 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_deadliness.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfStealth]: {
 			name: "Glyph of Stealth",
-			description: "Reduces the cooldown of your Stealth ability by ${$m1/-1000} sec.",
+			description: "Reduces the cooldown of your Stealth ability by 4 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_stealth.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfDeadlyMomentum]: {
@@ -112,12 +112,12 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfCloakOfShadows]: {
 			name: "Glyph of Cloak of Shadows",
-			description: "While Cloak of Shadows is active, you take $63269s1% less physical damage.",
+			description: "While Cloak of Shadows is active, you take 40% less physical damage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_nethercloak.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfVanish]: {
 			name: "Glyph of Vanish",
-			description: "Increases the duration of your Vanish effect by ${$89758m1/1000} sec.",
+			description: "Increases the duration of your Vanish effect by 2 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_vanish.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfBlind]: {
@@ -134,7 +134,7 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMinorGlyph.GlyphOfDetection]: {
 			name: "Glyph of Detection",
-			description: "Teaches you the ability Detection.\u000D\u000A\u000D\u000AFocus intently on trying to detect certain creatures.",
+			description: "Teaches you the ability Detection.\u000D\u000A\u000D\u000A Focus intently on trying to detect certain creatures.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_spy.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfHemorrhage]: {
@@ -144,17 +144,17 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMinorGlyph.GlyphOfPickPocket]: {
 			name: "Glyph of Pick Pocket",
-			description: "Increases the range of your Pick Pocket ability by $58017s1 yards.",
+			description: "Increases the range of your Pick Pocket ability by 5 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bag_11.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfDistract]: {
 			name: "Glyph of Distract",
-			description: "Increases the range of your Distract ability by $58032s1 yards.",
+			description: "Increases the range of your Distract ability by 5 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_distract.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfPickLock]: {
 			name: "Glyph of Pick Lock",
-			description: "Reduces the cast time of your Pick Lock ability by $58027s1%.",
+			description: "Reduces the cast time of your Pick Lock ability by 100%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_moonkey.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfSafeFall]: {
@@ -169,7 +169,7 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMinorGlyph.GlyphOfPoisons]: {
 			name: "Glyph of Poisons",
-			description: "You apply poisons to your weapons $58038s1% faster.",
+			description: "You apply poisons to your weapons 50% faster.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/trade_brewpoison.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfKillingSpree]: {
@@ -184,13 +184,8 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMinorGlyph.GlyphOfDisguise]: {
 			name: "Glyph of Disguise",
-			description: "When you Pick Pocket a humanoid enemy, you also copy their appearance for $121308d.  Your disguise will unravel upon entering combat.",
+			description: "When you Pick Pocket a humanoid enemy, you also copy their appearance for 0ms. Your disguise will unravel upon entering combat.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_disguise.jpg",
-		},
-		[RogueMinorGlyph.ZzoldGlyphOfStabbing]: {
-			name: "zzOLD Glyph of Stabbing",
-			description: "When you Vanish, you leave behind a brief illusion that very closely resembles you.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_vanish.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfHeadhunting]: {
 			name: "Glyph of Headhunting",

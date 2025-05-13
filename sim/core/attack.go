@@ -199,6 +199,11 @@ func (spell *Spell) IsMelee() bool {
 	return spell.ProcMask.Matches(ProcMaskMelee)
 }
 
+// Returns whether this hit effect is associated with a ranged weapon.
+func (spell *Spell) IsRanged() bool {
+	return spell.ProcMask.Matches(ProcMaskRanged)
+}
+
 func (aa *AutoAttacks) MH() *Weapon {
 	return aa.mh.getWeapon()
 }
@@ -397,7 +402,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 1},
 		SpellSchool: options.MainHand.GetSpellSchool(),
 		ProcMask:    ProcMaskMeleeMHAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -422,7 +427,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 2},
 		SpellSchool: options.OffHand.GetSpellSchool(),
 		ProcMask:    ProcMaskMeleeOHAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -442,7 +447,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
 		SpellSchool:  options.Ranged.GetSpellSchool(),
 		ProcMask:     ProcMaskRangedAuto,
-		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		Flags:        SpellFlagMeleeMetrics,
 		MissileSpeed: 40,
 
 		DamageMultiplier:         1,
@@ -453,7 +458,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	}

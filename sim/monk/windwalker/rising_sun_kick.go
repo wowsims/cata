@@ -16,20 +16,28 @@ Also causes all targets within 8 yards to take an increased 20% damage from your
 Grievously wounds the target, reducing the effectiveness of any healing received for 10 sec.
 -- Mortal Wounds --
 */
+
 func (ww *WindwalkerMonk) registerRisingSunKick() {
 	actionID := core.ActionID{SpellID: 130320}
 	chiMetrics := ww.NewChiMetrics(actionID)
+
+	risingSunKickDamageBonus := func(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
+		if !spell.Matches(monk.MonkSpellsAll) {
+			return 1.0
+		}
+		return 1.2
+	}
 
 	risingSunKickDebuff := ww.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Rising Sun Kick" + target.Label,
 			ActionID: actionID,
 			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.2
+			OnGain: func(aura *core.Aura, _ *core.Simulation) {
+				core.EnableDamageDoneByCaster(DDBC_RisingSunKick, DDBC_Total, ww.AttackTables[aura.Unit.UnitIndex], risingSunKickDamageBonus)
 			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.2
+			OnExpire: func(aura *core.Aura, _ *core.Simulation) {
+				core.DisableDamageDoneByCaster(DDBC_RisingSunKick, ww.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 	})
@@ -38,7 +46,7 @@ func (ww *WindwalkerMonk) registerRisingSunKick() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | monk.SpellFlagSpender | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | monk.SpellFlagSpender | core.SpellFlagAPL,
 		ClassSpellMask: monk.MonkSpellRisingSunKick,
 		MaxRange:       core.MaxMeleeRange,
 
@@ -73,5 +81,6 @@ func (ww *WindwalkerMonk) registerRisingSunKick() {
 				}
 			}
 		},
+		RelatedAuraArrays: risingSunKickDebuff.ToMap(),
 	})
 }

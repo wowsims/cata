@@ -14,7 +14,7 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 		ActionID:       core.ActionID{SpellID: 78},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskHeroicStrike | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 
@@ -61,7 +61,7 @@ func (warrior *Warrior) RegisterCleaveSpell() {
 		ActionID:       core.ActionID{SpellID: 845},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskCleave | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 
