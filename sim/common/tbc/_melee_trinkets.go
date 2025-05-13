@@ -16,7 +16,7 @@ package tbc
 
 // 	// Proc effects. Keep these in order by item ID.
 
-// 	core.NewItemEffect(11815, func(agent core.Agent) {
+// 	core.NewItemEffect(11815, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		if !character.AutoAttacks.AutoSwingMelee {
 // 			return
@@ -60,7 +60,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(28830, func(agent core.Agent) {
+// 	core.NewItemEffect(28830, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Dragonspine Trophy Proc", core.ActionID{ItemID: 28830}, stats.Stats{stats.HasteRating: 325}, time.Second*10)
 
@@ -93,7 +93,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(30627, func(agent core.Agent) {
+// 	core.NewItemEffect(30627, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Tsunami Talisman Proc", core.ActionID{ItemID: 30627}, stats.Stats{stats.AttackPower: 340, stats.RangedAttackPower: 340}, time.Second*10)
 // 		const procChance = 0.1
@@ -129,7 +129,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(32505, func(agent core.Agent) {
+// 	core.NewItemEffect(32505, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Madness of the Betrayer Proc", core.ActionID{ItemID: 32505}, stats.Stats{stats.CritRating: 42}, time.Second*10)
 
@@ -153,7 +153,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(34427, func(agent core.Agent) {
+// 	core.NewItemEffect(34427, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		var bonusPerStack stats.Stats
@@ -206,7 +206,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(34472, func(agent core.Agent) {
+// 	core.NewItemEffect(34472, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Shard of Contempt Proc", core.ActionID{ItemID: 34472}, stats.Stats{stats.AttackPower: 230, stats.RangedAttackPower: 230}, time.Second*20)
 

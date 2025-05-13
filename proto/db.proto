@@ -16,7 +16,12 @@ message SimDatabase {
 	repeated SpellEffect spell_effects = 8;
 
 }
-
+  // Contains only the Enchant info needed by the sim.
+message SimEnchant {
+	int32 effect_id = 1;
+	repeated double stats = 2;
+	ItemEffect enchant_effect = 3;
+}
 // Contains only the Item info needed by the sim.
 message SimItem {
 	int32 id = 1;
@@ -36,7 +41,7 @@ message SimItem {
 	int32 set_id = 12;
 
 	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ItemLevelState variants that this item could potentially have
-	repeated ItemEffect item_effects = 14;
+	ItemEffect item_effect = 14;
 }
 
 message Consumable {

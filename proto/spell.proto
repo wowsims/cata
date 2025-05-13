@@ -5,16 +5,11 @@ option go_package = "./proto";
 
 import "common.proto";
 enum ItemEffectType {
-	NONE   = 0;
-	PROC   = 1;
-	ON_USE = 2;
+	EffectTypeNone   = 0;
+	EffectTypeProc   = 1;
+	EffectTypeOnUse = 2;
   }
-  // Contains only the Enchant info needed by the sim.
-message SimEnchant {
-	int32 effect_id = 1;
-	repeated double stats = 2;
-	ItemEffect enchant_effect = 3;
-}
+
 
 message ScalingItemEffectProperties {
 	// keys are the numeric values of proto.common.Stat
@@ -22,8 +17,8 @@ message ScalingItemEffectProperties {
 	double rppm_ilvl_modifier = 2;
 }
   message ItemEffect {
-	int32            spell_id         = 1;
-	string label = 9;
+	int32            buff_id         = 1;
+	string buff_name = 9;
 	ItemEffectType   type            = 2;
 	int32            effect_duration = 3;  // seconds
 
@@ -37,8 +32,9 @@ message ScalingItemEffectProperties {
 
   message ProcEffect {
 	double      proc_chance = 1;  // e.g. 0.20 = 20%
-	double 		rppm = 3;
+	double 		ppm = 3;
 	int32 rppm_scale = 4;
+	// The key represents a Class enum key
 	map<int32, double> spec_modifiers = 5;
 	int32       icd         = 2;  // internal cooldown in seconds
   }

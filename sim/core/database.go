@@ -152,7 +152,7 @@ type Item struct {
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	RandPropPoints int32
 	UpgradeStep    proto.ItemLevelState
-	ItemEffects    []*proto.ItemEffect
+	ItemEffect     *proto.ItemEffect
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -170,7 +170,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		ScalingOptions:   pData.ScalingOptions,
-		ItemEffects:      pData.ItemEffects,
+		ItemEffect:       pData.ItemEffect,
 	}
 }
 
@@ -365,22 +365,12 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	})
 }
 
-func (equipment *Equipment) GetEnchantByEffectID(effectID int32) *Enchant {
-	for _, item := range equipment {
-		if item.Enchant.EffectID == effectID {
-			return &item.Enchant
-		}
-	}
-	return nil
+func GetEnchantByEffectID(effectID int32) Enchant {
+	return EnchantsByEffectID[effectID]
 }
 
-func (equipment *Equipment) GetItemById(itemID int32) *Item {
-	for _, item := range equipment {
-		if item.ID == itemID {
-			return &item
-		}
-	}
-	return nil
+func GetItemById(itemID int32) Item {
+	return ItemsByID[itemID]
 }
 
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {

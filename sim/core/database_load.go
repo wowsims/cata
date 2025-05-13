@@ -38,7 +38,7 @@ func init() {
 			SetName:          item.SetName,
 			SetId:            item.SetId,
 			ScalingOptions:   item.ScalingOptions,
-			ItemEffects:      item.ItemEffects,
+			ItemEffect:       item.ItemEffect,
 		}
 	}
 

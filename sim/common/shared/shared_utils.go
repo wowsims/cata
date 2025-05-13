@@ -52,7 +52,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 		procMask = damage.ProcMask
 	}
 
-	factory_StatBonusEffect(config, func(agent core.Agent) ExtraSpellInfo {
+	factory_StatBonusEffect(config, func(agent core.Agent, _ proto.ItemLevelState) ExtraSpellInfo {
 		character := agent.GetCharacter()
 		critMultiplier := core.TernaryFloat64(damage.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
 
@@ -80,7 +80,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 	})
 }
 
-func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent core.Agent) ExtraSpellInfo) {
+func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent core.Agent, _ proto.ItemLevelState) ExtraSpellInfo) {
 	isEnchant := config.EnchantID != 0
 
 	var effectFn func(id int32, effect core.ApplyEffect)
@@ -96,29 +96,24 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		triggerActionID = core.ActionID{ItemID: effectID}
 	}
 
-	effectFn(effectID, func(agent core.Agent) {
+	effectFn(effectID, func(agent core.Agent, itemLevelState proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		var eligibleSlots []proto.ItemSlot
 		var procEffect *proto.ItemEffect
-		scalingSelector := proto.ItemLevelState_Base
 		if isEnchant {
 			eligibleSlots = character.ItemSwap.EligibleSlotsForEffect(effectID)
-
-			ench := core.EnchantsByEffectID[effectID]
+			ench := core.GetEnchantByEffectID(effectID)
 			if ench.EnchantEffect.GetProc() != nil {
 				procEffect = ench.EnchantEffect
 			}
 		} else {
 			eligibleSlots = character.ItemSwap.EligibleSlotsForItem(effectID)
 
-			item := character.Equipment.GetItemById(effectID)
-			if item != nil && len(item.ItemEffects) > 0 {
-				scalingSelector = item.UpgradeStep
-				for _, effect := range item.ItemEffects {
-					if effect.GetProc() != nil {
-						procEffect = effect
-					}
+			item := core.GetItemById(effectID)
+			if item.ItemEffect != nil {
+				if item.ItemEffect.GetProc() != nil {
+					procEffect = item.ItemEffect
 				}
 			}
 		}
@@ -127,14 +122,14 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			panic(err)
 		}
 		proc := procEffect.GetProc()
-		procAction := core.ActionID{SpellID: procEffect.SpellId}
-		procAura := character.NewTemporaryStatsAura(core.Ternary(config.Name != "", config.Name, procEffect.Label)+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(scalingSelector)].Stats), time.Second*time.Duration(procEffect.EffectDuration))
+		procAction := core.ActionID{SpellID: procEffect.BuffId}
+		procAura := character.NewTemporaryStatsAura(procEffect.BuffName+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats), time.Second*time.Duration(procEffect.EffectDuration))
 		var dpm *core.DynamicProcManager
-		if (config.PPM != 0) && (config.ProcMask == core.ProcMaskUnknown) {
+		if (proc.Ppm != 0) && (config.ProcMask == core.ProcMaskUnknown) {
 			if isEnchant {
-				dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, proc.Rppm, 0)
+				dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, proc.Ppm, 0)
 			} else {
-				dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, proc.Rppm, 0)
+				dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, proc.Ppm, 0)
 			}
 		}
 		procAura.CustomProcCondition = config.CustomProcCondition
@@ -153,7 +148,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		var procSpell ExtraSpellInfo
 		if extraSpell != nil {
-			procSpell = extraSpell(agent)
+			procSpell = extraSpell(agent, proto.ItemLevelState_Base)
 		}
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if customHandler != nil {
@@ -167,13 +162,13 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   triggerActionID,
-			Name:       core.Ternary(config.Name != "", config.Name, procEffect.Label),
+			Name:       config.Name,
 			Callback:   config.Callback,
 			ProcMask:   config.ProcMask,
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
 			ProcChance: proc.ProcChance,
-			PPM:        proc.Rppm,
+			PPM:        proc.Ppm,
 			DPM:        dpm,
 			ICD:        time.Second * time.Duration(proc.Icd),
 			Handler:    handler,
@@ -290,7 +285,7 @@ type StackingStatBonusCD struct {
 }
 
 func NewStackingStatBonusCD(config StackingStatBonusCD) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	core.NewItemEffect(config.ID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		auraID := core.ActionID{SpellID: config.AuraID}
@@ -386,7 +381,7 @@ type StackingStatBonusEffect struct {
 }
 
 func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
-	core.NewItemEffect(config.ItemID, func(agent core.Agent) {
+	core.NewItemEffect(config.ItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
@@ -491,7 +486,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		triggerActionID = core.ActionID{ItemID: config.ItemID}
 	}
 
-	effectFn(effectID, func(agent core.Agent) {
+	effectFn(effectID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		critMultiplier := core.TernaryFloat64(config.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())

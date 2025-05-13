@@ -4,7 +4,7 @@ package tbc
 // 	core.AddEffectsToTest = false
 // 	// Keep these in order by item ID.
 
-// 	core.NewItemEffect(25893, func(agent core.Agent) {
+// 	core.NewItemEffect(25893, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Mystic Focus Proc", core.ActionID{ItemID: 25893}, stats.Stats{stats.HasteRating: 320}, time.Second*4)
 
@@ -29,11 +29,11 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(25899, func(agent core.Agent) {
+// 	core.NewItemEffect(25899, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().PseudoStats.BonusDamage += 3
 // 	})
 
-// 	core.NewItemEffect(25901, func(agent core.Agent) {
+// 	core.NewItemEffect(25901, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		icd := core.Cooldown{
 // 			Timer:    character.NewTimer(),
@@ -57,7 +57,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(32410, func(agent core.Agent) {
+// 	core.NewItemEffect(32410, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Thundering Skyfire Diamond Proc", core.ActionID{ItemID: 32410}, stats.Stats{stats.HasteRating: 240}, time.Second*6)
 
@@ -91,17 +91,17 @@ package tbc
 // 	})
 
 // 	// Eternal Earthstorm
-// 	core.NewItemEffect(35501, func(agent core.Agent) {
+// 	core.NewItemEffect(35501, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().PseudoStats.BlockDamageReduction += 0.01
 // 	})
 
-// 	core.NewItemEffect(35503, func(agent core.Agent) {
+// 	core.NewItemEffect(35503, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().MultiplyStat(stats.Intellect, 1.02)
 // 	})
 
 // 	// These are handled in character.go, but create empty effects, so they are included in tests.
-// 	core.NewItemEffect(34220, func(_ core.Agent) {}) // Chaotic Skyfire Diamond
-// 	core.NewItemEffect(32409, func(_ core.Agent) {}) // Relentless Earthstorm Diamond
+// 	core.NewItemEffect(34220, func(_ core.Agent, _ proto.ItemLevelState) {}) // Chaotic Skyfire Diamond
+// 	core.NewItemEffect(32409, func(_ core.Agent, _ proto.ItemLevelState) {}) // Relentless Earthstorm Diamond
 
 // 	core.AddEffectsToTest = true
 // }
