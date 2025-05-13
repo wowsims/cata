@@ -27,7 +27,7 @@ func (shadow *ShadowPriest) registerSurgeOfDarkness() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  priest.PriestSpellMindSpike,
 		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
+		FloatValue: -100,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  priest.PriestSpellMindSpike,
 		Kind:       core.SpellMod_CastTime_Pct,
@@ -45,7 +45,7 @@ func (shadow *ShadowPriest) registerSurgeOfDarkness() {
 		Label: "Surge of Darkness (Talent)",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// use class mask here due to mastery duplication
-			if spell.ClassSpellMask != priest.PriestSpellVampiricTouch {
+			if spell.ClassSpellMask&priest.PriestSpellVampiricTouch == 0 {
 				return
 			}
 
@@ -184,7 +184,7 @@ func (shadow *ShadowPriest) registerDivineInsight() {
 	costMod := shadow.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  priest.PriestSpellMindBlast,
 		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
+		FloatValue: -100,
 	})
 
 	procAura := shadow.RegisterAura(core.Aura{
@@ -214,7 +214,7 @@ func (shadow *ShadowPriest) registerDivineInsight() {
 	core.MakePermanent(shadow.RegisterAura(core.Aura{
 		Label: "Divine Insight (Talent)",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != shadow.ShadowWordPain {
+			if spell.ClassSpellMask&priest.PriestSpellShadowWordPain == 0 {
 				return
 			}
 

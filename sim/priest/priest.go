@@ -89,6 +89,8 @@ func (priest *Priest) Initialize() {
 
 	priest.registerPowerInfusionSpell()
 	priest.newMindSearSpell()
+
+	priest.ApplyGlyphs()
 }
 
 func (priest *Priest) AddHolyEvanglismStack(sim *core.Simulation) {

@@ -571,5 +571,17 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var shaWeaponIDs = []int32{86990, 86865, 86227, 97296}
+
 func init() {
+	for _, id := range shaWeaponIDs {
+		core.NewItemEffect(id, func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			priest.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ClassSpellMask&(PriestSpellMindBender|PriestSpellShadowFiend) > 0 {
+					spell.DefaultCast.GCD = time.Duration(0)
+				}
+			})
+		})
+	}
 }
