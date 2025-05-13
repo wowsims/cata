@@ -1,60 +1,54 @@
-package paladin
+package protection
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/paladin"
 )
 
-func (paladin *Paladin) registerConsecrationSpell() {
-	numTicks := int32(10)
-	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfConsecration) {
-		numTicks += 2
-	}
+func (prot *ProtectionPaladin) registerConsecrationSpell() {
+	consAvgDamage := prot.CalcScalingSpellDmg(0.80000001192)
+	apMod := 0.07999999821
 
-	consAvgDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.07900000364)
-
-	paladin.Consecration = paladin.RegisterSpell(core.SpellConfig{
+	prot.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 26573},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskConsecration,
+		ClassSpellMask: paladin.SpellMaskConsecration,
 
 		MaxRange: 8,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 55,
+			BaseCostPercent: 7,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: 30 * time.Second,
+				Timer:    prot.NewTimer(),
+				Duration: 9 * time.Second,
 			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		CritMultiplier:   prot.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
 				ActionID: core.ActionID{SpellID: 26573},
-				Label:    "Consecration" + paladin.Label,
+				Label:    "Consecration" + prot.Label,
 			},
-			NumberOfTicks: numTicks,
+			NumberOfTicks: 9,
 			TickLength:    time.Second * 1,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Consecration recalculates everything on each tick
-				baseDamage := consAvgDamage +
-					0.0270000007*dot.Spell.MeleeAttackPower() +
-					0.0270000007*dot.Spell.SpellPower()
+				baseDamage := consAvgDamage + apMod*dot.Spell.MeleeAttackPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}

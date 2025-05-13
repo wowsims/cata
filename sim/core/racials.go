@@ -87,7 +87,64 @@ func applyRaceEffects(agent Agent) {
 			stats.PhysicalHitPercent: 1,
 			stats.SpellHitPercent:    1,
 		})
-		// TODO: Gift of the naaru for healers
+
+		classSpellIDs := map[proto.Class]ActionID{
+			proto.Class_ClassHunter:      {SpellID: 59543},
+			proto.Class_ClassMage:        {SpellID: 59548},
+			proto.Class_ClassPaladin:     {SpellID: 59542},
+			proto.Class_ClassShaman:      {SpellID: 59547},
+			proto.Class_ClassWarrior:     {SpellID: 28880},
+			proto.Class_ClassDeathKnight: {SpellID: 59545},
+			proto.Class_ClassMonk:        {SpellID: 121093},
+			proto.Class_ClassPriest:      {SpellID: 121093},
+		}
+
+		var actionID ActionID
+		if id, ok := classSpellIDs[character.Class]; ok {
+			actionID = id
+		} else {
+			actionID = ActionID{SpellID: 121093}
+		}
+
+		character.RegisterSpell(SpellConfig{
+			ActionID:    actionID,
+			Flags:       SpellFlagAPL | SpellFlagHelpful | SpellFlagIgnoreModifiers,
+			ProcMask:    ProcMaskSpellHealing,
+			SpellSchool: SpellSchoolHoly,
+
+			MaxRange: 40,
+
+			Cast: CastConfig{
+				DefaultCast: Cast{
+					NonEmpty: true,
+				},
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 15,
+				},
+			},
+
+			DamageMultiplier: 1.0,
+			CritMultiplier:   character.DefaultCritMultiplier(),
+			ThreatMultiplier: 1.0,
+
+			Hot: DotConfig{
+				Aura: Aura{
+					Label: "Gift of the Naaru" + character.Label,
+				},
+				NumberOfTicks:       5,
+				TickLength:          time.Second * 3,
+				AffectedByCastSpeed: false,
+				OnTick: func(sim *Simulation, target *Unit, dot *Dot) {
+					healValue := character.MaxHealth() * 0.04
+					dot.Spell.CalcAndDealPeriodicHealing(sim, target, healValue, dot.OutcomeTickHealingCrit)
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				spell.Hot(target).Activate(sim)
+			},
+		})
 	case proto.Race_RaceDwarf:
 		character.PseudoStats.ReducedFrostHitTakenChance += 0.02
 

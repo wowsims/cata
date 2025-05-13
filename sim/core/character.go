@@ -618,7 +618,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodgePercent: (character.PseudoStats.BaseDodgeChance + character.GetDiminishedDodgeChance()) * 100,
 		proto.PseudoStat_PseudoStatParryPercent: (character.PseudoStats.BaseParryChance + character.GetDiminishedParryChance()) * 100,
-		proto.PseudoStat_PseudoStatBlockPercent: 5 + character.GetStat(stats.BlockPercent),
+		proto.PseudoStat_PseudoStatBlockPercent: (character.PseudoStats.BaseBlockChance + character.GetDiminishedBlockChance()) * 100,
 
 		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,

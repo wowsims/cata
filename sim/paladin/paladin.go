@@ -1,198 +1,59 @@
 package paladin
 
 import (
-	"time"
-
 	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const (
-	SpellFlagSecondaryJudgement = core.SpellFlagAgentReserved1
-	SpellFlagPrimaryJudgement   = core.SpellFlagAgentReserved2
-)
-
-const (
-	SpellMaskTemplarsVerdict int64 = 1 << iota
-	SpellMaskCrusaderStrike
-	SpellMaskDivineStorm
-	SpellMaskExorcism
-	SpellMaskGlyphOfExorcism
-	SpellMaskHammerOfWrath
-	SpellMaskJudgementBase
-	SpellMaskJudgementOfTruth
-	SpellMaskJudgementOfInsight
-	SpellMaskJudgementOfRighteousness
-	SpellMaskJudgementOfJustice
-	SpellMaskHolyWrath
-	SpellMaskConsecration
-	SpellMaskHammerOfTheRighteousMelee
-	SpellMaskHammerOfTheRighteousAoe
-	SpellMaskAvengersShield
-	SpellMaskDivinePlea
-	SpellMaskDivineProtection
-	SpellMaskAvengingWrath
-	SpellMaskCensure
-	SpellMaskInquisition
-	SpellMaskHandOfLight
-	SpellMaskZealotry
-	SpellMaskGuardianOfAncientKings
-	SpellMaskAncientFury
-	SpellMaskSealsOfCommand
-	SpellMaskShieldOfTheRighteous
-	SpellMaskHolyShield
-	SpellMaskArdentDefender
-
-	SpellMaskHolyShock
-	SpellMaskWordOfGlory
-
-	SpellMaskSealOfTruth
-	SpellMaskSealOfInsight
-	SpellMaskSealOfRighteousness
-	SpellMaskSealOfJustice
-)
-
-const SpellMaskBuilder = SpellMaskCrusaderStrike |
-	SpellMaskDivineStorm |
-	SpellMaskHammerOfTheRighteousMelee
-
-const SpellMaskHammerOfTheRighteous = SpellMaskHammerOfTheRighteousMelee | SpellMaskHammerOfTheRighteousAoe
-
-const SpellMaskJudgement = SpellMaskJudgementOfTruth |
-	SpellMaskJudgementOfInsight |
-	SpellMaskJudgementOfRighteousness |
-	SpellMaskJudgementOfJustice
-
-const SpellMaskCanTriggerSealOfJustice = SpellMaskCrusaderStrike |
-	SpellMaskTemplarsVerdict |
-	SpellMaskHammerOfWrath
-
-const SpellMaskCanTriggerSealOfInsight = SpellMaskCanTriggerSealOfJustice
-
-const SpellMaskCanTriggerSealOfRighteousness = SpellMaskCanTriggerSealOfJustice |
-	SpellMaskDivineStorm |
-	SpellMaskHammerOfTheRighteousMelee
-
-const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
-	SpellMaskTemplarsVerdict |
-	SpellMaskExorcism |
-	SpellMaskHammerOfWrath |
-	SpellMaskJudgement |
-	SpellMaskHammerOfTheRighteousMelee |
-	SpellMaskShieldOfTheRighteous
-
-const SpellMaskCanTriggerAncientPower = SpellMaskCanTriggerSealOfTruth |
-	SpellMaskHolyWrath
-
-const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
-	SpellMaskExorcism |
-	SpellMaskJudgement |
-	SpellMaskHolyWrath |
-	SpellMaskTemplarsVerdict |
-	SpellMaskDivineStorm |
-	SpellMaskInquisition
-
-const SpellMaskCanConsumeDivinePurpose = SpellMaskInquisition |
-	SpellMaskTemplarsVerdict
-
-const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
-	SpellMaskSealOfTruth |
-	SpellMaskSealsOfCommand |
-	SpellMaskHammerOfWrath
-
-const SpellMaskModifiedByZealOfTheCrusader = SpellMaskTemplarsVerdict |
-	SpellMaskCrusaderStrike |
-	SpellMaskDivineStorm |
-	SpellMaskExorcism |
-	SpellMaskGlyphOfExorcism |
-	SpellMaskHammerOfWrath |
-	SpellMaskJudgementOfTruth |
-	SpellMaskJudgementOfRighteousness |
-	SpellMaskHolyWrath |
-	SpellMaskConsecration |
-	SpellMaskHammerOfTheRighteousMelee |
-	SpellMaskHammerOfTheRighteousAoe |
-	SpellMaskAvengersShield |
-	SpellMaskCensure |
-	SpellMaskSealsOfCommand |
-	SpellMaskHolyShock |
-	SpellMaskSealOfTruth |
-	SpellMaskSealOfRighteousness |
-	SpellMaskSealOfJustice
-
 type Paladin struct {
 	core.Character
 
-	PaladinAura proto.PaladinAura
-	Seal        proto.PaladinSeal
-	HolyPower   core.SecondaryResourceBar
+	Seal      proto.PaladinSeal
+	HolyPower core.SecondaryResourceBar
 
 	Talents *proto.PaladinTalents
 
-	// Used for CS/DS/HotR
-	sharedBuilderTimer  *core.Timer
-	sharedBuilderBaseCD time.Duration
+	// Used for CS/HotR
+	sharedBuilderTimer *core.Timer
 
 	CurrentSeal       *core.Aura
-	CurrentJudgement  *core.Spell
 	StartingHolyPower int32
 
 	// Pets
-	AncientGuardian *AncientGuardianPet
+	AncientGuardian    *AncientGuardianPet
+	GurthalakTentacles []*cata.TentacleOfTheOldOnesPet
 
-	DivinePlea               *core.Spell
-	DivineStorm              *core.Spell
-	HolyWrath                *core.Spell
-	Consecration             *core.Spell
-	CrusaderStrike           *core.Spell
-	Exorcism                 *core.Spell
-	HolyShield               *core.Spell
-	HammerOfTheRighteous     *core.Spell
-	HandOfReckoning          *core.Spell
-	ShieldOfRighteousness    *core.Spell
-	AvengersShield           *core.Spell
-	HammerOfWrath            *core.Spell
-	AvengingWrath            *core.Spell
-	DivineProtection         *core.Spell
-	TemplarsVerdict          *core.Spell
-	Zealotry                 *core.Spell
-	Inquisition              *core.Spell
-	HandOfLight              *core.Spell
-	JudgementOfTruth         *core.Spell
-	JudgementOfInsight       *core.Spell
-	JudgementOfRighteousness *core.Spell
-	JudgementOfJustice       *core.Spell
-	ShieldOfTheRighteous     *core.Spell
+	Judgment       *core.Spell
+	Exorcism       *core.Spell
+	AvengersShield *core.Spell
+	HammerOfWrath  *core.Spell
 
-	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
-	DivinePleaAura          *core.Aura
 	SealOfTruthAura         *core.Aura
 	SealOfInsightAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	SealOfJusticeAura       *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
-	ZealotryAura            *core.Aura
-	InquisitionAura         *core.Aura
-	DivinePurposeAura       *core.Aura
-	JudgementsOfThePureAura *core.Aura
-	GrandCrusaderAura       *core.Aura
-	SacredDutyAura          *core.Aura
 	GoakAura                *core.Aura
 	AncientPowerAura        *core.Aura
-
-	// Cached Gurthalak tentacles
-	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+	DivinePurposeAura       *core.Aura
 
 	// Item sets
 	T11Ret4pc *core.Aura
+
+	HolyAvengerActionIDFilter []*core.ActionID
+
+	DynamicHolyPowerSpent                        int32
+	BastionOfGloryMultiplier                     float64
+	ShieldOfTheRighteousAdditiveMultiplier       float64
+	ShieldOfTheRighteousMultiplicativeMultiplier float64
 }
 
 func (paladin *Paladin) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
-	return paladin.gurthalakTentacles
+	return paladin.GurthalakTentacles
 }
 
 func (paladin *Paladin) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
@@ -221,78 +82,61 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 	return paladin
 }
 
-// func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	if paladin.PaladinAura == proto.PaladinAura_Devotion {
-// 		raidBuffs.DevotionAura = true
-// 	}
-// 	if paladin.PaladinAura == proto.PaladinAura_Retribution {
-// 		raidBuffs.RetributionAura = true
-// 	}
-// 	if paladin.PaladinAura == proto.PaladinAura_Resistance {
-// 		raidBuffs.ResistanceAura = true
-// 	}
-// 	if paladin.Talents.Communion {
-// 		raidBuffs.Communion = true
-// 	}
-// }
+func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.BlessingOfMight = true
+	raidBuffs.BlessingOfKings = true
+}
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-	// paladin.applyGlyphs()
+	paladin.applyGlyphs()
 	paladin.registerSpells()
-	paladin.addBloodthirstyGloves()
+	paladin.addCataclysmPvpGloves()
+	paladin.addMistsPvpGloves()
+	paladin.applySanctityOfBattle()
 }
 
-func (paladin *Paladin) ApplyTalents() {}
-
 func (paladin *Paladin) registerSpells() {
-	paladin.registerCrusaderStrike()
-	paladin.registerExorcism()
-	paladin.registerJudgement()
-	// paladin.registerSealOfTruth()
-	paladin.registerSealOfInsight()
-	// paladin.registerSealOfRighteousness()
-	paladin.registerSealOfJustice()
-	// paladin.registerInquisition()
-	// paladin.registerHammerOfWrathSpell()
 	paladin.registerAvengingWrath()
-	paladin.registerDivinePleaSpell()
-	paladin.registerConsecrationSpell()
-	paladin.registerHolyWrath()
-	paladin.registerGuardianOfAncientKings()
+	paladin.registerCrusaderStrike()
+	paladin.registerDevotionAura()
 	paladin.registerDivineProtectionSpell()
+	paladin.registerGuardianOfAncientKings()
+	paladin.registerHammerOfTheRighteous()
+	paladin.registerHammerOfWrathSpell()
+	paladin.registerJudgment()
+	paladin.registerSealOfInsight()
+	paladin.registerSealOfRighteousness()
+	paladin.registerSealOfTruth()
+	paladin.registerShieldOfTheRighteous()
+	paladin.registerTemplarsVerdict()
+	paladin.registerWordOfGlory()
 }
 
 func (paladin *Paladin) Reset(sim *core.Simulation) {
-	// switch paladin.Seal {
-	// case proto.PaladinSeal_Truth:
-	// 	paladin.CurrentJudgement = paladin.JudgementOfTruth
-	// 	paladin.CurrentSeal = paladin.SealOfTruthAura
-	// 	paladin.SealOfTruthAura.Activate(sim)
-	// case proto.PaladinSeal_Insight:
-	// 	paladin.CurrentJudgement = paladin.JudgementOfInsight
-	// 	paladin.CurrentSeal = paladin.SealOfInsightAura
-	// 	paladin.SealOfInsightAura.Activate(sim)
-	// case proto.PaladinSeal_Righteousness:
-	// 	paladin.CurrentJudgement = paladin.JudgementOfRighteousness
-	// 	paladin.CurrentSeal = paladin.SealOfRighteousnessAura
-	// 	paladin.SealOfRighteousnessAura.Activate(sim)
-	// case proto.PaladinSeal_Justice:
-	// 	paladin.CurrentJudgement = paladin.JudgementOfJustice
-	// 	paladin.CurrentSeal = paladin.SealOfJusticeAura
-	// 	paladin.SealOfJusticeAura.Activate(sim)
-	// }
+	switch paladin.Seal {
+	case proto.PaladinSeal_Truth:
+		paladin.CurrentSeal = paladin.SealOfTruthAura
+		paladin.SealOfTruthAura.Activate(sim)
+	case proto.PaladinSeal_Insight:
+		paladin.CurrentSeal = paladin.SealOfInsightAura
+		paladin.SealOfInsightAura.Activate(sim)
+	case proto.PaladinSeal_Righteousness:
+		paladin.CurrentSeal = paladin.SealOfRighteousnessAura
+		paladin.SealOfRighteousnessAura.Activate(sim)
+	case proto.PaladinSeal_Justice:
+		paladin.CurrentSeal = paladin.SealOfJusticeAura
+		paladin.SealOfJusticeAura.Activate(sim)
+	}
 }
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
 	paladin := &Paladin{
-		Character:           *character,
-		Talents:             &proto.PaladinTalents{},
-		Seal:                options.Seal,
-		PaladinAura:         options.Aura,
-		sharedBuilderBaseCD: time.Millisecond * core.TernaryDuration(character.Spec == proto.Spec_SpecProtectionPaladin, 3000, 4500),
+		Character: *character,
+		Talents:   &proto.PaladinTalents{},
+		Seal:      options.Seal,
 	}
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr)
@@ -300,14 +144,11 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.HolyPower = HolyPowerBar{
-		DefaultSecondaryResourceBarImpl: paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
-			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
-			Max:     3,
-			Default: paladin.StartingHolyPower,
-		}),
-		paladin: paladin,
-	}
+	paladin.HolyPower = paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+		Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
+		Max:     5,
+		Default: paladin.StartingHolyPower,
+	})
 	paladin.RegisterSecondaryResourceBar(paladin.HolyPower)
 
 	// Only retribution and holy are actually pets performing some kind of action
@@ -325,6 +166,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStat(stats.ParryRating, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
 	paladin.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)
 
+	paladin.PseudoStats.BaseBlockChance += 0.05
 	paladin.PseudoStats.BaseDodgeChance += 0.05
 	paladin.PseudoStats.BaseParryChance += 0.05
 
@@ -332,17 +174,61 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	if mh := paladin.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
-		paladin.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
+		paladin.GurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
 
 		for i := 0; i < 10; i++ {
-			paladin.gurthalakTentacles[i] = paladin.NewTentacleOfTheOldOnesPet()
+			paladin.GurthalakTentacles[i] = paladin.NewTentacleOfTheOldOnesPet()
 		}
 	}
 
 	return paladin
 }
 
-// Shared cooldown for builders
+func (paladin *Paladin) applySanctityOfBattle() {
+	var classMask int64
+	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+		classMask = SpellMaskSanctityOfBattleProt
+	} else if paladin.Spec == proto.Spec_SpecHolyPaladin {
+		classMask = SpellMaskSanctityOfBattleHoly
+	} else {
+		classMask = SpellMaskSanctityOfBattleRet
+	}
+
+	cooldownMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Multiplier,
+		ClassMask: classMask,
+	})
+
+	updateFloatValue := func(castSpeed float64) {
+		cooldownMod.UpdateFloatValue(castSpeed)
+	}
+
+	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
+		updateFloatValue(castSpeed)
+	})
+
+	core.MakePermanent(paladin.GetOrRegisterAura(core.Aura{
+		Label:    "Sanctity of Battle",
+		ActionID: core.ActionID{SpellID: 25956},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			updateFloatValue(paladin.CastSpeed)
+			cooldownMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			cooldownMod.Deactivate()
+		},
+	}))
+}
+
+func (paladin *Paladin) CanTriggerHolyAvengerHpGain(actionID core.ActionID) {
+	paladin.HolyAvengerActionIDFilter = append(paladin.HolyAvengerActionIDFilter, &actionID)
+}
+
+// Shared cooldown for CS and HotR
 func (paladin *Paladin) BuilderCooldown() *core.Timer {
 	return paladin.Character.GetOrInitTimer(&paladin.sharedBuilderTimer)
+}
+
+func (paladin *Paladin) SpendableHolyPower() int32 {
+	return min(paladin.HolyPower.Value(), 3)
 }

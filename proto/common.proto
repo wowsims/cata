@@ -508,7 +508,7 @@ message IndividualBuffs {
 	// Other Buffs
 	int32 unholy_frenzy_count = 12;
 	TristateEffect tricks_of_the_trade = 101; // "Regular" = Glyphed, "Improved" = un-Glyphed
-	int32 divine_guardian_count = 23;
+	int32 devotion_aura_count = 23;
 	int32 pain_suppression_count = 24;
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;

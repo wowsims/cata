@@ -6,8 +6,8 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-type OnGainCallback func(gain int32, realGain int32)
-type OnSpendCallback func(amount int32)
+type OnGainCallback func(gain int32, realGain int32, actionID ActionID, sim *Simulation)
+type OnSpendCallback func(amount int32, actionID ActionID, sim *Simulation)
 
 type SecondaryResourceBar interface {
 	CanSpend(limit int32) bool                                     // Check whether the current resource is available or not
@@ -66,7 +66,7 @@ func (bar *DefaultSecondaryResourceBarImpl) Gain(amount int32, action ActionID, 
 		)
 	}
 
-	bar.invokeOnGain(amount, amountGained)
+	bar.invokeOnGain(sim, amount, amountGained, action)
 }
 
 // Reset implements SecondaryResourceBar.
@@ -102,7 +102,7 @@ func (bar *DefaultSecondaryResourceBarImpl) Spend(amount int32, action ActionID,
 	}
 
 	metrics.AddEvent(float64(-amount), float64(-amount))
-	bar.invokeOnSpend(amount)
+	bar.invokeOnSpend(sim, amount, action)
 	bar.value -= amount
 }
 
@@ -113,13 +113,18 @@ func (bar *DefaultSecondaryResourceBarImpl) SpendUpTo(limit int32, action Action
 		return limit
 	}
 
-	bar.Spend(bar.value, action, sim)
-	return bar.value
+	value := bar.value
+	bar.Spend(value, action, sim)
+	return value
 }
 
 // Value implements SecondaryResourceBar.
 func (bar *DefaultSecondaryResourceBarImpl) Value() int32 {
 	return bar.value
+}
+
+func (bar *DefaultSecondaryResourceBarImpl) Max() int32 {
+	return bar.config.Max
 }
 
 func (bar *DefaultSecondaryResourceBarImpl) GetMetric(action ActionID) *ResourceMetrics {
@@ -148,15 +153,15 @@ func (bar *DefaultSecondaryResourceBarImpl) RegisterOnSpend(callback OnSpendCall
 	bar.onSpend = append(bar.onSpend, callback)
 }
 
-func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(gain int32, realGain int32) {
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(sim *Simulation, gain int32, realGain int32, actionID ActionID) {
 	for _, callback := range bar.onGain {
-		callback(gain, realGain)
+		callback(gain, realGain, actionID, sim)
 	}
 }
 
-func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(amount int32) {
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(sim *Simulation, amount int32, actionID ActionID) {
 	for _, callback := range bar.onSpend {
-		callback(amount)
+		callback(amount, actionID, sim)
 	}
 }
 

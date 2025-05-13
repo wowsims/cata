@@ -27,9 +27,17 @@ func (h HolyPowerBar) SpendUpTo(limit int32, action core.ActionID, sim *core.Sim
 
 // Value implements core.SecondaryResourceBar.
 func (h HolyPowerBar) Value() int32 {
-	if h.paladin.DivinePurposeAura.IsActive() {
-		return 3
+	if h.paladin.DivinePurposeAura != nil && h.paladin.DivinePurposeAura.IsActive() {
+		return 5
 	}
 
 	return h.DefaultSecondaryResourceBarImpl.Value()
+}
+
+func (h HolyPowerBar) CanSpend(amount int32) bool {
+	if h.paladin.DivinePurposeAura != nil && h.paladin.DivinePurposeAura.IsActive() {
+		return true
+	}
+
+	return h.DefaultSecondaryResourceBarImpl.CanSpend(amount)
 }

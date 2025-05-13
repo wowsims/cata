@@ -534,7 +534,7 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			var orbsSpend int32 = 0
-			priest.Unit.GetSecondaryResourceBar().RegisterOnSpend(func(amount int32) {
+			priest.Unit.GetSecondaryResourceBar().RegisterOnSpend(func(amount int32, _ core.ActionID, _ *core.Simulation) {
 				orbsSpend = amount
 			})
 

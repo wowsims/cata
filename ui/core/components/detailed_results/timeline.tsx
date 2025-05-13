@@ -1290,15 +1290,12 @@ const idToCategoryMap: Record<number, number> = {
 	[99092]: MELEE_ACTION_CATEGORY + 0.21, // Flames of the Faithful (ret T12 2pc)
 	[53385]: MELEE_ACTION_CATEGORY + 0.3, // Divine Storm
 	[85256]: MELEE_ACTION_CATEGORY + 0.4, // Templar's Verdict
-	[20271]: MELEE_ACTION_CATEGORY + 0.5, // Judgement
-	[31804]: MELEE_ACTION_CATEGORY + 0.51, // Judgement of Truth
-	[20187]: MELEE_ACTION_CATEGORY + 0.52, // Judgement of Righteousness
-	[31930]: MELEE_ACTION_CATEGORY + 0.53, // Judgements of the Wise
-	[89906]: MELEE_ACTION_CATEGORY + 0.54, // Judgements of the Bold
+	[20271]: MELEE_ACTION_CATEGORY + 0.5, // Judgment
+	[31930]: MELEE_ACTION_CATEGORY + 0.53, // Judgments of the Wise
+	[89906]: MELEE_ACTION_CATEGORY + 0.54, // Judgments of the Bold
 	[42463]: MELEE_ACTION_CATEGORY + 0.6, // Seal of Truth (on-hit)
 	[31803]: MELEE_ACTION_CATEGORY + 0.61, // Censure (Seal of Truth)
-	[25742]: MELEE_ACTION_CATEGORY + 0.63, // Seal of Righteousness
-	[20424]: MELEE_ACTION_CATEGORY + 0.64, // Seals of Command
+	[101423]: MELEE_ACTION_CATEGORY + 0.63, // Seal of Righteousness
 	[53600]: MELEE_ACTION_CATEGORY + 0.7, // Shield of the Righteous
 	[99075]: MELEE_ACTION_CATEGORY + 0.71, // Righteous Flames (prot T12 2pc)
 	[53595]: MELEE_ACTION_CATEGORY + 0.8, // Hammer of the Righteous

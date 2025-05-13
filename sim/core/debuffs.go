@@ -63,12 +63,14 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 }
 
+const WeakenedBlowsDuration = time.Second * 30
+
 // –10% Physical damage dealt
 func WeakenedBlowsAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Weakened Blows",
 		ActionID: ActionID{SpellID: 115798},
-		Duration: time.Second * 30,
+		Duration: WeakenedBlowsDuration,
 	})
 	PhysDamageReductionEffect(aura, 0.1)
 	return aura

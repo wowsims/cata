@@ -160,9 +160,9 @@ func (spell *Spell) HealingCritCheck(sim *Simulation) bool {
 	return sim.RandomFloat("Healing Crit Roll") < critChance
 }
 
-func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *SpellResult) {
+func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *SpellResult, isPeriodic bool) {
 	for i := range result.Target.DynamicDamageTakenModifiers {
-		result.Target.DynamicDamageTakenModifiers[i](sim, spell, result)
+		result.Target.DynamicDamageTakenModifiers[i](sim, spell, result, isPeriodic)
 	}
 	result.Damage = max(0, result.Damage)
 }
@@ -201,7 +201,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 			result.Outcome |= partialOutcome
 		}
 
-		spell.ApplyPostOutcomeDamageModifiers(sim, result)
+		spell.ApplyPostOutcomeDamageModifiers(sim, result, isPeriodic)
 	} else {
 		result.Damage *= attackerMultiplier
 		afterAttackMods := result.Damage
@@ -224,7 +224,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 			result.Outcome |= partialOutcome
 		}
 
-		spell.ApplyPostOutcomeDamageModifiers(sim, result)
+		spell.ApplyPostOutcomeDamageModifiers(sim, result, isPeriodic)
 		afterPostOutcome := result.Damage
 
 		spell.Unit.Log(

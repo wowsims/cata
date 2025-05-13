@@ -7,8 +7,8 @@ import (
 )
 
 func (paladin *Paladin) registerSealOfTruth() {
-	hasteMultiplier := 1 + 0.01*3*float64(paladin.Talents.JudgementsOfThePure)
-
+	spCoef := 0.09399999678
+	baseDamage := paladin.CalcScalingSpellDmg(spCoef)
 	censureActionId := core.ActionID{SpellID: 31803}
 
 	// Censure DoT application
@@ -50,9 +50,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 			TickLength:          time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickValue := float64(dot.GetStacks()) * (0 +
-					0.01400000043*dot.Spell.SpellPower() +
-					0.0270000007*dot.Spell.MeleeAttackPower())
+				tickValue := float64(dot.GetStacks()) * (baseDamage + spCoef*dot.Spell.SpellPower())
 
 				dot.SnapshotBaseDamage = tickValue
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
@@ -68,42 +66,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 			spell.SpellMetrics[target.UnitIndex].Casts--
 			dot := spell.Dot(target)
 
-			undoJotpForInitialTick := !dot.IsActive() &&
-				paladin.JudgementsOfThePureAura != nil &&
-				paladin.JudgementsOfThePureAura.IsActive()
-
-			if undoJotpForInitialTick {
-				paladin.MultiplyCastSpeed(1 / hasteMultiplier)
-			}
-
 			dot.Apply(sim)
 			dot.AddStack(sim)
-
-			if undoJotpForInitialTick {
-				paladin.MultiplyCastSpeed(hasteMultiplier)
-			}
-		},
-	})
-
-	// Judgement of Truth cast on Judgement
-	paladin.JudgementOfTruth = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 31804},
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
-		ClassSpellMask: SpellMaskJudgementOfTruth,
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1 +
-				0.22300000489*spell.SpellPower() +
-				0.14200000465*spell.MeleeAttackPower()
-
-			baseDamage *= 1 + .2*float64(censureSpell.Dot(target).GetStacks())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
 
@@ -115,13 +79,12 @@ func (paladin *Paladin) registerSealOfTruth() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealOfTruth,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.12,
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.15 * paladin.MHWeaponDamage(sim, spell.MeleeAttackPower()) *
-				(0.2 * float64(censureSpell.Dot(target).GetStacks()))
+			baseDamage := paladin.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			// can't miss if melee swing landed, but can crit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -132,7 +95,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		Label:    "Seal of Truth" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 31801},
-		Duration: time.Minute * 30,
+		Duration: core.NeverExpires,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Don't proc on misses.
@@ -142,7 +105,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 			// SoT only procs on white hits, CS, TV, Exo, Judge, HoW, HotR, ShoR
 			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
-				spell.ClassSpellMask&SpellMaskCanTriggerSealOfTruth == 0 {
+				!spell.Matches(SpellMaskCanTriggerSealOfTruth) {
 				return
 			}
 
@@ -152,7 +115,6 @@ func (paladin *Paladin) registerSealOfTruth() {
 	})
 
 	// Seal of Truth self-buff.
-	aura := paladin.SealOfTruthAura
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 31801},
 		SpellSchool: core.SpellSchoolHoly,
@@ -160,13 +122,13 @@ func (paladin *Paladin) registerSealOfTruth() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 14,
-			PercentModifier: 100,
+			BaseCostPercent: 16.4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
+			IgnoreHaste: true,
 		},
 
 		ThreatMultiplier: 0,
@@ -175,8 +137,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 			if paladin.CurrentSeal != nil {
 				paladin.CurrentSeal.Deactivate(sim)
 			}
-			paladin.CurrentSeal = aura
-			paladin.CurrentJudgement = paladin.JudgementOfTruth
+			paladin.CurrentSeal = paladin.SealOfTruthAura
 			paladin.CurrentSeal.Activate(sim)
 		},
 	})

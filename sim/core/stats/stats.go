@@ -434,6 +434,7 @@ type PseudoStats struct {
 
 	// Avoidance % not affected by Diminishing Returns, represented as
 	// probabilities (between 0 and 1).
+	BaseBlockChance float64
 	BaseDodgeChance float64
 	BaseParryChance float64
 	//BaseMiss is not needed, this is always 5%

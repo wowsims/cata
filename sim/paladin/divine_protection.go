@@ -11,6 +11,9 @@ import (
 func (paladin *Paladin) registerDivineProtectionSpell() {
 	glyphOfDivineProtection := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivineProtection)
 
+	spellDamageMultiplier := core.TernaryFloat64(glyphOfDivineProtection, 0.8, 0.6)
+	physDamageMultiplier := core.TernaryFloat64(glyphOfDivineProtection, 0.8, 1.0)
+
 	actionID := core.ActionID{SpellID: 498}
 	paladin.DivineProtectionAura = paladin.RegisterAura(core.Aura{
 		Label:    "Divine Protection" + paladin.Label,
@@ -18,38 +21,32 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 		Duration: time.Second * 10,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if glyphOfDivineProtection {
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.6
-			} else {
-				paladin.PseudoStats.DamageTakenMultiplier *= 0.8
-			}
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= spellDamageMultiplier
+			paladin.PseudoStats.DamageTakenMultiplier *= physDamageMultiplier
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if glyphOfDivineProtection {
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 0.6
-				paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 0.6
-			} else {
-				paladin.PseudoStats.DamageTakenMultiplier /= 0.8
-			}
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= spellDamageMultiplier
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= spellDamageMultiplier
+			paladin.PseudoStats.DamageTakenMultiplier /= physDamageMultiplier
 		},
 	})
 
-	paladin.DivineProtection = paladin.RegisterSpell(core.SpellConfig{
+	divineProtection := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskDivineProtection,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 3,
+			BaseCostPercent: 3.5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -68,7 +65,7 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 
 	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
 		paladin.AddMajorCooldown(core.MajorCooldown{
-			Spell: paladin.DivineProtection,
+			Spell: divineProtection,
 			Type:  core.CooldownTypeSurvival,
 		})
 	}

@@ -1,7 +1,6 @@
 package retribution
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -18,7 +17,7 @@ func RegisterRetributionPaladin() {
 			return NewRetributionPaladin(character, options)
 		},
 		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_RetributionPaladin) // I don't really understand this line
+			playerSpec, ok := spec.(*proto.Player_RetributionPaladin)
 			if !ok {
 				panic("Invalid spec value for Retribution Paladin!")
 			}
@@ -50,8 +49,11 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
-	ret.RegisterSpecializationEffects()
-	ret.RegisterTemplarsVerdict()
+	ret.registerSpecializationEffects()
+	ret.registerSealOfJustice()
+	ret.registerInquisition()
+	ret.registerExorcism()
+	ret.registerDivineStorm()
 }
 
 func (ret *RetributionPaladin) ApplyTalents() {
@@ -63,38 +65,20 @@ func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	ret.Paladin.Reset(sim)
 }
 
-func (ret *RetributionPaladin) RegisterSpecializationEffects() {
-	ret.RegisterMastery()
+func (ret *RetributionPaladin) registerSpecializationEffects() {
+	ret.registerMastery()
 
-	// Sheath of Light
-	ret.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.3)
-	ret.AddStat(stats.SpellHitPercent, 8)
-
-	// Two-Handed Weapon Specialization
-	mhWeapon := ret.GetMHWeapon()
-	if mhWeapon != nil && mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
-		ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.25
-		ret.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			ClassMask:  paladin.SpellMaskModifiedByTwoHandedSpec,
-			FloatValue: 0.25,
-		})
-	}
-
-	// Judgements of the Bold
-	ret.ApplyJudgmentsOfTheBold()
+	ret.applyJudgmentsOfTheBold()
+	ret.applyArtOfWar()
+	ret.applySwordOfLight()
 }
 
-func (ret *RetributionPaladin) RegisterMastery() {
-	actionId := core.ActionID{SpellID: 76672}
-
-	// Hand of Light
-	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
-		ActionID:       actionId,
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-		ClassSpellMask: paladin.SpellMaskHandOfLight,
+func (ret *RetributionPaladin) registerMastery() {
+	handOfLight := ret.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 96172},
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
@@ -103,69 +87,165 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := ret.HoLDamage
 			if target.HasActiveAuraWithTag(core.SpellDamageEffectAuraTag) {
-				baseDamage *= 1.08
+				baseDamage *= 1.05
 			}
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:           "Hand of Light" + ret.Label,
-		ActionID:       actionId,
+		Name:           "Mastery: Hand of Light" + ret.Label,
+		ActionID:       core.ActionID{SpellID: 76672},
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
-		ProcMask:       core.ProcMaskMeleeSpecial,
-		ClassSpellMask: paladin.SpellMaskCrusaderStrike | paladin.SpellMaskDivineStorm | paladin.SpellMaskTemplarsVerdict,
-		ProcChance:     1.0,
+		ClassSpellMask: paladin.SpellMaskCanTriggerHandOfLight,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ret.HoLDamage = ((16.8 + 2.1*ret.GetMasteryPoints()) / 100.0) * result.Damage
-			ret.HandOfLight.Cast(sim, result.Target)
+			ret.HoLDamage = ret.getMasteryPercent() * result.Damage
+			handOfLight.Cast(sim, result.Target)
 		},
 	})
 }
 
-func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
-	actionID := core.ActionID{SpellID: 89901}
-	manaMetrics := ret.NewManaMetrics(actionID)
+func (ret *RetributionPaladin) getMasteryPercent() float64 {
+	return ((8.0 + ret.GetMasteryPoints()) * 1.85000002384) / 100.0
+}
 
-	// It's 25% of base mana over 10 seconds, with haste adding ticks.
-	manaPerTick := math.Round(0.025 * ret.BaseMana)
+func (ret *RetributionPaladin) applyJudgmentsOfTheBold() {
+	actionID := core.ActionID{SpellID: 111528}
+	ret.CanTriggerHolyAvengerHpGain(actionID)
+	auraArray := ret.NewEnemyAuraArray(core.PhysVulnerabilityAura)
+	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
+		Name:           "Judgments of the Bold" + ret.Label,
+		ActionID:       core.ActionID{SpellID: 111529},
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: paladin.SpellMaskJudgment,
 
-	jotb := ret.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful | core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			ret.HolyPower.Gain(1, actionID, sim)
 
-		Hot: core.DotConfig{
-			SelfOnly: true,
-			Aura: core.Aura{
-				Label: "Judgements of the Bold" + ret.Label,
-			},
-			NumberOfTicks:        10,
-			TickLength:           time.Second * 1,
-			AffectedByCastSpeed:  true,
-			HasteReducesDuration: false,
-
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				ret.AddMana(sim, manaPerTick, manaMetrics)
-			},
+			auraArray.Get(result.Target).Activate(sim)
 		},
+	})
+}
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SelfHot().Apply(sim)
+func (ret *RetributionPaladin) applyArtOfWar() {
+	artOfWarAura := ret.RegisterAura(core.Aura{
+		Label:    "The Art Of War" + ret.Label,
+		ActionID: core.ActionID{SpellID: 59578},
+		Duration: time.Second * 6,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			ret.Exorcism.CD.Reset()
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(paladin.SpellMaskExorcism) {
+				aura.Deactivate(sim)
+			}
 		},
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:           "Judgements of the Bold Trigger" + ret.Label,
-		ActionID:       actionID,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
-		ClassSpellMask: paladin.SpellMaskJudgement,
-		ProcChance:     1.0,
+		Name:       "Art of War" + ret.Label,
+		ActionID:   core.ActionID{SpellID: 87138},
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.20,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			jotb.Cast(sim, &ret.Unit)
+			artOfWarAura.Activate(sim)
 		},
+	})
+}
+
+func (ret *RetributionPaladin) applySwordOfLight() {
+	actionID := core.ActionID{SpellID: 53503}
+	manaMetrics := ret.NewManaMetrics(actionID)
+	swordOfLightHpActionID := core.ActionID{SpellID: 141459}
+	ret.CanTriggerHolyAvengerHpGain(swordOfLightHpActionID)
+
+	oldGetSpellPowerValue := ret.GetSpellPowerValue
+	newGetSpellPowerValue := func(spell *core.Spell) float64 {
+		return spell.MeleeAttackPower() * 0.5
+	}
+
+	core.MakePermanent(ret.RegisterAura(core.Aura{
+		Label:    "Sword of Light" + ret.Label,
+		ActionID: actionID,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			oldExtraCastCondition := ret.HammerOfWrath.ExtraCastCondition
+			ret.HammerOfWrath.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+				return (oldExtraCastCondition != nil && oldExtraCastCondition(sim, target)) ||
+					ret.AvengingWrathAura.IsActive()
+			}
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:   time.Second * 2,
+				Priority: core.ActionPriorityRegen,
+				OnAction: func(*core.Simulation) {
+					ret.AddMana(sim, 0.06*ret.MaxMana(), manaMetrics)
+				},
+			})
+
+			ret.GetSpellPowerValue = newGetSpellPowerValue
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			ret.GetSpellPowerValue = oldGetSpellPowerValue
+		},
+	})).AttachProcTrigger(core.ProcTrigger{
+		Name:           "Hammer of Wrath Holy Power Gain" + ret.Label,
+		ClassSpellMask: paladin.SpellMaskHammerOfWrath,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			ret.HolyPower.Gain(1, swordOfLightHpActionID, sim)
+		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  paladin.SpellMaskWordOfGlory,
+		FloatValue: 0.6,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  paladin.SpellMaskFlashOfLight,
+		FloatValue: 1.0,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: paladin.SpellMaskCrusaderStrike,
+		IntValue:  -80,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: paladin.SpellMaskJudgment,
+		IntValue:  -40,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: paladin.SpellMaskAvengingWrath,
+		TimeValue: time.Minute * -1,
+	})
+
+	holyTwoHandDamageMod := ret.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  paladin.SpellMaskDamageModifiedBySwordOfLight,
+		FloatValue: 0.3,
+	})
+
+	checkWeaponType := func() {
+		mhWeapon := ret.GetMHWeapon()
+		if mhWeapon != nil && mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
+			if !holyTwoHandDamageMod.IsActive {
+				ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.3
+			}
+			holyTwoHandDamageMod.Activate()
+		} else if holyTwoHandDamageMod.IsActive {
+			ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.3
+			holyTwoHandDamageMod.Deactivate()
+		}
+	}
+
+	checkWeaponType()
+
+	ret.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *core.Simulation, _ proto.ItemSlot) {
+		checkWeaponType()
 	})
 }

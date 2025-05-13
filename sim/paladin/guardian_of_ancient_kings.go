@@ -9,9 +9,12 @@ import (
 )
 
 func (paladin *Paladin) goakBaseDuration() time.Duration {
-	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+	switch paladin.Spec {
+	case proto.Spec_SpecHolyPaladin:
+		return time.Second * 15
+	case proto.Spec_SpecProtectionPaladin:
 		return time.Second * 12
-	} else {
+	default:
 		return time.Second * 30
 	}
 }
@@ -63,7 +66,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3,
 			},
 		},
 
@@ -103,7 +106,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3,
 			},
 		},
 
@@ -116,7 +119,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *core.Spell {
 	var strDepByStackCount = map[int32]*stats.StatDependency{}
 
-	for i := 1; i <= 20; i++ {
+	for i := 1; i <= 12; i++ {
 		strDepByStackCount[int32(i)] = paladin.NewDynamicMultiplyStat(stats.Strength, 1.0+0.01*float64(i))
 	}
 
@@ -124,7 +127,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		Label:     "Ancient Power" + paladin.Label,
 		ActionID:  core.ActionID{SpellID: 86700},
 		Duration:  duration + time.Second*1,
-		MaxStacks: 20,
+		MaxStacks: 12,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			if oldStacks > 0 {
@@ -137,39 +140,33 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		},
 	})
 
-	ancientFuryMinDamage, ancientFuryMaxDamage :=
-		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.23659999669, 0.30000001192)
 	numTargets := paladin.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numTargets)
+	scalingCoef := 0.23659999669
+	variance := 0.30000001192
+	spCoef := 0.10700000077
 
 	ancientFury := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 86704},
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: SpellMaskAncientFury,
-		Flags:          core.SpellFlagPassiveSpell,
+		ActionID:    core.ActionID{SpellID: 86704},
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagPassiveSpell,
 
 		MaxRange: 10,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.RollWithLabel(ancientFuryMinDamage, ancientFuryMaxDamage, "Ancient Fury"+paladin.Label) +
-				0.06100000069*spell.SpellPower()
+			baseDamage := paladin.CalcAndRollDamageRange(sim, scalingCoef, variance) +
+				spCoef*spell.SpellPower()
 
 			// Deals X Holy damage per application of Ancient Power,
 			// divided evenly among all targets within 10 yards.
 			baseDamage *= float64(paladin.AncientPowerAura.GetStacks())
 			baseDamage /= float64(numTargets)
 
+			results := make([]*core.SpellResult, numTargets)
 			for idx := int32(0); idx < numTargets; idx++ {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -189,7 +186,8 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		Duration: duration,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || spell.ClassSpellMask&SpellMaskCanTriggerAncientPower == 0 {
+			if !result.Landed() ||
+				(!spell.Matches(SpellMaskCanTriggerAncientPower) && !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit)) {
 				return
 			}
 
@@ -217,7 +215,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3,
 			},
 		},
 

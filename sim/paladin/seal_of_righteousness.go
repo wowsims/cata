@@ -1,52 +1,23 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 )
 
 func (paladin *Paladin) registerSealOfRighteousness() {
-	var numTargets int32
-	if paladin.Talents.SealsOfCommand {
-		numTargets = paladin.Env.GetNumTargets()
-	} else {
-		numTargets = 1
-	}
-	results := make([]*core.SpellResult, numTargets)
-
-	// Judgement of Righteousness cast on Judgement
-	paladin.JudgementOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 20187},
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
-		ClassSpellMask: SpellMaskJudgementOfRighteousness,
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1 +
-				0.32*spell.SpellPower() +
-				0.2*spell.MeleeAttackPower()
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
-		},
-	})
+	numTargets := paladin.Env.GetNumTargets()
 
 	registerOnHitSpell := func(tag int32, applyEffects core.ApplySpellResults) *core.Spell {
 		return paladin.RegisterSpell(core.SpellConfig{
-			ActionID:       core.ActionID{SpellID: 25742}.WithTag(tag),
+			ActionID:       core.ActionID{SpellID: 101423}.WithTag(tag),
 			SpellSchool:    core.SpellSchoolHoly,
 			ProcMask:       core.ProcMaskMeleeProc,
 			Flags:          core.SpellFlagMeleeMetrics,
 			ClassSpellMask: SpellMaskSealOfRighteousness,
 
-			MaxRange: core.MaxMeleeRange,
+			MaxRange: 8,
 
-			DamageMultiplier: 1,
+			DamageMultiplier: 0.09,
 			CritMultiplier:   paladin.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
@@ -62,8 +33,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	// DS hits 10 targets -> SoR procs 10 times
 	// otherwise it would be DS hits 10 targets -> SoR procs 100 times
 	onHitSingleTarget := registerOnHitSpell(1, func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := paladin.GetMHWeapon().SwingSpeed *
-			(0.022*spell.SpellPower() + 0.011*spell.MeleeAttackPower())
+		baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 		// can't miss if melee swing landed, but can crit
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -71,12 +41,13 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 	// Seal of Righteousness on-hit proc (multi-target hit, for everything else)
 	onHitMultiTarget := registerOnHitSpell(2, func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := paladin.GetMHWeapon().SwingSpeed *
-			(0.022*spell.SpellPower() + 0.011*spell.MeleeAttackPower())
+		results := make([]*core.SpellResult, numTargets)
 
 		for idx := int32(0); idx < numTargets; idx++ {
+			currentTarget := sim.Environment.GetTargetUnit(idx)
+			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			// can't miss if melee swing landed, but can crit
-			results[idx] = spell.CalcDamage(sim, sim.Environment.GetTargetUnit(idx), baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		}
 
 		for idx := int32(0); idx < numTargets; idx++ {
@@ -88,21 +59,23 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		Label:    "Seal of Righteousness" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 20154},
-		Duration: time.Minute * 30,
+		Duration: core.NeverExpires,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Don't proc on misses
-			if !result.Landed() {
+			divineStorm := spell.Matches(SpellMaskDivineStorm)
+
+			// Don't proc on misses, **except for Divine Storm**
+			if !result.Landed() && !divineStorm {
 				return
 			}
 
-			// SoR only procs on white hits, CS, DS, TV, HoW and the melee part of HotR
+			// SoR only procs on white hits, CS, DS, TV, ShotR and the melee part of HotR
 			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
-				spell.ClassSpellMask&SpellMaskCanTriggerSealOfRighteousness == 0 {
+				!spell.Matches(SpellMaskCanTriggerSealOfRighteousness) {
 				return
 			}
 
-			if spell.ClassSpellMask&SpellMaskDivineStorm != 0 {
+			if divineStorm {
 				onHitSingleTarget.Cast(sim, result.Target)
 			} else {
 				onHitMultiTarget.Cast(sim, result.Target)
@@ -111,7 +84,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	})
 
 	// Seal of Righteousness self-buff.
-	aura := paladin.SealOfRighteousnessAura
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20154},
 		SpellSchool: core.SpellSchoolHoly,
@@ -119,13 +91,13 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 14,
-			PercentModifier: 100,
+			BaseCostPercent: 16.4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
+			IgnoreHaste: true,
 		},
 
 		ThreatMultiplier: 0,
@@ -134,8 +106,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			if paladin.CurrentSeal != nil {
 				paladin.CurrentSeal.Deactivate(sim)
 			}
-			paladin.CurrentSeal = aura
-			paladin.CurrentJudgement = paladin.JudgementOfRighteousness
+			paladin.CurrentSeal = paladin.SealOfRighteousnessAura
 			paladin.CurrentSeal.Activate(sim)
 		},
 	})

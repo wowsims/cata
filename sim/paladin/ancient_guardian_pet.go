@@ -23,12 +23,8 @@ func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 			Name:  "Ancient Guardian",
 			Owner: &paladin.Character,
 			BaseStats: stats.Stats{
-				stats.Stamina: 100,
-
-				// Taken from combined logs with > 1600 hits, seems to
-				// be around 2% final Crit chance after the 4.8%
-				// suppression from boss level mobs.
-				stats.PhysicalCritPercent: 6.8,
+				stats.Stamina:             100,
+				stats.PhysicalCritPercent: 5,
 			},
 			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				// Draenei Heroic Presence is not included, so inherit HitRating
@@ -38,6 +34,7 @@ func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 				return stats.Stats{
 					stats.HitRating:       ownerHitRating,
 					stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
+					stats.AttackPower:     ownerStats[stats.AttackPower] * 6.1,
 				}
 			},
 			EnabledOnStart: false,
@@ -72,27 +69,25 @@ func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(sim *core.Simul
 
 func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 	ancientPowerID := core.ActionID{SpellID: 86700}
-	ancientPowerAura := ancientGuardian.RegisterAura(core.Aura{
-		Label:    "Ancient Power" + ancientGuardian.Label,
+	ancientPowerAura := core.MakeProcTriggerAura(&ancientGuardian.Unit, core.ProcTrigger{
+		Name:     "Ancient Power" + ancientGuardian.Label,
 		ActionID: ancientPowerID,
-		Duration: core.NeverExpires,
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		Harmful:  true,
 
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			ancientGuardian.paladinOwner.GetAuraByID(ancientPowerID).AddStack(sim)
 		},
 	})
 
+	baseDamage := ancientGuardian.paladinOwner.CalcScalingSpellDmg(6.1)
 	ancientGuardian.EnableAutoAttacks(ancientGuardian, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:     5576,
-			BaseDamageMax:     7265,
-			SwingSpeed:        2,
-			CritMultiplier:    2,
-			AttackPowerPerDPS: 0,
+			BaseDamageMin:  baseDamage,
+			BaseDamageMax:  baseDamage,
+			SwingSpeed:     2,
+			CritMultiplier: ancientGuardian.DefaultCritMultiplier(),
 		},
 		AutoSwingMelee: true,
 	})

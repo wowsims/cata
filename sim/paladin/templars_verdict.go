@@ -1,38 +1,30 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (paladin *Paladin) registerCrusaderStrike() {
-	actionID := core.ActionID{SpellID: 35395}
-	paladin.CanTriggerHolyAvengerHpGain(actionID)
-	bonusDamage := paladin.CalcScalingSpellDmg(0.55400002003)
+func (paladin *Paladin) registerTemplarsVerdict() {
+	actionID := core.ActionID{SpellID: 85256}
+	bonusDamage := paladin.CalcScalingSpellDmg(0.55000001192)
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskCrusaderStrike,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 10,
-		},
+		ClassSpellMask: SpellMaskTemplarsVerdict,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: core.Cooldown{
-				Timer:    paladin.BuilderCooldown(),
-				Duration: time.Millisecond * 4500,
-			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return paladin.HolyPower.CanSpend(3)
 		},
 
-		DamageMultiplier: 1.25,
+		DamageMultiplier: 2.75,
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
@@ -42,7 +34,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.HolyPower.Gain(1, actionID, sim)
+				paladin.HolyPower.Spend(3, actionID, sim)
 			}
 
 			spell.DealOutcome(sim, result)

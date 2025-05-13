@@ -2,33 +2,11 @@ package paladin
 
 import (
 	"math"
-	"time"
 
 	"github.com/wowsims/mop/sim/core"
 )
 
 func (paladin *Paladin) registerSealOfInsight() {
-	// Judgement of Insight cast on Judgement
-	paladin.JudgementOfInsight = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 54158},
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
-		ClassSpellMask: SpellMaskJudgementOfInsight,
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1 +
-				0.25*spell.SpellPower() +
-				0.15999999642*spell.MeleeAttackPower()
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
-		},
-	})
-
 	actionID := core.ActionID{SpellID: 20167}
 	healthMetrics := paladin.NewHealthMetrics(actionID)
 	manaMetrics := paladin.NewManaMetrics(actionID)
@@ -59,7 +37,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		Label:    "Seal of Insight" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 20165},
-		Duration: time.Minute * 30,
+		Duration: core.NeverExpires,
 		Dpm:      dpm,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -70,7 +48,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 
 			// SoJ only procs on white hits, CS, TV and HoW
 			if (spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
-				spell.ClassSpellMask&SpellMaskCanTriggerSealOfInsight == 0) ||
+				!spell.Matches(SpellMaskCanTriggerSealOfInsight)) ||
 				!dpm.Proc(sim, spell.ProcMask, "Seal of Insight"+paladin.Label) {
 				return
 			}
@@ -88,13 +66,13 @@ func (paladin *Paladin) registerSealOfInsight() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 14,
-			PercentModifier: 100,
+			BaseCostPercent: 16.4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
+			IgnoreHaste: true,
 		},
 
 		ThreatMultiplier: 0,
@@ -104,7 +82,6 @@ func (paladin *Paladin) registerSealOfInsight() {
 				paladin.CurrentSeal.Deactivate(sim)
 			}
 			paladin.CurrentSeal = aura
-			paladin.CurrentJudgement = paladin.JudgementOfInsight
 			paladin.CurrentSeal.Activate(sim)
 		},
 	})
