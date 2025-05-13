@@ -100,7 +100,7 @@ func (monk *Monk) registerHealingSphere() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 500 * time.Microsecond,
+				GCD: 500 * time.Millisecond,
 			},
 			CD: core.Cooldown{
 				Timer:    monk.NewTimer(),
