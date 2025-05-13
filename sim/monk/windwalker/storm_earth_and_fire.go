@@ -1,7 +1,6 @@
 package windwalker
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -240,8 +239,6 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 		CritMultiplier: ww.DefaultCritMultiplier(),
 	}
 
-	fmt.Println(cloneMhWeapon.AverageDamage(), cloneOhWeapon.AverageDamage())
-
 	sefClone.EnableAutoAttacks(sefClone, core.AutoAttackOptions{
 		MainHand:       cloneMhWeapon,
 		OffHand:        cloneOhWeapon,
@@ -267,6 +264,10 @@ func (sefClone *StormEarthAndFirePet) ExecuteCustomRotation(_ *core.Simulation) 
 }
 
 func (sefClone *StormEarthAndFirePet) enable(sim *core.Simulation) {
+	if sefClone.AutoAttacks.IsDualWielding {
+		sefClone.AutoAttacks.DesyncOffHand(sim, sim.CurrentTime)
+	}
+
 	sefClone.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ monk.Stance) {
 		sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
 	})
