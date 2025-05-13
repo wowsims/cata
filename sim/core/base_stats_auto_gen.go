@@ -9,22 +9,14 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-<<<<<<< HEAD
-const ExpertisePerQuarterPercentReduction = 340.000000
-=======
 const ExpertisePerQuarterPercentReduction = 85.0
->>>>>>> master
 const HasteRatingPerHastePercent = 425.000000
 const CritRatingPerCritPercent = 600.000000
 const PhysicalHitRatingPerHitPercent = 340.000000
 const SpellHitRatingPerHitPercent = 340.000000
 const DodgeRatingPerDodgePercent = 885.000000
 const ParryRatingPerParryPercent = 885.000000
-<<<<<<< HEAD
-const MasteryRatingPerMasteryPoint = 600.000
-=======
 const MasteryRatingPerMasteryPoint = 600.000000
->>>>>>> master
 
 var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,
