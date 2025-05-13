@@ -128,6 +128,7 @@ export const TricksOfTheTrade = makeTristateIndividualBuffInput({
 export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(49016), numStates: 11, fieldName: 'unholyFrenzyCount' });
 export const ShatteringThrow = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(64382), numStates: 11, fieldName: 'shatteringThrowCount' });
 export const Skullbanner = makeMultistateRaidBuffInput({ actionId: ActionId.fromSpellId(114207), numStates: 11, fieldName: 'skullBannerCount' });
+export const StormLashTotem = makeMultistateRaidBuffInput({ actionId: ActionId.fromSpellId(120668), numStates: 11, fieldName: 'stormlashTotemCount' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
@@ -226,6 +227,11 @@ export const RAID_BUFFS_MISC_CONFIG = [
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
 	},
 	{
+		config: StormLashTotem,
+		picker: IconPicker,
+		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
+	},
+	{
 		config: ManaTideTotem,
 		picker: IconPicker,
 		stats: [Stat.StatSpirit],
@@ -261,7 +267,8 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: SpellDamageDebuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatSpellPower],
+		// Enabled for all specs because it affects Stormlash Totem
+		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
 	},
 	{
 		config: DamageReduction,

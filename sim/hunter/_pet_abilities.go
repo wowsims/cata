@@ -110,7 +110,7 @@ func (hp *HunterPet) RegisterKillCommandSpell() *core.Spell {
 		CritMultiplier:           hp.CritMultiplier(1.0, 0.0),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.516*spell.RangedAttackPower(target) + 923
+			baseDamage := 0.516*spell.RangedAttackPower() + 923
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
@@ -158,7 +158,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		ClassSpellMask: HunterPetFocusDump,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 25,
@@ -211,7 +211,7 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 	var procMask core.ProcMask
 	onSpellHitDealt := config.OnSpellHitDealt
 	if config.School == core.SpellSchoolPhysical {
-		flags = core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage
+		flags = core.SpellFlagMeleeMetrics
 		procMask = core.ProcMaskSpellDamage
 		applyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 

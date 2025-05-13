@@ -409,9 +409,6 @@ type PseudoStats struct {
 	IncreasedMissChance  float64 // Insect Swarm and Scorpid Sting
 	DodgeReduction       float64 // Used by Warrior talent 'Weapon Mastery' and SWP boss auras.
 
-	MobTypeAttackPower float64 // Bonus AP against mobs of the current type.
-	MobTypeSpellPower  float64 // Bonus SP against mobs of the current type.
-
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
 	DamageDealtMultiplier       float64            // All damage
@@ -444,11 +441,7 @@ type PseudoStats struct {
 
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
-	BonusRangedAttackPowerTaken float64 // Hunters mark
-	BonusSpellCritPercentTaken  float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
-
-	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
-	BonusHealingTaken        float64 // Talisman of Troll Divinity
+	BonusHealingTaken float64 // Talisman of Troll Divinity
 
 	DamageTakenMultiplier       float64            // All damage
 	SchoolDamageTakenMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc.)

@@ -161,7 +161,7 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 		ActionID:       core.ActionID{SpellID: 47468},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: GhoulSpellClaw,
 
 		FocusCost: core.FocusCostOptions{

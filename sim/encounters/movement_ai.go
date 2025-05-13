@@ -21,12 +21,12 @@ func addMovementAI() {
 			Stats: stats.Stats{
 				stats.Health:      120_016_403,
 				stats.Armor:       24835,
-				stats.AttackPower: 650,
+				stats.AttackPower: 0,
 			}.ToProtoArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
-			SwingSpeed:       2.5,
-			MinBaseDamage:    210000,
+			SwingSpeed:       2,
+			MinBaseDamage:    550000,
 			DamageSpread:     0.4,
 			SuppressDodge:    false,
 			ParryHaste:       false,
