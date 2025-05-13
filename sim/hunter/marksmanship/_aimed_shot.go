@@ -14,7 +14,7 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: hunter.HunterSpellAimedShot,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 50 - mmHunter.Talents.Efficiency*2,
@@ -40,8 +40,8 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			wepDmg := spell.Unit.RangedNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			rap := spell.RangedAttackPower(target) * 0.723
+			wepDmg := spell.Unit.RangedNormalizedWeaponDamage(sim, spell.RangedAttackPower())
+			rap := spell.RangedAttackPower() * 0.723
 			baseDamage := (wepDmg + rap) + sim.Roll(776, 866)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)

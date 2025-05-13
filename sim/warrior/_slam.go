@@ -24,7 +24,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
 		CritMultiplier:   warrior.DefaultCritMultiplier(),
@@ -39,7 +39,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		ActionID:       slamActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

@@ -620,8 +620,6 @@ var ExtraItemIcons = []int32{
 	44329,
 	44330,
 	44331,
-	9088,
-	9224,
 
 	// Potions / In Battle Consumes
 	13442,

@@ -23,7 +23,7 @@ func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	}

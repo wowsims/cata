@@ -78,6 +78,9 @@ var FullRaidBuffs = &proto.RaidBuffs{
 
 	// Crit Damage %
 	SkullBannerCount: 1, // Warrior
+
+	// Additional Nature Damage Proc
+	StormlashTotemCount: 1, // Shaman
 }
 
 var FullPartyBuffs = &proto.PartyBuffs{}
