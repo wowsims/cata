@@ -15,7 +15,7 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | monk.SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | monk.SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: monk.MonkSpellKegSmash,
 		MaxRange:       core.MaxMeleeRange,
 		MissileSpeed:   30,
