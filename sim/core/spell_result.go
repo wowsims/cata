@@ -505,10 +505,6 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 		multiplier *= attackTable.Defender.PseudoStats.DiseaseDamageTakenMultiplier
 	}
 
-	if spell.Flags.Matches(SpellFlagHauntSE) {
-		multiplier *= attackTable.HauntSEDamageTakenMultiplier
-	}
-
 	if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
 	}
