@@ -70,7 +70,6 @@ enum RogueMinorGlyph {
     GlyphOfKillingSpree = 45762;
     GlyphOfTricksOfTheTrade = 45767;
     GlyphOfDisguise = 45768;
-    ZzoldGlyphOfStabbing = 71799;
     GlyphOfHeadhunting = 104123;
     GlyphOfImprovedDistraction = 104124;
 }

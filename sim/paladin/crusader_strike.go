@@ -10,7 +10,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskCrusaderStrike,
 
 		ManaCost: core.ManaCostOptions{
