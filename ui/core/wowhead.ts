@@ -49,6 +49,11 @@ export type WowheadTooltipItemParams = {
 	 * */
 	reforgeId?: number;
 	/**
+	 * @description Upgrades
+	 * @see upgd - mapped value from wowhead
+	 * */
+	upgradeStep?: number;
+	/**
 	 * @description Transmogrified to
 	 * @see transmog - mapped value from wowhead
 	 * */
@@ -83,7 +88,7 @@ export const WOWHEAD_EXPANSION_ENV = 15;
 export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemParams | WowheadTooltipSpellParams) => {
 	const lang = getLanguageCode();
 	const params = new URLSearchParams();
-	const langPrefix = lang ? lang + '.' : '';
+	const langPrefix = lang && lang != 'en' ? lang + '.' : '';
 	params.set('domain', `${langPrefix}mop-classic`);
 	params.set('dataEnv', String(WOWHEAD_EXPANSION_ENV));
 
@@ -115,6 +120,9 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 		}
 		if (options.randomEnchantmentId) {
 			params.set('rand', String(options.randomEnchantmentId));
+		}
+		if (typeof options.upgradeStep === 'number') {
+			params.set('upgd', String(options.upgradeStep));
 		}
 		if (options.setPieceIds?.length) {
 			params.set('pcs', options.setPieceIds.join(':'));

@@ -44,13 +44,6 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		vengeance: &core.VengeanceTracker{},
 	}
 
-	healingModel := options.HealingModel
-	if healingModel != nil {
-		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(&bdk.Unit, healingModel.InspirationUptime)
-		}
-	}
-
 	return bdk
 }
 

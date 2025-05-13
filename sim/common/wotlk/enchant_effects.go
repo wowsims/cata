@@ -123,14 +123,6 @@ func init() {
 		IsMelee: true,
 	})
 
-	// Enchant: 3247, Spell: 44595 - Scourgebane
-	core.NewEnchantEffect(3247, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeAttackPower += 140
-		}
-	})
-
 	// Enchant: 3253, Spell: 44625 - Armsman
 	core.NewEnchantEffect(3253, func(agent core.Agent) {
 		character := agent.GetCharacter()

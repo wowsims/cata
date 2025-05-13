@@ -234,7 +234,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 		ActionID:       core.ActionID{SpellID: 89751},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellFelGuardFelstorm,
 
 		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
@@ -284,7 +284,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		ActionID:       core.ActionID{SpellID: 30213},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
 
 		ManaCost: core.ManaCostOptions{BaseCostPercent: 6},

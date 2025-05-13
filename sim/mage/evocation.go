@@ -52,10 +52,6 @@ func (mage *Mage) registerEvocation() {
 		Spell: evocation,
 		Type:  core.CooldownTypeMana,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			if character.HasActiveAuraWithTag(core.InnervateAuraTag) || character.HasActiveAuraWithTag(core.ManaTideTotemAuraTag) {
-				return false
-			}
-
 			if sim.GetRemainingDuration() < 12*time.Second {
 				return false
 			}

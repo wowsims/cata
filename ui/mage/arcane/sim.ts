@@ -64,9 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			vampiricTouch: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Presets.DefaultDebuffs,
 	},
 
@@ -75,13 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: ArcaneInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ReplenishmentBuff,
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.MP5Buff,
-		BuffDebuffInputs.StaminaBuff,
-		BuffDebuffInputs.ManaBuff,
-	],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
