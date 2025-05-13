@@ -33,7 +33,7 @@ func (priest *Priest) registerShadowfiendSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3,
 			},
 		},
 

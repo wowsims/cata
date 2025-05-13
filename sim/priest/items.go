@@ -462,7 +462,7 @@ var ItemSetRegaliaOfTheGuardianSperpent = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				ClassMask:  PriestSpellShadowWordPain,
-				FloatValue: 0.1,
+				FloatValue: 10,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {

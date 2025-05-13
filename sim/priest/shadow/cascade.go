@@ -72,7 +72,7 @@ func (shadow *ShadowPriest) registerCascade() {
 		SpellSchool:  core.SpellSchoolShadow,
 		Flags:        core.SpellFlagAPL,
 		ProcMask:     core.ProcMaskSpellDamage,
-		MissileSpeed: 20,
+		MissileSpeed: 24,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 10,
 		},
@@ -90,7 +90,7 @@ func (shadow *ShadowPriest) registerCascade() {
 		CritMultiplier:   shadow.DefaultCritMultiplier(),
 		BonusCoefficient: cascadeCoeff,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damageMod := math.Min(0.4+(30-shadow.DistanceFromTarget)/30, 1)
+			damageMod := math.Min(0.4+0.6*(1-(30-shadow.DistanceFromTarget)/30), 1)
 			targets = []*core.Unit{target}
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				cascadeHandler(damageMod, bounceSpell, target, sim)

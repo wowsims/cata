@@ -38,8 +38,8 @@ func (shadow *ShadowPriest) registerDivineStar() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			hit1 := shadow.DistanceFromTarget / 20
-			hit2 := 3 - hit1
+			hit1 := shadow.DistanceFromTarget / 24
+			hit2 := 2.5 - hit1
 
 			// first hit
 			core.StartDelayedAction(sim, core.DelayedActionOptions{

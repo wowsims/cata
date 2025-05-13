@@ -24,8 +24,8 @@ func (shadow *ShadowPriest) registerHalo() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: haloCoeff,
 		ClassSpellMask:   priest.PriestSpellHalo,
-		CritMultiplier:   1,
-		MissileSpeed:     20,
+		CritMultiplier:   shadow.DefaultCritMultiplier(),
+		MissileSpeed:     10,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 13.5,
 		},
@@ -48,6 +48,7 @@ func (shadow *ShadowPriest) registerHalo() {
 				for _, target := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
+				spell.DamageMultiplier /= distMod
 			})
 		},
 	})
