@@ -13,7 +13,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellMultiShot,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		MinRange:       5,
 		MaxRange:       40,
@@ -42,7 +42,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 			baseDamageArray := make([]*core.SpellResult, numHits)
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				currentTarget := hunter.Env.GetTargetUnit(hitIndex)
-				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(currentTarget)
+				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower()
 				baseDamageArray[hitIndex] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			}

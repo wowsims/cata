@@ -48,7 +48,7 @@ func (affliction *AfflictionWarlock) Initialize() {
 	affliction.Warlock.Initialize()
 
 	// affliction.registerHaunt()
-	affliction.registerUnstableAffliction()
+	// affliction.registerUnstableAffliction()
 }
 
 func (affliction *AfflictionWarlock) ApplyTalents() {

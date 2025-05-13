@@ -371,7 +371,7 @@ func (hp *HunterPet) registerWolverineBite() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagMeleeMetrics,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
