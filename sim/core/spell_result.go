@@ -94,11 +94,8 @@ func (spell *Spell) DodgeSuppression() float64 {
 // MoP reworked Parry. Rather than being innately ~2x Dodge chance, expertise now applies to Dodge first (down to 0), and then Parry.
 // The base chance for Dodge/Parry are both 7.5%, assuming a +3 target. The 7.5% Dodge chance must be fully suppressed before Parry will go down.
 // This makes the effect of each point of Expertise linear when attacking from the front
-func (spell *Spell) ParrySuppression() float64 {
-	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
-	parrySupp := expertiseRating / ExpertisePerQuarterPercentReduction / 400
-	parrySupp -= max(0, spell.DodgeSuppression())
-	return parrySupp
+func (spell *Spell) ParrySuppression(attackTable *AttackTable) float64 {
+	return max(0, spell.DodgeSuppression()-attackTable.BaseDodgeChance)
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
