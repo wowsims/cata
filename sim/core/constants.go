@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-const CharacterLevel = 85
+const CharacterLevel = 90
 const MaxChallengeModeIlvl = 463
 
 const GCDMin = time.Second * 1
