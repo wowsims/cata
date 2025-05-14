@@ -669,12 +669,6 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		Duration: time.Minute * 10,
 	})
 
-	for _, pet := range character.Pets {
-		if !pet.IsGuardian() {
-			BloodlustAura(&pet.Character, actionTag)
-		}
-	}
-
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "Bloodlust-" + actionID.String(),
 		Tag:      BloodlustAuraTag,
@@ -683,12 +677,6 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1.3)
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.3)
-			for _, pet := range character.Pets {
-				if pet.IsEnabled() && !pet.IsGuardian() {
-					pet.GetAura(aura.Label).Activate(sim)
-				}
-			}
-
 			sated.Activate(sim)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
@@ -1207,7 +1195,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 	}
 
 	handler := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-		if !aura.Icd.IsReady(sim) || !result.Landed() || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) || !sim.Proc(0.5, "Stormlash") {
+		if !aura.Icd.IsReady(sim) || !result.Landed() || result.Damage <= 0 || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) || !sim.Proc(0.5, "Stormlash") {
 			return
 		}
 

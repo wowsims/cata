@@ -29,7 +29,14 @@ type T12MirrorImage struct {
 
 func (mage *Mage) NewT12MirrorImage() *T12MirrorImage {
 	mirrorImage := &T12MirrorImage{
-		Pet:       core.NewPet("Mirror Image T12 2pc", &mage.Character, t12MirrorImageBaseStats, createT12MirrorImageInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Mirror Image T12 2pc",
+			Owner:           &mage.Character,
+			BaseStats:       t12MirrorImageBaseStats,
+			StatInheritance: createT12MirrorImageInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		mageOwner: mage,
 	}
 

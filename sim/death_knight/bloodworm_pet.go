@@ -14,7 +14,14 @@ type BloodwormPet struct {
 
 func (dk *DeathKnight) NewBloodwormPet(_ int) *BloodwormPet {
 	bloodworm := &BloodwormPet{
-		Pet:     core.NewPet("Bloodworm", &dk.Character, bloodwormPetBaseStats, dk.bloodwormStatInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Bloodworm",
+			Owner:           &dk.Character,
+			BaseStats:       bloodwormPetBaseStats,
+			StatInheritance: dk.bloodwormStatInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		dkOwner: dk,
 	}
 
