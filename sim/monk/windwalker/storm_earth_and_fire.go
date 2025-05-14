@@ -35,20 +35,14 @@ func (ww *WindwalkerMonk) registerStormEarthAndFire() {
 		ActionID:  core.ActionID{SpellID: 137639},
 		Duration:  core.NeverExpires,
 		MaxStacks: 2,
-		// Casts copy
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			copySpell := ww.SefController.GetCopySpell(spell.ActionID)
-			if copySpell == nil {
-				return
-			}
-
-			CopySpellMultipliers(spell, copySpell, ww.CurrentTarget)
-
-			copySpell.Cast(sim, ww.CurrentTarget)
+			ww.SefController.CastCopySpell(sim, spell)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			// We only care if stacks are increasing
+			// as decreasing would mean disabling SEF
 			if newStacks > oldStacks {
-				ww.SefController.Activate(sim, sefTarget)
+				ww.SefController.PickClone(sim, sefTarget)
 				ww.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
 				ww.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
 				for _, pet := range ww.SefController.pets {
@@ -105,7 +99,19 @@ func (controller *StormEarthAndFireController) GetCopySpell(actionId core.Action
 	return controller.spells[actionId]
 }
 
-func (controller *StormEarthAndFireController) Activate(sim *core.Simulation, target *core.Unit) {
+func (controller *StormEarthAndFireController) CastCopySpell(sim *core.Simulation, spell *core.Spell) {
+	copySpell := controller.GetCopySpell(spell.ActionID)
+	if copySpell == nil {
+		return
+	}
+
+	for _, pet := range controller.pets {
+		copySpell.Cast(sim, pet.CurrentTarget)
+		CopySpellMultipliers(spell, copySpell, pet.CurrentTarget)
+	}
+}
+
+func (controller *StormEarthAndFireController) PickClone(sim *core.Simulation, target *core.Unit) {
 	clone := controller.GetCloneFromTarget(sim, target)
 	// If the target already has an active clone, disable it
 	if clone != nil {
@@ -121,7 +127,7 @@ func (controller *StormEarthAndFireController) Activate(sim *core.Simulation, ta
 
 	validClones := controller.GetInactiveClones()
 	cloneIndex := int32(math.Round(sim.Roll(0, float64(len(validClones)-1))))
-	controller.Enable(sim, validClones[cloneIndex], target)
+	controller.EnableClone(sim, validClones[cloneIndex], target)
 }
 
 func (controller *StormEarthAndFireController) GetCloneFromTarget(sim *core.Simulation, target *core.Unit) *StormEarthAndFirePet {
@@ -129,7 +135,7 @@ func (controller *StormEarthAndFireController) GetCloneFromTarget(sim *core.Simu
 	return controller.sefTargets[targetUnixIndex]
 }
 
-func (controller *StormEarthAndFireController) Enable(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
+func (controller *StormEarthAndFireController) EnableClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
 	clone.CurrentTarget = target
 	clone.EnableWithStartAttackDelay(sim, clone, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
 	controller.sefTargets[target.UnitIndex] = clone
