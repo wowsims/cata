@@ -99,8 +99,14 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		AutoSwingMelee: true,
 	})
 
-	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 0
+	shadowfiend.OnPetEnable = func(sim *core.Simulation) {
+		shadowfiend.MultiplyMeleeSpeed(sim, shadowfiend.Owner.PseudoStats.MeleeSpeedMultiplier)
+		shadowfiend.EnableDynamicMeleeSpeed(func(amount float64) {
+			priest.ShadowfiendPet.MultiplyMeleeSpeed(sim, amount)
+		})
+	}
 
+	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 1
 	shadowfiend.EnableManaBar()
 	priest.AddPet(shadowfiend)
 
@@ -113,7 +119,8 @@ func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
 			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.3,
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.75,
-			stats.AttackPower:         core.DefaultAttackPowerPerDPS / 1.5 * ownerStats[stats.SpellPower],
+			stats.SpellPower:          ownerStats[stats.SpellPower],
+			stats.HasteRating:         ownerStats[stats.HasteRating],
 		}
 	}
 }

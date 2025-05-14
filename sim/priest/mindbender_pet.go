@@ -81,7 +81,14 @@ func (priest *Priest) NewMindBender() *MindBender {
 		AutoSwingMelee: true,
 	})
 
-	mindbender.AutoAttacks.MHConfig().BonusCoefficient = 0
+	mindbender.OnPetEnable = func(sim *core.Simulation) {
+		mindbender.MultiplyMeleeSpeed(sim, mindbender.Owner.PseudoStats.MeleeSpeedMultiplier)
+		mindbender.EnableDynamicMeleeSpeed(func(amount float64) {
+			mindbender.MultiplyMeleeSpeed(sim, amount)
+		})
+	}
+
+	mindbender.AutoAttacks.MHConfig().BonusCoefficient = 1
 
 	mindbender.EnableManaBar()
 	priest.AddPet(mindbender)
@@ -95,7 +102,8 @@ func (priest *Priest) mindbenderStatInheritance() core.PetStatInheritance {
 			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
 			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.3,
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.75,
-			stats.AttackPower:         0.88 * core.DefaultAttackPowerPerDPS / 1.5 * ownerStats[stats.SpellPower],
+			stats.SpellPower:          0.88 * ownerStats[stats.SpellPower],
+			stats.HasteRating:         ownerStats[stats.HasteRating],
 		}
 	}
 }
