@@ -74,7 +74,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// shadowfiend.ShadowcrawlAura.Activate(sim)
+			shadowfiend.ShadowcrawlAura.Activate(sim)
 		},
 	})
 

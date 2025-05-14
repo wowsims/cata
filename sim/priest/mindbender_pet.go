@@ -56,7 +56,7 @@ func (priest *Priest) NewMindBender() *MindBender {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// mindbender.ShadowcrawlAura.Activate(sim)
+			mindbender.ShadowcrawlAura.Activate(sim)
 		},
 	})
 
