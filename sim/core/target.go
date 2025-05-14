@@ -255,8 +255,8 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 		table.MeleeCritSuppression = UnitLevelFloat64(defender.Level, 0, 0.01, 0.02, 0.03)
 		table.SpellCritSuppression = UnitLevelFloat64(defender.Level, 0, 0.01, 0.02, 0.03)
 	} else {
-		table.BaseSpellMissChance = UnitLevelFloat64(defender.Level, 0.06, 0.03, 0, 0)
-		table.BaseMissChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, 0)
+		table.BaseSpellMissChance = UnitLevelFloat64(attacker.Level, 0.06, 0.03, 0, -0.03)
+		table.BaseMissChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
 		table.BaseBlockChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
 		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
 		table.BaseParryChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)

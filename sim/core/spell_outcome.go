@@ -469,18 +469,11 @@ func (spell *Spell) outcomeRangedHitAndCrit(sim *Simulation, result *SpellResult
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0
 
-	// TODO: Ranged Attacks are currently blockable on MoP Beta
-	// However, they shouldn't be! Revisit when fixed
 	if spell.Unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
-			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) {
-			if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
-				result.applyAttackTableBlock(sim, spell, attackTable)
-			} else {
-				if !result.applyAttackTableBlock(sim, spell, attackTable) {
-					result.applyAttackTableHit(spell, countHits)
-				}
-			}
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
+			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
@@ -501,14 +494,10 @@ func (dot *Dot) outcomeRangedHitAndCritSnapshot(sim *Simulation, result *SpellRe
 	chance := 0.0
 
 	if dot.Spell.Unit.PseudoStats.InFrontOfTarget {
-		if !result.applyAttackTableMissNoDWPenalty(dot.Spell, attackTable, roll, &chance) {
-			if result.applyAttackTableCritSeparateRollSnapshot(sim, dot) {
-				result.applyAttackTableBlock(sim, dot.Spell, attackTable)
-			} else {
-				if !result.applyAttackTableBlock(sim, dot.Spell, attackTable) {
-					result.applyAttackTableHit(dot.Spell, countHits)
-				}
-			}
+		if !result.applyAttackTableMissNoDWPenalty(dot.Spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableDodge(dot.Spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRollSnapshot(sim, dot) {
+			result.applyAttackTableHit(dot.Spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(dot.Spell, attackTable, roll, &chance) &&
@@ -640,7 +629,7 @@ func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *Atta
 		return false
 	}
 
-	*chance += max(0, attackTable.BaseDodgeChance-spell.DodgeSuppression()-spell.Unit.PseudoStats.DodgeReduction)
+	*chance += max(0, attackTable.BaseDodgeChance-spell.DodgeSuppression())
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
@@ -771,7 +760,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 		return false
 	}
 
-	*chance += max(result.Target.GetTotalDodgeChanceAsDefender(attackTable)-spell.Unit.PseudoStats.DodgeReduction, 0.0)
+	*chance += max(result.Target.GetTotalDodgeChanceAsDefender(attackTable), 0.0)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
@@ -854,24 +843,24 @@ func (spell *Spell) OutcomeExpectedMagicHitAndCrit(_ *Simulation, result *SpellR
 
 func (spell *Spell) OutcomeExpectedMeleeWhite(_ *Simulation, result *SpellResult, attackTable *AttackTable) {
 	missChance := spell.GetPhysicalMissChance(attackTable)
-	dodgeChance := TernaryFloat64(spell.Flags.Matches(SpellFlagCannotBeDodged), 0, max(0, attackTable.BaseDodgeChance-spell.DodgeSuppression()-spell.Unit.PseudoStats.DodgeReduction))
+	dodgeChance := TernaryFloat64(spell.Flags.Matches(SpellFlagCannotBeDodged), 0, max(0, attackTable.BaseDodgeChance-spell.DodgeSuppression()))
 	parryChance := TernaryFloat64(spell.Unit.PseudoStats.InFrontOfTarget, max(0, attackTable.BaseParryChance-spell.ParrySuppression(attackTable)), 0)
 	glanceChance := attackTable.BaseGlanceChance
 	blockChance := TernaryFloat64(spell.Unit.PseudoStats.InFrontOfTarget, attackTable.BaseBlockChance, 0)
 	whiteCritCap := 1.0 - missChance - dodgeChance - parryChance - glanceChance
 	critChance := min(spell.PhysicalCritChance(attackTable), whiteCritCap)
-	averageMultiplier := 1.0 - missChance - dodgeChance - parryChance + (spell.CritDamageMultiplier()-1)*critChance - glanceChance*(1.0-attackTable.GlanceMultiplier) - blockChance*result.Target.BlockDamageReduction()
+	averageMultiplier := (1.0 - missChance - dodgeChance - parryChance + (spell.CritDamageMultiplier()-1)*critChance - glanceChance*(1.0-attackTable.GlanceMultiplier)) * (1.0 - blockChance*result.Target.BlockDamageReduction())
 	result.Damage *= averageMultiplier
 }
 
 func (spell *Spell) OutcomeExpectedMeleeWeaponSpecialHitAndCrit(_ *Simulation, result *SpellResult, attackTable *AttackTable) {
 	missChance := max(0, attackTable.BaseMissChance-spell.PhysicalHitChance(attackTable))
-	dodgeChance := TernaryFloat64(spell.Flags.Matches(SpellFlagCannotBeDodged), 0, max(0, attackTable.BaseDodgeChance-spell.DodgeSuppression()-spell.Unit.PseudoStats.DodgeReduction))
+	dodgeChance := TernaryFloat64(spell.Flags.Matches(SpellFlagCannotBeDodged), 0, max(0, attackTable.BaseDodgeChance-spell.DodgeSuppression()))
 	parryChance := TernaryFloat64(spell.Unit.PseudoStats.InFrontOfTarget, max(0, attackTable.BaseParryChance-spell.ParrySuppression(attackTable)), 0)
 	blockChance := TernaryFloat64(spell.Unit.PseudoStats.InFrontOfTarget, attackTable.BaseBlockChance, 0)
 	critChance := spell.PhysicalCritChance(attackTable)
-	averageMultiplier := (1.0 - missChance - dodgeChance - parryChance) * (1.0 + (spell.CritDamageMultiplier()-1)*critChance)
-	averageMultiplier -= blockChance * ((spell.CritDamageMultiplier()-1)*critChance + result.Target.BlockDamageReduction())
+	critFactor := (spell.CritDamageMultiplier() - 1) * critChance
+	averageMultiplier := (1.0 - missChance - dodgeChance - parryChance) * (1.0 + critFactor - blockChance*(critFactor+result.Target.BlockDamageReduction()))
 	result.Damage *= averageMultiplier
 }
 
