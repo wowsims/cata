@@ -18,7 +18,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		ActionID:       core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
 		DamageMultiplier: 1,
@@ -38,7 +38,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		ActionID:       core.ActionID{SpellID: 51690, Tag: 2}, // actual spellID is 57842
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
 		DamageMultiplier: 1 * comRogue.DWSMultiplier(),

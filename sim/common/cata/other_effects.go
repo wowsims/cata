@@ -933,7 +933,7 @@ func init() {
 					if spell.ProcMask.Matches(core.ProcMaskMelee | core.ProcMaskMeleeProc) {
 						apSnapshot = spell.MeleeAttackPower()
 					} else {
-						apSnapshot = spell.RangedAttackPower(result.Target)
+						apSnapshot = spell.RangedAttackPower()
 					}
 					lightningStrike.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskRanged), core.ProcMaskRangedProc, core.ProcMaskMeleeProc)
 					lightningStrike.Cast(sim, result.Target)

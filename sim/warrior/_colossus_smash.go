@@ -28,7 +28,7 @@ func (warrior *Warrior) RegisterColossusSmash() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskColossusSmash | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

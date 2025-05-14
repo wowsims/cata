@@ -91,11 +91,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// mangle: true,
-			// sunderArmor: true,
-			// shadowAndFlame: true,
-			// earthAndMoon: true,
-			// bloodFrenzy: true,
+			curseOfElements:true,
+			physicalVulnerability: true,
+			weakenedArmor: true,
 		}),
 	},
 

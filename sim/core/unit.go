@@ -189,9 +189,7 @@ type Unit struct {
 }
 
 func (unit *Unit) getSpellpowerValueImpl(spell *Spell) float64 {
-	return unit.stats[stats.SpellPower] +
-		spell.BonusSpellPower +
-		spell.Unit.PseudoStats.MobTypeSpellPower
+	return unit.stats[stats.SpellPower] + spell.BonusSpellPower
 }
 
 // Units can be disabled for several reasons:
