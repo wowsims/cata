@@ -119,6 +119,7 @@ func (xuen *Xuen) Reset(sim *core.Simulation) {
 }
 
 func (xuen *Xuen) enable(sim *core.Simulation) {
+	xuen.MultiplyMeleeSpeed(sim, xuen.owner.PseudoStats.MeleeSpeedMultiplier)
 	xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
 
 	xuen.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
@@ -126,7 +127,6 @@ func (xuen *Xuen) enable(sim *core.Simulation) {
 	})
 
 	xuen.EnableDynamicMeleeSpeed(func(amount float64) {
-		xuen.MultiplyCastSpeed(amount)
 		xuen.MultiplyMeleeSpeed(sim, amount)
 	})
 }
