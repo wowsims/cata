@@ -261,7 +261,7 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskShieldOfTheRighteous,
 
 		Cast: core.CastConfig{

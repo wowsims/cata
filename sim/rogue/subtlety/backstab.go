@@ -15,7 +15,7 @@ func (subRogue *SubtletyRogue) registerBackstabSpell() {
 		ActionID:       core.ActionID{SpellID: 53},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellBackstab,
 
 		EnergyCost: core.EnergyCostOptions{

@@ -31,7 +31,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 		ActionID:       core.ActionID{SpellID: 7384},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskOverpower | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

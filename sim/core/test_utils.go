@@ -34,13 +34,13 @@ const LongDuration = 300
 var DefaultTargetProto = &proto.Target{
 	Level: CharacterLevel + 3,
 	Stats: stats.Stats{
-		stats.Armor:       11977,
-		stats.AttackPower: 650,
+		stats.Armor:       24835,
+		stats.AttackPower: 0,
 	}.ToProtoArray(),
 	MobType: proto.MobType_MobTypeMechanical,
 
-	SwingSpeed:    2.5,
-	MinBaseDamage: 210000,
+	SwingSpeed:    2,
+	MinBaseDamage: 550000,
 	ParryHaste:    false,
 	DamageSpread:  0.4,
 }
@@ -78,6 +78,9 @@ var FullRaidBuffs = &proto.RaidBuffs{
 
 	// Crit Damage %
 	SkullBannerCount: 1, // Warrior
+
+	// Additional Nature Damage Proc
+	StormlashTotemCount: 1, // Shaman
 }
 
 var FullPartyBuffs = &proto.PartyBuffs{}
