@@ -453,7 +453,8 @@ func (spell *Spell) outcomeRangedHit(sim *Simulation, result *SpellResult, attac
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0
 
-	if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) {
+	if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
+		!result.applyAttackTableDodge(spell, attackTable, roll, &chance) {
 		result.applyAttackTableHit(spell, countHits)
 	}
 }
@@ -471,7 +472,8 @@ func (spell *Spell) outcomeRangedHitAndCrit(sim *Simulation, result *SpellResult
 	// TODO: Ranged Attacks are currently blockable on MoP Beta
 	// However, they shouldn't be! Revisit when fixed
 	if spell.Unit.PseudoStats.InFrontOfTarget {
-		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) {
+		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) {
 			if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 				result.applyAttackTableBlock(sim, spell, attackTable)
 			} else {
