@@ -25,7 +25,14 @@ var FireElementalIntellectScaling = 0.3198
 
 func (shaman *Shaman) NewFireElemental() *FireElemental {
 	fireElemental := &FireElemental{
-		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Greater Fire Elemental",
+			Owner:           &shaman.Character,
+			BaseStats:       fireElementalPetBaseStats,
+			StatInheritance: shaman.fireElementalStatInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		shamanOwner: shaman,
 	}
 	fireElemental.EnableManaBar()
