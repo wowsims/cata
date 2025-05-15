@@ -109,8 +109,10 @@ export default class BulkItemSearch extends ContentBlock {
 				.getAllItems()
 				.filter(item => canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined))
 				.sort((a, b) => {
-					if (a.scalingOptions[ItemLevelState.Base].ilvl < b.scalingOptions[ItemLevelState.Base].ilvl) return 1;
-					else if (b.scalingOptions[ItemLevelState.Base].ilvl < a.scalingOptions[ItemLevelState.Base].ilvl) return -1;
+					const aIlvl = a.scalingOptions?.[ItemLevelState.Base].ilvl || a.ilvl;
+					const bIlvl = b.scalingOptions?.[ItemLevelState.Base].ilvl || b.ilvl;
+					if (aIlvl < bIlvl) return 1;
+					else if (bIlvl < aIlvl) return -1;
 					else return 0;
 				});
 
@@ -147,8 +149,9 @@ export default class BulkItemSearch extends ContentBlock {
 		let matchCount = 0;
 
 		this.allItems.forEach(item => {
-			if (this.maxIlvl != 0 && this.maxIlvl < item.scalingOptions[ItemLevelState.Base].ilvl) return false;
-			if (this.minIlvl != 0 && this.minIlvl > item.scalingOptions[ItemLevelState.Base].ilvl) return false;
+			const ilvl = item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl;
+			if (this.maxIlvl != 0 && this.maxIlvl < ilvl) return false;
+			if (this.minIlvl != 0 && this.minIlvl > ilvl) return false;
 
 			let matched = true;
 			const lcName = item.name.toLowerCase();
@@ -172,7 +175,7 @@ export default class BulkItemSearch extends ContentBlock {
 					<li>
 						<a className="dropdown-item bulk-item-search-item" dataset={{ itemId: item.id.toString() }} ref={itemRef} target="_blank">
 							<div className="bulk-item-search-item-icon-wrapper">
-								<span className="item-picker-ilvl">{item.scalingOptions[ItemLevelState.Base].ilvl}</span>
+								<span className="item-picker-ilvl">{ilvl}</span>
 								<div className="bulk-item-search-item-icon" ref={iconRef} />
 							</div>
 							<div className="d-flex flex-column ps-2">
