@@ -12,7 +12,7 @@ import (
 	"github.com/wowsims/mop/tools"
 )
 
-func ReadAtlasLootData() *WowDatabase {
+func ReadAtlasLootData(dbHelper *DBHelper) *WowDatabase {
 	db := NewWowDatabase()
 
 	// Read these in reverse order, because some items are listed in multiple expansions
@@ -30,7 +30,7 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
 	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Factions/data-cata.lua")
 
-	readZoneData(db)
+	readZoneData(db, dbHelper)
 
 	return db
 }
@@ -312,31 +312,44 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 // 	}
 // }
 
-func readZoneData(db *WowDatabase) {
+func readZoneData(db *WowDatabase, dbHelper *DBHelper) {
 	zoneIDs := make([]int32, 0, len(db.Zones))
 	for zoneID := range db.Zones {
 		zoneIDs = append(zoneIDs, zoneID)
 	}
-	zoneIDStrs := core.MapSlice(zoneIDs, func(zoneID int32) string { return strconv.Itoa(int(zoneID)) })
-	//Todo: This is the only place still needing the tooltip manager
-	//Remove it
-	zoneTM := &WowheadTooltipManager{
-		TooltipManager{
-			FilePath:   "",
-			UrlPattern: "https://nether.wowhead.com/mop-classic/tooltip/zone/%s",
-		},
-	}
-	zoneTooltips := zoneTM.FetchFromWeb(zoneIDStrs)
 
-	tooltipPattern := regexp.MustCompile(`{"name":"(.*?)",`)
-	for i, zoneID := range zoneIDs {
-		tooltip := zoneTooltips[zoneIDStrs[i]]
-		match := tooltipPattern.FindStringSubmatch(tooltip)
-		if match == nil {
-			log.Fatalf("Error parsing zone tooltip %s", tooltip)
-		}
-		db.Zones[zoneID].Name = match[1]
+	zoneNames, error := loadZones(dbHelper)
+	if error != nil {
+		panic(error)
 	}
+
+	for _, zoneID := range zoneIDs {
+		db.Zones[zoneID].Name = zoneNames[zoneID]
+	}
+}
+
+func loadZones(dbHelper *DBHelper) (map[int32]string, error) {
+	const query = `SELECT ID, AreaName_lang FROM AreaTable`
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("querying drop sources: %w", err)
+	}
+	defer rows.Close()
+
+	var zoneId int32
+	var zoneName string
+	namesByZone := make(map[int32]string)
+	for rows.Next() {
+		e := rows.Scan(&zoneId, &zoneName)
+		if e != nil {
+			return nil, e
+		}
+
+		namesByZone[zoneId] = zoneName
+	}
+
+	return namesByZone, nil
 }
 
 var AtlasLootProfessionIDs = map[int]proto.Profession{
