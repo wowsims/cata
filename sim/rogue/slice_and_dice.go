@@ -76,6 +76,8 @@ func (rogue *Rogue) registerSliceAndDice() {
 				if rogue.Spec == proto.Spec_SpecSubtletyRogue {
 					rogue.AddEnergy(sim, 8, energyMetrics)
 				}
+				// Do something just to give us a tick line
+				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTickHealingCrit)
 			},
 		},
 
