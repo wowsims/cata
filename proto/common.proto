@@ -431,88 +431,66 @@ enum TristateEffect {
 }
 
 // Buffs that affect the entire raid.
-// TODO: Reindex
-// next index: 48
+// Reindexed to Mists of Pandaria raid buffs.
+// Next index: 36
 message RaidBuffs {
-	// +5% Base Stats and Spell Resistances
-	bool mark_of_the_wild = 1;
-	bool blessing_of_kings = 2;
-	bool drums_of_the_burning_wild = 3;
-	bool legacy_of_the_emperor = 47;
-
-	// +Spell Resistances
-	bool elemental_resistance_totem = 4;
-	bool resistance_aura = 5;
-	bool shadow_protection = 6;
-	bool aspect_of_the_wild = 7;
-
-	// +Stamina
-	bool power_word_fortitude = 8;
-	bool commanding_shout = 9;
-	bool blood_pact = 10;
-
-	// +Stength and Agility
-	bool battle_shout = 11;
-	bool horn_of_winter = 12;
-	bool strength_of_earth_totem = 13;
-
 	// +10% Attack Power
-	bool trueshot_aura = 14;
-	bool unleashed_rage = 15;
-	bool abominations_might = 16;
-	bool blessing_of_might = 17;
+	bool horn_of_winter           = 1;  // Death Knights
+	bool trueshot_aura            = 2;  // Hunters
+	bool battle_shout             = 3;  // Warriors
 
-	// +10% Melee Speed
-	bool windfury_totem = 18;
-	bool icy_talons = 19;
-	bool hunting_party = 20;
+	// +10% Melee and Ranged Attack Speed
+	bool unholy_aura              = 5;  // Frost/Unholy DKs
+	bool cackling_howl            = 6;  // Hyena Pets
+	bool serpents_swiftness       = 7;  // Serpent Pets
+	bool swiftblades_cunning      = 8;  // Rogues
+	bool unleashed_rage           = 9;  // Enhancement Shamans
 
-	// +Mana
-	bool arcane_brilliance = 21; // Also +Mp5
-	bool fel_intelligence = 22; // Also +6% SP
+	// +10% Spell Power
+	bool still_water              = 10; // Exotic Water Strider Pets
+	bool arcane_brilliance        = 11; // Mages
+	bool burning_wrath            = 12; // Shamans
+	bool dark_intent              = 13; // Warlocks
 
-	// +Mana Regen
-	bool mana_spring_totem = 23;
+	// +5% Spell Haste
+	bool moonkin_aura             = 14; // Balance Druids
+	bool mind_quickening          = 15; // Sporebat Pets
+	bool shadow_form              = 16; // Shadow Priests
+	bool elemental_oath           = 17; // Elemental Shamans
 
-	// +Spell Power
-	bool demonic_pact = 24;
-	bool totemic_wrath = 25;
-	bool flametongue_totem = 26; // 6% SP
+	// +5% Critical Strike Chance
+	bool leader_of_the_pack       = 18; // Feral/Guardian Druids
+	bool terrifying_roar          = 19; // Devilsaur Pets
+	bool furious_howl             = 20; // Wolf Pets
+	bool legacy_of_the_white_tiger= 21; // Windwalker Monks
 
-	// +5% Spell haste
-	bool moonkin_form = 27;
-	bool shadow_form = 28;
-	bool wrath_of_air_totem = 29;
+	// +3000 Mastery Rating
+	bool roar_of_courage          = 22; // Cat Pets
+	bool spirit_beast_blessing    = 23; // Spirit Beast Pets
+	bool blessing_of_might        = 24; // Paladins
+	bool grace_of_air             = 25; // Shamans
 
-	// +3% All Damage
-	bool arcane_tactics = 30;
-	bool ferocious_inspiration = 31;
-	bool communion = 32;
+	// +5% Strength, Agility, Intellect
+	bool mark_of_the_wild         = 26; // Druids
+	bool embrace_of_the_shale_spider = 27; // Shale Spider Pets
+	bool legacy_of_the_emperor    = 28; // Monks
+	bool blessing_of_kings        = 29; // Paladins
 
-	// +5% All Crit
-	bool leader_of_the_pack = 33;
-	bool elemental_oath = 34;
-	bool honor_among_thieves = 35;
-	bool rampage = 36;
-	bool terrifying_roar = 37;
-	bool furious_howl = 45;
-	bool legacy_of_the_white_tiger = 46;
+	// +10% Stamina
+	bool qiraji_fortitude         = 30; // Silithid Pets
+	bool power_word_fortitude     = 31; // Priests
+	bool commanding_shout         = 4;  // Warriors
 
 	// Major Haste
-	bool bloodlust = 38;
-	bool heroism = 39;
-	bool time_warp = 40;
+	bool bloodlust                = 32;
+	bool heroism                  = 33;
+	bool time_warp                = 34;
 
-	// Major Mana Replenishment
-	int32 mana_tide_totem_count = 41;
-
-	// +Armor
-	bool devotion_aura = 42;
-	bool stoneskin_totem = 43;
-
-	// Miscellaneous
-	bool retribution_aura = 44;
-}
+	// Raid Cooldowns
+	int32 mana_tide_totem_count   = 35;
+	int32 stormlash_totem_count = 36;
+	int32 skull_banner_count = 37;
+  }
 
 // Buffs that affect a single party.
 message PartyBuffs {
@@ -528,15 +506,7 @@ message IndividualBuffs {
 	int32 innervate_count = 10;
 	int32 hymn_of_hope_count = 7;
 
-	// Minor Mana Replenishment
-	bool vampiric_touch = 14;
-	bool enduring_winter = 18;
-	bool soul_leach = 16;
-	bool revitalize = 17;
-	bool communion = 100;
-
 	// Other Buffs
-	int32 power_infusion_count = 11;
 	int32 unholy_frenzy_count = 12;
 	TristateEffect tricks_of_the_trade = 101; // "Regular" = Glyphed, "Improved" = un-Glyphed
 	int32 divine_guardian_count = 23;
@@ -545,57 +515,42 @@ message IndividualBuffs {
 	int32 guardian_spirit_count = 26;
 	int32 rallying_cry_count = 102;
 	int32 shattering_throw_count = 103;
-	bool focus_magic = 22;
-	bool dark_intent = 27;
 }
 
 message Debuffs {
-	// 8% spell damage
-	bool curse_of_elements = 1;
-	bool ebon_plaguebringer = 2;
-	bool earth_and_moon = 3;
-	bool master_poisoner = 4;
-	bool fire_breath = 5;
-	bool lightning_breath = 6;
 
-	// 5% spell crit
-	bool critical_mass = 7;
-	bool shadow_and_flame = 8;
+	// –10% Physical damage dealt for 30s
+	// Physical‐damage‐dealt sources:
+	// Scarlet Fever, Thrash, Demoralizing Roar, Demoralizing Screech, Keg Smash,
+	//   Hammer of the Righteous, Earth Shock, Curse of Enfeeblement, Thunder Clap
+	bool weakened_blows = 1;
 
-	// 30% bleed damage
-	bool blood_frenzy = 9;
-	bool hemorrhage = 10;
-	bool mangle = 11;
-	bool stampede = 12;
+	// +4% Physical damage taken for 30s
+	// Gore, Stampede, Acid Spit, Ravage, Judgments of the Bold, Colossus Smash
+	bool physical_vulnerability = 2;
 
-	// Major armor
-	bool expose_armor = 13;
-	bool sunder_armor = 14;
-	bool faerie_fire = 15;
-	bool corrosive_spit = 16;
+	// –4% Armor for 30s, stacks 3 times
+	// Faerie Fire, Tear Armor, Dust Cloud, Expose Armor, Sunder Armor
+	bool weakened_armor = 3;
 
-	// 4% physical dmg
-	bool savage_combat = 17;
-	bool brittle_bones = 18;
-	bool acid_spit = 19;
+	//Healing reduction
+	//Widow Venom, Monstrous Bite, Rising Sun Kick, Wound Poison, Mortal Strike, Wild Strike
+	bool mortal_wounds = 4;
 
-	// -dmg %
-	bool curse_of_weakness = 20;
-	bool demoralizing_roar = 21;
-	bool demoralizing_shout = 22;
-	bool vindication = 23;
-	bool scarlet_fever = 24;
-	bool demoralizing_screech = 25;
-	bool keg_smask = 32;
+	// Spell‐damage‐taken sources:
+	bool fire_breath              = 5;
+	bool lightning_breath         = 6;
+	bool master_poisoner          = 7;
+	bool curse_of_elements        = 8;
 
-	// -attack speed
-	bool thunder_clap = 26;
-	bool frost_fever = 27;
-	bool infected_wounds = 28;
-	bool judgements_of_the_just = 29;
-	bool dust_cloud = 30;
-	bool earth_shock = 31;
-}
+	// Casting‐speed‐reduction sources:
+	bool necrotic_strike          = 9;
+	bool lava_breath              = 10;
+	bool spore_cloud              = 11;
+	bool slow                     = 12;
+	bool mind_numbing_poison      = 13;
+	bool curse_of_enfeeblement	  = 14;
+  }
 
 message ConsumesSpec {
 	int32 prepot_id = 1;
@@ -728,6 +683,7 @@ message ItemSpec {
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
 	ItemLevelState upgrade_step = 7;
+	bool challenge_mode = 8;
 }
 
 
@@ -869,13 +825,11 @@ message HealingModel {
 	// How often healing is applied.
 	double cadence_seconds = 2;
 	// Variation in the cadence.
-	double cadence_variation = 5;
+	double cadence_variation = 4;
 	// Fraction of each heal to model as an absorb shield.
-	double absorb_frac = 6;
-	// % Inspiration buff uptime
-	double inspiration_uptime = 3;
+	double absorb_frac = 5;
 	// TMI burst window bin size
-	int32 burst_window = 4;
+	int32 burst_window = 3;
 }
 
 message CustomRotation {
@@ -919,4 +873,3 @@ enum LogLevel {
 
 	Undefined = -1;
 }
-

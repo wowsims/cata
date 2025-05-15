@@ -9,7 +9,7 @@ import (
 )
 
 const MAX_SCALING_LEVEL = 100
-const BASE_LEVEL = 85
+const BASE_LEVEL = 90
 
 type SpellEffect struct {
 	ID                             int
@@ -38,8 +38,9 @@ type SpellEffect struct {
 	ResourceCoefficient            float64
 	GroupSizeBasePointsCoefficient float64
 	// Grouped properties parsed from JSON strings:
-	EffectMiscValues      []int // from EffectMiscValue_0, EffectMiscValue_1
-	EffectRadiusIndices   []int // from EffectRadiusIndex_0, EffectRadiusIndex_1
+	EffectMiscValues      []int     // from EffectMiscValue_0, EffectMiscValue_1
+	EffectMinRange        []float64 // from EffectRadiusIndex_0, EffectRadiusIndex_1
+	EffectMaxRange        []float64
 	EffectSpellClassMasks []int // from EffectSpellClassMask_0, EffectSpellClassMask_1, EffectSpellClassMask_2, EffectSpellClassMask_3
 	ImplicitTargets       []int // from ImplicitTarget_0, ImplicitTarget_1
 	SpellID               int
@@ -69,7 +70,11 @@ func (se *SpellEffect) ToProto() *proto.SpellEffect {
 }
 
 func (s *SpellEffect) GetRadiusMax() float64 {
-	return math.Max(float64(s.EffectRadiusIndices[0]), float64(s.EffectRadiusIndices[1]))
+	return math.Max(s.EffectMaxRange[0], s.EffectMaxRange[1])
+}
+
+func (s *SpellEffect) GetRadiusMin() float64 {
+	return math.Min(s.EffectMinRange[0], s.EffectMinRange[1])
 }
 
 func (s *SpellEffect) ScalingClass() proto.Class {
@@ -101,8 +106,8 @@ func (s *SpellEffect) ScalingClass() proto.Class {
 	}
 }
 func (s *SpellEffect) Delta(pLevel int, level int) float64 {
-	if level > 85 {
-		level = 85
+	if level > 90 {
+		level = 90
 	}
 
 	var mScale float64

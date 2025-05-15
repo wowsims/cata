@@ -32,7 +32,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskRevenge | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

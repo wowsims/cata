@@ -34,58 +34,74 @@ const LongDuration = 300
 var DefaultTargetProto = &proto.Target{
 	Level: CharacterLevel + 3,
 	Stats: stats.Stats{
-		stats.Armor:       11977,
-		stats.AttackPower: 650,
+		stats.Armor:       24835,
+		stats.AttackPower: 0,
 	}.ToProtoArray(),
 	MobType: proto.MobType_MobTypeMechanical,
 
-	SwingSpeed:    2.5,
-	MinBaseDamage: 210000,
+	SwingSpeed:    2,
+	MinBaseDamage: 550000,
 	ParryHaste:    false,
 	DamageSpread:  0.4,
 }
 
 var FullRaidBuffs = &proto.RaidBuffs{
-	BlessingOfKings:      true,
-	PowerWordFortitude:   true,
-	BlessingOfMight:      true,
-	MoonkinForm:          true,
-	ElementalOath:        true,
-	StrengthOfEarthTotem: true,
-	IcyTalons:            true,
-	ArcaneBrilliance:     true,
-	DemonicPact:          true,
-	Bloodlust:            true,
-	Communion:            true,
-	ShadowForm:           true,
-}
-var FullPartyBuffs = &proto.PartyBuffs{
-	//BraidedEterniumChain: true,
-	// ManaTideTotems: 1,
-}
-var FullIndividualBuffs = &proto.IndividualBuffs{
-	// BlessingOfMight:     true,
-	// BlessingOfSanctuary: true,
-	// BlessingOfWisdom:    true,
-	// JudgementsOfTheWise: true,
-	VampiricTouch: true,
+	// +10% Attack Power
+	TrueshotAura: true, // Hunters
+
+	// +10% Melee & Ranged Attack Speed
+	UnholyAura: true, // Frost/Unholy DKs
+
+	// +10% Spell Power
+	ArcaneBrilliance: true, // Mages
+
+	// +5% Spell Haste
+	ShadowForm: true, // Shadow Priests
+
+	// +5% Critical Strike Chance
+	LeaderOfThePack: true, // Feral/Guardian Druids
+
+	// +3000 Mastery Rating
+	BlessingOfMight: true, // Paladins
+
+	// +5% Strength, Agility, Intellect
+	BlessingOfKings: true, // Paladins
+
+	// +10% Stamina
+	PowerWordFortitude: true, // Priests
+
+	// Major Haste
+	Bloodlust: true,
+
+	// Major Mana Replenishment
+	ManaTideTotemCount: 1, // Shamans
+
+	// Crit Damage %
+	SkullBannerCount: 1, // Warrior
+
+	// Additional Nature Damage Proc
+	StormlashTotemCount: 1, // Shaman
 }
 
+var FullPartyBuffs = &proto.PartyBuffs{}
+
+var FullIndividualBuffs = &proto.IndividualBuffs{}
+
 var FullDebuffs = &proto.Debuffs{
-	BloodFrenzy:       true,
-	CurseOfElements:   true,
-	CurseOfWeakness:   true,
-	EarthAndMoon:      true,
-	EbonPlaguebringer: true,
-	ExposeArmor:       true,
-	FaerieFire:        true,
-	Mangle:            true,
-	SunderArmor:       true,
-	ThunderClap:       true,
-	Vindication:       true,
-	MasterPoisoner:    true,
-	CriticalMass:      true,
-	DemoralizingRoar:  true,
+	WeakenedBlows:         true,
+	PhysicalVulnerability: true,
+	WeakenedArmor:         true,
+	MortalWounds:          true,
+	FireBreath:            true,
+	LightningBreath:       true,
+	MasterPoisoner:        true,
+	CurseOfElements:       true,
+	NecroticStrike:        true,
+	LavaBreath:            true,
+	SporeCloud:            true,
+	Slow:                  true,
+	MindNumbingPoison:     true,
+	CurseOfEnfeeblement:   true,
 }
 
 func NewDefaultTarget() *proto.Target {

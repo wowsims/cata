@@ -636,7 +636,7 @@ func (spell *Spell) ExpectedTickDamageFromCurrentSnapshot(sim *Simulation, targe
 }
 
 func (spell *Spell) CritDamageMultiplier() float64 {
-	return (spell.CritMultiplier-1)*(spell.CritMultiplierAdditive+1) + 1
+	return ((spell.CritMultiplier*spell.Unit.PseudoStats.CritDamageMultiplier)-1)*(spell.CritMultiplierAdditive+1) + 1
 }
 
 // Time until either the cast is finished or GCD is ready again, whichever is longer

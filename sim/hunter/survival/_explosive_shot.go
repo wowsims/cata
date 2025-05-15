@@ -33,7 +33,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				rap := dot.Spell.RangedAttackPower(target)
+				rap := dot.Spell.RangedAttackPower()
 				baseDmg := sim.Roll(minFlatDamage, maxFlatDamage) + (0.273 * rap)
 				dot.Snapshot(target, baseDmg)
 			},
@@ -41,7 +41,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
 			},
 			// OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			// 	rap := dot.Spell.RangedAttackPower(target)
+			// 	rap := dot.Spell.RangedAttackPower()
 			// 	baseDmg := sim.Roll(minFlatDamage, maxFlatDamage) + (0.273 * rap)
 			// 	dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDmg, dot.OutcomeTickPhysicalCrit)
 			// },
@@ -80,7 +80,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				rap := dot.Spell.RangedAttackPower(target)
+				rap := dot.Spell.RangedAttackPower()
 				baseDmg := sim.Roll(minFlatDamage, maxFlatDamage) + (0.273 * rap)
 				dot.Snapshot(target, baseDmg)
 			},

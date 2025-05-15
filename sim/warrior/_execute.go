@@ -14,7 +14,7 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 		ActionID:       core.ActionID{SpellID: 5308},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskExecute | SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

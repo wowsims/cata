@@ -236,6 +236,20 @@ export class Gear extends BaseGear {
 		};
 	}
 
+	withChallengeMode(enabled: boolean): Gear {
+		let curGear: Gear = this;
+
+		for (const slot of this.getItemSlots()) {
+			const item = this.getEquippedItem(slot);
+
+			if (item) {
+				curGear = curGear.withEquippedItem(slot, item.withChallengeMode(enabled), true);
+			}
+		}
+
+		return curGear;
+	}
+
 	// Returns true if this gear set has a meta gem AND the other gems meet the meta's conditions.
 	hasActiveMetaGem(isBlacksmithing: boolean): boolean {
 		const metaGem = this.getMetaGem();
@@ -325,7 +339,11 @@ export class Gear extends BaseGear {
 			const item = this.getEquippedItem(slot);
 
 			if (item && !ignoreSlots?.get(slot)) {
-				curGear = curGear.withEquippedItem(slot, item.withItem(item.item).withRandomSuffix(item._randomSuffix), canDualWield2H);
+				curGear = curGear.withEquippedItem(
+					slot,
+					item.withItem(item.item).withUpgrade(item._upgrade).withRandomSuffix(item._randomSuffix),
+					canDualWield2H,
+				);
 			}
 		}
 

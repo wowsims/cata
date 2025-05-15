@@ -46,7 +46,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 		ActionID:       StormstrikeActionID.WithTag(actionTag),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       procMask,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskStormstrikeDamage,
 
 		ThreatMultiplier: 1,

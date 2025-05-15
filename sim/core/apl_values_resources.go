@@ -462,3 +462,28 @@ func (value *APLValueMaxRunicPower) GetInt(sim *Simulation) int32 {
 func (value *APLValueMaxRunicPower) String() string {
 	return fmt.Sprintf("Max Runic Power(%d)", value.maxRunicPower)
 }
+
+type APLValueCurrentGenericResource struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueCurrentGenericResource(_ *proto.APLValueCurrentGenericResource, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if unit.secondaryResourceBar == nil {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not have secondary resource", unit.Label)
+		return nil
+	}
+	return &APLValueCurrentGenericResource{
+		unit: unit,
+	}
+}
+func (value *APLValueCurrentGenericResource) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueCurrentGenericResource) GetInt(sim *Simulation) int32 {
+	return value.unit.secondaryResourceBar.Value()
+}
+func (value *APLValueCurrentGenericResource) String() string {
+	return "Current {GENERIC_RESOURCE}"
+}

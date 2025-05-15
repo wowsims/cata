@@ -6,13 +6,11 @@ import (
 
 func (paladin *Paladin) registerCrusaderStrike() {
 	actionId := core.ActionID{SpellID: 35395}
-	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
-
 	paladin.CrusaderStrike = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskCrusaderStrike,
 
 		ManaCost: core.ManaCostOptions{
@@ -41,7 +39,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 			if result.Landed() {
 				holyPowerGain := core.TernaryInt32(paladin.ZealotryAura.IsActive(), 3, 1)
-				paladin.GainHolyPower(sim, holyPowerGain, hpMetrics)
+				paladin.HolyPower.Gain(holyPowerGain, actionId, sim)
 			}
 
 			spell.DealOutcome(sim, result)

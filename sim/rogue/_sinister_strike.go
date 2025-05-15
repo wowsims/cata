@@ -15,7 +15,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		ActionID:       core.ActionID{SpellID: 1752},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 		ClassSpellMask: RogueSpellSinisterStrike,
 
 		EnergyCost: core.EnergyCostOptions{

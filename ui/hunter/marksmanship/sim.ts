@@ -86,32 +86,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Default spec-specific settings.
 		specOptions: Presets.MMDefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			vampiricTouch: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			sunderArmor: true,
-			faerieFire: true,
-			curseOfElements: true,
-			savageCombat: true,
-			bloodFrenzy: true,
+			// sunderArmor: true,
+			// faerieFire: true,
+			// curseOfElements: true,
+			// savageCombat: true,
+			// bloodFrenzy: true,
 		}),
 	},
 
@@ -133,7 +116,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	encounterPicker: {

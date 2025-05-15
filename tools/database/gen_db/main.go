@@ -60,8 +60,6 @@ func main() {
 		log.Fatalf("failed to run overrides: %v", err)
 	}
 
-	database.GenerateProtos()
-
 	_, err = database.LoadAndWriteRawRandomSuffixes(helper, inputsDir)
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
@@ -144,6 +142,9 @@ func main() {
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
+
+	database.GenerateProtos(instance)
+
 	for _, item := range instance.Items {
 		parsed := item.ToUIItem()
 		if parsed.Icon == "" {
