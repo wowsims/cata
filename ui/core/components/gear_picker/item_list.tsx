@@ -415,7 +415,7 @@ export default class ItemList<T extends ItemListType> {
 			const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
 			const diff = this.computeEP(first) - this.computeEP(second);
 			// if EP is same, sort by ilvl
-			if (Math.abs(diff) < 0.01) return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
+			if (Math.abs(diff) < 0.01) return (first as unknown as Item).scalingOptions[ItemLevelState.Base].ilvl - (second as unknown as Item).scalingOptions[ItemLevelState.Base].ilvl;
 			return diff;
 		};
 		switch (this.sortBy) {
@@ -423,7 +423,7 @@ export default class ItemList<T extends ItemListType> {
 				sortFn = (itemA: T, itemB: T) => {
 					const first = this.sortDirection === SortDirection.DESC ? itemB : itemA;
 					const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
-					return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
+					return (first as unknown as Item).scalingOptions[ItemLevelState.Base].ilvl - (second as unknown as Item).scalingOptions[ItemLevelState.Base].ilvl;
 				};
 				break;
 		}
