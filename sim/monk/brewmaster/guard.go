@@ -40,7 +40,7 @@ func (bm *BrewmasterMonk) registerGuard() {
 				1 +
 				core.TernaryFloat64(hasGlyph, 0.1, 0) +
 				core.TernaryFloat64(bm.PowerGuardAura.IsActive(), 0.15, 0) +
-				core.TernaryFloat64(bm.T14Brewmaster4P.IsActive(), 0.2, 0)
+				core.TernaryFloat64(bm.T14Brewmaster4P != nil && bm.T14Brewmaster4P.IsActive(), 0.2, 0)
 		},
 	)
 
