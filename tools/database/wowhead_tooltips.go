@@ -547,15 +547,16 @@ func (item WowheadItemResponse) GetSocketBonus() stats.Stats {
 }
 
 var gemSocketColorPatterns = map[proto.GemColor]*regexp.Regexp{
-	proto.GemColor_GemColorMeta:      regexp.MustCompile(`Only fits in a meta gem slot\.`),
-	proto.GemColor_GemColorBlue:      regexp.MustCompile(`Matches a Blue ([Ss])ocket\.`),
-	proto.GemColor_GemColorRed:       regexp.MustCompile(`Matches a Red [Ss]ocket\.`),
-	proto.GemColor_GemColorYellow:    regexp.MustCompile(`Matches a Yellow [Ss]ocket\.`),
-	proto.GemColor_GemColorOrange:    regexp.MustCompile(`Matches a ((Yellow)|(Red)) or ((Yellow)|(Red)) [Ss]ocket\.`),
-	proto.GemColor_GemColorPurple:    regexp.MustCompile(`Matches a ((Blue)|(Red)) or ((Blue)|(Red)) [Ss]ocket\.`),
-	proto.GemColor_GemColorGreen:     regexp.MustCompile(`Matches a ((Yellow)|(Blue)) or ((Yellow)|(Blue)) [Ss]ocket\.`),
-	proto.GemColor_GemColorPrismatic: regexp.MustCompile(`(Matches any [Ss]ocket)|(Matches a Red, Yellow or Blue [Ss]ocket)`),
-	proto.GemColor_GemColorCogwheel:  regexp.MustCompile(`Only fits in a Cogwheel socket.`),
+	proto.GemColor_GemColorMeta:       regexp.MustCompile(`Only fits in a meta gem slot\.`),
+	proto.GemColor_GemColorBlue:       regexp.MustCompile(`Matches a Blue ([Ss])ocket\.`),
+	proto.GemColor_GemColorRed:        regexp.MustCompile(`Matches a Red [Ss]ocket\.`),
+	proto.GemColor_GemColorYellow:     regexp.MustCompile(`Matches a Yellow [Ss]ocket\.`),
+	proto.GemColor_GemColorOrange:     regexp.MustCompile(`Matches a ((Yellow)|(Red)) or ((Yellow)|(Red)) [Ss]ocket\.`),
+	proto.GemColor_GemColorPurple:     regexp.MustCompile(`Matches a ((Blue)|(Red)) or ((Blue)|(Red)) [Ss]ocket\.`),
+	proto.GemColor_GemColorGreen:      regexp.MustCompile(`Matches a ((Yellow)|(Blue)) or ((Yellow)|(Blue)) [Ss]ocket\.`),
+	proto.GemColor_GemColorPrismatic:  regexp.MustCompile(`(Matches any [Ss]ocket)|(Matches a Red, Yellow or Blue [Ss]ocket)`),
+	proto.GemColor_GemColorCogwheel:   regexp.MustCompile(`Only fits in a Cogwheel socket.`),
+	proto.GemColor_GemColorShaTouched: regexp.MustCompile(`Crystal of Fear`),
 }
 
 func (item WowheadItemResponse) GetSocketColor() proto.GemColor {
