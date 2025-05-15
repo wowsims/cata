@@ -193,21 +193,30 @@ func (sefClone *StormEarthAndFirePet) Initialize() {
 
 func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarthAndFirePet {
 	sefClone := &StormEarthAndFirePet{
-		Pet: core.NewPet(name, &ww.Character, stats.Stats{}, func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
-				stats.AttackPower: ownerStats[stats.AttackPower] * 0,
-				stats.HasteRating: ownerStats[stats.HasteRating],
+		Pet: core.NewPet(core.PetConfig{
+			Name:      name,
+			Owner:     &ww.Character,
+			BaseStats: stats.Stats{},
+			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
+				return stats.Stats{
+					stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
+					stats.AttackPower: ownerStats[stats.AttackPower] * 0,
+					stats.HasteRating: ownerStats[stats.HasteRating],
 
-				stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
-				stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
+					stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+					stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
 
-				stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent],
+					stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent],
 
-				stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-				stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
-			}
-		}, false, false),
+					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+				}
+			},
+			EnabledOnStart:                  false,
+			IsGuardian:                      false,
+			HasDynamicMeleeSpeedInheritance: true,
+			HasDynamicCastSpeedInheritance:  true,
+		}),
 		owner: ww,
 	}
 
@@ -276,11 +285,6 @@ func (sefClone *StormEarthAndFirePet) enable(sim *core.Simulation) {
 
 	sefClone.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ monk.Stance) {
 		sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
-	})
-
-	sefClone.EnableDynamicMeleeSpeed(func(amount float64) {
-		sefClone.MultiplyCastSpeed(amount)
-		sefClone.MultiplyMeleeSpeed(sim, amount)
 	})
 }
 

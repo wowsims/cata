@@ -25,7 +25,15 @@ var baseStats = stats.Stats{
 
 func (monk *Monk) NewXuen() *Xuen {
 	xuen := &Xuen{
-		Pet:   core.NewPet("Xuen, The White Tiger", &monk.Character, baseStats, monk.xuenStatInheritance(), false, false),
+		Pet: core.NewPet(core.PetConfig{
+			Name:                            "Xuen, The White Tiger",
+			Owner:                           &monk.Character,
+			BaseStats:                       baseStats,
+			StatInheritance:                 monk.xuenStatInheritance(),
+			EnabledOnStart:                  false,
+			IsGuardian:                      false,
+			HasDynamicMeleeSpeedInheritance: true,
+		}),
 		owner: monk,
 	}
 
@@ -119,11 +127,6 @@ func (xuen *Xuen) enable(sim *core.Simulation) {
 
 	xuen.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
 		xuen.PseudoStats.DamageDealtMultiplier = xuen.owner.PseudoStats.DamageDealtMultiplier
-	})
-
-	xuen.EnableDynamicMeleeSpeed(func(amount float64) {
-		xuen.MultiplyCastSpeed(amount)
-		xuen.MultiplyMeleeSpeed(sim, amount)
 	})
 }
 
