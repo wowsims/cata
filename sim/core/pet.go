@@ -268,6 +268,9 @@ func (pet *Pet) Disable(sim *Simulation) {
 		if idx := slices.Index(pet.Owner.DynamicMeleeSpeedPets, pet); idx != -1 {
 			pet.Owner.DynamicMeleeSpeedPets = removeBySwappingToBack(pet.Owner.DynamicMeleeSpeedPets, idx)
 		}
+
+		// reset melee speed inheritance here so pets that get enabled later to not keep it
+		pet.dynamicMeleeSpeedInheritance(1 / pet.Owner.PseudoStats.MeleeSpeedMultiplier)
 		pet.dynamicMeleeSpeedInheritance = nil
 	}
 
