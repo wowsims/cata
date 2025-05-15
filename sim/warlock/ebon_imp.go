@@ -28,7 +28,16 @@ func (warlock *Warlock) NewEbonImp() *EbonImpPet {
 		}
 	}
 
-	imp := &EbonImpPet{Pet: core.NewPet("Ebon Imp", &warlock.Character, baseStats, statInheritance, false, true)}
+	imp := &EbonImpPet{
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Ebon Imp",
+			Owner:           &warlock.Character,
+			BaseStats:       baseStats,
+			StatInheritance: statInheritance,
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
+	}
 	imp.EnableAutoAttacks(imp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			// determined from logs on target dummies (damage before armor and modifiers)

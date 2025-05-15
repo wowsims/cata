@@ -81,7 +81,14 @@ type FlameOrb struct {
 
 func (mage *Mage) NewFlameOrb() *FlameOrb {
 	flameOrb := &FlameOrb{
-		Pet:       core.NewPet("Flame Orb", &mage.Character, flameOrbBaseStats, createFlameOrbInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Flame Orb",
+			Owner:           &mage.Character,
+			BaseStats:       flameOrbBaseStats,
+			StatInheritance: createFlameOrbInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		mageOwner: mage,
 		TickCount: 0,
 	}

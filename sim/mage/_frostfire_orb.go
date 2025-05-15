@@ -56,7 +56,14 @@ type FrostfireOrb struct {
 
 func (mage *Mage) NewFrostfireOrb() *FrostfireOrb {
 	frostfireOrb := &FrostfireOrb{
-		Pet:       core.NewPet("Frostfire Orb", &mage.Character, frostfireOrbBaseStats, createFrostfireOrbInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Frostfire Orb",
+			Owner:           &mage.Character,
+			BaseStats:       frostfireOrbBaseStats,
+			StatInheritance: createFrostfireOrbInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		mageOwner: mage,
 		TickCount: 0,
 	}
