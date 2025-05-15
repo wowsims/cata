@@ -279,6 +279,9 @@ func (sefClone *StormEarthAndFirePet) ExecuteCustomRotation(_ *core.Simulation) 
 }
 
 func (sefClone *StormEarthAndFirePet) enable(sim *core.Simulation) {
+	sefClone.MultiplyMeleeSpeed(sim, sefClone.owner.PseudoStats.MeleeSpeedMultiplier)
+	sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
+
 	if sefClone.AutoAttacks.IsDualWielding {
 		sefClone.AutoAttacks.DesyncOffHand(sim, sim.CurrentTime)
 	}
