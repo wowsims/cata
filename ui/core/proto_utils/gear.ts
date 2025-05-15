@@ -159,7 +159,6 @@ abstract class BaseGear {
  * This is an immutable type.
  */
 export class Gear extends BaseGear {
-
 	constructor(gear: Partial<InternalGear>) {
 		super(gear);
 	}
@@ -330,7 +329,11 @@ export class Gear extends BaseGear {
 			const item = this.getEquippedItem(slot);
 
 			if (item && !ignoreSlots?.get(slot)) {
-				curGear = curGear.withEquippedItem(slot, item.withItem(item.item).withRandomSuffix(item._randomSuffix), canDualWield2H);
+				curGear = curGear.withEquippedItem(
+					slot,
+					item.withItem(item.item).withUpgrade(item._upgrade).withRandomSuffix(item._randomSuffix),
+					canDualWield2H,
+				);
 			}
 		}
 

@@ -215,13 +215,12 @@ type AttackTable struct {
 	MeleeCritSuppression float64
 	SpellCritSuppression float64
 
-	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
-	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
-	HauntSEDamageTakenMultiplier float64
-	HealingDealtMultiplier       float64
-	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
-	ArmorIgnoreFactor            float64 // Percentage of armor to ignore for this attacker's attacks
-	BonusSpellCritPercent        float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but only for this attacker specifically
+	DamageDealtMultiplier  float64 // attacker buff, applied in applyAttackerModifiers()
+	DamageTakenMultiplier  float64 // defender debuff, applied in applyTargetModifiers()
+	HealingDealtMultiplier float64
+	IgnoreArmor            bool    // Ignore defender's armor for specifically this attacker's attacks
+	ArmorIgnoreFactor      float64 // Percentage of armor to ignore for this attacker's attacks
+	BonusSpellCritPercent  float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but only for this attacker specifically
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
@@ -237,10 +236,9 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 		Attacker: attacker,
 		Defender: defender,
 
-		DamageDealtMultiplier:        1,
-		DamageTakenMultiplier:        1,
-		HauntSEDamageTakenMultiplier: 1,
-		HealingDealtMultiplier:       1,
+		DamageDealtMultiplier:  1,
+		DamageTakenMultiplier:  1,
+		HealingDealtMultiplier: 1,
 	}
 
 	if defender.Type == EnemyUnit {

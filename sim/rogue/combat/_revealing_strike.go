@@ -53,7 +53,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | rogue.SpellFlagBuilder,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | rogue.SpellFlagBuilder,
 		ClassSpellMask: rogue.RogueSpellRevealingStrike,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
