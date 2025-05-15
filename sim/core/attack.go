@@ -103,7 +103,8 @@ func (character *Character) WeaponFromOffHand(critMultiplier float64) Weapon {
 
 // Returns weapon stats using the ranged equipped weapon.
 func (character *Character) WeaponFromRanged(critMultiplier float64) Weapon {
-	if weapon := character.GetRangedWeapon(); weapon != nil {
+	weapon := character.Ranged()
+	if weapon != nil {
 		return newWeaponFromItem(weapon, critMultiplier, character.PseudoStats.BonusRangedDps)
 	} else {
 		return Weapon{}

@@ -246,7 +246,7 @@ type ItemSpec struct {
 	ChallengeMode bool
 }
 
-type Equipment [proto.ItemSlot_ItemSlotOffHand + 1]Item
+type Equipment [NumItemSlots]Item
 
 func (equipment *Equipment) MainHand() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotMainHand]
@@ -259,7 +259,7 @@ func (equipment *Equipment) OffHand() *Item {
 func (equipment *Equipment) Ranged() *Item {
 	mh := equipment.MainHand()
 	if mh.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeUnknown {
-		return &Item{}
+		return nil
 	}
 
 	return mh
@@ -378,7 +378,7 @@ func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 }
 
 // Structs used for looking up items/gems/enchants
-type EquipmentSpec [proto.ItemSlot_ItemSlotOffHand + 1]ItemSpec
+type EquipmentSpec [NumItemSlots]ItemSpec
 
 func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec

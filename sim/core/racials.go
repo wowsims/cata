@@ -92,7 +92,8 @@ func applyRaceEffects(agent Agent) {
 		character.PseudoStats.ReducedFrostHitTakenChance += 0.02
 
 		// Gun specialization (+1% ranged crit when using a gun).
-		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun {
+		ranged := character.Ranged()
+		if ranged != nil && ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun {
 			character.AddBonusRangedCritPercent(1)
 		}
 
@@ -231,7 +232,8 @@ func applyRaceEffects(agent Agent) {
 		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)
 	case proto.Race_RaceTroll:
 		// Bow specialization (+1% ranged crit when using a bow).
-		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow {
+		ranged := character.Ranged()
+		if ranged != nil && ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow {
 			character.AddBonusRangedCritPercent(1)
 		}
 

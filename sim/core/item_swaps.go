@@ -377,7 +377,7 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull b
 
 		// As of MoP Ranged Weapons are worn in the Main Hand
 		// If we can get it, we equipeed a valid ranged weapon
-		if character.GetRangedWeapon() != nil {
+		if character.Ranged() != nil {
 			if character.AutoAttacks.AutoSwingRanged {
 				character.AutoAttacks.SetRanged(character.WeaponFromRanged(swap.rangedCritMultiplier))
 			}
