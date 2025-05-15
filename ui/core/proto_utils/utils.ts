@@ -1934,7 +1934,7 @@ export function getEligibleEnchantSlots(enchant: Enchant): Array<ItemSlot> {
 
 			// For compatability map scopes to main hand
 			if (type == ItemType.ItemTypeRanged) {
-				return [ItemSlot.ItemSlotRanged];
+				return [ItemSlot.ItemSlotMainHand];
 			}
 
 			// Should never reach here
@@ -1961,7 +1961,7 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 	)
 		return false;
 
-	if (sharedSlots.includes(ItemSlot.ItemSlotRanged)) {
+	if (enchant.type == ItemType.ItemTypeRanged && item.rangedWeaponType > 0) {
 		if (
 			![RangedWeaponType.RangedWeaponTypeBow, RangedWeaponType.RangedWeaponTypeCrossbow, RangedWeaponType.RangedWeaponTypeGun].includes(
 				item.rangedWeaponType,

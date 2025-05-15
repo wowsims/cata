@@ -386,7 +386,6 @@ enum ItemSlot {
 	ItemSlotTrinket2 = 13;
 	ItemSlotMainHand = 14; // can be 1h or 2h
 	ItemSlotOffHand = 15;
-	ItemSlotRanged = 16;
 }
 
 enum ItemQuality {
