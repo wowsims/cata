@@ -197,14 +197,12 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	}
 
 	if pet.hasDynamicMeleeSpeedInheritance {
-		pet.MultiplyMeleeSpeed(sim, pet.Owner.PseudoStats.MeleeSpeedMultiplier)
 		pet.enableDynamicMeleeSpeed(func(amount float64) {
 			pet.MultiplyMeleeSpeed(sim, amount)
 		})
 	}
 
 	if pet.hasDynamicCastSpeedInheritance {
-		pet.MultiplyCastSpeed(pet.Owner.PseudoStats.CastSpeedMultiplier)
 		pet.enableDynamicCastSpeed(func(amount float64) {
 			pet.MultiplyCastSpeed(amount)
 		})
@@ -279,6 +277,7 @@ func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
 func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicMeleeSpeedPets, pet) {
 		pet.Owner.DynamicMeleeSpeedPets = append(pet.Owner.DynamicMeleeSpeedPets, pet)
+		inheritance(pet.Owner.PseudoStats.MeleeSpeedMultiplier)
 	}
 	pet.dynamicMeleeSpeedInheritance = inheritance
 }
@@ -294,6 +293,7 @@ func (pet *Pet) EnableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
 func (pet *Pet) enableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicCastSpeedPets, pet) {
 		pet.Owner.DynamicCastSpeedPets = append(pet.Owner.DynamicCastSpeedPets, pet)
+		inheritance(pet.Owner.PseudoStats.CastSpeedMultiplier)
 	}
 	pet.dynamicCastSpeedInheritance = inheritance
 }
