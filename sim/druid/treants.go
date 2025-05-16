@@ -48,7 +48,14 @@ var treantBaseStats = stats.Stats{
 
 func (druid *Druid) NewTreant() *Treant {
 	treant := &Treant{
-		Pet:        core.NewPet("Treant", &druid.Character, treantBaseStats, druid.makeStatInheritance(), false, false),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Treant",
+			Owner:           &druid.Character,
+			BaseStats:       treantBaseStats,
+			StatInheritance: druid.makeStatInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      false,
+		}),
 		druidOwner: druid,
 	}
 

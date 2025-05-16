@@ -54,7 +54,14 @@ type WaterElemental struct {
 
 func (Mage *FrostMage) NewWaterElemental(disobeyChance float64) *WaterElemental {
 	waterElemental := &WaterElemental{
-		Pet:           core.NewPet("Water Elemental", &Mage.Character, waterElementalBaseStats, waterElementalStatInheritance, true, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Water Elemental",
+			Owner:           &Mage.Character,
+			BaseStats:       waterElementalBaseStats,
+			StatInheritance: waterElementalStatInheritance,
+			EnabledOnStart:  true,
+			IsGuardian:      true,
+		}),
 		mageOwner:     Mage,
 		disobeyChance: disobeyChance,
 	}

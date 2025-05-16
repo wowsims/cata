@@ -22,6 +22,7 @@ socketToMatchingColors.set(GemColor.GemColorPrismatic, [
 	GemColor.GemColorPrismatic,
 ]);
 socketToMatchingColors.set(GemColor.GemColorCogwheel, [GemColor.GemColorCogwheel]);
+socketToMatchingColors.set(GemColor.GemColorShaTouched, [GemColor.GemColorShaTouched]);
 
 export function gemColorMatchesSocket(gemColor: GemColor, socketColor: GemColor) {
 	return gemColor == socketColor || (socketToMatchingColors.has(socketColor) && socketToMatchingColors.get(socketColor)!.includes(gemColor));
@@ -39,8 +40,10 @@ export function gemEligibleForSocket(gem: Gem, socketColor: GemColor) {
 			return gem.color == GemColor.GemColorMeta;
 		case GemColor.GemColorCogwheel:
 			return gem.color == GemColor.GemColorCogwheel;
+		case GemColor.GemColorShaTouched:
+			return gem.color == GemColor.GemColorShaTouched;
 		default:
-			return gem.color != GemColor.GemColorMeta && gem.color != GemColor.GemColorCogwheel;
+			return gem.color != GemColor.GemColorMeta && gem.color != GemColor.GemColorCogwheel && gem.color != GemColor.GemColorShaTouched;
 	}
 }
 
@@ -320,6 +323,7 @@ const emptyGemSocketIcons: Partial<Record<GemColor, string>> = {
 	[GemColor.GemColorYellow]: 'https://wow.zamimg.com/images/icons/socket-yellow.gif',
 	[GemColor.GemColorPrismatic]: 'https://wow.zamimg.com/images/icons/socket-prismatic.gif',
 	[GemColor.GemColorCogwheel]: 'https://wow.zamimg.com/images/icons/socket-cogwheel.gif',
+	[GemColor.GemColorShaTouched]: 'https://wow.zamimg.com/images/icons/socket-hydraulic.gif',
 };
 export function getEmptyGemSocketIconUrl(color: GemColor): string {
 	if (emptyGemSocketIcons[color]) return emptyGemSocketIcons[color] as string;

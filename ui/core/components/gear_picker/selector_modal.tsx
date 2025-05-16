@@ -151,7 +151,7 @@ export default class SelectorModal extends BaseModal {
 						item: item,
 						id: item.id,
 						actionId: equippedItem.asActionId(),
-						ilvl: equippedItem.ilvl,
+						ilvl: item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl,
 						name: item.name,
 						quality: item.quality,
 						heroic: item.heroic,

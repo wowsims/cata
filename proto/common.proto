@@ -410,6 +410,7 @@ enum GemColor {
 	GemColorPurple = 7;
 	GemColorPrismatic = 8;
 	GemColorCogwheel = 9;
+	GemColorShaTouched = 10;
 }
 
 enum SpellSchool {

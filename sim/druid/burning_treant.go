@@ -25,7 +25,14 @@ func (druid *Druid) NewBurningTreant() *BurningTreant {
 	}
 
 	burningTreant := &BurningTreant{
-		Pet:   core.NewPet("Burning Treant", &druid.Character, baseStats, statInheritance, false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Burning Treant",
+			Owner:           &druid.Character,
+			BaseStats:       baseStats,
+			StatInheritance: statInheritance,
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		owner: druid,
 	}
 

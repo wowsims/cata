@@ -112,14 +112,21 @@ type GurthalakAgent interface {
 
 func NewTentacleOfTheOldOnesPet(character *core.Character) *TentacleOfTheOldOnesPet {
 	pet := &TentacleOfTheOldOnesPet{
-		Pet: core.NewPet("Tentacle of the Old Ones", character, stats.Stats{
-			stats.Stamina: 100,
-		}, func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
-				stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-			}
-		}, false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:  "Tentacle of the Old Ones",
+			Owner: character,
+			BaseStats: stats.Stats{
+				stats.Stamina: 100,
+			},
+			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
+				return stats.Stats{
+					stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
+					stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+				}
+			},
+			EnabledOnStart: false,
+			IsGuardian:     true,
+		}),
 	}
 
 	pet.Pet.OnPetEnable = pet.enable

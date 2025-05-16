@@ -62,7 +62,14 @@ func (mage *Mage) NewMirrorImage() *MirrorImage {
 	hasGlyph := mage.HasMinorGlyph(proto.MageMinorGlyph_GlyphOfMirrorImage)
 
 	mirrorImage := &MirrorImage{
-		Pet:       core.NewPet("Mirror Image", &mage.Character, mirrorImageBaseStats, createMirrorImageInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Mirror Image",
+			Owner:           &mage.Character,
+			BaseStats:       mirrorImageBaseStats,
+			StatInheritance: createMirrorImageInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		mageOwner: mage,
 		hasGlyph:  hasGlyph,
 		Spec:      mage.Spec,
