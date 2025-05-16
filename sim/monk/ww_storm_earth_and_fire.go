@@ -1,7 +1,6 @@
 package monk
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -20,7 +19,7 @@ func (monk *Monk) registerStormEarthAndFire() {
 		Duration:  core.NeverExpires,
 		MaxStacks: 2,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			monk.SefController.CastCopySpell(sim, spell)
+			monk.SefController.castCopySpell(sim, spell)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			// We only care if stacks are increasing
@@ -30,13 +29,14 @@ func (monk *Monk) registerStormEarthAndFire() {
 				monk.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
 				monk.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
 				for _, pet := range monk.SefController.pets {
-					pet.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
+					pet.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
+					pet.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
 				}
 			} else {
 				monk.SefController.Reset(sim)
 				monk.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
 				for _, pet := range monk.SefController.pets {
-					pet.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
+					pet.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
 				}
 				aura.Deactivate(sim)
 			}
@@ -69,10 +69,11 @@ func (monk *Monk) registerStormEarthAndFire() {
 }
 
 type StormEarthAndFireController struct {
-	owner      *Monk
-	pets       []*StormEarthAndFirePet
-	spells     map[core.ActionID]*core.Spell
-	sefTargets map[int32]*StormEarthAndFirePet
+	owner        *Monk
+	pets         []*StormEarthAndFirePet
+	spells       map[core.ActionID]*core.Spell
+	sefTargets   map[int32]*StormEarthAndFirePet
+	activeClones map[int32]*StormEarthAndFirePet
 }
 
 const StormEarthAndFireAllowedSpells = MonkSpellChiWave |
@@ -80,7 +81,7 @@ const StormEarthAndFireAllowedSpells = MonkSpellChiWave |
 
 // Modifies the spell that should be copied with
 // Damage Multipliers / Tags etc.
-func ModifyCopySpell(pet *StormEarthAndFirePet, sourceSpell *core.Spell, targetSpell *core.Spell) {
+func (pet *StormEarthAndFirePet) modifyCopySpell(sourceSpell *core.Spell, targetSpell *core.Spell) {
 	targetSpell.DamageMultiplier = sourceSpell.DamageMultiplier
 	targetSpell.DamageMultiplierAdditive = sourceSpell.DamageMultiplierAdditive
 	targetSpell.BonusCritPercent = sourceSpell.BonusCritPercent
@@ -98,13 +99,13 @@ func ModifyCopySpell(pet *StormEarthAndFirePet, sourceSpell *core.Spell, targetS
 	}
 }
 
-func (controller *StormEarthAndFireController) CastCopySpell(sim *core.Simulation, spell *core.Spell) {
-	for _, pet := range controller.GetActiveClones() {
+func (controller *StormEarthAndFireController) castCopySpell(sim *core.Simulation, spell *core.Spell) {
+	for _, pet := range controller.activeClones {
 		if copySpell := pet.GetSpell(spell.ActionID.WithTag(SEFSpellID)); copySpell != nil {
 			if pet.CurrentTarget == pet.owner.CurrentTarget {
 				return
 			}
-			ModifyCopySpell(pet, spell, copySpell)
+			pet.modifyCopySpell(spell, copySpell)
 			copySpell.Cast(sim, pet.CurrentTarget)
 		} else {
 			break
@@ -113,69 +114,73 @@ func (controller *StormEarthAndFireController) CastCopySpell(sim *core.Simulatio
 }
 
 func (controller *StormEarthAndFireController) PickClone(sim *core.Simulation, target *core.Unit) {
-	clone := controller.GetCloneFromTarget(sim, target)
+	clone := controller.getCloneFromTarget(target)
 	// If the target already has an active clone, disable it
 	if clone != nil {
-		controller.Deactivate(sim, clone, target)
+		controller.deactivateClone(sim, clone, target)
+		return
+	}
+
+	if controller.getActiveCloneCount() == 2 {
+		controller.Reset(sim)
 		return
 	}
 
 	// Pick a random clone to spawn from the clones that are not already enabled
-	if controller.GetActiveCloneCount() == 3 {
-		controller.Deactivate(sim, clone, target)
-		return
-	}
-
-	validClones := controller.GetInactiveClones()
-	cloneIndex := int32(math.Round(sim.Roll(0, float64(len(validClones)-1))))
-	controller.EnableClone(sim, validClones[cloneIndex], target)
+	validClones := controller.getInactiveClones()
+	cloneIndex := int32(sim.Roll(0, float64(len(validClones))))
+	controller.enableClone(sim, validClones[cloneIndex], target)
 }
 
-func (controller *StormEarthAndFireController) GetCloneFromTarget(sim *core.Simulation, target *core.Unit) *StormEarthAndFirePet {
+func (controller *StormEarthAndFireController) getCloneFromTarget(target *core.Unit) *StormEarthAndFirePet {
 	targetUnixIndex := target.UnitIndex
 	return controller.sefTargets[targetUnixIndex]
 }
 
-func (controller *StormEarthAndFireController) EnableClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
+func (controller *StormEarthAndFireController) enableClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
 	clone.CurrentTarget = target
 	clone.EnableWithStartAttackDelay(sim, clone, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
 	controller.sefTargets[target.UnitIndex] = clone
+	controller.activeClones[clone.cloneID] = clone
 }
 
-func (controller *StormEarthAndFireController) Deactivate(sim *core.Simulation, pet *StormEarthAndFirePet, target *core.Unit) {
-	pet.Disable(sim)
+func (controller *StormEarthAndFireController) deactivateClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
+	clone.Disable(sim)
 	controller.sefTargets[target.UnitIndex] = nil
+	controller.activeClones[clone.cloneID] = nil
 }
 
 func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
-	for _, pet := range controller.pets {
+	for _, pet := range controller.activeClones {
 		pet.Disable(sim)
 	}
 	controller.sefTargets = make(map[int32]*StormEarthAndFirePet)
+	controller.activeClones = make(map[int32]*StormEarthAndFirePet)
 }
 
-func (controller *StormEarthAndFireController) GetInactiveClones() []*StormEarthAndFirePet {
-	return core.FilterSlice(controller.pets, func(pet *StormEarthAndFirePet) bool {
-		return !pet.IsEnabled()
-	})
+func (controller *StormEarthAndFireController) getInactiveClones() []*StormEarthAndFirePet {
+	inactiveClones := make([]*StormEarthAndFirePet, 0, 3)
+
+	for _, pet := range controller.pets {
+		if _, exists := controller.activeClones[pet.cloneID]; !exists {
+			inactiveClones = append(inactiveClones, pet)
+		}
+	}
+
+	return inactiveClones
 }
 
-func (controller *StormEarthAndFireController) GetActiveClones() []*StormEarthAndFirePet {
-	return core.FilterSlice(controller.pets, func(pet *StormEarthAndFirePet) bool {
-		return pet.IsEnabled()
-	})
-}
-
-func (controller *StormEarthAndFireController) GetActiveCloneCount() int32 {
-	return int32(len(controller.GetActiveClones()) - 1)
+func (controller *StormEarthAndFireController) getActiveCloneCount() int32 {
+	return int32(len(controller.activeClones) - 1)
 }
 
 func (monk *Monk) registerSEFPets() {
 	monk.SefController = &StormEarthAndFireController{
-		owner:      monk,
-		spells:     make(map[core.ActionID]*core.Spell),
-		pets:       make([]*StormEarthAndFirePet, 0, 3),
-		sefTargets: make(map[int32]*StormEarthAndFirePet),
+		owner:        monk,
+		spells:       make(map[core.ActionID]*core.Spell),
+		pets:         make([]*StormEarthAndFirePet, 0, 3),
+		sefTargets:   make(map[int32]*StormEarthAndFirePet),
+		activeClones: make(map[int32]*StormEarthAndFirePet),
 	}
 
 	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Storm Spirit", 138121, 2.7))
@@ -295,19 +300,12 @@ func (sefClone *StormEarthAndFirePet) Reset(_ *core.Simulation) {
 }
 
 func (sefClone *StormEarthAndFirePet) ExecuteCustomRotation(_ *core.Simulation) {
-	sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
 }
 
 func (sefClone *StormEarthAndFirePet) enable(sim *core.Simulation) {
-	sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
-
 	if sefClone.AutoAttacks.IsDualWielding {
 		sefClone.AutoAttacks.DesyncOffHand(sim, sim.CurrentTime)
 	}
-
-	sefClone.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
-		sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
-	})
 }
 
 func (sefClone *StormEarthAndFirePet) disable(sim *core.Simulation) {
