@@ -46,10 +46,7 @@ func TestRetribution(t *testing.T) {
 				proto.HandType_HandTypeTwoHand,
 			},
 			ArmorType: proto.ArmorType_ArmorTypePlate,
-			RangedWeaponTypes: []proto.RangedWeaponType{
-				proto.RangedWeaponType_RangedWeaponTypeRelic,
-			},
-		},
+			RangedWeaponTypes: []proto.RangedWeaponType{},
 	}))
 }
 

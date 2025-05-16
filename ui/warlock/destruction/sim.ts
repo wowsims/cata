@@ -77,7 +77,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		ItemSlot.ItemSlotHands,
 		ItemSlot.ItemSlotMainHand,
 		ItemSlot.ItemSlotOffHand,
-		ItemSlot.ItemSlotRanged,
 		ItemSlot.ItemSlotTrinket1,
 		ItemSlot.ItemSlotTrinket2,
 	],

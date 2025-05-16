@@ -29,9 +29,7 @@ func init() {
 // 				proto.WeaponType_WeaponTypePolearm,
 // 			},
 // 			ArmorType: proto.ArmorType_ArmorTypeLeather,
-// 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
-// 			},
+// 			RangedWeaponTypes: []proto.RangedWeaponType{},
 // 		},
 // 	}))
 // }

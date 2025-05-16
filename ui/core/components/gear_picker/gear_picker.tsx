@@ -46,8 +46,7 @@ export default class GearPicker extends Component {
 			ItemSlot.ItemSlotChest,
 			ItemSlot.ItemSlotWrist,
 			ItemSlot.ItemSlotMainHand,
-			ItemSlot.ItemSlotOffHand,
-			ItemSlot.ItemSlotRanged,
+			ItemSlot.ItemSlotOffHand
 		].map(slot => new ItemPicker(leftSideRef.value!, this, simUI, player, slot));
 
 		const rightItemPickers = [

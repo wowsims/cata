@@ -317,6 +317,5 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 		[ItemSlot.ItemSlotTrinket2]: 14,
 		[ItemSlot.ItemSlotMainHand]: 16,
 		[ItemSlot.ItemSlotOffHand]: 17,
-		[ItemSlot.ItemSlotRanged]: 18,
 	};
 }
