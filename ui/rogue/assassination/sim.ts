@@ -62,7 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [94.15, 0],
+				postCapEPs: [144, 0],
 			});
 
 			return [meleeHitSoftCapConfig];

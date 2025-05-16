@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/rogue"
 )
 
@@ -12,6 +13,24 @@ func (asnRogue *AssassinationRogue) registerAllPassives() {
 }
 
 func (asnRogue *AssassinationRogue) registerBlindsidePassive() {
+	// Apply Mastery
+	masteryMod := asnRogue.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  rogue.RogueSpellWoundPoison | rogue.RogueSpellDeadlyPoison | rogue.RogueSpellEnvenom | rogue.RogueSpellVenomousWounds,
+		FloatValue: asnRogue.GetMasteryBonusFromRating(asnRogue.GetStat(stats.MasteryRating)),
+	})
+	masteryMod.Activate()
+
+	asnRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		masteryMod.UpdateFloatValue(asnRogue.GetMasteryBonusFromRating(newMastery))
+	})
+
+	// Assassin's Resolve: +20% Multiplicative all-school damage
+	// +20 Energy handled in base rogue
+	if asnRogue.HasDagger(core.MainHand) || asnRogue.HasDagger(core.OffHand) {
+		asnRogue.PseudoStats.DamageDealtMultiplier *= 1.2
+	}
+
 	energyMod := asnRogue.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_PowerCost_Pct,
 		ClassMask: rogue.RogueSpellDispatch,

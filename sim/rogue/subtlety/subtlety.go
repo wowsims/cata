@@ -34,8 +34,8 @@ func RegisterSubtletyRogue() {
 func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.Rogue.Initialize()
 
-	subRogue.MasteryBaseValue = 0.2
-	subRogue.MasteryMultiplier = .025
+	subRogue.MasteryBaseValue = 0.24
+	subRogue.MasteryMultiplier = .03
 
 	subRogue.registerBackstabSpell()
 	subRogue.registerHemorrhageSpell()

@@ -21,20 +21,19 @@ export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Combat',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.85,
+			[Stat.StatAgility]: 2.6,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.2,
-			[Stat.StatHitRating]: 2.5,
-			[Stat.StatHasteRating]: 1.58,
-			[Stat.StatMasteryRating]: 1.41,
-			[Stat.StatExpertiseRating]: 2.1,
+			[Stat.StatCritRating]: 0.75,
+			[Stat.StatHitRating]: 1.82,
+			[Stat.StatHasteRating]: 1.2,
+			[Stat.StatMasteryRating]: 0.95,
+			[Stat.StatExpertiseRating]: 1.42,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 52,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 249,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 620,
 		},
 	),
 );

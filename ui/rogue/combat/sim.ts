@@ -63,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [90, 0],
+				postCapEPs: [210.5, 0],
 			});
 
 			return [meleeHitSoftCapConfig];
@@ -192,8 +192,7 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 						(playerRace == Race.RaceOrc && (mhWepType == WeaponType.WeaponTypeAxe || mhWepType == WeaponType.WeaponTypeFist)) ||
 						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword))
 					) {
-						// TODO (TheBackstabi): Update this for the expertise rating gained
-						return baseStats.addStat(Stat.StatExpertiseRating, 90);
+						return baseStats.addStat(Stat.StatExpertiseRating, 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 					}
 					return baseStats;
 				},
