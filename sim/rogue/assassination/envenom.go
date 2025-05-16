@@ -11,6 +11,10 @@ func (asnRogue *AssassinationRogue) registerEnvenom() {
 	baseDamage := asnRogue.GetBaseDamageFromCoefficient(0.38499999046)
 	apScalingPerComboPoint := 0.112
 
+	// Envenom has a DoT-like clipping window, where it adds up to 1 seconds to the new duration.
+	// This functions exactly like DoT clipping, just for a standard aura
+	clipInterval := time.Second * 1
+
 	asnRogue.EnvenomAura = asnRogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
 		ActionID: core.ActionID{SpellID: 32645},
@@ -59,7 +63,7 @@ func (asnRogue *AssassinationRogue) registerEnvenom() {
 			// - the aura is active even if the attack fails to land
 			// - the aura is applied before the hit effect
 			// See: https://github.com/where-fore/rogue-wotlk/issues/32
-			asnRogue.EnvenomAura.Duration = time.Second * time.Duration(1+comboPoints)
+			asnRogue.EnvenomAura.Duration = time.Second*time.Duration(1+comboPoints) + asnRogue.EnvenomAura.RemainingDuration(sim)%clipInterval
 			if asnRogue.Has2PT15 {
 				asnRogue.EnvenomAura.Duration += time.Second * 1
 			}

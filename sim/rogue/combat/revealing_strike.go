@@ -14,12 +14,17 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 
 	wepDamage := 1.6
 
+	// RvS has a DoT-like clipping window, where it adds up to 3 seconds to the new duration.
+	// This functions exactly like DoT clipping, just for a standard aura
+	clipInterval := time.Second * 3
+	baseDuration := time.Second * 24
+
 	// Enemy Debuff Aura for Finisher Damage
 	rvsAura := comRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Revealing Strike",
 			ActionID: actionID,
-			Duration: 24 * time.Second,
+			Duration: baseDuration,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				core.EnableDamageDoneByCaster(DDBC_RevealingStrike, DDBC_Total, comRogue.AttackTables[aura.Unit.UnitIndex], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
@@ -60,6 +65,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 				GCD:    time.Second,
 				GCDMin: time.Millisecond * 800,
 			},
+			IgnoreHaste: true,
 		},
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   40,
@@ -80,7 +86,14 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
 				comRogue.AddComboPointsOrAnticipation(sim, 1, spell.ComboPointMetrics())
-				rvsAura.Get(target).Activate(sim)
+				aura := rvsAura.Get(target)
+				if aura.IsActive() {
+					aura.Duration = aura.RemainingDuration(sim)%clipInterval + baseDuration
+					aura.Activate(sim)
+				} else {
+					aura.Duration = baseDuration
+					aura.Activate(sim)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
