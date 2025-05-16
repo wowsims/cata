@@ -19,7 +19,7 @@ var baseStats = stats.Stats{
 	stats.Agility:     0,
 	stats.Stamina:     0,
 	stats.Intellect:   0,
-	stats.AttackPower: 1141,
+	stats.AttackPower: 0,
 	stats.Mana:        0,
 }
 
@@ -76,10 +76,16 @@ func (monk *Monk) NewXuen() *Xuen {
 	xuen.PseudoStats.DamageTakenMultiplier *= 0.1
 	xuen.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
 
+	// Observed values for Xuen's auto attack damage
+	// This could be either:
+	// ClassBaseScaling * 1.05853604195
+	// CreatureDPS (201.889276) * 5.73988599855808
+	// or something completely different
+	baseWeaponDamage := 1157.9
 	xuen.EnableAutoAttacks(xuen, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:        monk.CalcScalingSpellDmg(1), // Currently does 1240 in bugged state
-			BaseDamageMax:        monk.CalcScalingSpellDmg(1), // Currently does 1241 in bugged state
+			BaseDamageMin:        baseWeaponDamage,
+			BaseDamageMax:        baseWeaponDamage + 1,
 			SwingSpeed:           1,
 			NormalizedSwingSpeed: 1,
 			CritMultiplier:       monk.DefaultCritMultiplier(),
@@ -102,7 +108,7 @@ func (monk *Monk) xuenStatInheritance() core.PetStatInheritance {
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 			stats.Stamina:             ownerStats[stats.Stamina],
 			stats.Intellect:           ownerStats[stats.Intellect] * 0.3,
-			stats.AttackPower:         ownerStats[stats.AttackPower],
+			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
 			stats.PhysicalHitPercent:  ownerStats[stats.PhysicalHitPercent],
 			stats.HasteRating:         ownerStats[stats.HasteRating],
 		}
@@ -113,6 +119,8 @@ func (xuen *Xuen) Initialize() {
 }
 
 func (xuen *Xuen) ExecuteCustomRotation(sim *core.Simulation) {
+	xuen.PseudoStats.DamageDealtMultiplier = xuen.owner.PseudoStats.DamageDealtMultiplier
+
 	if xuen.CracklingTigerLightning.CanCast(sim, xuen.CurrentTarget) {
 		xuen.CracklingTigerLightning.Cast(sim, xuen.CurrentTarget)
 	}
