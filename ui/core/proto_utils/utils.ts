@@ -1884,10 +1884,6 @@ export function getEligibleItemSlots(item: Item, isFuryWarrior?: boolean): Array
 		}
 	}
 
-	if (item.type == ItemType.ItemTypeRanged) {
-		return [ItemSlot.ItemSlotMainHand];
-	}
-
 	// Should never reach here
 	throw new Error('Could not find item slots for item: ' + Item.toJsonString(item));
 }
@@ -1933,11 +1929,6 @@ export function getEligibleEnchantSlots(enchant: Enchant): Array<ItemSlot> {
 				return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand];
 			}
 
-			// For compatability map scopes to main hand
-			if (type == ItemType.ItemTypeRanged) {
-				return [ItemSlot.ItemSlotMainHand];
-			}
-
 			// Should never reach here
 			throw new Error('Could not find item slots for enchant: ' + Enchant.toJsonString(enchant));
 		})
@@ -1962,13 +1953,17 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 	)
 		return false;
 
-	if (enchant.type == ItemType.ItemTypeRanged && item.rangedWeaponType > 0) {
+	if (enchant.type == ItemType.ItemTypeRanged) {
 		if (
 			![RangedWeaponType.RangedWeaponTypeBow, RangedWeaponType.RangedWeaponTypeCrossbow, RangedWeaponType.RangedWeaponTypeGun].includes(
 				item.rangedWeaponType,
 			)
 		)
 			return false;
+	}
+
+	if (item.rangedWeaponType > 0 && enchant.type != ItemType.ItemTypeRanged) {
+		return false;
 	}
 
 	return true;
