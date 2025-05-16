@@ -718,7 +718,11 @@ func (result *SpellResult) applyEnemyAttackTableBlock(sim *Simulation, spell *Sp
 
 	if sim.RandomFloat("Player Block") < chance {
 		result.Outcome |= OutcomeBlock
-		spell.SpellMetrics[result.Target.UnitIndex].Blocks++
+		if result.DidCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
+		} else {
+			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
+		}
 
 		if result.Target.Blockhandler != nil {
 			result.Target.Blockhandler(sim, spell, result)
