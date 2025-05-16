@@ -714,19 +714,12 @@ every 0.75 sec, within 8 yards. Generates 1 Chi, if it hits at least 3 targets. 
 
 Replaces Spinning Crane Kick.
 */
-func (monk *Monk) registerRushingJadeWind() {
-	if !monk.Talents.RushingJadeWind {
-		return
-	}
+var rushingJadeWindActionID = core.ActionID{SpellID: 116847}
+var rushingJadeWindDebuffActionID = core.ActionID{SpellID: 148187}
 
-	actionID := core.ActionID{SpellID: 116847}
-	debuffActionID := core.ActionID{SpellID: 148187}
-	chiMetrics := monk.NewChiMetrics(actionID)
-
-	numTargets := monk.Env.GetNumTargets()
-
-	rushingJadeWindTickSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       debuffActionID,
+func rushingJadeWindTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       rushingJadeWindDebuffActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
@@ -743,23 +736,74 @@ func (monk *Monk) registerRushingJadeWind() {
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
-	})
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+
+}
+
+func rushingJadeWindSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       rushingJadeWindActionID,
+		Flags:          SpellFlagBuilder | core.SpellFlagAPL,
+		ClassSpellMask: MonkSpellRushingJadeWind,
+
+		EnergyCost: overrides.EnergyCost,
+		ManaCost:   overrides.ManaCost,
+		Cast:       overrides.Cast,
+
+		Dot: core.DotConfig{
+			IsAOE: true,
+			Aura: core.Aura{
+				Label:    "Rushing Jade Wind" + monk.Label,
+				ActionID: rushingJadeWindDebuffActionID,
+				OnInit:   overrides.Dot.Aura.OnInit,
+			},
+			NumberOfTicks:        8,
+			TickLength:           time.Millisecond * 750,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: true,
+
+			OnTick: overrides.Dot.OnTick,
+		},
+
+		ApplyEffects: overrides.ApplyEffects,
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+		config.Flags ^= core.SpellFlagAPL ^ SpellFlagBuilder
+	}
+
+	return config
+}
+
+func (monk *Monk) registerRushingJadeWind() {
+	if !monk.Talents.RushingJadeWind {
+		return
+	}
+
+	chiMetrics := monk.NewChiMetrics(rushingJadeWindActionID)
+
+	numTargets := monk.Env.GetNumTargets()
+
+	rushingJadeWindTickSpell := monk.RegisterSpell(rushingJadeWindTickSpellConfig(monk, false))
 
 	baseCooldown := time.Second * 6
 
 	rushingJadeWindBuff := monk.RegisterAura(core.Aura{
 		Label:    "Rushing Jade Wind" + monk.Label,
-		ActionID: actionID,
+		ActionID: rushingJadeWindActionID,
 		Duration: baseCooldown,
 	})
 
 	isWiseSerpent := monk.StanceMatches(WiseSerpent)
 	var rushingJadeWindSpell *core.Spell
-	rushingJadeWindSpell = monk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
-		Flags:          SpellFlagBuilder | core.SpellFlagAPL,
-		ClassSpellMask: MonkSpellRushingJadeWind,
-
+	rushingJadeWindSpell = monk.RegisterSpell(rushingJadeWindSpellConfig(monk, false, core.SpellConfig{
 		EnergyCost: core.EnergyCostOptions{
 			Cost: core.TernaryInt32(isWiseSerpent, 0, 40),
 		},
@@ -779,20 +823,12 @@ func (monk *Monk) registerRushingJadeWind() {
 		},
 
 		Dot: core.DotConfig{
-			IsAOE: true,
 			Aura: core.Aura{
-				Label:    "Rushing Jade Wind" + monk.Label,
-				ActionID: debuffActionID,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					rushingJadeWindSpell.CD.Duration = monk.ApplyCastSpeed(baseCooldown)
 					rushingJadeWindBuff.Duration = rushingJadeWindSpell.CD.Duration
 				},
 			},
-			NumberOfTicks:        8,
-			TickLength:           time.Millisecond * 750,
-			AffectedByCastSpeed:  true,
-			HasteReducesDuration: true,
-
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				rushingJadeWindTickSpell.Cast(sim, target)
 			},
@@ -812,12 +848,45 @@ func (monk *Monk) registerRushingJadeWind() {
 				monk.AddChi(sim, spell, 1, chiMetrics)
 			}
 		},
-	})
+	}))
 
 	monk.AddOnCastSpeedChanged(func(_ float64, _ float64) {
 		rushingJadeWindSpell.CD.Duration = monk.ApplyCastSpeed(baseCooldown)
 		rushingJadeWindBuff.Duration = rushingJadeWindSpell.CD.Duration
 	})
+}
+
+func (pet *StormEarthAndFirePet) registerSEFRushingJadeWind() {
+	if !pet.owner.Talents.RushingJadeWind {
+		return
+	}
+
+	rushingJadeWindTickSpell := pet.RegisterSpell(rushingJadeWindTickSpellConfig(pet.owner, true))
+
+	var rushingJadeWindSpell *core.Spell
+	rushingJadeWindSpell = pet.RegisterSpell(rushingJadeWindSpellConfig(pet.owner, true, core.SpellConfig{
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+		},
+
+		Dot: core.DotConfig{
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				rushingJadeWindTickSpell.Cast(sim, target)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dot := spell.AOEDot()
+			dot.Apply(sim)
+			dot.TickOnce(sim)
+
+			remainingDuration := dot.RemainingDuration(sim)
+			rushingJadeWindSpell.CD.Duration = remainingDuration
+		},
+	}))
 }
 
 func (monk *Monk) registerInvokeXuenTheWhiteTiger() {

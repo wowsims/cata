@@ -193,6 +193,8 @@ func (monk *Monk) registerSpells() {
 	// Required to be registered on monk so it can interact with SEF
 	monk.registerRisingSunKick()
 	monk.registerFistsOfFury()
+	monk.registerSpinningFireBlossom()
+
 }
 
 func (monk *Monk) Reset(sim *core.Simulation) {

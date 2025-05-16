@@ -75,20 +75,8 @@ type StormEarthAndFireController struct {
 	sefTargets map[int32]*StormEarthAndFirePet
 }
 
-const StormEarthAndFireAllowedSpells = MonkSpellExpelHarm |
-	// MonkSpellBlackoutKick |
-	// MonkSpellJab |
-	// MonkSpellSpinningCraneKick |
-	// MonkSpellTigerPalm |
-	MonkSpellChiWave |
-	MonkSpellZenSphere |
-	MonkSpellChiBurst |
-	MonkSpellChiSphere |
-	MonkSpellRushingJadeWind |
-	MonkSpellChiTorpedo |
-	// MonkSpellFistsOfFury |
-	// MonkSpellRisingSunKick |
-	MonkSpellSpinningFireBlossom
+const StormEarthAndFireAllowedSpells = MonkSpellChiWave |
+	MonkSpellChiBurst
 
 // Modifies the spell that should be copied with
 // Damage Multipliers / Tags etc.
@@ -118,6 +106,8 @@ func (controller *StormEarthAndFireController) CastCopySpell(sim *core.Simulatio
 			}
 			ModifyCopySpell(pet, spell, copySpell)
 			copySpell.Cast(sim, pet.CurrentTarget)
+		} else {
+			break
 		}
 	}
 }
@@ -201,6 +191,9 @@ type StormEarthAndFirePet struct {
 }
 
 func (sefClone *StormEarthAndFirePet) Initialize() {
+	// Talents
+	sefClone.registerSEFRushingJadeWind()
+
 	// Passives - Windwalker
 	sefClone.registerSEFCombatConditioning()
 	sefClone.registerSEFTigerStrikes()
@@ -214,6 +207,7 @@ func (sefClone *StormEarthAndFirePet) Initialize() {
 	// Spells - Windwalker
 	sefClone.registerSEFRisingSunKick()
 	sefClone.registerSEFFistsOfFury()
+	sefClone.registerSpinningFireBlossom()
 }
 
 func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *StormEarthAndFirePet {
@@ -260,7 +254,6 @@ func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *Sto
 	if isDualWielding {
 		ohWeapon := monk.WeaponFromOffHand(monk.DefaultCritMultiplier())
 		ohAvgDPS := ohWeapon.DPS()
-
 		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * core.TernaryFloat64(ohAvgDPS > 0, DualWieldModifier, 1.0)
 		cloneOhWeapon = core.Weapon{
 			// The clone has a tiny variance in auto attack damage

@@ -69,7 +69,6 @@ func (ww *WindwalkerMonk) Reset(sim *core.Simulation) {
 func (ww *WindwalkerMonk) RegisterSpecializationEffects() {
 	ww.registerEnergizingBrew()
 	ww.registerTigereyeBrew()
-	ww.registerSpinningFireBlossom()
 
 	ww.registerPassives()
 }

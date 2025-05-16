@@ -756,11 +756,6 @@ export class ActionId {
 					name += ' (Damage)';
 				}
 				break;
-			case 'Rushing Jade Wind':
-				if (this.spellId === 148187) {
-					name += ' (Hit)';
-				}
-				break;
 			case 'Stagger':
 				if (this.tag === 1) {
 					name += ' (Dot)';
