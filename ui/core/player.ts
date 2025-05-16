@@ -1301,10 +1301,10 @@ export class Player<SpecType extends Spec> {
 		};
 
 		if (filters.minIlvl != 0) {
-			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
+			itemData = filterItems(itemData, item => (item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl) >= filters.minIlvl);
 		}
 		if (filters.maxIlvl != 0) {
-			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+			itemData = filterItems(itemData, item => (item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl) <= filters.maxIlvl);
 		}
 
 		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {

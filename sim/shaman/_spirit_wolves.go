@@ -47,7 +47,14 @@ var spiritWolfBaseStats = stats.Stats{
 
 func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
 	spiritWolf := &SpiritWolf{
-		Pet:         core.NewPet("Spirit Wolf "+strconv.Itoa(index), &shaman.Character, spiritWolfBaseStats, shaman.makeStatInheritance(), false, false),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Spirit Wolf " + strconv.Itoa(index),
+			Owner:           &shaman.Character,
+			BaseStats:       spiritWolfBaseStats,
+			StatInheritance: shaman.makeStatInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      false,
+		}),
 		shamanOwner: shaman,
 	}
 

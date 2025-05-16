@@ -34,7 +34,14 @@ var baseStats = stats.Stats{
 
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	shadowfiend := &Shadowfiend{
-		Pet:    core.NewPet("Shadowfiend", &priest.Character, baseStats, priest.shadowfiendStatInheritance(), false, false),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Shadowfiend",
+			Owner:           &priest.Character,
+			BaseStats:       baseStats,
+			StatInheritance: priest.shadowfiendStatInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      false,
+		}),
 		Priest: priest,
 	}
 
