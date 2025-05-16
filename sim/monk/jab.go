@@ -23,18 +23,39 @@ You Jab the target, dealing ${1.5*$<low>} to ${1.5*$<high>} damage and generatin
 
 	Chi.
 */
-func (monk *Monk) registerJab() {
-	actionID := core.ActionID{SpellID: 100780}
-	chiMetrics := monk.NewChiMetrics(actionID)
+var jabActionID = core.ActionID{SpellID: 100780}
 
-	monk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+func jabSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       jabActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: MonkSpellJab,
 		MaxRange:       core.MaxMeleeRange,
 
+		EnergyCost: overrides.EnergyCost,
+		ManaCost:   overrides.ManaCost,
+		Cast:       overrides.Cast,
+
+		DamageMultiplier: 1.5,
+		ThreatMultiplier: 1,
+		CritMultiplier:   monk.DefaultCritMultiplier(),
+
+		ApplyEffects: overrides.ApplyEffects,
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+		config.Flags ^= core.SpellFlagAPL
+	}
+
+	return config
+}
+func (monk *Monk) registerJab() {
+	chiMetrics := monk.NewChiMetrics(jabActionID)
+
+	monk.RegisterSpell(jabSpellConfig(monk, false, core.SpellConfig{
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   core.TernaryInt32(monk.StanceMatches(WiseSerpent), 0, 40),
 			Refund: 0.8,
@@ -50,13 +71,8 @@ func (monk *Monk) registerJab() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1.5,
-		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultCritMultiplier(),
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -64,5 +80,21 @@ func (monk *Monk) registerJab() {
 				monk.AddChi(sim, spell, chiGain, chiMetrics)
 			}
 		},
-	})
+	}))
+}
+
+func (pet *StormEarthAndFirePet) registerSEFJab() {
+	pet.RegisterSpell(jabSpellConfig(pet.owner, true, core.SpellConfig{
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := pet.owner.CalculateMonkStrikeDamage(sim, spell)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	}))
 }

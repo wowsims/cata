@@ -1,4 +1,4 @@
-package windwalker
+package monk
 
 import (
 	"math"
@@ -6,66 +6,50 @@ import (
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
-	"github.com/wowsims/mop/sim/monk"
 )
 
-func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, target *core.Unit) {
-	targetSpell.DamageMultiplier = sourceSpell.DamageMultiplier
-	targetSpell.DamageMultiplierAdditive = sourceSpell.DamageMultiplierAdditive
-	targetSpell.BonusCritPercent = sourceSpell.BonusCritPercent
-	targetSpell.BonusHitPercent = sourceSpell.BonusHitPercent
-	targetSpell.CritMultiplier = sourceSpell.CritMultiplier
-	targetSpell.ThreatMultiplier = sourceSpell.ThreatMultiplier
+var SEFSpellID = int32(138228)
 
-	if sourceSpell.Dot(target) != nil {
-		sourceDot := sourceSpell.Dot(target)
-		targetDot := targetSpell.Dot(target)
-
-		targetDot.BaseTickCount = sourceDot.BaseTickCount
-		targetDot.BaseTickLength = sourceDot.BaseTickLength
-	}
-}
-
-func (ww *WindwalkerMonk) registerStormEarthAndFire() {
+func (monk *Monk) registerStormEarthAndFire() {
 	var sefTarget *core.Unit
 	damageMultiplier := []float64{1, 0.70, 0.55}
 
-	sefAura := ww.RegisterAura(core.Aura{
+	sefAura := monk.RegisterAura(core.Aura{
 		Label:     "Storm, Earth, and Fire",
-		ActionID:  core.ActionID{SpellID: 137639},
+		ActionID:  core.ActionID{SpellID: SEFSpellID},
 		Duration:  core.NeverExpires,
 		MaxStacks: 2,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			ww.SefController.CastCopySpell(sim, spell)
+			monk.SefController.CastCopySpell(sim, spell)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			// We only care if stacks are increasing
 			// as decreasing would mean disabling SEF
 			if newStacks > oldStacks {
-				ww.SefController.PickClone(sim, sefTarget)
-				ww.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
-				ww.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
-				for _, pet := range ww.SefController.pets {
-					pet.PseudoStats.DamageDealtMultiplier = ww.PseudoStats.DamageDealtMultiplier
+				monk.SefController.PickClone(sim, sefTarget)
+				monk.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
+				monk.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
+				for _, pet := range monk.SefController.pets {
+					pet.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
 				}
 			} else {
-				ww.SefController.Reset(sim)
-				ww.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
-				for _, pet := range ww.SefController.pets {
-					pet.PseudoStats.DamageDealtMultiplier = ww.PseudoStats.DamageDealtMultiplier
+				monk.SefController.Reset(sim)
+				monk.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
+				for _, pet := range monk.SefController.pets {
+					pet.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
 				}
 				aura.Deactivate(sim)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			ww.SefController.Reset(sim)
+			monk.SefController.Reset(sim)
 		},
 	})
 
-	ww.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 137639},
+	monk.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: SEFSpellID},
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: monk.MonkSpellStormEarthAndFire,
+		ClassSpellMask: MonkSpellStormEarthAndFire,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 10,
@@ -85,29 +69,56 @@ func (ww *WindwalkerMonk) registerStormEarthAndFire() {
 }
 
 type StormEarthAndFireController struct {
-	owner      *WindwalkerMonk
+	owner      *Monk
 	pets       []*StormEarthAndFirePet
 	spells     map[core.ActionID]*core.Spell
 	sefTargets map[int32]*StormEarthAndFirePet
 }
 
-func (controller *StormEarthAndFireController) AddCopySpell(actionId core.ActionID, spell *core.Spell) {
-	controller.spells[actionId] = spell
-}
+const StormEarthAndFireAllowedSpells = MonkSpellExpelHarm |
+	// MonkSpellBlackoutKick |
+	// MonkSpellJab |
+	// MonkSpellSpinningCraneKick |
+	// MonkSpellTigerPalm |
+	MonkSpellChiWave |
+	MonkSpellZenSphere |
+	MonkSpellChiBurst |
+	MonkSpellChiSphere |
+	MonkSpellRushingJadeWind |
+	MonkSpellChiTorpedo |
+	// MonkSpellFistsOfFury |
+	// MonkSpellRisingSunKick |
+	MonkSpellSpinningFireBlossom
 
-func (controller *StormEarthAndFireController) GetCopySpell(actionId core.ActionID) *core.Spell {
-	return controller.spells[actionId]
+// Modifies the spell that should be copied with
+// Damage Multipliers / Tags etc.
+func ModifyCopySpell(pet *StormEarthAndFirePet, sourceSpell *core.Spell, targetSpell *core.Spell) {
+	targetSpell.DamageMultiplier = sourceSpell.DamageMultiplier
+	targetSpell.DamageMultiplierAdditive = sourceSpell.DamageMultiplierAdditive
+	targetSpell.BonusCritPercent = sourceSpell.BonusCritPercent
+	targetSpell.BonusHitPercent = sourceSpell.BonusHitPercent
+	targetSpell.CritMultiplier = sourceSpell.CritMultiplier
+	targetSpell.ThreatMultiplier = sourceSpell.ThreatMultiplier
+	targetSpell.BonusCoefficient = sourceSpell.BonusCoefficient
+
+	if sourceSpell.Dot(pet.CurrentTarget) != nil {
+		sourceDot := sourceSpell.Dot(pet.CurrentTarget)
+		targetDot := targetSpell.Dot(pet.CurrentTarget)
+
+		targetDot.BaseTickCount = sourceDot.BaseTickCount
+		targetDot.BaseTickLength = sourceDot.BaseTickLength
+	}
 }
 
 func (controller *StormEarthAndFireController) CastCopySpell(sim *core.Simulation, spell *core.Spell) {
-	copySpell := controller.GetCopySpell(spell.ActionID)
-	if copySpell == nil {
-		return
-	}
-
-	for _, pet := range controller.pets {
-		copySpell.Cast(sim, pet.CurrentTarget)
-		CopySpellMultipliers(spell, copySpell, pet.CurrentTarget)
+	for _, pet := range controller.GetActiveClones() {
+		if copySpell := pet.GetSpell(spell.ActionID.WithTag(SEFSpellID)); copySpell != nil {
+			if pet.CurrentTarget == pet.owner.CurrentTarget {
+				return
+			}
+			ModifyCopySpell(pet, spell, copySpell)
+			copySpell.Cast(sim, pet.CurrentTarget)
+		}
 	}
 }
 
@@ -169,33 +180,47 @@ func (controller *StormEarthAndFireController) GetActiveCloneCount() int32 {
 	return int32(len(controller.GetActiveClones()) - 1)
 }
 
-func (ww *WindwalkerMonk) registerSEFPets() {
-	ww.SefController = &StormEarthAndFireController{
-		owner:      ww,
+func (monk *Monk) registerSEFPets() {
+	monk.SefController = &StormEarthAndFireController{
+		owner:      monk,
 		spells:     make(map[core.ActionID]*core.Spell),
 		pets:       make([]*StormEarthAndFirePet, 0, 3),
 		sefTargets: make(map[int32]*StormEarthAndFirePet),
 	}
 
-	ww.SefController.pets = append(ww.SefController.pets, ww.NewSEFPet("Storm Spirit", 2.7))
-	ww.SefController.pets = append(ww.SefController.pets, ww.NewSEFPet("Earth Spirit", 3.6))
-	ww.SefController.pets = append(ww.SefController.pets, ww.NewSEFPet("Fire Spirit", 2.7))
+	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Storm Spirit", 138121, 2.7))
+	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Earth Spirit", 138122, 3.6))
+	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Fire Spirit", 138123, 2.7))
+
 }
 
 type StormEarthAndFirePet struct {
 	core.Pet
-
-	owner *WindwalkerMonk
+	cloneID int32
+	owner   *Monk
 }
 
 func (sefClone *StormEarthAndFirePet) Initialize() {
+	// Passives - Windwalker
+	sefClone.registerSEFCombatConditioning()
+	sefClone.registerSEFTigerStrikes()
+
+	// Spells - Monk
+	sefClone.registerSEFJab()
+	sefClone.registerSEFTigerPalm()
+	sefClone.registerSEFBlackoutKick()
+	sefClone.registerSEFSpinningCraneKick()
+
+	// Spells - Windwalker
+	sefClone.registerSEFRisingSunKick()
+	sefClone.registerSEFFistsOfFury()
 }
 
-func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarthAndFirePet {
+func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *StormEarthAndFirePet {
 	sefClone := &StormEarthAndFirePet{
 		Pet: core.NewPet(core.PetConfig{
 			Name:      name,
-			Owner:     &ww.Character,
+			Owner:     &monk.Character,
 			BaseStats: stats.Stats{},
 			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				return stats.Stats{
@@ -217,11 +242,12 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 			HasDynamicMeleeSpeedInheritance: true,
 			HasDynamicCastSpeedInheritance:  true,
 		}),
-		owner: ww,
+		cloneID: cloneID,
+		owner:   monk,
 	}
 
 	isDualWielding := swingSpeed == 2.7
-	mhWeapon := ww.WeaponFromMainHand(ww.DefaultCritMultiplier())
+	mhWeapon := monk.WeaponFromMainHand(monk.DefaultCritMultiplier())
 	mhAvgDPS := mhWeapon.DPS()
 
 	// This number is derived from naked Dummy testing and using multiple
@@ -232,16 +258,16 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 
 	var cloneOhWeapon core.Weapon
 	if isDualWielding {
-		ohWeapon := ww.WeaponFromOffHand(ww.DefaultCritMultiplier())
+		ohWeapon := monk.WeaponFromOffHand(monk.DefaultCritMultiplier())
 		ohAvgDPS := ohWeapon.DPS()
 
-		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * core.TernaryFloat64(ohAvgDPS > 0, monk.DualWieldModifier, 1.0)
+		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * core.TernaryFloat64(ohAvgDPS > 0, DualWieldModifier, 1.0)
 		cloneOhWeapon = core.Weapon{
 			// The clone has a tiny variance in auto attack damage
 			BaseDamageMin:  baseCloneDamage - 1 + avgMhDamage,
 			BaseDamageMax:  baseCloneDamage + 1 + avgMhDamage,
 			SwingSpeed:     swingSpeed,
-			CritMultiplier: ww.DefaultCritMultiplier(),
+			CritMultiplier: monk.DefaultCritMultiplier(),
 		}
 	} else {
 		avgMhDamage = mhAvgDPS * swingSpeed
@@ -251,7 +277,7 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 		BaseDamageMin:  baseCloneDamage + avgMhDamage,
 		BaseDamageMax:  baseCloneDamage + avgMhDamage,
 		SwingSpeed:     swingSpeed,
-		CritMultiplier: ww.DefaultCritMultiplier(),
+		CritMultiplier: monk.DefaultCritMultiplier(),
 	}
 
 	sefClone.EnableAutoAttacks(sefClone, core.AutoAttackOptions{
@@ -263,7 +289,7 @@ func (ww *WindwalkerMonk) NewSEFPet(name string, swingSpeed float64) *StormEarth
 	sefClone.OnPetEnable = sefClone.enable
 	sefClone.OnPetDisable = sefClone.disable
 
-	ww.AddPet(sefClone)
+	monk.AddPet(sefClone)
 
 	return sefClone
 }
@@ -276,20 +302,21 @@ func (sefClone *StormEarthAndFirePet) Reset(_ *core.Simulation) {
 }
 
 func (sefClone *StormEarthAndFirePet) ExecuteCustomRotation(_ *core.Simulation) {
+	sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
 }
 
 func (sefClone *StormEarthAndFirePet) enable(sim *core.Simulation) {
-	sefClone.MultiplyMeleeSpeed(sim, sefClone.owner.PseudoStats.MeleeSpeedMultiplier)
 	sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
 
 	if sefClone.AutoAttacks.IsDualWielding {
 		sefClone.AutoAttacks.DesyncOffHand(sim, sim.CurrentTime)
 	}
 
-	sefClone.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ monk.Stance) {
+	sefClone.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
 		sefClone.PseudoStats.DamageDealtMultiplier = sefClone.owner.PseudoStats.DamageDealtMultiplier
 	})
 }
 
 func (sefClone *StormEarthAndFirePet) disable(sim *core.Simulation) {
+
 }

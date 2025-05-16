@@ -11,6 +11,14 @@ const (
 	SpellFlagSpender = core.SpellFlagAgentReserved3
 )
 
+// Damage Done By Caster setup
+// Used by Windwalker Monk and SEF
+const (
+	DDBC_RisingSunKick int = iota
+
+	DDBC_Total
+)
+
 type OnStanceChanged func(sim *core.Simulation, newStance Stance)
 type OnChiSpent func(sim *core.Simulation, chiSpent int32)
 type OnNewBrewStacks func(sim *core.Simulation, stacksToAdd int32)
@@ -44,6 +52,8 @@ type Monk struct {
 	// Brewmaster
 	ElusiveBrewAura   *core.Aura
 	ElusiveBrewStacks int32
+
+	SefController *StormEarthAndFireController
 
 	XuenAura *core.Aura
 	XuenPet  *Xuen
@@ -153,21 +163,36 @@ func (monk *Monk) Initialize() {
 
 	monk.registerStances()
 	monk.applyGlyphs()
+	monk.registerPassives()
 	monk.registerSpells()
+}
+
+func (monk *Monk) registerPassives() {
 	monk.registerWayOfTheMonk()
 	monk.registerSwiftReflexes()
+
+	// Windwalker
+	// Required to be registered on monk so it can interact with SEF
+	monk.registerCombatConditioning()
+	monk.registerTigerStrikes()
 }
 
 func (monk *Monk) registerSpells() {
 	monk.registerHealingSphere()
-	monk.registerBlackoutKick()
 	monk.registerExpelHarm()
+	monk.registerBlackoutKick()
 	monk.registerJab()
 	monk.registerSpinningCraneKick()
 	monk.registerTigerPalm()
-	monk.registerCracklingJadeLightning()
 	monk.registerFortifyingBrew()
 	monk.registerTouchOfDeath()
+	monk.registerCracklingJadeLightning()
+	monk.registerStormEarthAndFire()
+
+	// Windwalker
+	// Required to be registered on monk so it can interact with SEF
+	monk.registerRisingSunKick()
+	monk.registerFistsOfFury()
 }
 
 func (monk *Monk) Reset(sim *core.Simulation) {
@@ -204,6 +229,8 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 
 	monk.PseudoStats.CanParry = true
 	monk.XuenPet = monk.NewXuen()
+
+	monk.registerSEFPets()
 
 	monk.EnableEnergyBar(core.EnergyBarOptions{
 		MaxComboPoints: 4,

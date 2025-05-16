@@ -7,13 +7,6 @@ import (
 	"github.com/wowsims/mop/sim/monk"
 )
 
-// Damage Done By Caster setup
-const (
-	DDBC_RisingSunKick int = iota
-
-	DDBC_Total
-)
-
 func RegisterWindwalkerMonk() {
 	core.RegisterAgentFactory(
 		proto.Player_WindwalkerMonk{},
@@ -41,8 +34,6 @@ func NewWindwalkerMonk(character *core.Character, options *proto.Player) *Windwa
 	ww.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	ww.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 
-	ww.registerSEFPets()
-
 	return ww
 }
 
@@ -53,8 +44,6 @@ type WindwalkerMonk struct {
 
 	outstandingChi           int32
 	tigereyeBrewT164PTracker int32
-
-	SefController *StormEarthAndFireController
 }
 
 func (ww *WindwalkerMonk) GetMonk() *monk.Monk {
@@ -79,12 +68,10 @@ func (ww *WindwalkerMonk) Reset(sim *core.Simulation) {
 
 func (ww *WindwalkerMonk) RegisterSpecializationEffects() {
 	ww.registerEnergizingBrew()
-	ww.registerFistsOfFury()
-	ww.registerPassives()
-	ww.registerRisingSunKick()
 	ww.registerTigereyeBrew()
 	ww.registerSpinningFireBlossom()
-	ww.registerStormEarthAndFire()
+
+	ww.registerPassives()
 }
 
 func (ww *WindwalkerMonk) getMasteryPercent() float64 {
