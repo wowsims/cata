@@ -9,6 +9,7 @@ import (
 )
 
 func (moonkin *BalanceDruid) RegisterBalancePassives() {
+	moonkin.registerMoonkinForm()
 	moonkin.registerShootingStars()
 	moonkin.registerBalanceOfPower()
 	moonkin.registerEuphoria()
@@ -19,6 +20,25 @@ func (moonkin *BalanceDruid) RegisterBalancePassives() {
 	moonkin.registerTotalEclipse()
 	moonkin.registerLunarShower()
 	moonkin.registerNaturesGrace()
+}
+
+func (moonkin *BalanceDruid) registerMoonkinForm() {
+	moonkin.AddStaticMod(core.SpellModConfig{
+		School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+		FloatValue: 0.1,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	moonkin.MultiplyStat(stats.Armor, 0.6)
+
+	core.MakePermanent(moonkin.RegisterAura(core.Aura{
+		Label: "Moonkin Form",
+		ActionID: core.ActionID{
+			SpellID: 4858,
+		},
+	}))
+
+	core.MakePermanent(core.MoonkinAura(&moonkin.Unit))
 }
 
 func (moonkin *BalanceDruid) registerShootingStars() {
@@ -62,8 +82,8 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 }
 
 func (moonkin *BalanceDruid) registerBalanceOfPower() {
-	moonkin.AddStat(stats.SpellHitPercent, -moonkin.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
-	moonkin.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 1/core.SpellHitRatingPerHitPercent)
+	moonkin.AddStat(stats.SpellHitPercent, -moonkin.GetBaseStats()[stats.Spirit])
+	moonkin.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 1)
 }
 
 func (moonkin *BalanceDruid) registerNaturesGrace() {
