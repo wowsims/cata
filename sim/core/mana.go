@@ -27,6 +27,7 @@ type manaBar struct {
 	// For keeping track of OOM status.
 	waitingForMana          float64
 	waitingForManaStartTime time.Duration
+	hasteEffectsRegen       bool
 }
 
 // EnableManaBar will setup caster stat dependencies (int->mana and int->spellcrit)
@@ -38,12 +39,6 @@ func (character *Character) EnableManaBar() {
 }
 
 func (character *Character) EnableManaBarWithModifier(modifier float64) {
-	// Assumes all units have >= 20 intellect.
-	// See https://wowwiki-archive.fandom.com/wiki/Base_mana.
-	// Subtract out the non-linear part of the formula separately, so that weird
-	// mana values are not included when using the stat dependency manager.
-	character.AddStat(stats.Mana, 20-15*20*modifier)
-	character.AddStatDependency(stats.Intellect, stats.Mana, 15*modifier)
 
 	// Starting with cataclysm you get mp5 equal 5% of your base mana
 	character.AddStat(stats.MP5, character.baseStats[stats.Mana]*0.05)
@@ -164,6 +159,10 @@ func (unit *Unit) SpiritManaRegenPerSecond() float64 {
 // considered to be casting.
 func (unit *Unit) ManaRegenPerSecondWhileCombat() float64 {
 	regenRate := unit.MP5ManaRegenPerSecond()
+
+	if unit.manaBar.hasteEffectsRegen {
+		regenRate *= (1 + unit.stats[stats.HasteRating]/HasteRatingPerHastePercent)
+	}
 
 	spiritRegenRate := 0.0
 	if unit.PseudoStats.SpiritRegenRateCombat != 0 || unit.PseudoStats.ForceFullSpiritRegen {
@@ -294,6 +293,10 @@ func (mb *manaBar) EndOOMEvent(sim *Simulation) {
 	mb.unit.Metrics.AddOOMTime(sim, eventDuration)
 	mb.waitingForManaStartTime = 0
 	mb.waitingForMana = 0
+}
+
+func (unit *Unit) HasteEffectsRegen() {
+	unit.manaBar.hasteEffectsRegen = true
 }
 
 type ManaCostOptions struct {
