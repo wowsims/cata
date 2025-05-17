@@ -20,11 +20,9 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		Kind:      core.SpellMod_CastTime_Flat,
 		TimeValue: time.Millisecond * -500,
 	})
-
-	//TODO : Might change to multiplicative if updated on beta
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskChainLightning | SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload | SpellMaskLavaBeam | SpellMaskLavaBeamOverload,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.7,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
@@ -145,7 +143,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
 		FloatValue: 0.2,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  SpellMaskEarthquake,
 		FloatValue: 0.2,
 	})

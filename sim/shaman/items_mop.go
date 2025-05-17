@@ -14,7 +14,7 @@ var ItemSetRegaliaOfTheFirebird = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat, //TODO : Misght change to multiplicative is updated on beta
+				Kind:       core.SpellMod_DamageDone_Pct,
 				FloatValue: 0.05,
 				ClassMask:  SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
 			})
@@ -147,7 +147,7 @@ var ItemSetBattlegearOfTheFirebird = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
+				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  SpellMaskLavaLash,
 				FloatValue: 0.15,
 			})

@@ -10,18 +10,16 @@ import (
 func (shaman *Shaman) ApplyTalents() {
 
 	//"Hotfix (2013-09-23): Lightning Bolt's damage has been increased by 10%."
-	//TODO : Might change to multiplicative if updated on beta
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.1,
 	})
 	//"Hotfix (2013-09-23): Flametongue Weapon's Flametongue Attack effect now deals 50% more damage."
 	//"Hotfix (2013-09-23): Windfury Weapon's Windfury Attack effect now deals 50% more damage."
-	//TODO : Might change to multiplicative if updated on beta
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskFlametongueWeapon | SpellMaskWindfuryWeapon,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.5,
 	})
 

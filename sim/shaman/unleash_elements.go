@@ -31,8 +31,8 @@ func (shaman *Shaman) registerUnleashFlame() {
 				sim.AddPendingAction(pa)
 			}
 		},
-	}).AttachSpellMod(core.SpellModConfig{ //TODO : Change this to multiplicative if it changes on beta
-		Kind:       core.SpellMod_DamageDone_Flat,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  spellMask,
 		FloatValue: 0.3,
 	})

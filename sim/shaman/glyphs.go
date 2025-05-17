@@ -16,11 +16,10 @@ func (shaman *Shaman) ApplyGlyphs() {
 		})
 	}
 
-	//TODO : Might change to multiplicative ifupdated on beta
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskChainLightning | SpellMaskChainLightningOverload,
-			Kind:       core.SpellMod_DamageDone_Flat,
+			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: -0.1,
 		})
 	}
