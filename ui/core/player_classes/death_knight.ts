@@ -35,7 +35,7 @@ export class DeathKnight extends PlayerClass<Class.ClassDeathKnight> {
 		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
 		// TODO: validate proficiencies
 	];
-	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeRelic];
+	static rangedWeaponTypes: RangedWeaponType[] = [];
 
 	readonly classID = DeathKnight.classID;
 	readonly friendlyName = DeathKnight.name;

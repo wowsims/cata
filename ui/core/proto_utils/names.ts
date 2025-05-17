@@ -28,7 +28,6 @@ export const rangedWeaponTypeNames: Map<RangedWeaponType, string> = new Map([
 	[RangedWeaponType.RangedWeaponTypeBow, 'Bow'],
 	[RangedWeaponType.RangedWeaponTypeCrossbow, 'Crossbow'],
 	[RangedWeaponType.RangedWeaponTypeGun, 'Gun'],
-	[RangedWeaponType.RangedWeaponTypeRelic, 'Relic'],
 	[RangedWeaponType.RangedWeaponTypeThrown, 'Thrown'],
 	[RangedWeaponType.RangedWeaponTypeWand, 'Wand'],
 ]);
@@ -193,7 +192,6 @@ export const slotNames: Map<ItemSlot, string> = new Map([
 	[ItemSlot.ItemSlotTrinket2, 'Trinket 2'],
 	[ItemSlot.ItemSlotMainHand, 'Main Hand'],
 	[ItemSlot.ItemSlotOffHand, 'Off Hand'],
-	[ItemSlot.ItemSlotRanged, 'Ranged'],
 ]);
 
 export const resourceNames: Map<ResourceType, string> = new Map([
