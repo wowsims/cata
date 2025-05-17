@@ -144,8 +144,8 @@ func (monk *Monk) GetMonk() *Monk {
 }
 
 func (monk *Monk) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.LegacyOfTheEmperor = true
-	// raidBuffs.LegacyOfTheWhiteTiger = true
+	raidBuffs.LegacyOfTheEmperor = true
+	raidBuffs.LegacyOfTheWhiteTiger = true
 }
 
 func (monk *Monk) AddPartyBuffs(_ *proto.PartyBuffs) {}
@@ -199,6 +199,7 @@ func (monk *Monk) registerSpells() {
 
 func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
+	monk.SefController.Reset(sim)
 	monk.ElusiveBrewStacks = 0
 }
 

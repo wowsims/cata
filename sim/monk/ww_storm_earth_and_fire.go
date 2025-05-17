@@ -1,6 +1,7 @@
 package monk
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -77,7 +78,6 @@ func (monk *Monk) registerStormEarthAndFire() {
 type StormEarthAndFireController struct {
 	owner          *Monk
 	pets           []*StormEarthAndFirePet
-	sefTargets     map[int32]*StormEarthAndFirePet
 	activeClones   map[int32]*StormEarthAndFirePet
 	inActiveClones []*StormEarthAndFirePet
 }
@@ -127,7 +127,7 @@ func (controller *StormEarthAndFireController) PickClone(sim *core.Simulation, t
 	clone := controller.getCloneFromTarget(target)
 	// If the target already has an active clone, disable it
 	if clone != nil {
-		controller.deactivateClone(sim, clone, target)
+		controller.deactivateClone(sim, clone)
 		return
 	}
 
@@ -139,25 +139,35 @@ func (controller *StormEarthAndFireController) PickClone(sim *core.Simulation, t
 
 	// Pick a random clone to spawn from the clones that are not already enabled
 	validClones := controller.getInactiveClones()
-	cloneIndex := int32(sim.Roll(0, float64(len(validClones))))
-	controller.enableClone(sim, validClones[cloneIndex], target)
+	cloneIndex := int32(sim.RollWithLabel(0, float64(len(validClones)), "Pick Random Clone"))
+	clone = validClones[cloneIndex]
+
+	if sim.Log != nil {
+		controller.owner.Log(sim, "[DEBUG] Picked clone %s for target %s", clone.Name, target.Label)
+	}
+	fmt.Printf("[DEBUG] Picked clone %s (Index=%v) for target %s \n", clone.Name, cloneIndex, target.Label)
+
+	controller.enableClone(sim, clone, target)
 }
 
 func (controller *StormEarthAndFireController) getCloneFromTarget(target *core.Unit) *StormEarthAndFirePet {
-	targetUnixIndex := target.UnitIndex
-	return controller.sefTargets[targetUnixIndex]
+	for _, pet := range controller.activeClones {
+		if pet.CurrentTarget == target {
+			return pet
+		}
+	}
+
+	return nil
 }
 
 func (controller *StormEarthAndFireController) enableClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
 	clone.CurrentTarget = target
 	clone.EnableWithStartAttackDelay(sim, clone, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
-	controller.sefTargets[target.UnitIndex] = clone
 	controller.updateActiveClones()
 }
 
-func (controller *StormEarthAndFireController) deactivateClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
+func (controller *StormEarthAndFireController) deactivateClone(sim *core.Simulation, clone *StormEarthAndFirePet) {
 	clone.Disable(sim)
-	controller.sefTargets[target.UnitIndex] = nil
 	controller.updateActiveClones()
 }
 
@@ -171,7 +181,6 @@ func (controller *StormEarthAndFireController) updateActiveClones() {
 			controller.inActiveClones = append(controller.inActiveClones, pet)
 		}
 	}
-
 }
 
 func (controller *StormEarthAndFireController) getActiveCloneCount() int32 {
@@ -183,18 +192,16 @@ func (controller *StormEarthAndFireController) getInactiveClones() []*StormEarth
 }
 
 func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
-	for _, pet := range controller.activeClones {
+	for _, pet := range controller.pets {
 		pet.Disable(sim)
 	}
-	controller.sefTargets = make(map[int32]*StormEarthAndFirePet)
-	controller.activeClones = make(map[int32]*StormEarthAndFirePet)
+	controller.updateActiveClones()
 }
 
 func (monk *Monk) registerSEFPets() {
 	monk.SefController = &StormEarthAndFireController{
-		owner:      monk,
-		pets:       make([]*StormEarthAndFirePet, 0, 3),
-		sefTargets: make(map[int32]*StormEarthAndFirePet),
+		owner: monk,
+		pets:  make([]*StormEarthAndFirePet, 0, 3),
 	}
 
 	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Storm Spirit", 138121, 2.7))
