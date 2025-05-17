@@ -53,19 +53,36 @@ When bouncing to allies, Chi Wave will prefer those injured over full health.
 $damage=${<avg>+$ap*0.45}
 $healing=${<avg>+$ap*0.45}
 */
-func (monk *Monk) registerChiWave() {
-	if !monk.Talents.ChiWave {
-		return
+var chiWaveActionID = core.ActionID{SpellID: 115098}
+var chiWaveDamageActionID = core.ActionID{SpellID: 132467}
+var chiWaveHealActionID = core.ActionID{SpellID: 132463}
+var chiWaveMaxBounces = 7
+var chiWaveBonusCoeff = 0.45
+var chiWaveCoeff = core.CalcScalingSpellAverageEffect(proto.Class_ClassMonk, chiWaveBonusCoeff)
+
+func chiWaveSpellConfig(_ *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiWaveActionID,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MonkSpellChiWave,
+		MaxRange:       40,
+
+		Cast: overrides.Cast,
+
+		ApplyEffects: overrides.ApplyEffects,
 	}
 
-	avgScaling := monk.CalcScalingSpellDmg(0.4499999881)
-	var nextTarget *core.Unit
-	tickIndex := 0
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
 
-	var chiWaveDamageSpell *core.Spell
-	var chiWaveHealingSpell *core.Spell
-	chiWaveDamageSpell = monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 132467},
+	return config
+}
+func chiWaveDamageSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiWaveDamageActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
@@ -77,27 +94,19 @@ func (monk *Monk) registerChiWave() {
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgScaling + spell.MeleeAttackPower()*0.45
+		ApplyEffects: overrides.ApplyEffects,
+	}
 
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
 
-			if result.Landed() {
-				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
-					if tickIndex < 7 {
-						tickIndex++
+	return config
+}
 
-						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
-						chiWaveHealingSpell.Cast(sim, &monk.Unit)
-					}
-				})
-			}
-		},
-	})
-
-	chiWaveHealingSpell = monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 132463},
+func chiWaveHealSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiWaveHealActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellHealing,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
@@ -108,30 +117,62 @@ func (monk *Monk) registerChiWave() {
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
+		ApplyEffects: overrides.ApplyEffects,
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+}
+
+func (monk *Monk) registerChiWave() {
+	if !monk.Talents.ChiWave {
+		return
+	}
+
+	var nextTarget *core.Unit
+	tickIndex := 0
+
+	var chiWaveHealingSpell *core.Spell
+	chiWaveDamageSpell := monk.RegisterSpell(chiWaveDamageSpellConfig(monk, false, core.SpellConfig{
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := avgScaling + spell.MeleeAttackPower()*0.45
+			baseDamage := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
+			if result.Landed() {
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					if tickIndex < chiWaveMaxBounces {
+						tickIndex++
+						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
+						chiWaveHealingSpell.Cast(sim, &monk.Unit)
+					}
+				})
+			}
+		},
+	}))
+
+	chiWaveHealingSpell = monk.RegisterSpell(chiWaveHealSpellConfig(monk, false, core.SpellConfig{
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseHealing := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealHealing(sim, result)
 
-				if tickIndex < 7 {
+				if tickIndex < chiWaveMaxBounces {
 					tickIndex++
 					chiWaveDamageSpell.Cast(sim, nextTarget)
 				}
 			})
 		},
-	})
+	}))
 
-	monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 115098},
-		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MonkSpellChiWave,
-		MaxRange:       40,
-
+	monk.RegisterSpell(chiWaveSpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -153,7 +194,73 @@ func (monk *Monk) registerChiWave() {
 				chiWaveHealingSpell.Cast(sim, target)
 			}
 		},
-	})
+	}))
+}
+
+func (pet *StormEarthAndFirePet) registerSEFChiWave() {
+	if !pet.owner.Talents.ChiWave {
+		return
+	}
+
+	var nextTarget *core.Unit
+	tickIndex := 0
+
+	var chiWaveHealingSpell *core.Spell
+	chiWaveDamageSpell := pet.RegisterSpell(chiWaveDamageSpellConfig(pet.owner, true, core.SpellConfig{
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
+			if result.Landed() {
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					if tickIndex < chiWaveMaxBounces {
+						tickIndex++
+						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
+						chiWaveHealingSpell.Cast(sim, &pet.Unit)
+					}
+				})
+			}
+		},
+	}))
+
+	chiWaveHealingSpell = pet.RegisterSpell(chiWaveHealSpellConfig(pet.owner, true, core.SpellConfig{
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseHealing := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+
+			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealHealing(sim, result)
+
+				if tickIndex < chiWaveMaxBounces {
+					tickIndex++
+					chiWaveDamageSpell.Cast(sim, nextTarget)
+				}
+			})
+		},
+	}))
+
+	pet.RegisterSpell(chiWaveSpellConfig(pet.owner, true, core.SpellConfig{
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			tickIndex = 0
+			if pet.IsOpponent(target) {
+				nextTarget = target.Env.NextTargetUnit(target)
+				chiWaveDamageSpell.Cast(sim, target)
+			} else {
+				nextTarget = target.CurrentTarget
+				chiWaveHealingSpell.Cast(sim, target)
+			}
+		},
+	}))
 }
 
 /*

@@ -82,8 +82,7 @@ type StormEarthAndFireController struct {
 	inActiveClones []*StormEarthAndFirePet
 }
 
-const StormEarthAndFireAllowedSpells = MonkSpellChiWave |
-	MonkSpellChiBurst
+const StormEarthAndFireAllowedSpells = MonkSpellChiBurst
 
 // Modifies the spell that should be copied with
 // Damage Multipliers / Tags etc.
@@ -217,6 +216,7 @@ type StormEarthAndFirePet struct {
 func (sefClone *StormEarthAndFirePet) Initialize() {
 	// Talents
 	sefClone.registerSEFRushingJadeWind()
+	sefClone.registerSEFChiWave()
 
 	// Passives - Windwalker
 	sefClone.registerSEFCombatConditioning()
@@ -243,13 +243,13 @@ func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *Sto
 			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				return stats.Stats{
 					stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
-					stats.AttackPower: ownerStats[stats.AttackPower] * 0,
+					stats.AttackPower: ownerStats[stats.AttackPower],
 					stats.HasteRating: ownerStats[stats.HasteRating],
 
 					stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
-					stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
+					stats.SpellHitPercent:    ownerStats[stats.SpellHitPercent],
 
-					stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent],
+					stats.ExpertiseRating: ownerStats[stats.ExpertiseRating],
 
 					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
@@ -273,29 +273,35 @@ func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *Sto
 	// other weapons. This was the constant difference between them.
 	baseCloneDamage := 266.0
 
-	avgMhDamage := 0.0
+	avgWeaponDamageMin := 0.0
+	avgWeaponDamageMax := 0.0
 
 	var cloneOhWeapon core.Weapon
 	if isDualWielding {
 		ohWeapon := monk.WeaponFromOffHand(monk.DefaultCritMultiplier())
 		ohAvgDPS := ohWeapon.DPS()
-		avgMhDamage = (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * core.TernaryFloat64(ohAvgDPS > 0, DualWieldModifier, 1.0)
+		baseDamage := (mhAvgDPS + (ohAvgDPS / 2)) * swingSpeed * core.TernaryFloat64(ohAvgDPS > 0, DualWieldModifier, 1.0)
+		// The DW clone has a tiny variance in auto attack damage
+		avgWeaponDamageMin = baseDamage - 1
+		avgWeaponDamageMax = baseDamage + 1
 		cloneOhWeapon = core.Weapon{
-			// The clone has a tiny variance in auto attack damage
-			BaseDamageMin:  baseCloneDamage - 1 + avgMhDamage,
-			BaseDamageMax:  baseCloneDamage + 1 + avgMhDamage,
-			SwingSpeed:     swingSpeed,
-			CritMultiplier: monk.DefaultCritMultiplier(),
+			BaseDamageMin:     baseCloneDamage + avgWeaponDamageMin,
+			BaseDamageMax:     baseCloneDamage + avgWeaponDamageMax,
+			SwingSpeed:        swingSpeed,
+			CritMultiplier:    monk.DefaultCritMultiplier(),
+			AttackPowerPerDPS: 0,
 		}
 	} else {
-		avgMhDamage = mhAvgDPS * swingSpeed
+		avgWeaponDamageMin = mhAvgDPS * swingSpeed
+		avgWeaponDamageMax = avgWeaponDamageMin
 	}
 
 	cloneMhWeapon := core.Weapon{
-		BaseDamageMin:  baseCloneDamage + avgMhDamage,
-		BaseDamageMax:  baseCloneDamage + avgMhDamage,
-		SwingSpeed:     swingSpeed,
-		CritMultiplier: monk.DefaultCritMultiplier(),
+		BaseDamageMin:     baseCloneDamage + avgWeaponDamageMin,
+		BaseDamageMax:     baseCloneDamage + avgWeaponDamageMax,
+		SwingSpeed:        swingSpeed,
+		CritMultiplier:    monk.DefaultCritMultiplier(),
+		AttackPowerPerDPS: 0,
 	}
 
 	sefClone.EnableAutoAttacks(sefClone, core.AutoAttackOptions{
