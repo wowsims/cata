@@ -102,7 +102,6 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 		ActionID: core.ActionID{SpellID: 16188},
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
-			//TODO goes on cd only when buff is consumed
 			CD: core.Cooldown{
 				Timer:    asCdTimer,
 				Duration: asCd,

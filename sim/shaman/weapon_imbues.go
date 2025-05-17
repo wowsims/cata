@@ -263,7 +263,6 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		ActionID:    core.ActionID{SpellID: 8033},
 		SpellSchool: core.SpellSchoolFrost,
 
-		// TODO: Is this correct?
 		ProcMask: core.ProcMaskEmpty,
 		Flags:    core.SpellFlagPassiveSpell,
 

@@ -9,7 +9,6 @@ import (
 
 var StormstrikeActionID = core.ActionID{SpellID: 17364}
 
-// TODO: Confirm how this affects lightning shield
 func (enh *EnhancementShaman) StormstrikeDebuffAura(target *core.Unit) *core.Aura {
 	return target.GetOrRegisterAura(core.Aura{
 		Label:    "Stormstrike-" + enh.Label,

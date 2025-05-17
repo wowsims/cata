@@ -11,14 +11,14 @@ type EarthElemental struct {
 	shamanOwner *Shaman
 }
 
-var EarthElementalSpellPowerScaling = 0.749 // Estimated from beta testing
+var EarthElementalSpellPowerScaling = 1.3 // Estimated from beta testing
 
 func (shaman *Shaman) NewEarthElemental(isGuardian bool) *EarthElemental {
 	earthElemental := &EarthElemental{
 		Pet: core.NewPet(core.PetConfig{
 			Name:                            core.Ternary(isGuardian, "Greater Earth Elemental", "Primal Earth Elemental"),
 			Owner:                           &shaman.Character,
-			BaseStats:                       earthElementalPetBaseStats,
+			BaseStats:                       shaman.earthElementalBaseStats(isGuardian),
 			StatInheritance:                 shaman.earthElementalStatInheritance(isGuardian),
 			EnabledOnStart:                  false,
 			IsGuardian:                      isGuardian,
@@ -27,7 +27,8 @@ func (shaman *Shaman) NewEarthElemental(isGuardian bool) *EarthElemental {
 		}),
 		shamanOwner: shaman,
 	}
-	baseMeleeDamage := core.TernaryFloat64(isGuardian, 1222.72, 2114.25) //Estimated from beta testing
+	scalingDamage := shaman.CalcScalingSpellDmg(1.3)
+	baseMeleeDamage := core.TernaryFloat64(isGuardian, scalingDamage, scalingDamage*1.8)
 	earthElemental.EnableAutoAttacks(earthElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  baseMeleeDamage,
@@ -70,7 +71,11 @@ func (earthElemental *EarthElemental) ExecuteCustomRotation(sim *core.Simulation
 
 }
 
-var earthElementalPetBaseStats = stats.Stats{}
+func (shaman *Shaman) earthElementalBaseStats(isGuardian bool) stats.Stats {
+	return stats.Stats{
+		stats.Stamina: core.TernaryFloat64(isGuardian, 10457, 10457*1.5),
+	}
+}
 
 func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
@@ -82,8 +87,8 @@ func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetSta
 		ownerHasteRating := ownerStats[stats.HasteRating]
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 0.75, 0.9),
-			stats.AttackPower: ownerStats[stats.SpellPower] * core.TernaryFloat64(isGuardian, EarthElementalSpellPowerScaling, EarthElementalSpellPowerScaling*1.8),
+			stats.Stamina:     ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 1, 1.5),
+			stats.AttackPower: shaman.GetSpellPowerValue(shaman.EarthElementalTotem) * core.TernaryFloat64(isGuardian, EarthElementalSpellPowerScaling, EarthElementalSpellPowerScaling*1.8),
 
 			stats.PhysicalHitPercent:  max(ownerSpellHitPercent/2, ownerPhysicalHitPercent),
 			stats.SpellHitPercent:     max(ownerSpellHitPercent, ownerExpertiseRating/core.ExpertisePerQuarterPercentReduction/4+ownerPhysicalHitPercent),

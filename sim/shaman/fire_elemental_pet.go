@@ -24,7 +24,7 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 		Pet: core.NewPet(core.PetConfig{
 			Name:                            core.Ternary(isGuardian, "Greater Fire Elemental", "Primal Fire Elemental"),
 			Owner:                           &shaman.Character,
-			BaseStats:                       fireElementalPetBaseStats,
+			BaseStats:                       shaman.fireElementalBaseStats(isGuardian),
 			StatInheritance:                 shaman.fireElementalStatInheritance(isGuardian),
 			EnabledOnStart:                  false,
 			IsGuardian:                      isGuardian,
@@ -33,7 +33,8 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 		}),
 		shamanOwner: shaman,
 	}
-	baseMeleeDamage := core.TernaryFloat64(isGuardian, 1222.72, 2114.25) //Estimated from beta testing
+	scalingDamage := shaman.CalcScalingSpellDmg(1.0)
+	baseMeleeDamage := core.TernaryFloat64(isGuardian, scalingDamage, scalingDamage*1.8)
 	fireElemental.EnableManaBar()
 	fireElemental.EnableAutoAttacks(fireElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
@@ -114,8 +115,11 @@ func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.U
 	return true
 }
 
-var fireElementalPetBaseStats = stats.Stats{
-	stats.Mana: 9916,
+func (shaman *Shaman) fireElementalBaseStats(isGuardian bool) stats.Stats {
+	return stats.Stats{
+		stats.Mana:    9916,
+		stats.Stamina: core.TernaryFloat64(isGuardian, 7843, 7843*1.2),
+	}
 }
 
 func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStatInheritance {
@@ -128,8 +132,8 @@ func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStat
 		ownerHasteRating := ownerStats[stats.HasteRating]
 
 		return stats.Stats{
-			stats.Stamina:    ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 0.75, 0.9),
-			stats.SpellPower: ownerStats[stats.SpellPower] * core.TernaryFloat64(isGuardian, FireElementalSpellPowerScaling, FireElementalSpellPowerScaling*1.8),
+			stats.Stamina:    ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 0.75, 0.75*1.2),
+			stats.SpellPower: shaman.GetSpellPowerValue(shaman.FireElementalTotem) * core.TernaryFloat64(isGuardian, FireElementalSpellPowerScaling, FireElementalSpellPowerScaling*1.8),
 
 			stats.PhysicalHitPercent:  max(ownerSpellHitPercent/2, ownerPhysicalHitPercent),
 			stats.SpellHitPercent:     max(ownerSpellHitPercent, ownerExpertiseRating/core.ExpertisePerQuarterPercentReduction/4+ownerPhysicalHitPercent),
