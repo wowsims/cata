@@ -126,7 +126,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	//Maelstr	om Weapon
+	//Maelstrom Weapon
 	mwAffectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskEarthShock | SpellMaskElementalBlast
 	mwCastTimemod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mwAffectedSpells,
