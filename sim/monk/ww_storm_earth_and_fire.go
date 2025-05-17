@@ -19,7 +19,7 @@ func (monk *Monk) registerStormEarthAndFire() {
 		Duration:  core.NeverExpires,
 		MaxStacks: 2,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			monk.SefController.castCopySpell(sim, spell)
+			monk.SefController.CastCopySpell(sim, spell)
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			// We only care if stacks are increasing
@@ -32,16 +32,17 @@ func (monk *Monk) registerStormEarthAndFire() {
 					pet.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
 					pet.PseudoStats.DamageDealtMultiplier *= damageMultiplier[newStacks]
 				}
-			} else {
-				monk.SefController.Reset(sim)
-				monk.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
-				for _, pet := range monk.SefController.pets {
-					pet.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
-				}
-				aura.Deactivate(sim)
+				return
+			}
+
+			aura.Deactivate(sim)
+			monk.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
+			for _, pet := range monk.SefController.pets {
+				pet.PseudoStats.DamageDealtMultiplier /= damageMultiplier[oldStacks]
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			sefTarget = nil
 			monk.SefController.Reset(sim)
 		},
 	})
@@ -61,6 +62,11 @@ func (monk *Monk) registerStormEarthAndFire() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+			// If we have 2 clones already, disable SEF
+			if sefAura.GetStacks() == 2 {
+				sefAura.Deactivate(sim)
+				return
+			}
 			sefTarget = target
 			sefAura.Activate(sim)
 			sefAura.AddStack(sim)
@@ -69,11 +75,11 @@ func (monk *Monk) registerStormEarthAndFire() {
 }
 
 type StormEarthAndFireController struct {
-	owner        *Monk
-	pets         []*StormEarthAndFirePet
-	spells       map[core.ActionID]*core.Spell
-	sefTargets   map[int32]*StormEarthAndFirePet
-	activeClones map[int32]*StormEarthAndFirePet
+	owner          *Monk
+	pets           []*StormEarthAndFirePet
+	sefTargets     map[int32]*StormEarthAndFirePet
+	activeClones   map[int32]*StormEarthAndFirePet
+	inActiveClones []*StormEarthAndFirePet
 }
 
 const StormEarthAndFireAllowedSpells = MonkSpellChiWave |
@@ -99,15 +105,22 @@ func (pet *StormEarthAndFirePet) modifyCopySpell(sourceSpell *core.Spell, target
 	}
 }
 
-func (controller *StormEarthAndFireController) castCopySpell(sim *core.Simulation, spell *core.Spell) {
+func (controller *StormEarthAndFireController) CastCopySpell(sim *core.Simulation, spell *core.Spell) {
 	for _, pet := range controller.activeClones {
-		if copySpell := pet.GetSpell(spell.ActionID.WithTag(SEFSpellID)); copySpell != nil {
+		petSpellActionID := spell.ActionID.WithTag(SEFSpellID)
+		copySpell := pet.spells[petSpellActionID]
+		if copySpell == nil {
+			copySpell = pet.GetSpell(petSpellActionID)
+			pet.spells[petSpellActionID] = copySpell
+		}
+		if copySpell != nil {
 			if pet.CurrentTarget == pet.owner.CurrentTarget {
-				return
+				continue
 			}
 			pet.modifyCopySpell(spell, copySpell)
 			copySpell.Cast(sim, pet.CurrentTarget)
 		} else {
+			// Break the loop early because the spell doesn't exist
 			break
 		}
 	}
@@ -121,6 +134,7 @@ func (controller *StormEarthAndFireController) PickClone(sim *core.Simulation, t
 		return
 	}
 
+	// If we have 2 clones already, disable SEF
 	if controller.getActiveCloneCount() == 2 {
 		controller.Reset(sim)
 		return
@@ -141,13 +155,34 @@ func (controller *StormEarthAndFireController) enableClone(sim *core.Simulation,
 	clone.CurrentTarget = target
 	clone.EnableWithStartAttackDelay(sim, clone, core.DurationFromSeconds(sim.RollWithLabel(2, 2.3, "SEF Spawn Delay")))
 	controller.sefTargets[target.UnitIndex] = clone
-	controller.activeClones[clone.cloneID] = clone
+	controller.updateActiveClones()
 }
 
 func (controller *StormEarthAndFireController) deactivateClone(sim *core.Simulation, clone *StormEarthAndFirePet, target *core.Unit) {
 	clone.Disable(sim)
 	controller.sefTargets[target.UnitIndex] = nil
-	controller.activeClones[clone.cloneID] = nil
+	controller.updateActiveClones()
+}
+
+func (controller *StormEarthAndFireController) updateActiveClones() {
+	controller.activeClones = make(map[int32]*StormEarthAndFirePet)
+	controller.inActiveClones = make([]*StormEarthAndFirePet, 0, 3)
+	for _, pet := range controller.pets {
+		if pet.IsEnabled() {
+			controller.activeClones[pet.cloneID] = pet
+		} else {
+			controller.inActiveClones = append(controller.inActiveClones, pet)
+		}
+	}
+
+}
+
+func (controller *StormEarthAndFireController) getActiveCloneCount() int32 {
+	return int32(len(controller.activeClones) - 1)
+}
+
+func (controller *StormEarthAndFireController) getInactiveClones() []*StormEarthAndFirePet {
+	return controller.inActiveClones
 }
 
 func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
@@ -158,41 +193,25 @@ func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
 	controller.activeClones = make(map[int32]*StormEarthAndFirePet)
 }
 
-func (controller *StormEarthAndFireController) getInactiveClones() []*StormEarthAndFirePet {
-	inactiveClones := make([]*StormEarthAndFirePet, 0, 3)
-
-	for _, pet := range controller.pets {
-		if _, exists := controller.activeClones[pet.cloneID]; !exists {
-			inactiveClones = append(inactiveClones, pet)
-		}
-	}
-
-	return inactiveClones
-}
-
-func (controller *StormEarthAndFireController) getActiveCloneCount() int32 {
-	return int32(len(controller.activeClones) - 1)
-}
-
 func (monk *Monk) registerSEFPets() {
 	monk.SefController = &StormEarthAndFireController{
-		owner:        monk,
-		spells:       make(map[core.ActionID]*core.Spell),
-		pets:         make([]*StormEarthAndFirePet, 0, 3),
-		sefTargets:   make(map[int32]*StormEarthAndFirePet),
-		activeClones: make(map[int32]*StormEarthAndFirePet),
+		owner:      monk,
+		pets:       make([]*StormEarthAndFirePet, 0, 3),
+		sefTargets: make(map[int32]*StormEarthAndFirePet),
 	}
 
 	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Storm Spirit", 138121, 2.7))
 	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Earth Spirit", 138122, 3.6))
 	monk.SefController.pets = append(monk.SefController.pets, monk.NewSEFPet("Fire Spirit", 138123, 2.7))
 
+	monk.SefController.updateActiveClones()
 }
 
 type StormEarthAndFirePet struct {
 	core.Pet
 	cloneID int32
 	owner   *Monk
+	spells  map[core.ActionID]*core.Spell
 }
 
 func (sefClone *StormEarthAndFirePet) Initialize() {
@@ -242,6 +261,7 @@ func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *Sto
 			HasDynamicCastSpeedInheritance:  true,
 		}),
 		cloneID: cloneID,
+		spells:  make(map[core.ActionID]*core.Spell),
 		owner:   monk,
 	}
 
