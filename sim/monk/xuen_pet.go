@@ -74,7 +74,6 @@ func (monk *Monk) NewXuen() *Xuen {
 	})
 
 	xuen.PseudoStats.DamageTakenMultiplier *= 0.1
-	xuen.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
 
 	// Observed values for Xuen's auto attack damage
 	// This could be either:
@@ -119,8 +118,6 @@ func (xuen *Xuen) Initialize() {
 }
 
 func (xuen *Xuen) ExecuteCustomRotation(sim *core.Simulation) {
-	xuen.PseudoStats.DamageDealtMultiplier = xuen.owner.PseudoStats.DamageDealtMultiplier
-
 	if xuen.CracklingTigerLightning.CanCast(sim, xuen.CurrentTarget) {
 		xuen.CracklingTigerLightning.Cast(sim, xuen.CurrentTarget)
 	}
@@ -132,10 +129,6 @@ func (xuen *Xuen) Reset(sim *core.Simulation) {
 
 func (xuen *Xuen) enable(sim *core.Simulation) {
 	xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
-
-	xuen.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
-		xuen.PseudoStats.DamageDealtMultiplier = xuen.owner.PseudoStats.DamageDealtMultiplier
-	})
 }
 
 func (xuen *Xuen) GetPet() *core.Pet {
