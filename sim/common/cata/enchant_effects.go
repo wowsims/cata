@@ -270,7 +270,7 @@ func init() {
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 		Outcome:    core.OutcomeLanded,
 		ICD:        time.Second * 45,
-		ProcChance: 1.0 / 3.0,
+		ProcChance: 0.2,
 		Bonus:      stats.Stats{stats.Intellect: 500},
 		Duration:   time.Second * 12,
 	})
