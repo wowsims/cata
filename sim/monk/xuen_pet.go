@@ -104,12 +104,16 @@ func (monk *Monk) NewXuen() *Xuen {
 func (monk *Monk) xuenStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
+			stats.Stamina:     ownerStats[stats.Stamina],
+			stats.AttackPower: ownerStats[stats.AttackPower] * 0.5,
+
+			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+			stats.SpellHitPercent:    ownerStats[stats.SpellHitPercent],
+
+			stats.ExpertiseRating: ownerStats[stats.ExpertiseRating],
+
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.Stamina:             ownerStats[stats.Stamina],
-			stats.Intellect:           ownerStats[stats.Intellect] * 0.3,
-			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
-			stats.PhysicalHitPercent:  ownerStats[stats.PhysicalHitPercent],
-			stats.HasteRating:         ownerStats[stats.HasteRating],
+			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 		}
 	}
 }

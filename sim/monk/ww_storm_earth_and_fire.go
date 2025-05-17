@@ -244,7 +244,6 @@ func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *Sto
 				return stats.Stats{
 					stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
 					stats.AttackPower: ownerStats[stats.AttackPower],
-					stats.HasteRating: ownerStats[stats.HasteRating],
 
 					stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
 					stats.SpellHitPercent:    ownerStats[stats.SpellHitPercent],
