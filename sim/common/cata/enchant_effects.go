@@ -12,7 +12,7 @@ import (
 func init() {
 
 	// Enchant: 4066, Spell: 74195 - Enchant Weapon - Mending
-	core.NewEnchantEffect(4066, func(agent core.Agent) {
+	core.NewEnchantEffect(4066, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 74194})
 
@@ -51,7 +51,7 @@ func init() {
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
 	// http://elitistjerks.com/f79/t110302-enhsim_cataclysm/p4/#post1832162
 	// Research indicates that the proc itself does not behave as game tables suggest <.<
-	core.NewEnchantEffect(4067, func(agent core.Agent) {
+	core.NewEnchantEffect(4067, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74196},
@@ -118,7 +118,7 @@ func init() {
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
-	core.NewEnchantEffect(4074, func(agent core.Agent) {
+	core.NewEnchantEffect(4074, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74208},
@@ -153,7 +153,7 @@ func init() {
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
-	core.NewEnchantEffect(4083, func(agent core.Agent) {
+	core.NewEnchantEffect(4083, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		procBuilder := func(name string, tag int32) *core.StatBuffAura {
@@ -288,7 +288,7 @@ func init() {
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
-	core.NewEnchantEffect(4099, func(agent core.Agent) {
+	core.NewEnchantEffect(4099, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		mainHand := character.NewTemporaryStatsAura(
@@ -384,12 +384,12 @@ func init() {
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
-	core.NewEnchantEffect(4176, func(agent core.Agent) {
+	core.NewEnchantEffect(4176, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().AddBonusRangedHitPercent(88 / core.PhysicalHitRatingPerHitPercent)
 	})
 
 	// Enchant: 4177, Item: 59596 - Safety Catch Removal Kit
-	core.NewEnchantEffect(4177, func(agent core.Agent) {
+	core.NewEnchantEffect(4177, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		// TODO: This should be ranged-only haste. For now just make it hunter-only.
 		if character.Class == proto.Class_ClassHunter {
@@ -463,7 +463,7 @@ func init() {
 	}
 
 	for _, enchantID := range movementSpeedEnchants {
-		core.NewEnchantEffect(enchantID, func(agent core.Agent) {
+		core.NewEnchantEffect(enchantID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			aura := character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
 

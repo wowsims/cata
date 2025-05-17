@@ -23,8 +23,9 @@ type DBC struct {
 	ItemArmorTotal         map[int]ItemArmorTotal
 	ArmorLocation          map[int]ArmorLocation
 	SpellScalings          map[int]SpellScaling
-	Consumables            map[int]Consumable // Item ID
-	ItemEffects            map[int]ItemEffect // Parent Item ID
+	Consumables            map[int]Consumable   // Item ID
+	ItemEffects            map[int]ItemEffect   // Parent Item ID
+	ItemEffectsByParentID  map[int][]ItemEffect // new
 }
 
 func NewDBC() *DBC {
@@ -46,6 +47,7 @@ func NewDBC() *DBC {
 		Consumables:            make(map[int]Consumable),
 		ItemEffects:            make(map[int]ItemEffect),
 		SpellScalings:          make(map[int]SpellScaling),
+		ItemEffectsByParentID:  make(map[int][]ItemEffect),
 	}
 }
 
@@ -173,12 +175,28 @@ func (d *DBC) loadItemEffects(filename string) error {
 		}
 	}
 
-	for i := range effects {
-		effect := effects[i]
-		d.ItemEffects[effect.ID] = effect
+	// Initialize maps if needed
+	if d.ItemEffects == nil {
+		d.ItemEffects = make(map[int]ItemEffect)
 	}
+	if d.ItemEffectsByParentID == nil {
+		d.ItemEffectsByParentID = make(map[int][]ItemEffect)
+	}
+
+	// Populate both maps
+	for _, effect := range effects {
+		// Single lookup by effect ID
+		d.ItemEffects[effect.ID] = effect
+		// Grouping by parent item ID
+		d.ItemEffectsByParentID[effect.ParentItemID] = append(
+			d.ItemEffectsByParentID[effect.ParentItemID],
+			effect,
+		)
+	}
+
 	return nil
 }
+
 func (d *DBC) loadRandomPropertiesByIlvl(filename string) error {
 	data, err := ReadGzipFile(filename)
 	if err != nil {

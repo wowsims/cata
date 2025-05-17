@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	// core.NewItemEffect(37220, func(agent core.Agent) {
+	// core.NewItemEffect(37220, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 37220}
 
@@ -40,7 +40,7 @@ func init() {
 	// 	})
 	// 	procAura.Icd = triggerAura.Icd
 	// })
-	// core.NewItemEffect(45507, func(agent core.Agent) {
+	// core.NewItemEffect(45507, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 45507}
 
@@ -71,7 +71,7 @@ func init() {
 	// 	procAura.Icd = triggerAura.Icd
 	// })
 
-	// core.NewItemEffect(37734, func(agent core.Agent) {
+	// core.NewItemEffect(37734, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 37734}
 
@@ -148,7 +148,7 @@ func init() {
 			}
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			strAura := character.NewTemporaryStatsAura(name+" Strength Proc", core.ActionID{SpellID: auraIDs[0]}, stats.Stats{stats.Strength: amount}, time.Second*30)
@@ -205,7 +205,7 @@ func init() {
 		})
 	})
 
-	// core.NewItemEffect(40258, func(agent core.Agent) {
+	// core.NewItemEffect(40258, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 
 	// 	healSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -246,7 +246,7 @@ func init() {
 	// 	})
 	// })
 
-	// core.NewItemEffect(40382, func(agent core.Agent) {
+	// core.NewItemEffect(40382, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 40382}
 	// 	manaMetrics := character.NewManaMetrics(actionID)
@@ -265,7 +265,7 @@ func init() {
 	// 	})
 	// })
 
-	// core.NewItemEffect(41121, func(agent core.Agent) { // Gnomish Lightning Generator
+	// core.NewItemEffect(41121, func(agent core.Agent, _ proto.ItemLevelState) { // Gnomish Lightning Generator
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 41121}
 
@@ -302,7 +302,7 @@ func init() {
 	// 	})
 	// })
 
-	core.NewItemEffect(46017, func(agent core.Agent) { // Val'anyr
+	core.NewItemEffect(46017, func(agent core.Agent, _ proto.ItemLevelState) { // Val'anyr
 		character := agent.GetCharacter()
 
 		shieldSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -348,7 +348,7 @@ func init() {
 		character.ItemSwap.RegisterProc(46017, triggerAura)
 	})
 
-	// core.NewItemEffect(50259, func(agent core.Agent) {
+	// core.NewItemEffect(50259, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 50259}
 
@@ -406,7 +406,7 @@ func init() {
 	// 		amount = 1830.0
 	// 	}
 
-	// 	core.NewItemEffect(itemID, func(agent core.Agent) {
+	// 	core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 		character := agent.GetCharacter()
 	// 		actionID := core.ActionID{ItemID: itemID}
 	// 		manaMetrics := character.NewManaMetrics(actionID)
@@ -441,7 +441,7 @@ func init() {
 			amount = 6426.0
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -483,7 +483,7 @@ func init() {
 			amount = 121.0
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -525,7 +525,7 @@ func init() {
 		})
 	})
 
-	// core.NewItemEffect(42413, func(agent core.Agent) {
+	// core.NewItemEffect(42413, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{SpellID: 56186}
 	// 	manaMetrics := character.NewManaMetrics(actionID)
@@ -555,7 +555,7 @@ func init() {
 	// 	})
 	// })
 
-	// core.NewItemEffect(47215, func(agent core.Agent) {
+	// core.NewItemEffect(47215, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{SpellID: 67667}
 	// 	manaMetrics := character.NewManaMetrics(actionID)
@@ -583,7 +583,7 @@ func init() {
 			numTicks = 6
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -647,7 +647,7 @@ func init() {
 		})
 	})
 
-	// core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(50260, stats.Stats{stats.MeleeHaste: 464, stats.SpellHaste: 464}, time.Second*20, time.Minute*2, func(agent core.Agent) {
+	// core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(50260, stats.Stats{stats.MeleeHaste: 464, stats.SpellHaste: 464}, time.Second*20, time.Minute*2, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 50260}
 	// 	manaMetrics := character.NewManaMetrics(actionID)
@@ -663,7 +663,7 @@ func init() {
 	// 	})
 	// })
 
-	// core.NewItemEffect(50356, func(agent core.Agent) {
+	// core.NewItemEffect(50356, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{SpellID: 71586}
 
@@ -710,7 +710,7 @@ func init() {
 			itemID = 50726
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -754,7 +754,7 @@ func init() {
 			maxHeal = 7298.0
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -803,7 +803,7 @@ func init() {
 			healingPerTick = 402.0
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -877,7 +877,7 @@ func init() {
 			amount = 828.0
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
@@ -923,7 +923,7 @@ func init() {
 			maxDmg = float64(2664)
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, 2.0, 0)
@@ -969,7 +969,7 @@ func init() {
 			amount = 0.10
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			var curDmg float64
@@ -1012,7 +1012,7 @@ func init() {
 		})
 	})
 
-	// core.NewItemEffect(37111, func(agent core.Agent) {
+	// core.NewItemEffect(37111, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	actionID := core.ActionID{ItemID: 37111}
 
@@ -1050,7 +1050,7 @@ func init() {
 	// 	})
 	// })
 
-	// core.NewItemEffect(21685, func(agent core.Agent) {
+	// core.NewItemEffect(21685, func(agent core.Agent, _ proto.ItemLevelState) {
 	// 	character := agent.GetCharacter()
 	// 	statBonusPerStack := stats.Stats{stats.ArcaneResistance: 10, stats.FireResistance: 10, stats.FrostResistance: 10, stats.NatureResistance: 10, stats.ShadowResistance: 10}
 
@@ -1110,7 +1110,7 @@ func init() {
 			procName += " H"
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			procAura := character.GetOrRegisterAura(core.Aura{

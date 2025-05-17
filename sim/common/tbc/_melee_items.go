@@ -5,14 +5,14 @@ package tbc
 
 // 	// Proc effects. Keep these in order by item ID.
 
-// 	core.NewItemEffect(9449, func(agent core.Agent) {
+// 	core.NewItemEffect(9449, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		// Assumes that the user will swap pummelers to have the buff for the whole fight.
 // 		character.AddStat(stats.HasteRating, 500)
 // 	})
 
-// 	core.NewItemEffect(19019, func(agent core.Agent) {
+// 	core.NewItemEffect(19019, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(19019, 6.0, 0)
@@ -93,11 +93,11 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(24114, func(agent core.Agent) {
+// 	core.NewItemEffect(24114, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().PseudoStats.BonusDamage += 5
 // 	})
 
-// 	core.NewItemEffect(29297, func(agent core.Agent) {
+// 	core.NewItemEffect(29297, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		const procChance = 0.03
@@ -129,7 +129,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(29301, func(agent core.Agent) {
+// 	core.NewItemEffect(29301, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		procAura := character.NewTemporaryStatsAura("Band of the Eternal Champion Proc", core.ActionID{ItemID: 29301}, stats.Stats{stats.AttackPower: 160, stats.RangedAttackPower: 160}, time.Second*10)
@@ -163,7 +163,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(29996, func(agent core.Agent) {
+// 	core.NewItemEffect(29996, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(29996, 1.0, 0)
@@ -202,7 +202,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(31193, func(agent core.Agent) {
+// 	core.NewItemEffect(31193, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(31193, 0, 0.02)
@@ -236,7 +236,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(32262, func(agent core.Agent) {
+// 	core.NewItemEffect(32262, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(12590, 1.0, 0)
@@ -286,7 +286,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(32375, func(agent core.Agent) {
+// 	core.NewItemEffect(32375, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		const procChance = 0.02
@@ -306,7 +306,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(34473, func(agent core.Agent) {
+// 	core.NewItemEffect(34473, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		procAura := character.NewTemporaryStatsAura("Commendation of Kael'Thas Proc", core.ActionID{ItemID: 34473}, stats.Stats{stats.DodgeRating: 152}, time.Second*10)
@@ -341,7 +341,7 @@ package tbc
 // 		})
 // 	})
 
-// 	core.NewItemEffect(12590, func(agent core.Agent) {
+// 	core.NewItemEffect(12590, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(12590, 1.0, 0)

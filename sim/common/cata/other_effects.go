@@ -19,7 +19,7 @@ const (
 )
 
 func init() {
-	core.NewItemEffect(63839, func(agent core.Agent) {
+	core.NewItemEffect(63839, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		spreadDot := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: 91076},
@@ -107,7 +107,7 @@ func init() {
 		character.ItemSwap.RegisterProc(63839, triggerAura)
 	})
 
-	core.NewItemEffect(64645, func(agent core.Agent) {
+	core.NewItemEffect(64645, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		storedMana := 0.0
 
@@ -164,7 +164,7 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(59461, func(agent core.Agent) {
+	core.NewItemEffect(59461, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		dummyAura := character.RegisterAura(core.Aura{
@@ -228,7 +228,7 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(68996, func(agent core.Agent) {
+	core.NewItemEffect(68996, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		totalAbsorbed := 0.0
@@ -322,7 +322,7 @@ func init() {
 		labelSuffix := core.Ternary(heroic, " (Heroic)", "")
 
 		leadenItemID := core.TernaryInt32(heroic, 56347, 55816)
-		core.NewItemEffect(leadenItemID, func(agent core.Agent) {
+		core.NewItemEffect(leadenItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: core.TernaryInt32(heroic, 92184, 92179)}
 			armorBonus := core.TernaryFloat64(heroic, 3420, 2580)
@@ -351,7 +351,7 @@ func init() {
 		})
 
 		heartItemID := core.TernaryInt32(heroic, 65110, 59514)
-		core.NewItemEffect(heartItemID, func(agent core.Agent) {
+		core.NewItemEffect(heartItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			procAura := core.MakeStackingAura(character, core.StackingStatAura{
@@ -428,7 +428,7 @@ func init() {
 		})
 
 		jarItemID := core.TernaryInt32(heroic, 65029, 59354)
-		core.NewItemEffect(jarItemID, func(agent core.Agent) {
+		core.NewItemEffect(jarItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			manaReturn := core.TernaryFloat64(heroic, 7260, 6420)
@@ -493,7 +493,7 @@ func init() {
 		})
 
 		matrixItemID := core.TernaryInt32(heroic, 69150, 68994)
-		core.NewItemEffect(matrixItemID, func(agent core.Agent) {
+		core.NewItemEffect(matrixItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			bonusStats := core.TernaryFloat64(heroic, 1834, 1624)
@@ -552,7 +552,7 @@ func init() {
 		})
 
 		apparatusItemID := core.TernaryInt32(heroic, 69113, 68972)
-		core.NewItemEffect(apparatusItemID, func(agent core.Agent) {
+		core.NewItemEffect(apparatusItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			bonusPerStack := core.TernaryFloat64(heroic, 575, 508)
@@ -685,7 +685,7 @@ func init() {
 		})
 
 		vesselItemID := core.TernaryInt32(heroic, 69167, 68995)
-		core.NewItemEffect(vesselItemID, func(agent core.Agent) {
+		core.NewItemEffect(vesselItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			procAura := core.MakeStackingAura(character, core.StackingStatAura{
@@ -727,7 +727,7 @@ func init() {
 		})
 
 		jawsItemID := core.TernaryInt32(heroic, 69111, 68926)
-		core.NewItemEffect(jawsItemID, func(agent core.Agent) {
+		core.NewItemEffect(jawsItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			if !character.HasManaBar() {
@@ -808,7 +808,7 @@ func init() {
 		})
 
 		spindleItemID := core.TernaryInt32(heroic, 69138, 68981)
-		core.NewItemEffect(spindleItemID, func(agent core.Agent) {
+		core.NewItemEffect(spindleItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			shieldStrength := core.TernaryFloat64(heroic, 19283, 17095)
@@ -844,7 +844,7 @@ func init() {
 		})
 
 		scalesOfLifeItemID := core.TernaryInt32(heroic, 69109, 68915)
-		core.NewItemEffect(scalesOfLifeItemID, func(agent core.Agent) {
+		core.NewItemEffect(scalesOfLifeItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			// Assuming full stack since sim doesn't track overhealing
@@ -887,7 +887,7 @@ func init() {
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
 		vialItemID := []int32{77979, 77207, 77999}[version]
-		core.NewItemEffect(vialItemID, func(agent core.Agent) {
+		core.NewItemEffect(vialItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			actionID := core.ActionID{SpellID: []int32{109721, 107994, 109724}[version]}
@@ -945,7 +945,7 @@ func init() {
 		})
 
 		fetishItemID := []int32{77982, 77210, 78002}[version]
-		core.NewItemEffect(fetishItemID, func(agent core.Agent) {
+		core.NewItemEffect(fetishItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			numTargets := character.Env.GetNumTargets()
 
@@ -997,7 +997,7 @@ func init() {
 		})
 
 		cunningItemID := []int32{77980, 77208, 78000}[version]
-		core.NewItemEffect(cunningItemID, func(agent core.Agent) {
+		core.NewItemEffect(cunningItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			numTargets := character.Env.GetNumTargets()
 
@@ -1054,7 +1054,7 @@ func init() {
 		})
 
 		prideItemID := []int32{77983, 77211, 78003}[version]
-		core.NewItemEffect(prideItemID, func(agent core.Agent) {
+		core.NewItemEffect(prideItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			absorbModifier := []float64{0.43, 0.50, 0.56}[version]
@@ -1100,7 +1100,7 @@ func init() {
 		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E
 		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/cata/item=77194/kiril-fury-of-beasts#comments:id=1639024
 		kirilItemID := []int32{78482, 77194, 78473}[version]
-		core.NewItemEffect(kirilItemID, func(agent core.Agent) {
+		core.NewItemEffect(kirilItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			beastFuryAura := core.MakeStackingAura(character, core.StackingStatAura{
@@ -1155,7 +1155,7 @@ func init() {
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
 		// (Proc chance: 15%)
 		souldrinkerItemID := []int32{78488, 77193, 78479}[version]
-		core.NewItemEffect(souldrinkerItemID, func(agent core.Agent) {
+		core.NewItemEffect(souldrinkerItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			label := fmt.Sprintf("Drain Life Trigger %s", labelSuffix)
@@ -1232,7 +1232,7 @@ func init() {
 		// Equip: Your melee attacks have a chance to blast your enemy with Fire, Shadow, or Frost, dealing 6781/7654/8640 to 10171/11481/12960 damage.
 		// (Proc chance: 7%)
 		nokaledItemID := []int32{78481, 77188, 78472}[version]
-		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
+		core.NewItemEffect(nokaledItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			defaultProcMask := core.ProcMaskMeleeProc
@@ -1301,7 +1301,7 @@ func init() {
 		// Equip: Your harmful spellcasts have a chance to poison all enemies near your target for 7715/8710/9830 nature damage over 10 sec.
 		// (Proc chance: 15%, 17s cooldown)
 		rathrakItemID := []int32{78484, 77195, 78475}[version]
-		core.NewItemEffect(rathrakItemID, func(agent core.Agent) {
+		core.NewItemEffect(rathrakItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			tickDamage := []float64{7715, 8710, 9830}[version] / 5
@@ -1365,7 +1365,7 @@ func init() {
 		// (Proc chance: 15%, 17s cooldown)
 		// Time between ticks: 200ms
 		vishankaItemID := []int32{78480, 78359, 78471}[version]
-		core.NewItemEffect(vishankaItemID, func(agent core.Agent) {
+		core.NewItemEffect(vishankaItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			tickDamage := []float64{7040, 7950, 8970}[version] / 10
@@ -1433,7 +1433,7 @@ func init() {
 		titahkAuraID := []int32{109842, 107804, 109844}[version]
 		titahkBonus := []float64{1366 + 342, 1542 + 386, 1741 + 435}[version]
 		titahkLabel := fmt.Sprintf("Ti'tahk, the Steps of Time %s", labelSuffix)
-		core.NewItemEffect(titahkItemID, func(agent core.Agent) {
+		core.NewItemEffect(titahkItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			procAura := character.NewTemporaryStatsAura(titahkLabel, core.ActionID{SpellID: titahkAuraID}, stats.Stats{stats.HasteRating: titahkBonus}, time.Second*10)
 

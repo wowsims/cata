@@ -13,7 +13,7 @@ func init() {
 	// Keep these in order by item ID.
 
 	// Enchant: 3251, Spell: 44622 - Giant Slayer
-	core.NewEnchantEffect(3251, func(agent core.Agent) {
+	core.NewEnchantEffect(3251, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3251, 4.0, 0)
@@ -53,7 +53,7 @@ func init() {
 	})
 
 	// Enchant: 3239, Spell: 44525 - Icebreaker
-	core.NewEnchantEffect(3239, func(agent core.Agent) {
+	core.NewEnchantEffect(3239, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3239, 4.0, 0)
@@ -93,7 +93,7 @@ func init() {
 	})
 
 	// Enchant: 3607, Spell: 55076, Item: 41146 - Sun Scope
-	core.NewEnchantEffect(3607, func(agent core.Agent) {
+	core.NewEnchantEffect(3607, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		// TODO: This should be ranged-only haste. For now just make it hunter-only.
 		if character.Class == proto.Class_ClassHunter {
@@ -102,7 +102,7 @@ func init() {
 	})
 
 	// Enchant: 3608, Spell: 55135, Item: 41167 - Heartseeker Scope
-	core.NewEnchantEffect(3608, func(agent core.Agent) {
+	core.NewEnchantEffect(3608, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().AddBonusRangedCritPercent(40 / core.CritRatingPerCritPercent)
 	})
 
@@ -124,7 +124,7 @@ func init() {
 	})
 
 	// Enchant: 3247, Spell: 44595 - Scourgebane
-	core.NewEnchantEffect(3247, func(agent core.Agent) {
+	core.NewEnchantEffect(3247, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 			character.PseudoStats.MobTypeAttackPower += 140
@@ -132,19 +132,19 @@ func init() {
 	})
 
 	// Enchant: 3253, Spell: 44625 - Armsman
-	core.NewEnchantEffect(3253, func(agent core.Agent) {
+	core.NewEnchantEffect(3253, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		character.PseudoStats.ThreatMultiplier *= 1.02
 	})
 
 	// Enchant: 3296, Spell: 47899 - Wisdom
-	core.NewEnchantEffect(3296, func(agent core.Agent) {
+	core.NewEnchantEffect(3296, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		character.PseudoStats.ThreatMultiplier *= 0.98
 	})
 
 	// Enchant: 3789, Spell: 59620 - Berserking
-	core.NewEnchantEffect(3789, func(agent core.Agent) {
+	core.NewEnchantEffect(3789, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3789, 1.0, 0)
@@ -179,7 +179,7 @@ func init() {
 	})
 
 	// TODO: These are stand-in values without any real reference.
-	core.NewEnchantEffect(3241, func(agent core.Agent) {
+	core.NewEnchantEffect(3241, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3241, 3.0, 0)
@@ -207,7 +207,7 @@ func init() {
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
-	core.NewEnchantEffect(3790, func(agent core.Agent) {
+	core.NewEnchantEffect(3790, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		procAura := character.NewTemporaryStatsAura("Black Magic Proc", core.ActionID{SpellID: 59626}, stats.Stats{stats.HasteRating: 250}, time.Second*10)
@@ -248,7 +248,7 @@ func init() {
 		w.BaseDamageMax += 15
 	})
 
-	//core.NewEnchantEffect(3603, func(agent core.Agent) {
+	//core.NewEnchantEffect(3603, func(agent core.Agent, _ proto.ItemLevelState) {
 	//	character := agent.GetCharacter()
 	//	actionID := core.ActionID{SpellID: 54757}
 
@@ -285,7 +285,7 @@ func init() {
 	//	})
 	//})
 
-	//core.NewEnchantEffect(3604, func(agent core.Agent) {
+	//core.NewEnchantEffect(3604, func(agent core.Agent, _ proto.ItemLevelState) {
 	//	character := agent.GetCharacter()
 	//	actionID := core.ActionID{SpellID: 54758}
 
@@ -339,7 +339,7 @@ func init() {
 	})
 
 	// Enchant: 3728, Spell: 55769 - Darkglow Embroidery
-	core.NewEnchantEffect(3728, func(agent core.Agent) {
+	core.NewEnchantEffect(3728, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		if !character.HasManaBar() {
 			return
@@ -386,7 +386,7 @@ func init() {
 	})
 
 	// Enchant: 3870, Spell: 64568 - Blood Draining
-	core.NewEnchantEffect(3870, func(agent core.Agent) {
+	core.NewEnchantEffect(3870, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 64569})
 

@@ -28,7 +28,7 @@ func init() {
 		gurthalakItemID := gurthalakItemIDs[version]
 		summonSpellID := []int32{109838, 107818, 109840}[version]
 
-		core.NewItemEffect(gurthalakItemID, func(agent core.Agent) {
+		core.NewItemEffect(gurthalakItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			var gurthalak GurthalakAgent
 			if gurth, canEquip := agent.(GurthalakAgent); canEquip {
 				gurthalak = gurth

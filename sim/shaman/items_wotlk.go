@@ -78,7 +78,7 @@ import (
 // })
 
 // func init() {
-// 	core.NewItemEffect(40708, func(agent core.Agent) {
+// 	core.NewItemEffect(40708, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		shaman := agent.(ShamanAgent).GetShaman()
 // 		procAura := shaman.NewTemporaryStatsAura("Totem of the Elemental Plane Proc", core.ActionID{SpellID: 60771}, stats.Stats{stats.SpellHaste: 196, stats.MeleeHaste: 196}, time.Second*10)
 
@@ -105,7 +105,7 @@ import (
 // 		})
 // 	})
 
-// 	core.NewItemEffect(47666, func(agent core.Agent) {
+// 	core.NewItemEffect(47666, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		shaman := agent.(ShamanAgent).GetShaman()
 // 		procAura := shaman.NewTemporaryStatsAura("ToEW - Energized", core.ActionID{SpellID: 67385}, stats.Stats{stats.SpellHaste: 200, stats.MeleeHaste: 200}, time.Second*12)
 
@@ -132,7 +132,7 @@ import (
 // 		})
 // 	})
 
-// 	core.NewItemEffect(50463, func(agent core.Agent) {
+// 	core.NewItemEffect(50463, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		shaman := agent.(ShamanAgent).GetShaman()
 // 		procAura := shaman.RegisterAura(core.Aura{
 // 			Label:     "Enraged",
@@ -163,7 +163,7 @@ import (
 // 	})
 
 // 	// Bizuri's Totem of Shattered Ice
-// 	core.NewItemEffect(50458, func(agent core.Agent) {
+// 	core.NewItemEffect(50458, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		shaman := agent.(ShamanAgent).GetShaman()
 // 		procAura := shaman.RegisterAura(core.Aura{
 // 			Label:     "Furious",

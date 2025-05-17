@@ -448,7 +448,7 @@ var CataPVPSet = core.NewItemSet(core.ItemSet{
 
 // 45% SS/RvS Modifier for Legendary MH Dagger
 func makeWeightedBladesModifier(itemID int32) {
-	core.NewItemEffect(itemID, func(agent core.Agent) {
+	core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.45,

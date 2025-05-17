@@ -13,7 +13,7 @@ package tbc
 // 		core.NewItemEffect(itemID, func(core.Agent) {})
 // 	}
 
-// 	core.NewItemEffect(21625, func(agent core.Agent) { // Scarab Brooch
+// 	core.NewItemEffect(21625, func(agent core.Agent, _ proto.ItemLevelState) { // Scarab Brooch
 // 		character := agent.GetCharacter()
 // 		actionID := core.ActionID{ItemID: 21625}
 
