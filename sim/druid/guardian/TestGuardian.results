@@ -1294,8 +1294,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 10961.8548
-  tps: 54876.93275
+  dps: 10998.72318
+  tps: 55061.27465
   hps: 361.55625
  }
 }
@@ -1478,8 +1478,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 10961.76723
-  tps: 54876.49492
+  dps: 11000.33797
+  tps: 55069.34858
   hps: 361.55625
  }
 }
@@ -1830,8 +1830,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 10963.47382
-  tps: 54885.02783
+  dps: 10999.41883
+  tps: 55064.75292
   hps: 361.55625
  }
 }
@@ -2158,9 +2158,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-TheHungerer-69112"
  value: {
-  dps: 11302.88179
-  tps: 56583.05164
-  hps: 355.12858
+  dps: 11367.0621
+  tps: 56904.41427
+  hps: 356.7355
  }
 }
 dps_results: {

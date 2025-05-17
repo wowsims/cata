@@ -1113,7 +1113,7 @@ func init() {
 		ProcMask:   core.ProcMaskMeleeOrRanged,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1, //TODO: verify proc chance, seems wrong?
-		ICD:        time.Second * 60,
+		ICD:        time.Second * 59,
 	})
 
 	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
@@ -1282,7 +1282,7 @@ func init() {
 			ItemID:     id,
 			AuraID:     126582,
 			Bonus:      stats.Stats{stats.Strength: 963},
-			Duration:   time.Second * 15,
+			Duration:   time.Second * 20,
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
 			Outcome:    core.OutcomeLanded,

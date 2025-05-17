@@ -11,7 +11,7 @@ character_stats_results: {
   final_stats: 412
   final_stats: 692
   final_stats: 0
-  final_stats: 2731.66357
+  final_stats: 2731.66358
   final_stats: 1315
   final_stats: 25247.454
   final_stats: 209
@@ -1152,8 +1152,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 59967.71458
-  tps: 41705.80245
+  dps: 60301.57965
+  tps: 41969.31293
  }
 }
 dps_results: {
@@ -1334,8 +1334,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 59965.27994
-  tps: 41706.22435
+  dps: 60311.10195
+  tps: 41975.47351
  }
 }
 dps_results: {
@@ -1651,8 +1651,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 59954.7156
-  tps: 41694.93333
+  dps: 60312.73126
+  tps: 41976.62433
  }
 }
 dps_results: {
@@ -1952,8 +1952,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-TheHungerer-69112"
  value: {
-  dps: 60406.37943
-  tps: 42297.62628
+  dps: 60368.92052
+  tps: 42206.71855
  }
 }
 dps_results: {

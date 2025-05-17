@@ -1116,7 +1116,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 48423.78508
+  dps: 48423.32187
   tps: 43641.84434
  }
 }
@@ -1270,7 +1270,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 48423.11231
+  dps: 48423.54973
   tps: 43641.84434
  }
 }
@@ -1599,7 +1599,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 48422.96117
+  dps: 48423.15659
   tps: 43641.84434
  }
 }
