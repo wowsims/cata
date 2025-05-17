@@ -185,7 +185,12 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 					}
 
 					if config.CD.Timer != nil && spell.charges == 0 {
-						spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+						if spell.MaxCharges > 0 {
+							// spell.CdMultiplier would be concidered within the the recharge time if we ever need that
+							spell.CD.Set(sim.CurrentTime + spell.NextChargeIn(sim))
+						} else {
+							spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+						}
 					}
 
 					if config.SharedCD.Timer != nil {
@@ -221,7 +226,12 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if config.CD.Timer != nil && spell.charges == 0 {
-			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+			if spell.MaxCharges > 0 {
+				// spell.CdMultiplier would be concidered within the the recharge time if we ever need that
+				spell.CD.Set(sim.CurrentTime + spell.NextChargeIn(sim))
+			} else {
+				spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+			}
 		}
 
 		if config.SharedCD.Timer != nil {
@@ -275,7 +285,12 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 		}
 
 		if spell.CD.Timer != nil && spell.charges == 0 {
-			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+			if spell.MaxCharges > 0 {
+				// spell.CdMultiplier would be concidered within the the recharge time if we ever need that
+				spell.CD.Set(sim.CurrentTime + spell.NextChargeIn(sim))
+			} else {
+				spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+			}
 		}
 
 		if spell.SharedCD.Timer != nil {
