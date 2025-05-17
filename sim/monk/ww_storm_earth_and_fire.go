@@ -82,8 +82,6 @@ type StormEarthAndFireController struct {
 	inActiveClones []*StormEarthAndFirePet
 }
 
-const StormEarthAndFireAllowedSpells = MonkSpellChiBurst
-
 // Modifies the spell that should be copied with
 // Damage Multipliers / Tags etc.
 func (pet *StormEarthAndFirePet) modifyCopySpell(sourceSpell *core.Spell, targetSpell *core.Spell) {
@@ -215,8 +213,9 @@ type StormEarthAndFirePet struct {
 
 func (sefClone *StormEarthAndFirePet) Initialize() {
 	// Talents
-	sefClone.registerSEFRushingJadeWind()
+	sefClone.registerSEFChiBurst()
 	sefClone.registerSEFChiWave()
+	sefClone.registerSEFRushingJadeWind()
 
 	// Passives - Windwalker
 	sefClone.registerSEFCombatConditioning()

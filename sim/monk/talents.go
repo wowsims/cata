@@ -58,7 +58,7 @@ var chiWaveDamageActionID = core.ActionID{SpellID: 132467}
 var chiWaveHealActionID = core.ActionID{SpellID: 132463}
 var chiWaveMaxBounces = 7
 var chiWaveBonusCoeff = 0.45
-var chiWaveCoeff = core.CalcScalingSpellAverageEffect(proto.Class_ClassMonk, chiWaveBonusCoeff)
+var chiWaveScaling = core.CalcScalingSpellAverageEffect(proto.Class_ClassMonk, chiWaveBonusCoeff)
 
 func chiWaveSpellConfig(_ *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
 	config := core.SpellConfig{
@@ -138,7 +138,7 @@ func (monk *Monk) registerChiWave() {
 	var chiWaveHealingSpell *core.Spell
 	chiWaveDamageSpell := monk.RegisterSpell(chiWaveDamageSpellConfig(monk, false, core.SpellConfig{
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+			baseDamage := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 			if result.Landed() {
@@ -156,7 +156,7 @@ func (monk *Monk) registerChiWave() {
 
 	chiWaveHealingSpell = monk.RegisterSpell(chiWaveHealSpellConfig(monk, false, core.SpellConfig{
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+			baseHealing := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 
@@ -207,7 +207,7 @@ func (pet *StormEarthAndFirePet) registerSEFChiWave() {
 	var chiWaveHealingSpell *core.Spell
 	chiWaveDamageSpell := pet.RegisterSpell(chiWaveDamageSpellConfig(pet.owner, true, core.SpellConfig{
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+			baseDamage := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
@@ -226,7 +226,7 @@ func (pet *StormEarthAndFirePet) registerSEFChiWave() {
 
 	chiWaveHealingSpell = pet.RegisterSpell(chiWaveHealSpellConfig(pet.owner, true, core.SpellConfig{
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
+			baseHealing := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 
@@ -442,15 +442,16 @@ While casting Chi Burst, you continue to dodge, parry, and auto-attack.
 $damage=${<avg>+$ap*1.21}
 $healing=${<avg>+$ap}
 */
-func (monk *Monk) registerChiBurst() {
-	if !monk.Talents.ChiBurst {
-		return
-	}
+var chiBurstActionID = core.ActionID{SpellID: 123986}
+var chiBurstDamageActionID = core.ActionID{SpellID: 148135}
+var chiBurstHealActionID = core.ActionID{SpellID: 130654}
+var chiBurstBonusCoeff = 1.21
+var chiBurstScaling = core.CalcScalingSpellAverageEffect(proto.Class_ClassMonk, chiWaveBonusCoeff)
 
-	avgDmgScaling := monk.CalcScalingSpellDmg(1.2100000381)
+func chiBurstDamageSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
 
-	chiBurstDamageSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 148135},
+	config := core.SpellConfig{
+		ActionID:       chiBurstDamageActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
@@ -463,7 +464,7 @@ func (monk *Monk) registerChiBurst() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgDmgScaling + spell.MeleeAttackPower()*1.21
+			baseDamage := chiBurstScaling + spell.MeleeAttackPower()*chiBurstBonusCoeff
 
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
 				for _, target := range sim.Encounter.TargetUnits {
@@ -476,10 +477,18 @@ func (monk *Monk) registerChiBurst() {
 			})
 
 		},
-	})
+	}
 
-	chiBurstHealingSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 130654},
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+
+}
+func chiBurstHealSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiBurstHealActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellHealing,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
@@ -499,12 +508,27 @@ func (monk *Monk) registerChiBurst() {
 				spell.DealHealing(sim, result)
 			})
 		},
-	})
+	}
 
-	actionID := core.ActionID{SpellID: 123986}
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+}
+
+func (monk *Monk) registerChiBurst() {
+	if !monk.Talents.ChiBurst {
+		return
+	}
+
+	chiBurstDamageSpell := monk.RegisterSpell(chiBurstDamageSpellConfig(monk, false))
+
+	chiBurstHealingSpell := monk.RegisterSpell(chiBurstHealSpellConfig(monk, false))
+
 	chiBurstFakeCastAura := monk.RegisterAura(core.Aura{
 		Label:    "Chi Burst" + monk.Label,
-		ActionID: actionID,
+		ActionID: chiBurstActionID,
 		Duration: time.Second,
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			chiBurstDamageSpell.Cast(sim, monk.CurrentTarget)
@@ -513,7 +537,7 @@ func (monk *Monk) registerChiBurst() {
 	})
 
 	monk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       chiBurstActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -535,6 +559,15 @@ func (monk *Monk) registerChiBurst() {
 			chiBurstFakeCastAura.Activate(sim)
 		},
 	})
+}
+
+func (pet *StormEarthAndFirePet) registerSEFChiBurst() {
+	if !pet.owner.Talents.ChiBurst {
+		return
+	}
+
+	pet.RegisterSpell(chiBurstDamageSpellConfig(pet.owner, true))
+	pet.RegisterSpell(chiBurstHealSpellConfig(pet.owner, true))
 }
 
 func (monk *Monk) registerPowerStrikes() {
