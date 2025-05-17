@@ -141,93 +141,95 @@ export class FiltersMenu extends BaseModal {
 				});
 			}
 		} else if (Player.WEAPON_SLOTS.includes(slot)) {
-			const weaponTypeSection = this.newSection('Weapon Type');
-			weaponTypeSection.classList.add('filters-menu-section-bool-list');
-			const weaponTypes = player.getPlayerClass().weaponTypes.map(ewt => ewt.weaponType);
+			if (player.getPlayerClass().weaponTypes.length > 0) {
+				const weaponTypeSection = this.newSection('Weapon Type');
+				weaponTypeSection.classList.add('filters-menu-section-bool-list');
+				const weaponTypes = player.getPlayerClass().weaponTypes.map(ewt => ewt.weaponType);
 
-			weaponTypes.forEach(weaponType => {
-				new BooleanPicker<Sim>(weaponTypeSection, player.sim, {
-					id: `filters-weapon-type-${weaponType}`,
-					label: weaponTypeNames.get(weaponType),
-					inline: true,
-					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
-					getValue: (sim: Sim) => sim.getFilters().weaponTypes.includes(weaponType),
-					setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
-						const filters = sim.getFilters();
-						if (newValue) {
-							filters.weaponTypes.push(weaponType);
-						} else {
-							filters.weaponTypes = filters.weaponTypes.filter(at => at != weaponType);
-						}
-						sim.setFilters(eventID, filters);
-					},
+				weaponTypes.forEach(weaponType => {
+					new BooleanPicker<Sim>(weaponTypeSection, player.sim, {
+						id: `filters-weapon-type-${weaponType}`,
+						label: weaponTypeNames.get(weaponType),
+						inline: true,
+						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
+						getValue: (sim: Sim) => sim.getFilters().weaponTypes.includes(weaponType),
+						setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
+							const filters = sim.getFilters();
+							if (newValue) {
+								filters.weaponTypes.push(weaponType);
+							} else {
+								filters.weaponTypes = filters.weaponTypes.filter(at => at != weaponType);
+							}
+							sim.setFilters(eventID, filters);
+						},
+					});
 				});
-			});
 
-			const weaponSpeedSection = this.newSection('Weapon Speed');
-			weaponSpeedSection.classList.add('filters-menu-section-number-list');
-			new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
-				id: 'filters-min-weapon-speed',
-				label: 'Min MH Speed',
-				//labelTooltip: 'Maximum speed for the mainhand weapon. If 0, no maximum value is applied.',
-				float: true,
-				positive: true,
-				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
-				getValue: (sim: Sim) => sim.getFilters().minMhWeaponSpeed,
-				setValue: (eventID: EventID, sim: Sim, newValue: number) => {
-					const filters = sim.getFilters();
-					filters.minMhWeaponSpeed = newValue;
-					sim.setFilters(eventID, filters);
-				},
-			});
-			new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
-				id: 'filters-max-weapon-speed',
-				label: 'Max MH Speed',
-				//labelTooltip: 'Maximum speed for the mainhand weapon. If 0, no maximum value is applied.',
-				float: true,
-				positive: true,
-				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
-				getValue: (sim: Sim) => sim.getFilters().maxMhWeaponSpeed,
-				setValue: (eventID: EventID, sim: Sim, newValue: number) => {
-					const filters = sim.getFilters();
-					filters.maxMhWeaponSpeed = newValue;
-					sim.setFilters(eventID, filters);
-				},
-			});
-
-			if (player.getPlayerSpec().canDualWield) {
+				const weaponSpeedSection = this.newSection('Weapon Speed');
+				weaponSpeedSection.classList.add('filters-menu-section-number-list');
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
-					id: 'filters-min-oh-weapon-speed',
-					label: 'Min OH Speed',
-					//labelTooltip: 'Minimum speed for the offhand weapon. If 0, no minimum value is applied.',
+					id: 'filters-min-weapon-speed',
+					label: 'Min MH Speed',
+					//labelTooltip: 'Maximum speed for the mainhand weapon. If 0, no maximum value is applied.',
 					float: true,
 					positive: true,
 					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
-					getValue: (sim: Sim) => sim.getFilters().minOhWeaponSpeed,
+					getValue: (sim: Sim) => sim.getFilters().minMhWeaponSpeed,
 					setValue: (eventID: EventID, sim: Sim, newValue: number) => {
 						const filters = sim.getFilters();
-						filters.minOhWeaponSpeed = newValue;
+						filters.minMhWeaponSpeed = newValue;
 						sim.setFilters(eventID, filters);
 					},
 				});
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
-					id: 'filters-max-oh-weapon-speed',
-					label: 'Max OH Speed',
-					//labelTooltip: 'Maximum speed for the offhand weapon. If 0, no maximum value is applied.',
+					id: 'filters-max-weapon-speed',
+					label: 'Max MH Speed',
+					//labelTooltip: 'Maximum speed for the mainhand weapon. If 0, no maximum value is applied.',
 					float: true,
 					positive: true,
 					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
-					getValue: (sim: Sim) => sim.getFilters().maxOhWeaponSpeed,
+					getValue: (sim: Sim) => sim.getFilters().maxMhWeaponSpeed,
 					setValue: (eventID: EventID, sim: Sim, newValue: number) => {
 						const filters = sim.getFilters();
-						filters.maxOhWeaponSpeed = newValue;
+						filters.maxMhWeaponSpeed = newValue;
 						sim.setFilters(eventID, filters);
 					},
 				});
+
+				if (player.getPlayerSpec().canDualWield) {
+					new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
+						id: 'filters-min-oh-weapon-speed',
+						label: 'Min OH Speed',
+						//labelTooltip: 'Minimum speed for the offhand weapon. If 0, no minimum value is applied.',
+						float: true,
+						positive: true,
+						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
+						getValue: (sim: Sim) => sim.getFilters().minOhWeaponSpeed,
+						setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+							const filters = sim.getFilters();
+							filters.minOhWeaponSpeed = newValue;
+							sim.setFilters(eventID, filters);
+						},
+					});
+					new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
+						id: 'filters-max-oh-weapon-speed',
+						label: 'Max OH Speed',
+						//labelTooltip: 'Maximum speed for the offhand weapon. If 0, no maximum value is applied.',
+						float: true,
+						positive: true,
+						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
+						getValue: (sim: Sim) => sim.getFilters().maxOhWeaponSpeed,
+						setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+							const filters = sim.getFilters();
+							filters.maxOhWeaponSpeed = newValue;
+							sim.setFilters(eventID, filters);
+						},
+					});
+				}
 			}
-		} else if (slot == ItemSlot.ItemSlotRanged) {
+
 			const rangedweapontypes = player.getPlayerClass().rangedWeaponTypes;
-			if (rangedweapontypes.length <= 1) {
+			if (rangedweapontypes.length < 1) {
 				return;
 			}
 			const rangedWeaponTypeSection = this.newSection('Ranged Weapon Type');

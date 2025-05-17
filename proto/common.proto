@@ -364,7 +364,6 @@ enum RangedWeaponType {
 	RangedWeaponTypeBow = 1;
 	RangedWeaponTypeCrossbow = 2;
 	RangedWeaponTypeGun = 3;
-	RangedWeaponTypeRelic = 4;
 	RangedWeaponTypeThrown = 5;
 	RangedWeaponTypeWand = 6;
 }
@@ -387,7 +386,6 @@ enum ItemSlot {
 	ItemSlotTrinket2 = 13;
 	ItemSlotMainHand = 14; // can be 1h or 2h
 	ItemSlotOffHand = 15;
-	ItemSlotRanged = 16;
 }
 
 enum ItemQuality {
@@ -412,6 +410,7 @@ enum GemColor {
 	GemColorPurple = 7;
 	GemColorPrismatic = 8;
 	GemColorCogwheel = 9;
+	GemColorShaTouched = 10;
 }
 
 enum SpellSchool {

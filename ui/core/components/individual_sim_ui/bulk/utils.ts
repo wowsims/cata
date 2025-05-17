@@ -18,7 +18,6 @@ export enum BulkSimItemSlot {
 	ItemSlotMainHand,
 	ItemSlotOffHand,
 	ItemSlotHandWeapon, // Weapon grouping slot for specs that can dual-wield
-	ItemSlotRanged,
 }
 
 // Return all eligible bulk item slots.
@@ -49,7 +48,6 @@ export const bulkSimSlotNames: Map<BulkSimItemSlot, string> = new Map([
 	[BulkSimItemSlot.ItemSlotMainHand, 'Main Hand'],
 	[BulkSimItemSlot.ItemSlotOffHand, 'Off Hand'],
 	[BulkSimItemSlot.ItemSlotHandWeapon, 'Weapons'],
-	[BulkSimItemSlot.ItemSlotRanged, 'Ranged'],
 ]);
 
 export const itemSlotToBulkSimItemSlot: Map<ItemSlot, BulkSimItemSlot> = new Map([
@@ -69,7 +67,6 @@ export const itemSlotToBulkSimItemSlot: Map<ItemSlot, BulkSimItemSlot> = new Map
 	[ItemSlot.ItemSlotTrinket2, BulkSimItemSlot.ItemSlotTrinket],
 	[ItemSlot.ItemSlotMainHand, BulkSimItemSlot.ItemSlotMainHand],
 	[ItemSlot.ItemSlotOffHand, BulkSimItemSlot.ItemSlotOffHand],
-	[ItemSlot.ItemSlotRanged, BulkSimItemSlot.ItemSlotRanged],
 ]);
 
 export const getBulkItemSlotFromSlot = (slot: ItemSlot, canDualWield: boolean): BulkSimItemSlot => {

@@ -1862,7 +1862,7 @@ const itemTypeToSlotsMap: Partial<Record<ItemType, Array<ItemSlot>>> = {
 	[ItemType.ItemTypeFeet]: [ItemSlot.ItemSlotFeet],
 	[ItemType.ItemTypeFinger]: [ItemSlot.ItemSlotFinger1, ItemSlot.ItemSlotFinger2],
 	[ItemType.ItemTypeTrinket]: [ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
-	[ItemType.ItemTypeRanged]: [ItemSlot.ItemSlotRanged],
+	[ItemType.ItemTypeRanged]: [ItemSlot.ItemSlotMainHand],
 };
 
 export function getEligibleItemSlots(item: Item, isFuryWarrior?: boolean): Array<ItemSlot> {
@@ -1953,13 +1953,17 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 	)
 		return false;
 
-	if (sharedSlots.includes(ItemSlot.ItemSlotRanged)) {
+	if (enchant.type == ItemType.ItemTypeRanged) {
 		if (
 			![RangedWeaponType.RangedWeaponTypeBow, RangedWeaponType.RangedWeaponTypeCrossbow, RangedWeaponType.RangedWeaponTypeGun].includes(
 				item.rangedWeaponType,
 			)
 		)
 			return false;
+	}
+
+	if (item.rangedWeaponType > 0 && enchant.type != ItemType.ItemTypeRanged) {
+		return false;
 	}
 
 	return true;

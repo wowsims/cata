@@ -36,10 +36,8 @@ func TestEnhancement(t *testing.T) {
 				proto.WeaponType_WeaponTypeShield,
 				proto.WeaponType_WeaponTypeStaff,
 			},
-			ArmorType: proto.ArmorType_ArmorTypeMail,
-			RangedWeaponTypes: []proto.RangedWeaponType{
-				proto.RangedWeaponType_RangedWeaponTypeRelic,
-			},
+			ArmorType:         proto.ArmorType_ArmorTypeMail,
+			RangedWeaponTypes: []proto.RangedWeaponType{},
 		},
 	}))
 }
