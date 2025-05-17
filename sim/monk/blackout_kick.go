@@ -35,7 +35,7 @@ Kick with a blast of Chi energy, dealing ${7.12*$<low>} to ${7.12*$<high>} Physi
 
 -- Teachings of the Monastery --
 */
-var blackoutKickActionID = core.ActionID{SpellID: 100784}.WithTag(1)
+var blackoutKickActionID = core.ActionID{SpellID: 100784}
 
 func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
 	config := core.SpellConfig{
@@ -55,7 +55,7 @@ func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellCo
 
 	if isSEFClone {
 		config.ActionID = config.ActionID.WithTag(SEFSpellID)
-		config.Flags ^= core.SpellFlagAPL
+		config.Flags ^= core.SpellFlagAPL ^ SpellFlagSpender
 	}
 
 	return config
