@@ -114,6 +114,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			}
 		}
 
+		if spell.MaxCharges > 0 && spell.charges == 0 {
+			return spell.castFailureHelper(sim, "not enough charges")
+		}
+
 		if !config.IgnoreHaste {
 			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)).Round(time.Millisecond)
 			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell).Round(time.Millisecond)
@@ -176,7 +180,11 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 						spell.Cost.SpendCost(sim, spell)
 					}
 
-					if config.CD.Timer != nil {
+					if spell.charges > 0 {
+						spell.ConsumeCharge(sim)
+					}
+
+					if config.CD.Timer != nil && spell.charges == 0 {
 						spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 					}
 
@@ -208,7 +216,11 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.Cost.SpendCost(sim, spell)
 		}
 
-		if config.CD.Timer != nil {
+		if spell.charges > 0 {
+			spell.ConsumeCharge(sim)
+		}
+
+		if config.CD.Timer != nil && spell.charges == 0 {
 			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
@@ -258,7 +270,11 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
 		}
 
-		if spell.CD.Timer != nil {
+		if spell.charges > 0 {
+			spell.ConsumeCharge(sim)
+		}
+
+		if spell.CD.Timer != nil && spell.charges == 0 {
 			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
