@@ -1,7 +1,6 @@
 package monk
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -141,11 +140,6 @@ func (controller *StormEarthAndFireController) PickClone(sim *core.Simulation, t
 	validClones := controller.getInactiveClones()
 	cloneIndex := int32(sim.RollWithLabel(0, float64(len(validClones)), "Pick Random Clone"))
 	clone = validClones[cloneIndex]
-
-	if sim.Log != nil {
-		controller.owner.Log(sim, "[DEBUG] Picked clone %s for target %s", clone.Name, target.Label)
-	}
-	fmt.Printf("[DEBUG] Picked clone %s (Index=%v) for target %s \n", clone.Name, cloneIndex, target.Label)
 
 	controller.enableClone(sim, clone, target)
 }
