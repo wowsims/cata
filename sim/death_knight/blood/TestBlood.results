@@ -926,8 +926,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-HeartofRage-59224"
  value: {
-  dps: 22778.62776
-  tps: 115177.81571
+  dps: 22476.70254
+  tps: 113665.5968
   hps: 5354.68438
  }
 }
@@ -1286,8 +1286,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 22795.11453
-  tps: 114864.8467
+  dps: 22940.20205
+  tps: 115664.82163
   hps: 5309.79177
  }
 }
@@ -1462,8 +1462,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 22814.33494
-  tps: 114965.10941
+  dps: 22959.3479
+  tps: 115786.09258
   hps: 5309.79177
  }
 }
@@ -1790,8 +1790,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 22797.70512
-  tps: 114898.06162
+  dps: 22933.44098
+  tps: 115639.70807
   hps: 5309.79177
  }
 }
@@ -2110,9 +2110,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-TheHungerer-69112"
  value: {
-  dps: 22348.52869
-  tps: 112489.47041
-  hps: 5464.34341
+  dps: 22510.74329
+  tps: 113800.73606
+  hps: 5457.94224
  }
 }
 dps_results: {

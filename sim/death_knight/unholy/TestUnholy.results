@@ -1270,9 +1270,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 51545.88136
-  tps: 36322.23006
-  hps: 703.46131
+  dps: 51822.58144
+  tps: 36565.99452
+  hps: 702.57646
  }
 }
 dps_results: {
@@ -1446,9 +1446,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 51461.84085
-  tps: 36212.81482
-  hps: 702.57646
+  dps: 51928.74142
+  tps: 36563.62009
+  hps: 703.46131
  }
 }
 dps_results: {
@@ -1782,8 +1782,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 51629.94262
-  tps: 36323.02988
+  dps: 51978.00915
+  tps: 36622.76538
   hps: 705.23103
  }
 }
@@ -2102,9 +2102,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-TheHungerer-69112"
  value: {
-  dps: 51287.73703
-  tps: 36009.22827
-  hps: 702.57646
+  dps: 51180.12918
+  tps: 35936.19839
+  hps: 700.80674
  }
 }
 dps_results: {
