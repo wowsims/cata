@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (shaman *Shaman) registerFireElementalTotem() {
+func (shaman *Shaman) registerFireElementalTotem(isGuardian bool) {
 
 	actionID := core.ActionID{SpellID: 2894}
 
@@ -18,7 +18,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 		ActionID: actionID,
 		Duration: totalDuration,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.FireElemental.ChangeStatInheritance(shaman.FireElemental.shamanOwner.fireElementalStatInheritance())
+			shaman.FireElemental.ChangeStatInheritance(shaman.FireElemental.shamanOwner.fireElementalStatInheritance(isGuardian))
 		},
 	})
 
@@ -62,8 +62,8 @@ func (shaman *Shaman) registerFireElementalTotem() {
 		},
 	})
 
-	/*shaman.AddMajorCooldown(core.MajorCooldown{
+	shaman.AddMajorCooldown(core.MajorCooldown{
 		Spell: shaman.FireElementalTotem,
 		Type:  core.CooldownTypeDPS,
-	})*/
+	})
 }

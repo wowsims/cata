@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (shaman *Shaman) registerEarthElementalTotem() {
+func (shaman *Shaman) registerEarthElementalTotem(isGuardian bool) {
 
 	actionID := core.ActionID{SpellID: 2062}
 
@@ -18,7 +18,7 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 		ActionID: actionID,
 		Duration: totalDuration,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.EarthElemental.ChangeStatInheritance(shaman.EarthElemental.shamanOwner.earthElementalStatInheritance())
+			shaman.EarthElemental.ChangeStatInheritance(shaman.EarthElemental.shamanOwner.earthElementalStatInheritance(isGuardian))
 		},
 	})
 
@@ -55,8 +55,8 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 		},
 	})
 
-	/*shaman.AddMajorCooldown(core.MajorCooldown{
+	shaman.AddMajorCooldown(core.MajorCooldown{
 		Spell: shaman.EarthElementalTotem,
 		Type:  core.CooldownTypeDPS,
-	})*/
+	})
 }

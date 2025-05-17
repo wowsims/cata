@@ -192,9 +192,9 @@ func applyRaceEffects(agent Agent) {
 		})
 
 	case proto.Race_RaceOrc:
-		// Command (Pet damage +5%)
+		// Command (Pet damage +2%)
 		for _, pet := range character.Pets {
-			pet.PseudoStats.DamageDealtMultiplier *= 1.05
+			pet.PseudoStats.DamageDealtMultiplier *= 1.02
 		}
 
 		// Blood Fury
@@ -204,14 +204,14 @@ func applyRaceEffects(agent Agent) {
 
 		switch character.Class {
 		case proto.Class_ClassMage:
-			spBonus = 584.5
+			spBonus = 2257.0
 		case proto.Class_ClassWarlock:
-			spBonus = 584.5
+			spBonus = 2257.0
 		case proto.Class_ClassShaman:
-			spBonus = 584.5
-			apBonus = 1169.0
+			spBonus = 2257.0
+			apBonus = 4514.0
 		default:
-			apBonus = 1169.0
+			apBonus = 4514.0
 		}
 
 		buffStats := stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}
@@ -227,7 +227,7 @@ func applyRaceEffects(agent Agent) {
 		})
 
 		// Axe specialization
-		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
+		applyWeaponSpecialization(character, 4*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist)
 	case proto.Race_RaceTauren:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02

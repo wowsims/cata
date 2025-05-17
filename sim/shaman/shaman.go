@@ -56,8 +56,8 @@ func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, t
 		shaman.AddStat(stats.MP5, 2138)
 	}
 
-	shaman.FireElemental = shaman.NewFireElemental()
-	shaman.EarthElemental = shaman.NewEarthElemental()
+	shaman.FireElemental = shaman.NewFireElemental(!shaman.Talents.PrimalElementalist)
+	shaman.EarthElemental = shaman.NewEarthElemental(!shaman.Talents.PrimalElementalist)
 
 	return shaman
 }
@@ -209,8 +209,8 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 func (shaman *Shaman) Initialize() {
 	shaman.registerChainLightningSpell()
-	shaman.registerFireElementalTotem()
-	shaman.registerEarthElementalTotem()
+	shaman.registerFireElementalTotem(!shaman.Talents.PrimalElementalist)
+	shaman.registerEarthElementalTotem(!shaman.Talents.PrimalElementalist)
 	shaman.registerLightningBoltSpell()
 	shaman.registerLightningShieldSpell()
 	shaman.registerSpiritwalkersGraceSpell()

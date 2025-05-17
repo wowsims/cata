@@ -13,103 +13,111 @@ func (fireElemental *FireElemental) registerFireBlast() {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: 276,
+			FlatCost: 40,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    fireElemental.NewTimer(),
-				Duration: time.Second * 5,
+				Duration: time.Second * 6,
 			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
+		CritMultiplier:   fireElemental.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.429,
+		BonusCoefficient: 0.42899999022,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO these are approximation, from base SP
-			spell.CalcAndDealDamage(sim, target, sim.Roll(220, 268), spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
+			baseDamage := 14.0 //Magic number from beta testing
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }
 
 func (fireElemental *FireElemental) registerFireNova() {
 	fireElemental.FireNova = fireElemental.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 424340},
+		ActionID:    core.ActionID{SpellID: 117588},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: 207,
+			FlatCost: 30,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
 				CastTime: time.Second * 2,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    fireElemental.NewTimer(),
-				Duration: time.Second * 5,
+				Duration: time.Second * 10,
 			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
+		CritMultiplier:   fireElemental.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1.00,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(453, 537) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
+				levelScalingMultiplier := 91.517600 / 12.102900
+				baseDamage := sim.Roll(49*levelScalingMultiplier, 58*levelScalingMultiplier) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing 49 58
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
 }
 
-func (fireElemental *FireElemental) registerFireShieldAura() {
-	actionID := core.ActionID{SpellID: 13376}
+func (fireElemental *FireElemental) registerImmolate() {
+	actionID := core.ActionID{SpellID: 118297}
 
-	//dummy spell
-	spell := fireElemental.RegisterSpell(core.SpellConfig{
+	fireElemental.Immolate = fireElemental.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskSpellDamage,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
+		CritMultiplier:   fireElemental.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.032,
+		BonusCoefficient: 1.0,
 
-		Dot: core.DotConfig{
-			IsAOE: true,
-			Aura: core.Aura{
-				Label: "FireShield",
+		ManaCost: core.ManaCostOptions{
+			FlatCost: 95,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD:      core.GCDDefault,
+				CastTime: time.Second * 2,
 			},
-			NumberOfTicks: 40,
-			TickLength:    time.Second * 3,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// TODO is this the right affect should it be Capped?
-				// TODO these are approximation, from base SP
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					//baseDamage *= sim.Encounter.AOECapMultiplier()
-					dot.Spell.CalcAndDealDamage(sim, aoeTarget, 102, dot.Spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
-				}
+			CD: core.Cooldown{
+				Timer:    fireElemental.NewTimer(),
+				Duration: time.Second * 10,
 			},
 		},
-	})
-
-	fireElemental.FireShieldAura = fireElemental.RegisterAura(core.Aura{
-		Label:    "Fire Shield",
-		ActionID: actionID,
-		Duration: time.Minute * 2,
-		OnGain: func(_ *core.Aura, sim *core.Simulation) {
-			spell.AOEDot().Apply(sim)
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !fireElemental.IsGuardian()
+		},
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Immolate",
+			},
+			NumberOfTicks:    7,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: 0.34999999404,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.SnapshotBaseDamage = fireElemental.shamanOwner.CalcScalingSpellDmg(0.62800002098)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeMagicHitAndCrit)
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := fireElemental.shamanOwner.CalcScalingSpellDmg(1.79499995708)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 }

@@ -235,11 +235,7 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 }
 
 func (shaman *Shaman) ApplyPrimalElementalist() {
-	if !shaman.Talents.PrimalElementalist {
-		return
-	}
-
-	//TODO
+	//In the corresponding pet files
 }
 
 func (shaman *Shaman) ApplyElementalBlast() {
