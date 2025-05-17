@@ -60,6 +60,7 @@ type BalanceDruid struct {
 	Starfall  *druid.DruidSpell
 
 	DreamOfCenarius *core.Aura
+	NaturesGrace    *core.Aura
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
@@ -104,4 +105,8 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
 	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
+}
+
+type BalanceDruidAgent interface {
+	GetBalanceDruid() *BalanceDruid
 }

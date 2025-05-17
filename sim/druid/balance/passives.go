@@ -87,7 +87,7 @@ func (moonkin *BalanceDruid) registerBalanceOfPower() {
 }
 
 func (moonkin *BalanceDruid) registerNaturesGrace() {
-	ngAura := moonkin.RegisterAura(core.Aura{
+	moonkin.NaturesGrace = moonkin.RegisterAura(core.Aura{
 		Label:    "Nature's Grace",
 		ActionID: core.ActionID{SpellID: 16886},
 		Duration: time.Second * 15,
@@ -102,7 +102,7 @@ func (moonkin *BalanceDruid) registerNaturesGrace() {
 	if moonkin.HasEclipseBar() {
 		moonkin.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
 			if gained {
-				ngAura.Activate(sim)
+				moonkin.NaturesGrace.Activate(sim)
 			}
 		})
 	}
