@@ -227,11 +227,12 @@ const (
 	Yellow GemType = 0x4
 	Blue   GemType = 0x8
 	// Combined colors:
-	Orange    GemType = Red | Yellow        // 0x6
-	Purple    GemType = Red | Blue          // 0xa
-	Green     GemType = Yellow | Blue       // 0xc
-	Prismatic GemType = Red | Yellow | Blue // 0xe
-	Cogwheel  GemType = 0x20
+	Orange     GemType = Red | Yellow        // 0x6
+	Purple     GemType = Red | Blue          // 0xa
+	Green      GemType = Yellow | Blue       // 0xc
+	Prismatic  GemType = Red | Yellow | Blue // 0xe
+	ShaTouched GemType = 0x10
+	Cogwheel   GemType = 0x20
 )
 
 func (gem GemType) ToProto() proto.GemColor {
@@ -252,6 +253,8 @@ func (gem GemType) ToProto() proto.GemColor {
 		return proto.GemColor_GemColorGreen
 	case Prismatic:
 		return proto.GemColor_GemColorPrismatic
+	case ShaTouched:
+		return proto.GemColor_GemColorShaTouched
 	case Cogwheel:
 		return proto.GemColor_GemColorCogwheel
 	default:

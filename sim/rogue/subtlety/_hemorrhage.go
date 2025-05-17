@@ -58,7 +58,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		ActionID:       hemoActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellHemorrhage,
 
 		EnergyCost: core.EnergyCostOptions{

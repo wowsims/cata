@@ -34,13 +34,13 @@ const LongDuration = 300
 var DefaultTargetProto = &proto.Target{
 	Level: CharacterLevel + 3,
 	Stats: stats.Stats{
-		stats.Armor:       11977,
-		stats.AttackPower: 650,
+		stats.Armor:       24835,
+		stats.AttackPower: 0,
 	}.ToProtoArray(),
 	MobType: proto.MobType_MobTypeMechanical,
 
-	SwingSpeed:    2.5,
-	MinBaseDamage: 210000,
+	SwingSpeed:    2,
+	MinBaseDamage: 550000,
 	ParryHaste:    false,
 	DamageSpread:  0.4,
 }
@@ -75,18 +75,17 @@ var FullRaidBuffs = &proto.RaidBuffs{
 
 	// Major Mana Replenishment
 	ManaTideTotemCount: 1, // Shamans
+
+	// Crit Damage %
+	SkullBannerCount: 1, // Warrior
+
+	// Additional Nature Damage Proc
+	StormlashTotemCount: 1, // Shaman
 }
 
-var FullPartyBuffs = &proto.PartyBuffs{
-	//BraidedEterniumChain: true,
-	// ManaTideTotems: 1,
-}
-var FullIndividualBuffs = &proto.IndividualBuffs{
-	// BlessingOfMight:     true,
-	// BlessingOfSanctuary: true,
-	// BlessingOfWisdom:    true,
-	// JudgementsOfTheWise: true,
-}
+var FullPartyBuffs = &proto.PartyBuffs{}
+
+var FullIndividualBuffs = &proto.IndividualBuffs{}
 
 var FullDebuffs = &proto.Debuffs{
 	WeakenedBlows:         true,
@@ -102,6 +101,7 @@ var FullDebuffs = &proto.Debuffs{
 	SporeCloud:            true,
 	Slow:                  true,
 	MindNumbingPoison:     true,
+	CurseOfEnfeeblement:   true,
 }
 
 func NewDefaultTarget() *proto.Target {

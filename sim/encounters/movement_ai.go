@@ -14,19 +14,19 @@ func addMovementAI() {
 		Config: &proto.Target{
 			Id:        31147,
 			Name:      "Movement",
-			Level:     88,
+			Level:     93,
 			MobType:   proto.MobType_MobTypeMechanical,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
 				stats.Health:      120_016_403,
-				stats.Armor:       11977,
-				stats.AttackPower: 650,
+				stats.Armor:       24835,
+				stats.AttackPower: 0,
 			}.ToProtoArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
-			SwingSpeed:       2.5,
-			MinBaseDamage:    210000,
+			SwingSpeed:       2,
+			MinBaseDamage:    550000,
 			DamageSpread:     0.4,
 			SuppressDodge:    false,
 			ParryHaste:       false,

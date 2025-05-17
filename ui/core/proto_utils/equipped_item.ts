@@ -1,3 +1,4 @@
+import { MAX_CHALLENGE_MODE_ILVL } from '../constants/mechanics';
 import {
 	GemColor,
 	ItemLevelState,
@@ -7,6 +8,7 @@ import {
 	ItemType,
 	Profession,
 	PseudoStat,
+	RangedWeaponType,
 	ReforgeStat,
 	ScalingItemProperties,
 	Stat,
@@ -28,11 +30,13 @@ export const getWeaponStatsBySlot = (item: Item, slot: ItemSlot, upgradeStep: It
 	if (item.weaponSpeed > 0) {
 		const weaponDps = getWeaponDPS(item, upgradeStep);
 		if (slot === ItemSlot.ItemSlotMainHand) {
-			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
+			if (item.rangedWeaponType > RangedWeaponType.RangedWeaponTypeUnknown) {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
+			} else {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
+			}
 		} else if (slot === ItemSlot.ItemSlotOffHand) {
 			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-		} else if (slot === ItemSlot.ItemSlotRanged) {
-			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
 		}
 	}
 	return itemStats;
@@ -55,6 +59,7 @@ type EquippedItemOptions = {
 	randomSuffix?: ItemRandomSuffix | null;
 	reforge?: ReforgeStat | null;
 	upgrade?: ItemLevelState | null;
+	challengeMode?: boolean;
 };
 
 /**
@@ -69,16 +74,18 @@ export class EquippedItem {
 	readonly _enchant: Enchant | null;
 	readonly _gems: Array<Gem | null>;
 	readonly _upgrade: ItemLevelState;
+	readonly _challengeMode: boolean;
 
 	readonly numPossibleSockets: number;
 
-	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade }: EquippedItemOptions) {
+	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeMode }: EquippedItemOptions) {
 		this._item = item;
 		this._enchant = enchant || null;
 		this._gems = gems || [];
 		this._randomSuffix = randomSuffix || null;
 		this._reforge = reforge || null;
 		this._upgrade = upgrade ?? ItemLevelState.Base;
+		this._challengeMode = challengeMode ?? false;
 
 		this.numPossibleSockets = this.numSockets(true);
 
@@ -112,19 +119,30 @@ export class EquippedItem {
 		return this._gems.map(gem => (gem == null ? null : Gem.clone(gem)));
 	}
 	get upgrade(): ItemLevelState {
-		return this._upgrade;
+		let upgradeLevel: ItemLevelState;
+		if (!this._challengeMode) {
+			upgradeLevel = this._upgrade;
+		} else if (this._item.scalingOptions[ItemLevelState.Base].ilvl <= MAX_CHALLENGE_MODE_ILVL) {
+			upgradeLevel = ItemLevelState.Base;
+		} else {
+			upgradeLevel = ItemLevelState.ChallengeMode;
+		}
+		return upgradeLevel;
+	}
+	get randomPropPoints(): number {
+		return this.item.scalingOptions[this.upgrade].randPropPoints || this.item.randPropPoints;
 	}
 	get ilvl(): number {
 		return this.item.scalingOptions[this.upgrade].ilvl;
 	}
 	// Returns the ilvl difference from the previous upgrade step
 	get ilvlFromPrevious(): number {
-		if (!this.upgrade) return 0;
+		if (this.upgrade < 1) return 0;
 		return this.item.scalingOptions[this.upgrade].ilvl - this.item.scalingOptions[this.upgrade - 1].ilvl;
 	}
 	// Returns the ilvl difference from the base item level
 	get ilvlFromBase(): number {
-		if (!this.upgrade) return 0;
+		if (this.upgrade < 1) return 0;
 		return this.item.scalingOptions[this.upgrade].ilvl - this.item.scalingOptions[ItemLevelState.Base].ilvl;
 	}
 
@@ -132,7 +150,7 @@ export class EquippedItem {
 		reforge = reforge || this.reforge;
 		if (!reforge) return null;
 		const { id, fromStat, toStat, multiplier } = reforge;
-		const item = this.getWithDynamicStats().item;
+		const item = this.item;
 		const fromAmount = Math.ceil(-item.stats[fromStat] * multiplier);
 		const toAmount = Math.floor(item.stats[fromStat] * multiplier);
 
@@ -184,6 +202,8 @@ export class EquippedItem {
 
 		if (this._upgrade !== other.upgrade) return false;
 
+		if (this._challengeMode !== other._challengeMode) return false;
+
 		return true;
 	}
 
@@ -220,6 +240,7 @@ export class EquippedItem {
 			item,
 			enchant: newEnchant,
 			gems: newGems,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -234,6 +255,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -248,6 +270,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge,
 			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -262,6 +285,22 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade,
+			challengeMode: this._challengeMode,
+		});
+	}
+
+	/**
+	 * Returns a new EquippedItem as if it was scaled for Challenge Mode
+	 */
+	withChallengeMode(enabled: boolean): EquippedItem {
+		return new EquippedItem({
+			item: this._item,
+			enchant: this._enchant,
+			gems: this._gems,
+			randomSuffix: this._randomSuffix,
+			reforge: this._reforge,
+			upgrade: this._upgrade,
+			challengeMode: enabled,
 		});
 	}
 
@@ -283,6 +322,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -333,25 +373,21 @@ export class EquippedItem {
 			randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 
-	getRandomPropPoints(): number {
-		return this.item.scalingOptions[this._upgrade]?.randPropPoints || this.item.randPropPoints;
-	}
-
-	getWithDynamicStats() {
+	withDynamicStats() {
 		const item = this.item;
-		const scalingOptions = this._item.scalingOptions[this._upgrade];
+		const scalingOptions = item.scalingOptions[this.upgrade];
 		item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
 		item.weaponDamageMin = scalingOptions.weaponDamageMin;
 		item.weaponDamageMax = scalingOptions.weaponDamageMax;
+		item.randPropPoints = scalingOptions.randPropPoints;
 
 		if (this._randomSuffix) {
-			const randomPropPoints = this.getRandomPropPoints();
-			item.randPropPoints = randomPropPoints;
 			item.stats = item.stats.map((stat, index) =>
-				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * randomPropPoints) / 10000) : stat,
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * item.randPropPoints) / 10000) : stat,
 			);
 		}
 
@@ -362,11 +398,21 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 
+	// Returns calculated stats
+	// if slot is provided it will include slot specific stats like weapon DPS
+	calcStats(slot?: ItemSlot): Stats {
+		const item = this.item;
+		let stats = new Stats(item.stats);
+		if (typeof slot === 'number') stats = stats.add(getWeaponStatsBySlot(item, slot, this.upgrade));
+		return stats;
+	}
+
 	asActionId(): ActionId {
-		return ActionId.fromItemId(this._item.id, undefined, this._randomSuffix?.id || undefined, undefined, this._upgrade);
+		return ActionId.fromItemId(this._item.id, undefined, this._randomSuffix?.id || undefined, undefined, this.upgrade);
 	}
 
 	asSpec(): ItemSpec {
@@ -377,6 +423,7 @@ export class EquippedItem {
 			gems: this._gems.map(gem => gem?.id || 0),
 			reforging: this._reforge?.id,
 			upgradeStep: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 

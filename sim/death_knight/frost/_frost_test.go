@@ -84,7 +84,5 @@ var ItemFilter = core.ItemFilter{
 		proto.WeaponType_WeaponTypeSword,
 		proto.WeaponType_WeaponTypeMace,
 	},
-	RangedWeaponTypes: []proto.RangedWeaponType{
-		proto.RangedWeaponType_RangedWeaponTypeRelic,
-	},
+	RangedWeaponTypes: []proto.RangedWeaponType{},
 }

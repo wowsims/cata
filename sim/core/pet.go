@@ -23,6 +23,17 @@ type OnPetDisable func(sim *Simulation)
 type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
 type PetMeleeSpeedInheritance func(amount float64)
 
+type PetConfig struct {
+	Name                            string
+	Owner                           *Character
+	BaseStats                       stats.Stats
+	StatInheritance                 PetStatInheritance
+	EnabledOnStart                  bool
+	IsGuardian                      bool
+	HasDynamicMeleeSpeedInheritance bool
+	HasDynamicCastSpeedInheritance  bool
+}
+
 // Pet is an extension of Character, for any entity created by a player that can
 // take actions on its own.
 type Pet struct {
@@ -42,8 +53,15 @@ type Pet struct {
 	inheritedStats         stats.Stats
 	inheritanceDelay       time.Duration
 
-	// DK pets also inherit their owner's MeleeSpeed. This replace OwnerAttackSpeedChanged.
+	// In MoP pets inherit their owners melee speed and cast speed
+	// rather than having auras such as Heroism being applied to them.
 	dynamicMeleeSpeedInheritance PetMeleeSpeedInheritance
+	dynamicCastSpeedInheritance  PetMeleeSpeedInheritance
+
+	// If true the pet will automatically inherit the owner's melee speed
+	hasDynamicMeleeSpeedInheritance bool
+	// If true the pet will automatically inherit the owner's cast speed
+	hasDynamicCastSpeedInheritance bool
 
 	isReset bool
 
@@ -51,17 +69,19 @@ type Pet struct {
 	// the pet on expiration.
 	timeoutAction *PendingAction
 
+	// Examples:
 	// DK Raise Dead is doing its whole RP thing by climbing out of the ground before attacking.
+	// Monk clones Rush towards targets before attacking.
 	startAttackDelay time.Duration
 }
 
-func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritance PetStatInheritance, enabledOnStart bool, isGuardian bool) Pet {
+func NewPet(config PetConfig) Pet {
 	pet := Pet{
 		Character: Character{
 			Unit: Unit{
 				Type:        PetUnit,
-				Index:       owner.Party.Raid.getNextPetIndex(),
-				Label:       fmt.Sprintf("%s - %s", owner.Label, name),
+				Index:       config.Owner.Party.Raid.getNextPetIndex(),
+				Label:       fmt.Sprintf("%s - %s", config.Owner.Label, config.Name),
 				Level:       CharacterLevel,
 				PseudoStats: stats.NewPseudoStats(),
 				auraTracker: newAuraTracker(),
@@ -69,27 +89,29 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 
 				StatDependencyManager: stats.NewStatDependencyManager(),
 
-				ReactionTime: owner.ReactionTime,
+				ReactionTime: config.Owner.ReactionTime,
 
 				StartDistanceFromTarget: MaxMeleeRange, // TODO: Match to owner and add movement logic to pet rotations
 			},
-			Name:       name,
-			Party:      owner.Party,
-			PartyIndex: owner.PartyIndex,
-			baseStats:  baseStats,
+			Name:       config.Name,
+			Party:      config.Owner.Party,
+			PartyIndex: config.Owner.PartyIndex,
+			baseStats:  config.BaseStats,
 		},
-		Owner:           owner,
-		statInheritance: statInheritance,
-		enabledOnStart:  enabledOnStart,
-		isGuardian:      isGuardian,
+		Owner:                           config.Owner,
+		statInheritance:                 config.StatInheritance,
+		hasDynamicMeleeSpeedInheritance: config.HasDynamicMeleeSpeedInheritance,
+		hasDynamicCastSpeedInheritance:  config.HasDynamicCastSpeedInheritance,
+		enabledOnStart:                  config.EnabledOnStart,
+		isGuardian:                      config.IsGuardian,
 	}
-	pet.spellCritMultiplier = pet.DefaultCritMultiplier()
+
 	pet.GCD = pet.NewTimer()
 	pet.RotationTimer = pet.NewTimer()
 
-	pet.AddStats(baseStats)
+	pet.AddStats(config.BaseStats)
 	pet.addUniversalStatDependencies()
-	pet.PseudoStats.InFrontOfTarget = owner.PseudoStats.InFrontOfTarget
+	pet.PseudoStats.InFrontOfTarget = config.Owner.PseudoStats.InFrontOfTarget
 
 	return pet
 }
@@ -174,6 +196,18 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		pet.OnPetEnable(sim)
 	}
 
+	if pet.hasDynamicMeleeSpeedInheritance {
+		pet.enableDynamicMeleeSpeed(func(amount float64) {
+			pet.MultiplyMeleeSpeed(sim, amount)
+		})
+	}
+
+	if pet.hasDynamicCastSpeedInheritance {
+		pet.enableDynamicCastSpeed(func(amount float64) {
+			pet.MultiplyCastSpeed(amount)
+		})
+	}
+
 	pet.SetGCDTimer(sim, max(0, sim.CurrentTime+pet.startAttackDelay, sim.CurrentTime))
 	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
 		pet.AutoAttacks.EnableAutoSwing(sim)
@@ -224,7 +258,7 @@ func (pet *Pet) SetStartAttackDelay(startAttackDelay time.Duration) {
 	pet.startAttackDelay = startAttackDelay
 }
 
-// Enables and possibly updates how the pet inherits its owner's stats. DK use only.
+// Enables and possibly updates how the pet inherits its owner's stats.
 func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 	if !slices.Contains(pet.Owner.DynamicStatsPets, pet) {
 		pet.Owner.DynamicStatsPets = append(pet.Owner.DynamicStatsPets, pet)
@@ -232,12 +266,36 @@ func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 	pet.dynamicStatInheritance = inheritance
 }
 
-// Enables and possibly updates how the pet inherits its owner's melee speed. DK use only.
+// Enables and possibly updates how the pet inherits its owner's melee speed.
 func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
+	if pet.hasDynamicMeleeSpeedInheritance {
+		panic("To use custom EnableDynamicMeleeSpeed remove hasDynamicMeleeSpeedInheritance from the Pet constructor")
+	}
+	pet.enableDynamicMeleeSpeed(inheritance)
+}
+
+func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicMeleeSpeedPets, pet) {
 		pet.Owner.DynamicMeleeSpeedPets = append(pet.Owner.DynamicMeleeSpeedPets, pet)
+		inheritance(pet.Owner.PseudoStats.MeleeSpeedMultiplier)
 	}
 	pet.dynamicMeleeSpeedInheritance = inheritance
+}
+
+// Enables and possibly updates how the pet inherits its owner's cast speed.
+func (pet *Pet) EnableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
+	if pet.hasDynamicCastSpeedInheritance {
+		panic("To use custom EnableDynamicCastSpeed remove hasDynamicCastSpeedInheritance from the Pet constructor")
+	}
+	pet.enableDynamicCastSpeed(inheritance)
+}
+
+func (pet *Pet) enableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
+	if !slices.Contains(pet.Owner.DynamicCastSpeedPets, pet) {
+		pet.Owner.DynamicCastSpeedPets = append(pet.Owner.DynamicCastSpeedPets, pet)
+		inheritance(pet.Owner.PseudoStats.CastSpeedMultiplier)
+	}
+	pet.dynamicCastSpeedInheritance = inheritance
 }
 
 // Some pets, i.E. Shadowfiend only inherit their owners stat after a brief period of time
@@ -268,7 +326,20 @@ func (pet *Pet) Disable(sim *Simulation) {
 		if idx := slices.Index(pet.Owner.DynamicMeleeSpeedPets, pet); idx != -1 {
 			pet.Owner.DynamicMeleeSpeedPets = removeBySwappingToBack(pet.Owner.DynamicMeleeSpeedPets, idx)
 		}
+
+		// reset melee speed inheritance here so pets that get enabled later to not keep it
+		pet.dynamicMeleeSpeedInheritance(1 / pet.Owner.PseudoStats.MeleeSpeedMultiplier)
 		pet.dynamicMeleeSpeedInheritance = nil
+	}
+
+	if pet.dynamicCastSpeedInheritance != nil {
+		if idx := slices.Index(pet.Owner.DynamicCastSpeedPets, pet); idx != -1 {
+			pet.Owner.DynamicCastSpeedPets = removeBySwappingToBack(pet.Owner.DynamicCastSpeedPets, idx)
+		}
+
+		// reset cast speed inheritance here so pets that get enabled later to not keep it
+		pet.dynamicCastSpeedInheritance(1 / pet.Owner.PseudoStats.CastSpeedMultiplier)
+		pet.dynamicCastSpeedInheritance = nil
 	}
 
 	pet.CancelGCDTimer(sim)

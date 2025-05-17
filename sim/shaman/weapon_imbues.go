@@ -47,7 +47,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       procMask,
 		ClassSpellMask: SpellMaskWindfuryWeapon,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),

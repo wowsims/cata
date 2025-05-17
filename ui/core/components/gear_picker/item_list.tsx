@@ -195,6 +195,7 @@ export default class ItemList<T extends ItemListType> {
 
 		if (
 			label === SelectorModalTabs.Items &&
+			player.getPlayerClass().weaponTypes.length > 0 &&
 			(currentSlot === ItemSlot.ItemSlotMainHand || (currentSlot === ItemSlot.ItemSlotOffHand && player.getClass() === Class.ClassWarrior))
 		) {
 			if (show1hWeaponRef.value) makeShow1hWeaponsSelector(show1hWeaponRef.value, player.sim);
@@ -411,19 +412,20 @@ export default class ItemList<T extends ItemListType> {
 
 	private sortIdxs(itemIdxs: Array<number>): number[] {
 		let sortFn = (itemA: T, itemB: T) => {
-			const first = this.sortDirection === SortDirection.DESC ? itemB : itemA;
-			const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
-			const diff = this.computeEP(first) - this.computeEP(second);
+			const first = (this.sortDirection === SortDirection.DESC ? itemB : itemA) as unknown as Item;
+			const second = (this.sortDirection === SortDirection.DESC ? itemA : itemB) as unknown as Item;
+			const diff = this.computeEP(first as T) - this.computeEP(second as T);
 			// if EP is same, sort by ilvl
-			if (Math.abs(diff) < 0.01) return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
+			if (Math.abs(diff) < 0.01)
+				return (first.scalingOptions?.[ItemLevelState.Base].ilvl || first.ilvl) - (second.scalingOptions?.[ItemLevelState.Base].ilvl || second.ilvl);
 			return diff;
 		};
 		switch (this.sortBy) {
 			case ItemListSortBy.ILVL:
 				sortFn = (itemA: T, itemB: T) => {
-					const first = this.sortDirection === SortDirection.DESC ? itemB : itemA;
-					const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
-					return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
+					const first = (this.sortDirection === SortDirection.DESC ? itemB : itemA) as unknown as Item;
+					const second = (this.sortDirection === SortDirection.DESC ? itemA : itemB) as unknown as Item;
+					return (first.scalingOptions?.[ItemLevelState.Base].ilvl || first.ilvl) - (second.scalingOptions?.[ItemLevelState.Base].ilvl || second.ilvl);
 				};
 				break;
 		}
@@ -458,7 +460,7 @@ export default class ItemList<T extends ItemListType> {
 		const itemData = item.data;
 		const itemEP = this.computeEP(itemData.item);
 		const equippedItem = this.equippedToItemFn(this.gearData.getEquippedItem());
-		const hasItem = equippedItem !== null && equippedItem !== undefined
+		const hasItem = equippedItem !== null && equippedItem !== undefined;
 		const equippedItemID = this.getItemIdByItemType(equippedItem);
 		const equippedItemEP = hasItem ? this.computeEP(equippedItem) : 0;
 

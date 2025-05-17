@@ -3,6 +3,7 @@ package dbc
 import (
 	"math"
 
+	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
@@ -102,13 +103,13 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		}
 	}
 
-	if item.ItemLevel > 460 {
+	if item.ItemLevel > core.MaxChallengeModeIlvl {
 		scalingProperties[int32(proto.ItemLevelState_ChallengeMode)] = &proto.ScalingItemProperties{
-			WeaponDamageMin: item.WeaponDmgMin(460),
-			WeaponDamageMax: item.WeaponDmgMax(460),
-			Stats:           item.GetStats(460).ToProtoMap(),
-			RandPropPoints:  item.GetRandPropPoints(460),
-			Ilvl:            460,
+			WeaponDamageMin: item.WeaponDmgMin(core.MaxChallengeModeIlvl),
+			WeaponDamageMax: item.WeaponDmgMax(core.MaxChallengeModeIlvl),
+			Stats:           item.GetStats(core.MaxChallengeModeIlvl).ToProtoMap(),
+			RandPropPoints:  item.GetRandPropPoints(core.MaxChallengeModeIlvl),
+			Ilvl:            core.MaxChallengeModeIlvl,
 		}
 	}
 	uiItem.ScalingOptions = scalingProperties
@@ -324,8 +325,6 @@ func (item *Item) GetWeaponTypes() (proto.WeaponType, proto.HandType, proto.Rang
 	switch item.ItemClass {
 	case ITEM_CLASS_ARMOR:
 		switch item.ItemSubClass {
-		case ITEM_SUBCLASS_ARMOR_RELIC:
-			rangedWeaponType = proto.RangedWeaponType_RangedWeaponTypeRelic
 		case ITEM_SUBCLASS_ARMOR_MISC:
 			if item.InventoryType == INVTYPE_HOLDABLE {
 

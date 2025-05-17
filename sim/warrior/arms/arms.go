@@ -96,7 +96,7 @@ func (war *ArmsWarrior) RegisterMastery() {
 		ActionID:    core.ActionID{SpellID: StrikesOfOpportunityHitID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier:         1.0,
 		DamageMultiplierAdditive: 1.0,

@@ -20,10 +20,8 @@ var FeralItemFilter = core.ItemFilter{
 		proto.WeaponType_WeaponTypeStaff,
 		proto.WeaponType_WeaponTypePolearm,
 	},
-	ArmorType: proto.ArmorType_ArmorTypeLeather,
-	RangedWeaponTypes: []proto.RangedWeaponType{
-		proto.RangedWeaponType_RangedWeaponTypeRelic,
-	},
+	ArmorType:         proto.ArmorType_ArmorTypeLeather,
+	RangedWeaponTypes: []proto.RangedWeaponType{},
 }
 
 func TestFeral(t *testing.T) {

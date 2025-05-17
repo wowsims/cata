@@ -152,6 +152,7 @@ type Item struct {
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	RandPropPoints int32
 	UpgradeStep    proto.ItemLevelState
+	ChallengeMode  bool
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -174,11 +175,12 @@ func ItemFromProto(pData *proto.SimItem) Item {
 
 func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	itemSpec := &proto.ItemSpec{
-		Id:           item.ID,
-		RandomSuffix: item.RandomSuffix.ID,
-		Enchant:      item.Enchant.EffectID,
-		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
-		UpgradeStep:  item.UpgradeStep,
+		Id:            item.ID,
+		RandomSuffix:  item.RandomSuffix.ID,
+		Enchant:       item.Enchant.EffectID,
+		Gems:          MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
+		UpgradeStep:   item.UpgradeStep,
+		ChallengeMode: item.ChallengeMode,
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -235,15 +237,16 @@ func GemFromProto(pData *proto.SimGem) Gem {
 }
 
 type ItemSpec struct {
-	ID           int32
-	RandomSuffix int32
-	Enchant      int32
-	Gems         []int32
-	Reforging    int32
-	UpgradeStep  proto.ItemLevelState
+	ID            int32
+	RandomSuffix  int32
+	Enchant       int32
+	Gems          []int32
+	Reforging     int32
+	UpgradeStep   proto.ItemLevelState
+	ChallengeMode bool
 }
 
-type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
+type Equipment [NumItemSlots]Item
 
 func (equipment *Equipment) MainHand() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotMainHand]
@@ -254,7 +257,12 @@ func (equipment *Equipment) OffHand() *Item {
 }
 
 func (equipment *Equipment) Ranged() *Item {
-	return &equipment[proto.ItemSlot_ItemSlotRanged]
+	mh := equipment.MainHand()
+	if mh.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeUnknown {
+		return nil
+	}
+
+	return mh
 }
 
 func (equipment *Equipment) Head() *Item {
@@ -370,18 +378,19 @@ func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 }
 
 // Structs used for looking up items/gems/enchants
-type EquipmentSpec [proto.ItemSlot_ItemSlotRanged + 1]ItemSpec
+type EquipmentSpec [NumItemSlots]ItemSpec
 
 func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
-			ID:           item.Id,
-			RandomSuffix: item.RandomSuffix,
-			Enchant:      item.Enchant,
-			Gems:         item.Gems,
-			Reforging:    item.Reforging,
-			UpgradeStep:  item.UpgradeStep,
+			ID:            item.Id,
+			RandomSuffix:  item.RandomSuffix,
+			Enchant:       item.Enchant,
+			Gems:          item.Gems,
+			Reforging:     item.Reforging,
+			UpgradeStep:   item.UpgradeStep,
+			ChallengeMode: item.ChallengeMode,
 		}
 	}
 	return coreEquip
@@ -395,7 +404,16 @@ func NewItem(itemSpec ItemSpec) Item {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
 
-	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
+	var itemLevelState proto.ItemLevelState
+	if !itemSpec.ChallengeMode {
+		itemLevelState = itemSpec.UpgradeStep
+	} else if item.ScalingOptions[0].Ilvl <= MaxChallengeModeIlvl {
+		itemLevelState = proto.ItemLevelState_Base
+	} else {
+		itemLevelState = proto.ItemLevelState_ChallengeMode
+	}
+
+	scalingOptions := item.ScalingOptions[int32(itemLevelState)]
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
@@ -599,7 +617,7 @@ func ItemTypeToSlot(it proto.ItemType) proto.ItemSlot {
 	case proto.ItemType_ItemTypeWeapon:
 		return proto.ItemSlot_ItemSlotMainHand
 	case proto.ItemType_ItemTypeRanged:
-		return proto.ItemSlot_ItemSlotRanged
+		return proto.ItemSlot_ItemSlotMainHand
 	}
 
 	return 255
@@ -619,7 +637,7 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	proto.ItemType_ItemTypeFeet:     {proto.ItemSlot_ItemSlotFeet},
 	proto.ItemType_ItemTypeFinger:   {proto.ItemSlot_ItemSlotFinger1, proto.ItemSlot_ItemSlotFinger2},
 	proto.ItemType_ItemTypeTrinket:  {proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2},
-	proto.ItemType_ItemTypeRanged:   {proto.ItemSlot_ItemSlotRanged},
+	proto.ItemType_ItemTypeRanged:   {proto.ItemSlot_ItemSlotMainHand},
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 

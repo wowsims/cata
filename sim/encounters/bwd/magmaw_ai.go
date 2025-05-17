@@ -32,7 +32,7 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool,
 			Stats: stats.Stats{
 				stats.Health:      health,
 				stats.Armor:       11977,
-				stats.AttackPower: 650,
+				stats.AttackPower: 0,
 			}.ToProtoArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
@@ -88,7 +88,7 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool,
 				Stats: stats.Stats{
 					stats.Health:      addHealth,
 					stats.Armor:       11977,
-					stats.AttackPower: 650,
+					stats.AttackPower: 0,
 				}.ToProtoArray(),
 
 				SpellSchool:   proto.SpellSchool_SpellSchoolPhysical,
