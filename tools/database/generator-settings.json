@@ -11,6 +11,7 @@
 	"GameTablesOutDirectory": "../../assets/db_inputs/basestats",
 	"GameTables": [],
 	"Tables": [
+		"AreaTable",
 		"Spell",
 		"Item",
 		"GemProperties",

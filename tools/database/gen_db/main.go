@@ -40,7 +40,13 @@ func main() {
 	inputsDir := fmt.Sprintf("%s/db_inputs", *outDir)
 
 	if *genAsset == "atlasloot" {
-		db := database.ReadAtlasLootData()
+		helper, err := database.NewDBHelper()
+		if err != nil {
+			log.Fatalf("failed to initialize database: %v", err)
+		}
+		defer helper.Close()
+
+		db := database.ReadAtlasLootData(helper)
 		db.WriteJson(fmt.Sprintf("%s/atlasloot_db.json", inputsDir))
 		return
 	} else if *genAsset == "reforge-stats" {
