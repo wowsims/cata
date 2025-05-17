@@ -78,8 +78,8 @@ func (monk *Monk) registerStormEarthAndFire() {
 type StormEarthAndFireController struct {
 	owner          *Monk
 	pets           []*StormEarthAndFirePet
-	activeClones   map[int32]*StormEarthAndFirePet
-	inActiveClones []*StormEarthAndFirePet
+	activeClones   []*StormEarthAndFirePet
+	inactiveClones []*StormEarthAndFirePet
 }
 
 // Modifies the spell that should be copied with
@@ -172,13 +172,13 @@ func (controller *StormEarthAndFireController) deactivateClone(sim *core.Simulat
 }
 
 func (controller *StormEarthAndFireController) updateActiveClones() {
-	controller.activeClones = make(map[int32]*StormEarthAndFirePet)
-	controller.inActiveClones = make([]*StormEarthAndFirePet, 0, 3)
+	controller.activeClones = make([]*StormEarthAndFirePet, 0, 3)
+	controller.inactiveClones = make([]*StormEarthAndFirePet, 0, 3)
 	for _, pet := range controller.pets {
 		if pet.IsEnabled() {
-			controller.activeClones[pet.cloneID] = pet
+			controller.activeClones = append(controller.activeClones, pet)
 		} else {
-			controller.inActiveClones = append(controller.inActiveClones, pet)
+			controller.inactiveClones = append(controller.inactiveClones, pet)
 		}
 	}
 }
@@ -188,7 +188,7 @@ func (controller *StormEarthAndFireController) getActiveCloneCount() int32 {
 }
 
 func (controller *StormEarthAndFireController) getInactiveClones() []*StormEarthAndFirePet {
-	return controller.inActiveClones
+	return controller.inactiveClones
 }
 
 func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
