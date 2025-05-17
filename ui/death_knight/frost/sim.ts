@@ -140,7 +140,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		ItemSlot.ItemSlotTrinket2,
 		ItemSlot.ItemSlotMainHand,
 		ItemSlot.ItemSlotOffHand,
-		ItemSlot.ItemSlotRanged,
 	],
 	encounterPicker: {
 		showExecuteProportion: false,

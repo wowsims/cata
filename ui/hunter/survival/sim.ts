@@ -60,7 +60,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotMainHand,
-		ItemSlot.ItemSlotRanged,
 		ItemSlot.ItemSlotHands,
 		ItemSlot.ItemSlotTrinket1,
 		ItemSlot.ItemSlotTrinket2,
