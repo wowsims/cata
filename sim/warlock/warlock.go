@@ -53,13 +53,7 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) ApplyTalents() {
-	warlock.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 86091)
 
-	// warlock.ApplyAfflictionTalents()
-	// warlock.ApplyDemonologyTalents()
-	// warlock.ApplyDestructionTalents()
-
-	// warlock.ApplyGlyphs()
 }
 
 func (warlock *Warlock) Initialize() {
@@ -76,13 +70,13 @@ func (warlock *Warlock) Initialize() {
 	// warlock.registerImmolate()
 	// warlock.registerIncinerate()
 	// warlock.registerLifeTap()
-	warlock.registerSearingPain()
+	// warlock.registerSearingPain()
 	// warlock.registerSeed()
 	// warlock.registerShadowBolt()
-	warlock.registerShadowflame()
+	// warlock.registerShadowflame()
 	// warlock.registerSoulFire()
-	warlock.registerSoulHarvest()
-	warlock.registerSoulburn()
+	// warlock.registerSoulHarvest()
+	// warlock.registerSoulburn()
 	// warlock.registerSummonDemon()
 
 	// doomguardInfernalTimer := warlock.NewTimer()
@@ -97,22 +91,17 @@ func (warlock *Warlock) Initialize() {
 	// 	})
 	// }
 
+	// Fel Armor 10% Stamina
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
 			Label:    "Fel Armor",
 			ActionID: core.ActionID{SpellID: 28176},
 		}))
+	warlock.MultiplyStat(stats.Stamina, 1.1)
+	warlock.MultiplyStat(stats.Health, 1.1)
 
-	warlock.SoulShards = core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:     "Soul Shards",
-			ActionID:  core.ActionID{ItemID: 6265},
-			MaxStacks: 3,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.SetStacks(sim, 3)
-			},
-		}))
-
+	// 5% int passive
+	warlock.MultiplyStat(stats.Intellect, 1.05)
 	// warlock.registerPetAbilities()
 
 	// warlock.registerBlackBook()
@@ -133,11 +122,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString)
 	warlock.EnableManaBar()
-
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-
-	// Add Fel Armor SP by default
-	warlock.AddStat(stats.SpellPower, 638)
 
 	// warlock.EbonImp = warlock.NewEbonImp()
 	// warlock.Infernal = warlock.NewInfernalPet()
@@ -207,6 +192,8 @@ const (
 	WarlockSpellSoulBurn
 	WarlockSpellFelFlame
 	WarlockSpellBurningEmbers
+	WarlockSpellEmberTrap
+	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |

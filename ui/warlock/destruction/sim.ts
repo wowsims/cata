@@ -1,14 +1,34 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import { HASTE_RATING_PER_HASTE_PERCENT } from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { TypedEvent } from '../../core/typed_event';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
+
+
+const modifyDisplayStats = (player: Player<Spec.SpecDestructionWarlock>) => {
+	let stats = new Stats();
+
+	TypedEvent.freezeAllAndDo(() => {
+		const currentStats = player.getCurrentStats().finalStats?.stats
+		if (currentStats === undefined) {
+			return {}
+		}
+
+		stats = stats.addStat(Stat.StatMP5, currentStats[Stat.StatMP5] * currentStats[Stat.StatHasteRating] / HASTE_RATING_PER_HASTE_PERCENT / 100)
+	});
+
+	return {
+		talents: stats,
+	};
+};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	cssClass: 'destruction-warlock-sim-ui',
@@ -25,7 +45,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatMP5],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-
+	modifyDisplayStats,
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.P3_PRESET.gear,
