@@ -161,7 +161,7 @@ func (unit *Unit) ManaRegenPerSecondWhileCombat() float64 {
 	regenRate := unit.MP5ManaRegenPerSecond()
 
 	if unit.manaBar.hasteEffectsRegen {
-		regenRate *= (1 + unit.stats[stats.HasteRating]/HasteRatingPerHastePercent)
+		regenRate *= (1 + unit.stats[stats.HasteRating]/HasteRatingPerHastePercent/100)
 	}
 
 	spiritRegenRate := 0.0
