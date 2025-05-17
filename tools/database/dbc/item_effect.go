@@ -86,21 +86,19 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 
 func (e *ItemEffect) ToProto(itemLevel int, levelState proto.ItemLevelState) (*proto.ItemEffect, bool) {
 	statsSpellID := resolveStatsSpell(e.SpellID)
+
 	pe := makeBaseProto(e, statsSpellID)
 	assignTrigger(e, statsSpellID, pe)
 
 	// build scaling properties and skip if empty
 	props := buildScalingProps(statsSpellID, itemLevel)
+
 	if len(props.Stats) == 0 {
 		return nil, false
 	}
 
 	pe.ScalingOptions[int32(levelState)] = props
 
-	// If proc and no proc info found, set PPM = 1
-	if pe.GetProc() != nil {
-
-	}
 	return pe, true
 }
 
@@ -175,6 +173,7 @@ func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
 	// pick a base effect that has stats if there is more than one effect on the item
 	var baseEff *ItemEffect
 	for i := range dbcInstance.ItemEffectsByParentID[int(parsed.Id)] {
+
 		e := &dbcInstance.ItemEffectsByParentID[int(parsed.Id)][i]
 		props := buildScalingProps(resolveStatsSpell(e.SpellID), int(parsed.Ilvl))
 		if len(props.Stats) > 0 {
