@@ -141,10 +141,9 @@ func (monk *Monk) registerChiWave() {
 			baseDamage := chiWaveCoeff + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
-
 			if result.Landed() {
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					result = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 					if tickIndex < chiWaveMaxBounces {
 						tickIndex++
 						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
@@ -838,8 +837,8 @@ func rushingJadeWindTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfi
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
 			for _, target := range sim.Encounter.TargetUnits {
+				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
