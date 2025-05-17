@@ -465,6 +465,7 @@ func (spell *Spell) reset(sim *Simulation) {
 	if spell.rechargeTimer != nil {
 		spell.rechargeTimer.Cancel(sim)
 		spell.rechargeTimer = nil
+		spell.charges = spell.MaxCharges
 	}
 }
 

@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 100
+// NextIndex: 99
 message APLValue {
 	UUID uuid = 87;
 
@@ -164,8 +164,8 @@ message APLValue {
         APLValueSpellIsChanneling spell_is_channeling = 56;
         APLValueSpellChanneledTicks spell_channeled_ticks = 57;
         APLValueSpellCurrentCost spell_current_cost = 62;
-        APLValueSpellNumCharges spell_num_charges = 98;
-        APLValueSpellTimeToCharge spell_time_to_charge = 99;
+        APLValueSpellNumCharges spell_num_charges = 97;
+        APLValueSpellTimeToCharge spell_time_to_charge = 98;
 
         // Aura values
         APLValueAuraIsKnown aura_is_known = 73;
