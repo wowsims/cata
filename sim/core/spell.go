@@ -35,6 +35,7 @@ type SpellConfig struct {
 	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
 	MinRange float64
 	MaxRange float64
+	Charges  int // The maximum amount of charges this spell can have
 
 	BonusHitPercent      float64
 	BonusCritPercent     float64
@@ -103,8 +104,12 @@ type Spell struct {
 	ExtraCastCondition CanCastCondition
 
 	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
-	MinRange float64
-	MaxRange float64
+	MinRange   float64
+	MaxRange   float64
+	MaxCharges int // Maximum amount of charges the spell can have
+	charges    int // Current amount of charges the spell has
+
+	rechargeTimer *PendingAction // used for the recharge timer
 
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
 
@@ -242,6 +247,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		RelatedAuraArrays: config.RelatedAuraArrays,
 		RelatedDotSpell:   config.RelatedDotSpell,
 		RelatedSelfBuff:   config.RelatedSelfBuff,
+
+		charges:    config.Charges,
+		MaxCharges: config.Charges,
 	}
 
 	switch {
@@ -447,13 +455,17 @@ func (spell *Spell) finalize() {
 	}
 }
 
-func (spell *Spell) reset(_ *Simulation) {
+func (spell *Spell) reset(sim *Simulation) {
 	for i := range spell.splitSpellMetrics {
 		for j := range spell.SpellMetrics {
 			spell.splitSpellMetrics[i][j] = SpellMetrics{}
 		}
 	}
 	spell.casts = 0
+	if spell.rechargeTimer != nil {
+		spell.rechargeTimer.Cancel(sim)
+		spell.rechargeTimer = nil
+	}
 }
 
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {
@@ -562,6 +574,11 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 			//}
 			return false
 		}
+	}
+
+	// Spell uses charges but has none
+	if spell.MaxCharges > 0 && spell.charges == 0 {
+		return false
 	}
 
 	return true
@@ -704,4 +721,60 @@ func (sc *SpellCost) GetCurrentCost() float64 {
 
 func (spell *Spell) IssueRefund(sim *Simulation) {
 	spell.Cost.IssueRefund(sim, spell)
+}
+
+func (spell *Spell) ConsumeCharge(sim *Simulation) {
+	if spell.MaxCharges == 0 {
+		return
+	}
+
+	if spell.charges == 0 {
+		panic("Trying to consume charge, but spell has no charges left.")
+	}
+
+	spell.charges--
+
+	// No recharge in progress yet, start timer
+	if spell.rechargeTimer == nil {
+		spell.scheduleRechargeAction(sim)
+	}
+}
+
+func (spell *Spell) scheduleRechargeAction(sim *Simulation) {
+	spell.rechargeTimer = &PendingAction{
+		NextActionAt: sim.CurrentTime + spell.CD.Duration,
+		Priority:     ActionPriorityAuto,
+		OnAction: func(sim *Simulation) {
+			spell.RefreshCharge(sim)
+			if spell.charges < spell.MaxCharges {
+				spell.scheduleRechargeAction(sim)
+			}
+		},
+	}
+
+	sim.AddPendingAction(spell.rechargeTimer)
+}
+
+func (spell *Spell) GetNumCharges() int {
+	return spell.charges
+}
+
+// Calculates the time until the next charge is available.
+// Will return 0 if no recharge is in progress
+func (spell *Spell) NextChargeIn(sim *Simulation) time.Duration {
+	if spell.rechargeTimer == nil {
+		return 0
+	}
+
+	return spell.rechargeTimer.NextActionAt - sim.CurrentTime
+}
+
+// Refreshes a charge of the spell
+// Can be called if the spell has max charges
+func (spell *Spell) RefreshCharge(sim *Simulation) {
+	if spell.charges == spell.MaxCharges {
+		return
+	}
+
+	spell.charges++
 }

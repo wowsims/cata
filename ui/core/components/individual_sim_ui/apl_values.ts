@@ -65,7 +65,6 @@ import {
 	APLValueMin,
 	APLValueMonkCurrentChi,
 	APLValueMonkMaxChi,
-	APLValueMonkNextChiBrewRecharge,
 	APLValueNextRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
@@ -97,6 +96,8 @@ import {
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
+	APLValueSpellNumCharges,
+	APLValueSpellTimeToCharge,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -1044,6 +1045,20 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueSpellChanneledTicks.create,
 		fields: [AplHelpers.actionIdFieldConfig('spellId', 'channel_spells', '')],
 	}),
+	spellNumCharges: inputBuilder({
+		label: 'Number of Charges',
+		submenu: ['Spell'],
+		shortDescription: 'The number of charges that are currently available for the spell.',
+		newValue: APLValueSpellNumCharges.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
+	spellTimeToCharge: inputBuilder({
+		label: 'Time to next Charge',
+		submenu: ['Spell'],
+		shortDescription: 'The time until the next charge is available. 0 if spell has all charges avaialable.',
+		newValue: APLValueSpellTimeToCharge.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
 	channelClipDelay: inputBuilder({
 		label: 'Channel Clip Delay',
 		submenu: ['Spell'],
@@ -1146,14 +1161,6 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				labelTooltip: 'Maximum amount of time before the aura expires when it may be refreshed.',
 			}),
 		],
-	}),
-	monkNextChiBrewRecharge: inputBuilder({
-		label: 'Next Chi Brew Recharge',
-		submenu: ['Aura'],
-		shortDescription: 'Returns the amount of time until the next Chi Brew stack will be ready.',
-		newValue: APLValueMonkNextChiBrewRecharge.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassMonk,
-		fields: [],
 	}),
 
 	// Aura Sets
