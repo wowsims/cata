@@ -35,10 +35,11 @@ func NewDestructionWarlock(character *core.Character, options *proto.Player) *De
 type DestructionWarlock struct {
 	*warlock.Warlock
 
-	Conflagrate   *core.Spell
-	BurningEmbers core.SecondaryResourceBar
-	FABAura       *core.Aura
-	FABImmolate   *core.Spell
+	Conflagrate    *core.Spell
+	BurningEmbers  core.SecondaryResourceBar
+	FABAura        *core.Aura
+	FABImmolate    *core.Spell
+	FABConflagrate *core.Spell
 }
 
 func (destruction DestructionWarlock) getGeneratorMasteryBonus() float64 {

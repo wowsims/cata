@@ -99,7 +99,7 @@ func (warlock *Warlock) Initialize() {
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
 			Label:    "Fel Armor",
-			ActionID: core.ActionID{SpellID: 28176},
+			ActionID: core.ActionID{SpellID: 104938},
 		}))
 	warlock.MultiplyStat(stats.Stamina, 1.1)
 	warlock.MultiplyStat(stats.Health, 1.1)

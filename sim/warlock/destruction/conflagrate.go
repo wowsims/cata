@@ -24,18 +24,17 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: core.Cooldown{
-				Timer:    destruction.NewTimer(),
-				Duration: 12 * time.Second,
-			},
 		},
 		DamageMultiplier: 1.0,
 		CritMultiplier:   destruction.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: conflagrateCoeff,
 		Charges:          2,
-
+		RechargeTime:     time.Second * 12,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+
+			// keep charges in sync
+			destruction.FABConflagrate.ConsumeCharge(sim)
 			baseDamage := destruction.CalcAndRollDamageRange(sim, conflagrateScale, conflagrateVariance)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			destruction.BurningEmbers.Gain(core.TernaryInt32(result.DidCrit(), 2, 1), spell.ActionID, sim)

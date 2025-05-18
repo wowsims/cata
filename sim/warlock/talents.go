@@ -1,6 +1,10 @@
 package warlock
 
-import "github.com/wowsims/mop/sim/core"
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+)
 
 func (warlock *Warlock) registerArchimondesDarkness() {
 	if !warlock.Talents.ArchimondesDarkness {
@@ -9,7 +13,13 @@ func (warlock *Warlock) registerArchimondesDarkness() {
 
 	warlock.AddStaticMod(core.SpellModConfig{
 		Kind:      core.SpellMod_ModCharges_Flat,
-		IntValue:  1,
+		IntValue:  2,
+		ClassMask: WarlockSpellDarkSoulInsanity,
+	})
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 100,
 		ClassMask: WarlockSpellDarkSoulInsanity,
 	})
 }
