@@ -184,7 +184,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 						spell.ConsumeCharge(sim)
 					}
 
-					if config.CD.Timer != nil {
+					if config.CD.Timer != nil || spell.rechargeTimer != nil {
 						spell.triggerCooldown(sim)
 					}
 
@@ -220,7 +220,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.ConsumeCharge(sim)
 		}
 
-		if config.CD.Timer != nil {
+		if config.CD.Timer != nil || spell.rechargeTimer != nil {
 			spell.triggerCooldown(sim)
 		}
 
@@ -247,7 +247,9 @@ func (spell *Spell) triggerCooldown(sim *Simulation) {
 		cd = TernaryDuration(cd > spell.NextChargeIn(sim), cd, spell.NextChargeIn(sim))
 	}
 
-	spell.CD.Set(sim.CurrentTime + cd)
+	if cd > 0 {
+		spell.CD.Set(sim.CurrentTime + cd)
+	}
 }
 
 func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
@@ -286,7 +288,7 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			spell.ConsumeCharge(sim)
 		}
 
-		if spell.CD.Timer != nil {
+		if spell.CD.Timer != nil || spell.rechargeTimer != nil {
 			spell.triggerCooldown(sim)
 		}
 
