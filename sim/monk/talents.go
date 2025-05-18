@@ -572,14 +572,10 @@ func (monk *Monk) registerChiBrew() {
 			DefaultCast: core.Cast{
 				NonEmpty: true,
 			},
-			CD: core.Cooldown{
-				Duration: time.Second * 45,
-				Timer:    monk.NewTimer(),
-			},
 		},
 
-		Charges: 2,
-
+		Charges:      2,
+		RechargeTime: time.Second * 45,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// TODO: Add 5 Elusive Brew stacks for Brewmasters
 			// TODO: Add 2 Mana Tea stacks for Mistweavers

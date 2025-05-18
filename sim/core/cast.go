@@ -180,17 +180,12 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 						spell.Cost.SpendCost(sim, spell)
 					}
 
-					if spell.charges > 0 {
+					if spell.MaxCharges > 0 {
 						spell.ConsumeCharge(sim)
 					}
 
-					if config.CD.Timer != nil && spell.charges == 0 {
-						if spell.MaxCharges > 0 {
-							// spell.CdMultiplier would be concidered within the the recharge time if we ever need that
-							spell.CD.Set(sim.CurrentTime + spell.NextChargeIn(sim))
-						} else {
-							spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
-						}
+					if config.CD.Timer != nil {
+						spell.triggerCooldown(sim)
 					}
 
 					if config.SharedCD.Timer != nil {
@@ -221,17 +216,12 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.Cost.SpendCost(sim, spell)
 		}
 
-		if spell.charges > 0 {
+		if spell.MaxCharges > 0 {
 			spell.ConsumeCharge(sim)
 		}
 
-		if config.CD.Timer != nil && spell.charges == 0 {
-			if spell.MaxCharges > 0 {
-				// spell.CdMultiplier would be concidered within the the recharge time if we ever need that
-				spell.CD.Set(sim.CurrentTime + spell.NextChargeIn(sim))
-			} else {
-				spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
-			}
+		if config.CD.Timer != nil {
+			spell.triggerCooldown(sim)
 		}
 
 		if config.SharedCD.Timer != nil {
@@ -246,6 +236,18 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 		return true
 	}
+}
+
+func (spell *Spell) triggerCooldown(sim *Simulation) {
+	cd := time.Duration(float64(spell.CD.Duration) * spell.CdMultiplier)
+
+	// if recharge timer is higher than the actual cooldown of the spell we use
+	if spell.MaxCharges > 0 && spell.charges == 0 {
+		// spell.CdMultiplier would be considered within the the recharge time if we ever need that
+		cd = TernaryDuration(cd > spell.NextChargeIn(sim), cd, spell.NextChargeIn(sim))
+	}
+
+	spell.CD.Set(sim.CurrentTime + cd)
 }
 
 func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
@@ -280,17 +282,12 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
 		}
 
-		if spell.charges > 0 {
+		if spell.MaxCharges > 0 {
 			spell.ConsumeCharge(sim)
 		}
 
-		if spell.CD.Timer != nil && spell.charges == 0 {
-			if spell.MaxCharges > 0 {
-				// spell.CdMultiplier would be concidered within the the recharge time if we ever need that
-				spell.CD.Set(sim.CurrentTime + spell.NextChargeIn(sim))
-			} else {
-				spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
-			}
+		if spell.CD.Timer != nil {
+			spell.triggerCooldown(sim)
 		}
 
 		if spell.SharedCD.Timer != nil {
