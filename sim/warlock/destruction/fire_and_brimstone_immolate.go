@@ -21,6 +21,11 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneImmolate() {
 				GCD:      core.GCDDefault,
 				CastTime: 1500 * time.Millisecond,
 			},
+			ModifyCast: func(sim *core.Simulation, _ *core.Spell, _ *core.Cast) {
+				if !destruction.FABAura.IsActive() {
+					destruction.FABAura.Activate(sim)
+				}
+			},
 		},
 
 		DamageMultiplier: 1,
@@ -28,7 +33,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneImmolate() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: immolateCoeff,
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return destruction.BurningEmbers.CanSpend(10) && destruction.FABAura.IsActive()
+			return destruction.BurningEmbers.CanSpend(10)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

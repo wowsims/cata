@@ -34,6 +34,10 @@ func (destro *DestructionWarlock) registerIncinerate() {
 		BonusCoefficient:         incinerateCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if destro.FABAura.IsActive() {
+				destro.FABAura.Deactivate(sim)
+			}
+
 			baseDamage := destro.CalcAndRollDamageRange(sim, incinerateScale, incinerateVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.DidCrit() {

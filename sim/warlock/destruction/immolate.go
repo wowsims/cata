@@ -32,6 +32,10 @@ func (destruction *DestructionWarlock) registerImmolate() {
 		BonusCoefficient: immolateCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if destruction.FABAura.IsActive() {
+				destruction.FABAura.Deactivate(sim)
+			}
+
 			result := spell.CalcDamage(sim, target, destruction.CalcScalingSpellDmg(immolateScale), spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				spell.RelatedDotSpell.Cast(sim, target)

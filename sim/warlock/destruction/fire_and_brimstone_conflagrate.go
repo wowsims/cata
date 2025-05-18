@@ -25,10 +25,14 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneConflagrate() {
 		ClassSpellMask:   warlock.WarlockSpellConflagrate,
 		BonusCoefficient: conflagrateCoeff,
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return destruction.BurningEmbers.CanSpend(10) && destruction.FABAura.IsActive()
+			return destruction.BurningEmbers.CanSpend(10)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !destruction.FABAura.IsActive() {
+				destruction.FABAura.Activate(sim)
+			}
+
 			// reduce damage for this spell based on mastery
 			reduction := destruction.getFABReduction()
 			spell.DamageMultiplier *= reduction

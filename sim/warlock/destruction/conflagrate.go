@@ -32,6 +32,9 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 		Charges:          2,
 		RechargeTime:     time.Second * 12,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if destruction.FABAura.IsActive() {
+				destruction.FABAura.Deactivate(sim)
+			}
 
 			// keep charges in sync
 			destruction.FABConflagrate.ConsumeCharge(sim)

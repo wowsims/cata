@@ -33,10 +33,14 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneIncinerate() {
 		BonusCoefficient:         bafIncinerateCoeff,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return destruction.BurningEmbers.CanSpend(10) && destruction.FABAura.IsActive()
+			return destruction.BurningEmbers.CanSpend(10)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !destruction.FABAura.IsActive() {
+				destruction.FABAura.Activate(sim)
+			}
+
 			reduction := destruction.getFABReduction()
 			spell.DamageMultiplier *= reduction
 			destruction.BurningEmbers.Spend(10, spell.ActionID, sim)
