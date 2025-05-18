@@ -33,9 +33,10 @@ type SpellConfig struct {
 	ExtraCastCondition CanCastCondition
 
 	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
-	MinRange float64
-	MaxRange float64
-	Charges  int // The maximum amount of charges this spell can have
+	MinRange     float64
+	MaxRange     float64
+	Charges      int // The maximum amount of charges this spell can have
+	RechargeTime time.Duration
 
 	BonusHitPercent      float64
 	BonusCritPercent     float64
@@ -104,10 +105,11 @@ type Spell struct {
 	ExtraCastCondition CanCastCondition
 
 	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
-	MinRange   float64
-	MaxRange   float64
-	MaxCharges int // Maximum amount of charges the spell can have
-	charges    int // Current amount of charges the spell has
+	MinRange     float64
+	MaxRange     float64
+	MaxCharges   int // Maximum amount of charges the spell can have
+	charges      int // Current amount of charges the spell has
+	RechargeTime time.Duration
 
 	rechargeTimer *PendingAction // used for the recharge timer
 
@@ -199,6 +201,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic("Cast.SharedCD w/o Duration specified for spell " + config.ActionID.String())
 	}
 
+	if config.Charges > 0 && config.RechargeTime == 0 {
+		panic("Spell has charges but no recharge time.")
+	}
+
 	if config.Cast.CastTime == nil {
 		config.Cast.CastTime = func(spell *Spell) time.Duration {
 			return spell.Unit.ApplyCastSpeedForSpell(spell.DefaultCast.CastTime, spell)
@@ -248,8 +254,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		RelatedDotSpell:   config.RelatedDotSpell,
 		RelatedSelfBuff:   config.RelatedSelfBuff,
 
-		charges:    config.Charges,
-		MaxCharges: config.Charges,
+		charges:      config.Charges,
+		MaxCharges:   config.Charges,
+		RechargeTime: config.RechargeTime,
 	}
 
 	switch {
@@ -743,7 +750,7 @@ func (spell *Spell) ConsumeCharge(sim *Simulation) {
 
 func (spell *Spell) scheduleRechargeAction(sim *Simulation) {
 	spell.rechargeTimer = &PendingAction{
-		NextActionAt: sim.CurrentTime + spell.CD.Duration,
+		NextActionAt: sim.CurrentTime + spell.RechargeTime,
 		Priority:     ActionPriorityAuto,
 		OnAction: func(sim *Simulation) {
 			spell.RefreshCharge(sim)
