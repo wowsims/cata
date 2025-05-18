@@ -1,12 +1,16 @@
 package shaman
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type EarthElemental struct {
 	core.Pet
+
+	Pulverize *core.Spell
 
 	shamanOwner *Shaman
 }
@@ -60,7 +64,7 @@ func (earthElemental *EarthElemental) GetPet() *core.Pet {
 }
 
 func (earthElemental *EarthElemental) Initialize() {
-
+	earthElemental.registerPulverize()
 }
 
 func (earthElemental *EarthElemental) Reset(_ *core.Simulation) {
@@ -68,7 +72,28 @@ func (earthElemental *EarthElemental) Reset(_ *core.Simulation) {
 }
 
 func (earthElemental *EarthElemental) ExecuteCustomRotation(sim *core.Simulation) {
+	/*
+		Pulverize on cd
+	*/
+	target := earthElemental.CurrentTarget
 
+	earthElemental.TryCast(sim, target, earthElemental.Pulverize)
+
+	if !earthElemental.GCD.IsReady(sim) {
+		return
+	}
+
+	minCd := earthElemental.Pulverize.CD.ReadyAt()
+	earthElemental.ExtendGCDUntil(sim, max(minCd, sim.CurrentTime+time.Second))
+}
+
+func (earthElemental *EarthElemental) TryCast(sim *core.Simulation, target *core.Unit, spell *core.Spell) bool {
+	if !spell.Cast(sim, target) {
+		return false
+	}
+	// all spell casts reset the elemental's swing timer
+	earthElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime, false)
+	return true
 }
 
 func (shaman *Shaman) earthElementalBaseStats(isGuardian bool) stats.Stats {

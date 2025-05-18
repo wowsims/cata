@@ -62,7 +62,6 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		SpiritWolf2: enh.NewSpiritWolf(2),
 	}
 
-	//enh.AddStat(stats.PhysicalHitPercent, 6)
 	enh.PseudoStats.CanParry = true
 
 	return enh
@@ -142,6 +141,7 @@ func (enh *EnhancementShaman) Initialize() {
 	enh.registerFireNovaSpell()
 	enh.registerStormstrikeSpell()
 	enh.registerStormblastSpell()
+	enh.registerFeralSpirit()
 }
 
 func (enh EnhancementShaman) getMasteryBonus() float64 {

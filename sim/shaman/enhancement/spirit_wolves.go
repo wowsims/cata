@@ -1,12 +1,10 @@
 package enhancement
 
 import (
-	"math"
 	"strconv"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -32,63 +30,49 @@ func (SpiritWolves *SpiritWolves) CancelGCDTimer(sim *core.Simulation) {
 }
 
 var spiritWolfBaseStats = stats.Stats{
-	stats.Stamina:   389,
-	stats.Spirit:    116,
-	stats.Intellect: 69,
-	stats.Armor:     12310,
-
-	stats.Agility:     1218,
-	stats.Strength:    476,
-	stats.AttackPower: -20,
-
-	// Add 1.8% because pets aren't affected by that component of crit suppression.
-	stats.PhysicalCritPercent: 1.1515 + 1.8,
+	stats.Stamina: 3137,
 }
 
 func (enh *EnhancementShaman) NewSpiritWolf(index int) *SpiritWolf {
 	spiritWolf := &SpiritWolf{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Spirit Wolf " + strconv.Itoa(index),
-			Owner:           &enh.Character,
-			BaseStats:       spiritWolfBaseStats,
-			StatInheritance: enh.makeStatInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      false,
+			Name:                            "Spirit Wolf " + strconv.Itoa(index),
+			Owner:                           &enh.Character,
+			BaseStats:                       spiritWolfBaseStats,
+			StatInheritance:                 enh.makeStatInheritance(),
+			EnabledOnStart:                  false,
+			IsGuardian:                      true,
+			HasDynamicMeleeSpeedInheritance: true,
+			HasDynamicCastSpeedInheritance:  true,
 		}),
 		shamanOwner: enh,
 	}
-
+	baseMeleeDamage := enh.CalcScalingSpellDmg(0.5)
 	spiritWolf.EnableAutoAttacks(spiritWolf, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  583,
-			BaseDamageMax:  876,
+			BaseDamageMin:  baseMeleeDamage,
+			BaseDamageMax:  baseMeleeDamage,
 			SwingSpeed:     1.5,
-			CritMultiplier: 2,
+			CritMultiplier: spiritWolf.DefaultCritMultiplier(),
 		},
 		AutoSwingMelee: true,
 	})
-
-	spiritWolf.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	spiritWolf.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
 
 	enh.AddPet(spiritWolf)
 
 	return spiritWolf
 }
 
-const PetExpertiseScale = 3.25
-
 func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		flooredOwnerHitPercent := math.Floor(ownerStats[stats.PhysicalHitPercent])
-
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3189,
-			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.AttackPower] * 0.3296,
-
-			stats.HitRating:       flooredOwnerHitPercent * core.PhysicalHitRatingPerHitPercent,
-			stats.ExpertiseRating: math.Floor(flooredOwnerHitPercent*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
+			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,
+			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
+			stats.PhysicalHitPercent:  ownerStats[stats.PhysicalHitPercent],
+			stats.SpellHitPercent:     ownerStats[stats.SpellHitPercent],
+			stats.ExpertiseRating:     ownerStats[stats.ExpertiseRating],
+			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 		}
 	}
 }

@@ -47,7 +47,7 @@ func (enh *EnhancementShaman) registerFeralSpirit() {
 
 	enh.AddMajorCooldown(core.MajorCooldown{
 		Spell:    enh.FeralSpirit,
-		Priority: core.CooldownPriorityDrums + 1000, // Always prefer to use wolves before bloodlust/drums so wolves gain haste buff
+		Priority: core.CooldownPriorityDefault,
 		Type:     core.CooldownTypeDPS,
 	})
 }
