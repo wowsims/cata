@@ -15,6 +15,7 @@ import (
 type EclipseEnergy byte
 
 const (
+	NoEnergy            EclipseEnergy = 0
 	SolarEnergy         EclipseEnergy = 1
 	LunarEnergy         EclipseEnergy = 2
 	SolarAndLunarEnergy               = SolarEnergy | LunarEnergy
@@ -35,6 +36,7 @@ type eclipseEnergyBar struct {
 	solarEnergy      float64
 	currentEclipse   Eclipse
 	gainMask         EclipseEnergy // which energy the unit is currently allowed to accumulate
+	previousGainMask EclipseEnergy // used to restore gain mask after CA
 	eclipseCallbacks []EclipseCallback
 	eclipseTrigger   func(spell *core.Spell) bool // used to deactivate eclipse spells
 }
@@ -52,12 +54,34 @@ func (eb *eclipseEnergyBar) reset() {
 	eb.currentEclipse = NoEclipse
 }
 
+func (eb *eclipseEnergyBar) resetWithMask(gainMask EclipseEnergy) {
+	eb.reset()
+	eb.gainMask = gainMask
+}
+
 func (moonkin *BalanceDruid) EnableEclipseBar() {
 	moonkin.eclipseEnergyBar = eclipseEnergyBar{
 		moonkin:          moonkin,
 		gainMask:         SolarAndLunarEnergy,
 		eclipseCallbacks: moonkin.eclipseEnergyBar.eclipseCallbacks,
 	}
+}
+
+func (moonkin *BalanceDruid) SuspendEclipseBar() {
+	moonkin.eclipseEnergyBar.previousGainMask = moonkin.eclipseEnergyBar.gainMask
+	moonkin.eclipseEnergyBar.resetWithMask(NoEnergy)
+}
+
+func (moonkin *BalanceDruid) RestoreEclipseBar() {
+	moonkin.eclipseEnergyBar.resetWithMask(moonkin.eclipseEnergyBar.previousGainMask)
+}
+
+func (moonkin *BalanceDruid) ActivateEclipse(eclipse Eclipse, sim *core.Simulation) {
+	moonkin.eclipseEnergyBar.invokeCallback(eclipse, true, sim)
+}
+
+func (moonkin *BalanceDruid) DeactivateEclipse(eclipse Eclipse, sim *core.Simulation) {
+	moonkin.eclipseEnergyBar.invokeCallback(eclipse, false, sim)
 }
 
 func getEclipseMasteryBonus(masteryPoints float64) float64 {
@@ -233,6 +257,11 @@ func (eb *eclipseEnergyBar) CurrentLunarEnergy() int32 {
 
 func (eb *eclipseEnergyBar) CanGainEnergy(kind EclipseEnergy) bool {
 	return eb.gainMask&kind > 0
+}
+
+func (eb *eclipseEnergyBar) StoreGainMaskAndSuspend() {
+	eb.previousGainMask = eb.gainMask
+	eb.gainMask = NoEnergy
 }
 
 // spends the given amount of energy and returns how much energy remains

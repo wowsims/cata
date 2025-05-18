@@ -90,16 +90,7 @@ func (moonkin *BalanceDruid) RegisterBalanceSpells() {
 	moonkin.registerStarsurgeSpell()
 	moonkin.registerStarfallSpell()
 	moonkin.registerAstralCommunionSpell()
-}
-
-func (moonkin *BalanceDruid) ApplyTalents() {
-
-	// moonkin.EnableEclipseBar()
-	// moonkin.RegisterEclipseAuras()
-	// moonkin.RegisterEclipseEnergyGainAura()
-
-	// Apply druid talents
-	// moonkin.Druid.ApplyTalents()
+	moonkin.registerCelestialAlignmentSpell()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
