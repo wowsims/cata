@@ -195,6 +195,7 @@ export default class ItemList<T extends ItemListType> {
 
 		if (
 			label === SelectorModalTabs.Items &&
+			player.getPlayerClass().weaponTypes.length > 0 &&
 			(currentSlot === ItemSlot.ItemSlotMainHand || (currentSlot === ItemSlot.ItemSlotOffHand && player.getClass() === Class.ClassWarrior))
 		) {
 			if (show1hWeaponRef.value) makeShow1hWeaponsSelector(show1hWeaponRef.value, player.sim);

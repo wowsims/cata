@@ -22,7 +22,6 @@ const emptySlotIcons: Record<ItemSlot, string> = {
 	[ItemSlot.ItemSlotTrinket2]: '/mop/assets/item_slots/trinket.jpg',
 	[ItemSlot.ItemSlotMainHand]: '/mop/assets/item_slots/mainhand.jpg',
 	[ItemSlot.ItemSlotOffHand]: '/mop/assets/item_slots/offhand.jpg',
-	[ItemSlot.ItemSlotRanged]: '/mop/assets/item_slots/ranged.jpg',
 };
 export function getEmptySlotIconUrl(slot: ItemSlot): string {
 	return emptySlotIcons[slot];

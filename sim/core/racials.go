@@ -91,9 +91,12 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceDwarf:
 		character.PseudoStats.ReducedFrostHitTakenChance += 0.02
 
-		// Gun specialization (+1% ranged crit when using a gun).
-		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun {
-			character.AddBonusRangedCritPercent(1)
+		// Crack Shot: 1% Expertise with Ranged Weapons
+		ranged := character.Ranged()
+		if ranged != nil && (ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow ||
+			ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun ||
+			ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeCrossbow) {
+			character.AddStat(stats.ExpertiseRating, ExpertisePerQuarterPercentReduction*4)
 		}
 
 		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
@@ -230,9 +233,12 @@ func applyRaceEffects(agent Agent) {
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)
 	case proto.Race_RaceTroll:
-		// Bow specialization (+1% ranged crit when using a bow).
-		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow {
-			character.AddBonusRangedCritPercent(1)
+		// Dead Eye: 1% Expertise with Guns, Bows or Crossbows.
+		ranged := character.Ranged()
+		if ranged != nil && (ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow ||
+			ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun ||
+			ranged.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeCrossbow) {
+			character.AddStat(stats.ExpertiseRating, ExpertisePerQuarterPercentReduction*4)
 		}
 
 		// Beast Slaying (+5% damage to beasts)

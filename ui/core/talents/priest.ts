@@ -32,7 +32,7 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		},
 		[PriestMajorGlyph.GlyphOfHolyNova]: {
 			name: "Glyph of Holy Nova",
-			description: "Teaches you the ability Holy Nova.\u000D\u000A\u000D\u000A Causes an explosion of holy light around the caster, causing 2444 Holy damage to all enemy targets within 10 yards and healing up to 5 targets within 10 yards for 473.\u000D\u000A\u000D\u000A Healing is divided among the number of targets healed. These effects cause no threat.",
+			description: "Teaches you the ability Holy Nova.\u000D\u000A\u000D\u000A Causes an explosion of holy light around the caster, causing 2477 Holy damage to all enemy targets within 10 yards and healing up to 5 targets within 10 yards for 525.\u000D\u000A\u000D\u000A Healing is divided among the number of targets healed. These effects cause no threat.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_holynova.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfInnerFire]: {
@@ -97,7 +97,7 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		},
 		[PriestMajorGlyph.GlyphOfDispelMagic]: {
 			name: "Glyph of Dispel Magic",
-			description: "Your Dispel Magic spell also damages your target for 4861 Holy damage when you successfully dispel a magical effect.",
+			description: "Your Dispel Magic spell also damages your target for 4937 Holy damage when you successfully dispel a magical effect.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_nullifydisease.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfSmite]: {

@@ -8,6 +8,7 @@ import {
 	ItemType,
 	Profession,
 	PseudoStat,
+	RangedWeaponType,
 	ReforgeStat,
 	ScalingItemProperties,
 	Stat,
@@ -29,11 +30,13 @@ export const getWeaponStatsBySlot = (item: Item, slot: ItemSlot, upgradeStep: It
 	if (item.weaponSpeed > 0) {
 		const weaponDps = getWeaponDPS(item, upgradeStep);
 		if (slot === ItemSlot.ItemSlotMainHand) {
-			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
+			if (item.rangedWeaponType > RangedWeaponType.RangedWeaponTypeUnknown) {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
+			} else {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
+			}
 		} else if (slot === ItemSlot.ItemSlotOffHand) {
 			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-		} else if (slot === ItemSlot.ItemSlotRanged) {
-			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
 		}
 	}
 	return itemStats;

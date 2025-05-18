@@ -40,10 +40,8 @@ func TestProtection(t *testing.T) {
 				proto.HandType_HandTypeOneHand,
 				proto.HandType_HandTypeOffHand,
 			},
-			ArmorType: proto.ArmorType_ArmorTypePlate,
-			RangedWeaponTypes: []proto.RangedWeaponType{
-				proto.RangedWeaponType_RangedWeaponTypeRelic,
-			},
+			ArmorType:         proto.ArmorType_ArmorTypePlate,
+			RangedWeaponTypes: []proto.RangedWeaponType{},
 		},
 	}))
 }

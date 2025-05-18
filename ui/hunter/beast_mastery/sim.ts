@@ -61,7 +61,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotMainHand,
-		ItemSlot.ItemSlotRanged,
 		ItemSlot.ItemSlotHands,
 		ItemSlot.ItemSlotTrinket1,
 		ItemSlot.ItemSlotTrinket2,

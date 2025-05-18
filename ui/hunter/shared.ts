@@ -9,7 +9,8 @@ export const sharedHunterDisplayStatsModifiers = (
 ): StatMods => {
 	let stats = new Stats();
 
-	const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
+	// TODO: Update for MOP Scopes
+	const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
 	if (rangedWeapon?.enchant?.effectId == 3608) {
 		stats = stats.addStat(Stat.StatCritRating, 40);
 	}
