@@ -288,6 +288,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		spell.Cost = newFocusCost(spell, config.FocusCost)
 	}
 
+	// Create timer to track recharge time if none given
+	if spell.CD.Timer == nil && spell.RechargeTime > 0 {
+		spell.CD.Timer = spell.Unit.NewTimer()
+	}
+
 	spell.createDots(config.Dot, false)
 	spell.createDots(config.Hot, true)
 	spell.createShields(config.Shield)
