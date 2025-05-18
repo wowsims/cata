@@ -37,6 +37,8 @@ type DestructionWarlock struct {
 
 	Conflagrate   *core.Spell
 	BurningEmbers core.SecondaryResourceBar
+	FABAura       *core.Aura
+	FABImmolate   *core.Spell
 }
 
 func (destruction DestructionWarlock) getGeneratorMasteryBonus() float64 {
@@ -64,9 +66,16 @@ func (destruction *DestructionWarlock) Initialize() {
 	destruction.ApplyMastery()
 	destruction.ApplyEmbersHandler()
 
-	// destruction.registerChaosBolt()
 	destruction.registerIncinerate()
 	destruction.registerConflagrate()
+	destruction.registerImmolate()
+	destruction.registerBackdraft()
+	destruction.registerFelflame()
+	destruction.registerChaosBolt()
+	destruction.registerShadowBurnSpell()
+	destruction.registerRainOfFire()
+	destruction.registerEmberTap()
+	destruction.registerFireAndBrimstone()
 }
 
 func (destruction *DestructionWarlock) ApplyTalents() {
@@ -77,5 +86,5 @@ func (destruction *DestructionWarlock) Reset(sim *core.Simulation) {
 	destruction.Warlock.Reset(sim)
 }
 
-var SpellMaskCinderSpender = warlock.WarlockSpellChaosBolt | warlock.WarlockSpellEmberTrap | warlock.WarlockSpellShadowBurn
+var SpellMaskCinderSpender = warlock.WarlockSpellChaosBolt | warlock.WarlockSpellEmberTap | warlock.WarlockSpellShadowBurn
 var SpellMaskCinderGenerator = warlock.WarlockSpellImmolate | warlock.WarlockSpellImmolateDot | warlock.WarlockSpellIncinerate | warlock.WarlockSpellFelFlame | warlock.WarlockSpellConflagrate

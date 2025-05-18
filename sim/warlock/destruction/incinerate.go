@@ -8,8 +8,8 @@ import (
 )
 
 const incinerateVariance = 0.1
-const incinerateScale = 1.54
-const incinerateCoeff = 1.54
+const incinerateScale = 1.54 * 1.15 // Hotfix
+const incinerateCoeff = 1.54 * 1.15
 
 func (destro *DestructionWarlock) registerIncinerate() {
 	destro.RegisterSpell(core.SpellConfig{

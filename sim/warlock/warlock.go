@@ -54,9 +54,13 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 
 func (warlock *Warlock) ApplyTalents() {
 
+	warlock.registerArchimondesDarkness()
 }
 
 func (warlock *Warlock) Initialize() {
+
+	warlock.registerDarkSoulInstability()
+	warlock.registerCurseOfElements()
 	// warlock.registerBaneOfAgony()
 	// warlock.registerBaneOfDoom()
 	// warlock.registerCorruption()
@@ -192,7 +196,10 @@ const (
 	WarlockSpellSoulBurn
 	WarlockSpellFelFlame
 	WarlockSpellBurningEmbers
-	WarlockSpellEmberTrap
+	WarlockSpellEmberTap
+	WarlockSpellRainOfFire
+	WarlockSpellFireAndBrimstone
+	WarlockSpellDarkSoulInsanity
 	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |

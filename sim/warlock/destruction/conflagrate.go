@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
+const conflagrateScale = 1.725
+const conflagrateVariance = 0.1
+const conflagrateCoeff = 1.725
+
 func (destruction *DestructionWarlock) registerConflagrate() {
 	destruction.Conflagrate = destruction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 17962},
@@ -15,34 +19,26 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellConflagrate,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 16},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 1},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    destruction.NewTimer(),
-				Duration: 10 * time.Second,
+				Duration: 12 * time.Second,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return destruction.Immolate.Dot(target).IsActive()
-		},
-
 		DamageMultiplier: 1.0,
 		CritMultiplier:   destruction.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.17599999905,
+		BonusCoefficient: conflagrateCoeff,
+		Charges:          2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := destruction.CalcScalingSpellDmg(0.43900001049)
-			immoDot := destruction.Immolate.Dot(target)
-			if !immoDot.IsActive() {
-				panic("Casted conflagrate without active immolation on the target")
-			}
-			spell.DamageMultiplier *= float64(immoDot.HastedTickCount()) * 0.6
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= float64(immoDot.HastedTickCount()) * 0.6
+			baseDamage := destruction.CalcAndRollDamageRange(sim, conflagrateScale, conflagrateVariance)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			destruction.BurningEmbers.Gain(core.TernaryInt32(result.DidCrit(), 2, 1), spell.ActionID, sim)
 		},
 	})
 }
