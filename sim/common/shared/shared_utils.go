@@ -123,7 +123,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		proc := procEffect.GetProc()
 		procAction := core.ActionID{SpellID: procEffect.BuffId}
-		procAura := character.NewTemporaryStatsAura(procEffect.BuffName+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats), time.Second*time.Duration(procEffect.EffectDuration))
+		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats), time.Second*time.Duration(procEffect.EffectDuration))
 		var dpm *core.DynamicProcManager
 		if (proc.Ppm != 0) && (config.ProcMask == core.ProcMaskUnknown) {
 			if isEnchant {
