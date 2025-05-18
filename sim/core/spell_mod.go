@@ -243,8 +243,9 @@ const (
 	// Uses FloatValue
 	SpellMod_DamageDone_Flat
 
-	// Will reduce spell.Cost.PercentModifier by % amount. -5% = -5
-	// Uses IntValue
+	// Will reduce spell.Cost.PercentModifier by % amount. -5% = -0.05
+	// For 0 Mana cost use -2
+	// Uses FloatValue
 	SpellMod_PowerCost_Pct
 
 	// Increases or decreases spell.Cost.FlatModifier by flat amount. -5 Mana = -5
@@ -460,13 +461,13 @@ func onResetDamageDoneAdd(mod *SpellMod) {
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.PercentModifier += mod.intValue
+		spell.Cost.PercentModifier *= (1 + mod.floatValue)
 	}
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.PercentModifier -= mod.intValue
+		spell.Cost.PercentModifier /= (1 + mod.floatValue)
 	}
 }
 

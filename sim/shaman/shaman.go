@@ -314,11 +314,11 @@ func (shaman *Shaman) GetOverloadChance() float64 {
 	return overloadChance
 }
 
-func (shaman *Shaman) GetMentalQuicknessBonus() int32 {
-	mentalQuicknessBonus := int32(0)
+func (shaman *Shaman) GetMentalQuicknessBonus() float64 {
+	mentalQuicknessBonus := 0.0
 
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		mentalQuicknessBonus += 55
+		mentalQuicknessBonus += 0.55
 	}
 
 	return mentalQuicknessBonus

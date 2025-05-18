@@ -27,7 +27,7 @@ func (shaman *Shaman) registerBloodlustCD() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 26,
-			PercentModifier: 100 - shaman.GetMentalQuicknessBonus(),
+			PercentModifier: 1 - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

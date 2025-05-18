@@ -280,7 +280,7 @@ func newEnergyCost(spell *Spell, options EnergyCostOptions, energyBar *energyBar
 	return &SpellCost{
 		spell:           spell,
 		BaseCost:        options.Cost,
-		PercentModifier: 100,
+		PercentModifier: 1,
 		ResourceCostImpl: &EnergyCost{
 			Refund:            options.Refund,
 			RefundMetrics:     options.RefundMetrics,
