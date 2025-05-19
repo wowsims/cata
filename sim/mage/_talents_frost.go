@@ -89,9 +89,6 @@ func (mage *Mage) registerIcyVeinsCD() {
 		},
 		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 			icyVeinsMod.Deactivate()
-			if mage.t13ProcAura != nil {
-				mage.t13ProcAura.Deactivate(sim)
-			}
 		},
 	})
 
@@ -107,23 +104,15 @@ func (mage *Mage) registerIcyVeinsCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * time.Duration(180*[]float64{1, .93, .86, .80}[mage.Talents.IceFloes]),
+				Duration: time.Second * 180,
 			},
 			DefaultCast: core.Cast{
 				NonEmpty: true,
 			},
 		},
 
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			// Need to check for icy veins already active in case Cold Snap is used right after.
-			return !icyVeinsAura.IsActive() && !mage.frostfireOrb.IsEnabled()
-		},
-
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			icyVeinsAura.Activate(sim)
-			if mage.T13_4pc.IsActive() {
-				spell.CD.Reduce(time.Second * time.Duration(15*mage.t13ProcAura.GetStacks()))
-			}
 		},
 	})
 

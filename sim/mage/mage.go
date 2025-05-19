@@ -54,6 +54,7 @@ type Mage struct {
 	// Item sets
 	T12_4pc *core.Aura
 	T13_4pc *core.Aura
+	T14_4pc *core.Aura
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
