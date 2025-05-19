@@ -452,6 +452,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-DarkglowEmbroidery-3728"
+ value: {
+  dps: 53188.04124
+  tps: 74243.08926
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-DarkglowEmbroidery-4116"
+ value: {
+  dps: 53178.96474
+  tps: 74334.73142
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
   dps: 48169.97392
@@ -564,6 +580,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 48463.05142
@@ -604,11 +628,187 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-ElementiumShieldSpike-4215"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 51877.27024
   tps: 72380.31731
   hps: 27.06519
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Enchant2HWeapon-Scourgebane-3247"
+ value: {
+  dps: 52616.18218
+  tps: 73338.89884
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantBoots-Assassin'sStep-4105"
+ value: {
+  dps: 53251.72763
+  tps: 74326.37921
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantBoots-EarthenVitality-4062"
+ value: {
+  dps: 53112.54544
+  tps: 74132.49693
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantBoots-Lavawalker-4104"
+ value: {
+  dps: 53181.68919
+  tps: 74246.69513
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantBoots-Tuskarr'sVitality-3232"
+ value: {
+  dps: 53112.54544
+  tps: 74132.49693
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantCloak-Wisdom-3296"
+ value: {
+  dps: 53188.04124
+  tps: 72757.99527
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantGloves-Armsman-3253"
+ value: {
+  dps: 53184.78908
+  tps: 75698.95317
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Avalanche-4067"
+ value: {
+  dps: 52795.7362
+  tps: 73335.24995
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Berserking-3789"
+ value: {
+  dps: 52839.32353
+  tps: 72992.41382
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-BlackMagic-3790"
+ value: {
+  dps: 52608.29879
+  tps: 73252.85145
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-BloodDraining-3870"
+ value: {
+  dps: 52616.18218
+  tps: 73338.89884
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-ElementalSlayer-4074"
+ value: {
+  dps: 52672.20538
+  tps: 73205.72955
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-GiantSlayer-3251"
+ value: {
+  dps: 52616.18218
+  tps: 73338.89884
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Heartsong-4084"
+ value: {
+  dps: 52616.18218
+  tps: 73338.89884
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Hurricane-4083"
+ value: {
+  dps: 52680.73839
+  tps: 70773.34359
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Icebreaker-3239"
+ value: {
+  dps: 52699.8069
+  tps: 73473.28124
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Landslide-4099"
+ value: {
+  dps: 52974.14152
+  tps: 72742.09885
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Lifeward-3241"
+ value: {
+  dps: 52616.18218
+  tps: 73338.89884
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Mending-4066"
+ value: {
+  dps: 52611.97313
+  tps: 73333.90244
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-PowerTorrent-4097"
+ value: {
+  dps: 52620.95149
+  tps: 73166.27431
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-EnchantWeapon-Windwalk-4098"
+ value: {
+  dps: 52536.72008
+  tps: 73385.35736
+  hps: 26.77086
  }
 }
 dps_results: {
@@ -772,6 +972,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Flintlocke'sWoodchucker-4267"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-FluidDeath-58181"
  value: {
   dps: 49798.07257
@@ -857,6 +1065,14 @@ dps_results: {
   dps: 48011.85506
   tps: 65229.48253
   hps: 27.77377
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-GnomishX-RayScope-4175"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
  }
 }
 dps_results: {
@@ -968,6 +1184,14 @@ dps_results: {
  value: {
   dps: 53941.73556
   tps: 72831.21667
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-HeartseekerScope-3608"
+ value: {
+  dps: 53393.35501
+  tps: 74517.10176
   hps: 26.77086
  }
 }
@@ -1224,6 +1448,22 @@ dps_results: {
  value: {
   dps: 48694.43341
   tps: 66169.32986
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-LightweaveEmbroidery-3722"
+ value: {
+  dps: 53173.66539
+  tps: 73916.70575
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-LightweaveEmbroidery-4115"
+ value: {
+  dps: 53188.04124
+  tps: 74243.4129
   hps: 26.77086
  }
 }
@@ -1564,6 +1804,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-PyriumShieldSpike-4216"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-R19Threatfinder-4176"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Rainsong-55854"
  value: {
   dps: 48011.85506
@@ -1792,6 +2048,14 @@ dps_results: {
  value: {
   dps: 49117.89548
   tps: 67029.23004
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-SafetyCatchRemovalKit-4177"
+ value: {
+  dps: 53482.95997
+  tps: 74665.68355
   hps: 26.77086
  }
 }
@@ -2092,6 +2356,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-SunScope-3607"
+ value: {
+  dps: 53390.64773
+  tps: 74536.1118
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-SwordguardEmbroidery-3730"
+ value: {
+  dps: 53177.32421
+  tps: 74294.7289
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-SwordguardEmbroidery-4118"
+ value: {
+  dps: 53638.87227
+  tps: 74791.81157
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-SymbioticWorm-59332"
  value: {
   dps: 48011.85506
@@ -2288,6 +2576,14 @@ dps_results: {
  value: {
   dps: 48615.50675
   tps: 67411.30269
+  hps: 26.77086
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-TitaniumShieldSpike-3748"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
   hps: 26.77086
  }
 }
