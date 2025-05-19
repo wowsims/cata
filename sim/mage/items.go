@@ -139,17 +139,17 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  MageSpellIceLance,
-				FloatValue: 12,
+				FloatValue: 0.12,
 			})
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
-				ClassMask:  MageSpellArcaneMissilesCast,
-				FloatValue: 7,
+				ClassMask:  MageSpellArcaneMissilesTick,
+				FloatValue: 0.07,
 			})
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
-				ClassMask:  MageSpellPyroblast,
-				FloatValue: 8,
+				ClassMask:  MageSpellPyroblast | MageSpellPyroblastDot,
+				FloatValue: 0.08,
 			})
 		},
 		// Increases the damage bonus of Arcane Power by an additional 10%, reduces the cooldown of Icy Veins by 50%, and reduces the cooldown of Combustion by 20%.
@@ -158,13 +158,13 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 			mage.T14_4pc = setBonusAura
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				FloatValue: -.5,
+				FloatValue: -0.5,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellIcyVeins,
 			})
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				FloatValue: -.2,
+				FloatValue: -0.2,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellCombustion,
 			})
