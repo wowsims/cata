@@ -19,8 +19,9 @@ Melee attack speed increased by 40%.
 */
 func (monk *Monk) registerWayOfTheMonk() {
 	aura := core.MakePermanent(monk.RegisterAura(core.Aura{
-		Label:    "Way of the Monk" + monk.Label,
-		ActionID: core.ActionID{SpellID: 120277},
+		Label:      "Way of the Monk" + monk.Label,
+		ActionID:   core.ActionID{SpellID: 120277},
+		BuildPhase: core.CharacterBuildPhaseBase,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)

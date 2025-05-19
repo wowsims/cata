@@ -145,7 +145,6 @@ func (monk *Monk) GetMonk() *Monk {
 
 func (monk *Monk) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.LegacyOfTheEmperor = true
-	raidBuffs.LegacyOfTheWhiteTiger = true
 }
 
 func (monk *Monk) AddPartyBuffs(_ *proto.PartyBuffs) {}
@@ -211,13 +210,6 @@ func (monk *Monk) GetHandType() proto.HandType {
 
 	}
 	return proto.HandType_HandTypeOneHand
-}
-
-func (monk *Monk) GetAttackPowerPerDPS() float64 {
-	if monk.Spec == proto.Spec_SpecBrewmasterMonk {
-		return 1.0 / 11.0
-	}
-	return 1.0 / core.DefaultAttackPowerPerDPS
 }
 
 func NewMonk(character *core.Character, options *proto.MonkOptions, talents string) *Monk {

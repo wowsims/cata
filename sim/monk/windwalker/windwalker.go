@@ -50,6 +50,11 @@ func (ww *WindwalkerMonk) GetMonk() *monk.Monk {
 	return ww.Monk
 }
 
+func (ww *WindwalkerMonk) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	ww.Monk.AddRaidBuffs(raidBuffs)
+	raidBuffs.LegacyOfTheWhiteTiger = true
+}
+
 func (ww *WindwalkerMonk) Initialize() {
 	ww.Monk.Initialize()
 	ww.RegisterSpecializationEffects()

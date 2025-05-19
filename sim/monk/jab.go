@@ -11,6 +11,18 @@ Tooltip:
 
 You Jab the target, dealing ${1.5*$<low>} to ${1.5*$<high>} damage and generating
 
+$stnc=$?a103985[${1.1}][${1.0}]
+$dw1=$?a108561[${1}][${0.898882275}]
+$dw=$?a115697[${1}][${$<dw1>}]
+$bm=$?s120267[${0.85}][${1}]
+$off1=$?a108561[${0}][${1}]
+$off=$?a115697[${0}][${$<off1>}]
+$offl=$?!s124146[${$mwb/2/$mws}][${$owb/2/$ows}]
+$offh=$?!s124146[${$MWB/2/$mws}][${$OWB/2/$ows}]
+$mist=$?a121278[${0.5}][${1}]
+$low=${$<bm>*$<stnc>*($<dw>*(($mwb)/($MWS)*$<mist>+$<off>*$<offl>)+($AP/14)-1)}
+$high=${$<bm>*$<stnc>*($<dw>*(($MWB)/($MWS)*$<mist>+$<off>*$<offh>)+($AP/14)+1)}
+
 -- Stance of the Fierce Tiger --
 
 	2
@@ -74,7 +86,7 @@ func (monk *Monk) registerJab() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-
+			// fmt.Println("Jab Result", result.Damage)
 			if result.Landed() {
 				chiGain := core.TernaryInt32(monk.StanceMatches(FierceTiger), 2, 1)
 				monk.AddChi(sim, spell, chiGain, chiMetrics)

@@ -68,7 +68,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 		totalDamage *= DualWieldModifier
 	}
 
-	apMod := monk.GetAttackPowerPerDPS()
+	apMod := 1.0 / core.DefaultAttackPowerPerDPS
 
 	if !hasMainHand && !hasOffHand {
 		// Unarmed
