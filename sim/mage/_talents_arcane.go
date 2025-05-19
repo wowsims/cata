@@ -309,6 +309,7 @@ func (mage *Mage) registerArcanePowerCD() {
 			arcanePowerCostMod.UpdateIntValue(core.TernaryInt32(mage.T12_4pc.IsActive(), -10, 20))
 			arcanePowerCostMod.Activate()
 
+			arcanePowerDmgMod.UpdateFloatValue(core.TernaryInt32(mage.T14_4pc.IsActive(), .3, .2))
 			arcanePowerDmgMod.Activate()
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
