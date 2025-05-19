@@ -53,6 +53,7 @@ func init() {
 		simDB.Enchants[i] = &proto.SimEnchant{
 			EffectId: enchant.EffectId,
 			Stats:    enchant.Stats,
+			Type:     enchant.Type,
 		}
 	}
 

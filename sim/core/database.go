@@ -209,12 +209,14 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 type Enchant struct {
 	EffectID int32 // Used by UI to apply effect to tooltip
 	Stats    stats.Stats
+	Type     proto.ItemType // Only needed for unit tests
 }
 
 func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 	return Enchant{
 		EffectID: pData.EffectId,
 		Stats:    stats.FromProtoArray(pData.Stats),
+		Type:     pData.Type,
 	}
 }
 
