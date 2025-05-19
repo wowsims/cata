@@ -48,6 +48,7 @@ type Monk struct {
 	onStanceChanged OnStanceChanged
 	onChiSpent      OnChiSpent
 	onNewBrewStacks OnNewBrewStacks
+	chiBrewRecharge *core.PendingAction
 }
 
 func (monk *Monk) ChangeStance(sim *core.Simulation, newStance Stance) {
