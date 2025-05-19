@@ -40,18 +40,18 @@ export const P1_PREBIS_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 1.05,
-			[Stat.StatAgility]: 2.94,
-			[Stat.StatHitRating]: 3.21,
-			[Stat.StatCritRating]: 1.34,
-			[Stat.StatHasteRating]: 1.7,
-			[Stat.StatExpertiseRating]: 3.2,
-			[Stat.StatMasteryRating]: 0.68,
+			[Stat.StatAgility]: 2.58,
+			[Stat.StatHitRating]: 2.54,
+			[Stat.StatCritRating]: 0.89,
+			[Stat.StatHasteRating]: 1.83,
+			[Stat.StatExpertiseRating]: 2.02,
+			[Stat.StatMasteryRating]: 0.15,
 			[Stat.StatAttackPower]: 1,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 7.59,
-			[PseudoStat.PseudoStatOffHandDps]: 3.8,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 385.2,
+			[PseudoStat.PseudoStatMainHandDps]: 6.76,
+			[PseudoStat.PseudoStatOffHandDps]: 3.38,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 863.23,
 		},
 	),
 );
@@ -76,10 +76,10 @@ export const DefaultOptions = MonkOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId:  76084,  // Flask of Spring Blossoms
-	foodId:   104303, // Sea Mist Rice Noodles
-	potId:    76089,  // Virmen's Bite
-	prepotId: 76089,  // Virmen's Bite
+	flaskId: 76084, // Flask of Spring Blossoms
+	foodId: 104303, // Sea Mist Rice Noodles
+	potId: 76089, // Virmen's Bite
+	prepotId: 76089, // Virmen's Bite
 	tinkerId: 126734, // Synapse Springs II
 });
 
