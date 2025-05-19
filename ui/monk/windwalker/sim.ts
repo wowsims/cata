@@ -30,11 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 		Stat.StatMasteryRating,
 		Stat.StatAttackPower,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -118,13 +114,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.PREPATCH_ROTATION_PRESET],
+		rotations: [Presets.ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PREBIS_DW_GEAR_PRESET, Presets.P1_PREBIS_2H_GEAR_PRESET],
+		gear: [Presets.P1_PREBIS_DW_GEAR_PRESET, Presets.P1_PREBIS_2H_GEAR_PRESET, Presets.P1_BIS_DW_GEAR_PRESET, Presets.P1_BIS_2H_GEAR_PRESET],
 	},
 
 	autoRotation: (_: Player<Spec.SpecWindwalkerMonk>): APLRotation => {
-		return Presets.PREPATCH_ROTATION_PRESET.rotation.rotation!;
+		return Presets.ROTATION_PRESET.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -189,7 +185,6 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 							meleeSoftCap.postCapEPs = [initialEP / 5.5, 0];
 						}
 					}
-
 					return softCaps;
 				},
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {

@@ -86,7 +86,7 @@ func (monk *Monk) registerJab() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			// fmt.Println("Jab Result", result.Damage)
+
 			if result.Landed() {
 				chiGain := core.TernaryInt32(monk.StanceMatches(FierceTiger), 2, 1)
 				monk.AddChi(sim, spell, chiGain, chiMetrics)

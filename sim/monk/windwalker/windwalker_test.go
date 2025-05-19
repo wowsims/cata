@@ -21,6 +21,8 @@ func TestWindwalker(t *testing.T) {
 		GearSet: core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_prebis_dw"),
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_prebis_2h"),
+			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_bis_dw"),
+			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_bis_2h"),
 		},
 		Talents:     WindwalkerTalents,
 		Glyphs:      WindwalkerDefaultGlyphs,
