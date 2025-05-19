@@ -572,6 +572,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 21971.2473
+  tps: 110542.97145
+  hps: 5935.7523
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 21751.61672

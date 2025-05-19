@@ -543,6 +543,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 29510.45638
+  tps: 20952.42403
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 27534.82108

@@ -499,6 +499,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 34860.02374

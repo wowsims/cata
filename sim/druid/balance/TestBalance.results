@@ -513,6 +513,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 48980.11726
+  tps: 45646.00675
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 45900.86871

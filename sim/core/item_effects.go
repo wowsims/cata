@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -16,11 +15,7 @@ import (
 // but there are occasionally class-specific item effects.
 type ApplyEffect func(Agent)
 
-// Function for applying permanent effects to an agent's weapon
-type ApplyWeaponEffect func(Agent, proto.ItemSlot)
-
 var itemEffects = map[int32]ApplyEffect{}
-var weaponEffects = map[int32]ApplyWeaponEffect{}
 var enchantEffects = map[int32]ApplyEffect{}
 
 // IDs of item effects which should be used for tests.
@@ -36,11 +31,6 @@ func HasItemEffect(id int32) bool {
 }
 func HasItemEffectForTest(id int32) bool {
 	return slices.Contains(itemEffectsForTest, id)
-}
-
-func HasWeaponEffect(id int32) bool {
-	_, ok := weaponEffects[id]
-	return ok
 }
 
 func HasEnchantEffect(id int32) bool {
@@ -86,20 +76,8 @@ func NewEnchantEffect(id int32, enchantEffect ApplyEffect) {
 	}
 }
 
-func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
-	if WITH_DB {
-		if _, ok := EnchantsByEffectID[id]; !ok {
-			panic(fmt.Sprintf("No enchant with ID: %d", id))
-		}
-	}
-	if HasWeaponEffect(id) {
-		panic(fmt.Sprintf("Cannot add multiple effects for one item: %d, %#v", id, weaponEffect))
-	}
-	weaponEffects[id] = weaponEffect
-}
-
 func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool, includeGemEffects bool) {
-	for slot, eq := range equipment {
+	for _, eq := range equipment {
 		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
 			applyItemEffect(agent)
 			registeredItemEffects[eq.ID] = true
@@ -117,12 +95,6 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 			applyEnchantEffect(agent)
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
-		}
-
 	}
 }
 

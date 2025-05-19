@@ -580,6 +580,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 53313.72086
+  tps: 74428.13534
+  hps: 26.77086
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 48463.05142

@@ -594,6 +594,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 6201.28805
+  tps: 36929.29582
+  hps: 1029.29328
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 6227.32829
