@@ -52,6 +52,8 @@ func (frostMage *FrostMage) Initialize() {
 	frostMage.Mage.Initialize()
 
 	frostMage.registerSummonWaterElementalSpell()
+	frostMage.registerFingersOfFrost()
+	frostMage.registerBrainFreeze()
 }
 
 func (frostMage *FrostMage) ApplyTalents() {
