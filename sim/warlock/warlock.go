@@ -33,8 +33,8 @@ type Warlock struct {
 	Succubus   *WarlockPet
 	Voidwalker *WarlockPet
 
-	// Doomguard *DoomguardPet
-	// Infernal  *InfernalPet
+	Doomguard *DoomguardPet
+	Infernal  *InfernalPet
 	// EbonImp   *EbonImpPet
 	// FieryImp  *FieryImpPet
 
@@ -53,6 +53,8 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 func (warlock *Warlock) ApplyTalents() {
 
 	warlock.registerArchimondesDarkness()
+	warlock.registerKilJaedensCunning()
+	warlock.registerMannarothsFury()
 }
 
 func (warlock *Warlock) Initialize() {
@@ -81,17 +83,9 @@ func (warlock *Warlock) Initialize() {
 	// warlock.registerSoulburn()
 	// warlock.registerSummonDemon()
 
-	// doomguardInfernalTimer := warlock.NewTimer()
-	// warlock.registerSummonDoomguard(doomguardInfernalTimer)
-	// warlock.registerSummonInfernal(doomguardInfernalTimer)
-
-	// TODO: vile hack to make the APLs work for now ...
-	// if !warlock.CouldHaveSetBonus(ItemSetMaleficRaiment, 4) {
-	// 	warlock.RegisterAura(core.Aura{
-	// 		Label:    "Fel Spark",
-	// 		ActionID: core.ActionID{SpellID: 89937},
-	// 	})
-	// }
+	doomguardInfernalTimer := warlock.NewTimer()
+	warlock.registerSummonDoomguard(doomguardInfernalTimer)
+	warlock.registerSummonInfernal(doomguardInfernalTimer)
 
 	// Fel Armor 10% Stamina
 	core.MakePermanent(
@@ -104,9 +98,6 @@ func (warlock *Warlock) Initialize() {
 
 	// 5% int passive
 	warlock.MultiplyStat(stats.Intellect, 1.05)
-	// warlock.registerPetAbilities()
-
-	// warlock.registerBlackBook()
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
@@ -127,8 +118,8 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
 	// warlock.EbonImp = warlock.NewEbonImp()
-	// warlock.Infernal = warlock.NewInfernalPet()
-	// warlock.Doomguard = warlock.NewDoomguardPet()
+	warlock.Infernal = warlock.NewInfernalPet()
+	warlock.Doomguard = warlock.NewDoomguardPet()
 	// warlock.FieryImp = warlock.NewFieryImp()
 
 	warlock.registerPets()
@@ -175,6 +166,7 @@ const (
 	WarlockSpellSeedOfCorruptionExposion
 	WarlockSpellHandOfGuldan
 	WarlockSpellImmolationAura
+	WarlockSpellHellfire
 	WarlockSpellSearingPain
 	WarlockSpellSummonDoomguard
 	WarlockSpellDoomguardDoomBolt
@@ -187,6 +179,7 @@ const (
 	WarlockSpellFelHunterShadowBite
 	WarlockSpellSummonSuccubus
 	WarlockSpellSuccubusLashOfPain
+	WarlockSpellVoidwalkerTorment
 	WarlockSpellSummonInfernal
 	WarlockSpellDemonSoul
 	WarlockSpellShadowflame
@@ -198,6 +191,7 @@ const (
 	WarlockSpellRainOfFire
 	WarlockSpellFireAndBrimstone
 	WarlockSpellDarkSoulInsanity
+	WarlockSpellMaleficGrasp
 	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |

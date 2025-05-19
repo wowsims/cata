@@ -233,6 +233,10 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	if pet.HasFocusBar() {
 		pet.focusBar.enable(sim, sim.CurrentTime)
 	}
+
+	if pet.HasEnergyBar() {
+		pet.energyBar.enable(sim, sim.CurrentTime)
+	}
 }
 
 func (pet *Pet) EnableWithStartAttackDelay(sim *Simulation, petAgent PetAgent, startAttackDelay time.Duration) {

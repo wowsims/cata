@@ -12,7 +12,7 @@ func (warlock *Warlock) registerSummonDoomguard(timer *core.Timer) {
 	summonDoomguardAura := warlock.RegisterAura(core.Aura{
 		Label:    "Summon Doomguard",
 		ActionID: core.ActionID{SpellID: 18540},
-		Duration: time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second,
+		Duration: 60 * time.Second,
 	})
 
 	warlock.RegisterSpell(core.SpellConfig{
@@ -22,7 +22,7 @@ func (warlock *Warlock) registerSummonDoomguard(timer *core.Timer) {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonDoomguard,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 25},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{GCD: core.GCDDefault},
 			CD: core.Cooldown{
@@ -47,30 +47,31 @@ type DoomguardPet struct {
 }
 
 func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
-	// probably wrong, but nobody is ever going to test this
 	baseStats := stats.Stats{
-		stats.Strength:            453,
-		stats.Agility:             883,
-		stats.Stamina:             353,
-		stats.Intellect:           159,
-		stats.Spirit:              225,
-		stats.Mana:                23420,
-		stats.PhysicalCritPercent: 0.652,
-		stats.SpellCritPercent:    3.3355,
+		stats.Health: 84606.8,
+		stats.Armor:  19680,
 	}
 
 	pet := &DoomguardPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Doomguard",
-			Owner:           &warlock.Character,
-			BaseStats:       baseStats,
-			StatInheritance: warlock.petStatInheritance,
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                            "Doomguard",
+			Owner:                           &warlock.Character,
+			BaseStats:                       baseStats,
+			StatInheritance:                 warlock.simplePetStatInheritanceWithScale(0),
+			EnabledOnStart:                  false,
+			IsGuardian:                      true,
+			HasDynamicMeleeSpeedInheritance: true,
+			HasDynamicCastSpeedInheritance:  true,
 		}),
 	}
-	warlock.setPetOptions(pet, 1.0, 0.77, nil)
 
+	pet.Class = proto.Class_ClassWarlock
+	pet.EnableEnergyBar(core.EnergyBarOptions{
+		MaxEnergy: 100,
+		UnitClass: proto.Class_ClassWarlock,
+	})
+
+	warlock.AddPet(pet)
 	return pet
 }
 
@@ -80,7 +81,6 @@ func (doomguard *DoomguardPet) GetPet() *core.Pet {
 
 func (pet *DoomguardPet) Initialize() {
 	pet.registerDoomBolt()
-	petMasteryHelper(&pet.Pet)
 }
 
 func (pet *DoomguardPet) Reset(_ *core.Simulation) {}
@@ -88,13 +88,11 @@ func (pet *DoomguardPet) Reset(_ *core.Simulation) {}
 func (pet *DoomguardPet) ExecuteCustomRotation(sim *core.Simulation) {
 	if pet.DoomBolt.CanCast(sim, pet.CurrentTarget) {
 		pet.DoomBolt.Cast(sim, pet.CurrentTarget)
-		minDelay := 150.0
-		maxDelay := 750.0
-		delayRange := maxDelay - minDelay
-		// ~150-750ms delay between casts
-		// Research: https://docs.google.com/spreadsheets/d/e/2PACX-1vSaFavGbmrd0l3r7XsPWivap9wMjeaRB6Sl5ieg_GpJ8AfdWkzdG3o2czJ60WHFIZwK0QK5yWF22p8D/pubchart?oid=586881278&format=interactive
-		randomDelay := time.Duration(minDelay+delayRange*sim.RandomFloat("Doomguard Cast Delay")) * time.Millisecond
-		pet.WaitUntil(sim, pet.NextGCDAt()+randomDelay)
+
+		// calculate energy required
+		timeTillEnergy := max(0, (pet.DoomBolt.Cost.GetCurrentCost()-pet.CurrentEnergy())/pet.EnergyRegenPerSecond())
+		delay := min(0, time.Duration(float64(time.Second)*timeTillEnergy))
+		pet.WaitUntil(sim, sim.CurrentTime+delay)
 		return
 	}
 }
@@ -107,7 +105,10 @@ func (pet *DoomguardPet) registerDoomBolt() {
 		ClassSpellMask: WarlockSpellDoomguardDoomBolt,
 		MissileSpeed:   20,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 0},
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 35,
+		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -118,13 +119,10 @@ func (pet *DoomguardPet) registerDoomBolt() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           2,
 		ThreatMultiplier:         1,
-		BonusCoefficient:         1.28550004959,
+		BonusCoefficient:         0.9,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// seems weird to have class = warrior here, but seems to fit better then paladin
-			baseDmg := core.GetClassSpellScalingCoefficient(proto.Class_ClassWarrior) * 1.05599999428
-			baseDmg = sim.Roll(core.ApplyVarianceMinMax(baseDmg, 0.1099999994))
-			result := spell.CalcDamage(sim, target, baseDmg, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, pet.CalcAndRollDamageRange(sim, 0.9, 0.1), spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

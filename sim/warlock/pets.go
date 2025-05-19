@@ -37,8 +37,10 @@ var petBaseStats = map[proto.WarlockOptions_Summon]*stats.Stats{
 func (warlock *Warlock) simplePetStatInheritanceWithScale(apScale float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
-			stats.SpellPower: ownerStats[stats.SpellPower], // All pets inherit spell 1:1
-			stats.CritRating: ownerStats[stats.CritRating],
+			stats.Stamina:     ownerStats[stats.Stamina] * 1.0 / 3.0,
+			stats.SpellPower:  ownerStats[stats.SpellPower], // All pets inherit spell 1:1
+			stats.CritRating:  ownerStats[stats.CritRating],
+			stats.HasteRating: ownerStats[stats.HasteRating],
 
 			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
 			stats.HitRating:       ownerStats[stats.HitRating],
@@ -71,15 +73,19 @@ func (warlock *Warlock) makePet(
 	enabledOnStart := summonType == warlock.Options.Summon
 	pet := &WarlockPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            name,
-			Owner:           &warlock.Character,
-			BaseStats:       baseStats,
-			StatInheritance: statInheritance,
-			EnabledOnStart:  enabledOnStart,
-			IsGuardian:      false,
+			Name:                            name,
+			Owner:                           &warlock.Character,
+			BaseStats:                       baseStats,
+			StatInheritance:                 statInheritance,
+			EnabledOnStart:                  enabledOnStart,
+			IsGuardian:                      false,
+			HasDynamicMeleeSpeedInheritance: true,
+			HasDynamicCastSpeedInheritance:  true,
 		}),
 	}
 
+	// set pet class for proper scaling values
+	pet.Class = pet.Owner.Class
 	if enabledOnStart {
 		warlock.RegisterResetEffect(func(sim *core.Simulation) {
 			warlock.ActivePet = pet
@@ -96,6 +102,12 @@ func (warlock *Warlock) setPetOptions(petAgent core.PetAgent, aaOptions *core.Au
 	if aaOptions != nil {
 		pet.EnableAutoAttacks(petAgent, *aaOptions)
 	}
+
+	pet.EnableEnergyBar(core.EnergyBarOptions{
+		MaxEnergy: 200,
+		UnitClass: proto.Class_ClassWarlock,
+	})
+
 	warlock.AddPet(petAgent)
 }
 
@@ -107,19 +119,27 @@ func (warlock *Warlock) registerPets() {
 }
 
 func (warlock *Warlock) registerImp() *WarlockPet {
-	return warlock.registerPet(proto.WarlockOptions_Imp, 0, 0)
+	pet := warlock.registerPet(proto.WarlockOptions_Imp, 0, 0)
+	pet.registerFireboltSpell()
+	return pet
 }
 
 func (warlock *Warlock) registerFelHunter() *WarlockPet {
-	return warlock.registerPet(proto.WarlockOptions_Felhunter, 2, 3.5)
+	pet := warlock.registerPet(proto.WarlockOptions_Felhunter, 2, 3.5)
+	pet.registerShadowBiteSpell()
+	return pet
 }
 
 func (warlock *Warlock) registerVoidWalker() *WarlockPet {
-	return warlock.registerPet(proto.WarlockOptions_Voidwalker, 2, 3.5)
+	pet := warlock.registerPet(proto.WarlockOptions_Voidwalker, 2, 3.5)
+	pet.registerTormentSpell()
+	return pet
 }
 
 func (warlock *Warlock) registerSuccubus() *WarlockPet {
-	return warlock.registerPet(proto.WarlockOptions_Succubus, 3, 1.667)
+	pet := warlock.registerPet(proto.WarlockOptions_Succubus, 3, 1.667)
+	pet.registerLashOfPainSpell()
+	return pet
 }
 
 func (warlock *Warlock) registerPet(t proto.WarlockOptions_Summon, swingSpeed float64, apScale float64) *WarlockPet {
@@ -142,27 +162,6 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 }
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
-
-// func petMasteryHelper(pet *core.Pet) {
-// 	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
-// 		// The current code convention is to not include base Mastery points in the MasteryRating stat
-// 		// value, only bonus Rating gained from gear / consumes. Therefore, we bake in the base points (8
-// 		// for Warlock but not for all classes) to the damage multiplier calculation.
-// 		petDamageMultiplier := func(masteryRating float64) float64 {
-// 			return 1 + math.Floor(2.3*(8+core.MasteryRatingToMasteryPoints(masteryRating)))/100
-// 		}
-
-// 		// Set initial multiplier from base stats (should be 0 Mastery Rating at this point since
-// 		// owner stats have not yet been inherited).
-// 		pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(pet.GetStat(stats.MasteryRating))
-
-// 		// Keep the multiplier updated when Mastery Rating changes.
-// 		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
-// 			pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(newMasteryRating) / petDamageMultiplier(oldMasteryRating)
-// 		})
-// 	}
-// }
-
 func (pet *WarlockPet) Initialize() {
 }
 
@@ -175,10 +174,12 @@ func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 			return
 		}
 
-		waitUntil = min(waitUntil, max(sim.CurrentTime, spell.CD.ReadyAt()))
+		// calculate energy required
+		timeTillEnergy := max(0, (spell.Cost.GetCurrentCost()-pet.CurrentEnergy())/pet.EnergyRegenPerSecond())
+		waitUntil = min(waitUntil, time.Duration(float64(time.Second)*timeTillEnergy))
 	}
 
-	pet.WaitUntil(sim, waitUntil)
+	pet.WaitUntil(sim, sim.CurrentTime+waitUntil)
 }
 
 func (pet *WarlockPet) registerShadowBiteSpell() {
@@ -187,42 +188,23 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellFelHunterShadowBite,
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 3,
-			PercentModifier: 100,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    pet.NewTimer(),
-				Duration: 6 * time.Second,
-			},
+		},
+
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 50,
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.38,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// shadowbite is a weird spell that seems to get it's SP scaling via a secondary effect,
-			// so even though it has variance that only applies to the "base" damage
-			// the second "base" value of 182.5 is probably not correct
-			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.12600000203, 0.34999999404)
-			baseDamage += 1.228 * spell.SpellPower()
-
-			activeDots := 0
-			for _, spell := range pet.Owner.Spellbook {
-				// spell.RelatedDotSpell == nil to not double count spells with a separate dot component spell
-				if spell.Dot(target) != nil && spell.RelatedDotSpell == nil && spell.Dot(target).IsActive() {
-					activeDots++
-				}
-			}
-
-			baseDamage *= 1 + 0.3*float64(activeDots)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.38), spell.OutcomeMagicHitAndCrit)
 		},
 	}))
 }
@@ -313,7 +295,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 	}))
 }
 
-func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
+func (pet *WarlockPet) registerFireboltSpell() {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3110},
 		SpellSchool:    core.SpellSchoolFire,
@@ -321,30 +303,23 @@ func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
 		ClassSpellMask: WarlockSpellImpFireBolt,
 		MissileSpeed:   16,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 40,
+		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: 2500 * time.Millisecond,
-			},
-			IgnoreHaste: true,
-			// Custom modify cast to not lower GCD
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				cast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.DefaultCast.CastTime, spell)
+				GCD:      time.Second * 1,
+				CastTime: time.Millisecond * 1750,
 			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.907,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// seems to function similar to shadowbite, i.e. variance that only applies to the "base" damage, a
-			// secondary "base" value of 182.5 (probably not entirely correct) and SP scaling via a secondary effect
-			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.1230000034, 0.1099999994)
-			baseDamage += 0.657 * spell.SpellPower()
-
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, pet.CalcScalingSpellDmg(0.907), spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
@@ -358,28 +333,48 @@ func (pet *WarlockPet) registerLashOfPainSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellSuccubusLashOfPain,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 3,
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 60,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    pet.NewTimer(),
-				Duration: 12 * time.Second,
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   2,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.907,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.907), spell.OutcomeMagicHitAndCrit)
+		},
+	}))
+}
+
+func (pet *WarlockPet) registerTormentSpell() {
+	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 3716},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: WarlockSpellVoidwalkerTorment,
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 50,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
 			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1.5,
+		CritMultiplier:   2,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.3,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 187 + (0.612 * (0.5 * spell.SpellPower()))
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.3), spell.OutcomeMagicHitAndCrit)
 		},
 	}))
 }
