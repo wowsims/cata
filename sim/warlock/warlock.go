@@ -26,19 +26,17 @@ type Warlock struct {
 	Shadowburn           *core.Spell
 	UnstableAffliction   *core.Spell
 
-	// ActivePet *WarlockPet
-	// Felhunter *WarlockPet
+	ActivePet *WarlockPet
+	Felhunter *WarlockPet
 	// Felguard  *WarlockPet
-	// Imp       *WarlockPet
-	// Succubus  *WarlockPet
+	Imp        *WarlockPet
+	Succubus   *WarlockPet
+	Voidwalker *WarlockPet
 
 	// Doomguard *DoomguardPet
 	// Infernal  *InfernalPet
 	// EbonImp   *EbonImpPet
 	// FieryImp  *FieryImpPet
-
-	SoulShards   *core.Aura
-	SoulBurnAura *core.Aura
 
 	// Item sets
 	T13_4pc *core.Aura
@@ -133,7 +131,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	// warlock.Doomguard = warlock.NewDoomguardPet()
 	// warlock.FieryImp = warlock.NewFieryImp()
 
-	// warlock.registerPets()
+	warlock.registerPets()
 
 	return warlock
 }

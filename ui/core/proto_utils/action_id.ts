@@ -1038,6 +1038,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
+	'Felhunter': ActionId.fromSpellId(691),
 };
 
 // https://wowhead.com/mop-classic/hunter-pets

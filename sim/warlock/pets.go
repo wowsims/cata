@@ -15,38 +15,58 @@ type WarlockPet struct {
 	AutoCastAbilities []*core.Spell
 }
 
-func (warlock *Warlock) petStatInheritance(ownerStats stats.Stats) stats.Stats {
-	const petExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
-	const scalingFactor = 0.53153153153153 // TODO: changes from 80 (where it's 0.5) -> 85, clearly there's more to it..
+var petBaseStats = map[proto.WarlockOptions_Summon]*stats.Stats{
+	proto.WarlockOptions_Imp: {
+		stats.Health: 48312.8,
+		stats.Armor:  19680,
+	},
+	proto.WarlockOptions_Voidwalker: {
+		stats.Health: 120900.8,
+		stats.Armor:  19680,
+	},
+	proto.WarlockOptions_Succubus: {
+		stats.Health: 84606.8,
+		stats.Armor:  12568,
+	},
+	proto.WarlockOptions_Felhunter: {
+		stats.Health: 84606.8,
+		stats.Armor:  19680,
+	},
+}
 
-	return stats.Stats{
-		stats.Mana:  ownerStats[stats.Mana] / scalingFactor,
-		stats.Armor: ownerStats[stats.Armor],
+func (warlock *Warlock) simplePetStatInheritanceWithScale(apScale float64) core.PetStatInheritance {
+	return func(ownerStats stats.Stats) stats.Stats {
+		return stats.Stats{
+			stats.SpellPower: ownerStats[stats.SpellPower], // All pets inherit spell 1:1
+			stats.CritRating: ownerStats[stats.CritRating],
 
-		stats.SpellPower:  ownerStats[stats.SpellPower] * scalingFactor,
-		stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
+			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
+			stats.HitRating:       ownerStats[stats.HitRating],
+			stats.ExpertiseRating: ownerStats[stats.HitRating] / core.SpellHitRatingPerHitPercent * core.ExpertisePerQuarterPercentReduction * 4, // 1% hit = 1% expertise
 
-		// almost certainly wrong, needs more testing
-		stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
-		stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
-
-		// pets inherit haste rating directly, evidenced by:
-		// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
-		// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
-		stats.HasteRating: ownerStats[stats.HasteRating],
-
-		// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
-		stats.HitRating:       ownerStats[stats.SpellHitPercent] * core.SpellHitRatingPerHitPercent,
-		stats.ExpertiseRating: ownerStats[stats.SpellHitPercent] * petExpertiseScale,
-
-		// for master demonologist
-		stats.MasteryRating: ownerStats[stats.MasteryRating],
+			stats.AttackPower: ownerStats[stats.SpellPower] * apScale,
+		}
 	}
 }
 
-func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, meleeMod float64,
-	powerModifier float64, aaOptions *core.AutoAttackOptions, statInheritance core.PetStatInheritance) *WarlockPet {
+func scaledAutoAttackConfig(swingSpeed float64) *core.AutoAttackOptions {
+	return &core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			BaseDamageMin:  math.Floor(core.ClassBaseScaling[proto.Class_ClassWarlock]),
+			BaseDamageMax:  math.Ceil(core.ClassBaseScaling[proto.Class_ClassWarlock]),
+			SwingSpeed:     swingSpeed,
+			CritMultiplier: 2,
+		},
+		AutoSwingMelee: true,
+	}
+}
 
+func (warlock *Warlock) makePet(
+	summonType proto.WarlockOptions_Summon,
+	baseStats stats.Stats,
+	aaOptions *core.AutoAttackOptions,
+	statInheritance core.PetStatInheritance,
+) *WarlockPet {
 	name := proto.WarlockOptions_Summon_name[int32(summonType)]
 	enabledOnStart := summonType == warlock.Options.Summon
 	pet := &WarlockPet{
@@ -59,29 +79,20 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 			IsGuardian:      false,
 		}),
 	}
+
 	if enabledOnStart {
 		warlock.RegisterResetEffect(func(sim *core.Simulation) {
 			warlock.ActivePet = pet
 		})
 	}
 
-	warlock.setPetOptions(pet, meleeMod, powerModifier, aaOptions)
+	warlock.setPetOptions(pet, aaOptions)
 
 	return pet
 }
 
-func (warlock *Warlock) setPetOptions(petAgent core.PetAgent, meleeMod float64, powerModifier float64,
-	aaOptions *core.AutoAttackOptions) {
-
+func (warlock *Warlock) setPetOptions(petAgent core.PetAgent, aaOptions *core.AutoAttackOptions) {
 	pet := petAgent.GetPet()
-	pet.EnableManaBarWithModifier(powerModifier)
-	pet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	pet.AddStat(stats.AttackPower, -20)
-	pet.AddStatDependency(stats.Agility, stats.PhysicalCritPercent,
-		core.CritPerAgiMaxLevel[proto.Class_ClassPaladin])
-	pet.AddStatDependency(stats.Intellect, stats.SpellCritPercent,
-		core.CritPerIntMaxLevel[proto.Class_ClassPaladin])
-	pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= meleeMod
 	if aaOptions != nil {
 		pet.EnableAutoAttacks(petAgent, *aaOptions)
 	}
@@ -89,62 +100,41 @@ func (warlock *Warlock) setPetOptions(petAgent core.PetAgent, meleeMod float64, 
 }
 
 func (warlock *Warlock) registerPets() {
-	aaOptions := &core.AutoAttackOptions{
-		MainHand: core.Weapon{
-			BaseDamageMin:  741.13,
-			BaseDamageMax:  1111.62,
-			SwingSpeed:     2,
-			CritMultiplier: 2,
-		},
-		AutoSwingMelee: true,
-	}
-	baseStats := stats.Stats{
-		stats.Strength:  453,
-		stats.Agility:   883,
-		stats.Stamina:   353,
-		stats.Intellect: 159,
-		stats.Spirit:    225,
-
-		stats.Mana: 23420, // x / 0.05 = 1171, x / 0.03 = 702; x ~= 23420
-
-		// determined "base" crit chance with GetCritChanceFrom{Agility,Int}("pet") and then subtracted
-		// the calculated amount of crit from agi/int.
-		//
-		// To calculate crit per agi/int the following two spells where used:
-		// Rabies (3150) -5 int
-		// Corrupted Agility (6817) -10 agi
-		stats.PhysicalCritPercent: 0.652,
-		stats.SpellCritPercent:    3.3355,
-	}
-	impBaseStats := stats.Stats{
-		stats.Strength:  429,
-		stats.Agility:   309,
-		stats.Stamina:   712,
-		stats.Intellect: 391,
-		stats.Spirit:    395,
-
-		stats.Mana: 17415, // x / 0.16 = 2786, x / 0.02 = 348; x ~= 17415
-
-		stats.PhysicalCritPercent: 0.652,
-		stats.SpellCritPercent:    0.9075,
-	}
-
-	inheritance := warlock.petStatInheritance
-	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, aaOptions, inheritance)
-	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, aaOptions, inheritance)
-	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
-	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.025, 0.77, aaOptions, inheritance)
+	warlock.Imp = warlock.registerImp()
+	warlock.Succubus = warlock.registerSuccubus()
+	warlock.Felhunter = warlock.registerFelHunter()
+	warlock.Voidwalker = warlock.registerVoidWalker()
 }
 
-func (warlock *Warlock) registerPetAbilities() {
-	warlock.Felhunter.registerShadowBiteSpell()
+func (warlock *Warlock) registerImp() *WarlockPet {
+	return warlock.registerPet(proto.WarlockOptions_Imp, 0, 0)
+}
 
-	warlock.Felguard.registerLegionStrikeSpell()
-	warlock.Felguard.registerFelstormSpell()
+func (warlock *Warlock) registerFelHunter() *WarlockPet {
+	return warlock.registerPet(proto.WarlockOptions_Felhunter, 2, 3.5)
+}
 
-	warlock.Imp.registerFireboltSpell(warlock)
+func (warlock *Warlock) registerVoidWalker() *WarlockPet {
+	return warlock.registerPet(proto.WarlockOptions_Voidwalker, 2, 3.5)
+}
 
-	warlock.Succubus.registerLashOfPainSpell()
+func (warlock *Warlock) registerSuccubus() *WarlockPet {
+	return warlock.registerPet(proto.WarlockOptions_Succubus, 3, 1.667)
+}
+
+func (warlock *Warlock) registerPet(t proto.WarlockOptions_Summon, swingSpeed float64, apScale float64) *WarlockPet {
+	baseStats, ok := petBaseStats[t]
+	if !ok {
+		panic("Undefined base stats for pet")
+	}
+
+	var attackOptions *core.AutoAttackOptions = nil
+	if swingSpeed > 0 {
+		attackOptions = scaledAutoAttackConfig(swingSpeed)
+	}
+
+	inheritance := warlock.simplePetStatInheritanceWithScale(apScale)
+	return warlock.makePet(t, *baseStats, attackOptions, inheritance)
 }
 
 func (pet *WarlockPet) GetPet() *core.Pet {
@@ -153,28 +143,27 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
 
-func petMasteryHelper(pet *core.Pet) {
-	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
-		// The current code convention is to not include base Mastery points in the MasteryRating stat
-		// value, only bonus Rating gained from gear / consumes. Therefore, we bake in the base points (8
-		// for Warlock but not for all classes) to the damage multiplier calculation.
-		petDamageMultiplier := func(masteryRating float64) float64 {
-			return 1 + math.Floor(2.3*(8+core.MasteryRatingToMasteryPoints(masteryRating)))/100
-		}
+// func petMasteryHelper(pet *core.Pet) {
+// 	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
+// 		// The current code convention is to not include base Mastery points in the MasteryRating stat
+// 		// value, only bonus Rating gained from gear / consumes. Therefore, we bake in the base points (8
+// 		// for Warlock but not for all classes) to the damage multiplier calculation.
+// 		petDamageMultiplier := func(masteryRating float64) float64 {
+// 			return 1 + math.Floor(2.3*(8+core.MasteryRatingToMasteryPoints(masteryRating)))/100
+// 		}
 
-		// Set initial multiplier from base stats (should be 0 Mastery Rating at this point since
-		// owner stats have not yet been inherited).
-		pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(pet.GetStat(stats.MasteryRating))
+// 		// Set initial multiplier from base stats (should be 0 Mastery Rating at this point since
+// 		// owner stats have not yet been inherited).
+// 		pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(pet.GetStat(stats.MasteryRating))
 
-		// Keep the multiplier updated when Mastery Rating changes.
-		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
-			pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(newMasteryRating) / petDamageMultiplier(oldMasteryRating)
-		})
-	}
-}
+// 		// Keep the multiplier updated when Mastery Rating changes.
+// 		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+// 			pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(newMasteryRating) / petDamageMultiplier(oldMasteryRating)
+// 		})
+// 	}
+// }
 
 func (pet *WarlockPet) Initialize() {
-	petMasteryHelper(&pet.Pet)
 }
 
 func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
@@ -356,14 +345,6 @@ func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
 			baseDamage += 0.657 * spell.SpellPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if warlock.Talents.BurningEmbers > 0 && result.Landed() {
-				dot := warlock.BurningEmbers.Dot(result.Target)
-				if !dot.IsActive() {
-					dot.SnapshotBaseDamage = 0.0 // ensure we don't use old dot data
-				}
-				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
-				dot.Apply(sim)
-			}
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
