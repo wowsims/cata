@@ -401,6 +401,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-DarkglowEmbroidery-3728"
+ value: {
+  dps: 37065.81386
+  tps: 34191.21939
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-DarkglowEmbroidery-4116"
+ value: {
+  dps: 37096.39243
+  tps: 34202.0213
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
   dps: 33918.77883
@@ -485,6 +499,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 34860.02374
@@ -513,10 +534,157 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-ElementiumShieldSpike-4215"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 36787.96568
   tps: 33940.51611
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Enchant2HWeapon-Scourgebane-3247"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantBoots-Assassin'sStep-4105"
+ value: {
+  dps: 36710.45743
+  tps: 34030.99728
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantBoots-EarthenVitality-4062"
+ value: {
+  dps: 36710.45743
+  tps: 34030.99728
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantBoots-Lavawalker-4104"
+ value: {
+  dps: 36774.81398
+  tps: 34091.09829
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantBoots-Tuskarr'sVitality-3232"
+ value: {
+  dps: 36710.45743
+  tps: 34030.99728
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantCloak-Wisdom-3296"
+ value: {
+  dps: 37096.47871
+  tps: 33533.89647
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantGloves-Armsman-3253"
+ value: {
+  dps: 37097.40292
+  tps: 34935.02092
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Avalanche-4067"
+ value: {
+  dps: 37395.84528
+  tps: 34611.39084
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Berserking-3789"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-BlackMagic-3790"
+ value: {
+  dps: 36747.23539
+  tps: 33991.61201
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-BloodDraining-3870"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-ElementalSlayer-4074"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-GiantSlayer-3251"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Heartsong-4084"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Hurricane-4083"
+ value: {
+  dps: 36922.43413
+  tps: 34222.12994
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Icebreaker-3239"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Landslide-4099"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Lifeward-3241"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Mending-4066"
+ value: {
+  dps: 36764.95085
+  tps: 33980.08843
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-EnchantWeapon-Windwalk-4098"
+ value: {
+  dps: 36736.39931
+  tps: 33964.72312
  }
 }
 dps_results: {
@@ -674,6 +842,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Flintlocke'sWoodchucker-4267"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-FluidDeath-58181"
  value: {
   dps: 33918.77883
@@ -741,6 +916,13 @@ dps_results: {
  value: {
   dps: 35027.81969
   tps: 32239.61737
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-GnomishX-RayScope-4175"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
  }
 }
 dps_results: {
@@ -860,6 +1042,13 @@ dps_results: {
  value: {
   dps: 37218.98742
   tps: 34378.71882
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-HeartseekerScope-3608"
+ value: {
+  dps: 37276.66631
+  tps: 34456.60893
  }
 }
 dps_results: {
@@ -1063,6 +1252,20 @@ dps_results: {
  value: {
   dps: 33918.77883
   tps: 31244.88234
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-LightweaveEmbroidery-3722"
+ value: {
+  dps: 37288.53029
+  tps: 34374.70785
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-LightweaveEmbroidery-4115"
+ value: {
+  dps: 37532.83419
+  tps: 34656.29209
  }
 }
 dps_results: {
@@ -1346,6 +1549,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-PyriumShieldSpike-4216"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-R19Threatfinder-4176"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Rainsong-55854"
  value: {
   dps: 33998.03828
@@ -1546,6 +1763,13 @@ dps_results: {
  value: {
   dps: 33918.60012
   tps: 31244.70363
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SafetyCatchRemovalKit-4177"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
  }
 }
 dps_results: {
@@ -1817,6 +2041,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-SunScope-3607"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SwordguardEmbroidery-3730"
+ value: {
+  dps: 37096.39243
+  tps: 34202.0213
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SwordguardEmbroidery-4118"
+ value: {
+  dps: 37096.39243
+  tps: 34202.0213
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-SymbioticWorm-59332"
  value: {
   dps: 33918.77883
@@ -1989,6 +2234,13 @@ dps_results: {
  value: {
   dps: 33918.77883
   tps: 31244.88234
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-TitaniumShieldSpike-3748"
+ value: {
+  dps: 37218.98742
+  tps: 34378.71882
  }
 }
 dps_results: {

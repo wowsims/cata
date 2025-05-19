@@ -242,7 +242,7 @@ func init() {
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
-	core.AddWeaponEffect(3843, func(agent core.Agent, _ proto.ItemSlot) {
+	core.NewEnchantEffect(3843, func(agent core.Agent, _ proto.ItemLevelState) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 15
 		w.BaseDamageMax += 15

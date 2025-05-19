@@ -445,6 +445,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-DarkglowEmbroidery-3728"
+ value: {
+  dps: 29431.0692
+  tps: 20896.05913
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-DarkglowEmbroidery-4116"
+ value: {
+  dps: 29431.0692
+  tps: 20896.05913
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
   dps: 27300.64089
@@ -529,6 +543,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 29510.45638
+  tps: 20952.42403
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 27534.82108
@@ -557,10 +578,157 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-ElementiumShieldSpike-4215"
+ value: {
+  dps: 29043.64167
+  tps: 20620.98559
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 28951.30631
   tps: 20555.42748
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-Enchant2HWeapon-Scourgebane-3247"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantBoots-Assassin'sStep-4105"
+ value: {
+  dps: 29472.91161
+  tps: 20925.76724
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantBoots-EarthenVitality-4062"
+ value: {
+  dps: 29366.19582
+  tps: 20849.99903
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantBoots-Lavawalker-4104"
+ value: {
+  dps: 29424.72694
+  tps: 20891.55613
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantBoots-Tuskarr'sVitality-3232"
+ value: {
+  dps: 29366.19582
+  tps: 20849.99903
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantCloak-Wisdom-3296"
+ value: {
+  dps: 29431.0692
+  tps: 20478.13795
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantGloves-Armsman-3253"
+ value: {
+  dps: 29400.62406
+  tps: 21291.93194
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Avalanche-4067"
+ value: {
+  dps: 29092.58847
+  tps: 20655.73782
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Berserking-3789"
+ value: {
+  dps: 29140.74043
+  tps: 20689.9257
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-BlackMagic-3790"
+ value: {
+  dps: 29127.6035
+  tps: 20680.59848
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-BloodDraining-3870"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-ElementalSlayer-4074"
+ value: {
+  dps: 28993.82703
+  tps: 20585.61719
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-GiantSlayer-3251"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Heartsong-4084"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Hurricane-4083"
+ value: {
+  dps: 29403.09215
+  tps: 20876.19543
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Icebreaker-3239"
+ value: {
+  dps: 28926.62779
+  tps: 20537.90573
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Lifeward-3241"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Mending-4066"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-PowerTorrent-4097"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-EnchantWeapon-Windwalk-4098"
+ value: {
+  dps: 28872.11444
+  tps: 20499.20125
  }
 }
 dps_results: {
@@ -718,6 +886,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-Flintlocke'sWoodchucker-4267"
+ value: {
+  dps: 29510.45638
+  tps: 20952.42403
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-ForestwalkerIdolofRage-92142"
  value: {
   dps: 29239.10946
@@ -785,6 +960,13 @@ dps_results: {
  value: {
   dps: 27300.64089
   tps: 19383.45503
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-GnomishX-RayScope-4175"
+ value: {
+  dps: 29510.45638
+  tps: 20952.42403
  }
 }
 dps_results: {
@@ -890,6 +1072,13 @@ dps_results: {
  value: {
   dps: 29510.45638
   tps: 20952.42403
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-HeartseekerScope-3608"
+ value: {
+  dps: 29538.93278
+  tps: 20972.64227
  }
 }
 dps_results: {
@@ -1100,6 +1289,20 @@ dps_results: {
  value: {
   dps: 28576.91712
   tps: 20289.61115
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-LightweaveEmbroidery-3722"
+ value: {
+  dps: 29431.0692
+  tps: 20896.05913
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-LightweaveEmbroidery-4115"
+ value: {
+  dps: 29431.0692
+  tps: 20896.05913
  }
 }
 dps_results: {
@@ -1383,6 +1586,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-PyriumShieldSpike-4216"
+ value: {
+  dps: 29043.64167
+  tps: 20620.98559
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-R19Threatfinder-4176"
+ value: {
+  dps: 29684.1601
+  tps: 21075.75367
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-Rainsong-55854"
  value: {
   dps: 27300.64089
@@ -1583,6 +1800,13 @@ dps_results: {
  value: {
   dps: 28019.86531
   tps: 19894.10437
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-SafetyCatchRemovalKit-4177"
+ value: {
+  dps: 29646.33037
+  tps: 21048.89456
  }
 }
 dps_results: {
@@ -1840,6 +2064,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-SunScope-3607"
+ value: {
+  dps: 29572.21728
+  tps: 20996.27427
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-SwordguardEmbroidery-3730"
+ value: {
+  dps: 29597.53308
+  tps: 21014.24849
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-SwordguardEmbroidery-4118"
+ value: {
+  dps: 29846.39364
+  tps: 21190.93948
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-SymbioticWorm-59332"
  value: {
   dps: 27300.64089
@@ -1998,6 +2243,13 @@ dps_results: {
  value: {
   dps: 28598.41553
   tps: 20304.87502
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-TitaniumShieldSpike-3748"
+ value: {
+  dps: 29043.64167
+  tps: 20620.98559
  }
 }
 dps_results: {

@@ -55,6 +55,8 @@ func init() {
 			EffectId:      enchant.EffectId,
 			Stats:         enchant.Stats,
 			EnchantEffect: enchant.EnchantEffect,
+			Name:          enchant.Name,
+			Type:          enchant.Type,
 		}
 	}
 

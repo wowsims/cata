@@ -127,6 +127,8 @@ func getDatabase(itemIds *int32, numItems int32, enchantIds *int32, numEnchants 
 			EffectId:      enchant.EffectID,
 			Stats:         enchant.Stats[:],
 			EnchantEffect: enchant.EnchantEffect,
+			Name:          enchant.Name,
+			Type:          enchant.Type,
 		}
 	}
 	for i, gemId := range gids {

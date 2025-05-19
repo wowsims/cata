@@ -16,12 +16,16 @@ message SimDatabase {
 	repeated SpellEffect spell_effects = 8;
 
 }
-  // Contains only the Enchant info needed by the sim.
+
+// Contains only the Enchant info needed by the sim.
 message SimEnchant {
-	int32 effect_id = 1;
-	repeated double stats = 2;
-	ItemEffect enchant_effect = 3;
+        int32 effect_id = 1;
+        string name = 2; // Only needed for unit tests.
+        ItemType type = 3; // Only needed for unit tests.
+        repeated double stats = 4;
+        ItemEffect enchant_effect = 5;
 }
+
 // Contains only the Item info needed by the sim.
 message SimItem {
 	int32 id = 1;
