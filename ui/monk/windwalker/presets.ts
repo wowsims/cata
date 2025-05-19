@@ -62,7 +62,7 @@ export const P1_PREBIS_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '211322',
 		glyphs: Glyphs.create({
 			major1: MonkMajorGlyph.GlyphOfSpinningCraneKick,
 			major2: MonkMajorGlyph.GlyphOfTouchOfKarma,
