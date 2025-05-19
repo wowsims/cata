@@ -34,7 +34,7 @@ func TestWindwalker(t *testing.T) {
 	}))
 }
 
-var WindwalkerTalents = "211322"
+var WindwalkerTalents = "213322"
 var WindwalkerDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.MonkMajorGlyph_GlyphOfSpinningCraneKick),
 	Major2: int32(proto.MonkMajorGlyph_GlyphOfTouchOfKarma),
