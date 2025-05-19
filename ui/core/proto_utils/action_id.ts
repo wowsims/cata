@@ -274,9 +274,13 @@ export class ActionId {
 		const baseName = tooltipData['name'];
 		let name = baseName;
 
-		// handle DRT
 		let tag = this.tag;
-		if (tag >= 71086) {
+		// Handle Monk's Storm, Earth and Fire
+		if (tag >= 138228) {
+			tag -= 138228;
+		}
+		// Handle DTR
+		else if (tag >= 71086) {
 			name = 'Dragonwrath - ' + name;
 			tag -= 71086;
 		}
@@ -709,7 +713,7 @@ export class ActionId {
 
 			// Monk
 			case 'Tiger Strikes':
-				if (this.spellId === 12274) {
+				if (this.spellId === 120274) {
 					name += ' (Main Hand)';
 				} else {
 					name += ' (Off Hand)';
@@ -750,11 +754,6 @@ export class ActionId {
 					name += ' (Heal)';
 				} else if (this.spellId === 148135) {
 					name += ' (Damage)';
-				}
-				break;
-			case 'Rushing Jade Wind':
-				if (this.spellId === 148187) {
-					name += ' (Hit)';
 				}
 				break;
 			case 'Stagger':
@@ -817,7 +816,8 @@ export class ActionId {
 		} else if (this.otherId) {
 			return 'other-' + this.otherId;
 		} else {
-			throw new Error('Empty action id!');
+			console.error('Empty action id!');
+			return '';
 		}
 	}
 
@@ -1060,6 +1060,9 @@ const petNameToActionId: Record<string, ActionId> = {
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
 	'Xuen, The White Tiger': ActionId.fromSpellId(123904),
+	'Earth Spirit': ActionId.fromSpellId(138121),
+	'Storm Spirit': ActionId.fromSpellId(138122),
+	'Fire Spirit': ActionId.fromSpellId(138123),
 };
 
 // https://wowhead.com/mop-classic/hunter-pets

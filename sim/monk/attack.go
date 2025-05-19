@@ -45,7 +45,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 
 		if sim.Log != nil {
 			monk.Log(sim, "[DEBUG] main hand weapon damage portion for %s: td=%0.3f, wd=%0.3f, ws=%0.3f",
-				spell.ActionID, totalDamage, dmg, mhw.SwingSpeed, ap)
+				spell.ActionID, totalDamage, dmg, mhw.SwingSpeed)
 		}
 	}
 
@@ -59,7 +59,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 
 		if sim.Log != nil {
 			monk.Log(sim, "[DEBUG] off hand weapon damage portion for %s: td=%0.3f, wd=%0.3f, ws=%0.3f",
-				spell.ActionID, totalDamage, dmg, ohw.SwingSpeed, ap)
+				spell.ActionID, totalDamage, dmg, ohw.SwingSpeed)
 		}
 	}
 
@@ -68,7 +68,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 		totalDamage *= DualWieldModifier
 	}
 
-	apMod := monk.GetAttackPowerPerDPS()
+	apMod := 1.0 / core.DefaultAttackPowerPerDPS
 
 	if !hasMainHand && !hasOffHand {
 		// Unarmed

@@ -19,7 +19,7 @@ var baseStats = stats.Stats{
 	stats.Agility:     0,
 	stats.Stamina:     0,
 	stats.Intellect:   0,
-	stats.AttackPower: 1141,
+	stats.AttackPower: 0,
 	stats.Mana:        0,
 }
 
@@ -74,12 +74,17 @@ func (monk *Monk) NewXuen() *Xuen {
 	})
 
 	xuen.PseudoStats.DamageTakenMultiplier *= 0.1
-	xuen.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
 
+	// Observed values for Xuen's auto attack damage
+	// This could be either:
+	// ClassBaseScaling * 1.05853604195
+	// CreatureDPS (201.889276) * 5.73988599855808
+	// or something completely different
+	baseWeaponDamage := 1157.9
 	xuen.EnableAutoAttacks(xuen, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:        monk.CalcScalingSpellDmg(1), // Currently does 1240 in bugged state
-			BaseDamageMax:        monk.CalcScalingSpellDmg(1), // Currently does 1241 in bugged state
+			BaseDamageMin:        baseWeaponDamage,
+			BaseDamageMax:        baseWeaponDamage + 1,
 			SwingSpeed:           1,
 			NormalizedSwingSpeed: 1,
 			CritMultiplier:       monk.DefaultCritMultiplier(),
@@ -91,10 +96,6 @@ func (monk *Monk) NewXuen() *Xuen {
 	xuen.AutoAttacks.MHConfig().BonusCoefficient = 0
 	xuen.AutoAttacks.MHConfig().Flags |= core.SpellFlagIgnoreTargetModifiers
 
-	monk.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
-		xuen.PseudoStats.DamageDealtMultiplier = monk.PseudoStats.DamageDealtMultiplier
-	})
-
 	monk.AddPet(xuen)
 
 	return xuen
@@ -103,12 +104,16 @@ func (monk *Monk) NewXuen() *Xuen {
 func (monk *Monk) xuenStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
+			stats.Stamina:     ownerStats[stats.Stamina],
+			stats.AttackPower: ownerStats[stats.AttackPower] * 0.5,
+
+			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+			stats.SpellHitPercent:    ownerStats[stats.SpellHitPercent],
+
+			stats.ExpertiseRating: ownerStats[stats.ExpertiseRating],
+
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.Stamina:             ownerStats[stats.Stamina],
-			stats.Intellect:           ownerStats[stats.Intellect] * 0.3,
-			stats.AttackPower:         ownerStats[stats.AttackPower],
-			stats.PhysicalHitPercent:  ownerStats[stats.PhysicalHitPercent],
-			stats.HasteRating:         ownerStats[stats.HasteRating],
+			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 		}
 	}
 }
@@ -128,10 +133,6 @@ func (xuen *Xuen) Reset(sim *core.Simulation) {
 
 func (xuen *Xuen) enable(sim *core.Simulation) {
 	xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
-
-	xuen.owner.RegisterOnStanceChanged(func(sim *core.Simulation, _ Stance) {
-		xuen.PseudoStats.DamageDealtMultiplier = xuen.owner.PseudoStats.DamageDealtMultiplier
-	})
 }
 
 func (xuen *Xuen) GetPet() *core.Pet {
