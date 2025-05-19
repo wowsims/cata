@@ -1,9 +1,11 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -17,6 +19,8 @@ func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) cor
 	masteryAura := shaman.NewTemporaryStatsAura("Elemental Blast Mastery", core.ActionID{SpellID: 118522, Tag: 1}, stats.Stats{stats.MasteryRating: 3500}, time.Second*8)
 	hasteAura := shaman.NewTemporaryStatsAura("Elemental Blast Haste", core.ActionID{SpellID: 118522, Tag: 2}, stats.Stats{stats.HasteRating: 3500}, time.Second*8)
 	critAura := shaman.NewTemporaryStatsAura("Elemental Blast Crit", core.ActionID{SpellID: 118522, Tag: 3}, stats.Stats{stats.CritRating: 3500}, time.Second*8)
+	agiAura := shaman.NewTemporaryStatsAura("Elemental Blast Agi", core.ActionID{SpellID: 118522, Tag: 4}, stats.Stats{stats.Agility: 3500}, time.Second*8)
+	eleBlastAuras := []*core.StatBuffAura{masteryAura, hasteAura, critAura, agiAura}
 
 	mask := core.ProcMaskSpellDamage
 	flags := SpellFlagShamanSpell | SpellFlagFocusable
@@ -62,26 +66,24 @@ func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) cor
 	}
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.CalcAndRollDamageRange(sim, 4.23999977112, 0.15000000596)
-		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		if !isElementalOverload {
-			rand := sim.RandomFloat("Elemental Blast buff")
-			if rand < 1.0/3.0 {
-				hasteAura.Deactivate(sim)
-				critAura.Deactivate(sim)
-				masteryAura.Activate(sim)
+			var rand int
+			if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+				rand = int(math.Floor(sim.RollWithLabel(0, 4, "Elemental Blast buff")))
 			} else {
-				if rand < 2.0/3.0 {
-					masteryAura.Deactivate(sim)
-					critAura.Deactivate(sim)
-					hasteAura.Activate(sim)
+				rand = int(math.Floor(sim.RollWithLabel(0, 3, "Elemental Blast buff")))
+			}
+			for i, aura := range eleBlastAuras {
+				if i == rand {
+					aura.Activate(sim)
 				} else {
-					masteryAura.Deactivate(sim)
-					hasteAura.Deactivate(sim)
-					critAura.Activate(sim)
+					aura.Deactivate(sim)
 				}
 			}
 		}
+
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 4.23999977112, 0.15000000596)
+		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
