@@ -80,8 +80,14 @@ func (frostMage *FrostMage) ApplyTalents() {
 
 	// Frost Mastery Bonus
 
+	/*
+		Mastery needs to be redone in general
+			Need to implement Icicles
+			Need to Change Damage Amp to be for Water Ele Waterbolt
+			https://www.wowhead.com/mop-classic/spell=76613/mastery-icicles
+	*/
 	frostMasteryMod := frostMage.Mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellIceLance | mage.MageSpellDeepFreeze,
+		ClassMask:  mage.MageSpellIceLance, //TODO: I need to learn more about ClassMask so that I can place in the water elemental Water Bolt spell here.
 		FloatValue: frostMage.GetMasteryBonus(),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})

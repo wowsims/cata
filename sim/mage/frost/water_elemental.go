@@ -16,15 +16,16 @@ func (Mage *FrostMage) registerSummonWaterElementalSpell() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 16,
+			BaseCostPercent: 3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD:      core.GCDDefault,
+				CastTime: 1500 * time.Millisecond,
 			},
 			CD: core.Cooldown{
 				Timer:    Mage.NewTimer(),
-				Duration: time.Minute * 3,
+				Duration: time.Minute * 1,
 			},
 		},
 
