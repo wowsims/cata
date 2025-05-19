@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 98
+// NextIndex: 99
 message APLValue {
 	UUID uuid = 87;
 
@@ -164,6 +164,8 @@ message APLValue {
         APLValueSpellIsChanneling spell_is_channeling = 56;
         APLValueSpellChanneledTicks spell_channeled_ticks = 57;
         APLValueSpellCurrentCost spell_current_cost = 62;
+        APLValueSpellNumCharges spell_num_charges = 97;
+        APLValueSpellTimeToCharge spell_time_to_charge = 98;
 
         // Aura values
         APLValueAuraIsKnown aura_is_known = 73;
@@ -211,7 +213,6 @@ message APLValue {
         APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
         APLValueMonkCurrentChi monk_current_chi = 95;
 		APLValueMonkMaxChi monk_max_chi = 96;
-		APLValueMonkNextChiBrewRecharge monk_next_chi_brew_recharge = 97;
     }
 }
 
@@ -576,6 +577,12 @@ message APLValueSpellChanneledTicks {
 message APLValueSpellCurrentCost {
     ActionID spell_id = 1;
 }
+message APLValueSpellNumCharges{
+    ActionID spell_id = 1;
+}
+message APLValueSpellTimeToCharge{
+    ActionID spell_id = 1;
+}
 
 message APLValueAuraIsKnown {
     UnitReference source_unit = 2;
@@ -695,4 +702,3 @@ message APLValueShamanFireElementalDuration {
 
 message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
-message APLValueMonkNextChiBrewRecharge {}
