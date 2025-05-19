@@ -209,6 +209,7 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 type Enchant struct {
 	EffectID int32 // Used by UI to apply effect to tooltip
 	Stats    stats.Stats
+	Name     string         // Only needed for unit tests
 	Type     proto.ItemType // Only needed for unit tests
 }
 
@@ -216,6 +217,7 @@ func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 	return Enchant{
 		EffectID: pData.EffectId,
 		Stats:    stats.FromProtoArray(pData.Stats),
+		Name:     pData.Name,
 		Type:     pData.Type,
 	}
 }
@@ -344,6 +346,16 @@ func (equipment *Equipment) EquipItem(item Item) {
 		}
 	} else {
 		equipment[ItemTypeToSlot(item.Type)] = item
+	}
+}
+
+func (equipment *Equipment) EquipEnchant(enchant Enchant) {
+	// Some shield enchants parse as ItemTypeUnknown, so default those to
+	// the OH slot to ensure they still get tested.
+	if enchant.Type == proto.ItemType_ItemTypeUnknown {
+		equipment.OffHand().Enchant = enchant
+	} else {
+		equipment[ItemTypeToSlot(enchant.Type)].Enchant = enchant
 	}
 }
 

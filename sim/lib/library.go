@@ -126,6 +126,7 @@ func getDatabase(itemIds *int32, numItems int32, enchantIds *int32, numEnchants 
 		simDB.Enchants[i] = &proto.SimEnchant{
 			EffectId: enchant.EffectID,
 			Stats:    enchant.Stats[:],
+			Name:     enchant.Name,
 			Type:     enchant.Type,
 		}
 	}

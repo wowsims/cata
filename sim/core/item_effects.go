@@ -25,6 +25,7 @@ var enchantEffects = map[int32]ApplyEffect{}
 
 // IDs of item effects which should be used for tests.
 var itemEffectsForTest []int32
+var enchantEffectsForTest []int32
 
 // This value can be set before adding item effects, to control whether they are included in tests.
 var AddEffectsToTest = true
@@ -80,6 +81,9 @@ func NewEnchantEffect(id int32, enchantEffect ApplyEffect) {
 	}
 
 	enchantEffects[id] = enchantEffect
+	if AddEffectsToTest {
+		enchantEffectsForTest = append(enchantEffectsForTest, id)
+	}
 }
 
 func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {

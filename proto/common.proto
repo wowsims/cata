@@ -929,7 +929,8 @@ enum EnchantType {
 message SimEnchant {
         int32 effect_id = 1;
         repeated double stats = 2;
-        ItemType type = 3; // Only needed for unit tests.
+        string name = 3; // Only needed for unit tests.
+        ItemType type = 4; // Only needed for unit tests.
 }
 
 // Contains only the Gem info needed by the sim.
