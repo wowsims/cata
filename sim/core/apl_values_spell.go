@@ -255,3 +255,62 @@ func (value *APLValueSpellCurrentCost) GetFloat(_ *Simulation) float64 {
 func (value *APLValueSpellCurrentCost) String() string {
 	return fmt.Sprintf("CurrentCost(%s)", value.spell.ActionID)
 }
+
+// Spell Charges
+type APLValueSpellNumCharges struct {
+	DefaultAPLValueImpl
+	spell *Spell
+}
+
+func (rot *APLRotation) newValueSpellNumCharges(config *proto.APLValueSpellNumCharges, _ *proto.UUID) APLValue {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+	return &APLValueSpellNumCharges{
+		spell: spell,
+	}
+}
+
+func (value *APLValueSpellNumCharges) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+
+func (value *APLValueSpellNumCharges) GetInt(_ *Simulation) int32 {
+	return int32(value.spell.GetNumCharges())
+}
+
+func (value *APLValueSpellNumCharges) String() string {
+	return fmt.Sprintf("SpellNumCharges(%s)", value.spell.ActionID)
+}
+
+type APLValueSpellTimeToCharge struct {
+	DefaultAPLValueImpl
+	spell *Spell
+}
+
+func (rot *APLRotation) newValueSpellTimeToCharge(config *proto.APLValueSpellTimeToCharge, _ *proto.UUID) APLValue {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+	return &APLValueSpellTimeToCharge{
+		spell: spell,
+	}
+}
+
+func (value *APLValueSpellTimeToCharge) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+
+func (value *APLValueSpellTimeToCharge) GetDuration(sim *Simulation) time.Duration {
+	return value.spell.NextChargeIn(sim)
+}
+
+func (value *APLValueSpellTimeToCharge) GetFloat(sim *Simulation) float64 {
+	return value.GetDuration(sim).Seconds()
+}
+
+func (value *APLValueSpellTimeToCharge) String() string {
+	return fmt.Sprintf("SpellTimeToCharge(%s)", value.spell.ActionID)
+}
