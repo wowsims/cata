@@ -41,7 +41,6 @@ type Monk struct {
 	onStanceChanged OnStanceChanged
 	onChiSpent      OnChiSpent
 	onNewBrewStacks OnNewBrewStacks
-	chiBrewRecharge *core.PendingAction
 
 	StanceOfTheSturdyOx    *core.Spell
 	StanceOfTheWiseSerpent *core.Spell
