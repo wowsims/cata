@@ -221,6 +221,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerAscendanceSpell()
 
 	shaman.registerBloodlustCD()
+	shaman.registerStormalshCD()
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {

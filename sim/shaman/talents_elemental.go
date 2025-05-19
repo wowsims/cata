@@ -33,10 +33,10 @@ func (shaman *Shaman) ApplyElementalTalents() {
 
 	// Elemental Fury
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskFire | SpellMaskNature |
-			SpellMaskFrost | SpellMaskMagmaTotem | SpellMaskSearingTotem | SpellMaskEarthquake,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
-		FloatValue: 0.5,
+		ProcMask:          core.ProcMaskSpellDamage,
+		Kind:              core.SpellMod_CritMultiplier_Flat,
+		FloatValue:        0.5,
+		ShouldApplyToPets: true,
 	})
 
 	//Spiritual Insight

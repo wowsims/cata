@@ -17,7 +17,7 @@ type FireElemental struct {
 	shamanOwner *Shaman
 }
 
-var FireElementalSpellPowerScaling = 0.36 // Estimated from beta testing
+var FireElementalSpellPowerScaling = 0.36
 
 func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 	fireElemental := &FireElemental{
@@ -47,6 +47,7 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 		AutoSwingMelee: true,
 	})
 	fireElemental.AutoAttacks.MHConfig().BonusCoefficient = 0
+	fireElemental.AutoAttacks.MHConfig().ProcMask |= core.ProcMaskSpellDamage
 
 	fireElemental.OnPetEnable = fireElemental.enable
 	fireElemental.OnPetDisable = fireElemental.disable

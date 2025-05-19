@@ -1159,7 +1159,7 @@ func registerStormLashCD(agent Agent, numStormLashes int32) {
 
 var StormLashSpellExceptions = map[int32]float64{
 	1120:   2.0, // Drain Soul
-	45284:  2.0, // Lightning Bolt
+	403:    2.0, // Lightning Bolt
 	51505:  2.0, // Lava Burst
 	103103: 2.0, // Malefic Grasp
 	15407:  1.0, // Mind Flay
