@@ -521,6 +521,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 145323.91333
+  tps: 136974.16364
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-DarkmistVortex-86336"
  value: {
   dps: 143863.02765
@@ -1354,6 +1361,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 145340.15718
+  tps: 136990.40749
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-LordBlastington'sScopeofDoom-4699"
+ value: {
+  dps: 145643.26392
+  tps: 137226.94334
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
  value: {
   dps: 136727.39004
@@ -1512,6 +1533,13 @@ dps_results: {
  value: {
   dps: 136669.97422
   tps: 129194.3175
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-MirrorScope-4700"
+ value: {
+  dps: 145643.26392
+  tps: 137226.94334
  }
 }
 dps_results: {
@@ -2100,6 +2128,13 @@ dps_results: {
  value: {
   dps: 136661.49425
   tps: 129181.58598
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 147800.68446
+  tps: 139196.4793
  }
 }
 dps_results: {

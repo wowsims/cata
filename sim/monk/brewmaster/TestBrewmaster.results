@@ -679,6 +679,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 118421.70494
+  tps: 828951.93458
+  dtps: 44277.56549
+  hps: 6337.04427
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-DarkmistVortex-86336"
  value: {
   dps: 118361.1351
@@ -1777,6 +1786,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 118421.70494
+  tps: 828951.93458
+  dtps: 44277.56549
+  hps: 6337.04427
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-LordBlastington'sScopeofDoom-4699"
+ value: {
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
  value: {
   dps: 114378.4026
@@ -1981,6 +2008,15 @@ dps_results: {
   tps: 800648.81819
   dtps: 44707.78682
   hps: 6533.98288
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-MirrorScope-4700"
+ value: {
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
  }
 }
 dps_results: {
@@ -2719,6 +2755,15 @@ dps_results: {
   tps: 800648.81819
   dtps: 44707.78682
   hps: 6533.98288
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 119000.2588
+  tps: 833001.81157
+  dtps: 44254.43909
+  hps: 6375.58094
  }
 }
 dps_results: {

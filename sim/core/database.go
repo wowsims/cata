@@ -371,6 +371,16 @@ func (equipment *Equipment) EquipItem(item Item) {
 	}
 }
 
+func (equipment *Equipment) EquipEnchant(enchant Enchant) {
+	// Some shield enchants parse as ItemTypeUnknown, so default those to
+	// the OH slot to ensure they still get tested.
+	if enchant.Type == proto.ItemType_ItemTypeUnknown {
+		equipment.OffHand().Enchant = enchant
+	} else {
+		equipment[ItemTypeToSlot(enchant.Type)].Enchant = enchant
+	}
+}
+
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
 	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID) || (equipment[slot].Tinker.EffectID == effectID)
 }

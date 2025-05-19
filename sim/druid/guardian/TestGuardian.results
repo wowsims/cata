@@ -643,6 +643,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 89289.96395
+  tps: 618205.71538
+  dtps: 54589.90998
+  hps: 24180.52925
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-DarkmistVortex-86336"
  value: {
   dps: 87256.21224
@@ -1714,6 +1723,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 89302.44899
+  tps: 618205.71538
+  dtps: 54589.90998
+  hps: 24180.52925
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-LordBlastington'sScopeofDoom-4699"
+ value: {
+  dps: 89287.69965
+  tps: 618190.0285
+  dtps: 54571.70568
+  hps: 24228.77394
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
  value: {
   dps: 87119.91856
@@ -1918,6 +1945,15 @@ dps_results: {
   tps: 590594.61845
   dtps: 55953.71775
   hps: 22571.53866
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-MirrorScope-4700"
+ value: {
+  dps: 89287.69965
+  tps: 618190.0285
+  dtps: 54571.70568
+  hps: 24228.77394
  }
 }
 dps_results: {
@@ -2647,6 +2683,15 @@ dps_results: {
   tps: 590710.10232
   dtps: 55953.71775
   hps: 22571.53866
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 89855.08409
+  tps: 622017.77221
+  dtps: 54603.3144
+  hps: 24279.64811
  }
 }
 dps_results: {

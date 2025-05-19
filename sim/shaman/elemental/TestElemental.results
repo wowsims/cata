@@ -535,6 +535,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-DarkmistVortex-86336"
  value: {
   dps: 48279.3832
@@ -1368,6 +1375,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 54621.86445
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-LordBlastington'sScopeofDoom-4699"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
  value: {
   dps: 46974.06951
@@ -1525,6 +1546,13 @@ dps_results: {
  key: "TestElemental-AllItems-MendingBadgeoftheShieldwall-93348"
  value: {
   dps: 49395.69885
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-MirrorScope-4700"
+ value: {
+  dps: 52816.56668
   tps: 785.50813
  }
 }
@@ -2106,6 +2134,13 @@ dps_results: {
  key: "TestElemental-AllItems-SunsoulStoneofWisdom-101138"
  value: {
   dps: 49997.09297
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 52816.56668
   tps: 785.50813
  }
 }
