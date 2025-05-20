@@ -6,8 +6,8 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-type OnGainCallback func(gain int32, realGain int32)
-type OnSpendCallback func(amount int32)
+type OnGainCallback func(gain int32, realGain int32, actionID ActionID, sim *Simulation)
+type OnSpendCallback func(amount int32, actionID ActionID, sim *Simulation)
 
 type SecondaryResourceBar interface {
 	CanSpend(limit int32) bool                                     // Check whether the current resource is available or not
@@ -66,7 +66,7 @@ func (bar *DefaultSecondaryResourceBarImpl) Gain(amount int32, action ActionID, 
 		)
 	}
 
-	bar.invokeOnGain(amount, amountGained)
+	bar.invokeOnGain(amount, amountGained, action, sim)
 }
 
 // Reset implements SecondaryResourceBar.
@@ -102,7 +102,7 @@ func (bar *DefaultSecondaryResourceBarImpl) Spend(amount int32, action ActionID,
 	}
 
 	metrics.AddEvent(float64(-amount), float64(-amount))
-	bar.invokeOnSpend(amount)
+	bar.invokeOnSpend(amount, action, sim)
 	bar.value -= amount
 }
 
@@ -148,15 +148,15 @@ func (bar *DefaultSecondaryResourceBarImpl) RegisterOnSpend(callback OnSpendCall
 	bar.onSpend = append(bar.onSpend, callback)
 }
 
-func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(gain int32, realGain int32) {
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(gain int32, realGain int32, actionID ActionID, sim *Simulation) {
 	for _, callback := range bar.onGain {
-		callback(gain, realGain)
+		callback(gain, realGain, actionID, sim)
 	}
 }
 
-func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(amount int32) {
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(amount int32, actionID ActionID, sim *Simulation) {
 	for _, callback := range bar.onSpend {
-		callback(amount)
+		callback(amount, actionID, sim)
 	}
 }
 
