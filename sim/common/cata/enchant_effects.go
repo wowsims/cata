@@ -256,7 +256,7 @@ func init() {
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 		Outcome:    core.OutcomeLanded,
 		ICD:        time.Second * 20,
-		ProcChance: 0.25,
+		ProcChance: 0.15,
 		Bonus:      stats.Stats{stats.Spirit: 200},
 		Duration:   time.Second * 15,
 	})
@@ -370,17 +370,17 @@ func init() {
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Gnomish X-Ray Scope",
-		EnchantID:  4175,
-		ItemID:     59594,
-		AuraID:     95712,
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskRanged,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 40,
-		ProcChance: 0.1,
-		Bonus:      stats.Stats{stats.RangedAttackPower: 800},
-		Duration:   time.Second * 10,
+		Name:      "Gnomish X-Ray Scope",
+		EnchantID: 4175,
+		ItemID:    59594,
+		AuraID:    95712,
+		Callback:  core.CallbackOnSpellHitDealt,
+		ProcMask:  core.ProcMaskRanged,
+		Outcome:   core.OutcomeLanded,
+		ICD:       time.Second * 40,
+		PPM:       1,
+		Bonus:     stats.Stats{stats.RangedAttackPower: 800},
+		Duration:  time.Second * 10,
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
