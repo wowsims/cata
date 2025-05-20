@@ -40,11 +40,24 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneConflagrate() {
 			// keep charges in sync
 			destruction.Conflagrate.ConsumeCharge(sim)
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(
+				result := spell.CalcAndDealDamage(
 					sim,
 					aoeTarget,
 					destruction.CalcAndRollDamageRange(sim, conflagrateScale, conflagrateVariance),
 					spell.OutcomeMagicHitAndCrit)
+
+				var emberGain int32 = 1
+
+				// ember lottery
+				if sim.Proc(0.15, "Ember Lottery") {
+					emberGain *= 2
+				}
+
+				if result.DidCrit() {
+					emberGain += 1
+				}
+
+				destruction.BurningEmbers.Gain(emberGain, spell.ActionID, sim)
 			}
 			spell.DamageMultiplier /= reduction
 			destruction.BurningEmbers.Spend(10, spell.ActionID, sim)

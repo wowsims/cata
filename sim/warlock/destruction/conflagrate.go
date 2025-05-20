@@ -40,7 +40,18 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 			destruction.FABConflagrate.ConsumeCharge(sim)
 			baseDamage := destruction.CalcAndRollDamageRange(sim, conflagrateScale, conflagrateVariance)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			destruction.BurningEmbers.Gain(core.TernaryInt32(result.DidCrit(), 2, 1), spell.ActionID, sim)
+			var emberGain int32 = 1
+
+			// ember lottery
+			if sim.Proc(0.15, "Ember Lottery") {
+				emberGain *= 2
+			}
+
+			if result.DidCrit() {
+				emberGain += 1
+			}
+
+			destruction.BurningEmbers.Gain(emberGain, spell.ActionID, sim)
 		},
 	})
 }
