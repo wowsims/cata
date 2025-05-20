@@ -34,7 +34,11 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := destro.CalcAndRollDamageRange(sim, chaosBoltScale, chaosBoltVariance)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
+
 			if result.Landed() {
 				destro.BurningEmbers.Spend(10, spell.ActionID, sim)
 			}
