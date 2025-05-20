@@ -13,6 +13,7 @@ type WarlockPet struct {
 	core.Pet
 
 	AutoCastAbilities []*core.Spell
+	MinEnergy         float64 // The minimum amount of energy needed to the AI casts a spell
 }
 
 var petBaseStats = map[proto.WarlockOptions_Summon]*stats.Stats{
@@ -64,13 +65,12 @@ func scaledAutoAttackConfig(swingSpeed float64) *core.AutoAttackOptions {
 }
 
 func (warlock *Warlock) makePet(
-	summonType proto.WarlockOptions_Summon,
+	name string,
+	enabledOnStart bool,
 	baseStats stats.Stats,
 	aaOptions *core.AutoAttackOptions,
 	statInheritance core.PetStatInheritance,
 ) *WarlockPet {
-	name := proto.WarlockOptions_Summon_name[int32(summonType)]
-	enabledOnStart := summonType == warlock.Options.Summon
 	pet := &WarlockPet{
 		Pet: core.NewPet(core.PetConfig{
 			Name:                            name,
@@ -119,30 +119,60 @@ func (warlock *Warlock) registerPets() {
 }
 
 func (warlock *Warlock) registerImp() *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Imp, 0, 0)
+	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Imp)]
+	enabledOnStart := proto.WarlockOptions_Imp == warlock.Options.Summon
+	return warlock.registerImpWithName(name, enabledOnStart)
+}
+
+func (warlock *Warlock) registerImpWithName(name string, enabledOnStart bool) *WarlockPet {
+	pet := warlock.registerPet(proto.WarlockOptions_Imp, 0, 0, name, enabledOnStart)
 	pet.registerFireboltSpell()
 	return pet
 }
 
 func (warlock *Warlock) registerFelHunter() *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Felhunter, 2, 3.5)
+	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Felhunter)]
+	enabledOnStart := proto.WarlockOptions_Felhunter == warlock.Options.Summon
+	return warlock.registerFelHunterWithName(name, enabledOnStart)
+}
+
+func (warlock *Warlock) registerFelHunterWithName(name string, enabledOnStart bool) *WarlockPet {
+	pet := warlock.registerPet(proto.WarlockOptions_Felhunter, 2, 3.5, name, enabledOnStart)
 	pet.registerShadowBiteSpell()
 	return pet
 }
 
 func (warlock *Warlock) registerVoidWalker() *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Voidwalker, 2, 3.5)
+	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Voidwalker)]
+	enabledOnStart := proto.WarlockOptions_Voidwalker == warlock.Options.Summon
+	return warlock.registerVoidWalkerWithName(name, enabledOnStart)
+}
+
+func (warlock *Warlock) registerVoidWalkerWithName(name string, enabledOnStart bool) *WarlockPet {
+	pet := warlock.registerPet(proto.WarlockOptions_Voidwalker, 2, 3.5, name, enabledOnStart)
 	pet.registerTormentSpell()
 	return pet
 }
 
 func (warlock *Warlock) registerSuccubus() *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Succubus, 3, 1.667)
+	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Succubus)]
+	enabledOnStart := proto.WarlockOptions_Succubus == warlock.Options.Summon
+	return warlock.registerSuccubusWithName(name, enabledOnStart)
+}
+
+func (warlock *Warlock) registerSuccubusWithName(name string, enabledOnStart bool) *WarlockPet {
+	pet := warlock.registerPet(proto.WarlockOptions_Succubus, 3, 1.667, name, enabledOnStart)
 	pet.registerLashOfPainSpell()
 	return pet
 }
 
-func (warlock *Warlock) registerPet(t proto.WarlockOptions_Summon, swingSpeed float64, apScale float64) *WarlockPet {
+func (warlock *Warlock) registerPet(
+	t proto.WarlockOptions_Summon,
+	swingSpeed float64,
+	apScale float64,
+	name string,
+	enabledOnStart bool,
+) *WarlockPet {
 	baseStats, ok := petBaseStats[t]
 	if !ok {
 		panic("Undefined base stats for pet")
@@ -154,7 +184,7 @@ func (warlock *Warlock) registerPet(t proto.WarlockOptions_Summon, swingSpeed fl
 	}
 
 	inheritance := warlock.simplePetStatInheritanceWithScale(apScale)
-	return warlock.makePet(t, *baseStats, attackOptions, inheritance)
+	return warlock.makePet(name, enabledOnStart, *baseStats, attackOptions, inheritance)
 }
 
 func (pet *WarlockPet) GetPet() *core.Pet {
@@ -169,22 +199,26 @@ func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 	waitUntil := time.Duration(1<<63 - 1)
 
 	for _, spell := range pet.AutoCastAbilities {
-		if spell.CanCast(sim, pet.CurrentTarget) {
+		if spell.CanCast(sim, pet.CurrentTarget) && pet.CurrentEnergy() > pet.MinEnergy {
 			spell.Cast(sim, pet.CurrentTarget)
 			return
 		}
 
 		// calculate energy required
-		timeTillEnergy := max(0, (spell.Cost.GetCurrentCost()-pet.CurrentEnergy())/pet.EnergyRegenPerSecond())
+		cost := max(pet.MinEnergy, spell.Cost.GetCurrentCost())
+		timeTillEnergy := max(0, (cost-pet.CurrentEnergy())/pet.EnergyRegenPerSecond())
 		waitUntil = min(waitUntil, time.Duration(float64(time.Second)*timeTillEnergy))
 	}
 
-	pet.WaitUntil(sim, sim.CurrentTime+waitUntil)
+	// for now average the delay out to 100 ms so we don't need to roll random every time
+	pet.WaitUntil(sim, sim.CurrentTime+waitUntil+time.Millisecond*100)
 }
+
+var petActionShadowBite = core.ActionID{SpellID: 54049}
 
 func (pet *WarlockPet) registerShadowBiteSpell() {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 54049},
+		ActionID:       petActionShadowBite,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellFelHunterShadowBite,
@@ -295,9 +329,11 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 	}))
 }
 
+var petActionFireBolt = core.ActionID{SpellID: 3110}
+
 func (pet *WarlockPet) registerFireboltSpell() {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 3110},
+		ActionID:       petActionFireBolt,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellImpFireBolt,
@@ -327,9 +363,11 @@ func (pet *WarlockPet) registerFireboltSpell() {
 	}))
 }
 
+var petActionLashOfPain = core.ActionID{SpellID: 7814}
+
 func (pet *WarlockPet) registerLashOfPainSpell() {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 7814},
+		ActionID:       petActionLashOfPain,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellSuccubusLashOfPain,
@@ -353,9 +391,11 @@ func (pet *WarlockPet) registerLashOfPainSpell() {
 	}))
 }
 
+var petActionTorment = core.ActionID{SpellID: 3716}
+
 func (pet *WarlockPet) registerTormentSpell() {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 3716},
+		ActionID:       petActionTorment,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellVoidwalkerTorment,

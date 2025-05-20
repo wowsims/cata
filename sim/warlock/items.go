@@ -132,14 +132,6 @@ func (pet *FieryImpPet) registerFlameBlast(warlock *Warlock) {
 			baseDmg := sim.Roll(2750+1, 2750+1514)
 			result := spell.CalcDamage(sim, target, baseDmg, spell.OutcomeMagicHitAndCrit)
 
-			// TODO: old wowhead comments seem to suggest that this spell does trigger burning embers, but does it do it
-			// the same way that fire bolt does?
-			if warlock.Talents.BurningEmbers > 0 && result.Landed() {
-				dot := warlock.BurningEmbers.Dot(result.Target)
-				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
-				dot.Apply(sim)
-			}
-
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
@@ -269,6 +261,173 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 			setBonusAura.ExposeToAPL(105787)
 
 			warlock.T13_4pc = setBonusAura
+		},
+	},
+})
+
+// T14
+var ItemSetShaSkinRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Sha-Skin Regalia",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.1,
+				ClassMask:  WarlockSpellCorruption,
+			}).AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.05,
+				ClassMask:  WarlockSpellIncinerate | WarlockSpellFaBIncinerate,
+			}).AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.02,
+				ClassMask:  WarlockSpellShadowBolt | WarlockSpellDemonicSlash | WarlockSpellTouchOfChaos,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			buff := agent.GetCharacter().RegisterAura(core.Aura{
+				Label:    "Sha-Skin Regalia - 4P Buff",
+				ActionID: core.ActionID{SpellID: 148463},
+				Duration: time.Second * 20,
+			}).AttachMultiplicativePseudoStatBuff(&agent.GetCharacter().PseudoStats.DamageDealtMultiplier, 1.10)
+
+			agent.GetCharacter().OnSpellRegistered(func(spell *core.Spell) {
+				if spell.Matches(WarlockDarkSoulSpell) {
+					spell.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+						buff.Activate(sim)
+					})
+				}
+			})
+		},
+	},
+})
+
+// T15
+var ItemSetRegaliaOfTheThousandfeldHells = core.NewItemSet(core.ItemSet{
+	Name: "Regalia of the Thousandfold Hells",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.T15_2pc = agent.GetCharacter().RegisterAura(core.Aura{
+				Label:    "Regalia of the Thousandfold Hells - 2P Buff",
+				Duration: time.Second * 20,
+			}).AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_DotNumberOfTicks_Flat,
+				IntValue:  2,
+				ClassMask: WarlockSpellHaunt,
+			})
+
+			agent.GetCharacter().OnSpellRegistered(func(spell *core.Spell) {
+				if spell.Matches(WarlockDarkSoulSpell) {
+					spell.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+						warlock.T15_2pc.Activate(sim)
+					})
+				}
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.05,
+				ClassMask:  WarlockSpellMaleficGrasp | WarlockSpellDrainSoul,
+			})
+
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.T15_4pc = setBonusAura
+		},
+	},
+})
+
+// T15
+var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
+	Name: "Regalia of the Horned Nightmare",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			var buff *core.Aura
+			switch warlock.Spec {
+			case proto.Spec_SpecAfflictionWarlock:
+				buff = warlock.RegisterAura(core.Aura{
+					ActionID: core.ActionID{SpellID: 145082},
+					Label:    "Regalia of the Horned Nightmare - Affli - 2pc",
+					Duration: time.Second * 10,
+				}).AttachSpellMod(core.SpellModConfig{
+					Kind:       core.SpellMod_DamageDone_Pct,
+					FloatValue: 0.15,
+					ClassMask:  WarlockSpellDrainSoul | WarlockSpellMaleficGrasp,
+				})
+
+				setBonusAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.Matches(WarlockSpellUnstableAffliction) && result.DidCrit() && sim.Proc(0.5, "T16 - 2pc") {
+						buff.Activate(sim)
+						return
+					}
+				}
+			case proto.Spec_SpecDemonologyWarlock:
+				// TODO: Research if all pets or just the primary pet is affected
+				buff = warlock.RegisterAura(core.Aura{
+					ActionID: core.ActionID{SpellID: 145075},
+					Label:    "Regalia of the Horned Nightmare - Demo - 2pc",
+					Duration: time.Second * 10,
+				}).AttachMultiplicativePseudoStatBuff(&warlock.PseudoStats.DamageDealtMultiplier, 1.2)
+
+				setBonusAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.Matches(WarlockSpellSoulFire) && sim.Proc(0.2, "T16 - 2pc") {
+						buff.Activate(sim)
+					}
+				}
+			case proto.Spec_SpecDestructionWarlock:
+				buff = warlock.RegisterAura(core.Aura{
+					ActionID: core.ActionID{SpellID: 145075},
+					Label:    "Regalia of the Horned Nightmare - Destro - 2pc",
+					Duration: time.Second * 10,
+				}).AttachSpellMod(core.SpellModConfig{
+					Kind:       core.SpellMod_BonusCrit_Percent,
+					FloatValue: 0.1,
+					ClassMask:  WarlockSpellImmolate | WarlockSpellImmolateDot | WarlockSpellIncinerate | WarlockSpellFaBIncinerate,
+				})
+
+				setBonusAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.Matches(WarlockSpellConflagrate|WarlockSpellFaBConflagrate) && result.DidCrit() && sim.Proc(0.2, "T16 - 2pc") {
+						buff.Activate(sim)
+						return
+					}
+				}
+			default:
+				return
+			}
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			switch agent.GetCharacter().Spec {
+			case proto.Spec_SpecDestructionWarlock:
+				buff := warlock.RegisterAura(core.Aura{
+					ActionID: core.ActionID{SpellID: 145164},
+					Label:    "Regalia of the Horned Nightmare - Demo - 4pc",
+					Duration: time.Second * 5,
+					Icd: &core.Cooldown{
+						Timer:    warlock.NewTimer(),
+						Duration: time.Second * 10,
+					},
+				}).AttachStatBuff(stats.CritRating, core.CritRatingPerCritPercent*15)
+
+				warlock.GetSecondaryResourceBar().RegisterOnGain(func(
+					gain, realGain int32,
+					actionID core.ActionID,
+					sim *core.Simulation,
+				) {
+					if realGain == 0 || buff.Icd.IsReady(sim) {
+						return
+					}
+
+					old := warlock.GetSecondaryResourceBar().Value() - realGain
+					if int(old/10) == int(warlock.GetSecondaryResourceBar().Value()/10) {
+						return
+					}
+
+					buff.Activate(sim)
+				})
+			}
 		},
 	},
 })

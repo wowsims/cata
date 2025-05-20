@@ -32,8 +32,8 @@ func (warlock *Warlock) registerDarkSoulInstability() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			buff.Activate(sim)
 		},
+		RelatedSelfBuff: buff.Aura,
 	})
-
 	warlock.AddMajorCooldown(core.MajorCooldown{
 		Spell:    spell,
 		BuffAura: buff,

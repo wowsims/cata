@@ -34,5 +34,8 @@ func (destruction *DestructionWarlock) registerEmberTap() {
 		Spell:    spell,
 		Priority: core.CooldownPriorityDefault,
 		Type:     core.CooldownTypeSurvival,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return c.CurrentHealthPercent() < 0.5
+		},
 	})
 }

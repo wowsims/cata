@@ -18,7 +18,7 @@ func (destruction DestructionWarlock) ApplyChaoticEnergy() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: 3,
-		ClassMask:  warlock.WarlockSpellAll,
+		ClassMask:  warlock.WarlockSpellsChaoticEnergyDestro,
 	}))
 
 	destruction.MultiplyStat(stats.MP5, 7.25)

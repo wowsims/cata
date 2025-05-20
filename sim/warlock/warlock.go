@@ -36,10 +36,12 @@ type Warlock struct {
 	Doomguard *DoomguardPet
 	Infernal  *InfernalPet
 	// EbonImp   *EbonImpPet
-	// FieryImp  *FieryImpPet
+	FieryImp *FieryImpPet
 
 	// Item sets
 	T13_4pc *core.Aura
+	T15_2pc *core.Aura
+	T15_4pc *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -51,16 +53,20 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) ApplyTalents() {
-
+	warlock.registerHarvestLife()
 	warlock.registerArchimondesDarkness()
 	warlock.registerKilJaedensCunning()
 	warlock.registerMannarothsFury()
+	warlock.registerGrimoireOfSupremacy()
+	warlock.registerGrimoireOfSacrifice()
 }
 
 func (warlock *Warlock) Initialize() {
 
 	warlock.registerDarkSoulInstability()
 	warlock.registerCurseOfElements()
+	warlock.registerDrainLife()
+
 	// warlock.registerBaneOfAgony()
 	// warlock.registerBaneOfDoom()
 	// warlock.registerCorruption()
@@ -120,9 +126,10 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	// warlock.EbonImp = warlock.NewEbonImp()
 	warlock.Infernal = warlock.NewInfernalPet()
 	warlock.Doomguard = warlock.NewDoomguardPet()
-	// warlock.FieryImp = warlock.NewFieryImp()
+	warlock.FieryImp = warlock.NewFieryImp()
 
 	warlock.registerPets()
+	warlock.registerGrimoireOfService()
 
 	return warlock
 }
@@ -143,11 +150,13 @@ func (warlock *Warlock) HasMinorGlyph(glyph proto.WarlockMinorGlyph) bool {
 const (
 	WarlockSpellFlagNone    int64 = 0
 	WarlockSpellConflagrate int64 = 1 << iota
+	WarlockSpellFaBConflagrate
 	WarlockSpellShadowBolt
 	WarlockSpellChaosBolt
 	WarlockSpellImmolate
 	WarlockSpellImmolateDot
 	WarlockSpellIncinerate
+	WarlockSpellFaBIncinerate
 	WarlockSpellSoulFire
 	WarlockSpellShadowBurn
 	WarlockSpellLifeTap
@@ -192,6 +201,8 @@ const (
 	WarlockSpellFireAndBrimstone
 	WarlockSpellDarkSoulInsanity
 	WarlockSpellMaleficGrasp
+	WarlockSpellDemonicSlash
+	WarlockSpellTouchOfChaos
 	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
@@ -204,7 +215,8 @@ const (
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
 		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
-		WarlockSpellShadowflameDot | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn
+		WarlockSpellShadowflameDot | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn | WarlockSpellFaBConflagrate |
+		WarlockSpellFaBIncinerate
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
@@ -212,6 +224,10 @@ const (
 
 	WarlockSummonSpells = WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter |
 		WarlockSpellSummonFelguard
+
+	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity
+	WarlockAllSummons                = WarlockSummonSpells | WarlockSpellSummonInfernal | WarlockSpellSummonDoomguard
+	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons
 )
 
 const (

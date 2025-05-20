@@ -17,7 +17,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneIncinerate() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
 		MissileSpeed:   24,
-		ClassSpellMask: warlock.WarlockSpellIncinerate,
+		ClassSpellMask: warlock.WarlockSpellFaBIncinerate,
 
 		ManaCost: core.ManaCostOptions{BaseCostPercent: 5},
 		Cast: core.CastConfig{

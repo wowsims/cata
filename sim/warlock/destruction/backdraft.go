@@ -16,11 +16,11 @@ func (destruction *DestructionWarlock) registerBackdraft() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -0.3,
-		ClassMask:  warlock.WarlockSpellIncinerate,
+		ClassMask:  warlock.WarlockSpellIncinerate | warlock.WarlockSpellFaBIncinerate,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -0.3,
-		ClassMask:  warlock.WarlockSpellIncinerate,
+		ClassMask:  warlock.WarlockSpellIncinerate | warlock.WarlockSpellFaBIncinerate,
 	})
 
 	// chaos bolt requries 3 charges
@@ -44,7 +44,7 @@ func (destruction *DestructionWarlock) registerBackdraft() {
 
 	core.MakeProcTriggerAura(&destruction.Unit, core.ProcTrigger{
 		Name:           "Backdraft - Trigger",
-		ClassSpellMask: warlock.WarlockSpellConflagrate,
+		ClassSpellMask: warlock.WarlockSpellConflagrate | warlock.WarlockSpellFaBConflagrate,
 		Callback:       core.CallbackOnCastComplete,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			buff.Activate(sim)

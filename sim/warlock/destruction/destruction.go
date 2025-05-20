@@ -65,8 +65,6 @@ func (destruction *DestructionWarlock) Initialize() {
 
 	destruction.ApplyChaoticEnergy()
 	destruction.ApplyMastery()
-	destruction.ApplyEmbersHandler()
-
 	destruction.registerIncinerate()
 	destruction.registerConflagrate()
 	destruction.registerImmolate()
@@ -88,4 +86,6 @@ func (destruction *DestructionWarlock) Reset(sim *core.Simulation) {
 }
 
 var SpellMaskCinderSpender = warlock.WarlockSpellChaosBolt | warlock.WarlockSpellEmberTap | warlock.WarlockSpellShadowBurn
-var SpellMaskCinderGenerator = warlock.WarlockSpellImmolate | warlock.WarlockSpellImmolateDot | warlock.WarlockSpellIncinerate | warlock.WarlockSpellFelFlame | warlock.WarlockSpellConflagrate
+var SpellMaskCinderGenerator = warlock.WarlockSpellImmolate | warlock.WarlockSpellImmolateDot |
+	warlock.WarlockSpellIncinerate | warlock.WarlockSpellFelFlame | warlock.WarlockSpellConflagrate |
+	warlock.WarlockSpellFaBIncinerate | warlock.WarlockSpellFaBConflagrate

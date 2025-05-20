@@ -22,7 +22,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneConflagrate() {
 		},
 		Charges:          2,
 		RechargeTime:     time.Second * 12,
-		ClassSpellMask:   warlock.WarlockSpellConflagrate,
+		ClassSpellMask:   warlock.WarlockSpellFaBConflagrate,
 		BonusCoefficient: conflagrateCoeff,
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return destruction.BurningEmbers.CanSpend(10)
