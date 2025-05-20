@@ -381,6 +381,10 @@ func (pet *Pet) GetInheritedStats() stats.Stats {
 	return pet.inheritedStats
 }
 
+func (pet *Pet) DisableOnStart() {
+	pet.enabledOnStart = false
+}
+
 // Default implementations for some Agent functions which most Pets don't need.
 func (pet *Pet) GetCharacter() *Character {
 	return &pet.Character
