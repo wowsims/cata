@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { Stat } from '../proto/common.js';
+import { Spec, Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getStatName, masterySpellIDs, masterySpellNames } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
@@ -151,18 +151,29 @@ export class CharacterStats extends Component {
 
 			const statLinkElemRef = ref<HTMLButtonElement>();
 
+			// Custom "HACK" for Warlock.. they have two different mastery scalings
+			// And a different base mastery value..
+			let modifier = [this.player.getMasteryPerPointModifier()]
+			let customBonus = [0]
+			if (player.getSpec() == Spec.SpecDestructionWarlock) {
+				customBonus = [1, 0]
+				modifier = [1, ... modifier]
+			}
 			const valueElem = (
 				<div className="stat-value-link-container">
 					<button ref={statLinkElemRef} className={clsx('stat-value-link', contextualClass)}>
 						{`${this.statDisplayString(finalStats, unitStat, true)} `}
 					</button>
+					
 					{unitStat.equalsStat(Stat.StatMasteryRating) && (
-						<a
-							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
-							className={clsx('stat-value-link-mastery', contextualClass)}
-							target="_blank">
-							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
-						</a>
+						modifier.map((modifier, index) => (
+							<a
+								href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
+								className={clsx('stat-value-link-mastery', contextualClass)}
+								target="_blank">
+								{`${(masteryPoints * modifier + customBonus[index]).toFixed(2)}%`}
+							</a>
+						))
 					)}
 				</div>
 			);
