@@ -1,4 +1,4 @@
-package mage
+package frost
 
 import (
 	"time"
@@ -6,15 +6,12 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerFrostboltSpell() {
+var frostboltVariance    = 0.24 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "BonusCoefficient"
+var frostboltScale       = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "Coefficient"
+var frostboltCoefficient = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "BonusCoefficient"
 
-	replProcChance := float64(mage.Talents.EnduringWinter) / 3
-	var replSrc core.ReplenishmentSource
-	if replProcChance > 0 {
-		replSrc = mage.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 86508})
-	}
-
-	mage.RegisterSpell(core.SpellConfig{
+func (frostMage *FrostMage) registerFrostboltSpell() {
+	frostMage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 116},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -23,7 +20,7 @@ func (mage *Mage) registerFrostboltSpell() {
 		MissileSpeed:   28,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 13,
+			BaseCostPercent: 4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -33,18 +30,16 @@ func (mage *Mage) registerFrostboltSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		BonusCoefficient:         0.943,
+		CritMultiplier:           frostMage.DefaultCritMultiplier(),
+		BonusCoefficient:         frostboltCoefficient
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.884 * mage.ClassSpellScaling
+			baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
+			
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-				if replProcChance == 1 || sim.Proc(replProcChance, "Enduring Winter") {
-					mage.Env.Raid.ProcReplenishment(sim, replSrc)
-				}
 			})
 		},
 	})
