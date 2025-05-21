@@ -40,7 +40,7 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 				Label:    "Breath Of Fire" + bm.Label,
 				ActionID: dotActionID,
 			},
-			NumberOfTicks:       8,
+			NumberOfTicks:       4,
 			TickLength:          time.Millisecond * 2000,
 			AffectedByCastSpeed: false,
 
