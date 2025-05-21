@@ -61,6 +61,7 @@ func (monk *Monk) registerHealingSphere() {
 		ProcMask:    core.ProcMaskSpellHealing,
 
 		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

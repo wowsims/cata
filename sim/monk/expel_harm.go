@@ -68,7 +68,7 @@ func (monk *Monk) registerExpelHarm() {
 		},
 
 		DamageMultiplier: 7,
-		ThreatMultiplier: 1.0,
+		ThreatMultiplier: 1,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

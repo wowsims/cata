@@ -166,6 +166,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   1,
+		ThreatMultiplier: 1,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
