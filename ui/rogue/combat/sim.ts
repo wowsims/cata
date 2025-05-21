@@ -50,7 +50,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET_COMBAT.gear,
+		gear: Presets.P1_MSV_GEARSET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.CBAT_STANDARD_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -139,7 +139,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT],
+		gear: [Presets.PRERAID_GEARSET, Presets.P1_MSV_GEARSET, Presets.P1_T14_GEARSET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {
@@ -165,10 +165,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET_COMBAT.gear,
+					1: Presets.P1_MSV_GEARSET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET_COMBAT.gear,
+					1: Presets.P1_MSV_GEARSET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

@@ -40,7 +40,8 @@ func (rogue *Rogue) registerFanOfKnives() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:    time.Second,
+				GCDMin: time.Millisecond * 700,
 			},
 			IgnoreHaste: true,
 		},

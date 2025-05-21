@@ -41,7 +41,8 @@ func (asnRogue *AssassinationRogue) registerEnvenom() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:    time.Second,
+				GCDMin: time.Millisecond * 700,
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {

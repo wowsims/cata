@@ -31,7 +31,7 @@ func (rogue *Rogue) registerEviscerate() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:    time.Second,
-				GCDMin: time.Millisecond * 800,
+				GCDMin: time.Millisecond * 500,
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {

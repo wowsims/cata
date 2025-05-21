@@ -457,11 +457,17 @@ var Tier15 = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Shadow Blades also reduces the cost of all your abilities by 15%.
+			// Additionally, reduces the GCD of all rogue abilities by 300ms
 			rogue := agent.(RogueAgent).GetRogue()
 			energyMod := rogue.AddDynamicMod(core.SpellModConfig{
 				Kind:      core.SpellMod_PowerCost_Pct,
 				ClassMask: RogueSpellsAll,
 				IntValue:  -15,
+			})
+			gcdMod := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:      core.SpellMod_GlobalCooldown_Flat,
+				ClassMask: RogueSpellActives,
+				TimeValue: time.Millisecond * 300,
 			})
 			aura := rogue.RegisterAura(core.Aura{
 				Label:    "Shadow Blades Energy Cost Reduction",
@@ -469,9 +475,11 @@ var Tier15 = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					energyMod.Activate()
+					gcdMod.Activate()
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					energyMod.Deactivate()
+					gcdMod.Deactivate()
 				},
 			})
 

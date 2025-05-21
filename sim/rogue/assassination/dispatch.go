@@ -24,7 +24,8 @@ func (sinRogue *AssassinationRogue) registerDispatch() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:    time.Second,
+				GCDMin: time.Millisecond * 700,
 			},
 			IgnoreHaste: true,
 		},

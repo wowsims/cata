@@ -4,13 +4,17 @@ import { AssassinationRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptio
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import AssassinationApl from './apls/assassination.apl.json';
-import P1AssassinationGear from './gear_sets/p1_assassination.gear.json';
+import PreraidGear from './gear_sets/preraid_assassination.gear.json'
+import MSVGear from './gear_sets/p1_assassination_msv.gear.json';
+import T14 from './gear_sets/p1_assassination_t14.gear.json'
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P1 Assassination', P1AssassinationGear);
+export const PRERAID_GEARSET = PresetUtils.makePresetGear('P1 Preraid', PreraidGear);
+export const P1_MSV_GEARSET = PresetUtils.makePresetGear('P1 MSV', MSVGear);
+export const P1_T14_GEARSET = PresetUtils.makePresetGear('P1 T14', T14);
 
 export const ROTATION_PRESET_ASSASSINATION = PresetUtils.makePresetAPLRotation('Assassination', AssassinationApl);
 

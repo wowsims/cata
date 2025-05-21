@@ -69,6 +69,7 @@ func (rogue *Rogue) registerCrimsonTempest() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
+				// Omitting the GCDMin - does not appear affected by either Shadow Blades or Adrenaline Rush
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {

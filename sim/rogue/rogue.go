@@ -376,8 +376,8 @@ const (
 	RogueSpellsAll = RogueSpellLast<<1 - 1
 
 	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellDeadlyPoison
-	RogueSpellGenerator        = RogueSpellBackstab | RogueSpellHemorrhage | RogueSpellSinisterStrike | RogueSpellRevealingStrike | RogueSpellMutilate | RogueSpellDispatch | RogueSpellAmbush | RogueSpellGarrote
+	RogueSpellGenerator        = RogueSpellBackstab | RogueSpellHemorrhage | RogueSpellSinisterStrike | RogueSpellRevealingStrike | RogueSpellMutilate | RogueSpellDispatch | RogueSpellAmbush | RogueSpellGarrote | RogueSpellFanOfKnives
 	RogueSpellDamagingFinisher = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture | RogueSpellCrimsonTempest
 	RogueSpellWeightedBlades   = RogueSpellSinisterStrike | RogueSpellRevealingStrike
-	RogueSpellActives          = RogueSpellGenerator | RogueSpellDamagingFinisher
+	RogueSpellActives          = RogueSpellGenerator | RogueSpellDamagingFinisher | RogueSpellSliceAndDice
 )

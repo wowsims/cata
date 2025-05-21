@@ -29,6 +29,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
+				// Omitting the GCDMin - does not appear affected by either Shadow Blades or Adrenaline Rush
 			},
 			IgnoreHaste: true,
 		},

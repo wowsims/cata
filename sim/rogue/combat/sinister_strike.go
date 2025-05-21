@@ -25,7 +25,7 @@ func (comRogue *CombatRogue) registerSinisterStrikeSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:    time.Second,
-				GCDMin: time.Millisecond * 800,
+				GCDMin: time.Millisecond * 500,
 			},
 			IgnoreHaste: true,
 		},

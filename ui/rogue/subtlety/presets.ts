@@ -4,15 +4,17 @@ import { RogueMajorGlyph, RogueOptions_PoisonOptions, SubtletyRogue_Options as R
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SubtletyApl from './apls/subtlety.apl.json';
-import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json';
-import PreraidSubtletyGear from './gear_sets/preraid_subtlety.gear.json';
+import MSVGear from './gear_sets/p1_subtlety_msv.gear.json';
+import PreraidGear from './gear_sets/preraid_subtlety.gear.json';
+import T14 from './gear_sets/p1_subtlety_t14.gear.json'
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET_SUB = PresetUtils.makePresetGear('Pre-Raid Sub', PreraidSubtletyGear);
-export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Sub', P1SubtletyGear);
+export const PRERAID_GEARSET = PresetUtils.makePresetGear('P1 Preraid', PreraidGear);
+export const P1_MSV_GEARSET = PresetUtils.makePresetGear('P1 MSV', MSVGear);
+export const P1_T14_GEARSET = PresetUtils.makePresetGear('P1 T14', T14);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
 
