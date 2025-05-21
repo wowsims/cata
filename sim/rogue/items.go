@@ -467,7 +467,7 @@ var Tier15 = core.NewItemSet(core.ItemSet{
 			gcdMod := rogue.AddDynamicMod(core.SpellModConfig{
 				Kind:      core.SpellMod_GlobalCooldown_Flat,
 				ClassMask: RogueSpellActives,
-				TimeValue: time.Millisecond * 300,
+				TimeValue: time.Millisecond * -300,
 			})
 			aura := rogue.RegisterAura(core.Aura{
 				Label:    "Shadow Blades Energy Cost Reduction",
