@@ -87,7 +87,7 @@ func spinningCraneKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.Sp
 	if isSEFClone {
 		config.ActionID = config.ActionID.WithTag(SEFSpellID)
 		config.Dot.Aura.ActionID = config.Dot.Aura.ActionID.WithTag(SEFSpellID)
-		config.Flags ^= core.SpellFlagChanneled ^ core.SpellFlagAPL
+		config.Flags &= ^(core.SpellFlagChanneled | core.SpellFlagAPL)
 	}
 
 	return config

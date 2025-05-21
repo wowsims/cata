@@ -74,7 +74,7 @@ func risingSunKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellC
 
 	if isSEFClone {
 		config.ActionID = config.ActionID.WithTag(SEFSpellID)
-		config.Flags ^= core.SpellFlagAPL ^ SpellFlagSpender
+		config.Flags &= ^(core.SpellFlagAPL | SpellFlagSpender)
 	}
 
 	return config

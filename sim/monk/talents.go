@@ -860,7 +860,7 @@ func rushingJadeWindSpellConfig(monk *Monk, isSEFClone bool, overrides core.Spel
 
 	if isSEFClone {
 		config.ActionID = config.ActionID.WithTag(SEFSpellID)
-		config.Flags ^= core.SpellFlagAPL ^ SpellFlagBuilder
+		config.Flags &= ^(core.SpellFlagAPL | SpellFlagBuilder)
 	}
 
 	return config

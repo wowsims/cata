@@ -71,7 +71,7 @@ func fistsOfFurySpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellCon
 	if isSEFClone {
 		config.ActionID = config.ActionID.WithTag(SEFSpellID)
 		config.Dot.Aura.ActionID = config.Dot.Aura.ActionID.WithTag(SEFSpellID)
-		config.Flags ^= core.SpellFlagChanneled ^ SpellFlagSpender ^ core.SpellFlagAPL
+		config.Flags &= ^(core.SpellFlagChanneled | SpellFlagSpender | core.SpellFlagAPL)
 	}
 
 	return config
