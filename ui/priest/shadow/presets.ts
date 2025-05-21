@@ -4,16 +4,18 @@ import { PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph, PriestO
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
+import PreRaidGear from './gear_sets/pre_raid.gear.json';
 import P1Gear from './gear_sets/p1.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
+export const PRE_RAID_PRESET = PresetUtils.makePresetGear('Pre Raid Preset', PreRaidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.0,

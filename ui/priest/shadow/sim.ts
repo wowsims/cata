@@ -50,9 +50,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET.gear,
+		gear: Presets.PRE_RAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
@@ -90,12 +90,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	presets: {
-		epWeights: [Presets.P3_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET],
+		gear: [Presets.PRE_RAID_PRESET, Presets.P1_PRESET],
 		itemSwaps: [],
 		builds: [],
 	},
@@ -119,10 +119,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET.gear,
+					1: Presets.PRE_RAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET.gear,
+					1: Presets.PRE_RAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
 				},
 			},
 		},
@@ -142,7 +144,7 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 							StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 								breakpoints: [hasteBreakpoints.get('7-tick - VT')!],
 								capType: StatCapType.TypeSoftCap,
-								postCapEPs: [(Presets.P3_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.02) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+								postCapEPs: [(Presets.P1_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.02) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 							}),
 						);
 					}
