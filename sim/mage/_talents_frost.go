@@ -69,7 +69,7 @@ func (mage *Mage) ApplyFrostTalents() {
 }
 
 func (mage *Mage) registerIcyVeinsCD() {
-	if !mage.Talents.IcyVeins {
+	if !.mage.Spec.Frost {
 		return
 	}
 
@@ -96,10 +96,6 @@ func (mage *Mage) registerIcyVeinsCD() {
 		ActionID:       actionID,
 		ClassSpellMask: MageSpellIcyVeins,
 		Flags:          core.SpellFlagNoOnCastComplete,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 3,
-		},
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
