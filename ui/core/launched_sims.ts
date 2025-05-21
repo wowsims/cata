@@ -47,7 +47,7 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFeralDruid]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecGuardianDruid]: {
