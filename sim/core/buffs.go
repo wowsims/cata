@@ -203,6 +203,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		if raidBuffs.Heroism {
 			registerBloodlustCD(agent, 32182)
 		}
+
 		if raidBuffs.TimeWarp {
 			registerBloodlustCD(agent, 80353)
 		}

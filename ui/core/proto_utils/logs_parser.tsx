@@ -1071,9 +1071,10 @@ export class CastLog extends SimLog {
 		const damageDealtLogs = logs.filter((log): log is DamageDealtLog => log.isDamageDealt());
 
 		const toBucketKey = (actionId: ActionId) => {
-			if (actionId.spellId == 30451) {
+			if (actionId.spellId == 30451 || actionId.spellId == 127632) {
 				// Arcane Blast is unique because it can finish its cast as a different
 				// spell than it started (if stacks drop).
+				// Also handle Shadow's Cascade for bouncing
 				return actionId.toStringIgnoringTag();
 			} else {
 				return actionId.toString();
