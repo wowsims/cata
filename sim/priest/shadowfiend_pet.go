@@ -21,11 +21,12 @@ type Shadowfiend struct {
 }
 
 var baseStats = stats.Stats{
-	stats.Strength:    0,
-	stats.Agility:     0,
-	stats.Stamina:     348,
-	stats.Intellect:   350,
-	stats.AttackPower: 350,
+	stats.Strength:  0,
+	stats.Agility:   0,
+	stats.Stamina:   348,
+	stats.Intellect: 350,
+	// stats.AttackPower: 896, // Level 85
+	stats.AttackPower: 1077, // Level 90
 	stats.Mana:        12295,
 
 	// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
@@ -35,23 +36,18 @@ var baseStats = stats.Stats{
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	shadowfiend := &Shadowfiend{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Shadowfiend",
-			Owner:           &priest.Character,
-			BaseStats:       baseStats,
-			StatInheritance: priest.shadowfiendStatInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      false,
+			Name:                            "Shadowfiend",
+			Owner:                           &priest.Character,
+			BaseStats:                       baseStats,
+			StatInheritance:                 priest.shadowfiendStatInheritance(),
+			EnabledOnStart:                  false,
+			IsGuardian:                      false,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		Priest: priest,
 	}
 
-	shadowfiend.OnPetEnable = func(sim *core.Simulation) {
-		shadowfiend.AutoAttacks.PauseMeleeBy(sim, time.Duration(1))
-	}
-
-	shadowfiend.DelayInitialInheritance(time.Millisecond * 500)
 	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 34433})
-
 	core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
 		Label: "Autoattack mana regen",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -65,13 +61,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		Label:    "Shadowcrawl",
 		ActionID: actionID,
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shadowfiend.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shadowfiend.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&shadowfiend.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	shadowfiend.Shadowcrawl = shadowfiend.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -100,18 +90,18 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:        331.5,
-			BaseDamageMax:        406.5,
+			BaseDamageMin:        priest.CalcScalingSpellDmg(2.0),
+			BaseDamageMax:        priest.CalcScalingSpellDmg(2.0),
 			SwingSpeed:           1.5,
 			NormalizedSwingSpeed: 1.5,
 			CritMultiplier:       2,
 			SpellSchool:          core.SpellSchoolShadow,
+			AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 		},
 		AutoSwingMelee: true,
 	})
 
-	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 0
-
+	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 1
 	shadowfiend.EnableManaBar()
 	priest.AddPet(shadowfiend)
 
@@ -122,9 +112,10 @@ func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{ //still need to nail down shadow fiend crit scaling, but removing owner crit scaling after further investigation
 			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
-			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.5333,
-			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,
-			stats.AttackPower:         4.9 * (ownerStats[stats.SpellPower] - priest.GetBaseStats()[stats.Intellect] + 10),
+			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.3,
+			stats.Stamina:             ownerStats[stats.Stamina] * 0.75,
+			stats.SpellPower:          ownerStats[stats.SpellPower],
+			stats.HasteRating:         ownerStats[stats.HasteRating],
 		}
 	}
 }
