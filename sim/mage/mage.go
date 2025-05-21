@@ -308,6 +308,7 @@ const (
 	MageSpellFocusMagic
 	MageSpellFreeze
 	MageSpellFrostbolt
+	MageSpellFrostBomb
 	MageSpellFrostfireBolt
 	MageSpellFrostfireOrb
 	MageSpellIceLance
