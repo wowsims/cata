@@ -93,5 +93,5 @@ func (bm *BrewmasterMonk) RegisterMastery() {
 }
 
 func (bm *BrewmasterMonk) GetMasteryBonus() float64 {
-	return 0.2 + (0.05 + 0.0625*bm.GetMasteryPoints())
+	return 0.2 + (0.05 + 0.00625*bm.GetMasteryPoints())
 }
