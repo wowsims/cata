@@ -297,6 +297,7 @@ const (
 	MageSpellBlastWave
 	MageSpellBlizzard
 	MageSpellConeOfCold
+	MageSpellFrostNova
 	MageSpellDeepFreeze
 	MageSpellDragonsBreath
 	MageSpellEvocation
