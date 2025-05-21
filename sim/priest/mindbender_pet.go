@@ -17,7 +17,15 @@ type MindBender struct {
 
 func (priest *Priest) NewMindBender() *MindBender {
 	mindbender := &MindBender{
-		Pet:    core.NewPet("Mindbender", &priest.Character, baseStats, priest.mindbenderStatInheritance(), false, false),
+		Pet: core.NewPet(core.PetConfig{
+			Name:                            "Mindbender",
+			Owner:                           &priest.Character,
+			BaseStats:                       baseStats,
+			StatInheritance:                 priest.mindbenderStatInheritance(),
+			IsGuardian:                      false,
+			EnabledOnStart:                  false,
+			HasDynamicMeleeSpeedInheritance: true,
+		}),
 		Priest: priest,
 	}
 
