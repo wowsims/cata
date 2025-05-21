@@ -58,7 +58,9 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				for _, result := range results {
 					spell.DealOutcome(sim, result)
-					bm.DizzyingHazeAuras.Get(result.Target).Activate(sim)
+					if result.Landed() {
+						bm.DizzyingHazeAuras.Get(result.Target).Activate(sim)
+					}
 				}
 				if missedTargets > 0 && missedTargets == len(sim.Encounter.TargetUnits) {
 					spell.IssueRefund(sim)
