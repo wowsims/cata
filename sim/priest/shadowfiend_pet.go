@@ -36,12 +36,13 @@ var baseStats = stats.Stats{
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	shadowfiend := &Shadowfiend{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Shadowfiend",
-			Owner:           &priest.Character,
-			BaseStats:       baseStats,
-			StatInheritance: priest.shadowfiendStatInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      false,
+			Name:                            "Shadowfiend",
+			Owner:                           &priest.Character,
+			BaseStats:                       baseStats,
+			StatInheritance:                 priest.shadowfiendStatInheritance(),
+			EnabledOnStart:                  false,
+			IsGuardian:                      false,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		Priest: priest,
 	}
@@ -105,13 +106,6 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		},
 		AutoSwingMelee: true,
 	})
-
-	shadowfiend.OnPetEnable = func(sim *core.Simulation) {
-		shadowfiend.MultiplyMeleeSpeed(sim, shadowfiend.Owner.PseudoStats.MeleeSpeedMultiplier)
-		shadowfiend.EnableDynamicMeleeSpeed(func(amount float64) {
-			priest.ShadowfiendPet.MultiplyMeleeSpeed(sim, amount)
-		})
-	}
 
 	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 1
 	shadowfiend.EnableManaBar()

@@ -89,13 +89,6 @@ func (priest *Priest) NewMindBender() *MindBender {
 		AutoSwingMelee: true,
 	})
 
-	mindbender.OnPetEnable = func(sim *core.Simulation) {
-		mindbender.MultiplyMeleeSpeed(sim, mindbender.Owner.PseudoStats.MeleeSpeedMultiplier)
-		mindbender.EnableDynamicMeleeSpeed(func(amount float64) {
-			mindbender.MultiplyMeleeSpeed(sim, amount)
-		})
-	}
-
 	mindbender.AutoAttacks.MHConfig().BonusCoefficient = 1
 
 	mindbender.EnableManaBar()
