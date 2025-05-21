@@ -13,7 +13,6 @@ type Warlock struct {
 
 	BaneOfAgony          *core.Spell
 	BaneOfDoom           *core.Spell
-	BurningEmbers        *core.Spell
 	Corruption           *core.Spell
 	CurseOfElementsAuras core.AuraArray
 	CurseOfTonguesAuras  core.AuraArray

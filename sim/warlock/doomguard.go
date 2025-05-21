@@ -57,7 +57,7 @@ func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 			Name:                            "Doomguard",
 			Owner:                           &warlock.Character,
 			BaseStats:                       baseStats,
-			StatInheritance:                 warlock.simplePetStatInheritanceWithScale(0),
+			StatInheritance:                 warlock.SimplePetStatInheritanceWithScale(0),
 			EnabledOnStart:                  false,
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,

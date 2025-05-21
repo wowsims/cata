@@ -68,8 +68,8 @@ func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 		stats.Armor:  19680,
 	}
 
-	inheritance := warlock.simplePetStatInheritanceWithScale(0.25)
-	attack := scaledAutoAttackConfig(2)
+	inheritance := warlock.SimplePetStatInheritanceWithScale(0.25)
+	attack := ScaledAutoAttackConfig(2)
 	pet := &InfernalPet{
 		Pet: core.NewPet(core.PetConfig{
 			Name:                            "Infernal",

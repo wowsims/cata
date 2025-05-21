@@ -158,6 +158,9 @@ export class CharacterStats extends Component {
 			if (player.getSpec() == Spec.SpecDestructionWarlock) {
 				customBonus = [1, 0]
 				modifier = [1, ... modifier]
+			} else if (player.getSpec() == Spec.SpecDemonologyWarlock) {
+				customBonus = [0, 0]
+				modifier = [1, ... modifier]
 			}
 			const valueElem = (
 				<div className="stat-value-link-container">

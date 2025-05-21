@@ -1081,6 +1081,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Grimoire: Voidwalker': ActionId.fromSpellId(111895),
 	'Grimoire: Felhunter': ActionId.fromSpellId(111897),
 	'Grimoire: Succubus': ActionId.fromSpellId(111896),
+	'Felguard': ActionId.fromSpellId(30146),
 };
 
 // https://wowhead.com/mop-classic/hunter-pets
