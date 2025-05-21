@@ -111,10 +111,7 @@ export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
 		talentsString: '223113',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfFade,
-			major2: MajorGlyph.GlyphOfInnerFire,
-		}),
+		glyphs: Glyphs.create({}),
 	}),
 };
 
@@ -132,18 +129,22 @@ export const DefaultConsumables = ConsumesSpec.create({
 	tinkerId: 82174, // Synapse Springs
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({});
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	blessingOfKings: true,
+	mindQuickening: true,
+	leaderOfThePack: true,
+	blessingOfMight: true,
+	unholyAura: true,
+	bloodlust: true,
+	skullBannerCount: 2,
+	stormlashTotemCount: 4,
+});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	// bloodFrenzy: true,
-	// sunderArmor: true,
-	// ebonPlaguebringer: true,
-	// mangle: true,
-	// criticalMass: true,
-	// demoralizingShout: true,
-	// frostFever: true,
+	curseOfElements: true
 });
 
 export const OtherDefaults = {

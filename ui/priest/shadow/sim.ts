@@ -23,7 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Priest),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Some items may display and use stats a litle higher than their original value.'],
+	knownIssues: ['Some items may display and use stats a litle higher than their original value.', 'Procs from Weapons, Trinkets and other Items are not yet supported'],
 
 	// All stats for which EP should be calculated.
 	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
