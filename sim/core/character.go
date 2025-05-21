@@ -173,7 +173,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
-		character.enableItemSwap(player.ItemSwap, character.DefaultCritMultiplier(), character.DefaultCritMultiplier(), 0)
+		character.enableItemSwap(player.ItemSwap, character.DefaultCritMultiplier(), character.DefaultCritMultiplier(), character.DefaultCritMultiplier())
 	}
 
 	character.EquipScalingManager = character.NewEquipScalingManager()
@@ -530,18 +530,8 @@ func (character *Character) HasOHWeapon() bool {
 	return character.GetOHWeapon() != nil
 }
 
-// Returns the ranged weapon if one is equipped, and null otherwise.
-func (character *Character) GetRangedWeapon() *Item {
-	weapon := character.Ranged()
-	if weapon.ID == 0 ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeRelic {
-		return nil
-	} else {
-		return weapon
-	}
-}
 func (character *Character) HasRangedWeapon() bool {
-	return character.GetRangedWeapon() != nil
+	return character.Ranged() != nil
 }
 
 func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {

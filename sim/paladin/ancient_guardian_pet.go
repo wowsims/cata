@@ -19,23 +19,30 @@ const PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core
 
 func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 	ancientGuardian := &AncientGuardianPet{
-		Pet: core.NewPet("Ancient Guardian", &paladin.Character, stats.Stats{
-			stats.Stamina: 100,
+		Pet: core.NewPet(core.PetConfig{
+			Name:  "Ancient Guardian",
+			Owner: &paladin.Character,
+			BaseStats: stats.Stats{
+				stats.Stamina: 100,
 
-			// Taken from combined logs with > 1600 hits, seems to
-			// be around 2% final Crit chance after the 4.8%
-			// suppression from boss level mobs.
-			stats.PhysicalCritPercent: 6.8,
-		}, func(ownerStats stats.Stats) stats.Stats {
-			// Draenei Heroic Presence is not included, so inherit HitRating
-			// rather than PhysicalHitPercent.
-			ownerHitRating := ownerStats[stats.HitRating]
+				// Taken from combined logs with > 1600 hits, seems to
+				// be around 2% final Crit chance after the 4.8%
+				// suppression from boss level mobs.
+				stats.PhysicalCritPercent: 6.8,
+			},
+			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
+				// Draenei Heroic Presence is not included, so inherit HitRating
+				// rather than PhysicalHitPercent.
+				ownerHitRating := ownerStats[stats.HitRating]
 
-			return stats.Stats{
-				stats.HitRating:       ownerHitRating,
-				stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
-			}
-		}, false, true),
+				return stats.Stats{
+					stats.HitRating:       ownerHitRating,
+					stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
+				}
+			},
+			EnabledOnStart: false,
+			IsGuardian:     true,
+		}),
 		paladinOwner: paladin,
 	}
 

@@ -130,6 +130,7 @@ type Unit struct {
 
 	DynamicStatsPets      []*Pet
 	DynamicMeleeSpeedPets []*Pet
+	DynamicCastSpeedPets  []*Pet
 
 	// AutoAttacks is the manager for auto attack swings.
 	// Must be enabled to use, with "EnableAutoAttacks()".
@@ -422,6 +423,11 @@ func (unit *Unit) updateCastSpeed() {
 }
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
+
+	for _, pet := range unit.DynamicCastSpeedPets {
+		pet.dynamicCastSpeedInheritance(amount)
+	}
+
 	unit.updateCastSpeed()
 }
 
@@ -513,6 +519,7 @@ func (unit *Unit) GetCurrentPowerBar() PowerBarType {
 func (unit *Unit) addUniversalStatDependencies() {
 	unit.AddStatDependency(stats.HitRating, stats.PhysicalHitPercent, 1/PhysicalHitRatingPerHitPercent)
 	unit.AddStatDependency(stats.HitRating, stats.SpellHitPercent, 1/SpellHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.ExpertiseRating, stats.SpellHitPercent, 1/SpellHitRatingPerHitPercent)
 	unit.AddStatDependency(stats.CritRating, stats.PhysicalCritPercent, 1/CritRatingPerCritPercent)
 	unit.AddStatDependency(stats.CritRating, stats.SpellCritPercent, 1/CritRatingPerCritPercent)
 }

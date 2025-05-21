@@ -144,22 +144,29 @@ func (runeWeapon *RuneWeaponPet) AddCopySpell(actionId core.ActionID, spell *cor
 
 func (dk *DeathKnight) NewRuneWeapon() *RuneWeaponPet {
 	runeWeapon := &RuneWeaponPet{
-		Pet: core.NewPet("Rune Weapon", &dk.Character, stats.Stats{
-			stats.Stamina: 100,
-		}, func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.AttackPower: ownerStats[stats.AttackPower],
-				stats.HasteRating: ownerStats[stats.HasteRating],
+		Pet: core.NewPet(core.PetConfig{
+			Name:  "Rune Weapon",
+			Owner: &dk.Character,
+			BaseStats: stats.Stats{
+				stats.Stamina: 100,
+			},
+			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
+				return stats.Stats{
+					stats.AttackPower: ownerStats[stats.AttackPower],
+					stats.HasteRating: ownerStats[stats.HasteRating],
 
-				stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
-				stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent] * HitCapRatio,
+					stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+					stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent] * HitCapRatio,
 
-				stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
+					stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
 
-				stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-				stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
-			}
-		}, false, true),
+					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+				}
+			},
+			EnabledOnStart: false,
+			IsGuardian:     true,
+		}),
 		dkOwner: dk,
 	}
 

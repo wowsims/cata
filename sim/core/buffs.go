@@ -1196,7 +1196,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 	}
 
 	handler := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-		if !aura.Icd.IsReady(sim) || !result.Landed() || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) || !sim.Proc(0.5, "Stormlash") {
+		if !aura.Icd.IsReady(sim) || !result.Landed() || result.Damage <= 0 || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) || !sim.Proc(0.5, "Stormlash") {
 			return
 		}
 

@@ -246,7 +246,7 @@ type ItemSpec struct {
 	ChallengeMode bool
 }
 
-type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
+type Equipment [NumItemSlots]Item
 
 func (equipment *Equipment) MainHand() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotMainHand]
@@ -257,7 +257,12 @@ func (equipment *Equipment) OffHand() *Item {
 }
 
 func (equipment *Equipment) Ranged() *Item {
-	return &equipment[proto.ItemSlot_ItemSlotRanged]
+	mh := equipment.MainHand()
+	if mh.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeUnknown {
+		return nil
+	}
+
+	return mh
 }
 
 func (equipment *Equipment) Head() *Item {
@@ -373,7 +378,7 @@ func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 }
 
 // Structs used for looking up items/gems/enchants
-type EquipmentSpec [proto.ItemSlot_ItemSlotRanged + 1]ItemSpec
+type EquipmentSpec [NumItemSlots]ItemSpec
 
 func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
@@ -612,7 +617,7 @@ func ItemTypeToSlot(it proto.ItemType) proto.ItemSlot {
 	case proto.ItemType_ItemTypeWeapon:
 		return proto.ItemSlot_ItemSlotMainHand
 	case proto.ItemType_ItemTypeRanged:
-		return proto.ItemSlot_ItemSlotRanged
+		return proto.ItemSlot_ItemSlotMainHand
 	}
 
 	return 255
@@ -632,7 +637,7 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	proto.ItemType_ItemTypeFeet:     {proto.ItemSlot_ItemSlotFeet},
 	proto.ItemType_ItemTypeFinger:   {proto.ItemSlot_ItemSlotFinger1, proto.ItemSlot_ItemSlotFinger2},
 	proto.ItemType_ItemTypeTrinket:  {proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2},
-	proto.ItemType_ItemTypeRanged:   {proto.ItemSlot_ItemSlotRanged},
+	proto.ItemType_ItemTypeRanged:   {proto.ItemSlot_ItemSlotMainHand},
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 

@@ -143,10 +143,11 @@ var MapSocketTypeToGemColor = map[int]proto.GemColor{
 	2: proto.GemColor_GemColorRed,
 	3: proto.GemColor_GemColorYellow,
 	4: proto.GemColor_GemColorBlue,
-	5: proto.GemColor_GemColorPurple,
+	5: proto.GemColor_GemColorShaTouched,
 	6: proto.GemColor_GemColorCogwheel,
 	7: proto.GemColor_GemColorPrismatic,
 }
+
 var MapInventoryTypeToItemType = map[int]proto.ItemType{
 	0:                      proto.ItemType_ItemTypeUnknown,
 	INVTYPE_HEAD:           proto.ItemType_ItemTypeHead,

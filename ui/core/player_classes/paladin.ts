@@ -32,7 +32,7 @@ export class Paladin extends PlayerClass<Class.ClassPaladin> {
 		{ weaponType: WeaponType.WeaponTypeShield },
 		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
 	];
-	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeRelic];
+	static rangedWeaponTypes: RangedWeaponType[] = [];
 
 	readonly classID = Paladin.classID;
 	readonly friendlyName = Paladin.name;

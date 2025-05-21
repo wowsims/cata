@@ -120,7 +120,7 @@ func processEnchantmentEffects(
 					continue
 				}
 				if spellEffect.EffectType == E_APPLY_AURA && spellEffect.EffectAura == A_MOD_STAT {
-
+					outStats[spellEffect.EffectMiscValues[0]] += float64(spellEffect.EffectBasePoints)
 				}
 
 				school := SpellSchool(spellEffect.EffectMiscValues[0])
