@@ -43,13 +43,7 @@ func (priest *Priest) NewMindBender() *MindBender {
 		Label:    "Shadowcrawl",
 		ActionID: actionID,
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mindbender.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mindbender.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&mindbender.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	mindbender.Shadowcrawl = mindbender.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

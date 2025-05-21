@@ -61,13 +61,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		Label:    "Shadowcrawl",
 		ActionID: actionID,
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shadowfiend.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shadowfiend.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&shadowfiend.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	shadowfiend.Shadowcrawl = shadowfiend.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

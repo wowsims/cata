@@ -550,7 +550,7 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 					mod.Deactivate()
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if (spell.ClassSpellMask & (PriestSpellMindBlast | PriestSpellMindSpike | PriestSpellShadowWordDeath)) == 0 {
+					if spell.Matches(PriestSpellMindBlast | PriestSpellMindSpike | PriestSpellShadowWordDeath) {
 						return
 					}
 
@@ -577,10 +577,10 @@ func init() {
 	for _, id := range shaWeaponIDs {
 		core.NewItemEffect(id, func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
-			priest.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ClassSpellMask&(PriestSpellMindBender|PriestSpellShadowFiend) > 0 {
-					spell.DefaultCast.GCD = time.Duration(0)
-				}
+			priest.AddStaticMod(core.SpellModConfig{
+				Kind:      core.SpellMod_GlobalCooldown_Flat,
+				TimeValue: -core.GCDDefault,
+				ClassMask: PriestSpellShadowFiend | PriestSpellMindBender,
 			})
 		})
 	}
