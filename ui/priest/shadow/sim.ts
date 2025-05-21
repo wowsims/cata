@@ -134,21 +134,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecShadowPriest>) {
 		super(parentElem, player, SPEC_CONFIG);
-
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.SHADOW_BREAKPOINTS,
 				updateSoftCaps: softCaps => {
-					if (hasT134(player)) {
-						softCaps.push(
-							StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
-								breakpoints: [hasteBreakpoints.get('7-tick - VT')!],
-								capType: StatCapType.TypeSoftCap,
-								postCapEPs: [(Presets.P1_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.02) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
-							}),
-						);
-					}
-
 					return softCaps;
 				},
 			});
