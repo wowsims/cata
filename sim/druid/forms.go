@@ -22,6 +22,10 @@ const (
 // Converts from 0.009327 to 0.0085
 const AnimalSpiritRegenSuppression = 0.911337
 
+// Thick Hide contribution handled separately in talents code for cleanliness
+// and UI stats display.
+const BaseBearArmorMulti = 2.2
+
 func (form DruidForm) Matches(other DruidForm) bool {
 	return (form & other) != 0
 }
@@ -231,6 +235,8 @@ func (druid *Druid) RegisterBearFormAura() {
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
 	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.4)
+	critDep := druid.NewDynamicMultiplyStat(stats.CritRating, 1.5) // TODO: Should this be implemented as EquipScaling instead? Need to check elixirs and procs.
+	hasteDep := druid.NewDynamicMultiplyStat(stats.HasteRating, 1.5) // TODO: Should this be implemented as EquipScaling instead? Need to check elixirs and procs.
 	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
 
 	// Need redundant enabling/disabling of the dep both here and below
@@ -249,7 +255,6 @@ func (druid *Druid) RegisterBearFormAura() {
 	})
 
 	clawWeapon := druid.GetBearWeapon()
-	baseBearArmorMulti := 2.2 // Thick Hide contribution handled separately in talents code for cleanliness and UI stats display.
 
 	druid.BearFormAura = druid.RegisterAura(core.Aura{
 		Label:      "Bear Form",
@@ -267,8 +272,10 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus)
-			druid.ApplyDynamicEquipScaling(sim, stats.Armor, baseBearArmorMulti)
+			druid.ApplyDynamicEquipScaling(sim, stats.Armor, BaseBearArmorMulti)
 			druid.EnableBuildPhaseStatDep(sim, agiApDep)
+			druid.EnableBuildPhaseStatDep(sim, critDep)
+			druid.EnableBuildPhaseStatDep(sim, hasteDep)
 
 			// Preserve fraction of max health when shifting
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
@@ -294,8 +301,10 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
-			druid.RemoveDynamicEquipScaling(sim, stats.Armor, baseBearArmorMulti)
+			druid.RemoveDynamicEquipScaling(sim, stats.Armor, BaseBearArmorMulti)
 			druid.DisableBuildPhaseStatDep(sim, agiApDep)
+			druid.DisableBuildPhaseStatDep(sim, critDep)
+			druid.DisableBuildPhaseStatDep(sim, hasteDep)
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			druid.DisableBuildPhaseStatDep(sim, stamDep)
