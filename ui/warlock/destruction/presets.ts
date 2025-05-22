@@ -52,11 +52,11 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
+	flaskId: 76085, // Flask of the Warm Sun
 	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
-	tinkerId: 82174, // Synapse Springs
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
+	tinkerId: 141330, // Synapse Springs II
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
