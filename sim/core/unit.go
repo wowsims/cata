@@ -146,6 +146,7 @@ type Unit struct {
 	AttackTables                []*AttackTable
 	DynamicDamageTakenModifiers []DynamicDamageTakenModifier
 	Blockhandler                func(sim *Simulation, spell *Spell, result *SpellResult)
+	avoidanceParams             DiminishingReturnsConstants
 
 	GCD *Timer
 
@@ -715,14 +716,13 @@ func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
 
 func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseMissChance +
-		unit.GetDiminishedMissChance() +
 		unit.PseudoStats.ReducedPhysicalHitTakenChance
 	return math.Max(chance, 0.0)
 }
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.BlockPercent)/100
+		unit.GetDiminishedBlockChance()
 	return math.Max(chance, 0.0)
 }
 
