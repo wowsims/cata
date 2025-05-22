@@ -11,11 +11,13 @@ import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
+import P1PreBisGear from './gear_sets/p1-prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
+export const P1_PREBIS_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS', P1PreBisGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
 export const DEFAULT_APL = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -52,11 +54,11 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
+	flaskId: 76085, // Flask of the Warm Sun
 	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
-	tinkerId: 82174, // Synapse Springs
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
+	tinkerId: 141330, // Synapse Springs II
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
