@@ -311,7 +311,6 @@ func (druid *Druid) RegisterBearFormAura() {
 				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultCritMultiplier()))
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
-				druid.EnrageAura.Deactivate(sim)
 
 				if druid.PulverizeAura.IsActive() {
 					druid.PulverizeAura.Deactivate(sim)

@@ -40,7 +40,6 @@ type Druid struct {
 	Berserk               *DruidSpell
 	CatCharge             *DruidSpell
 	DemoralizingRoar      *DruidSpell
-	Enrage                *DruidSpell
 	FaerieFire            *DruidSpell
 	FerociousBite         *DruidSpell
 	ForceOfNature         *DruidSpell
@@ -88,7 +87,6 @@ type Druid struct {
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
-	EnrageAura               *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	LunarEclipseProcAura     *core.Aura

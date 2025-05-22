@@ -55,6 +55,12 @@ type GuardianDruid struct {
 
 	Options   *proto.GuardianDruid_Options
 	vengeance *core.VengeanceTracker
+
+	// Aura references
+	EnrageAura *core.Aura
+
+	// Spell references
+	Enrage *druid.DruidSpell
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {
