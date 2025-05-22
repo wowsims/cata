@@ -113,7 +113,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		rotations: [Presets.DEFAULT_APL],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET],
+		gear: [Presets.P1_PREBIS_PRESET, Presets.P1_PRESET,],
 		itemSwaps: [],
 	},
 
