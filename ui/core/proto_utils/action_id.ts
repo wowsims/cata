@@ -280,7 +280,7 @@ export class ActionId {
 			tag -= 138228;
 		}
 		// Handle DTR
-		else if (tag >= 71086) {
+		else if (tag >= 71086 && tag <= 71096) {
 			name = 'Dragonwrath - ' + name;
 			tag -= 71086;
 		}
@@ -346,6 +346,8 @@ export class ActionId {
 						name += ' (2 Tick)';
 					} else if (tag == 3) {
 						name += ' (3 Tick)';
+					} else if (tag == 77486) {
+						name += ' (Mastery)'
 					}
 				} else {
 					// Gurthalak, Voice of the Deeps
@@ -365,7 +367,10 @@ export class ActionId {
 					name += ' (2 Tick)';
 				} else if (tag == 3) {
 					name += ' (3 Tick)';
+				} else if (tag == 77486) {
+					name += ' (Mastery)';
 				}
+
 				break;
 			case 'Shattering Throw':
 			case 'Skull Banner':
@@ -587,8 +592,16 @@ export class ActionId {
 				break;
 			case 'Devouring Plague':
 				if (tag == 1) {
-					name += ' (Improved)';
+					name += ' (DoT)';
 					break;
+				}
+				if (tag == 77486) {
+					name += ' (Mastery)';
+					break;
+				}
+			case 'Shadow Word: Death':
+				if (tag == 1) {
+					name += ' (No Orb)'
 				}
 			case 'Improved Steady Shot':
 				if (tag == 2) {
@@ -774,6 +787,19 @@ export class ActionId {
 				if (this.spellId === 115464) {
 					name += ' (Heal)';
 				}
+				break;
+			case 'Vampiric Touch':
+			case 'Shadow Word: Pain':
+				if (tag == 77486) {
+					name += " (Mastery)"
+				}
+
+				break;
+			case 'Cascade':
+				if (tag == 1) {
+					name += " (Bounce)"
+				}
+
 				break;
 			default:
 				if (tag) {
@@ -1053,6 +1079,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
 	'Rune Weapon': ActionId.fromSpellId(49028),
 	Shadowfiend: ActionId.fromSpellId(34433),
+	Mindbender: ActionId.fromSpellId(123040),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 	Valkyr: ActionId.fromSpellId(71844),

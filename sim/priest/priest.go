@@ -17,6 +17,8 @@ type Priest struct {
 
 	ShadowfiendAura *core.Aura
 	ShadowfiendPet  *Shadowfiend
+	MindbenderPet   *MindBender
+	MindbenderAura  *core.Aura
 
 	ShadowOrbsAura      *core.Aura
 	EmpoweredShadowAura *core.Aura
@@ -29,30 +31,29 @@ type Priest struct {
 	SurgeOfLightProcAura *core.Aura
 
 	// might want to move these spell / talents into spec specific initialization
-	BindingHeal     *core.Spell
-	CircleOfHealing *core.Spell
-	FlashHeal       *core.Spell
-	GreaterHeal     *core.Spell
-	Penance         *core.Spell
-	PenanceHeal     *core.Spell
-	PowerWordShield *core.Spell
-	PrayerOfHealing *core.Spell
-	PrayerOfMending *core.Spell
-	Renew           *core.Spell
-	EmpoweredRenew  *core.Spell
-	InnerFocus      *core.Spell
-	HolyFire        *core.Spell
-	Smite           *core.Spell
-	DevouringPlague *core.Spell
-	ShadowWordPain  *core.Spell
-	Shadowfiend     *core.Spell
-	VampiricTouch   *core.Spell
+	BindingHeal       *core.Spell
+	CircleOfHealing   *core.Spell
+	FlashHeal         *core.Spell
+	GreaterHeal       *core.Spell
+	Penance           *core.Spell
+	PenanceHeal       *core.Spell
+	PowerWordShield   *core.Spell
+	PrayerOfHealing   *core.Spell
+	PrayerOfMending   *core.Spell
+	Renew             *core.Spell
+	EmpoweredRenew    *core.Spell
+	InnerFocus        *core.Spell
+	HolyFire          *core.Spell
+	Smite             *core.Spell
+	ShadowWordPain    *core.Spell
+	Shadowfiend       *core.Spell
+	VampiricTouch     *core.Spell
+	MindBender        *core.Spell
+	ShadowyApparition *core.Spell
 
 	WeakenedSouls core.AuraArray
 
 	ProcPrayerOfMending core.ApplySpellResults
-
-	ClassSpellScaling float64
 }
 
 type SelfBuffs struct {
@@ -66,62 +67,31 @@ func (priest *Priest) GetCharacter() *core.Character {
 	return &priest.Character
 }
 
-// func (priest *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
-// 	return priest.HasGlyph(int32(glyph))
-// }
-// func (priest *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
-// 	return priest.HasGlyph(int32(glyph))
-// }
-
-// func (priest *Priest) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	raidBuffs.ShadowProtection = true
-// 	raidBuffs.DivineSpirit = true
-
-// 	raidBuffs.PowerWordFortitude = max(raidBuffs.PowerWordFortitude, core.MakeTristateValue(
-// 		true,
-// 		priest.Talents.ImprovedPowerWordFortitude == 2))
-// }
-
 func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (priest *Priest) Initialize() {
 	if priest.SelfBuffs.UseInnerFire {
-		priest.AddStat(stats.SpellPower, 531)
-		priest.ApplyEquipScaling(stats.Armor, 1.6)
+		priest.MultiplyStat(stats.SpellPower, 1.1)
+		priest.ApplyEquipScaling(stats.Armor, 1.1)
 		core.MakePermanent(priest.RegisterAura(core.Aura{
 			Label:    "Inner Fire",
 			ActionID: core.ActionID{SpellID: 588},
 		}))
 	}
 
-	priest.registerDevouringPlagueSpell()
-	// priest.registerShadowWordPainSpell()
-
-	priest.registerMindBlastSpell()
-	priest.registerShadowWordDeathSpell()
+	priest.MultiplyStat(stats.Intellect, 1.05)
+	priest.registerShadowWordPainSpell()
 	priest.registerShadowfiendSpell()
-	// priest.registerVampiricTouchSpell()
+	priest.registerVampiricTouchSpell()
+
 	// priest.registerDispersionSpell()
-	priest.registerMindSpike()
 
-	// priest.registerPowerInfusionSpell()
-
-	priest.newMindFlaySpell()
+	priest.registerPowerInfusionSpell()
 	priest.newMindSearSpell()
-}
 
-// func (priest *Priest) RegisterHealingSpells() {
-// 	priest.registerPenanceHealSpell()
-// 	priest.registerBindingHealSpell()
-// 	priest.registerCircleOfHealingSpell()
-// 	priest.registerFlashHealSpell()
-// 	priest.registerGreaterHealSpell()
-// 	priest.registerPowerWordShieldSpell()
-// 	priest.registerPrayerOfHealingSpell()
-// 	priest.registerPrayerOfMendingSpell()
-// 	priest.registerRenewSpell()
-// }
+	priest.ApplyGlyphs()
+}
 
 func (priest *Priest) AddHolyEvanglismStack(sim *core.Simulation) {
 	if priest.HolyEvangelismProcAura != nil {
@@ -137,20 +107,28 @@ func (priest *Priest) AddDarkEvangelismStack(sim *core.Simulation) {
 	}
 }
 
+func (priest *Priest) ApplyTalents() {
+	priest.registerMindbenderSpell()
+}
+
 func (priest *Priest) Reset(_ *core.Simulation) {
 }
 
 func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	priest := &Priest{
-		Character:         *char,
-		SelfBuffs:         selfBuffs,
-		Talents:           &proto.PriestTalents{},
-		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassPriest),
+		Character: *char,
+		SelfBuffs: selfBuffs,
+		Talents:   &proto.PriestTalents{},
 	}
 
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents)
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()
+
+	if priest.Talents.Mindbender {
+		priest.MindbenderPet = priest.NewMindBender()
+	}
+
 	return priest
 }
 
@@ -159,11 +137,11 @@ type PriestAgent interface {
 	GetPriest() *Priest
 }
 
-func (hunter *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
+func (priest *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
+	return priest.HasGlyph(int32(glyph))
 }
-func (hunter *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
+func (priest *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
+	return priest.HasGlyph(int32(glyph))
 }
 
 const (
@@ -171,17 +149,21 @@ const (
 	PriestSpellArchangel int64 = 1 << iota
 	PriestSpellDarkArchangel
 	PriestSpellBindingHeal
+	PriestSpellCascade
 	PriestSpellCircleOfHealing
 	PriestSpellDevouringPlague
+	PriestSpellDevouringPlagueDoT
 	PriestSpellDesperatePrayer
 	PriestSpellDispersion
 	PriestSpellDivineAegis
 	PriestSpellDivineHymn
+	PriestSpellDivineStar
 	PriestSpellEmpoweredRenew
 	PriestSpellFade
 	PriestSpellFlashHeal
 	PriestSpellGreaterHeal
 	PriestSpellGuardianSpirit
+	PriestSpellHalo
 	PriestSpellHolyFire
 	PriestSpellHolyNova
 	PriestSpellHolyWordChastise
@@ -193,6 +175,7 @@ const (
 	PriestSpellInnerFocus
 	PriestSpellInnerWill
 	PriestSpellManaBurn
+	PriestSpellMindBender
 	PriestSpellMindBlast
 	PriestSpellMindFlay
 	PriestSpellMindSear
@@ -208,6 +191,7 @@ const (
 	PriestSpellPsychicScream
 	PriestSpellRenew
 	PriestSpellShadowOrbPassive
+	PriestSpellShadowyRecall
 	PriestSpellShadowWordDeath
 	PriestSpellShadowWordPain
 	PriestSpellShadowFiend
@@ -248,13 +232,3 @@ const (
 		PriestSpellMindSpike |
 		PriestSpellVampiricTouch
 )
-
-func (priest *Priest) calcBaseDamage(sim *core.Simulation, coefficient float64, variance float64) float64 {
-	baseDamage := priest.ClassSpellScaling * coefficient
-	if variance > 0 {
-		delta := priest.ClassSpellScaling * variance * 0.5
-		baseDamage += sim.Roll(-delta, delta)
-	}
-
-	return baseDamage
-}

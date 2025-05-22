@@ -476,6 +476,22 @@ func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonu
 	return parentAura
 }
 
+func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		parentAura.Unit.MultiplyCastSpeed(multiplier)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		parentAura.Unit.MultiplyCastSpeed(1 / multiplier)
+	})
+
+	if parentAura.IsActive() {
+		parentAura.Unit.MultiplyCastSpeed(multiplier)
+	}
+
+	return parentAura
+}
+
 type ShieldStrengthCalculator func(unit *Unit) float64
 
 type DamageAbsorptionAura struct {
