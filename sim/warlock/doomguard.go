@@ -62,6 +62,7 @@ func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,
 			HasDynamicCastSpeedInheritance:  true,
+			HasResourceRegenInheritance:     true,
 		}),
 	}
 
@@ -80,6 +81,7 @@ func (doomguard *DoomguardPet) GetPet() *core.Pet {
 }
 
 func (pet *DoomguardPet) Initialize() {
+	pet.Pet.Initialize()
 	pet.registerDoomBolt()
 }
 
