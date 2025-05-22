@@ -79,7 +79,7 @@ func (destruction *DestructionWarlock) registerImmolate() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
+			destruction.ApplyDotWithPandemic(spell.Dot(target), sim)
 		},
 	})
 }

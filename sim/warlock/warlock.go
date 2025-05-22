@@ -1,6 +1,9 @@
 package warlock
 
 import (
+	"math"
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -229,6 +232,27 @@ const (
 	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons
 )
 
-const (
-	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
-)
+// Pandemic - For now a Warlock only ability. Might be moved into core support in late expansions
+func (warlock *Warlock) ApplyDotWithPandemic(dot *core.Dot, sim *core.Simulation) {
+
+	// if DoT was not active before, there is nothing we need to do for pandemic
+	if !dot.IsActive() {
+		dot.Apply(sim)
+		return
+	}
+
+	// MoP Pandemic is a warlock only ability
+	// It allows for the extension of up to 50% of the unhasted base duration
+	// So we need to determine which is shorter base + remaining or base + maxExtend
+	remaining := dot.RemainingDuration(sim)
+	extend := time.Duration(math.Min(
+		float64(dot.BaseDuration()+remaining),
+		float64(dot.BaseDuration()+dot.BaseDuration()/2),
+	))
+
+	// First do usual dot carry over
+	dot.Apply(sim)
+	for dot.RemainingDuration(sim)+dot.TickPeriod() < extend {
+		dot.AddTick()
+	}
+}

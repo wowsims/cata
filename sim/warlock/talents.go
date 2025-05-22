@@ -204,7 +204,7 @@ func (warlock *Warlock) registerGrimoireOfSacrifice() {
 				return
 			}
 
-			spell.Dot(result.Target).Apply(sim)
+			warlock.ApplyDotWithPandemic(spell.Dot(result.Target), sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
