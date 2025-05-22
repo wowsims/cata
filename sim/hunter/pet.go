@@ -45,7 +45,7 @@ func (hunter *Hunter) NewStampedePet() *HunterPet {
 
 		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
 	}
-
+	hunter.AddPet(stampedePet)
 	return stampedePet
 }
 func (hunter *Hunter) NewDireBeastPet() *HunterPet {
@@ -65,6 +65,7 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
 	}
 
+	hunter.AddPet(stampedePet)
 	return stampedePet
 }
 func (hunter *Hunter) NewHunterPet() *HunterPet {
@@ -108,12 +109,10 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.AddStatDependency(stats.Strength, stats.RangedAttackPower, 2)
 	hp.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/324.72)
 
-	hp.ApplySpecialization()
 	hunter.AddPet(hp)
 	return hp
 }
 func (hp *HunterPet) ApplySpecialization() {
-	hp.registerRabidCD()
 	hp.ApplyCombatExperience() // All pets have this
 	hp.ApplySpikedCollar()
 
@@ -140,6 +139,8 @@ func (hp *HunterPet) Initialize() {
 		hp.exoticAbility = hp.NewPetAbility(cfg.ExoticAbility, false)
 	}
 	hp.KillCommand = hp.RegisterKillCommandSpell()
+
+	hp.registerRabidCD()
 }
 
 func (hp *HunterPet) Reset(_ *core.Simulation) {

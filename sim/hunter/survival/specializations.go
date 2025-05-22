@@ -1,12 +1,19 @@
 package survival
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/hunter"
 )
 
+func (survHunter *SurvivalHunter) ApplyTalents() {
+	survHunter.applyLNL()
+	survHunter.ApplyMods()
+	survHunter.Hunter.ApplyTalents()
+	fmt.Println("Sup")
+}
 func (survHunter *SurvivalHunter) ApplyMods() {
 	survHunter.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,

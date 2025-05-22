@@ -778,7 +778,7 @@ export class ActionId {
 		} else if (this.otherId) {
 			return 'other-' + this.otherId;
 		} else {
-			throw new Error('Empty action id!');
+			return 'unknown';
 		}
 	}
 

@@ -121,14 +121,14 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		//return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 25, School: core.SpellSchoolPhysical, DebuffAura: core.GoreAura})
 	case Ravage:
 		//return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 25, School: core.SpellSchoolPhysical, DebuffAura: core.RavageAura})
-	case StampedeDebuff:
-		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.StampedeAura})
-	case AcidSpitDebuff:
-		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 55749, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.AcidSpitAura})
+	// case StampedeDebuff:
+	// 	return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.StampedeAura})
+	// case AcidSpitDebuff:
+	// 	return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 55749, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.AcidSpitAura})
 	case DemoralizingRoar:
-		return hp.newDemoralizingRoar()
+		//return hp.newDemoralizingRoar()
 	case DemoralizingScreech:
-		return hp.newDemoralizingScreech()
+		//return hp.newDemoralizingScreech()
 	case FireBreathDebuff:
 		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 24844, CD: time.Second * 30, School: core.SpellSchoolFire, DebuffAura: core.FireBreathDebuff})
 	case LightningBreath:
@@ -467,44 +467,6 @@ func (hp *HunterPet) newFrostStormBreath() *core.Spell {
 	return hp.frostStormBreath
 }
 
-func (hp *HunterPet) newDemoralizingScreech() *core.Spell {
-	debuffs := hp.NewEnemyAuraArray(core.DemoralizingScreechAura)
-
-	return hp.newSpecialAbility(PetSpecialAbilityConfig{
-		Type: DemoralizingScreech,
-
-		GCD:     PetGCD,
-		CD:      time.Second * 10,
-		SpellID: 55487,
-		School:  core.SpellSchoolPhysical,
-		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					debuffs.Get(aoeTarget).Activate(sim)
-				}
-			}
-		},
-	})
-}
-func (hp *HunterPet) newDemoralizingRoar() *core.Spell {
-	debuffs := hp.NewEnemyAuraArray(core.DemoralizingScreechAura)
-
-	return hp.newSpecialAbility(PetSpecialAbilityConfig{
-		Type: DemoralizingScreech,
-
-		GCD:     PetGCD,
-		CD:      time.Second * 10,
-		SpellID: 55487,
-		School:  core.SpellSchoolPhysical,
-		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					debuffs.Get(aoeTarget).Activate(sim)
-				}
-			}
-		},
-	})
-}
 func (hp *HunterPet) newRoarOfCourage() *core.Spell { panic("newRoarOfCourage not implemented") }
 func (hp *HunterPet) newSpiritBeastBlessing() *core.Spell {
 	panic("newSpiritBeastBlessing not implemented")
@@ -514,7 +476,7 @@ func (hp *HunterPet) newSerpentsSwiftness() *core.Spell {
 	panic("newSerpentsSwiftness not implemented")
 }
 func (hp *HunterPet) newBellowingRoar() *core.Spell  { panic("newBellowingRoar not implemented") }
-func (hp *HunterPet) newFuriousHowl() *core.Spell    { panic("newFuriousHowl not implemented") }
+func (hp *HunterPet) newFuriousHowl() *core.Spell    { return hp.focusDump }
 func (hp *HunterPet) newTerrifyingRoar() *core.Spell { panic("newTerrifyingRoar not implemented") }
 func (hp *HunterPet) newFearlessRoar() *core.Spell   { panic("newFearlessRoar not implemented") }
 func (hp *HunterPet) newStillWater() *core.Spell     { panic("newStillWater not implemented") }

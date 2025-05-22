@@ -27,8 +27,6 @@ func RegisterSurvivalHunter() {
 func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
-	hunter.applyLNL()
-	hunter.ApplyMods()
 	hunter.registerExplosiveShotSpell()
 	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
 	// Apply SV Hunter mastery

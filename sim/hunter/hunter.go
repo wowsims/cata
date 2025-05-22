@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -127,7 +128,14 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	hunter.AddStatDependencies()
+
 	hunter.Pet = hunter.NewHunterPet()
+	hunter.StampedePet = make([]*HunterPet, 4)
+	for index := range 3 {
+		hunter.StampedePet[index] = hunter.NewStampedePet()
+	}
+
+	hunter.DireBeastPet = hunter.NewDireBeastPet()
 	return hunter
 }
 
@@ -135,19 +143,14 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.DefaultCritMultiplier()
 
 	hunter.FireTrapTimer = hunter.NewTimer()
-
-	// hunter.ApplyGlyphs()
-	hunter.RegisterSpells()
-	hunter.ApplyHotfixes()
-
 	// hunter.addBloodthirstyGloves()
 	// Add Stampede pets
-	hunter.StampedePet = make([]*HunterPet, 4)
-	for index := range 3 {
-		hunter.StampedePet[index] = hunter.NewStampedePet()
-	}
+
 	// Add Dire Beast pet
-	hunter.DireBeastPet = hunter.NewDireBeastPet()
+	// hunter.ApplyGlyphs()
+
+	hunter.RegisterSpells()
+
 }
 
 func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
@@ -155,9 +158,13 @@ func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
 }
 
 func (hunter *Hunter) ApplyTalents() {
-
 	hunter.applyThrillOfTheHunt()
 	hunter.applyBlinkStrike()
+	fmt.Println("Sup2")
+	hunter.ApplyHotfixes()
+
+	hunter.Pet.ApplyTalents()
+	hunter.Pet.ApplySpecialization()
 }
 
 func (hunter *Hunter) RegisterSpells() {
@@ -180,6 +187,7 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerFervorSpell()
 	hunter.RegisterDireBeastSpell()
 	hunter.RegisterStampedeSpell()
+	hunter.registerPowerShotSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {
