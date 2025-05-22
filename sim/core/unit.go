@@ -364,6 +364,21 @@ func (unit *Unit) DisableDynamicStatDep(sim *Simulation, dep *stats.StatDependen
 	}
 }
 
+func (unit *Unit) UpdateDynamicStatDep(sim *Simulation, dep *stats.StatDependency, newAmount float64) {
+	dep.UpdateValue(newAmount)
+
+	if unit.Env.IsFinalized() {
+		oldStats := unit.stats
+		unit.stats = unit.ApplyStatDependencies(unit.statsWithoutDeps)
+		statsChange := unit.stats.Subtract(oldStats)
+		unit.processDynamicBonus(sim, statsChange)
+
+		if sim.Log != nil {
+			unit.Log(sim, "Dynamic dep updated (%s): %s", dep.String(), statsChange.FlatString())
+		}
+	}
+}
+
 func (unit *Unit) EnableBuildPhaseStatDep(sim *Simulation, dep *stats.StatDependency) {
 	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
 		unit.StatDependencyManager.EnableDynamicStatDep(dep)

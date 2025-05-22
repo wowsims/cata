@@ -55,21 +55,71 @@ type GuardianDruid struct {
 
 	Options   *proto.GuardianDruid_Options
 	vengeance *core.VengeanceTracker
+
+	// Aura references
+	EnrageAura *core.Aura
+
+	// Spell references
+	Enrage *druid.DruidSpell
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {
 	return bear.Druid
 }
 
-func (bear *GuardianDruid) Initialize() {
-	bear.Druid.Initialize()
-	bear.RegisterFeralTankSpells()
+func (bear *GuardianDruid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.LeaderOfThePack = true
 }
 
 func (bear *GuardianDruid) ApplyTalents() {
 	// bear.Druid.ApplyTalents()
-	bear.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
+	bear.applyMastery()
+	bear.applyThickHide()
 	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
+}
+
+func (bear *GuardianDruid) applyMastery() {
+	const baseMasteryMod = 1.16
+	const masteryModPerPoint = 0.02
+
+	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod + masteryModPerPoint * bear.GetMasteryPoints())
+
+	bear.AddOnMasteryStatChanged(func(sim *core.Simulation, _ float64, newMasteryRating float64) {
+		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod + masteryModPerPoint * core.MasteryRatingToMasteryPoints(newMasteryRating))
+	})
+
+	bear.BearFormAura.AttachStatDependency(armorMultiplierDep)
+}
+
+func (bear *GuardianDruid) applyThickHide() {
+	// Back out the additional multiplier needed to reach 4.3x total (+330%)
+	const thickHideBearMulti = 4.3 / druid.BaseBearArmorMulti
+	bear.BearFormAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+		bear.ApplyDynamicEquipScaling(sim, stats.Armor, thickHideBearMulti)
+	})
+	bear.BearFormAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+		bear.RemoveDynamicEquipScaling(sim, stats.Armor, thickHideBearMulti)
+	})
+	bear.ApplyEquipScaling(stats.Armor, thickHideBearMulti)
+
+	// Magical DR
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.75
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.75
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.75
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.75
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.75
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.75
+
+	// Physical DR
+	bear.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 0.88
+
+	// Crit immunity
+	bear.PseudoStats.ReducedCritTakenChance += 0.06
+}
+
+func (bear *GuardianDruid) Initialize() {
+	bear.Druid.Initialize()
+	bear.RegisterFeralTankSpells()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {
