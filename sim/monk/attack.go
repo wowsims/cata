@@ -34,14 +34,12 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 	ap := spell.MeleeAttackPower()
 
 	staffOrPolearm := false
-	hasMainHand := false
 	mh := monk.MainHand()
 	mhw := monk.WeaponFromMainHand(monk.DefaultCritMultiplier())
 	if mh != nil && mh.WeaponType != proto.WeaponType_WeaponTypeUnknown {
 		staffOrPolearm = mh.WeaponType == proto.WeaponType_WeaponTypeStaff || mh.WeaponType == proto.WeaponType_WeaponTypePolearm
 		dmg := mhw.BaseDamage(sim) / mhw.SwingSpeed
 		totalDamage += dmg
-		hasMainHand = true
 
 		if sim.Log != nil {
 			monk.Log(sim, "[DEBUG] main hand weapon damage portion for %s: td=%0.3f, wd=%0.3f, ws=%0.3f",
@@ -49,13 +47,11 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 		}
 	}
 
-	hasOffHand := false
 	oh := monk.OffHand()
 	if oh != nil && oh.WeaponType != proto.WeaponType_WeaponTypeUnknown {
 		ohw := monk.WeaponFromOffHand(monk.DefaultCritMultiplier())
 		dmg := ohw.BaseDamage(sim) / ohw.SwingSpeed * 0.5
 		totalDamage += dmg
-		hasOffHand = true
 
 		if sim.Log != nil {
 			monk.Log(sim, "[DEBUG] off hand weapon damage portion for %s: td=%0.3f, wd=%0.3f, ws=%0.3f",
@@ -70,12 +66,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 
 	apMod := 1.0 / core.DefaultAttackPowerPerDPS
 
-	if !hasMainHand && !hasOffHand {
-		// Unarmed
-		totalDamage += mhw.CalculateWeaponDamage(sim, ap)
-	} else {
-		totalDamage += apMod * ap
-	}
+	totalDamage += apMod * ap
 
 	if sim.Log != nil {
 		monk.Log(sim, "[DEBUG] total weapon damage for %s: td=%0.3f, apmod=%0.3f, ap=%0.3f",
