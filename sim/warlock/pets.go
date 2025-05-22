@@ -85,6 +85,7 @@ func (warlock *Warlock) makePet(
 			IsGuardian:                      false,
 			HasDynamicMeleeSpeedInheritance: true,
 			HasDynamicCastSpeedInheritance:  true,
+			HasResourceRegenInheritance:     true,
 		}),
 	}
 
@@ -196,8 +197,6 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 }
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
-func (pet *WarlockPet) Initialize() {
-}
 
 func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 	waitUntil := time.Duration(1<<63 - 1)

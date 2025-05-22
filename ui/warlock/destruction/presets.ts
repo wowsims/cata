@@ -74,6 +74,8 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfElements: true,
+	weakenedArmor: true,
+	physicalVulnerability: true,
 });
 
 export const OtherDefaults = {
