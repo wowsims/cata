@@ -381,11 +381,12 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	druid.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[char.Class])
-	// Druids get 0.0041 dodge per agi (before dr), roughly 1% per 244
-	druid.AddStatDependency(stats.Agility, stats.DodgeRating, 0.00410000*core.DodgeRatingPerDodgePercent)
+
+	// Druids get roughly 1% Dodge per 951.16 Agi at level 90
+	druid.AddStatDependency(stats.Agility, stats.DodgeRating, 0.00105135 * core.DodgeRatingPerDodgePercent)
 
 	// Base dodge is unaffected by Diminishing Returns
-	druid.PseudoStats.BaseDodgeChance += 0.04951
+	druid.PseudoStats.BaseDodgeChance += 0.03
 
 	druid.RegisterLeatherSpecialization()
 

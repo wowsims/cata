@@ -67,15 +67,30 @@ func (bear *GuardianDruid) GetDruid() *druid.Druid {
 	return bear.Druid
 }
 
-func (bear *GuardianDruid) Initialize() {
-	bear.Druid.Initialize()
-	bear.RegisterFeralTankSpells()
+func (bear *GuardianDruid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.LeaderOfThePack = true
 }
 
 func (bear *GuardianDruid) ApplyTalents() {
 	// bear.Druid.ApplyTalents()
-	bear.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
+	bear.applyMastery()
 	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
+}
+
+func (bear *GuardianDruid) applyMastery() {
+	const masteryModPerPoint = 0.02
+	bear.AddStat(stats.Armor, bear.GetStat(stats.Armor) * (1.0 + masteryModPerPoint * bear.GetMasteryPoints()))
+	bear.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+		currentArmor := bear.GetStat(stats.Armor)
+		baseArmor := currentArmor / (1.0 + masteryModPerPoint * core.MasteryRatingToMasteryPoints(oldMasteryRating))
+		newArmor := baseArmor * (1.0 + masteryModPerPoint * core.MasteryRatingToMasteryPoints(newMasteryRating))
+		bear.AddStatDynamic(sim, stats.Armor, newArmor - currentArmor)
+	})
+}
+
+func (bear *GuardianDruid) Initialize() {
+	bear.Druid.Initialize()
+	bear.RegisterFeralTankSpells()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {

@@ -230,7 +230,7 @@ func (druid *Druid) RegisterBearFormAura() {
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
-	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.2)
+	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.4)
 	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
 
 	// Need redundant enabling/disabling of the dep both here and below
