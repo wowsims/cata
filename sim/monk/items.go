@@ -19,14 +19,9 @@ var ItemSetBattlegearOfTheRedCrane = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_Custom,
+				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: MonkSpellEnergizingBrew,
-				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					spell.RelatedSelfBuff.Duration += 5 * time.Second
-				},
-				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					spell.RelatedSelfBuff.Duration -= 5 * time.Second
-				},
+				TimeValue: 5 * time.Second,
 			}).ExposeToAPL(123150)
 		},
 	},
