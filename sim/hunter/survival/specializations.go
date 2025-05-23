@@ -1,7 +1,6 @@
 package survival
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -12,7 +11,6 @@ func (survHunter *SurvivalHunter) ApplyTalents() {
 	survHunter.applyLNL()
 	survHunter.ApplyMods()
 	survHunter.Hunter.ApplyTalents()
-	fmt.Println("Sup")
 }
 func (survHunter *SurvivalHunter) ApplyMods() {
 	survHunter.AddStaticMod(core.SpellModConfig{

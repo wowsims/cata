@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -162,10 +161,9 @@ func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
 func (hunter *Hunter) ApplyTalents() {
 	hunter.applyThrillOfTheHunt()
 	hunter.applyBlinkStrike()
-	fmt.Println("Sup2")
 	hunter.ApplyHotfixes()
 
-	hunter.Pet.ApplyTalents()
+	//hunter.Pet.ApplyTalents()
 	hunter.Pet.ApplySpecialization()
 }
 
