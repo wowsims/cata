@@ -75,6 +75,10 @@ func (bm *BrewmasterMonk) registerElusiveBrew() {
 		MaxStacks: 15,
 	}))
 
+	bm.Monk.RegisterOnNewBrewStacks(func(sim *core.Simulation, stacksToAdd int32) {
+		stackingAura.SetStacks(sim, stackingAura.GetStacks()+stacksToAdd)
+	})
+
 	bm.ElusiveBrewAura = bm.RegisterAura(core.Aura{
 		Label:    "Elusive Brew" + bm.Label,
 		ActionID: buffActionID,

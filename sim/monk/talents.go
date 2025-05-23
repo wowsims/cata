@@ -712,11 +712,15 @@ func (monk *Monk) registerChiBrew() {
 		Charges:      2,
 		RechargeTime: time.Second * 45,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Add 5 Elusive Brew stacks for Brewmasters
 			// TODO: Add 2 Mana Tea stacks for Mistweavers
 
+			if monk.Spec == proto.Spec_SpecBrewmasterMonk {
+				monk.AddBrewStacks(sim, 5)
+			} else if monk.Spec == proto.Spec_SpecWindwalkerMonk {
+				monk.AddBrewStacks(sim, 2)
+			}
+
 			monk.AddChi(sim, spell, 2, chiMetrics)
-			monk.AddBrewStacks(sim, 2)
 		},
 	})
 }
