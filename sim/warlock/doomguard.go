@@ -98,6 +98,12 @@ func (pet *DoomguardPet) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 func (pet *DoomguardPet) registerDoomBolt() {
+	doomBoltExecuteMod := pet.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  WarlockSpellDoomguardDoomBolt,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.2,
+	})
+
 	pet.DoomBolt = pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 85692},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -127,5 +133,14 @@ func (pet *DoomguardPet) registerDoomBolt() {
 				spell.DealDamage(sim, result)
 			})
 		},
+	})
+
+	pet.RegisterResetEffect(func(sim *core.Simulation) {
+		doomBoltExecuteMod.Deactivate()
+		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+			if isExecute == 20 {
+				doomBoltExecuteMod.Activate()
+			}
+		})
 	})
 }
