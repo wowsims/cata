@@ -39,30 +39,32 @@ func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura)
 			rawDamage := result.PreOutcomeDamage / result.ResistanceMultiplier
 
 			// The Weakened Blows debuff does not reduce Vengeance gains.
-			// TODO: Is this true for all damage multipliers on the attacker, including damage amps like Focused Anger?
-			if spell.Unit.GetAura("Weakened Blows").IsActive() {
+			// TODO: The game similarly hardcodes a correction for Demoralizing Banner, add that in once we implement the debuff in the sim.
+			if (spell.SpellSchool == SpellSchoolPhysical) && spell.Unit.GetAura("Weakened Blows").IsActive() {
 				rawDamage /= 0.9
 			}
 
-			// Normalize out the tank's major DR CDs captured in the DamageTakenMultiplier.
-			// TODO: Are school-specific DRs also normalized out?
-			// TODO: Are there any relevant tank debuffs that increase DamageTakenMultiplier but also increase Vengeance gains?
-			// TODO: Is this actually handled via hardcoded spell IDs for all normalizable DRs?
-			rawDamage /= result.Target.PseudoStats.DamageTakenMultiplier
+			// Note that result.PreOutcomeDamage does not include the impact of the tank's various DamageTakenMultiplier PseudoStats.
+			// By default this is the desired behavior, since it means that tank DRs are automatically divided out in the calculation.
+			// However, *detrimental* contributions to the relevant DamageTakenMultiplier PseudoStats *do* increase Vengeance gains in-game.
+			// This can be relevant on certain bosses, such as Ignite Armor stacks increasing Vengeance gains on Iron Juggernaut in SoO.
+			// TODO: Find a simple way to keep track of only detrimental contributions to DamageTakenMultiplier (and school-specific variants) with minimal overhead.
 
 			// Apply baseline scaling to the raw damage value.
-			newVengeance := VengeanceScaling * rawDamage
+			rawVengeance := VengeanceScaling * rawDamage
 
 			// Spells that are not mitigated by armor generate 2.5x more Vengeance.
 			if (spell.SpellSchool != SpellSchoolPhysical) || spell.Flags.Matches(SpellFlagIgnoreResists) {
-				newVengeance *= 2.5
+				rawVengeance *= 2.5
 			}
 
-			// TODO: 0.5x Vengeance multiplier for non-periodic AoE spells
+			// TODO: Is the 0.5x Vengeance multiplier for non-periodic AoE spells still a thing for the new version of Vengeance in Classic?
 
 			// TODO: Weapon-based specials may be normalizing out spell.DamageMultiplier as well?
 
 			// If the buff Aura is currently active, then perform decaying average with previous Vengeance.
+			newVengeance := rawVengeance
+
 			if buffAura.IsActive() {
 				newVengeance += float64(buffAura.GetStacks()) * buffAura.RemainingDuration(sim).Seconds() / buffAura.Duration.Seconds()
 			}
@@ -94,7 +96,7 @@ func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura)
 			newVengeance = min(newVengeance, result.Target.MaxHealth())
 
 			if sim.Log != nil {
-				result.Target.Log(sim, "Updated Vengeance for %s due to %s from %s. Raw damage value = %.1f, new Vengeance value = %.1f .", result.Target.Label, spell.ActionID, spell.Unit.Label, rawDamage, newVengeance)
+				result.Target.Log(sim, "Updated Vengeance for %s due to %s from %s. Raw damage value = %.1f, raw Vengeance contribution = %.1f, new Vengeance value = %.1f .", result.Target.Label, spell.ActionID, spell.Unit.Label, rawDamage, rawVengeance, newVengeance)
 			}
 
 			// Activate or refresh the buff Aura and set stacks.
