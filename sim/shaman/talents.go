@@ -125,7 +125,7 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 
 	var copySpells = map[*core.Spell]*core.Spell{}
 
-	shaman.GetOrRegisterAura(core.Aura{
+	core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
 		Label: "Echo of The Elements Dummy",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Outcome.Matches(core.OutcomeLanded) || spell.Flags.Matches(SpellFlagIsEcho) || !spell.Flags.Matches(SpellFlagShamanSpell) {
@@ -140,7 +140,7 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 			}
 			if copySpells[spell] == nil {
 				copySpells[spell] = spell.Unit.RegisterSpell(core.SpellConfig{
-					ActionID:                 core.ActionID{SpellID: spell.SpellID, Tag: 7},
+					ActionID:                 core.ActionID{SpellID: spell.SpellID, Tag: core.TernaryInt32(spell.Tag == CastTagLightningOverload, 8, 7)},
 					SpellSchool:              spell.SpellSchool,
 					ProcMask:                 core.ProcMaskSpellProc,
 					ApplyEffects:             spell.ApplyEffects,
@@ -160,7 +160,7 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 			copySpell.SpellMetrics[result.Target.UnitIndex].Casts--
 			copySpell.Cast(sim, result.Target)
 		},
-	})
+	}))
 }
 
 func (shaman *Shaman) ApplyUnleashedFury() {

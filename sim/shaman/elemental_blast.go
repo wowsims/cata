@@ -16,10 +16,10 @@ func (shaman *Shaman) registerElementalBlastSpell() {
 
 func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) core.SpellConfig {
 
-	masteryAura := shaman.NewTemporaryStatsAura("Elemental Blast Mastery", core.ActionID{SpellID: 118522, Tag: 1}, stats.Stats{stats.MasteryRating: 3500}, time.Second*8)
-	hasteAura := shaman.NewTemporaryStatsAura("Elemental Blast Haste", core.ActionID{SpellID: 118522, Tag: 2}, stats.Stats{stats.HasteRating: 3500}, time.Second*8)
-	critAura := shaman.NewTemporaryStatsAura("Elemental Blast Crit", core.ActionID{SpellID: 118522, Tag: 3}, stats.Stats{stats.CritRating: 3500}, time.Second*8)
-	agiAura := shaman.NewTemporaryStatsAura("Elemental Blast Agi", core.ActionID{SpellID: 118522, Tag: 4}, stats.Stats{stats.Agility: 3500}, time.Second*8)
+	masteryAura := shaman.NewTemporaryStatsAura("Elemental Blast Mastery", core.ActionID{SpellID: 118522, Tag: 9}, stats.Stats{stats.MasteryRating: 3500}, time.Second*8)
+	hasteAura := shaman.NewTemporaryStatsAura("Elemental Blast Haste", core.ActionID{SpellID: 118522, Tag: 10}, stats.Stats{stats.HasteRating: 3500}, time.Second*8)
+	critAura := shaman.NewTemporaryStatsAura("Elemental Blast Crit", core.ActionID{SpellID: 118522, Tag: 11}, stats.Stats{stats.CritRating: 3500}, time.Second*8)
+	agiAura := shaman.NewTemporaryStatsAura("Elemental Blast Agi", core.ActionID{SpellID: 118522, Tag: 12}, stats.Stats{stats.Agility: 3500}, time.Second*8)
 	eleBlastAuras := []*core.StatBuffAura{masteryAura, hasteAura, critAura, agiAura}
 
 	mask := core.ProcMaskSpellDamage
