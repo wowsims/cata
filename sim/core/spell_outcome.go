@@ -722,6 +722,8 @@ func (result *SpellResult) applyEnemyAttackTableBlock(sim *Simulation, spell *Sp
 		result.Outcome |= OutcomeBlock
 		if result.DidCrit() {
 			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
+		} else if result.DidGlance() {
+			spell.SpellMetrics[result.Target.UnitIndex].GlanceBlocks++
 		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
 		}
