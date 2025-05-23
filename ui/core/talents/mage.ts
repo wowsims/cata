@@ -129,7 +129,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		},
 		[MageMinorGlyph.GlyphOfCrittermorph]: {
 			name: "Glyph of Crittermorph",
-			description: "When cast on critters, your Polymorph spells now last 1440min and can be cast on multiple targets.",
+			description: "When cast on critters, your Polymorph spells now last 24hrs and can be cast on multiple targets.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_doublepolymorph2.jpg",
 		},
 		[MageMinorGlyph.GlyphOfThePorcupine]: {
