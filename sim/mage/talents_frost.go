@@ -69,7 +69,7 @@ func (mage *Mage) ApplyFrostTalents() {
 }
 
 func (mage *Mage) registerIcyVeinsCD() {
-	if !.mage.Spec.Frost {
+	if !mage.Spec.Frost {
 		return
 	}
 
