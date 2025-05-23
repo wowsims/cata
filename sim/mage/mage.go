@@ -333,6 +333,7 @@ const (
 	MageSpellFrostBomb
 	MageSpellFrostfireBolt
 	MageSpellFrostfireOrb
+	MageSpellFrozenOrb
 	MageSpellIceLance
 	MageSpellIcyVeins
 	MageSpellIgnite

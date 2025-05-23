@@ -14,6 +14,7 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		This effect affects Deep Freeze as well but does no damage so it's been ommitted. \
 		https://www.wowhead.com/mop-classic/spell=30455/ice-lance and https://www.wowhead.com/mop-classic/spell=112965/fingers-of-frost for more information.
 	*/
+
 	buff := frost.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost",
 		ActionID:  core.ActionID{SpellID: 112965},
@@ -27,33 +28,27 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.25,
 		ClassMask:  mage.MageSpellIceLance,
-	})
-
-	/*
-		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
-		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
-	*/
-	critMod := frost.AddDynamicMod(core.SpellModConfig{
+	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellIceLance,
 		FloatValue: frost.GetStat(stats.SpellCritPercent)*2 + 50,
 		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
-
-	buff.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-		critMod.Activate()
-	}
-
-	buff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		critMod.Deactivate()
-	})
+	/*
+		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
+		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
+	*/
 
 	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
 		Name:           "Fingers of Frost - Trigger",
-		ClassSpellMask: mage.MageSpellIceLance,
-		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellFrozenOrb | mage.MageSpellBlizzard,
+		Callback:       core.CallbackOnSpellHitDealt, //TODO: Does this count ticks of blizzard/frozen orb?
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			buff.Activate(sim)
-			buff.AddStack(sim)
+			// https://github.com/simulationcraft/simc/blob/e1190fed141feec2ec7a489e80caec5138c3a6ab/engine/class_modules/sc_mage.cpp#L4169
+			var fofProcChance = 0.15
+			if sim.Proc(fofProcChance, "FingersOfFrostProc") {
+				buff.Activate(sim)
+				buff.AddStack(sim)
+			}
 		},
 	})
 
