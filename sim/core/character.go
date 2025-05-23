@@ -101,6 +101,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			Metrics:     NewUnitMetrics(),
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
+			avoidanceParams:       AvoidanceDRByClass[player.Class],
 
 			ReactionTime:            time.Duration(max(player.ReactionTimeMs, 10)) * time.Millisecond,
 			ChannelClipDelay:        max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),

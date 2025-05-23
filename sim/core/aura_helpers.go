@@ -400,7 +400,6 @@ func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) *Aura {
 // Attaches a StatDependency to a parent Aura
 // Returns parent aura for chaining
 func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aura {
-
 	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
 		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
 	})
@@ -408,6 +407,10 @@ func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aur
 	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
 		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
 	})
+
+	if parentAura.IsActive() {
+		parentAura.Unit.StatDependencyManager.EnableDynamicStatDep(statDep)
+	}
 
 	return parentAura
 }

@@ -146,6 +146,7 @@ type Unit struct {
 	AttackTables                []*AttackTable
 	DynamicDamageTakenModifiers []DynamicDamageTakenModifier
 	Blockhandler                func(sim *Simulation, spell *Spell, result *SpellResult)
+	avoidanceParams             DiminishingReturnsConstants
 
 	GCD *Timer
 
@@ -360,6 +361,21 @@ func (unit *Unit) DisableDynamicStatDep(sim *Simulation, dep *stats.StatDependen
 
 		if sim.Log != nil {
 			unit.Log(sim, "Dynamic dep disabled (%s): %s", dep.String(), unit.stats.Subtract(oldStats).FlatString())
+		}
+	}
+}
+
+func (unit *Unit) UpdateDynamicStatDep(sim *Simulation, dep *stats.StatDependency, newAmount float64) {
+	dep.UpdateValue(newAmount)
+
+	if unit.Env.IsFinalized() {
+		oldStats := unit.stats
+		unit.stats = unit.ApplyStatDependencies(unit.statsWithoutDeps)
+		statsChange := unit.stats.Subtract(oldStats)
+		unit.processDynamicBonus(sim, statsChange)
+
+		if sim.Log != nil {
+			unit.Log(sim, "Dynamic dep updated (%s): %s", dep.String(), statsChange.FlatString())
 		}
 	}
 }
@@ -700,14 +716,13 @@ func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
 
 func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseMissChance +
-		unit.GetDiminishedMissChance() +
 		unit.PseudoStats.ReducedPhysicalHitTakenChance
 	return math.Max(chance, 0.0)
 }
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.BlockPercent)/100
+		unit.GetDiminishedBlockChance()
 	return math.Max(chance, 0.0)
 }
 
