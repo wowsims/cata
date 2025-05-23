@@ -8,8 +8,8 @@ import (
 )
 
 var frostfireBoltCoefficient = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=44614 Field "EffetBonusCoefficient"
-var frostfireBoltScaling     = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=44614 Field "Coefficient"
-var frostfireBoltVariance    = 0.24 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=44614 Field "Variance"
+var frostfireBoltScaling = 1.5     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=44614 Field "Coefficient"
+var frostfireBoltVariance = 0.24   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=44614 Field "Variance"
 
 func (mage *Mage) registerFrostfireBoltSpell() {
 
@@ -27,12 +27,6 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			BaseCostPercent: 4,
 		},
 
-		castSpeedMod := mage.AddDynamicMod(core.SpellModConfig{
-			ClassMask:  mage.MageSpellFrostfireBolt,
-			FloatValue: -500 * time.Millisecond,
-			Kind:       core.SpellMod_CastTime_Flat,
-		})
-
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -42,15 +36,11 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),
-		BonusCoefficient: frostfireBoltCoefficient, 
+		BonusCoefficient: frostfireBoltCoefficient,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := frostMage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
-
-			if hasGlyph {
-				castSpeedMod.Activate()
-			}
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
