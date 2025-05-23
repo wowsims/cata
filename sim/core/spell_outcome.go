@@ -590,6 +590,8 @@ func (result *SpellResult) applyAttackTableBlock(sim *Simulation, spell *Spell, 
 		result.Outcome |= OutcomeBlock
 		if result.DidCrit() {
 			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
+		} else if result.DidGlance() {
+			spell.SpellMetrics[result.Target.UnitIndex].GlanceBlocks++
 		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
 		}

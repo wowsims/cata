@@ -215,6 +215,9 @@ message TargetedActionMetrics {
 	// # of times this action was a Glance.
 	int32 glances = 8;
 
+	// # of times this action was a Glancing Block.
+	int32 glance_blocks = 25;
+
 	// Total damage done to this target by this action.
 	double damage = 9;
 

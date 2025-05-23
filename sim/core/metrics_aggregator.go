@@ -148,18 +148,19 @@ func (actionMetrics *ActionMetrics) ToProto(actionID ActionID) *proto.ActionMetr
 
 // Metric totals for a spell against a specific target, for the current iteration.
 type SpellMetrics struct {
-	Casts      int32
-	Misses     int32
-	Hits       int32
-	Crits      int32
-	Ticks      int32
-	CritTicks  int32
-	Crushes    int32
-	Dodges     int32
-	Glances    int32
-	Parries    int32
-	Blocks     int32
-	CritBlocks int32
+	Casts        int32
+	Misses       int32
+	Hits         int32
+	Crits        int32
+	Ticks        int32
+	CritTicks    int32
+	Crushes      int32
+	Dodges       int32
+	Glances      int32
+	Parries      int32
+	Blocks       int32
+	CritBlocks   int32
+	GlanceBlocks int32
 
 	TotalDamage          float64 // Damage done by all casts of this spell.
 	TotalCritDamage      float64 // Damage done by all critical casts of this spell.
@@ -178,17 +179,18 @@ type SpellMetrics struct {
 type TargetedActionMetrics struct {
 	UnitIndex int32
 
-	Casts      int32
-	Hits       int32
-	Crits      int32
-	Ticks      int32
-	CritTicks  int32
-	Misses     int32
-	Dodges     int32
-	Parries    int32
-	Blocks     int32
-	CritBlocks int32
-	Glances    int32
+	Casts        int32
+	Hits         int32
+	Crits        int32
+	Ticks        int32
+	CritTicks    int32
+	Misses       int32
+	Dodges       int32
+	Parries      int32
+	Blocks       int32
+	CritBlocks   int32
+	Glances      int32
+	GlanceBlocks int32
 
 	Damage          float64
 	CritDamage      float64
@@ -219,6 +221,7 @@ func (tam *TargetedActionMetrics) ToProto() *proto.TargetedActionMetrics {
 		Blocks:          tam.Blocks,
 		CritBlocks:      tam.CritBlocks,
 		Glances:         tam.Glances,
+		GlanceBlocks:    tam.GlanceBlocks,
 		Damage:          tam.Damage,
 		CritDamage:      tam.CritDamage,
 		TickDamage:      tam.TickDamage,
@@ -378,6 +381,7 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Blocks += spellTargetMetrics.Blocks
 		tam.CritBlocks += spellTargetMetrics.CritBlocks
 		tam.Glances += spellTargetMetrics.Glances
+		tam.GlanceBlocks += spellTargetMetrics.GlanceBlocks
 		tam.Damage += spellTargetMetrics.TotalDamage
 		tam.CritDamage += spellTargetMetrics.TotalCritDamage
 		tam.TickDamage += spellTargetMetrics.TotalTickDamage
