@@ -140,13 +140,11 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  MageSpellIceLance,
 				FloatValue: 0.12,
-			})
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
+			}).AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  MageSpellArcaneMissilesTick,
 				FloatValue: 0.07,
-			})
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
+			}).AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  MageSpellPyroblast | MageSpellPyroblastDot,
 				FloatValue: 0.08,
@@ -161,9 +159,7 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 				FloatValue: -0.5,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellIcyVeins,
-			})
-
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
+			}).AttachSpellMod(core.SpellModConfig{
 				FloatValue: -0.2,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellCombustion,

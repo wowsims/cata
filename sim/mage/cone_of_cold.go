@@ -12,9 +12,6 @@ var coneOfColdVariance = 0.0     // Per https://wago.tools/db2/SpellEffect?build
 
 func (mage *Mage) registerConeOfColdSpell() {
 
-	//hasGlyph := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfFrostfireBolt)
-	//TODO: post glyph implementation updates
-
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 120},
 		SpellSchool:    core.SpellSchoolFrost,
@@ -43,7 +40,9 @@ func (mage *Mage) registerConeOfColdSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := mage.CalcAndRollDamageRange(sim, coneOfColdScaling, coneOfColdVariance)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
 		},
 	})
 }
