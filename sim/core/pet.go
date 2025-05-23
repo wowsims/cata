@@ -32,6 +32,7 @@ type PetConfig struct {
 	IsGuardian                      bool
 	HasDynamicMeleeSpeedInheritance bool
 	HasDynamicCastSpeedInheritance  bool
+	HasResourceRegenInheritance     bool
 }
 
 // Pet is an extension of Character, for any entity created by a player that can
@@ -62,6 +63,8 @@ type Pet struct {
 	hasDynamicMeleeSpeedInheritance bool
 	// If true the pet will automatically inherit the owner's cast speed
 	hasDynamicCastSpeedInheritance bool
+	// If true the pet will automatically inherit the owner's regen speed multiplier
+	hasResourceRegenInheritance bool
 
 	isReset bool
 
@@ -102,6 +105,7 @@ func NewPet(config PetConfig) Pet {
 		statInheritance:                 config.StatInheritance,
 		hasDynamicMeleeSpeedInheritance: config.HasDynamicMeleeSpeedInheritance,
 		hasDynamicCastSpeedInheritance:  config.HasDynamicCastSpeedInheritance,
+		hasResourceRegenInheritance:     config.HasResourceRegenInheritance,
 		enabledOnStart:                  config.EnabledOnStart,
 		isGuardian:                      config.IsGuardian,
 	}
@@ -112,8 +116,13 @@ func NewPet(config PetConfig) Pet {
 	pet.AddStats(config.BaseStats)
 	pet.addUniversalStatDependencies()
 	pet.PseudoStats.InFrontOfTarget = config.Owner.PseudoStats.InFrontOfTarget
-
 	return pet
+}
+
+func (pet *Pet) Initialize() {
+	if pet.hasResourceRegenInheritance {
+		pet.enableResourceRegenInheritance()
+	}
 }
 
 // Updates the stats for this pet in response to a stat change on the owner.
@@ -300,6 +309,12 @@ func (pet *Pet) enableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
 		inheritance(pet.Owner.PseudoStats.CastSpeedMultiplier)
 	}
 	pet.dynamicCastSpeedInheritance = inheritance
+}
+
+func (pet *Pet) enableResourceRegenInheritance() {
+	if !slices.Contains(pet.Owner.RegenInheritancePets, pet) {
+		pet.Owner.RegenInheritancePets = append(pet.Owner.RegenInheritancePets, pet)
+	}
 }
 
 // Some pets, i.E. Shadowfiend only inherit their owners stat after a brief period of time

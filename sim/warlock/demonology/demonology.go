@@ -30,11 +30,16 @@ func NewDemonologyWarlock(character *core.Character, options *proto.Player) *Dem
 		Warlock: warlock.NewWarlock(character, options, demoOptions.ClassOptions),
 	}
 
+	demonology.Felguard = demonology.registerFelguard()
 	return demonology
 }
 
 type DemonologyWarlock struct {
 	*warlock.Warlock
+
+	DemonicFury   core.SecondaryResourceBar
+	Metamorphosis *core.Spell
+	Felguard      *warlock.WarlockPet
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
@@ -43,6 +48,16 @@ func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
 
 func (demonology *DemonologyWarlock) Initialize() {
 	demonology.Warlock.Initialize()
+
+	demonology.DemonicFury = demonology.RegisterNewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+		Type:    proto.SecondaryResourceType_SecondaryResourceTypeDemonicFury,
+		Max:     1000,
+		Default: 200,
+	})
+
+	demonology.registerMetamorphosis()
+	demonology.registerMasterDemonologist()
+	demonology.registerShadowBolt()
 
 	// demonology.registerHandOfGuldan()
 	// demonology.registerMetamorphosis()

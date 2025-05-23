@@ -47,11 +47,21 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneIncinerate() {
 			for _, enemy := range sim.Encounter.TargetUnits {
 				baseDamage := destruction.CalcAndRollDamageRange(sim, bafIncinerateScale, incinerateVariance)
 				result := spell.CalcDamage(sim, enemy, baseDamage, spell.OutcomeMagicHitAndCrit)
-				if result.DidCrit() {
-					destruction.BurningEmbers.Gain(2, spell.ActionID, sim)
-				} else {
-					destruction.BurningEmbers.Gain(1, spell.ActionID, sim)
+				var emberGain int32 = 1
+				if destruction.T15_4pc.IsActive() && sim.Proc(0.08, "T15 4p") {
+					emberGain += 1
 				}
+
+				// ember lottery
+				if sim.Proc(0.15, "Ember Lottery") {
+					emberGain *= 2
+				}
+
+				if result.DidCrit() {
+					emberGain += 1
+				}
+
+				destruction.BurningEmbers.Gain(emberGain, spell.ActionID, sim)
 
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)

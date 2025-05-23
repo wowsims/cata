@@ -103,7 +103,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneImmolate() {
 				return
 			}
 
-			spell.Dot(target).Apply(sim)
+			destruction.ApplyDotWithPandemic(spell.Dot(target), sim)
 		},
 	})
 }

@@ -114,13 +114,13 @@ func (warlock *Warlock) registerGrimoireOfSupremacy() {
 
 	// Succubus get's larger makeover
 	// Now dualwield with 1.5x less base damage
-	weaponConfig := scaledAutoAttackConfig(3)
+	weaponConfig := ScaledAutoAttackConfig(3)
 	weaponConfig.MainHand.BaseDamageMax /= 1.5
 	weaponConfig.MainHand.BaseDamageMin /= 1.5
 	weaponConfig.OffHand = weaponConfig.MainHand
 
 	warlock.Succubus.EnableAutoAttacks(warlock.Succubus, *weaponConfig)
-	warlock.Succubus.ChangeStatInheritance(warlock.simplePetStatInheritanceWithScale(1 + 1.0/9.0))
+	warlock.Succubus.ChangeStatInheritance(warlock.SimplePetStatInheritanceWithScale(1 + 1.0/9.0))
 	lashOfPain := warlock.Succubus.GetSpell(petActionLashOfPain)
 	lashOfPain.ActionID = core.ActionID{SpellID: 115748}
 	warlock.Succubus.PseudoStats.DamageDealtMultiplier *= 1.2
@@ -204,7 +204,7 @@ func (warlock *Warlock) registerGrimoireOfSacrifice() {
 				return
 			}
 
-			spell.Dot(result.Target).Apply(sim)
+			warlock.ApplyDotWithPandemic(spell.Dot(result.Target), sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,

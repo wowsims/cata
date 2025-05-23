@@ -33,9 +33,13 @@ var petBaseStats = map[proto.WarlockOptions_Summon]*stats.Stats{
 		stats.Health: 84606.8,
 		stats.Armor:  19680,
 	},
+	proto.WarlockOptions_Felguard: {
+		stats.Health: 84606.8,
+		stats.Armor:  12568,
+	},
 }
 
-func (warlock *Warlock) simplePetStatInheritanceWithScale(apScale float64) core.PetStatInheritance {
+func (warlock *Warlock) SimplePetStatInheritanceWithScale(apScale float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 1.0 / 3.0,
@@ -52,7 +56,7 @@ func (warlock *Warlock) simplePetStatInheritanceWithScale(apScale float64) core.
 	}
 }
 
-func scaledAutoAttackConfig(swingSpeed float64) *core.AutoAttackOptions {
+func ScaledAutoAttackConfig(swingSpeed float64) *core.AutoAttackOptions {
 	return &core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  math.Floor(core.ClassBaseScaling[proto.Class_ClassWarlock]),
@@ -81,6 +85,7 @@ func (warlock *Warlock) makePet(
 			IsGuardian:                      false,
 			HasDynamicMeleeSpeedInheritance: true,
 			HasDynamicCastSpeedInheritance:  true,
+			HasResourceRegenInheritance:     true,
 		}),
 	}
 
@@ -125,7 +130,7 @@ func (warlock *Warlock) registerImp() *WarlockPet {
 }
 
 func (warlock *Warlock) registerImpWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Imp, 0, 0, name, enabledOnStart)
+	pet := warlock.RegisterPet(proto.WarlockOptions_Imp, 0, 0, name, enabledOnStart)
 	pet.registerFireboltSpell()
 	return pet
 }
@@ -137,7 +142,7 @@ func (warlock *Warlock) registerFelHunter() *WarlockPet {
 }
 
 func (warlock *Warlock) registerFelHunterWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Felhunter, 2, 3.5, name, enabledOnStart)
+	pet := warlock.RegisterPet(proto.WarlockOptions_Felhunter, 2, 3.5, name, enabledOnStart)
 	pet.registerShadowBiteSpell()
 	return pet
 }
@@ -149,7 +154,7 @@ func (warlock *Warlock) registerVoidWalker() *WarlockPet {
 }
 
 func (warlock *Warlock) registerVoidWalkerWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Voidwalker, 2, 3.5, name, enabledOnStart)
+	pet := warlock.RegisterPet(proto.WarlockOptions_Voidwalker, 2, 3.5, name, enabledOnStart)
 	pet.registerTormentSpell()
 	return pet
 }
@@ -161,12 +166,12 @@ func (warlock *Warlock) registerSuccubus() *WarlockPet {
 }
 
 func (warlock *Warlock) registerSuccubusWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.registerPet(proto.WarlockOptions_Succubus, 3, 1.667, name, enabledOnStart)
+	pet := warlock.RegisterPet(proto.WarlockOptions_Succubus, 3, 1.667, name, enabledOnStart)
 	pet.registerLashOfPainSpell()
 	return pet
 }
 
-func (warlock *Warlock) registerPet(
+func (warlock *Warlock) RegisterPet(
 	t proto.WarlockOptions_Summon,
 	swingSpeed float64,
 	apScale float64,
@@ -180,10 +185,10 @@ func (warlock *Warlock) registerPet(
 
 	var attackOptions *core.AutoAttackOptions = nil
 	if swingSpeed > 0 {
-		attackOptions = scaledAutoAttackConfig(swingSpeed)
+		attackOptions = ScaledAutoAttackConfig(swingSpeed)
 	}
 
-	inheritance := warlock.simplePetStatInheritanceWithScale(apScale)
+	inheritance := warlock.SimplePetStatInheritanceWithScale(apScale)
 	return warlock.makePet(name, enabledOnStart, *baseStats, attackOptions, inheritance)
 }
 
@@ -192,8 +197,6 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 }
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
-func (pet *WarlockPet) Initialize() {
-}
 
 func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 	waitUntil := time.Duration(1<<63 - 1)
@@ -287,44 +290,6 @@ func (pet *WarlockPet) registerFelstormSpell() {
 			dot := spell.AOEDot()
 			dot.Apply(sim)
 			dot.TickOnce(sim)
-		},
-	}))
-}
-
-func (pet *WarlockPet) registerLegionStrikeSpell() {
-	numberOfTargets := pet.Env.GetNumTargets()
-
-	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 30213},
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
-
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 6},
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			CD: core.Cooldown{
-				Timer:    pet.NewTimer(),
-				Duration: 6 * time.Second,
-			},
-		},
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		CritMultiplier:   2,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			baseDmg += pet.Owner.CalcScalingSpellDmg(0.1439999938) + 0.264*spell.MeleeAttackPower()
-			baseDmg /= float64(numberOfTargets)
-
-			for _, target := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			}
 		},
 	}))
 }
