@@ -16,7 +16,7 @@ func (war *ProtectionWarrior) RegisterConcussionBlow() {
 		ActionID:       core.ActionID{SpellID: 12809},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskConcussionBlow | warrior.SpellMaskSpecialAttack,
 		MaxRange:       core.MaxMeleeRange,
 

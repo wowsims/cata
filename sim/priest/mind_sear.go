@@ -6,6 +6,10 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+const SearCoeff = 0.3
+const SearVariance = 0.08
+const SearScale = 0.3
+
 func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 	return core.SpellConfig{
 		SpellSchool:              core.SpellSchoolShadow,
@@ -15,20 +19,29 @@ func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
 		CritMultiplier:           priest.DefaultCritMultiplier(),
-		BonusCoefficient:         0.2622,
+		BonusCoefficient:         SearCoeff,
 	}
 }
 
 func (priest *Priest) getMindSearTickSpell() *core.Spell {
 	config := priest.getMindSearBaseConfig()
+	config.Flags = core.SpellFlagNoOnDamageDealt
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		damage := priest.ClassSpellScaling * 0.23
+		damage := priest.CalcAndRollDamageRange(sim, SearScale, SearVariance)
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
 
 			// Calc spell damage but deal as periodic for metric purposes
 			result := spell.CalcDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCritNoHitCounter)
+
+			// TODO: Verify actual proc behaviour
+			// Damage is logged as a tick, has the Flag 'Treat as Periodic' and 'Not a Proc'
+			// However, i.E. Trinkets proccing from 'Periodic Damage Dealt' do not trigger
 			spell.DealPeriodicDamage(sim, result)
+
+			// For now Sear seems to trigger damage dealt and not periodic dealt for procs
+			spell.Unit.OnSpellHitDealt(sim, spell, result)
+			result.Target.OnSpellHitTaken(sim, spell, result)
 
 			// Adjust metrics just for Mind Sear as it is a edgecase and needs to be handled manually
 			if result.DidCrit() {
@@ -50,7 +63,7 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.Flags = core.SpellFlagChanneled | core.SpellFlagAPL
 	config.ManaCost = core.ManaCostOptions{
-		BaseCostPercent: 28,
+		BaseCostPercent: 3,
 	}
 
 	config.Cast = core.CastConfig{
@@ -77,7 +90,7 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 		}
 	}
 	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-		baseDamage := priest.ClassSpellScaling * 0.23
+		baseDamage := priest.CalcAndRollDamageRange(sim, SearScale, SearVariance)
 		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 	}
 

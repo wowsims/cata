@@ -16,7 +16,7 @@ func (war *ProtectionWarrior) RegisterShockwave() {
 		ActionID:       core.ActionID{SpellID: 46968},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskShockwave | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{

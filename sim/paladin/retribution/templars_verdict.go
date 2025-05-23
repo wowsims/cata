@@ -7,13 +7,12 @@ import (
 
 func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 	actionId := core.ActionID{SpellID: 85256}
-	hpMetrics := retPaladin.NewHolyPowerMetrics(actionId)
 
 	retPaladin.TemplarsVerdict = retPaladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: paladin.SpellMaskTemplarsVerdict,
 
 		Cast: core.CastConfig{
@@ -23,7 +22,7 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return retPaladin.GetHolyPowerValue() > 0
+			return retPaladin.HolyPower.CanSpend(1)
 		},
 
 		DamageMultiplier: 1,
@@ -31,7 +30,7 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			holyPower := retPaladin.GetHolyPowerValue()
+			holyPower := int32(retPaladin.HolyPower.Value())
 
 			multiplier := []float64{0, 0.3, 0.9, 2.35}[holyPower]
 
@@ -42,7 +41,7 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 			spell.DamageMultiplier /= multiplier
 
 			if result.Landed() {
-				retPaladin.SpendHolyPower(sim, hpMetrics)
+				retPaladin.HolyPower.SpendUpTo(3, actionId, sim)
 			}
 
 			spell.DealOutcome(sim, result)

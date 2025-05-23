@@ -34,26 +34,18 @@ func applyConsumeEffects(agent Agent) {
 
 	if consumables.BattleElixirId != 0 {
 		elixir := ConsumablesByID[consumables.BattleElixirId]
-		switch consumables.BattleElixirId {
-		case 9224:
-			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-				character.PseudoStats.MobTypeAttackPower += 105
-			}
-		default:
-			if elixir.Stats[stats.MasteryRating] > 0 {
-				elixir.Stats[stats.MasteryRating] += alchemyBattleElixirBonus
-			} else if elixir.Stats[stats.HasteRating] > 0 {
-				elixir.Stats[stats.HasteRating] += alchemyBattleElixirBonus
-			} else if elixir.Stats[stats.CritRating] > 0 {
-				elixir.Stats[stats.CritRating] += alchemyBattleElixirBonus
-			} else if elixir.Stats[stats.ExpertiseRating] > 0 {
-				elixir.Stats[stats.ExpertiseRating] += alchemyBattleElixirBonus
-			} else if elixir.Stats[stats.Spirit] > 0 {
-				elixir.Stats[stats.Spirit] += alchemyBattleElixirBonus
-			}
-			character.AddStats(elixir.Stats)
+		if elixir.Stats[stats.MasteryRating] > 0 {
+			elixir.Stats[stats.MasteryRating] += alchemyBattleElixirBonus
+		} else if elixir.Stats[stats.HasteRating] > 0 {
+			elixir.Stats[stats.HasteRating] += alchemyBattleElixirBonus
+		} else if elixir.Stats[stats.CritRating] > 0 {
+			elixir.Stats[stats.CritRating] += alchemyBattleElixirBonus
+		} else if elixir.Stats[stats.ExpertiseRating] > 0 {
+			elixir.Stats[stats.ExpertiseRating] += alchemyBattleElixirBonus
+		} else if elixir.Stats[stats.Spirit] > 0 {
+			elixir.Stats[stats.Spirit] += alchemyBattleElixirBonus
 		}
-
+		character.AddStats(elixir.Stats)
 	}
 
 	if consumables.GuardianElixirId != 0 {

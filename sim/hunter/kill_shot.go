@@ -12,7 +12,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellKillShot,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       45,
@@ -36,7 +36,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			normalizedWeaponDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			normalizedWeaponDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
 
 			result := spell.CalcDamage(sim, target, normalizedWeaponDamage, spell.OutcomeRangedHitAndCrit)
 

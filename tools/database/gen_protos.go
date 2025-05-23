@@ -10,6 +10,7 @@ import (
 	"unicode"
 
 	"github.com/wowsims/mop/tools/database/dbc"
+	"github.com/wowsims/mop/tools/tooltip"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -413,7 +414,8 @@ func properTitle(s string) string {
 	caser := cases.Title(language.English)
 	return caser.String(s)
 }
-func convertRawGlyphToGlyph(r RawGlyph) Glyph {
+func convertRawGlyphToGlyph(r RawGlyph, dbc *dbc.DBC) Glyph {
+	tooltip, _ := tooltip.ParseTooltip(r.Description, tooltip.DBCTooltipDataProvider{DBC: dbc}, int64(r.SpellId))
 	return Glyph{
 		EnumName: strings.ReplaceAll(
 			strings.ReplaceAll(
@@ -423,13 +425,13 @@ func convertRawGlyphToGlyph(r RawGlyph) Glyph {
 				"-", ""),
 			" ", ""),
 		Name:        r.Name,
-		Description: template.JSEscapeString(r.Description),
+		Description: template.JSEscapeString(tooltip.String()),
 		IconUrl:     "",
 		ID:          int(r.ItemId),
 	}
 }
 
-func GenerateProtos() {
+func GenerateProtos(dbcData *dbc.DBC) {
 	helper, err := NewDBHelper()
 	if err != nil {
 		fmt.Printf("Error creating DB helper: %v\n", err)
@@ -465,11 +467,11 @@ func GenerateProtos() {
 
 		// Process glyphs
 		for _, raw := range rawGlyphs {
-			if slices.Contains(ignoredGlyphs, raw.ItemId) || strings.Contains(raw.Name, "Deprecated") || strings.Contains(raw.Name, "zzz") {
+			if slices.Contains(ignoredGlyphs, raw.ItemId) || strings.Contains(raw.Name, "Deprecated") || strings.Contains(raw.Name, "zzz") || (len(raw.Name) > 2 && raw.Name[:2] == "zz") {
 				continue
 			}
 			if glyphBelongsToClass(raw, dbcClass) {
-				g := convertRawGlyphToGlyph(raw)
+				g := convertRawGlyphToGlyph(raw, dbcData)
 				g.IconUrl = "https://wow.zamimg.com/images/wow/icons/large/" + strings.ToLower(GetIconName(iconsMap, int(raw.FDID))) + ".jpg"
 				switch raw.GlyphType {
 				case 0: // major

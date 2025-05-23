@@ -21,7 +21,14 @@ type GhoulPet struct {
 
 func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
 	ghoulPet := &GhoulPet{
-		Pet:     core.NewPet("Army of the Dead", &dk.Character, dk.ghoulBaseStats(), dk.ghoulStatInheritance(), false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:            "Army of the Dead",
+			Owner:           &dk.Character,
+			BaseStats:       dk.ghoulBaseStats(),
+			StatInheritance: dk.ghoulStatInheritance(),
+			EnabledOnStart:  false,
+			IsGuardian:      true,
+		}),
 		dkOwner: dk,
 	}
 
@@ -39,7 +46,15 @@ func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
 
 func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 	ghoulPet := &GhoulPet{
-		Pet:     core.NewPet("Ghoul", &dk.Character, dk.ghoulBaseStats(), dk.ghoulStatInheritance(), permanent, !permanent),
+		Pet: core.NewPet(core.PetConfig{
+			Name:                            "Ghoul",
+			Owner:                           &dk.Character,
+			BaseStats:                       dk.ghoulBaseStats(),
+			StatInheritance:                 dk.ghoulStatInheritance(),
+			EnabledOnStart:                  permanent,
+			IsGuardian:                      !permanent,
+			HasDynamicMeleeSpeedInheritance: !permanent,
+		}),
 		dkOwner: dk,
 	}
 
@@ -115,12 +130,6 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 		ghoulPet.MultiplyMeleeSpeed(sim, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
 		return
 	}
-
-	ghoulPet.MultiplyMeleeSpeed(sim, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
-
-	ghoulPet.EnableDynamicMeleeSpeed(func(amount float64) {
-		ghoulPet.MultiplyMeleeSpeed(sim, amount)
-	})
 }
 
 func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
@@ -161,7 +170,7 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 		ActionID:       core.ActionID{SpellID: 47468},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: GhoulSpellClaw,
 
 		FocusCost: core.FocusCostOptions{

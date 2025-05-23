@@ -77,22 +77,23 @@ func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64
 }
 
 func (spell *Spell) MeleeAttackPower() float64 {
-	return spell.Unit.stats[stats.AttackPower] + spell.Unit.PseudoStats.MobTypeAttackPower
+	return spell.Unit.stats[stats.AttackPower]
 }
 
-func (spell *Spell) RangedAttackPower(target *Unit) float64 {
-	return spell.Unit.stats[stats.RangedAttackPower] +
-		spell.Unit.PseudoStats.MobTypeAttackPower +
-		target.PseudoStats.BonusRangedAttackPowerTaken
+func (spell *Spell) RangedAttackPower() float64 {
+	return spell.Unit.stats[stats.RangedAttackPower]
 }
 
-func (spell *Spell) DodgeParrySuppression() float64 {
-	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
-	// percent intervals. Note that in-game character sheet tooltips will still
-	// display the truncated values, but it has been tested to behave continuously in
-	// reality since the patch.
+func (spell *Spell) DodgeSuppression() float64 {
 	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
 	return expertiseRating / ExpertisePerQuarterPercentReduction / 400
+}
+
+// MoP reworked Parry. Rather than being innately ~2x Dodge chance, expertise now applies to Dodge first (down to 0), and then Parry.
+// The base chance for Dodge/Parry are both 7.5%, assuming a +3 target. The 7.5% Dodge chance must be fully suppressed before Parry will go down.
+// This makes the effect of each point of Expertise linear when attacking from the front
+func (spell *Spell) ParrySuppression(attackTable *AttackTable) float64 {
+	return max(0, spell.DodgeSuppression()-attackTable.BaseDodgeChance)
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
@@ -139,7 +140,6 @@ func (spell *Spell) SpellCritChance(target *Unit) float64 {
 	attackTable := spell.Unit.AttackTables[target.UnitIndex]
 	critPercent := spell.Unit.stats[stats.SpellCritPercent] +
 		spell.BonusCritPercent +
-		target.PseudoStats.BonusSpellCritPercentTaken +
 		attackTable.BonusSpellCritPercent
 	return critPercent/100 - attackTable.SpellCritSuppression
 }
@@ -493,10 +493,6 @@ func (result *SpellResult) applyTargetModifiers(sim *Simulation, spell *Spell, a
 		return
 	}
 
-	if spell.SpellSchool.Matches(SpellSchoolPhysical) && spell.Flags.Matches(SpellFlagIncludeTargetBonusDamage) {
-		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
-	}
-
 	result.Damage *= spell.TargetDamageMultiplier(sim, attackTable, isPeriodic)
 }
 func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackTable, isPeriodic bool) float64 {
@@ -510,10 +506,6 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 
 	if spell.Flags.Matches(SpellFlagDisease) {
 		multiplier *= attackTable.Defender.PseudoStats.DiseaseDamageTakenMultiplier
-	}
-
-	if spell.Flags.Matches(SpellFlagHauntSE) {
-		multiplier *= attackTable.HauntSEDamageTakenMultiplier
 	}
 
 	if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {

@@ -13,20 +13,16 @@ export class AssignmentsPicker extends Component {
 	readonly changeEmitter: TypedEvent<void> = new TypedEvent<void>();
 
 	private readonly innervatesPicker: InnervatesPicker;
-	private readonly powerInfusionsPicker: PowerInfusionsPicker;
 	private readonly tricksOfTheTradesPicker: TricksOfTheTradesPicker;
 	private readonly unholyFrenzyPicker: UnholyFrenzyPicker;
-	private readonly focusMagicsPicker: FocusMagicsPicker;
 
 	constructor(parentElem: HTMLElement, raidSimUI: RaidSimUI) {
 		super(parentElem, 'assignments-picker-root');
 		this.raidSimUI = raidSimUI;
 
 		this.innervatesPicker = new InnervatesPicker(this.rootElem, raidSimUI);
-		this.powerInfusionsPicker = new PowerInfusionsPicker(this.rootElem, raidSimUI);
 		this.tricksOfTheTradesPicker = new TricksOfTheTradesPicker(this.rootElem, raidSimUI);
 		this.unholyFrenzyPicker = new UnholyFrenzyPicker(this.rootElem, raidSimUI);
-		this.focusMagicsPicker = new FocusMagicsPicker(this.rootElem, raidSimUI);
 	}
 }
 
@@ -131,28 +127,6 @@ class InnervatesPicker extends AssignedBuffPicker {
 	}
 }
 
-class PowerInfusionsPicker extends AssignedBuffPicker {
-	getTitle(): string {
-		return 'Power Infusion';
-	}
-
-	getSourcePlayers(): Array<Player<any>> {
-		return this.raidSimUI
-			.getActivePlayers()
-			.filter(player => player.isSpec(Spec.SpecDisciplinePriest) && (player.getTalents() as PriestTalents).powerInfusion);
-	}
-
-	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecDisciplinePriest>).getSpecOptions().powerInfusionTarget || emptyUnitReference();
-	}
-
-	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-		const newOptions = (player as Player<Spec.SpecDisciplinePriest>).getSpecOptions();
-		newOptions.powerInfusionTarget = newValue;
-		player.setSpecOptions(eventID, newOptions);
-	}
-}
-
 class TricksOfTheTradesPicker extends AssignedBuffPicker {
 	getTitle(): string {
 		return 'Tricks of the Trade';
@@ -193,22 +167,3 @@ class UnholyFrenzyPicker extends AssignedBuffPicker {
 	}
 }
 
-class FocusMagicsPicker extends AssignedBuffPicker {
-	getTitle(): string {
-		return 'Focus Magic';
-	}
-
-	getSourcePlayers(): Array<Player<any>> {
-		return this.raidSimUI.getActivePlayers().filter(player => player.isSpec(Spec.SpecArcaneMage));
-	}
-
-	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecArcaneMage>).getSpecOptions().focusMagicTarget || emptyUnitReference();
-	}
-
-	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-		const newOptions = (player as Player<Spec.SpecArcaneMage>).getSpecOptions();
-		newOptions.focusMagicTarget = newValue;
-		player.setSpecOptions(eventID, newOptions);
-	}
-}

@@ -37,9 +37,16 @@ func (hunter *Hunter) NewStampedePet() *HunterPet {
 		return nil
 	}
 	petConfig := DefaultPetConfigs[hunter.Options.PetType]
-
+	conf := core.PetConfig{
+		Name:            petConfig.Name,
+		Owner:           &hunter.Character,
+		BaseStats:       hunterPetBaseStats,
+		StatInheritance: hunter.makeStatInheritance(),
+		EnabledOnStart:  true,
+		IsGuardian:      false,
+	}
 	stampedePet := &HunterPet{
-		Pet:         core.NewPet(petConfig.Name, &hunter.Character, hunterPetBaseStats, hunter.makeStatInheritance(), true, false),
+		Pet:         core.NewPet(conf),
 		config:      petConfig,
 		hunterOwner: hunter,
 
@@ -56,9 +63,16 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 		return nil
 	}
 	petConfig := DefaultPetConfigs[hunter.Options.PetType]
-
+	conf := core.PetConfig{
+		Name:            petConfig.Name,
+		Owner:           &hunter.Character,
+		BaseStats:       hunterPetBaseStats,
+		StatInheritance: hunter.makeStatInheritance(),
+		EnabledOnStart:  false,
+		IsGuardian:      false,
+	}
 	stampedePet := &HunterPet{
-		Pet:         core.NewPet(petConfig.Name, &hunter.Character, hunterPetBaseStats, hunter.makeStatInheritance(), true, false),
+		Pet:         core.NewPet(conf),
 		config:      petConfig,
 		hunterOwner: hunter,
 
@@ -76,9 +90,16 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		return nil
 	}
 	petConfig := DefaultPetConfigs[hunter.Options.PetType]
-
+	conf := core.PetConfig{
+		Name:            petConfig.Name,
+		Owner:           &hunter.Character,
+		BaseStats:       hunterPetBaseStats,
+		StatInheritance: hunter.makeStatInheritance(),
+		EnabledOnStart:  true,
+		IsGuardian:      false,
+	}
 	hp := &HunterPet{
-		Pet:         core.NewPet(petConfig.Name, &hunter.Character, hunterPetBaseStats, hunter.makeStatInheritance(), true, false),
+		Pet:         core.NewPet(conf),
 		config:      petConfig,
 		hunterOwner: hunter,
 	}

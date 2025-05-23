@@ -6,7 +6,8 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-const CharacterLevel = 85
+const CharacterLevel = 90
+const MaxChallengeModeIlvl = 463
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
@@ -31,7 +32,7 @@ const OffHand Hand = false
 
 const CombatTableCoverageCap = 1.024 // 102.4% chance to avoid an attack
 
-const NumItemSlots = proto.ItemSlot_ItemSlotRanged + 1
+const NumItemSlots = proto.ItemSlot_ItemSlotOffHand + 1
 
 func TrinketSlots() []proto.ItemSlot {
 	return []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2}
@@ -42,7 +43,7 @@ func MeleeWeaponSlots() []proto.ItemSlot {
 }
 
 func AllWeaponSlots() []proto.ItemSlot {
-	return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}
+	return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}
 }
 
 func ArmorSpecializationSlots() []proto.ItemSlot {

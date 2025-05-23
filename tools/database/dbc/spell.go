@@ -16,7 +16,8 @@ type Spell struct {
 	MaxPassiveAuraLevel   int32
 	Cooldown              int32
 	GCD                   int32
-	RangeIndex            int32
+	MinRange              float32
+	MaxRange              float32
 	Attributes            []int
 	CategoryFlags         int32
 	MaxCharges            int32
@@ -28,7 +29,7 @@ type Spell struct {
 	ProcCharges           int32
 	ProcTypeMask          []int
 	ProcCategoryRecovery  int32
-	SpellProcsPerMinuteID int32
+	SpellProcsPerMinute   float32
 	EquippedItemClass     int32
 	EquippedItemInvTypes  int32
 	EquippedItemSubclass  int32
@@ -38,6 +39,11 @@ type Spell struct {
 	AuraInterruptFlags    []int
 	ChannelInterruptFlags []int
 	ShapeshiftMask        []int
+	Description           string
+	Variables             string
+	MaxCumulativeStacks   int32
+	MaxTargets            int32
+	IconPath              string
 }
 
 func (s *Spell) HasAttributeFlag(attr uint) bool {

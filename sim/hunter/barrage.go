@@ -23,7 +23,7 @@ func (hunter *Hunter) getBarrageTickSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 120361}
 	config.MissileSpeed = 30
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.4
+		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower()) * 0.4
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
 
 			// Calc spell damage but deal as periodic for metric purposes
@@ -87,7 +87,7 @@ func (hunter *Hunter) registerBarrageSpell() {
 		}
 	}
 	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.4
+		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower()) * 0.4
 		return spell.CalcDamage(sim, target, sharedDmg, spell.OutcomeRangedHitAndCrit)
 	}
 

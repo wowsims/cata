@@ -15,7 +15,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: HunterSpellSteadyShot,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       40,
@@ -44,7 +44,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
 			baseDamage += hunter.GetBaseDamageFromCoeff(2.112)
 
 			intFocus := 14.0

@@ -78,15 +78,22 @@ func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 	}
 
 	infernal := &InfernalPet{
-		Pet: core.NewPet("Infernal", &warlock.Character, stats.Stats{
-			stats.Strength:            331,
-			stats.Agility:             113,
-			stats.Stamina:             361,
-			stats.Intellect:           65,
-			stats.Spirit:              109,
-			stats.Mana:                0,
-			stats.PhysicalCritPercent: 3.192,
-		}, statInheritance, false, false),
+		Pet: core.NewPet(core.PetConfig{
+			Name:  "Infernal",
+			Owner: &warlock.Character,
+			BaseStats: stats.Stats{
+				stats.Strength:            331,
+				stats.Agility:             113,
+				stats.Stamina:             361,
+				stats.Intellect:           65,
+				stats.Spirit:              109,
+				stats.Mana:                0,
+				stats.PhysicalCritPercent: 3.192,
+			},
+			StatInheritance: statInheritance,
+			EnabledOnStart:  false,
+			IsGuardian:      false,
+		}),
 		owner: warlock,
 	}
 

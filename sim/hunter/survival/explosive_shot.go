@@ -58,7 +58,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					dot := spell.Dot(target)
-					rap := dot.Spell.RangedAttackPower(target)
+					rap := dot.Spell.RangedAttackPower()
 					dot.SnapshotBaseDamage = ((dot.OutstandingDmg() / 3) + ((243.35 + sim.RandomFloat("Explosive Shot")*487) + (0.39 * rap)))
 					dot.Apply(sim)
 					dot.TickOnce(sim)

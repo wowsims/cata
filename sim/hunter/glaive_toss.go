@@ -17,7 +17,7 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 			ActionID:                 core.ActionID{SpellID: spellID},
 			SpellSchool:              core.SpellSchoolPhysical,
 			ProcMask:                 core.ProcMaskRangedSpecial,
-			Flags:                    core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+			Flags:                    core.SpellFlagMeleeMetrics,
 			MissileSpeed:             18,
 			BonusCritPercent:         0,
 			DamageMultiplierAdditive: 1,
@@ -27,8 +27,8 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 			BonusCoefficient:         1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				numHits := hunter.Env.GetNumTargets()
-				sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-				sharedDmg += spell.RangedAttackPower(target) * 0.2
+				sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
+				sharedDmg += spell.RangedAttackPower() * 0.2
 				sharedDmg += (435.8 + sim.RandomFloat(fmt.Sprintf("Glaive Toss-%v", spellID))*872)
 				// Here we assume the Glaive Toss hits every single target in the encounter.
 				// This might be unrealistic, but until we have more spatial parameters, this is what we should do.

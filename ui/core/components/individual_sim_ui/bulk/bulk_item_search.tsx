@@ -3,7 +3,7 @@ import { ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../../../css_utils';
 import { IndividualSimUI } from '../../../individual_sim_ui';
-import { ItemSpec } from '../../../proto/common';
+import { ItemLevelState, ItemSpec } from '../../../proto/common';
 import { UIItem, UIItem_FactionRestriction } from '../../../proto/ui';
 import { ActionId } from '../../../proto_utils/action_id';
 import { canEquipItem, getEligibleItemSlots } from '../../../proto_utils/utils';
@@ -109,8 +109,10 @@ export default class BulkItemSearch extends ContentBlock {
 				.getAllItems()
 				.filter(item => canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined))
 				.sort((a, b) => {
-					if (a.ilvl < b.ilvl) return 1;
-					else if (b.ilvl < a.ilvl) return -1;
+					const aIlvl = a.scalingOptions?.[ItemLevelState.Base].ilvl || a.ilvl;
+					const bIlvl = b.scalingOptions?.[ItemLevelState.Base].ilvl || b.ilvl;
+					if (aIlvl < bIlvl) return 1;
+					else if (bIlvl < aIlvl) return -1;
 					else return 0;
 				});
 
@@ -147,8 +149,9 @@ export default class BulkItemSearch extends ContentBlock {
 		let matchCount = 0;
 
 		this.allItems.forEach(item => {
-			if (this.maxIlvl != 0 && this.maxIlvl < item.ilvl) return false;
-			if (this.minIlvl != 0 && this.minIlvl > item.ilvl) return false;
+			const ilvl = item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl;
+			if (this.maxIlvl != 0 && this.maxIlvl < ilvl) return false;
+			if (this.minIlvl != 0 && this.minIlvl > ilvl) return false;
 
 			let matched = true;
 			const lcName = item.name.toLowerCase();
@@ -172,7 +175,7 @@ export default class BulkItemSearch extends ContentBlock {
 					<li>
 						<a className="dropdown-item bulk-item-search-item" dataset={{ itemId: item.id.toString() }} ref={itemRef} target="_blank">
 							<div className="bulk-item-search-item-icon-wrapper">
-								<span className="item-picker-ilvl">{item.ilvl}</span>
+								<span className="item-picker-ilvl">{ilvl}</span>
 								<div className="bulk-item-search-item-icon" ref={iconRef} />
 							</div>
 							<div className="d-flex flex-column ps-2">

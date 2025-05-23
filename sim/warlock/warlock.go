@@ -65,7 +65,7 @@ func (warlock *Warlock) ApplyTalents() {
 func (warlock *Warlock) Initialize() {
 	// warlock.registerBaneOfAgony()
 	// warlock.registerBaneOfDoom()
-	warlock.registerCorruption()
+	// warlock.registerCorruption()
 	// warlock.registerCurseOfElements()
 	// warlock.registerCurseOfTongues()
 	// warlock.registerCurseOfWeakness()
@@ -77,7 +77,7 @@ func (warlock *Warlock) Initialize() {
 	// warlock.registerIncinerate()
 	// warlock.registerLifeTap()
 	warlock.registerSearingPain()
-	warlock.registerSeed()
+	// warlock.registerSeed()
 	// warlock.registerShadowBolt()
 	warlock.registerShadowflame()
 	// warlock.registerSoulFire()

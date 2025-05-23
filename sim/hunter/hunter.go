@@ -113,12 +113,14 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	rangedWeapon := hunter.WeaponFromRanged(0)
 
 	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
-		Ranged:          rangedWeapon,
+		Ranged: rangedWeapon,
+		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
+		AutoSwingMelee:  false,
 	})
 
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower())
 
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

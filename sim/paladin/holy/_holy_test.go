@@ -32,9 +32,7 @@ func init() {
 // 				proto.WeaponType_WeaponTypeShield,
 // 			},
 // 			ArmorType: proto.ArmorType_ArmorTypePlate,
-// 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
-// 			},
+// 			RangedWeaponTypes: []proto.RangedWeaponType{},
 // 		},
 // 	}))
 // }

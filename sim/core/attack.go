@@ -47,19 +47,6 @@ func newWeaponFromUnarmed(critMultiplier float64) Weapon {
 	}
 }
 
-func getWeaponMinRange(item *Item) float64 {
-	switch item.RangedWeaponType {
-	case proto.RangedWeaponType_RangedWeaponTypeThrown:
-	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
-	case proto.RangedWeaponType_RangedWeaponTypeWand:
-		return 0.
-	default:
-		return 5
-	}
-
-	return 0
-}
-
 func getWeaponMaxRange(item *Item) float64 {
 	switch item.RangedWeaponType {
 	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
@@ -91,7 +78,7 @@ func newWeaponFromItem(item *Item, critMultiplier float64, bonusDps float64) Wea
 		NormalizedSwingSpeed: normalizedWeaponSpeed,
 		CritMultiplier:       critMultiplier,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
-		MinRange:             getWeaponMinRange(item),
+		MinRange:             0, // no more deadzone in MoP
 		MaxRange:             getWeaponMaxRange(item),
 	}
 }
@@ -116,7 +103,8 @@ func (character *Character) WeaponFromOffHand(critMultiplier float64) Weapon {
 
 // Returns weapon stats using the ranged equipped weapon.
 func (character *Character) WeaponFromRanged(critMultiplier float64) Weapon {
-	if weapon := character.GetRangedWeapon(); weapon != nil {
+	weapon := character.Ranged()
+	if weapon != nil {
 		return newWeaponFromItem(weapon, critMultiplier, character.PseudoStats.BonusRangedDps)
 	} else {
 		return Weapon{}
@@ -197,6 +185,11 @@ func (spell *Spell) IsOH() bool {
 // Returns whether this hit effect is associated with either melee weapon.
 func (spell *Spell) IsMelee() bool {
 	return spell.ProcMask.Matches(ProcMaskMelee)
+}
+
+// Returns whether this hit effect is associated with a ranged weapon.
+func (spell *Spell) IsRanged() bool {
+	return spell.ProcMask.Matches(ProcMaskRanged)
 }
 
 func (aa *AutoAttacks) MH() *Weapon {
@@ -397,7 +390,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 1},
 		SpellSchool: options.MainHand.GetSpellSchool(),
 		ProcMask:    ProcMaskMeleeMHAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -422,7 +415,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 2},
 		SpellSchool: options.OffHand.GetSpellSchool(),
 		ProcMask:    ProcMaskMeleeOHAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -442,7 +435,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
 		SpellSchool:  options.Ranged.GetSpellSchool(),
 		ProcMask:     ProcMaskRangedAuto,
-		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		Flags:        SpellFlagMeleeMetrics,
 		MissileSpeed: 40,
 
 		DamageMultiplier:         1,
@@ -453,7 +446,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	}

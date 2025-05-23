@@ -43,7 +43,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := (27) + (0.03819999844 * dot.Spell.RangedAttackPower(target))
+				baseDamage := (27) + (0.03819999844 * dot.Spell.RangedAttackPower())
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage/10, dot.Spell.OutcomeRangedHitAndCritNoBlock)
@@ -65,7 +65,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 					DoAt: 0,
 					OnAction: func(sim *core.Simulation) {
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower(aoeTarget))
+							baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower())
 							baseDamage *= sim.Encounter.AOECapMultiplier()
 							baseDamage *= core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 1.3, 1)
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
@@ -75,7 +75,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				})
 			} else {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower(aoeTarget))
+					baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower())
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					baseDamage *= core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 1.3, 1)
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)

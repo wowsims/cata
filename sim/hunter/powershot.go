@@ -15,7 +15,7 @@ func (hunter *Hunter) registerPowerShotSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		//ClassSpellMask: hunter.HunterSpellAimedShot,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed: 40,
 		MinRange:     0,
 		MaxRange:     40,
@@ -47,7 +47,7 @@ func (hunter *Hunter) registerPowerShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			wepDmg := spell.Unit.RangedNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			wepDmg := spell.Unit.RangedNormalizedWeaponDamage(sim, spell.RangedAttackPower())
 
 			result := spell.CalcDamage(sim, target, wepDmg, spell.OutcomeRangedHitAndCrit)
 

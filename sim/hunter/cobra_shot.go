@@ -14,7 +14,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellCobraShot,
-		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
@@ -40,7 +40,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
 			intFocus := 14.0
 
 			hunter.AddFocus(sim, intFocus, csMetrics)

@@ -62,8 +62,6 @@ type Character struct {
 	bonusOHDps     float64
 	bonusRangedDps float64
 
-	spellCritMultiplier float64
-
 	professions [2]proto.Profession
 
 	glyphs [6]int32
@@ -103,6 +101,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			Metrics:     NewUnitMetrics(),
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
+			avoidanceParams:       AvoidanceDRByClass[player.Class],
 
 			ReactionTime:            time.Duration(max(player.ReactionTimeMs, 10)) * time.Millisecond,
 			ChannelClipDelay:        max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
@@ -126,7 +125,6 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 		majorCooldownManager: newMajorCooldownManager(player.Cooldowns),
 	}
-	character.spellCritMultiplier = character.DefaultCritMultiplier()
 	character.GCD = character.NewTimer()
 	character.RotationTimer = character.NewTimer()
 
@@ -176,7 +174,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
-		character.enableItemSwap(player.ItemSwap, character.DefaultCritMultiplier(), character.DefaultCritMultiplier(), 0)
+		character.enableItemSwap(player.ItemSwap, character.DefaultCritMultiplier(), character.DefaultCritMultiplier(), character.DefaultCritMultiplier())
 	}
 
 	character.EquipScalingManager = character.NewEquipScalingManager()
@@ -374,18 +372,6 @@ func (character *Character) GetBaseStats() stats.Stats {
 // https://github.com/TheGroxEmpire/TBC_DPS_Warrior_Sim/issues/30
 // TODO "primaryModifiers" could be modelled as a PseudoStat, since they're unit-specific. "secondaryModifiers" apply to a specific set of spells.
 func (character *Character) calculateCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	if character.HasMetaGemEquipped(34220) ||
-		character.HasMetaGemEquipped(32409) ||
-		character.HasMetaGemEquipped(41285) ||
-		character.HasMetaGemEquipped(41376) ||
-		character.HasMetaGemEquipped(41398) ||
-		character.HasMetaGemEquipped(52291) ||
-		character.HasMetaGemEquipped(52297) ||
-		character.HasMetaGemEquipped(68778) ||
-		character.HasMetaGemEquipped(68779) ||
-		character.HasMetaGemEquipped(68780) {
-		primaryModifiers *= 1.03
-	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
 }
 func (character *Character) CritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
@@ -393,17 +379,6 @@ func (character *Character) CritMultiplier(primaryModifiers float64, secondaryMo
 }
 func (character *Character) DefaultCritMultiplier() float64 {
 	return character.CritMultiplier(1, 0)
-}
-
-func (character *Character) SetDefaultSpellCritMultiplier(spellCritMultiplier float64) {
-	if character.Env != nil {
-		panic("Spell crit multiplier must be set during construction!")
-	}
-	character.spellCritMultiplier = spellCritMultiplier
-}
-
-func (character *Character) DefaultSpellCritMultiplier() float64 {
-	return character.spellCritMultiplier
 }
 
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
@@ -556,18 +531,8 @@ func (character *Character) HasOHWeapon() bool {
 	return character.GetOHWeapon() != nil
 }
 
-// Returns the ranged weapon if one is equipped, and null otherwise.
-func (character *Character) GetRangedWeapon() *Item {
-	weapon := character.Ranged()
-	if weapon.ID == 0 ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeRelic {
-		return nil
-	} else {
-		return weapon
-	}
-}
 func (character *Character) HasRangedWeapon() bool {
-	return character.GetRangedWeapon() != nil
+	return character.Ranged() != nil
 }
 
 func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {

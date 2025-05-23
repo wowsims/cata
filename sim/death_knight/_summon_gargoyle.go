@@ -63,17 +63,24 @@ type GargoylePet struct {
 
 func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 	gargoyle := &GargoylePet{
-		Pet: core.NewPet("Gargoyle", &dk.Character, stats.Stats{
-			stats.Stamina:         1000,
-			stats.SpellHitPercent: -float64(dk.Talents.NervesOfColdSteel) * HitCapRatio,
-		}, func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.SpellPower:       ownerStats[stats.AttackPower] * 0.7,
-				stats.SpellHitPercent:  ownerStats[stats.PhysicalHitPercent] * HitCapRatio,
-				stats.HasteRating:      ownerStats[stats.HasteRating],
-				stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-			}
-		}, false, true),
+		Pet: core.NewPet(core.PetConfig{
+			Name:  "Gargoyle",
+			Owner: &dk.Character,
+			BaseStats: stats.Stats{
+				stats.Stamina:         1000,
+				stats.SpellHitPercent: -float64(dk.Talents.NervesOfColdSteel) * HitCapRatio,
+			},
+			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
+				return stats.Stats{
+					stats.SpellPower:       ownerStats[stats.AttackPower] * 0.7,
+					stats.SpellHitPercent:  ownerStats[stats.PhysicalHitPercent] * HitCapRatio,
+					stats.HasteRating:      ownerStats[stats.HasteRating],
+					stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+				}
+			},
+			EnabledOnStart: false,
+			IsGuardian:     true,
+		}),
 		dkOwner: dk,
 	}
 

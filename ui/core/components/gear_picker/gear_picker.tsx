@@ -3,7 +3,7 @@ import { ref } from 'tsx-vanilla';
 import { MISSING_RANDOM_SUFFIX_WARNING } from '../../constants/item_notices';
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
-import { ItemSlot, ItemType } from '../../proto/common';
+import { ItemLevelState, ItemSlot, ItemType } from '../../proto/common';
 import { UIEnchant as Enchant, UIGem as Gem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription } from '../../proto_utils/enchants';
@@ -46,8 +46,7 @@ export default class GearPicker extends Component {
 			ItemSlot.ItemSlotChest,
 			ItemSlot.ItemSlotWrist,
 			ItemSlot.ItemSlotMainHand,
-			ItemSlot.ItemSlotOffHand,
-			ItemSlot.ItemSlotRanged,
+			ItemSlot.ItemSlotOffHand
 		].map(slot => new ItemPicker(leftSideRef.value!, this, simUI, player, slot));
 
 		const rightItemPickers = [
@@ -158,7 +157,9 @@ export class ItemRenderer extends Component {
 		this.ilvlElem.replaceChildren(
 			<>
 				{newItem.ilvl.toString()}
-				{!!newItem.ilvlFromBase && <span className="item-quality-uncommon">+{newItem.ilvlFromBase}</span>}
+				{!!(newItem.upgrade !== ItemLevelState.ChallengeMode && newItem.ilvlFromBase) && (
+					<span className="item-quality-uncommon">+{newItem.ilvlFromBase}</span>
+				)}
 			</>,
 		);
 
@@ -319,7 +320,7 @@ export class ItemPicker extends Component {
 			equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
 				this.player.equipItem(eventID, this.slot, equippedItem);
 			},
-			getEquippedItem: () => this.player.getEquippedItem(this.slot),
+			getEquippedItem: () => this.player.getEquippedItem(this.slot)?.withChallengeMode(this.player.getChallengeModeEnabled()).withDynamicStats() || null,
 			changeEvent: this.player.gearChangeEmitter,
 		};
 	}

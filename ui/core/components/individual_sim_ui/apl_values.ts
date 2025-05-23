@@ -26,9 +26,9 @@ import {
 	APLValueCurrentEclipsePhase,
 	APLValueCurrentEnergy,
 	APLValueCurrentFocus,
+	APLValueCurrentGenericResource,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
-	APLValueCurrentHolyPower,
 	APLValueCurrentLunarEnergy,
 	APLValueCurrentMana,
 	APLValueCurrentManaPercent,
@@ -65,7 +65,6 @@ import {
 	APLValueMin,
 	APLValueMonkCurrentChi,
 	APLValueMonkMaxChi,
-	APLValueMonkNextChiBrewRecharge,
 	APLValueNextRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
@@ -97,9 +96,12 @@ import {
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
+	APLValueSpellNumCharges,
+	APLValueSpellTimeToCharge,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
+import SecondaryResource from '../../proto_utils/secondary_resource';
 import { EventID } from '../../typed_event.js';
 import { randomUUID } from '../../utils';
 import { Input, InputConfig } from '../input.js';
@@ -131,7 +133,6 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 			valueKind => valueKindFactories[valueKind].includeIf?.(player, isPrepull) ?? true,
 		);
 
-
 		if (this.rootElem.parentElement!.classList.contains('list-picker-item')) {
 			const itemHeaderElem = ListPicker.getItemHeaderElem(this) || this.rootElem;
 			ListPicker.makeListItemValidations(
@@ -152,11 +153,14 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 			].concat(
 				allValueKinds.map(kind => {
 					const factory = valueKindFactories[kind];
+					const resolveString = factory.dynamicStringResolver || ((value: string) => value);
 					return {
 						value: kind,
-						label: factory.label,
+						label: resolveString(factory.label, player),
 						submenu: factory.submenu,
-						tooltip: factory.fullDescription ? `<p>${factory.shortDescription}</p> ${factory.fullDescription}` : factory.shortDescription,
+						tooltip: factory.fullDescription
+							? `<p>${resolveString(factory.shortDescription, player)}</p> ${resolveString(factory.fullDescription, player)}`
+							: resolveString(factory.shortDescription, player),
 					};
 				}),
 			),
@@ -275,10 +279,10 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		}
 
 		if (newValue) {
-			if (!newValue.uuid || newValue.uuid.value == "") {
+			if (!newValue.uuid || newValue.uuid.value == '') {
 				newValue.uuid = {
-					value: randomUUID()
-				}
+					value: randomUUID(),
+				};
 			}
 			this.rootElem.id = newValue.uuid!.value;
 		}
@@ -343,6 +347,7 @@ type ValueKindConfig<T> = {
 	newValue: () => T;
 	includeIf?: (player: Player<any>, isPrepull: boolean) => boolean;
 	factory: (parent: HTMLElement, player: Player<any>, config: InputConfig<Player<any>, T>) => Input<Player<any>, T>;
+	dynamicStringResolver?: (value: string, player: Player<any>) => string;
 };
 
 function comparisonOperatorFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
@@ -435,8 +440,8 @@ export function valueFieldConfig(
 		field: field,
 		newValue: () =>
 			APLValue.create({
-			uuid: { value: randomUUID() },
-		}),
+				uuid: { value: randomUUID() },
+			}),
 		factory: (parent, player, config) => new APLValuePicker(parent, player, config),
 		...(options || {}),
 	};
@@ -455,10 +460,12 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 						eventID,
 						player,
 						newValue.map(val => {
-							return val ||
-							APLValue.create({
-								uuid: { value: randomUUID() },
-							})
+							return (
+								val ||
+								APLValue.create({
+									uuid: { value: randomUUID() },
+								})
+							);
 						}),
 					);
 				},
@@ -466,7 +473,7 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 				newItem: () => {
 					return APLValue.create({
 						uuid: { value: randomUUID() },
-					})
+					});
 				},
 				copyItem: (oldValue: APLValue | undefined) => (oldValue ? APLValue.clone(oldValue) : oldValue),
 				newItemPicker: (
@@ -485,15 +492,11 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 	};
 }
 
-function inputBuilder<T extends APLValueImplType>(config: {
-	label: string;
-	submenu?: Array<string>;
-	shortDescription: string;
-	fullDescription?: string;
-	newValue: () => T;
-	includeIf?: (player: Player<any>, isPrepull: boolean) => boolean;
-	fields: Array<AplHelpers.APLPickerBuilderFieldConfig<T, keyof T>>;
-}): ValueKindConfig<T> {
+function inputBuilder<T extends APLValueImplType>(
+	config: {
+		fields: Array<AplHelpers.APLPickerBuilderFieldConfig<T, keyof T>>;
+	} & Omit<ValueKindConfig<T>, 'factory'>,
+): ValueKindConfig<T> {
 	return {
 		label: config.label,
 		submenu: config.submenu,
@@ -502,6 +505,7 @@ function inputBuilder<T extends APLValueImplType>(config: {
 		newValue: config.newValue,
 		includeIf: config.includeIf,
 		factory: AplHelpers.aplInputBuilder(config.newValue, config.fields),
+		dynamicStringResolver: config.dynamicStringResolver,
 	};
 }
 
@@ -862,13 +866,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
 		fields: [AplHelpers.eclipseTypeFieldConfig('eclipsePhase')],
 	}),
-	currentHolyPower: inputBuilder({
-		label: 'Holy Power',
+	currentGenericResource: inputBuilder({
+		label: '{GENERIC_RESOURCE}',
 		submenu: ['Resources'],
-		shortDescription: 'Amount of currently available Holy Power.',
-		newValue: APLValueCurrentHolyPower.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		shortDescription: 'Amount of currently available {GENERIC_RESOURCE}.',
+		newValue: APLValueCurrentGenericResource.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => SecondaryResource.hasSecondaryResource(player.getSpec()),
 		fields: [],
+		dynamicStringResolver: (value: string, player: Player<any>) => player.secondaryResource?.replaceResourceName(value) || '',
 	}),
 
 	// Resources Rune
@@ -1040,6 +1045,20 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueSpellChanneledTicks.create,
 		fields: [AplHelpers.actionIdFieldConfig('spellId', 'channel_spells', '')],
 	}),
+	spellNumCharges: inputBuilder({
+		label: 'Number of Charges',
+		submenu: ['Spell'],
+		shortDescription: 'The number of charges that are currently available for the spell.',
+		newValue: APLValueSpellNumCharges.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
+	spellTimeToCharge: inputBuilder({
+		label: 'Time to next Charge',
+		submenu: ['Spell'],
+		shortDescription: 'The time until the next charge is available. 0 if spell has all charges avaialable.',
+		newValue: APLValueSpellTimeToCharge.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
 	channelClipDelay: inputBuilder({
 		label: 'Channel Clip Delay',
 		submenu: ['Spell'],
@@ -1143,14 +1162,6 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			}),
 		],
 	}),
-	monkNextChiBrewRecharge: inputBuilder({
-		label: 'Next Chi Brew Recharge',
-		submenu: ['Aura'],
-		shortDescription: 'Returns the amount of time until the next Chi Brew stack will be ready.',
-		newValue: APLValueMonkNextChiBrewRecharge.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassMonk,
-		fields: [],
-	}),
 
 	// Aura Sets
 	allTrinketStatProcsActive: inputBuilder({
@@ -1166,7 +1177,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+			AplHelpers.minIcdInput,
+		],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
 		label: 'Any Item Proc Buff Active',
@@ -1181,7 +1197,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+			AplHelpers.minIcdInput,
+		],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
 		label: 'Item Procs Min Remaining Time',
@@ -1194,20 +1215,29 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+			AplHelpers.minIcdInput,
+		],
 	}),
 	trinketProcsMaxRemainingIcd: inputBuilder({
 		label: 'Item Procs Max Remaining ICD',
 		submenu: ['Aura Sets'],
-		shortDescription:
-			'Longest remaining ICD on any inactive item/enchant procs that buff the specified stat type(s), or 0 if all are currently active.',
+		shortDescription: 'Longest remaining ICD on any inactive item/enchant procs that buff the specified stat type(s), or 0 if all are currently active.',
 		newValue: () =>
 			APLValueTrinketProcsMaxRemainingICD.create({
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+			AplHelpers.minIcdInput,
+		],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Effects',
@@ -1219,7 +1249,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+			AplHelpers.minIcdInput,
+		],
 	}),
 	numStatBuffCooldowns: inputBuilder({
 		label: 'Num Stat Buff Cooldowns',

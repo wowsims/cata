@@ -40,7 +40,13 @@ func main() {
 	inputsDir := fmt.Sprintf("%s/db_inputs", *outDir)
 
 	if *genAsset == "atlasloot" {
-		db := database.ReadAtlasLootData()
+		helper, err := database.NewDBHelper()
+		if err != nil {
+			log.Fatalf("failed to initialize database: %v", err)
+		}
+		defer helper.Close()
+
+		db := database.ReadAtlasLootData(helper)
 		db.WriteJson(fmt.Sprintf("%s/atlasloot_db.json", inputsDir))
 		return
 	} else if *genAsset == "reforge-stats" {
@@ -59,8 +65,6 @@ func main() {
 	if err := database.RunOverrides(helper, "tools/database/overrides"); err != nil {
 		log.Fatalf("failed to run overrides: %v", err)
 	}
-
-	database.GenerateProtos()
 
 	_, err = database.LoadAndWriteRawRandomSuffixes(helper, inputsDir)
 	if err != nil {
@@ -144,6 +148,9 @@ func main() {
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
+
+	database.GenerateProtos(instance)
+
 	for _, item := range instance.Items {
 		parsed := item.ToUIItem()
 		if parsed.Icon == "" {

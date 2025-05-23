@@ -14,7 +14,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellMultiShot,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       40,
@@ -38,7 +38,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
 
-			sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
 
 			baseDamageArray := make([]*core.SpellResult, numHits)
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
