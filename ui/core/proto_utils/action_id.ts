@@ -433,6 +433,8 @@ export class ActionId {
 					name += ' (Haste)';
 				} else if (tag == 3) {
 					name += ' (Crit)';
+				} else if (tag == 4) {
+					name += ' (Agi)';
 				}
 				if (tag == 6) {
 					name += ' (Overload)';

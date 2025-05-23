@@ -146,7 +146,7 @@ func (enh *EnhancementShaman) Initialize() {
 }
 
 func (enh EnhancementShaman) getMasteryBonus() float64 {
-	return 0.16 + 0.025*enh.GetMasteryPoints()
+	return 0.16 + 0.02*enh.GetMasteryPoints()
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {
