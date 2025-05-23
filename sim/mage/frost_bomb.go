@@ -42,12 +42,12 @@ func (mage *Mage) registerFrostBombSpell() {
 		},
 	})
 
-	mage.LivingBomb = mage.GetOrRegisterSpell(core.SpellConfig{
+	mage.FrostBomb = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44457},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellLivingBombDot,
+		ClassSpellMask: MageSpellFrostBombDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1.25,

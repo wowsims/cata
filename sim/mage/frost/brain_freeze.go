@@ -25,33 +25,40 @@ func (frost *FrostMage) registerBrainFreeze() {
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1,
 		ClassMask:  mage.MageSpellFrostfireBolt,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  mage.MageSpellFrostfireBolt,
+		FloatValue: frost.GetStat(stats.SpellCritPercent)*2 + 50,
+		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	/*
 		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
 		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
 	*/
-	critMod := frost.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellFrostfireBolt,
-		FloatValue: frost.GetStat(stats.SpellCritPercent)*2 + 50,
-		Kind:       core.SpellMod_BonusCrit_Percent,
-	})
-
-	buff.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-		critMod.Activate()
-	}
-
-	buff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		critMod.Deactivate()
-	})
 
 	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
 		Name:           "Brain Freeze - Trigger",
-		ClassSpellMask: mage.MageSpellFrostfireBolt,
-		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: mage.MageSpellLivingBombDot | mage.MageSpellLivingBombExplosion | mage.MageSpellFrostBomb,
+		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// https://github.com/simulationcraft/simc/blob/e1190fed141feec2ec7a489e80caec5138c3a6ab/engine/class_modules/sc_mage.cpp#L4169
+			if spell.ClassSpellMask == mage.MageSpellLivingBombDot || spell.ClassSpellMask == mage.MageSpellLivingBombExplosion {
+				var livingBombProcChance = 0.25
+				if sim.Proc(livingBombProcChance, "BrainFreezeProc") {
+					buff.Activate(sim)
+				}
+			} else if spell.ClassSpellMask == mage.MageSpellFrostBomb {
+				var frostBombProcChance = 1.0
+				if sim.Proc(frostBombProcChance, "BrainFreezeProc") {
+					buff.Activate(sim)
+				}
+			} else {
+				var netherTempestProcChance = 0.09
+				if sim.Proc(netherTempestProcChance, "BrainFreezeProc") {
+					buff.Activate(sim)
+				}
+			}
 			buff.Activate(sim)
-			buff.AddStack(sim)
 		},
 	})
 
