@@ -5,7 +5,7 @@ import (
 
 	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
+	// "github.com/wowsims/mop/sim/core/stats"
 )
 
 // Tier 11 ret
@@ -86,25 +86,25 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// PvP set
-var ItemSetCataclysmGladiatorsVindication = core.NewItemSet(core.ItemSet{
-	ID: 917,
-	// Name: "Gladiator's Vindication",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-			setBonusAura.AttachStatBuff(stats.Strength, 70)
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-			setBonusAura.AttachStatBuff(stats.Strength, 90)
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				paladin.Judgment.MaxRange += 10
-			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				paladin.Judgment.MaxRange -= 10
-			})
-		},
-	},
-})
+// // PvP set
+// var ItemSetCataclysmGladiatorsVindication = core.NewItemSet(core.ItemSet{
+// 	ID: 917,
+// 	// Name: "Gladiator's Vindication",
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(_ core.Agent, setBonusAura *core.Aura) {
+// 			setBonusAura.AttachStatBuff(stats.Strength, 70)
+// 		},
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
+// 			paladin := agent.(PaladinAgent).GetPaladin()
+// 			setBonusAura.AttachStatBuff(stats.Strength, 90)
+// 			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+// 				paladin.Judgment.MaxRange += 10
+// 			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+// 				paladin.Judgment.MaxRange -= 10
+// 			})
+// 		},
+// 	},
+// })
 
 func (paladin *Paladin) addCataclysmPvpGloves() {
 	paladin.RegisterPvPGloveMod(
@@ -116,29 +116,29 @@ func (paladin *Paladin) addCataclysmPvpGloves() {
 		})
 }
 
-var ItemSetMistsGladiatorsVindication = core.NewItemSet(core.ItemSet{
-	ID: 1100,
-	// Name: "Gladiator's Vindication",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-			actionID := core.ActionID{SpellID: 131649}
-			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:     "Item - Paladin Pvp Set Retribution 4P Bonus" + paladin.Label,
-				ActionID: core.ActionID{SpellID: 31829},
-				Callback: core.CallbackOnSpellHitTaken,
-				Harmful:  true,
-				ICD:      time.Second * 8,
+// var ItemSetMistsGladiatorsVindication = core.NewItemSet(core.ItemSet{
+// 	ID: 1100,
+// 	// Name: "Gladiator's Vindication",
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(_ core.Agent, setBonusAura *core.Aura) {
+// 		},
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
+// 			paladin := agent.(PaladinAgent).GetPaladin()
+// 			actionID := core.ActionID{SpellID: 131649}
+// 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+// 				Name:     "Item - Paladin Pvp Set Retribution 4P Bonus" + paladin.Label,
+// 				ActionID: core.ActionID{SpellID: 31829},
+// 				Callback: core.CallbackOnSpellHitTaken,
+// 				Harmful:  true,
+// 				ICD:      time.Second * 8,
 
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					paladin.HolyPower.Gain(1, actionID, sim)
-				},
-			})
-		},
-	},
-})
+// 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+// 					paladin.HolyPower.Gain(1, actionID, sim)
+// 				},
+// 			})
+// 		},
+// 	},
+// })
 
 func (paladin *Paladin) addMistsPvpGloves() {
 	paladin.RegisterPvPGloveMod(
