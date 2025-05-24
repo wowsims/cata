@@ -63,6 +63,7 @@ func (destruction *DestructionWarlock) Initialize() {
 		Default: 10,
 	})
 
+	destruction.registerDarkSoulInstability()
 	destruction.ApplyChaoticEnergy()
 	destruction.ApplyMastery()
 	destruction.registerIncinerate()
@@ -75,6 +76,7 @@ func (destruction *DestructionWarlock) Initialize() {
 	destruction.registerRainOfFire()
 	destruction.registerEmberTap()
 	destruction.registerFireAndBrimstone()
+	destruction.RegisterDrainLife(nil) // no extra callback needed
 }
 
 func (destruction *DestructionWarlock) ApplyTalents() {

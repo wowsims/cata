@@ -9,12 +9,22 @@ import (
 func (demo *DemonologyWarlock) registerMetamorphosis() {
 	metaActionId := core.ActionID{SpellID: 103958}
 	var queueMetaCost func(sim *core.Simulation)
+	var soulFireManaCost core.ResourceCostImpl
 	metaAura := demo.RegisterAura(core.Aura{
 		Label:    "Metamorphosis",
 		ActionID: metaActionId,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			queueMetaCost(sim)
+
+			// update cast cost
+			soulFire := demo.GetSpell(core.ActionID{SpellID: 6353})
+			soulFireManaCost = soulFire.Cost.ResourceCostImpl
+			soulFire.Cost.ResourceCostImpl = NewDemonicFuryCost(160)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			soulFire := demo.GetSpell(core.ActionID{SpellID: 6353})
+			soulFire.Cost.ResourceCostImpl = soulFireManaCost
 		},
 	})
 

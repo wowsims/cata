@@ -6,15 +6,18 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warlock *Warlock) registerCorruption() {
+const corruptionScale = 0.165
+const corruptionCoeff = 0.165
+
+func (warlock *Warlock) RegisterCorruption(callback WarlockSpellCastedCallback) *core.Spell {
 	warlock.Corruption = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 172},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCorruption,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 6},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 1.25},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
@@ -25,16 +28,17 @@ func (warlock *Warlock) registerCorruption() {
 			Aura: core.Aura{
 				Label: "Corruption",
 			},
-			NumberOfTicks:       6,
-			TickLength:          3 * time.Second,
+			NumberOfTicks:       9,
+			TickLength:          2 * time.Second,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.17599999905,
+			BonusCoefficient:    corruptionCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcScalingSpellDmg(0.15299999714))
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(corruptionScale))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				callback([]core.SpellResult{*result}, dot.Spell, sim)
 			},
 		},
 
@@ -54,4 +58,6 @@ func (warlock *Warlock) registerCorruption() {
 			}
 		},
 	})
+
+	return warlock.Corruption
 }

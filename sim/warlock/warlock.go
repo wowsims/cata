@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -27,6 +28,7 @@ type Warlock struct {
 	ShadowEmbraceAuras   core.AuraArray
 	Shadowburn           *core.Spell
 	UnstableAffliction   *core.Spell
+	Hellfire             *core.Spell
 
 	ActivePet *WarlockPet
 	Felhunter *WarlockPet
@@ -65,9 +67,7 @@ func (warlock *Warlock) ApplyTalents() {
 
 func (warlock *Warlock) Initialize() {
 
-	warlock.registerDarkSoulInstability()
 	warlock.registerCurseOfElements()
-	warlock.registerDrainLife()
 
 	// warlock.registerBaneOfAgony()
 	// warlock.registerBaneOfDoom()
@@ -229,7 +229,7 @@ const (
 
 	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity
 	WarlockAllSummons                = WarlockSummonSpells | WarlockSpellSummonInfernal | WarlockSpellSummonDoomguard
-	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons
+	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons &^ WarlockSpellDrainLife
 )
 
 // Pandemic - For now a Warlock only ability. Might be moved into core support in late expansions
@@ -255,4 +255,41 @@ func (warlock *Warlock) ApplyDotWithPandemic(dot *core.Dot, sim *core.Simulation
 	for dot.RemainingDuration(sim)+dot.TickPeriod() < extend {
 		dot.AddTick()
 	}
+}
+
+// Called to handle custom resources
+type WarlockSpellCastedCallback func(resultList []core.SpellResult, spell *core.Spell, sim *core.Simulation)
+
+type SecondaryResourceCost struct {
+	SecondaryCost int
+	Name          string
+}
+
+// CostFailureReason implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) CostFailureReason(_ *core.Simulation, spell *core.Spell) string {
+	return fmt.Sprintf(
+		"Not enough %s (Current %s = %0.03f, %s Cost = %0.03f)",
+		s.Name,
+		s.Name,
+		spell.Unit.GetSecondaryResourceBar(),
+		s.Name,
+		spell.CurCast.Cost,
+	)
+}
+
+// IssueRefund implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) IssueRefund(sim *core.Simulation, spell *core.Spell) {
+	curCost := spell.Cost.PercentModifier * float64(s.SecondaryCost)
+	spell.Unit.GetSecondaryResourceBar().Gain(int32(curCost), spell.ActionID, sim)
+}
+
+// MeetsRequirement implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) MeetsRequirement(_ *core.Simulation, spell *core.Spell) bool {
+	spell.CurCast.Cost = spell.Cost.PercentModifier * float64(s.SecondaryCost)
+	return spell.Unit.GetSecondaryResourceBar().CanSpend(int32(spell.CurCast.Cost))
+}
+
+// SpendCost implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) SpendCost(sim *core.Simulation, spell *core.Spell) {
+	spell.Unit.GetSecondaryResourceBar().Spend(int32(spell.CurCast.Cost), spell.ActionID, sim)
 }

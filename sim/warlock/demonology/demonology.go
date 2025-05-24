@@ -58,56 +58,30 @@ func (demonology *DemonologyWarlock) Initialize() {
 	demonology.registerMetamorphosis()
 	demonology.registerMasterDemonologist()
 	demonology.registerShadowBolt()
+	demonology.registerFelFlame()
+	demonology.registerCorruption()
+	demonology.registerDrainLife()
+	demonology.registerHandOfGuldan()
+	demonology.registerHellfire()
 
 	// demonology.registerHandOfGuldan()
-	// demonology.registerMetamorphosis()
-	// demonology.registerSummonFelguard()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {
 	demonology.Warlock.ApplyTalents()
-
-	// Demonic Knowledge
-	demonology.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		School:     core.SpellSchoolShadow | core.SpellSchoolFire,
-		FloatValue: 0.15,
-	})
 }
-
-// func (demonology *DemonologyWarlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	raidBuffs.DemonicPact = demonology.Talents.DemonicPact && demonology.Options.Summon != proto.WarlockOptions_NoSummon
-// }
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
 	demonology.Warlock.Reset(sim)
 }
 
-// func (demonology *DemonologyWarlock) registerSummonFelguard() {
-// 	stunActionID := core.ActionID{SpellID: 32752}
+func NewDemonicFuryCost(cost int) *warlock.SecondaryResourceCost {
+	return &warlock.SecondaryResourceCost{
+		SecondaryCost: cost,
+		Name:          "Demonic Fury",
+	}
+}
 
-// 	demonology.Felguard.RegisterAura(demonology.GetSummonStunAura())
-// 	demonology.RegisterSpell(core.SpellConfig{
-// 		ActionID:       core.ActionID{SpellID: 30146},
-// 		SpellSchool:    core.SpellSchoolShadow,
-// 		ProcMask:       core.ProcMaskEmpty,
-// 		Flags:          core.SpellFlagAPL,
-// 		ClassSpellMask: warlock.WarlockSpellSummonFelguard,
-
-// 		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD:      core.GCDDefault,
-// 				CastTime: 6 * time.Second,
-// 			},
-// 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-// 				demonology.ActivatePetSummonStun(sim, stunActionID)
-// 			},
-// 		},
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			demonology.SoulBurnAura.Deactivate(sim)
-// 			demonology.ChangeActivePet(sim, demonology.Warlock.Felguard)
-// 		},
-// 	})
-// }
+func (demo *DemonologyWarlock) IsInMeta() bool {
+	return demo.Metamorphosis.RelatedSelfBuff.IsActive()
+}

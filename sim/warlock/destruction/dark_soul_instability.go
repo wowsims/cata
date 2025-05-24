@@ -1,30 +1,31 @@
-package warlock
+package destruction
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/warlock"
 )
 
-func (warlock *Warlock) registerDarkSoulInstability() {
-	buff := warlock.NewTemporaryStatsAura(
+func (destruction *DestructionWarlock) registerDarkSoulInstability() {
+	buff := destruction.NewTemporaryStatsAura(
 		"Dark Soul: Instability",
 		core.ActionID{SpellID: 113858},
 		stats.Stats{stats.CritRating: 30 * core.CritRatingPerCritPercent},
 		time.Second*20,
 	)
 
-	spell := warlock.RegisterSpell(core.SpellConfig{
+	spell := destruction.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 113858},
 		DamageMultiplier: 1,
 		ProcMask:         core.ProcMaskEmpty,
 		SpellSchool:      core.SpellSchoolShadow,
-		ClassSpellMask:   WarlockSpellDarkSoulInsanity,
+		ClassSpellMask:   warlock.WarlockSpellDarkSoulInsanity,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{NonEmpty: true},
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
+				Timer:    destruction.NewTimer(),
 				Duration: time.Minute * 2,
 			},
 		},
@@ -34,7 +35,7 @@ func (warlock *Warlock) registerDarkSoulInstability() {
 		},
 		RelatedSelfBuff: buff.Aura,
 	})
-	warlock.AddMajorCooldown(core.MajorCooldown{
+	destruction.AddMajorCooldown(core.MajorCooldown{
 		Spell:    spell,
 		BuffAura: buff,
 		Priority: core.CooldownPriorityDefault,
