@@ -2,26 +2,19 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
 	PaladinMajorGlyph,
-	PaladinMinorGlyph,
 	PaladinSeal,
 	ProtectionPaladin_Options as ProtectionPaladinOptions,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import PreraidGear from './gear_sets/preraid.gear.json';
-import T11Gear from './gear_sets/T11.gear.json';
-import T11CTCGear from './gear_sets/T11CTC.gear.json';
-import T12Gear from './gear_sets/T12.gear.json';
+import P1Gear from './gear_sets/P1.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('PreRaid', PreraidGear);
-export const T11_PRESET = PresetUtils.makePresetGear('P1 Balanced', T11Gear);
-export const T11CTC_PRESET = PresetUtils.makePresetGear('P1 CTC', T11CTCGear);
-export const T12_PRESET = PresetUtils.makePresetGear('P3', T12Gear);
+export const P1_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
 
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -68,6 +61,7 @@ export const DefaultOptions = ProtectionPaladinOptions.create({
 		seal: PaladinSeal.Truth,
 	},
 });
+
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58085, // Flask of Steelskin
 	foodId: 62663, // Lavascale Minestrone
@@ -75,6 +69,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 	prepotId: 58146, // Golemblood Potion
 	tinkerId: 82174, // Synapse Springs
 });
+
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Leatherworking,

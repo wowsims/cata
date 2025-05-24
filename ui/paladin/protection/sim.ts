@@ -1,24 +1,12 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
-import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { PaladinSeal } from '../../core/proto/paladin.js';
-import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
-import { TypedEvent } from '../../core/typed_event.js';
+import { UnitStat } from '../../core/proto_utils/stats.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
-
-const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecProtectionPaladin>): boolean => {
-	// const currentSeal = player.getSpecOptions().classOptions?.seal;
-	// return (
-	// 	player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
-	// 	(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
-	// );
-	return false;
-};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	cssClass: 'protection-paladin-sim-ui',
@@ -74,22 +62,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			PseudoStat.PseudoStatParryPercent,
 		],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
-		let stats = new Stats();
 
-		TypedEvent.freezeAllAndDo(() => {
-			if (isGlyphOfSealOfTruthActive(player)) {
-				stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			}
-		});
-
-		return {
-			talents: stats,
-		};
-	},
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T12_PRESET.gear,
+		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		// Values for now are pre-Cata initial WAG
 		epWeights: Presets.P1_EP_PRESET.epWeights,
@@ -149,7 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.T11_PRESET, Presets.T11CTC_PRESET, Presets.T12_PRESET],
+		gear: [Presets.P1_GEAR_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
@@ -170,16 +146,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.T11_PRESET.gear,
-					2: Presets.T11_PRESET.gear,
-					3: Presets.T12_PRESET.gear,
-					4: Presets.T12_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.T11_PRESET.gear,
-					2: Presets.T11_PRESET.gear,
-					3: Presets.T12_PRESET.gear,
-					4: Presets.T12_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
 				},
 			},
 		},
