@@ -83,8 +83,6 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 }
 
 func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.BlessingOfMight = true
-	raidBuffs.BlessingOfKings = true
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
