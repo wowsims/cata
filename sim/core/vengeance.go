@@ -7,98 +7,110 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-type VengeanceTracker struct {
-	eligibleDamage   float64
-	apBonus          float64
-	prevAPBonus      float64
-	recentMaxAPBonus float64
-	lastAttackedTime time.Duration // timestamp that the character was last attacked
-}
+const VengeanceScaling = 0.018 // Might be reverted to 0.015 in a later patch
 
-const (
-	VengeanceAPDecayRate     = 0.1 // AP bonus decays by 10% every 2 seconds, or 5% if the character has been hit in that time
-	OutcomeVengeanceTriggers = OutcomeLanded
-)
-
-func Clamp(val float64, min float64, max float64) float64 {
-	return math.Max(min, math.Min(val, max))
-}
-
-func UpdateVengeance(sim *Simulation, character *Character, tracker *VengeanceTracker, aura *Aura) {
-	// Save the current AP bonus so we can apply the new buff correctly
-	tracker.prevAPBonus = tracker.apBonus
-
-	// If this character has been attacked in the last 2 seconds, apply half decay and add new damage to buff
-	timeSinceLastHit := sim.CurrentTime - tracker.lastAttackedTime
-	if timeSinceLastHit < time.Second*2 {
-
-		// Decay existing bonus by half of the rate
-		decay := VengeanceAPDecayRate / 2
-		tracker.apBonus -= (decay * tracker.apBonus)
-
-		// Add 5% of damage taken in the last 2 seconds
-		tracker.apBonus += 0.05 * tracker.eligibleDamage
-
-		// 4.3.0 change: the vengeance AP buff is always at least 33% of the incoming
-		// damage if the tank has been hit in the last 2 seconds
-		baseAPBonus := tracker.eligibleDamage / 3.0
-		tracker.apBonus = math.Max(tracker.apBonus, baseAPBonus)
-	} else {
-		// No hits in the last 2 seconds - apply full decay
-		tracker.apBonus -= (VengeanceAPDecayRate * tracker.recentMaxAPBonus)
-	}
-
-	// Vengeance tooltip is wrong in sake of simplicity as stated by blizzard
-	// Actual formula used is Stamina + 10% of Base HP
-	apBonusMax := character.GetStat(stats.Stamina) + 0.1*character.baseStats[stats.Health]
-	tracker.apBonus = Clamp(tracker.apBonus, 0, apBonusMax)
-
-	tracker.recentMaxAPBonus = math.Max(tracker.apBonus, tracker.recentMaxAPBonus)
-
-	if sim.Log != nil {
-		character.Log(sim, "Updated Vengeance for %s: Eligible Damage(%f) | AP Bonus(%f)", character.Name, tracker.eligibleDamage, tracker.apBonus)
-	}
-
-	tracker.eligibleDamage = 0
-
-	// Update character stats
-	character.AddStatDynamic(sim, stats.AttackPower, -tracker.prevAPBonus)
-	character.AddStatDynamic(sim, stats.AttackPower, tracker.apBonus)
-}
-
-// To use: add a VengeanceTracker member to your spec-specific struct (e.g ProtWarrior, BloodDeathKnight, etc) then call this
-// with your class's specific Vengeance spell ID
-func ApplyVengeanceEffect(character *Character, tracker *VengeanceTracker, spellID int32) {
-	vengAura := MakePermanent(character.RegisterAura(Aura{
-		Label:    "Vengeance",
-		Duration: NeverExpires,
-		ActionID: ActionID{SpellID: spellID}, // Different specs use different spell IDs even though the effect is the same
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Outcome.Matches(OutcomeVengeanceTriggers) {
-				// Vengeance is based on the taken damage amount after mitigation
-				// TODO: check how this treats dodge/parry/miss
-				// https://worldofwarcraft.blizzard.com/en-us/news/1293873/tanking-with-a-vengeance seems to suggest a string of dodges will let it fall off
-				// but simc's implementation retriggers vengeance on _any_ attack, even dodge/parry/miss.
-				// I can't find any patch notes or other resources that support one or the other though
-				tracker.lastAttackedTime = sim.CurrentTime
-				tracker.eligibleDamage += result.Damage
-			}
+func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura) {
+	// First register the exposed Vengeance buff Aura, which we will model
+	// as discrete stacks with 1 AP granted per stack for ease of tracking
+	// in the timeline and APLs.
+	buffAura := MakeStackingAura(character, StackingStatAura{
+		Aura: Aura{
+			Label:     "Vengeance",
+			ActionID:  ActionID{SpellID: spellID},
+			Duration:  time.Second * 20,
+			MaxStacks: math.MaxInt32,
 		},
-	}))
 
-	// Vengeance "ticks" every 2 seconds to update the AP buff
-	character.RegisterResetEffect(func(sim *Simulation) {
-		// Reset values
-		tracker.prevAPBonus = 0
-		tracker.apBonus = 0
-		tracker.eligibleDamage = 0
-		tracker.recentMaxAPBonus = 0
-
-		StartPeriodicAction(sim, PeriodicActionOptions{
-			Period: time.Second * 2,
-			OnAction: func(sim *Simulation) {
-				UpdateVengeance(sim, character, tracker, vengAura)
-			},
-		})
+		BonusPerStack: stats.Stats{stats.AttackPower: 1},
 	})
+
+	// Then set up the proc trigger.
+	vengeanceTrigger := ProcTrigger{
+		Name:     "Vengeance Trigger",
+		Callback: CallbackOnSpellHitTaken,
+
+		Handler: func(sim *Simulation, spell *Spell, result *SpellResult) {
+			// Check that the caster is an NPC.
+			if spell.Unit.Type != EnemyUnit {
+				return
+			}
+
+			// Vengeance uses pre-outcome, pre-mitigation damage.
+			rawDamage := result.PreOutcomeDamage / result.ResistanceMultiplier
+
+			// The Weakened Blows debuff does not reduce Vengeance gains.
+			// TODO: The game similarly hardcodes a correction for Demoralizing Banner, add that in once we implement the debuff in the sim.
+			if (spell.SpellSchool == SpellSchoolPhysical) && spell.Unit.GetAura("Weakened Blows").IsActive() {
+				rawDamage /= 0.9
+			}
+
+			// Note that result.PreOutcomeDamage does not include the impact of the tank's various DamageTakenMultiplier PseudoStats.
+			// By default this is the desired behavior, since it means that tank DRs are automatically divided out in the calculation.
+			// However, *detrimental* contributions to the relevant DamageTakenMultiplier PseudoStats *do* increase Vengeance gains in-game.
+			// This can be relevant on certain bosses, such as Ignite Armor stacks increasing Vengeance gains on Iron Juggernaut in SoO.
+			// TODO: Find a simple way to keep track of only detrimental contributions to DamageTakenMultiplier (and school-specific variants) with minimal overhead.
+
+			// Apply baseline scaling to the raw damage value.
+			rawVengeance := VengeanceScaling * rawDamage
+
+			// Spells that are not mitigated by armor generate 2.5x more Vengeance.
+			if (spell.SpellSchool != SpellSchoolPhysical) || spell.Flags.Matches(SpellFlagIgnoreResists) {
+				rawVengeance *= 2.5
+			}
+
+			// TODO: Is the 0.5x Vengeance multiplier for non-periodic AoE spells still a thing for the new version of Vengeance in Classic?
+
+			// TODO: Weapon-based specials may be normalizing out spell.DamageMultiplier as well?
+
+			// If the buff Aura is currently active, then perform decaying average with previous Vengeance.
+			newVengeance := rawVengeance
+
+			if buffAura.IsActive() {
+				newVengeance += float64(buffAura.GetStacks()) * buffAura.RemainingDuration(sim).Seconds() / buffAura.Duration.Seconds()
+			}
+
+			// Compare to minimum ramp-up Vengeance value based on equilibrium estimate.
+			var inferredAttackInterval time.Duration
+
+			if spell.IsMH() {
+				// TODO: Is this supposed to be the base speed prior to attack speed multipliers?
+				inferredAttackInterval = spell.Unit.AutoAttacks.MainhandSwingSpeed()
+			} else if spell.IsOH() {
+				inferredAttackInterval = spell.Unit.AutoAttacks.OffhandSwingSpeed()
+			} else {
+				inferredAttackInterval = time.Minute
+			}
+
+			// TODO: Does this also need the 2.5x multiplier for spells and the 0.5x AoE multiplier in it?
+			inferredEquilibriumVengeance := VengeanceScaling * rawDamage * buffAura.Duration.Seconds() / inferredAttackInterval.Seconds()
+
+			if newVengeance < 0.5 * inferredEquilibriumVengeance {
+				if sim.Log != nil {
+					result.Target.Log(sim, "Triggered Vengeance ramp-up mechanism because newVengeance = %.1f and inferredEquilibriumVengeance = %.1f .", newVengeance, inferredEquilibriumVengeance)
+				}
+
+				newVengeance = 0.5 * inferredEquilibriumVengeance
+			}
+
+			// Apply HP cap.
+			newVengeance = min(newVengeance, result.Target.MaxHealth())
+
+			if sim.Log != nil {
+				result.Target.Log(sim, "Updated Vengeance for %s due to %s from %s. Raw damage value = %.1f, raw Vengeance contribution = %.1f, new Vengeance value = %.1f .", result.Target.Label, spell.ActionID, spell.Unit.Label, rawDamage, rawVengeance, newVengeance)
+			}
+
+			// Activate or refresh the buff Aura and set stacks.
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, int32(math.Round(newVengeance)))
+		},
+	}
+
+	// Finally, either create a new hidden Aura for the Vengeance trigger,
+	// or attach it to the supplied parent Aura (Bear Form for Druids,
+	// Defensive Stance for Warriors).
+	if requiredAura == nil {
+		MakeProcTriggerAura(&character.Unit, vengeanceTrigger)
+	} else {
+		requiredAura.AttachProcTrigger(vengeanceTrigger)
+	}
 }

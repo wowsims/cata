@@ -31,7 +31,6 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	bear := &GuardianDruid{
 		Druid:     druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
 		Options:   tankOptions.Options,
-		vengeance: &core.VengeanceTracker{},
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
@@ -53,8 +52,7 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 type GuardianDruid struct {
 	*druid.Druid
 
-	Options   *proto.GuardianDruid_Options
-	vengeance *core.VengeanceTracker
+	Options *proto.GuardianDruid_Options
 
 	// Aura references
 	EnrageAura *core.Aura
@@ -75,7 +73,7 @@ func (bear *GuardianDruid) ApplyTalents() {
 	// bear.Druid.ApplyTalents()
 	bear.applyMastery()
 	bear.applyThickHide()
-	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
+	bear.RegisterVengeance(84840, bear.BearFormAura)
 }
 
 func (bear *GuardianDruid) applyMastery() {
