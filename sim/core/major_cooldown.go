@@ -391,7 +391,7 @@ func RegisterTemporaryStatsOnUseCD(character *Character, auraLabel string, tempS
 
 // Helper function to make an ApplyEffect for a temporary stats on-use cooldown.
 func MakeTemporaryStatsOnUseCDRegistration(auraLabel string, tempStats stats.Stats, duration time.Duration, config SpellConfig, cdFunc func(*Character) Cooldown, sharedCDFunc func(*Character) Cooldown) ApplyEffect {
-	return func(agent Agent) {
+	return func(agent Agent, _ proto.ItemLevelState) {
 		localConfig := config
 		character := agent.GetCharacter()
 		if cdFunc != nil {

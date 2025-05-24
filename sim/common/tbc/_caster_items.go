@@ -5,7 +5,7 @@ package tbc
 // 	// Proc effects. Keep these in order by item ID.
 // 	core.AddEffectsToTest = false
 
-// 	core.NewItemEffect(29305, func(agent core.Agent) {
+// 	core.NewItemEffect(29305, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		procAura := character.NewTemporaryStatsAura("Band of the Eternal Sage Proc", core.ActionID{ItemID: 29305}, stats.Stats{stats.SpellPower: 95}, time.Second*10)
 

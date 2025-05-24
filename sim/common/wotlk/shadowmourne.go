@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -19,7 +20,7 @@ func init() {
 	// has some testing, and arrives at ~12 ppm (~75% for 3.7 speed)
 	// https://web.archive.org/web/20100508065259/http://elitistjerks.com/f81/t37462-warrior_dps_calculation_spreadsheet/p109/
 	// arrives at ~80% with "2000 white swings" on a dummy.
-	core.NewItemEffect(49623, func(agent core.Agent) {
+	core.NewItemEffect(49623, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		dpm := character.AutoAttacks.NewPPMManager(12, core.ProcMaskMeleeOrMeleeProc)

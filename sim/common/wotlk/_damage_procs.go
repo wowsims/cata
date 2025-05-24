@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 type ProcDamageEffect struct {
@@ -16,7 +17,7 @@ type ProcDamageEffect struct {
 }
 
 func newProcDamageEffect(config ProcDamageEffect) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	core.NewItemEffect(config.ID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		minDmg := config.MinDmg

@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -13,7 +14,7 @@ import (
 //
 // Passing Character instead of Agent would work for almost all cases,
 // but there are occasionally class-specific item effects.
-type ApplyEffect func(Agent)
+type ApplyEffect func(Agent, proto.ItemLevelState)
 
 var itemEffects = map[int32]ApplyEffect{}
 var enchantEffects = map[int32]ApplyEffect{}
@@ -79,20 +80,20 @@ func NewEnchantEffect(id int32, enchantEffect ApplyEffect) {
 func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool, includeGemEffects bool) {
 	for _, eq := range equipment {
 		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
-			applyItemEffect(agent)
+			applyItemEffect(agent, eq.UpgradeStep)
 			registeredItemEffects[eq.ID] = true
 		}
 
 		if includeGemEffects {
 			for _, g := range eq.Gems {
 				if applyGemEffect, ok := itemEffects[g.ID]; ok {
-					applyGemEffect(agent)
+					applyGemEffect(agent, proto.ItemLevelState_Base)
 				}
 			}
 		}
 
 		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyEnchantEffect(agent)
+			applyEnchantEffect(agent, proto.ItemLevelState_Base)
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
 	}
@@ -101,7 +102,7 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 // Helpers for making common types of active item effects.
 
 func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration, sharedCDFunc func(*Character) Cooldown, otherEffects ApplyEffect) {
-	NewItemEffect(itemID, func(agent Agent) {
+	NewItemEffect(itemID, func(agent Agent, _ proto.ItemLevelState) {
 		registerCD := MakeTemporaryStatsOnUseCDRegistration(
 			"ItemActive-"+strconv.Itoa(int(itemID)),
 			bonus,
@@ -118,9 +119,9 @@ func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration tim
 			sharedCDFunc,
 		)
 
-		registerCD(agent)
+		registerCD(agent, proto.ItemLevelState_Base)
 		if otherEffects != nil {
-			otherEffects(agent)
+			otherEffects(agent, proto.ItemLevelState_Base)
 		}
 	})
 }

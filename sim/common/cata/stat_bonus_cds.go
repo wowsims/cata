@@ -14,7 +14,7 @@ func init() {
 	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2) // Lady La-La's Singing Shell
 
 	// Shard of Woe
-	core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(60233, stats.Stats{stats.HasteRating: 1935}, time.Second*10, time.Minute*1, func(agent core.Agent) {
+	core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(60233, stats.Stats{stats.HasteRating: 1935}, time.Second*10, time.Minute*1, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		aura := core.MakePermanent(character.RegisterAura(core.Aura{
