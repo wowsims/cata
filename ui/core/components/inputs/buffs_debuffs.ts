@@ -1,4 +1,4 @@
-import { Faction, Stat } from '../../proto/common';
+import { Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import {
 	makeBooleanDebuffInput,

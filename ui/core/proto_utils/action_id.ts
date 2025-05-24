@@ -343,7 +343,7 @@ export class ActionId {
 					} else if (tag == 3) {
 						name += ' (3 Tick)';
 					} else if (tag == 77486) {
-						name += ' (Mastery)'
+						name += ' (Mastery)';
 					}
 				} else {
 					// Gurthalak, Voice of the Deeps
@@ -481,20 +481,32 @@ export class ActionId {
 				}
 				break;
 			case 'Inquisition':
-				name += ` (${tag} HP)`;
+				if (tag > 0) {
+					name += ` (${tag} HP)`;
+				}
 				break;
 			case 'Harsh Word':
-				name = `Word of Glory (Damage, ${tag} HP)`;
+				name = 'Word of Glory (Damage';
+				if (tag > 0) {
+					name += `, ${tag} HP`;
+				}
+				name += ')';
 				break;
 			case 'Word of Glory':
-				name = `Word of Glory (Healing, ${tag} HP)`;
+				name = 'Word of Glory (Healing';
+				if (tag > 0) {
+					name += `, ${tag} HP`;
+				}
+				name += ')';
 				break;
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
 			case 'Bloodlust':
 			case 'Ferocious Inspiration':
+			case 'Heroism':
 			case 'Innervate':
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
+			case 'Time Warp':
 			case 'Unholy Frenzy':
 			case 'Power Infusion':
 				if (tag != -1) {
@@ -601,7 +613,7 @@ export class ActionId {
 				}
 			case 'Shadow Word: Death':
 				if (tag == 1) {
-					name += ' (No Orb)'
+					name += ' (No Orb)';
 				}
 			case 'Improved Steady Shot':
 				if (tag == 2) {
@@ -772,15 +784,15 @@ export class ActionId {
 			case 'Vampiric Touch':
 			case 'Shadow Word: Pain':
 				if (tag == 77486) {
-					name += " (Mastery)"
+					name += ' (Mastery)';
 				}
 
 				break;
 			case 'Cascade':
 				if (tag == 1) {
-					name += " (Bounce)"
+					name += ' (Bounce)';
 				}
-				
+
 				break;
 			case 'Holy Prism':
 				if (this.spellId === 114852) {
