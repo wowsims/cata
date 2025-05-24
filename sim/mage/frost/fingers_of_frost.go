@@ -43,7 +43,6 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellFrozenOrb | mage.MageSpellBlizzard,
 		Callback:       core.CallbackOnSpellHitDealt, //TODO: Does this count ticks of blizzard/frozen orb?
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// https://github.com/simulationcraft/simc/blob/e1190fed141feec2ec7a489e80caec5138c3a6ab/engine/class_modules/sc_mage.cpp#L4169
 			var fofProcChance = 0.15
 			if sim.Proc(fofProcChance, "FingersOfFrostProc") {
 				buff.Activate(sim)

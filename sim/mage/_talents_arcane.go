@@ -281,11 +281,6 @@ func (mage *Mage) registerArcanePowerCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 12042}
-	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: MageSpellsAllDamaging,
-		IntValue:  10,
-		Kind:      core.SpellMod_PowerCost_Pct,
-	})
 
 	arcanePowerDmgMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
@@ -306,9 +301,6 @@ func (mage *Mage) registerArcanePowerCD() {
 				mage.arcanePowerGCDmod.Activate()
 			}
 
-			arcanePowerCostMod.UpdateIntValue(core.TernaryInt32(mage.T12_4pc.IsActive(), -10, 20))
-			arcanePowerCostMod.Activate()
-
 			arcanePowerDmgMod.UpdateFloatValue(core.TernaryInt32(mage.T14_4pc.IsActive(), .3, .2))
 			arcanePowerDmgMod.Activate()
 		},
@@ -316,12 +308,7 @@ func (mage *Mage) registerArcanePowerCD() {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
-
-			arcanePowerCostMod.Deactivate()
 			arcanePowerDmgMod.Deactivate()
-			if mage.t13ProcAura != nil {
-				mage.t13ProcAura.Deactivate(sim)
-			}
 		},
 	})
 
@@ -340,10 +327,6 @@ func (mage *Mage) registerArcanePowerCD() {
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			mage.arcanePowerAura.Activate(sim)
-			if mage.T13_4pc.IsActive() {
-				// We need to manually set the CD to the correct value because of Arcane Flows talent being applied after the CD
-				spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration-time.Second*time.Duration(7*mage.t13ProcAura.GetStacks()))*spell.CdMultiplier))
-			}
 		},
 	})
 	mage.AddMajorCooldown(core.MajorCooldown{
