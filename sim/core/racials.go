@@ -72,6 +72,8 @@ func applyRaceEffects(agent Agent) {
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				if spell.Unit.HasRunicPowerBar() {
 					return character.CurrentRunicPower() <= character.maxRunicPower-15
+				} else if character.Class == proto.Class_ClassMonk {
+					return character.ComboPoints() <= character.maxComboPoints-1
 				} else if spell.Unit.HasEnergyBar() {
 					return character.CurrentEnergy() <= character.maxEnergy-15
 				} else if spell.Unit.HasRageBar() {
@@ -298,8 +300,10 @@ func applyRaceEffects(agent Agent) {
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 				baseDamage := sim.Roll(CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassUnknown, 8, 0.15000000596))
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+				healAmount := result.Damage * spell.Unit.PseudoStats.HealingTakenMultiplier
 				spell.DealDamage(sim, result)
 				result.Target = spell.Unit
+				result.Damage = healAmount
 				spell.DealHealing(sim, result)
 			},
 		})
