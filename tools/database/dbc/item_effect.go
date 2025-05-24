@@ -63,18 +63,19 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 	case ITEM_SPELLTRIGGER_ON_USE:
 		pe.Type = proto.ItemEffectType_EffectTypeOnUse
 		pe.Effect = &proto.ItemEffect_OnUse{OnUse: &proto.OnUseEffect{
-			Cooldown:         int32(e.CoolDownMSec / 1000),
-			CategoryId:       int32(e.SpellCategoryID),
-			CategoryCooldown: int32(e.CategoryCoolDownMSec / 1000),
+			CooldownMs:         int32(e.CoolDownMSec),
+			CategoryId:         int32(e.SpellCategoryID),
+			CategoryCooldownMs: int32(e.CategoryCoolDownMSec),
 		}}
 	case ITEM_SPELLTRIGGER_CHANCE_ON_HIT:
 		proc := &proto.ProcEffect{
 			ProcChance: float64(spTop.ProcChance) / 100,
-			Icd:        int32(spTop.ProcCategoryRecovery / 1000),
+			IcdMs:      spTop.ProcCategoryRecovery,
 			Ppm:        spTop.Rppm,
 			RppmScale:  int32(realPpmScale(spTop)),
 		}
-		if spTop.ProcChance == 0 {
+		// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
+		if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
 			proc.Ppm = 1
 		}
 		pe.Type = proto.ItemEffectType_EffectTypeProc

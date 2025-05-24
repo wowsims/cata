@@ -36,15 +36,15 @@ message ScalingItemEffectProperties {
 	int32 rppm_scale = 4;
 	// The key represents a Class enum key
 	map<int32, double> spec_modifiers = 5;
-	int32       icd         = 2;  // internal cooldown in seconds
+	int32       icd_ms         = 2;  // internal cooldown in milliseconds
   }
 
   message OnUseEffect {
-	int32 cooldown = 1;  // seconds between uses
+	int32 cooldown_ms = 1;  // milliseconds between uses
 
 	int32 category_id = 11;
 
-	int32 category_cooldown = 8;
+	int32 category_cooldown_ms = 8;  // category cooldown in milliseconds
   }
 
 message SpellEffect {

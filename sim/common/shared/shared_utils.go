@@ -170,10 +170,10 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			ProcChance: proc.ProcChance,
 			PPM:        proc.Ppm,
 			DPM:        dpm,
-			ICD:        time.Second * time.Duration(proc.Icd),
+			ICD:        time.Millisecond * time.Duration(proc.IcdMs),
 			Handler:    handler,
 		})
-		if proc.Icd != 0 {
+		if proc.IcdMs != 0 {
 			procAura.Icd = triggerAura.Icd
 		}
 		if isEnchant {
