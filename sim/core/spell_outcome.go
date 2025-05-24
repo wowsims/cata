@@ -10,7 +10,7 @@ import (
 //  3. Modify the damage if necessary.
 type OutcomeApplier func(sim *Simulation, result *SpellResult, attackTable *AttackTable)
 
-func (spell *Spell) OutcomeAlwaysHit(_ *Simulation, result *SpellResult, _ *AttackTable) {
+func (spell *Spell) OutcomeAlwaysHit(sim *Simulation, result *SpellResult, _ *AttackTable) {
 	result.Outcome = OutcomeHit
 	spell.SpellMetrics[result.Target.UnitIndex].Hits++
 }
@@ -227,7 +227,6 @@ func (spell *Spell) outcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 	unit := spell.Unit
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0
-
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
@@ -253,7 +252,6 @@ func (spell *Spell) OutcomeMeleeWhiteNoGlance(sim *Simulation, result *SpellResu
 	unit := spell.Unit
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0
-
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
@@ -418,6 +416,7 @@ func (spell *Spell) OutcomeMeleeSpecialCritOnlyNoHitCounter(sim *Simulation, res
 	spell.outcomeMeleeSpecialCritOnly(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
+
 	if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 		result.applyAttackTableHit(spell, countHits)
 	}
@@ -430,6 +429,7 @@ func (spell *Spell) OutcomeMeleeSpecialBlockAndCritNoHitCounter(sim *Simulation,
 	spell.outcomeMeleeSpecialBlockAndCrit(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMeleeSpecialBlockAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
+
 	if spell.Unit.PseudoStats.InFrontOfTarget {
 		if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 			result.applyAttackTableBlock(sim, spell, attackTable)
@@ -589,9 +589,14 @@ func (result *SpellResult) applyAttackTableBlock(sim *Simulation, spell *Spell, 
 	if sim.RandomFloat("Block Roll") < chance {
 		result.Outcome |= OutcomeBlock
 		if result.DidCrit() {
+			// Subtract Crits because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Crits--
 			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
 		} else if result.DidGlance() {
+			// Subtract Glances because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Glances--
 			spell.SpellMetrics[result.Target.UnitIndex].GlanceBlocks++
+
 		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
 		}
@@ -721,8 +726,12 @@ func (result *SpellResult) applyEnemyAttackTableBlock(sim *Simulation, spell *Sp
 	if sim.RandomFloat("Player Block") < chance {
 		result.Outcome |= OutcomeBlock
 		if result.DidCrit() {
+			// Subtract Crits because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Crits--
 			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
 		} else if result.DidGlance() {
+			// Subtract Glances because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Glances--
 			spell.SpellMetrics[result.Target.UnitIndex].GlanceBlocks++
 		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
