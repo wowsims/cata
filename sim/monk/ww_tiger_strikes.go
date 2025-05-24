@@ -27,7 +27,7 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 			mhConfig.Flags |= core.SpellFlagPassiveSpell
 			mhConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhiteNoGlance)
+				spell.CalcAndDealDamage(sim, target, baseDamage*unit.AutoAttacks.MHAuto().DamageMultiplier, spell.OutcomeMeleeWhiteNoGlance)
 			}
 			tigerStrikesMHSpell = unit.GetOrRegisterSpell(mhConfig)
 
@@ -38,7 +38,7 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 				ohConfig.Flags |= core.SpellFlagPassiveSpell
 				ohConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhiteNoGlance)
+					spell.CalcAndDealDamage(sim, target, baseDamage*unit.AutoAttacks.OHAuto().DamageMultiplier, spell.OutcomeMeleeWhiteNoGlance)
 				}
 				tigerStrikesOHSpell = unit.GetOrRegisterSpell(ohConfig)
 			}
@@ -51,7 +51,7 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// TODO: Verify if it actually procs even on misses, seems so based on logs and simc
-			if !tigerStrikesBuff.IsActive() /*|| !result.Landed()*/ || spell.Matches(MonkSpellTigerStrikes) {
+			if !tigerStrikesBuff.IsActive() || spell.Matches(MonkSpellTigerStrikes) {
 				return
 			}
 
@@ -62,18 +62,6 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 				tigerStrikesBuff.RemoveStack(sim)
 				tigerStrikesOHSpell.Cast(sim, result.Target)
 			}
-
-			// TODO: Simc has delays but some SoO logs I looked at didn't...
-			/*if spellToCast != nil {
-				delaySeconds := sim.RollWithLabel(0.8, 1.2, "Tiger Strikes Delay")
-				sim.AddPendingAction(&core.PendingAction{
-					NextActionAt: sim.CurrentTime + core.DurationFromSeconds(delaySeconds),
-					Priority:     core.ActionPriorityAuto,
-					OnAction: func(sim *core.Simulation) {
-						spellToCast.Cast(sim, result.Target)
-					},
-				})
-			}*/
 		},
 	})
 
@@ -81,7 +69,6 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 		Name:       "Tiger Strikes Buff Trigger" + unit.Label,
 		ActionID:   core.ActionID{SpellID: 120272},
 		Callback:   core.CallbackOnSpellHitDealt,
-		Outcome:    core.OutcomeLanded,
 		ProcMask:   core.ProcMaskWhiteHit,
 		ProcChance: 1,
 

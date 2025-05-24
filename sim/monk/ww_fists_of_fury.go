@@ -18,7 +18,9 @@ Your parry chance is increased by 100% while channeling.
 var fofActionID = core.ActionID{SpellID: 113656}
 var fofDebuffActionID = core.ActionID{SpellID: 117418}
 
-func fistsOfFuryTickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+func fistsOfFuryTickSpellConfig(monk *Monk, pet *StormEarthAndFirePet) core.SpellConfig {
+	numTargets := monk.Env.GetNumTargets()
+
 	config := core.SpellConfig{
 		ActionID:       fofDebuffActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -30,10 +32,26 @@ func fistsOfFuryTickSpellConfig(monk *Monk, isSEFClone bool, overrides core.Spel
 		DamageMultiplier: 7.5 * 0.89,
 		ThreatMultiplier: 1,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
-		ApplyEffects:     overrides.ApplyEffects,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			results := make([]*core.SpellResult, numTargets)
+			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
+
+			// Damage is split between all mobs, each hit rolls for hit/crit separately
+			baseDamage /= float64(numTargets)
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				currentTarget := sim.Environment.GetTargetUnit(idx)
+				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				results[idx] = result
+			}
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				spell.DealDamage(sim, results[idx])
+			}
+		},
 	}
 
-	if isSEFClone {
+	if pet != nil {
 		config.ActionID = fofDebuffActionID.WithTag(SEFSpellID)
 	}
 
@@ -79,27 +97,8 @@ func fistsOfFurySpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellCon
 
 func (monk *Monk) registerFistsOfFury() {
 	chiMetrics := monk.NewChiMetrics(fofActionID)
-	numTargets := monk.Env.GetNumTargets()
 
-	fistsOfFuryTickSpell := monk.RegisterSpell(fistsOfFuryTickSpellConfig(monk, false, core.SpellConfig{
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
-			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-
-			// Damage is split between all mobs, each hit rolls for hit/crit separately
-			baseDamage /= float64(numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				results[idx] = result
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
-			}
-		},
-	}))
+	fistsOfFuryTickSpell := monk.RegisterSpell(fistsOfFuryTickSpellConfig(monk, nil))
 
 	monk.RegisterSpell(fistsOfFurySpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
@@ -120,7 +119,7 @@ func (monk *Monk) registerFistsOfFury() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !monk.Moving && monk.GetChi() >= 3
+			return monk.GetChi() >= 3
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -138,27 +137,7 @@ func (monk *Monk) registerFistsOfFury() {
 }
 
 func (pet *StormEarthAndFirePet) registerSEFFistsOfFury() {
-	numTargets := pet.Env.GetNumTargets()
-
-	fistsOfFuryTickSpell := pet.RegisterSpell(fistsOfFuryTickSpellConfig(pet.owner, true, core.SpellConfig{
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
-			baseDamage := pet.owner.CalculateMonkStrikeDamage(sim, spell)
-
-			// Damage is split between all mobs, each hit rolls for hit/crit separately
-			baseDamage /= float64(numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				results[idx] = result
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
-			}
-		},
-	}))
+	fistsOfFuryTickSpell := pet.RegisterSpell(fistsOfFuryTickSpellConfig(pet.owner, pet))
 
 	pet.RegisterSpell(fistsOfFurySpellConfig(pet.owner, true, core.SpellConfig{
 		Cast: core.CastConfig{

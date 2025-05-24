@@ -26,16 +26,16 @@ func (monk *Monk) registerWayOfTheMonk() {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)
 			} else {
-				monk.AutoAttacks.MHConfig().DamageMultiplier *= 1.4
-				monk.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
+				monk.AutoAttacks.MHAuto().DamageMultiplier *= 1.4
+				monk.AutoAttacks.OHAuto().DamageMultiplier *= 1.4
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1/1.4)
 			} else {
-				monk.AutoAttacks.MHConfig().DamageMultiplier *= 1 / 1.4
-				monk.AutoAttacks.OHConfig().DamageMultiplier *= 1 / 1.4
+				monk.AutoAttacks.MHAuto().DamageMultiplier *= 1 / 1.4
+				monk.AutoAttacks.OHAuto().DamageMultiplier *= 1 / 1.4
 			}
 		},
 	}))
