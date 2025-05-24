@@ -1,7 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
-	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
 	PaladinSeal,
@@ -66,7 +65,6 @@ export const DefaultTalents = {
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });

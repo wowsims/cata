@@ -1,13 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
-import {
-	PaladinAura as PaladinAura,
-	PaladinMajorGlyph,
-	PaladinMinorGlyph,
-	PaladinSeal,
-	RetributionPaladin_Options as RetributionPaladinOptions,
-} from '../../core/proto/paladin.js';
+import { PaladinMajorGlyph, PaladinMinorGlyph, PaladinSeal, RetributionPaladin_Options as RetributionPaladinOptions } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
@@ -128,7 +122,6 @@ export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });

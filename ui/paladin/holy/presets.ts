@@ -2,7 +2,6 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Debuffs, Glyphs, Profession, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
 	HolyPaladin_Options as Paladin_Options,
-	PaladinAura,
 	PaladinMajorGlyph as MajorGlyph,
 	PaladinMinorGlyph as MinorGlyph,
 	PaladinSeal,
@@ -51,7 +50,6 @@ export const StandardTalents = {
 
 export const DefaultOptions = Paladin_Options.create({
 	classOptions: {
-		aura: PaladinAura.Devotion,
 		seal: PaladinSeal.Insight,
 	},
 });
