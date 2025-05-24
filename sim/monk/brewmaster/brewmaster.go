@@ -28,8 +28,7 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 	monkOptions := options.GetBrewmasterMonk()
 
 	bm := &BrewmasterMonk{
-		Monk:      monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
-		vengeance: &core.VengeanceTracker{},
+		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 	}
 
 	bm.AddStatDependency(stats.Strength, stats.AttackPower, 1)
@@ -38,13 +37,14 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 	// Brewmaster monks does a flat 85% of total damage as well as AP per DPS being 11 instead of 14
 	bm.PseudoStats.DamageDealtMultiplier *= 0.85
 
+	// Vengeance
+	bm.RegisterVengeance(120267, nil)
+
 	return bm
 }
 
 type BrewmasterMonk struct {
 	*monk.Monk
-
-	vengeance *core.VengeanceTracker
 
 	Stagger        *core.Spell
 	RefreshStagger func(sim *core.Simulation, target *core.Unit, damagePerTick float64)

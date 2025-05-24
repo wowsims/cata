@@ -46,7 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PREPATCH_GEAR_PRESET.gear,
+		gear: Presets.P1_BIS_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -113,7 +113,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Preset rotations that the user can quickly select.
 		rotations: [],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREPATCH_GEAR_PRESET],
+		gear: [Presets.P1_PREBIS_RICH_GEAR_PRESET, Presets.P1_PREBIS_POOR_GEAR_PRESET, Presets.P1_BIS_GEAR_PRESET],
 	},
 
 	autoRotation: (_: Player<Spec.SpecBrewmasterMonk>): APLRotation => {
@@ -134,16 +134,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

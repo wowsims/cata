@@ -3,13 +3,17 @@ import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/p
 import { BrewmasterMonk_Options as BrewmasterMonkOptions, MonkMajorGlyph, MonkMinorGlyph, MonkStance } from '../../core/proto/monk';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import DefaultGear from './gear_sets/default.gear.json';
+import P1BISGear from './gear_sets/p1_bis.gear.json';
+import P1PreBISPoorGear from './gear_sets/p1_prebis_poor.gear.json';
+import P1PreBISRichGear from './gear_sets/p1_prebis_rich.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PREPATCH_GEAR_PRESET = PresetUtils.makePresetGear('Default', DefaultGear);
+export const P1_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
+export const P1_PREBIS_RICH_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 💰', P1PreBISRichGear);
+export const P1_PREBIS_POOR_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 📉', P1PreBISPoorGear);
 
 // Preset options for EP weights
 export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -40,10 +44,10 @@ export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '123321',
 		glyphs: Glyphs.create({
 			major1: MonkMajorGlyph.GlyphOfSpinningCraneKick,
-			major2: MonkMajorGlyph.GlyphOfTouchOfKarma,
+			major2: MonkMajorGlyph.GlyphOfFistsOfFury,
 			major3: MonkMajorGlyph.GlyphOfZenMeditation,
 			minor1: MonkMinorGlyph.GlyphOfBlackoutKick,
 			minor2: MonkMinorGlyph.GlyphOfJab,

@@ -76,6 +76,7 @@ func (bm *BrewmasterMonk) registerElusiveBrew() {
 	}))
 
 	bm.Monk.RegisterOnNewBrewStacks(func(sim *core.Simulation, stacksToAdd int32) {
+		stackingAura.Activate(sim)
 		stackingAura.SetStacks(sim, stackingAura.GetStacks()+stacksToAdd)
 	})
 
