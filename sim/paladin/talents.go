@@ -867,7 +867,7 @@ func (paladin *Paladin) registerExecutionSentence() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				snapshotSpellPower := dot.SnapshotBaseDamage
 
-				tickMultiplier := tickMultipliers[dot.TickCount()+1]
+				tickMultiplier := tickMultipliers[dot.TickCount()]
 				dot.SnapshotBaseDamage = tickMultiplier*baseTickDamage +
 					tickMultiplier*tickSpCoef*snapshotSpellPower
 
