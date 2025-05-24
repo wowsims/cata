@@ -1312,7 +1312,7 @@ const idToCategoryMap: Record<number, number> = {
 	[66233]: SPELL_ACTION_CATEGORY + 0.1, // Ardent Defender
 	[31884]: SPELL_ACTION_CATEGORY + 0.2, // Avenging Wrath
 	[85696]: SPELL_ACTION_CATEGORY + 0.3, // Zealotry,
-	[86150]: SPELL_ACTION_CATEGORY + 0.4, // Guardian of Ancient Kings
+	[86698]: SPELL_ACTION_CATEGORY + 0.4, // Guardian of Ancient Kings
 	[86704]: SPELL_ACTION_CATEGORY + 0.5, // Ancient Fury
 
 	// Priest

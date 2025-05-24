@@ -40,7 +40,7 @@ func (paladin *Paladin) registerGuardianOfAncientKings() {
 }
 
 func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell {
-	actionID := core.ActionID{SpellID: 86150}
+	actionID := core.ActionID{SpellID: 86669}
 
 	paladin.GoakAura = paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings" + paladin.Label,
@@ -79,7 +79,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 }
 
 func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core.Spell {
-	actionID := core.ActionID{SpellID: 86150}
+	actionID := core.ActionID{SpellID: 86659}
 
 	paladin.GoakAura = paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings" + paladin.Label,
@@ -178,7 +178,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		},
 	})
 
-	actionID := core.ActionID{SpellID: 86150}
+	actionID := core.ActionID{SpellID: 86698}
 
 	paladin.GoakAura = paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings" + paladin.Label,
