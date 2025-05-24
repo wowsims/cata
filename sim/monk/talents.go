@@ -781,6 +781,9 @@ func (monk *Monk) registerDampenHarm() {
 	monk.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeSurvival,
+		ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
+			return monk.Spec == proto.Spec_SpecBrewmasterMonk && monk.CurrentHealthPercent() < 0.5
+		},
 	})
 }
 
