@@ -29,8 +29,6 @@ type ProtectionWarrior struct {
 
 	Options *proto.ProtectionWarrior_Options
 
-	core.VengeanceTracker
-
 	shieldSlam *core.Spell
 }
 
@@ -76,7 +74,7 @@ func (war *ProtectionWarrior) RegisterSpecializationEffects() {
 	war.AddStat(stats.BlockPercent, 15)
 
 	// Vengeance
-	core.ApplyVengeanceEffect(war.GetCharacter(), &war.VengeanceTracker, 93098)
+	war.RegisterVengeance(93098, war.DefensiveStanceAura)
 }
 
 func (war *ProtectionWarrior) RegisterMastery() {
