@@ -225,6 +225,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 }
 
 var ClassBaseScaling = map[proto.Class]float64{
+	proto.Class_ClassUnknown:     1710.000000,
 	proto.Class_ClassWarrior:     1246.298600,
 	proto.Class_ClassPaladin:     1141.926000,
 	proto.Class_ClassHunter:      1246.298600,
