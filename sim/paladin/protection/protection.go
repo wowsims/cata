@@ -119,7 +119,7 @@ func (prot *ProtectionPaladin) applyGuardedByTheLight() {
 	core.MakePermanent(prot.RegisterAura(core.Aura{
 		Label:      "Guarded by the Light" + prot.Label,
 		ActionID:   actionID,
-		BuildPhase: core.CharacterBuildPhaseBuffs,
+		BuildPhase: core.CharacterBuildPhaseTalents,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{

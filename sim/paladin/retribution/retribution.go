@@ -171,8 +171,10 @@ func (ret *RetributionPaladin) applySwordOfLight() {
 	}
 
 	core.MakePermanent(ret.RegisterAura(core.Aura{
-		Label:    "Sword of Light" + ret.Label,
-		ActionID: actionID,
+		Label:      "Sword of Light" + ret.Label,
+		ActionID:   actionID,
+		BuildPhase: core.CharacterBuildPhaseTalents,
+
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			oldExtraCastCondition := ret.HammerOfWrath.ExtraCastCondition
 			ret.HammerOfWrath.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
