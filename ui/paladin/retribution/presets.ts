@@ -62,12 +62,13 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 		seal: PaladinSeal.Truth,
 	},
 });
+
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 76088, // Flask of Winter's Bite
-	foodId: 74646, // Black Pepper Ribs and Shrimp
+	// flaskId: 76088, // Flask of Winter's Bite
+	// foodId: 74646, // Black Pepper Ribs and Shrimp
 	potId: 76095, // Potion of Mogu Power
 	prepotId: 76095, // Potion of Mogu Power
-	tinkerId: 126734, // Synapse Springs Mark II
+	// tinkerId: 126734, // Synapse Springs Mark II
 });
 
 export const OtherDefaults = {

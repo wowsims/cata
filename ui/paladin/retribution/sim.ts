@@ -5,7 +5,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, UnitStats } from '../../core/proto/common.js';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as PaladinInputs from '../inputs.js';
 import * as RetributionInputs from './inputs.js';
@@ -27,6 +27,31 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Paladin),
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
+
+	overwriteDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
+		const playerStats = player.getCurrentStats();
+
+		const statMod = (current: UnitStats, previous?: UnitStats) => {
+			return new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(current).subtract(Stats.fromProto(previous)).getStat(Stat.StatAttackPower) * 0.5);
+		};
+
+		const base = statMod(playerStats.baseStats!);
+		const gear = statMod(playerStats.gearStats!, playerStats.baseStats);
+		const talents = statMod(playerStats.talentsStats!, playerStats.gearStats);
+		const buffs = statMod(playerStats.buffsStats!, playerStats.talentsStats);
+		const consumes = statMod(playerStats.consumesStats!, playerStats.buffsStats);
+		const final = new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(playerStats.finalStats).getStat(Stat.StatAttackPower) * 0.5);
+
+		return {
+			base: base,
+			gear: gear,
+			talents: talents,
+			buffs: buffs,
+			consumes: consumes,
+			final: final,
+			stats: [Stat.StatSpellPower],
+		};
+	},
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -52,6 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			Stat.StatSpellPower,
 			Stat.StatMana,
 			Stat.StatHealth,
+			Stat.StatStamina,
 			Stat.StatMasteryRating,
 		],
 		[
@@ -83,7 +109,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			arcaneBrilliance: true,
 			blessingOfKings: true,
 			blessingOfMight: true,
+			bloodlust: true,
 			elementalOath: true,
+			heroism: true,
 			powerWordFortitude: true,
 			serpentsSwiftness: true,
 			timeWarp: true,
@@ -109,16 +137,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	otherInputs: {
 		inputs: [RetributionInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
-	itemSwapSlots: [
-		ItemSlot.ItemSlotHead,
-		ItemSlot.ItemSlotShoulder,
-		ItemSlot.ItemSlotChest,
-		ItemSlot.ItemSlotHands,
-		ItemSlot.ItemSlotLegs,
-		ItemSlot.ItemSlotTrinket1,
-		ItemSlot.ItemSlotTrinket2,
-		ItemSlot.ItemSlotMainHand,
-	],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -131,7 +149,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		talents: [Presets.DefaultTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.P1_GEAR_PRESET],
-		itemSwaps: [],
 		builds: [Presets.P1_BUILD_PRESET],
 	},
 
