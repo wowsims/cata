@@ -272,12 +272,12 @@ export const DEBUFFS_CONFIG = [
 	},
 	{
 		config: DamageReduction,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
 	{
 		config: CastSpeedDebuff,
-		picker: IconPicker,
+		picker: MultiIconPicker,
 		stats: [Stat.StatArmor],
 	},
 ] as PickerStatOptions[];

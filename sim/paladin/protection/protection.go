@@ -30,9 +30,8 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 	protOptions := options.GetProtectionPaladin()
 
 	prot := &ProtectionPaladin{
-		Paladin:   paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
-		Options:   protOptions.Options,
-		vengeance: &core.VengeanceTracker{},
+		Paladin: paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
+		Options: protOptions.Options,
 	}
 
 	return prot
@@ -42,8 +41,6 @@ type ProtectionPaladin struct {
 	*paladin.Paladin
 
 	Options *proto.ProtectionPaladin_Options
-
-	vengeance *core.VengeanceTracker
 }
 
 func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {
@@ -78,7 +75,8 @@ func (prot *ProtectionPaladin) registerSpecializationEffects() {
 	prot.applyGrandCrusader()
 	prot.applyArdentDefender()
 
-	core.ApplyVengeanceEffect(&prot.Character, prot.vengeance, 84839)
+	// Vengeance
+	prot.RegisterVengeance(84839, nil)
 
 	prot.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,

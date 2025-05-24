@@ -29,9 +29,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	selfBuffs := druid.SelfBuffs{}
 
 	bear := &GuardianDruid{
-		Druid:     druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
-		Options:   tankOptions.Options,
-		vengeance: &core.VengeanceTracker{},
+		Druid:   druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
+		Options: tankOptions.Options,
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
@@ -53,8 +52,7 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 type GuardianDruid struct {
 	*druid.Druid
 
-	Options   *proto.GuardianDruid_Options
-	vengeance *core.VengeanceTracker
+	Options *proto.GuardianDruid_Options
 
 	// Aura references
 	EnrageAura *core.Aura
@@ -75,17 +73,17 @@ func (bear *GuardianDruid) ApplyTalents() {
 	// bear.Druid.ApplyTalents()
 	bear.applyMastery()
 	bear.applyThickHide()
-	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
+	bear.RegisterVengeance(84840, bear.BearFormAura)
 }
 
 func (bear *GuardianDruid) applyMastery() {
 	const baseMasteryMod = 1.16
 	const masteryModPerPoint = 0.02
 
-	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod + masteryModPerPoint * bear.GetMasteryPoints())
+	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod+masteryModPerPoint*bear.GetMasteryPoints())
 
 	bear.AddOnMasteryStatChanged(func(sim *core.Simulation, _ float64, newMasteryRating float64) {
-		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod + masteryModPerPoint * core.MasteryRatingToMasteryPoints(newMasteryRating))
+		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod+masteryModPerPoint*core.MasteryRatingToMasteryPoints(newMasteryRating))
 	})
 
 	bear.BearFormAura.AttachStatDependency(armorMultiplierDep)
