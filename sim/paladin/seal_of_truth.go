@@ -68,6 +68,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 			dot.Apply(sim)
 			dot.AddStack(sim)
+			dot.TakeSnapshot(sim, false)
 		},
 	})
 
