@@ -174,8 +174,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 50512.08047
-  tps: 65977.80919
+  dps: 50055.42052
+  tps: 67256.14229
   hps: 26.77086
  }
 }
@@ -470,8 +470,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 48166.51575
-  tps: 67182.30583
+  dps: 48168.62291
+  tps: 66190.43828
   hps: 26.77086
  }
 }
@@ -510,8 +510,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 50759.34216
-  tps: 69813.74017
+  dps: 50760.84236
+  tps: 69815.65267
   hps: 26.77086
  }
 }
@@ -567,8 +567,8 @@ dps_results: {
  key: "TestFeral-AllItems-DelivererStoneofWisdom-92115"
  value: {
   dps: 48108.44402
-  tps: 64866.03098
-  hps: 29.41842
+  tps: 64864.91107
+  hps: 29.11958
  }
 }
 dps_results: {
@@ -990,8 +990,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 50641.05655
-  tps: 67811.85447
+  dps: 50642.60117
+  tps: 67813.75363
   hps: 26.77086
  }
 }
@@ -1534,8 +1534,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 49401.51562
-  tps: 66418.43343
+  dps: 49402.22647
+  tps: 66419.30648
   hps: 26.77086
  }
 }
@@ -1622,16 +1622,16 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 48649.59025
-  tps: 66439.78769
+  dps: 48708.68147
+  tps: 66640.95155
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 50754.68258
-  tps: 69250.81356
+  dps: 50756.22674
+  tps: 69252.76869
   hps: 26.77086
  }
 }
@@ -1654,9 +1654,9 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-NaturalistStoneofWisdom-92139"
  value: {
-  dps: 48226.36801
-  tps: 66482.67136
-  hps: 29.95157
+  dps: 48225.43989
+  tps: 66480.20332
+  hps: 29.47529
  }
 }
 dps_results: {
@@ -1718,8 +1718,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 49527.72736
-  tps: 67619.08921
+  dps: 49528.43778
+  tps: 67619.99592
   hps: 26.77086
  }
 }
@@ -1735,7 +1735,7 @@ dps_results: {
  key: "TestFeral-AllItems-PartisanStoneofWisdom-92145"
  value: {
   dps: 48056.63373
-  tps: 66040.26212
+  tps: 66039.57295
   hps: 28.5205
  }
 }
@@ -2102,8 +2102,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 49357.95073
-  tps: 67486.4763
+  dps: 49358.65348
+  tps: 67487.37001
   hps: 26.77086
  }
 }
@@ -2230,8 +2230,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 48713.40526
-  tps: 67011.93123
+  dps: 48695.26042
+  tps: 67070.53407
   hps: 26.77086
  }
 }
@@ -2502,8 +2502,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 50799.90689
-  tps: 70022.41211
+  dps: 50801.4423
+  tps: 70024.35423
   hps: 26.77086
  }
 }
@@ -2526,9 +2526,9 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
-  dps: 48248.29169
-  tps: 66003.80492
-  hps: 30.28829
+  dps: 48247.36357
+  tps: 66001.50917
+  hps: 29.69994
  }
 }
 dps_results: {
@@ -2774,16 +2774,16 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 48221.4106
-  tps: 66958.96205
+  dps: 48122.40798
+  tps: 65817.48173
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 48558.63789
-  tps: 64404.30445
+  dps: 48622.41476
+  tps: 64372.36007
   hps: 40.08485
  }
 }
@@ -2798,16 +2798,16 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 48218.87974
-  tps: 67070.17123
+  dps: 48087.63205
+  tps: 65874.41014
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 48821.19168
-  tps: 68326.49173
+  dps: 48828.63065
+  tps: 67279.48548
   hps: 26.77086
  }
 }
@@ -2886,8 +2886,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 50630.57686
-  tps: 68987.61361
+  dps: 50632.11899
+  tps: 68989.5402
   hps: 26.77086
  }
 }
@@ -2903,8 +2903,8 @@ dps_results: {
  key: "TestFeral-AllItems-WaterdancerStoneofWisdom-92402"
  value: {
   dps: 48099.6542
-  tps: 65645.79002
-  hps: 29.25006
+  tps: 65644.58396
+  hps: 29.00725
  }
 }
 dps_results: {

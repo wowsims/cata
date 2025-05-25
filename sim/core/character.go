@@ -721,7 +721,7 @@ func (character *Character) GetDefensiveTrinketCD() *Timer {
 	return character.GetOrInitTimer(&character.defensiveTrinketCD)
 }
 func (character *Character) GetOffensiveTrinketCD() *Timer {
-	return character.GetOrInitTimer(&character.offensiveTrinketCD)
+	return character.GetOrInitSpellCategoryTimer(1141)
 }
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)

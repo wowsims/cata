@@ -142,8 +142,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-BindingPromise-67037"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5300.29889
  }
 }
@@ -174,8 +174,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 22165.08178
-  tps: 111515.05641
+  dps: 22157.31582
+  tps: 111494.98206
   hps: 5300.29889
  }
 }
@@ -294,8 +294,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5300.29889
  }
 }
@@ -480,7 +480,7 @@ dps_results: {
  value: {
   dps: 21971.2473
   tps: 110542.97145
-  hps: 5396.88972
+  hps: 5383.68889
  }
 }
 dps_results: {
@@ -542,9 +542,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 21982.70402
-  tps: 110706.57085
-  hps: 5329.18355
+  dps: 22035.50827
+  tps: 110776.03135
+  hps: 5418.53796
  }
 }
 dps_results: {
@@ -814,9 +814,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 22032.50861
-  tps: 110108.18829
-  hps: 5370.00568
+  dps: 21885.92372
+  tps: 109743.29786
+  hps: 5430.40446
  }
 }
 dps_results: {
@@ -926,8 +926,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5498.87715
  }
 }
@@ -1214,16 +1214,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21925.94442
+  tps: 110314.83672
   hps: 5300.29889
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21925.94442
+  tps: 110314.83672
   hps: 5300.29889
  }
 }
@@ -1518,8 +1518,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 22940.20205
-  tps: 115664.82163
+  dps: 22940.85946
+  tps: 115668.27079
   hps: 5309.79177
  }
 }
@@ -1566,16 +1566,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21925.94442
+  tps: 110314.83672
   hps: 5300.29889
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21925.94442
+  tps: 110314.83672
   hps: 5300.29889
  }
 }
@@ -1598,17 +1598,17 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5537.47667
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 21946.70627
-  tps: 109716.32295
-  hps: 5380.21
+  dps: 22074.9867
+  tps: 110726.07442
+  hps: 5407.62723
  }
 }
 dps_results: {
@@ -1694,8 +1694,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 22959.3479
-  tps: 115786.09258
+  dps: 22960.02519
+  tps: 115789.66767
   hps: 5309.79177
  }
 }
@@ -2110,8 +2110,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 22933.44098
-  tps: 115639.70807
+  dps: 22934.09136
+  tps: 115643.13115
   hps: 5309.79177
  }
 }
@@ -2246,9 +2246,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 21953.51415
-  tps: 110706.76446
-  hps: 5378.47021
+  dps: 22000.97809
+  tps: 110917.11964
+  hps: 5377.75715
  }
 }
 dps_results: {
@@ -2494,9 +2494,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 21905.39602
-  tps: 109963.8014
-  hps: 5348.96321
+  dps: 22045.78583
+  tps: 111039.61989
+  hps: 5359.02722
  }
 }
 dps_results: {
@@ -2686,16 +2686,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5524.45514
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5553.28852
  }
 }
@@ -2752,7 +2752,7 @@ dps_results: {
  value: {
   dps: 21770.95753
   tps: 109060.03619
-  hps: 5441.71354
+  hps: 5430.52625
  }
 }
 dps_results: {
@@ -2760,7 +2760,7 @@ dps_results: {
  value: {
   dps: 21867.37387
   tps: 109918.82309
-  hps: 5533.03577
+  hps: 5518.45043
  }
 }
 dps_results: {
@@ -2768,7 +2768,7 @@ dps_results: {
  value: {
   dps: 22332.07157
   tps: 112492.08978
-  hps: 5410.8818
+  hps: 5410.71328
  }
 }
 dps_results: {
@@ -2776,7 +2776,7 @@ dps_results: {
  value: {
   dps: 22037.95997
   tps: 111016.06675
-  hps: 5463.68731
+  hps: 5450.80034
  }
 }
 dps_results: {
@@ -2784,7 +2784,7 @@ dps_results: {
  value: {
   dps: 21971.2473
   tps: 110542.97145
-  hps: 5401.22696
+  hps: 5387.28811
  }
 }
 dps_results: {
@@ -2792,7 +2792,7 @@ dps_results: {
  value: {
   dps: 21971.2473
   tps: 110542.97145
-  hps: 5401.22696
+  hps: 5401.05871
  }
 }
 dps_results: {

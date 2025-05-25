@@ -106,10 +106,16 @@ func (e *ItemEffect) ToProto(itemLevel int, levelState proto.ItemLevelState) (*p
 }
 
 func resolveStatsSpell(spellID int) int {
-
+	for _, se := range dbcInstance.SpellEffects[spellID] {
+		switch se.EffectAura {
+		case A_MOD_STAT, A_MOD_RATING, A_MOD_RANGED_ATTACK_POWER, A_MOD_ATTACK_POWER, A_MOD_DAMAGE_DONE, A_MOD_TARGET_RESISTANCE, A_MOD_RESISTANCE, A_MOD_INCREASE_ENERGY,
+			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL:
+			return spellID
+		}
+	}
+	// If we cant resolve the spell in the first loop, we follow proc triggers downwards
 	for _, se := range dbcInstance.SpellEffects[spellID] {
 		if se.EffectAura == A_PROC_TRIGGER_SPELL {
-
 			return resolveStatsSpell(se.EffectTriggerSpell)
 		}
 	}
@@ -178,11 +184,7 @@ func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
 	for i := range dbcInstance.ItemEffectsByParentID[int(parsed.Id)] {
 
 		e := &dbcInstance.ItemEffectsByParentID[int(parsed.Id)][i]
-		props := buildScalingProps(resolveStatsSpell(e.SpellID), int(parsed.Ilvl))
-		if parsed.Id == 92118 {
-			fmt.Println("Item found hello", resolveStatsSpell(e.SpellID), int(parsed.Ilvl))
-			fmt.Println(props)
-		}
+		props := buildScalingProps(resolveStatsSpell(e.SpellID), int(parsed.ScalingOptions[int32(proto.ItemLevelState_Base)].Ilvl))
 		if len(props.Stats) > 0 {
 			baseEff = e
 			break
@@ -197,6 +199,9 @@ func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
 
 	// add scaling for each saved state
 	for state, opt := range parsed.ScalingOptions {
+		if parsed.Id == 92127 {
+			fmt.Println("hello2", parsed, parsed.Ilvl, opt.Ilvl, opt)
+		}
 		ilvl := int(opt.Ilvl)
 		props := buildScalingProps(statsSpellID, ilvl)
 		pe.ScalingOptions[state] = props

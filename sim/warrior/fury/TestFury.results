@@ -11,7 +11,7 @@ character_stats_results: {
   final_stats: 412
   final_stats: 692
   final_stats: 0
-  final_stats: 2731.66358
+  final_stats: 2731.66357
   final_stats: 1315
   final_stats: 25247.454
   final_stats: 209
@@ -172,8 +172,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 58755.35238
-  tps: 40913.78271
+  dps: 58252.76783
+  tps: 40445.2748
  }
 }
 dps_results: {
@@ -1348,8 +1348,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 60301.57965
-  tps: 41969.31293
+  dps: 60303.11294
+  tps: 41970.53716
  }
 }
 dps_results: {
@@ -1530,8 +1530,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 60311.10195
-  tps: 41975.47351
+  dps: 60312.64512
+  tps: 41976.70413
  }
 }
 dps_results: {
@@ -1868,8 +1868,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 60312.73126
-  tps: 41976.62433
+  dps: 60314.27613
+  tps: 41977.85615
  }
 }
 dps_results: {

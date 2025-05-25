@@ -142,9 +142,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-BindingPromise-67037"
  value: {
-  dps: 48434.65118
-  tps: 45848.63822
-  hps: 1665.75456
+  dps: 48345.77203
+  tps: 45773.57782
+  hps: 1671.26516
  }
 }
 dps_results: {
@@ -174,9 +174,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 48903.85388
-  tps: 46220.74137
-  hps: 1665.75456
+  dps: 48658.86922
+  tps: 46019.75436
+  hps: 1671.26516
  }
 }
 dps_results: {
@@ -294,9 +294,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 48434.65118
-  tps: 45848.63822
-  hps: 1665.75456
+  dps: 48345.77203
+  tps: 45773.57782
+  hps: 1671.26516
  }
 }
 dps_results: {
@@ -470,9 +470,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 48442.56535
-  tps: 45856.55239
-  hps: 1688.4029
+  dps: 48438.85253
+  tps: 45852.83957
+  hps: 1678.18726
  }
 }
 dps_results: {
@@ -534,9 +534,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 49551.49275
-  tps: 46914.43196
-  hps: 1673.39443
+  dps: 49833.65981
+  tps: 47139.66912
+  hps: 1699.54244
  }
 }
 dps_results: {
@@ -814,9 +814,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 49572.27386
-  tps: 46927.78892
-  hps: 1677.87789
+  dps: 50037.72605
+  tps: 47348.45854
+  hps: 1704.82512
  }
 }
 dps_results: {
@@ -918,9 +918,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 48453.95991
-  tps: 45867.94695
-  hps: 1725.55655
+  dps: 48365.17967
+  tps: 45792.98547
+  hps: 1731.26499
  }
 }
 dps_results: {
@@ -1214,17 +1214,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 49012.84293
-  tps: 46426.82997
-  hps: 1665.75456
+  dps: 49249.03591
+  tps: 46623.88688
+  hps: 1670.5814
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 49088.55852
-  tps: 46502.54556
-  hps: 1665.75456
+  dps: 49325.17995
+  tps: 46700.03092
+  hps: 1670.5814
  }
 }
 dps_results: {
@@ -1526,8 +1526,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 50487.73284
-  tps: 47713.92484
+  dps: 50489.28744
+  tps: 47715.32442
   hps: 1668.53011
  }
 }
@@ -1574,17 +1574,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 49171.15734
-  tps: 46585.14438
-  hps: 1665.75456
+  dps: 49408.24617
+  tps: 46783.09714
+  hps: 1670.5814
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 49171.15734
-  tps: 46585.14438
-  hps: 1665.75456
+  dps: 49408.24617
+  tps: 46783.09714
+  hps: 1670.5814
  }
 }
 dps_results: {
@@ -1606,17 +1606,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 48457.71313
-  tps: 45871.70017
-  hps: 1737.18083
+  dps: 48368.95212
+  tps: 45796.75792
+  hps: 1742.92772
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 49505.36861
-  tps: 46891.20104
-  hps: 1682.24888
+  dps: 49813.53006
+  tps: 47171.794
+  hps: 1688.82412
  }
 }
 dps_results: {
@@ -1726,8 +1726,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 50630.55665
-  tps: 47837.92006
+  dps: 50632.11066
+  tps: 47839.30576
   hps: 1675.56119
  }
 }
@@ -2142,8 +2142,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 50550.3764
-  tps: 47769.2239
+  dps: 50551.95184
+  tps: 47770.63995
   hps: 1672.48275
  }
 }
@@ -2294,9 +2294,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 49598.23284
-  tps: 46940.71519
-  hps: 1679.5888
+  dps: 49785.82177
+  tps: 47100.45214
+  hps: 1692.28343
  }
 }
 dps_results: {
@@ -2542,9 +2542,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 49553.18448
-  tps: 46893.00512
-  hps: 1687.91244
+  dps: 49789.02491
+  tps: 47121.91315
+  hps: 1684.2252
  }
 }
 dps_results: {
@@ -2742,17 +2742,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 48456.44698
-  tps: 45870.43402
-  hps: 1733.25938
+  dps: 48367.67949
+  tps: 45795.48529
+  hps: 1738.99331
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 48459.25059
-  tps: 45873.23763
-  hps: 1741.94258
+  dps: 48370.49746
+  tps: 45798.30326
+  hps: 1747.70523
  }
 }
 dps_results: {
@@ -2806,49 +2806,49 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 48983.13655
-  tps: 46374.06573
-  hps: 1735.1709
+  dps: 48979.81112
+  tps: 46370.7403
+  hps: 1725.27369
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 48935.1046
-  tps: 46297.07941
-  hps: 1705.94445
+  dps: 48931.98301
+  tps: 46293.95783
+  hps: 1696.69747
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 49062.96553
-  tps: 46430.50114
-  hps: 1701.02741
+  dps: 49062.95174
+  tps: 46430.48735
+  hps: 1700.98756
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 49085.17488
-  tps: 46478.75541
-  hps: 1720.77136
+  dps: 49082.10426
+  tps: 46475.68479
+  hps: 1712.03039
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 49223.02071
-  tps: 46637.00775
-  hps: 1689.41988
+  dps: 49219.13385
+  tps: 46633.12089
+  hps: 1678.72387
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 48442.92072
-  tps: 45856.90776
-  hps: 1689.41988
+  dps: 48442.90694
+  tps: 45856.89398
+  hps: 1689.38043
  }
 }
 dps_results: {

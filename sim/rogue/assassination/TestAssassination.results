@@ -202,8 +202,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 28927.21695
-  tps: 20538.32403
+  dps: 28806.73327
+  tps: 20452.78062
  }
 }
 dps_results: {
@@ -496,8 +496,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 29213.20918
-  tps: 20741.37852
+  dps: 29214.42159
+  tps: 20742.23933
  }
 }
 dps_results: {
@@ -517,8 +517,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 28186.60048
-  tps: 20012.48634
+  dps: 28339.94973
+  tps: 20121.36431
  }
 }
 dps_results: {
@@ -741,8 +741,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 28225.94241
-  tps: 20040.41911
+  dps: 28411.94922
+  tps: 20172.48395
  }
 }
 dps_results: {
@@ -895,8 +895,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 29239.10946
-  tps: 20759.76771
+  dps: 29240.31365
+  tps: 20760.62269
  }
 }
 dps_results: {
@@ -1364,8 +1364,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 28298.16449
-  tps: 20091.69679
+  dps: 28298.72604
+  tps: 20092.09549
  }
 }
 dps_results: {
@@ -1448,15 +1448,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 28005.52676
-  tps: 19883.924
+  dps: 28294.47395
+  tps: 20089.07651
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 29306.40607
-  tps: 20807.54831
+  dps: 29307.63264
+  tps: 20808.41917
  }
 }
 dps_results: {
@@ -1518,8 +1518,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 28299.10507
-  tps: 20092.3646
+  dps: 28299.6676
+  tps: 20092.76399
  }
 }
 dps_results: {
@@ -1849,8 +1849,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 28299.21868
-  tps: 20092.44526
+  dps: 28299.78132
+  tps: 20092.84474
  }
 }
 dps_results: {
@@ -1968,8 +1968,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 28040.87266
-  tps: 19909.01959
+  dps: 28401.18403
+  tps: 20164.84066
  }
 }
 dps_results: {
@@ -2192,15 +2192,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 28169.21178
-  tps: 20000.14037
+  dps: 28387.47732
+  tps: 20155.1089
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 29261.8343
-  tps: 20775.90235
+  dps: 29263.05481
+  tps: 20776.76892
  }
 }
 dps_results: {
@@ -2542,8 +2542,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 29273.00663
-  tps: 20783.8347
+  dps: 29274.22977
+  tps: 20784.70314
  }
 }
 dps_results: {

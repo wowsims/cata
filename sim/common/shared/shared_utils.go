@@ -289,13 +289,19 @@ func NewSimpleStatActive(itemID int32) {
 			Timer:    character.NewTimer(),
 			Duration: time.Duration(onUseData.CooldownMs) * time.Millisecond,
 		}
+		// if SpellCategoryID is 0 we seemingly do not share cd with anything
+		// Say Darkmoon Card: Earthquake and Ruthless Gladiator's Emblem of Cruelty even though tooltip shows as such
+		if onUseData.CategoryId > 0 {
+			sharedCDDuration := time.Duration(onUseData.CategoryCooldownMs) * time.Millisecond
+			if sharedCDDuration == 0 {
+				sharedCDDuration = time.Second * time.Duration(itemEffect.EffectDuration)
+			}
 
-		sharedCDDuration := time.Duration(onUseData.CategoryCooldownMs) * time.Millisecond
-
-		sharedCDTimer := character.GetOrInitSpellCategoryTimer(onUseData.CategoryId)
-		spellConfig.Cast.SharedCD = core.Cooldown{
-			Timer:    sharedCDTimer,
-			Duration: sharedCDDuration,
+			sharedCDTimer := character.GetOrInitSpellCategoryTimer(onUseData.CategoryId)
+			spellConfig.Cast.SharedCD = core.Cooldown{
+				Timer:    sharedCDTimer,
+				Duration: sharedCDDuration,
+			}
 		}
 
 		core.RegisterTemporaryStatsOnUseCD(character, itemEffect.BuffName, stats.FromProtoMap(itemEffect.ScalingOptions[int32(scalingSelector)].Stats), time.Second*time.Duration(itemEffect.EffectDuration), spellConfig)
