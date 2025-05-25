@@ -29,12 +29,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		Stat.StatMasteryRating,
 		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -51,17 +46,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PREPATCH_GEAR_PRESET.gear,
+		gear: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 27],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
 				postCapEPs: [0, 0],
@@ -81,7 +76,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			curseOfElements:true,
+			curseOfElements: true,
 			physicalVulnerability: true,
 			weakenedArmor: true,
 		}),
@@ -94,7 +89,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.InFrontOfTarget, OtherInputs.InputDelay],
+		inputs: [
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.HpPercentForDefensives,
+			OtherInputs.IncomingHps,
+			OtherInputs.HealingCadence,
+			OtherInputs.HealingCadenceVariation,
+			OtherInputs.AbsorbFrac,
+			OtherInputs.BurstWindow,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -106,13 +111,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [],
+		rotations: [Presets.ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREPATCH_GEAR_PRESET],
+		gear: [
+			Presets.P1_PREBIS_RICH_GEAR_PRESET,
+			Presets.P1_PREBIS_POOR_GEAR_PRESET,
+			Presets.P1_BIS_BALANCED_DW_GEAR_PRESET,
+			Presets.P1_BIS_BALANCED_2H_GEAR_PRESET,
+			Presets.P1_BIS_OFFENSIVE_DW_GEAR_PRESET,
+			Presets.P1_BIS_OFFENSIVE_2H_GEAR_PRESET,
+		],
 	},
 
 	autoRotation: (_: Player<Spec.SpecBrewmasterMonk>): APLRotation => {
-		return APLRotation.create();
+		return Presets.ROTATION_PRESET.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -129,16 +141,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

@@ -19,7 +19,7 @@ func (ww *WindwalkerMonk) registerEnergizingBrew() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 1,
-				NumTicks: 6,
+				NumTicks: int(aura.Duration.Seconds()),
 				OnAction: func(sim *core.Simulation) {
 					ww.AddEnergy(sim, 10, energyMetrics)
 				},
@@ -45,5 +45,6 @@ func (ww *WindwalkerMonk) registerEnergizingBrew() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			energizingBrewAura.Activate(sim)
 		},
+		RelatedSelfBuff: energizingBrewAura,
 	})
 }

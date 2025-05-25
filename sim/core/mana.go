@@ -86,6 +86,7 @@ func (unit *Unit) AddMana(sim *Simulation, amount float64, metrics *ResourceMetr
 
 	oldMana := unit.CurrentMana()
 	newMana := min(oldMana+amount, unit.MaxMana())
+
 	metrics.AddEvent(amount, newMana-oldMana)
 
 	if sim.Log != nil {
