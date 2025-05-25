@@ -34,9 +34,13 @@ const (
 	SpellMaskHolyWrath
 
 	// Holy abilities
+	SpellMaskDenounce
 	SpellMaskDivineLight
+	SpellMaskDivinePlea
 	SpellMaskHolyRadiance
-	SpellMaskHolyShock
+	SpellMaskHolyShockDamage
+	SpellMaskHolyShockHeal
+	SpellMaskLightOfDawn
 
 	// Talents
 	SpellMaskEternalFlame
@@ -83,6 +87,8 @@ const SpellMaskSanctityOfBattleProt = SpellMaskSanctityOfBattleBase |
 	SpellMaskHolyWrath |
 	SpellMaskAvengersShield |
 	SpellMaskShieldOfTheRighteous
+
+const SpellMaskHolyShock = SpellMaskHolyShockDamage | SpellMaskHolyShockHeal
 
 const SpellMaskSanctityOfBattleHoly = SpellMaskSanctityOfBattleBase |
 	SpellMaskHolyShock

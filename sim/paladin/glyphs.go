@@ -12,8 +12,23 @@ func (paladin *Paladin) applyGlyphs() {
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengingWrath) {
 		paladin.registerGlyphOfAvengingWrath()
 	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer) {
+		// TODO: Handle in seal_of_insight.go
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfBurdenOfGuilt) {
+		paladin.registerGlyphOfBurdenOfGuilt()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDazingShield) {
+		paladin.registerGlyphOfDazingShield()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDenounce) {
+		paladin.registerGlyphOfDenounce()
+	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDevotionAura) {
 		paladin.registerGlyphOfDevotionAura()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivinePlea) {
+		paladin.registerGlyphOfDivinePlea()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivineProtection) {
 		// Handled in divine_protection.go
@@ -21,11 +36,17 @@ func (paladin *Paladin) applyGlyphs() {
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivineStorm) {
 		paladin.registerGlyphOfDivineStorm()
 	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivinity) {
+		paladin.registerGlyphOfDivinity()
+	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDoubleJeopardy) {
 		paladin.registerGlyphOfDoubleJeopardy()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFinalWrath) {
 		// Handled in protection/holy_wrath.go
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFlashOfLight) {
+		paladin.registerGlyphOfFlashOfLight()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFocusedShield) {
 		// Handled in protection/avengers_shield.go
@@ -36,14 +57,26 @@ func (paladin *Paladin) applyGlyphs() {
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHarshWords) {
 		paladin.registerGlyphOfHarshWords()
 	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHolyShock) {
+		paladin.registerGlyphOfHolyShock()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfIllumination) {
+		paladin.registerGlyphOfIllumination()
+	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfImmediateTruth) {
 		paladin.registerGlyphOfImmediateTruth()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfLightOfDawn) {
+		paladin.registerGlyphOfLightOfDawn()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfMassExorcism) {
 		// Handled in retribution/exorcism.go
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfProtectorOfTheInnocent) {
 		paladin.registerGlyphOfProtectorOfTheInnocent()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTemplarsVerdict) {
+		paladin.registerGlyphOfTemplarsVerdict()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheAlabasterShield) {
 		paladin.registerGlyphOfTheAlabasterShield()
@@ -98,6 +131,95 @@ func (paladin *Paladin) registerGlyphOfAvengingWrath() {
 	})
 }
 
+// Your Judgment hits fill your target with doubt and remorse, reducing movement speed by 50% for 2 sec.
+func (paladin *Paladin) registerGlyphOfBurdenOfGuilt() {
+	burdenOfGuiltAuras := paladin.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
+		return unit.RegisterAura(core.Aura{
+			Label:    "Burden of Guilt" + unit.Label,
+			ActionID: core.ActionID{SpellID: 110300},
+			Duration: time.Second * 2,
+		}).AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.MovementSpeedMultiplier, 0.5)
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Burden of Guilt" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 54931},
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskJudgment,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			burdenOfGuiltAuras.Get(result.Target).Activate(sim)
+		},
+	})
+}
+
+// Your Avenger's Shield now also dazes targets for 10 sec.
+func (paladin *Paladin) registerGlyphOfDazingShield() {
+	if paladin.Spec != proto.Spec_SpecProtectionPaladin {
+		return
+	}
+
+	dazedAuras := paladin.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
+		return unit.RegisterAura(core.Aura{
+			Label:    "Dazed - Avenger's Shield" + unit.Label,
+			ActionID: core.ActionID{SpellID: 63529},
+			Duration: time.Second * 10,
+		}).AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.MovementSpeedMultiplier, 0.5)
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Dazing Shield" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 56414},
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskAvengersShield,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			dazedAuras.Get(result.Target).Activate(sim)
+		},
+	})
+}
+
+// Your Holy Shocks reduce the cast time of your next Denounce by 0.5 sec. This effect stacks up to 3 times.
+func (paladin *Paladin) registerGlyphOfDenounce() {
+	if paladin.Spec != proto.Spec_SpecHolyPaladin {
+		return
+	}
+
+	cdMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: SpellMaskDenounce,
+		TimeValue: time.Millisecond * -500,
+	})
+
+	denounceAura := paladin.RegisterAura(core.Aura{
+		Label:     "Glyph of Denounce" + paladin.Label,
+		ActionID:  core.ActionID{SpellID: 115654},
+		Duration:  time.Second * 15,
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			cdMod.Activate()
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			cdMod.UpdateTimeValue(time.Millisecond * time.Duration(-500*newStacks))
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			cdMod.Deactivate()
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Denounce Trigger" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 56420},
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskHolyShock,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			denounceAura.Activate(sim)
+			denounceAura.AddStack(sim)
+		},
+	})
+}
+
 // Devotion Aura no longer affects party or raid members, but the cooldown is reduced by 60 sec.
 func (paladin *Paladin) registerGlyphOfDevotionAura() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
@@ -110,8 +232,29 @@ func (paladin *Paladin) registerGlyphOfDevotionAura() {
 	})
 }
 
+// Divine Plea returns 50% less mana but has a 50% shorter cooldown.
+func (paladin *Paladin) registerGlyphOfDivinePlea() {
+	if paladin.Spec != proto.Spec_SpecHolyPaladin {
+		return
+	}
+
+	// TODO: Handle the mana return part in holy/divine_plea.go
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of Divine Plea" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 63223},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+		ClassMask:  SpellMaskDivinePlea,
+		FloatValue: -0.5,
+	})
+}
+
 // Your Divine Storm also heals you for 5% of your maximum health.
 func (paladin *Paladin) registerGlyphOfDivineStorm() {
+	if paladin.Spec != proto.Spec_SpecRetributionPaladin {
+		return
+	}
+
 	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: 115515})
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:           "Glyph of Divine Storm" + paladin.Label,
@@ -122,6 +265,26 @@ func (paladin *Paladin) registerGlyphOfDivineStorm() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			paladin.GainHealth(sim, paladin.MaxHealth()*0.05, healthMetrics)
 		},
+	})
+}
+
+// Increases the cooldown of your Lay on Hands by 2 min but causes it to give you 10% of your maximum mana.
+func (paladin *Paladin) registerGlyphOfDivinity() {
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 54986})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of Divinity" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 54939},
+	})).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: SpellMaskLayOnHands,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AddMana(sim, paladin.MaxMana()*0.10, manaMetrics)
+		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: SpellMaskLayOnHands,
+		TimeValue: time.Minute * 2,
 	})
 }
 
@@ -167,6 +330,38 @@ func (paladin *Paladin) registerGlyphOfDoubleJeopardy() {
 				triggeredTarget = result.Target
 				doubleJeopardyAura.Activate(sim)
 			}
+		},
+	})
+}
+
+// When you Flash of Light a target, it increases your next heal done to that target within 7 sec by 10%.
+func (paladin *Paladin) registerGlyphOfFlashOfLight() {
+	glyphAuras := paladin.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		return unit.RegisterAura(core.Aura{
+			Label:    "Glyph of Flash of Light" + unit.Label,
+			ActionID: core.ActionID{SpellID: 54957},
+			Duration: time.Second * 7,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.AttackTables[unit.UnitIndex].HealingDealtMultiplier *= 1.1
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.AttackTables[unit.UnitIndex].HealingDealtMultiplier /= 1.1
+			},
+			OnHealTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Unit == &paladin.Unit {
+					aura.Deactivate(sim)
+				}
+			},
+		})
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Flash of Light Trigger" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 57955},
+		Callback:       core.CallbackOnHealDealt,
+		ClassSpellMask: SpellMaskFlashOfLight,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			glyphAuras.Get(result.Target).Activate(sim)
 		},
 	})
 }
@@ -237,6 +432,49 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 	})
 }
 
+// Decreases the healing of Holy Shock by 50% but increases its damage by 50%.
+func (paladin *Paladin) registerGlyphOfHolyShock() {
+	if paladin.Spec != proto.Spec_SpecHolyPaladin {
+		return
+	}
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of Holy Shock" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 63224},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskHolyShockDamage,
+		FloatValue: 0.5,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskHolyShockHeal,
+		FloatValue: -0.5,
+	})
+}
+
+// Your Holy Shock criticals grant 1% mana return, but Holy Insight returns 10% less mana.
+// (800ms cooldown)
+func (paladin *Paladin) registerGlyphOfIllumination() {
+	if paladin.Spec != proto.Spec_SpecHolyPaladin {
+		return
+	}
+
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 115314})
+
+	// TODO: Handle the Holy Insight part in holy/holy.go
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Illumination" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 54937},
+		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskHolyShock,
+		ICD:            time.Millisecond * 800,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AddMana(sim, paladin.MaxMana()*0.01, manaMetrics)
+		},
+	})
+}
+
 // Increases the instant damage done by Seal of Truth by 40%, but decreases the damage done by Censure by 50%.
 func (paladin *Paladin) registerGlyphOfImmediateTruth() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
@@ -250,6 +488,23 @@ func (paladin *Paladin) registerGlyphOfImmediateTruth() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  SpellMaskCensure,
 		FloatValue: -0.5,
+	})
+}
+
+// Light of Dawn affects 2 fewer targets, but heals each target for 25% more.
+func (paladin *Paladin) registerGlyphOfLightOfDawn() {
+	if paladin.Spec != proto.Spec_SpecHolyPaladin {
+		return
+	}
+
+	// TODO: Handle the target count part in holy/light_of_dawn.go
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of Light of Dawn" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 54940},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskLightOfDawn,
+		FloatValue: 0.25,
 	})
 }
 
@@ -282,6 +537,26 @@ func (paladin *Paladin) registerGlyphOfProtectorOfTheInnocent() {
 
 			lastHeal = result.Damage
 			protectorOfTheInnocent.Cast(sim, &paladin.Unit)
+		},
+	})
+}
+
+// You take 10% less damage for 6 sec after dealing damage with Templar's Verdict or Exorcism.
+func (paladin *Paladin) registerGlyphOfTemplarsVerdict() {
+	glyphOfTemplarVerdictAura := paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of Templar's Verdict" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 115668},
+		Duration: time.Second * 6,
+	}).AttachMultiplicativePseudoStatBuff(&paladin.PseudoStats.DamageTakenMultiplier, 0.9)
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Templar's Verdict Trigger" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 54926},
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskTemplarsVerdict,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			glyphOfTemplarVerdictAura.Activate(sim)
 		},
 	})
 }
