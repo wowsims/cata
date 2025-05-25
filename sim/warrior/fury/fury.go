@@ -41,8 +41,8 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:  furyOptions.ClassOptions.StartingRage,
-		BaseHitFactor: 1.75,
+		StartingRage:       furyOptions.ClassOptions.StartingRage,
+		BaseRageMultiplier: 1,
 	}
 
 	war.PrecisionKnown = true
