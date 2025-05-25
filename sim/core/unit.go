@@ -721,7 +721,8 @@ func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) floa
 }
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
-	chance := atkTable.BaseBlockChance +
+	chance := unit.PseudoStats.BaseBlockChance +
+		atkTable.BaseBlockChance +
 		unit.GetDiminishedBlockChance()
 	return math.Max(chance, 0.0)
 }
