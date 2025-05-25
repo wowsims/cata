@@ -1,6 +1,7 @@
 package demonology
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -31,15 +32,27 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		},
 
 		Dot: core.DotConfig{
-			NumberOfTicks: 6,
-			TickLength:    time.Second,
+			Aura: core.Aura{
+				Label:     "Shadowflame",
+				MaxStacks: 2,
+			},
+			NumberOfTicks:    6,
+			TickLength:       time.Second,
+			BonusCoefficient: shadowFlameCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, demonology.CalcScalingSpellDmg(shadowFlameScale))
+				dot.Snapshot(target, 0)
+				stacks := math.Min(float64(dot.Aura.GetStacks())+1, 2)
+				dot.SnapshotBaseDamage = demonology.CalcScalingSpellDmg(shadowFlameScale) + stacks*dot.BonusCoefficient*dot.Spell.BonusDamage()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				demonology.DemonicFury.Gain(2, dot.Spell.ActionID, sim)
 			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).Apply(sim)
+			spell.Dot(target).Aura.AddStack(sim)
 		},
 	})
 
