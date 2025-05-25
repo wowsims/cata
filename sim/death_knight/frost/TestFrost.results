@@ -1574,17 +1574,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 49171.15734
-  tps: 46585.14438
-  hps: 1665.75456
+  dps: 49408.24617
+  tps: 46783.09714
+  hps: 1670.5814
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 49171.15734
-  tps: 46585.14438
-  hps: 1665.75456
+  dps: 49408.24617
+  tps: 46783.09714
+  hps: 1670.5814
  }
 }
 dps_results: {

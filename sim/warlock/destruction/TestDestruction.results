@@ -1320,15 +1320,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 46535.82143
-  tps: 27159.71201
+  dps: 46485.04209
+  tps: 27154.12308
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 46535.82143
-  tps: 27159.71201
+  dps: 46485.04209
+  tps: 27154.12308
  }
 }
 dps_results: {
