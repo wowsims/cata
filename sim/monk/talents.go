@@ -879,12 +879,10 @@ func (monk *Monk) registerRushingJadeWind() {
 	}
 
 	chiMetrics := monk.NewChiMetrics(rushingJadeWindActionID)
-
 	numTargets := monk.Env.GetNumTargets()
+	baseCooldown := time.Second * 6
 
 	rushingJadeWindTickSpell := monk.RegisterSpell(rushingJadeWindTickSpellConfig(monk, false))
-
-	baseCooldown := time.Second * 6
 
 	rushingJadeWindBuff := monk.RegisterAura(core.Aura{
 		Label:    "Rushing Jade Wind" + monk.Label,
@@ -893,7 +891,7 @@ func (monk *Monk) registerRushingJadeWind() {
 	})
 
 	isWiseSerpent := monk.StanceMatches(WiseSerpent)
-	rushingJadeWindSpell := monk.RegisterSpell(rushingJadeWindSpellConfig(monk, false, core.SpellConfig{
+	monk.RegisterSpell(rushingJadeWindSpellConfig(monk, false, core.SpellConfig{
 		EnergyCost: core.EnergyCostOptions{
 			Cost: core.TernaryInt32(isWiseSerpent, 0, 40),
 		},
@@ -924,7 +922,7 @@ func (monk *Monk) registerRushingJadeWind() {
 			dot.TickOnce(sim)
 
 			remainingDuration := dot.RemainingDuration(sim)
-			spell.CD.Duration = remainingDuration
+			spell.CD.Set(sim.CurrentTime + remainingDuration)
 			rushingJadeWindBuff.Duration = remainingDuration
 			rushingJadeWindBuff.Activate(sim)
 
@@ -933,11 +931,6 @@ func (monk *Monk) registerRushingJadeWind() {
 			}
 		},
 	}))
-
-	monk.AddOnCastSpeedChanged(func(_ float64, _ float64) {
-		rushingJadeWindSpell.CD.Duration = monk.ApplyCastSpeed(baseCooldown)
-		rushingJadeWindBuff.Duration = rushingJadeWindSpell.CD.Duration
-	})
 }
 
 func (pet *StormEarthAndFirePet) registerSEFRushingJadeWind() {
@@ -947,8 +940,7 @@ func (pet *StormEarthAndFirePet) registerSEFRushingJadeWind() {
 
 	rushingJadeWindTickSpell := pet.RegisterSpell(rushingJadeWindTickSpellConfig(pet.owner, true))
 
-	var rushingJadeWindSpell *core.Spell
-	rushingJadeWindSpell = pet.RegisterSpell(rushingJadeWindSpellConfig(pet.owner, true, core.SpellConfig{
+	pet.RegisterSpell(rushingJadeWindSpellConfig(pet.owner, true, core.SpellConfig{
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				NonEmpty: true,
@@ -966,9 +958,6 @@ func (pet *StormEarthAndFirePet) registerSEFRushingJadeWind() {
 			dot := spell.AOEDot()
 			dot.Apply(sim)
 			dot.TickOnce(sim)
-
-			remainingDuration := dot.RemainingDuration(sim)
-			rushingJadeWindSpell.CD.Duration = remainingDuration
 		},
 	}))
 }
