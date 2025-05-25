@@ -63,6 +63,31 @@ func (value *APLValueCurrentHealthPercent) String() string {
 	return fmt.Sprintf("Current Health %%")
 }
 
+type APLValueMaxHealth struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueMaxHealth(_ *proto.APLValueMaxHealth, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasHealthBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Health", unit.Label)
+		return nil
+	}
+	return &APLValueMaxHealth{
+		unit: unit,
+	}
+}
+func (value *APLValueMaxHealth) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueMaxHealth) GetFloat(sim *Simulation) float64 {
+	return value.unit.MaxHealth()
+}
+func (value *APLValueMaxHealth) String() string {
+	return "Max Health"
+}
+
 type APLValueCurrentMana struct {
 	DefaultAPLValueImpl
 	unit UnitReference
@@ -124,7 +149,7 @@ type APLValueCurrentRage struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueCurrentRage(_ *proto.APLValueCurrentRage, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRageBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Rage", unit.Label)
@@ -149,7 +174,7 @@ type APLValueCurrentFocus struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueCurrentFocus(_ *proto.APLValueCurrentFocus, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasFocusBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
@@ -260,7 +285,7 @@ type APLValueCurrentEnergy struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueCurrentEnergy(_ *proto.APLValueCurrentEnergy, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
@@ -368,7 +393,7 @@ type APLValueCurrentComboPoints struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueCurrentComboPoints(_ *proto.APLValueCurrentComboPoints, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Combo Points", unit.Label)
@@ -418,7 +443,7 @@ type APLValueCurrentRunicPower struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueCurrentRunicPower(_ *proto.APLValueCurrentRunicPower, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runic Power", unit.Label)
