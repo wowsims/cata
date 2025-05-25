@@ -9,31 +9,31 @@ import (
 func (druid *Druid) registerFaerieFireSpell() {
 	actionID := core.ActionID{SpellID: 770}
 	manaCostOptions := core.ManaCostOptions{
-		BaseCostPercent: 8,
+		BaseCostPercent: 7.5,
 	}
 	gcd := core.GCDDefault
 	ignoreHaste := false
 	cd := core.Cooldown{}
 	flatThreatBonus := 48.
-	flags := SpellFlagOmenTrigger
+	flags := core.SpellFlagAPL
 	formMask := Humanoid | Moonkin
 
 	if druid.InForm(Cat | Bear) {
-		actionID = core.ActionID{SpellID: 16857}
 		manaCostOptions = core.ManaCostOptions{}
-		gcd = time.Second
-		ignoreHaste = true
-		flags = core.SpellFlagNone
 		formMask = Cat | Bear
 		cd = core.Cooldown{
 			Timer:    druid.NewTimer(),
 			Duration: time.Second * 6,
 		}
 	}
-	flags |= core.SpellFlagAPL
+
+	if druid.InForm(Cat) {
+		gcd = time.Second
+		ignoreHaste = true
+	}
 
 	druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.FaerieFireAura(target)
+		return core.WeakenedArmorAura(target)
 	})
 
 	druid.FaerieFire = druid.RegisterSpell(formMask, core.SpellConfig{
@@ -60,7 +60,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 			baseDamage := 0.0
 			outcome := spell.OutcomeMagicHit
 			if druid.InForm(Bear) {
-				baseDamage = 2950 + 0.108*spell.MeleeAttackPower()
+				baseDamage = 10.0 + 0.302*spell.MeleeAttackPower()
 				outcome = spell.OutcomeMagicHitAndCrit
 			}
 
@@ -84,7 +84,7 @@ func (druid *Druid) TryApplyFaerieFireEffect(sim *core.Simulation, target *core.
 		aura.Activate(sim)
 
 		if aura.IsActive() {
-			aura.SetStacks(sim, aura.GetStacks()+1+druid.Talents.FeralAggression)
+			aura.SetStacks(sim, 3)
 		}
 	}
 }
