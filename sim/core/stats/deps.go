@@ -84,6 +84,13 @@ func (sd StatDependency) String() string {
 	}
 }
 
+// Updates the "amount" field for a previously defined dep. Note that if this is
+// called after the stats measurement phase, then ApplyStatDependencies() must
+// be immediately called afterwards!
+func (dep *StatDependency) UpdateValue(newAmount float64) {
+	dep.amount = newAmount
+}
+
 // Manages dependencies between stats.
 //
 // Some examples:

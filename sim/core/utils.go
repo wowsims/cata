@@ -232,6 +232,10 @@ func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
 	return masteryRating / MasteryRatingPerMasteryPoint
 }
 
+func Clamp(val float64, min float64, max float64) float64 {
+	return math.Max(min, math.Min(val, max))
+}
+
 // Gets the spell scaling coefficient associated with a given class
 // Retrieved from https://wago.tools/api/casc/1391660?download&branch=wow_classic_beta
 func GetClassSpellScalingCoefficient(class proto.Class) float64 {

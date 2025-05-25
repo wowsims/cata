@@ -33,7 +33,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 	prot := &ProtectionPaladin{
 		Paladin:   paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
 		Options:   protOptions.Options,
-		vengeance: &core.VengeanceTracker{},
 	}
 
 	return prot
@@ -43,8 +42,6 @@ type ProtectionPaladin struct {
 	*paladin.Paladin
 
 	Options *proto.ProtectionPaladin_Options
-
-	vengeance *core.VengeanceTracker
 }
 
 func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {
@@ -85,7 +82,7 @@ func (prot *ProtectionPaladin) RegisterSpecializationEffects() {
 	prot.ApplyJudgementsOfTheWise()
 
 	// Vengeance
-	core.ApplyVengeanceEffect(&prot.Character, prot.vengeance, 84839)
+	prot.RegisterVengeance(84839, nil)
 }
 
 func (prot *ProtectionPaladin) RegisterMastery() {

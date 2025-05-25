@@ -505,7 +505,7 @@ type TooltipAST struct {
 	Values *[]ComplexValue `parser:"@@*"`
 }
 
-var ternParser = regexp.MustCompile(`^\$(\d*)([gl])(.+):$`)
+var ternParser = regexp.MustCompile(`^\$(\d*)([glLG])(.+):$`)
 
 func (d DescriptionRef) String(ctx *TooltipContext) string {
 	desc := ctx.DataProvider.GetSpellDescription(d.SpellId)
@@ -545,12 +545,16 @@ func (s ShortTernary) String(ctx *TooltipContext) string {
 	t := match[2]
 	left := match[3]
 	switch t {
+	case "G":
+		fallthrough
 	case "g":
 		if ctx.DataProvider.IsMaleGender() {
 			return left
 		}
 
 		return s.Right
+	case "L":
+		fallthrough
 	case "l":
 		if ctx.LastEval <= 1 {
 			return left
@@ -635,7 +639,7 @@ func (s SimpleSpellValue) Eval(ctx *TooltipContext) float64 {
 	case "h":
 		return ctx.DataProvider.GetSpellProcChance(s.getSpellId(ctx))
 	case "d":
-		return float64(ctx.DataProvider.GetSpellDuration(s.getSpellId(ctx)))
+		return float64(ctx.DataProvider.GetSpellDuration(s.getSpellId(ctx))) / float64(time.Second)
 	case "w":
 		// This does not properly evaluate in client for Spell Descriptions. In theory it seems to refer to the specific extra values of a buff
 		// i.E. the actual stamina buffed by a priester to display it correctly client side
@@ -713,7 +717,15 @@ func (s SimpleSpellValue) String(ctx *TooltipContext) string {
 	case "D":
 		fallthrough
 	case "d":
+		// value is returned in seconds, normalize to time value
+		value *= float64(time.Second)
 		duration := time.Duration(value)
+		if value > float64(time.Hour*2) {
+			return fmt.Sprintf("%dhrs", duration/time.Hour)
+		}
+		if value >= float64(time.Hour) {
+			return fmt.Sprintf("%dhr", duration/time.Hour)
+		}
 		if value >= float64(time.Minute) {
 			return fmt.Sprintf("%dmin", duration/time.Minute)
 		}
@@ -883,10 +895,12 @@ var fixes = []tooltipFix{
 	{Regex: regexp.MustCompile(`\(\<\$`), Replace: "($<"},
 	{Regex: regexp.MustCompile(`,\<\$`), Replace: ",$<"},
 	{Regex: regexp.MustCompile(`\]\]`), Replace: "]"},
-	{Regex: regexp.MustCompile(`\$[bB]([^\d])`), Replace: "\n$1"},
+	{Regex: regexp.MustCompile(`(.)\$[bB]([^\d])`), Replace: "$1\n$2"},
 	{Regex: regexp.MustCompile(`\)\r\n\[`), Replace: ")["},
 	{Regex: regexp.MustCompile(`\]\$\[`), Replace: "]["},
 	{Regex: regexp.MustCompile(`\{(\d+[a-zA-Z]\d)`), Replace: "{$$$1"},
+	{Regex: regexp.MustCompile(`(\$\?[^\[$]+)\$\?`), Replace: "$1"},
+	{Regex: regexp.MustCompile(`([\(|&?][ap]\d+)[a-z]\d`), Replace: "$1"},
 }
 
 func applyFixes(tooltip string) string {
@@ -900,6 +914,7 @@ func applyFixes(tooltip string) string {
 func getLexer() *lexer.StatefulDefinition {
 	return lexer.MustStateful(lexer.Rules{
 		"Root": {
+			{Name: "CommentStart", Pattern: `--`, Action: lexer.Push("Comment")},
 			{Name: "TernStart", Pattern: `(\$|\])\?`, Action: lexer.Push("Ternary")},
 			{Name: "DescLookup", Pattern: `\$@(spelldesc|spelltooltip)`, Action: nil},
 			{Name: "SpellLookup", Pattern: `\$@spellname`, Action: nil},
@@ -909,6 +924,9 @@ func getLexer() *lexer.StatefulDefinition {
 			{Name: "Tok", Pattern: `[\[\]\{\}=?\<\>]`, Action: nil},
 			{Name: "Punct", Pattern: `[.,:\!?%;\]\r\n]`},
 			{Name: "SpellCond2", Pattern: `\?[aspc]\d{2,}`, Action: nil},
+		},
+		"Comment": {
+			{Name: "Comment", Pattern: ".+?\n", Action: lexer.Pop()},
 		},
 		"Boolean": {
 			{Name: "BEND", Pattern: `\)`, Action: nil},
@@ -927,7 +945,7 @@ func getLexer() *lexer.StatefulDefinition {
 		"Shared": {
 			{Name: `Whitespace`, Pattern: `[ \t]+`, Action: nil},
 			{Name: "MathStart", Pattern: `\$\{`, Action: lexer.Push("Math")},
-			{Name: "ShortTern", Pattern: `\$\d*[lg][a-zA-Z0-9 ]+:`, Action: lexer.Push("ShortTern")},
+			{Name: "ShortTern", Pattern: `\$\d*[lgLG][a-zA-Z0-9 ]+:`, Action: lexer.Push("ShortTern")},
 			{Name: "Float", Pattern: `-?(\d+)?\.\d+`, Action: nil},
 			{Name: "Int", Pattern: `-?\d+`, Action: nil},
 			{Name: "VarRef", Pattern: `\$\<`, Action: lexer.Push("VarRef")},
@@ -978,7 +996,7 @@ func (t Tooltip) String() string {
 
 func ParseTooltip(tooltip string, dataProvider TooltipDataProvider, spellId int64) (*Tooltip, error) {
 	def := getLexer()
-	parser, error := participle.Build[TooltipAST](participle.Lexer(def), participle.Elide("Whitespace"), participle.UseLookahead(-1))
+	parser, error := participle.Build[TooltipAST](participle.Lexer(def), participle.Elide("Whitespace", "Comment", "CommentStart"), participle.UseLookahead(-1))
 	if error != nil {
 		panic(error)
 	}
