@@ -26,21 +26,24 @@ func (monk *Monk) registerWayOfTheMonk() {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)
 			} else {
-				monk.AutoAttacks.MHAuto().DamageMultiplier *= 1.4
-				monk.AutoAttacks.OHAuto().DamageMultiplier *= 1.4
+				monk.MHAutoSpell.DamageMultiplier *= 1.4
+				if monk.OHAutoSpell != nil {
+					monk.OHAutoSpell.DamageMultiplier *= 1.4
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1/1.4)
 			} else {
-				monk.AutoAttacks.MHAuto().DamageMultiplier *= 1 / 1.4
-				monk.AutoAttacks.OHAuto().DamageMultiplier *= 1 / 1.4
+				monk.MHAutoSpell.DamageMultiplier /= 1.4
+				if monk.OHAutoSpell != nil {
+					monk.OHAutoSpell.DamageMultiplier /= 1.4
+				}
 			}
 		},
 	}))
 
-	// re-configure poisons when performing an item swap
 	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		aura.Deactivate(sim)
 		aura.Activate(sim)

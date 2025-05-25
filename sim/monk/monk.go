@@ -42,6 +42,9 @@ type Monk struct {
 	onChiSpent      OnChiSpent
 	onNewBrewStacks OnNewBrewStacks
 
+	MHAutoSpell *core.Spell
+	OHAutoSpell *core.Spell
+
 	StanceOfTheSturdyOx    *core.Spell
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
@@ -158,6 +161,11 @@ func (monk *Monk) HasMinorGlyph(glyph proto.MonkMinorGlyph) bool {
 func (monk *Monk) Initialize() {
 	monk.AutoAttacks.MHConfig().CritMultiplier = monk.DefaultCritMultiplier()
 	monk.AutoAttacks.OHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+
+	monk.Env.RegisterPostFinalizeEffect(func() {
+		monk.MHAutoSpell = monk.AutoAttacks.MHAuto()
+		monk.OHAutoSpell = monk.AutoAttacks.OHAuto()
+	})
 
 	monk.registerStances()
 	monk.applyGlyphs()
