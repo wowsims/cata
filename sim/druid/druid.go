@@ -91,18 +91,12 @@ type Druid struct {
 	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	OwlkinFrenzyAura         *core.Aura
-	PredatoryInstinctsAura   *core.Aura
 	PrimalMadnessAura        *core.Aura
-	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.DamageAbsorptionAura
-	SavageRoarAura           *core.Aura
-	SmokescreenAura          *core.Aura
 	SolarEclipseProcAura     *core.Aura
 	StampedeCatAura          *core.Aura
 	StampedeBearAura         *core.Aura
-	StrengthOfThePantherAura *core.Aura
 	SurvivalInstinctsAura    *core.Aura
-	// TigersFuryAura           *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 
@@ -127,7 +121,6 @@ type Druid struct {
 	// Item sets
 	T11Feral2pBonus *core.Aura
 	T11Feral4pBonus *core.Aura
-	T12Feral4pBonus *core.Aura
 	T13Feral4pBonus *core.Aura
 }
 
@@ -280,11 +273,10 @@ func (druid *Druid) Initialize() {
 		}
 	})
 
-	// druid.registerFaerieFireSpell()
+	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	druid.registerTranquilityCD()
-	druid.applyOmenOfClarity()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
@@ -317,8 +309,8 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	// druid.registerRipSpell()
 	// druid.registerSavageRoarSpell()
 	// druid.registerShredSpell()
-	druid.registerSwipeBearSpell()
-	druid.registerSwipeCatSpell()
+	//druid.registerSwipeBearSpell()
+	//druid.registerSwipeCatSpell()
 	// druid.registerThrashBearSpell()
 	// druid.registerTigersFurySpell()
 }
@@ -327,18 +319,18 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerBarkskinCD()
 	druid.registerBearFormSpell()
 	// druid.registerBerserkCD()
-	druid.registerDemoralizingRoarSpell()
+	//druid.registerDemoralizingRoarSpell()
 	// druid.registerEnrageSpell()
-	druid.registerFrenziedRegenerationCD()
+	//druid.registerFrenziedRegenerationCD()
 	// druid.registerMangleBearSpell()
 	// druid.registerMaulSpell()
 	// druid.registerLacerateSpell()
 	// druid.registerPulverizeSpell()
 	// druid.registerRakeSpell()
 	// druid.registerRipSpell()
-	druid.registerSavageDefensePassive()
+	//druid.registerSavageDefensePassive()
 	// druid.registerSurvivalInstinctsCD()
-	druid.registerSwipeBearSpell()
+	//druid.registerSwipeBearSpell()
 	// druid.registerThrashBearSpell()
 }
 

@@ -79,10 +79,6 @@ func (druid *Druid) GetBearWeapon() core.Weapon {
 func (druid *Druid) RegisterCatFormAura() {
 	actionID := core.ActionID{SpellID: 768}
 
-	// TODO: Fix this to work with the new talent system.
-	// srm := druid.GetSavageRoarMultiplier()
-	srm := 1.8
-
 	statBonus := stats.Stats{
 		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
 	}
@@ -113,15 +109,7 @@ func (druid *Druid) RegisterCatFormAura() {
 				druid.AutoAttacks.SetMH(clawWeapon)
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
-
-				// These buffs stay up, but corresponding changes don't
-				if druid.SavageRoarAura.IsActive() {
-					druid.MHAutoSpell.DamageMultiplier *= srm
-				}
-
-				if druid.PredatoryInstinctsAura != nil {
-					druid.PredatoryInstinctsAura.Activate(sim)
-				}
+				druid.MHAutoSpell.DamageMultiplier *= 2
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -137,43 +125,21 @@ func (druid *Druid) RegisterCatFormAura() {
 				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultCritMultiplier()))
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
-
-				// druid.TigersFuryAura.Deactivate(sim)
-
-				// These buffs stay up, but corresponding changes don't
-				if druid.SavageRoarAura.IsActive() {
-					druid.MHAutoSpell.DamageMultiplier /= srm
-				}
-
-				if druid.PredatoryInstinctsAura != nil {
-					druid.PredatoryInstinctsAura.Deactivate(sim)
-				}
-
-				if druid.StrengthOfThePantherAura.IsActive() {
-					druid.StrengthOfThePantherAura.Deactivate(sim)
-				}
+				druid.MHAutoSpell.DamageMultiplier /= 2
 			}
 		},
 	})
 
-	// if druid.Talents.FeralSwiftness > 0 {
-	// 	druid.CatFormAura.NewMovementSpeedEffect(0.15 * float64(druid.Talents.FeralSwiftness))
-	// }
+	druid.CatFormAura.NewMovementSpeedEffect(0.25)
 }
 
 func (druid *Druid) registerCatFormSpell() {
-	actionID := core.ActionID{SpellID: 768}
-	energyMetrics := druid.NewEnergyMetrics(actionID)
-
 	druid.CatForm = druid.RegisterSpell(Any, core.SpellConfig{
-		ActionID: actionID,
+		ActionID: core.ActionID{SpellID: 768},
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 5,
-			// TODO: Fix this to work with the new talent system.
-			// PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
-			PercentModifier: 100,
+			BaseCostPercent: 3.7,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -182,16 +148,7 @@ func (druid *Druid) registerCatFormSpell() {
 			IgnoreHaste: true,
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			// TODO: Fix this to work with the new talent system.
-			// maxShiftEnergy := float64(100*druid.Talents.Furor) / 3.0
-			maxShiftEnergy := 100 / 3.0
-
-			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
-
-			if energyDelta < 0 {
-				druid.SpendEnergy(sim, -energyDelta, energyMetrics)
-			}
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			druid.CatFormAura.Activate(sim)
 		},
 	})
@@ -207,8 +164,8 @@ func (druid *Druid) RegisterBearFormAura() {
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
 	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.4)
-	critDep := druid.NewDynamicMultiplyStat(stats.CritRating, 1.5) // TODO: Should this be implemented as EquipScaling instead? Need to check elixirs and procs.
-	hasteDep := druid.NewDynamicMultiplyStat(stats.HasteRating, 1.5) // TODO: Should this be implemented as EquipScaling instead? Need to check elixirs and procs.
+	critDep := druid.NewDynamicMultiplyStat(stats.CritRating, 1.5)
+	hasteDep := druid.NewDynamicMultiplyStat(stats.HasteRating, 1.5)
 
 	clawWeapon := druid.GetBearWeapon()
 
@@ -224,7 +181,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.form = Bear
 			druid.SetCurrentPowerBar(core.RageBar)
 
-			druid.PseudoStats.ThreatMultiplier *= 5
+			druid.PseudoStats.ThreatMultiplier *= 7
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus)
@@ -251,7 +208,7 @@ func (druid *Druid) RegisterBearFormAura() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
 
-			druid.PseudoStats.ThreatMultiplier /= 5
+			druid.PseudoStats.ThreatMultiplier /= 7
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
@@ -272,10 +229,6 @@ func (druid *Druid) RegisterBearFormAura() {
 				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultCritMultiplier()))
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
-
-				if druid.PulverizeAura.IsActive() {
-					druid.PulverizeAura.Deactivate(sim)
-				}
 			}
 		},
 	})
@@ -285,19 +238,12 @@ func (druid *Druid) registerBearFormSpell() {
 	actionID := core.ActionID{SpellID: 5487}
 	rageMetrics := druid.NewRageMetrics(actionID)
 
-	// TODO: Fix this to work with the new talent system.
-	// furorProcChance := float64(druid.Talents.Furor) / 3.0
-	furorProcChance := 0 / 3.0
-
 	druid.BearForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 5,
-			// TODO: Fix this to work with the new talent system.
-			// PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
-			PercentModifier: 100,
+			BaseCostPercent: 3.7,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -306,11 +252,8 @@ func (druid *Druid) registerBearFormSpell() {
 			IgnoreHaste: true,
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rageDelta := 0 - druid.CurrentRage()
-			if sim.Proc(furorProcChance, "Furor") {
-				rageDelta += 10
-			}
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			rageDelta := 10.0 - druid.CurrentRage()
 			if rageDelta > 0 {
 				druid.AddRage(sim, rageDelta, rageMetrics)
 			} else if rageDelta < 0 {
