@@ -720,8 +720,7 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
-	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+func (character *Character) RegisterArmorSpecializationTracker(armorType proto.ArmorType, spellID int32) *Aura {
 	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
 
 	aura := character.RegisterAura(Aura{
@@ -730,8 +729,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		BuildPhase: Ternary(isEnabled, CharacterBuildPhaseTalents, CharacterBuildPhaseNone),
 		Duration:   NeverExpires,
 	})
-
-	aura.AttachStatDependency(armorSpecializationDependency)
 
 	if isEnabled {
 		aura = MakePermanent(aura)
@@ -749,4 +746,11 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		})
 
 	return aura
+}
+
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
+	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	trackerAura := character.RegisterArmorSpecializationTracker(armorType, spellID)
+	trackerAura.AttachStatDependency(armorSpecializationDependency)
+	return trackerAura
 }
