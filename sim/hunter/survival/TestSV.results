@@ -480,8 +480,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 48457.28854
-  tps: 44033.61344
+  dps: 48456.07383
+  tps: 44032.53089
  }
 }
 dps_results: {
@@ -501,8 +501,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 46950.92461
-  tps: 42686.29234
+  dps: 46785.86131
+  tps: 42526.99508
  }
 }
 dps_results: {
@@ -732,8 +732,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 46828.39604
-  tps: 42572.44414
+  dps: 46748.44983
+  tps: 42496.11009
  }
 }
 dps_results: {
@@ -879,8 +879,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 48492.49745
-  tps: 44068.62121
+  dps: 48491.27063
+  tps: 44067.52724
  }
 }
 dps_results: {
@@ -949,8 +949,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-GnomishX-RayScope-4175"
  value: {
-  dps: 50554.16126
-  tps: 46103.17459
+  dps: 50560.62303
+  tps: 46108.54368
  }
 }
 dps_results: {
@@ -1460,15 +1460,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 46890.17364
-  tps: 42642.12636
+  dps: 46838.91873
+  tps: 42597.68994
  }
 }
 dps_results: {
  key: "TestSV-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 48440.29402
-  tps: 44015.34213
+  dps: 48436.09675
+  tps: 44011.27978
  }
 }
 dps_results: {
@@ -2031,8 +2031,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 46957.52056
-  tps: 42713.86988
+  dps: 46829.0821
+  tps: 42565.93023
  }
 }
 dps_results: {
@@ -2248,15 +2248,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 46892.31064
-  tps: 42628.13421
+  dps: 46803.0194
+  tps: 42562.04264
  }
 }
 dps_results: {
  key: "TestSV-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 48394.11802
-  tps: 43967.87143
+  dps: 48389.94688
+  tps: 43963.8358
  }
 }
 dps_results: {
@@ -2605,8 +2605,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 48467.43514
-  tps: 44040.92549
+  dps: 48466.18909
+  tps: 44039.81501
  }
 }
 dps_results: {

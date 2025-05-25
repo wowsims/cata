@@ -1516,8 +1516,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 6556.67393
-  tps: 39042.29309
+  dps: 6556.41922
+  tps: 39040.73443
   hps: 975.96349
  }
 }
@@ -1724,8 +1724,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 6550.39276
-  tps: 39016.0527
+  dps: 6550.14456
+  tps: 39014.52126
   hps: 975.96349
  }
 }
@@ -2105,8 +2105,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 6545.43197
-  tps: 38987.45325
+  dps: 6545.18892
+  tps: 38985.95147
   hps: 975.96349
  }
 }

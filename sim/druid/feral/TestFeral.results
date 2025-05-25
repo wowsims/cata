@@ -510,8 +510,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 50760.84236
-  tps: 69815.65267
+  dps: 50759.34216
+  tps: 69813.74017
   hps: 26.77086
  }
 }
@@ -567,8 +567,8 @@ dps_results: {
  key: "TestFeral-AllItems-DelivererStoneofWisdom-92115"
  value: {
   dps: 48108.44402
-  tps: 64864.91107
-  hps: 29.11958
+  tps: 64866.03098
+  hps: 29.41842
  }
 }
 dps_results: {
@@ -990,8 +990,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 50642.60117
-  tps: 67813.75363
+  dps: 50641.05655
+  tps: 67811.85447
   hps: 26.77086
  }
 }
@@ -1534,8 +1534,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 49402.22647
-  tps: 66419.30648
+  dps: 49401.51562
+  tps: 66418.43343
   hps: 26.77086
  }
 }
@@ -1622,16 +1622,16 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 48708.68147
-  tps: 66640.95155
+  dps: 48649.59025
+  tps: 66439.78769
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 50756.22674
-  tps: 69252.76869
+  dps: 50754.68258
+  tps: 69250.81356
   hps: 26.77086
  }
 }
@@ -1654,9 +1654,9 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-NaturalistStoneofWisdom-92139"
  value: {
-  dps: 48225.43989
-  tps: 66480.20332
-  hps: 29.47529
+  dps: 48226.36801
+  tps: 66482.67136
+  hps: 29.95157
  }
 }
 dps_results: {
@@ -1718,8 +1718,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 49528.43778
-  tps: 67619.99592
+  dps: 49527.72736
+  tps: 67619.08921
   hps: 26.77086
  }
 }
@@ -1735,7 +1735,7 @@ dps_results: {
  key: "TestFeral-AllItems-PartisanStoneofWisdom-92145"
  value: {
   dps: 48056.63373
-  tps: 66039.57295
+  tps: 66040.26212
   hps: 28.5205
  }
 }
@@ -2102,8 +2102,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 49358.65348
-  tps: 67487.37001
+  dps: 49357.95073
+  tps: 67486.4763
   hps: 26.77086
  }
 }
@@ -2230,8 +2230,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 48695.26042
-  tps: 67070.53407
+  dps: 48713.40526
+  tps: 67011.93123
   hps: 26.77086
  }
 }
@@ -2502,8 +2502,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 50801.4423
-  tps: 70024.35423
+  dps: 50799.90689
+  tps: 70022.41211
   hps: 26.77086
  }
 }
@@ -2526,9 +2526,9 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
-  dps: 48247.36357
-  tps: 66001.50917
-  hps: 29.69994
+  dps: 48248.29169
+  tps: 66003.80492
+  hps: 30.28829
  }
 }
 dps_results: {
@@ -2886,8 +2886,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 50632.11899
-  tps: 68989.5402
+  dps: 50630.57686
+  tps: 68987.61361
   hps: 26.77086
  }
 }
@@ -2903,8 +2903,8 @@ dps_results: {
  key: "TestFeral-AllItems-WaterdancerStoneofWisdom-92402"
  value: {
   dps: 48099.6542
-  tps: 65644.58396
-  hps: 29.00725
+  tps: 65645.79002
+  hps: 29.25006
  }
 }
 dps_results: {

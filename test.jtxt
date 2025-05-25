@@ -1,0 +1,2478 @@
+protoc -I=./proto --go_out=./sim/core ./proto/*.proto
+Starting webassembly compile now...
+[1;32mWASM compile successful.[0m
+go test --tags=with_db ./sim/...
+?   	github.com/wowsims/cata/sim/common	[no test files]
+?   	github.com/wowsims/cata/sim/common/wotlk	[no test files]
+?   	github.com/wowsims/cata/sim/common/cata	[no test files]
+?   	github.com/wowsims/cata/sim/common/tbc	[no test files]
+?   	github.com/wowsims/cata/sim/common/shared	[no test files]
+ok  	github.com/wowsims/cata/sim	0.041s
+?   	github.com/wowsims/cata/sim/core/proto	[no test files]
+?   	github.com/wowsims/cata/sim/death_knight	[no test files]
+?   	github.com/wowsims/cata/sim/druid	[no test files]
+?   	github.com/wowsims/cata/sim/encounters	[no test files]
+?   	github.com/wowsims/cata/sim/encounters/bwd	[no test files]
+?   	github.com/wowsims/cata/sim/encounters/default_ai	[no test files]
+?   	github.com/wowsims/cata/sim/encounters/dragonsoul	[no test files]
+?   	github.com/wowsims/cata/sim/encounters/firelands	[no test files]
+?   	github.com/wowsims/cata/sim/hunter	[no test files]
+?   	github.com/wowsims/cata/sim/lib	[no test files]
+?   	github.com/wowsims/cata/sim/mage	[no test files]
+ok  	github.com/wowsims/cata/sim/core	46.362s
+ok  	github.com/wowsims/cata/sim/core/simsignals	3.107s
+ok  	github.com/wowsims/cata/sim/core/stats	(cached)
+?   	github.com/wowsims/cata/sim/paladin	[no test files]
+?   	github.com/wowsims/cata/sim/priest	[no test files]
+?   	github.com/wowsims/cata/sim/rogue	[no test files]
+ok  	github.com/wowsims/cata/sim/death_knight/blood	64.958s
+?   	github.com/wowsims/cata/sim/shaman	[no test files]
+ok  	github.com/wowsims/cata/sim/death_knight/frost	74.713s
+?   	github.com/wowsims/cata/sim/warlock	[no test files]
+ok  	github.com/wowsims/cata/sim/death_knight/unholy	121.071s
+ok  	github.com/wowsims/cata/sim/druid/balance	21.606s
+ok  	github.com/wowsims/cata/sim/druid/feral	35.533s
+ok  	github.com/wowsims/cata/sim/druid/guardian	15.298s
+ok  	github.com/wowsims/cata/sim/druid/restoration	0.094s [no tests to run]
+2025/05/26 00:22:52 Using DTR for spec SpecBeastMasteryHunter which is not implemented. Using default config
+--- FAIL: TestBM (22.84s)
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-ShortSingleTarget (0.01s)
+        test_suite.go:250: DPS expected 18767.475 but was 18774.818!.
+        test_suite.go:261: TPS expected 11321.977 but was 11327.532!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 19419.937 but was 19427.072!.
+        test_suite.go:261: TPS expected 11425.633 but was 11430.890!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget (0.01s)
+        test_suite.go:250: DPS expected 18767.475 but was 18774.818!.
+        test_suite.go:261: TPS expected 11321.977 but was 11327.532!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 19419.937 but was 19427.072!.
+        test_suite.go:261: TPS expected 11425.633 but was 11430.890!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 31023.027 but was 31022.011!.
+        test_suite.go:261: TPS expected 19613.159 but was 19612.831!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 31979.755 but was 31978.806!.
+        test_suite.go:261: TPS expected 19770.506 but was 19770.279!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 31023.027 but was 31022.011!.
+        test_suite.go:261: TPS expected 19613.159 but was 19612.831!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 31979.755 but was 31978.806!.
+        test_suite.go:261: TPS expected 19770.506 but was 19770.279!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongSingleTarget (0.03s)
+        test_suite.go:250: DPS expected 17219.037 but was 17218.436!.
+        test_suite.go:261: TPS expected 10837.266 but was 10835.961!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongSingleTarget (0.06s)
+        test_suite.go:250: DPS expected 17634.028 but was 17633.518!.
+        test_suite.go:261: TPS expected 10857.138 but was 10856.316!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongSingleTarget (0.04s)
+        test_suite.go:250: DPS expected 17219.037 but was 17218.436!.
+        test_suite.go:261: TPS expected 10837.266 but was 10835.961!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongSingleTarget (0.04s)
+        test_suite.go:250: DPS expected 17634.028 but was 17633.518!.
+        test_suite.go:261: TPS expected 10857.138 but was 10856.316!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongSingleTarget (0.06s)
+        test_suite.go:250: DPS expected 25181.599 but was 25176.466!.
+        test_suite.go:261: TPS expected 15976.438 but was 15973.925!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongSingleTarget (0.03s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongSingleTarget (0.04s)
+        test_suite.go:250: DPS expected 25181.599 but was 25176.466!.
+        test_suite.go:261: TPS expected 15976.438 but was 15973.925!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongSingleTarget (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongMultiTarget (0.07s)
+        test_suite.go:250: DPS expected 17219.037 but was 17218.436!.
+        test_suite.go:261: TPS expected 10837.266 but was 10835.961!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongMultiTarget (0.07s)
+        test_suite.go:250: DPS expected 17634.028 but was 17633.518!.
+        test_suite.go:261: TPS expected 10857.138 but was 10856.316!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongMultiTarget (0.07s)
+        test_suite.go:250: DPS expected 17219.037 but was 17218.436!.
+        test_suite.go:261: TPS expected 10837.266 but was 10835.961!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongMultiTarget (0.09s)
+        test_suite.go:250: DPS expected 17634.028 but was 17633.518!.
+        test_suite.go:261: TPS expected 10857.138 but was 10856.316!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongMultiTarget (0.09s)
+        test_suite.go:250: DPS expected 25181.599 but was 25176.466!.
+        test_suite.go:261: TPS expected 15976.438 but was 15973.925!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongMultiTarget (0.08s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongMultiTarget (0.07s)
+        test_suite.go:250: DPS expected 25181.599 but was 25176.466!.
+        test_suite.go:261: TPS expected 15976.438 but was 15973.925!.
+    --- FAIL: TestBM/Settings-Orc-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongMultiTarget (0.08s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-UnsolvableRiddle-62468 (0.05s)
+        test_suite.go:250: DPS expected 25464.036 but was 25460.256!.
+        test_suite.go:261: TPS expected 15738.085 but was 15737.121!.
+    --- FAIL: TestBM/AllItems-MarkofKhardros-56132 (0.04s)
+        test_suite.go:250: DPS expected 24335.847 but was 24331.432!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sInsigniaofConquest-70404 (0.03s)
+        test_suite.go:250: DPS expected 25632.058 but was 25626.474!.
+        test_suite.go:261: TPS expected 15926.803 but was 15925.707!.
+    --- FAIL: TestBM/AllItems-LicensetoSlay-58180 (0.03s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-DarkwalkerStoneofRage-92117 (0.04s)
+        test_suite.go:250: DPS expected 25584.933 but was 25579.715!.
+        test_suite.go:261: TPS expected 15723.868 but was 15721.201!.
+    --- FAIL: TestBM/AllItems-StarcatcherCompass-77202 (0.04s)
+        test_suite.go:250: DPS expected 26236.881 but was 26236.887!.
+        test_suite.go:261: TPS expected 16282.536 but was 16281.983!.
+    --- FAIL: TestBM/AllItems-NaturalistIdolofDestruction-92137 (0.05s)
+        test_suite.go:250: DPS expected 24447.057 but was 24441.835!.
+        test_suite.go:261: TPS expected 15053.128 but was 15051.122!.
+    --- FAIL: TestBM/AllItems-ImpetuousQuery-56406 (0.03s)
+        test_suite.go:250: DPS expected 24388.297 but was 24382.985!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Throngus'sFinger-56121 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sBadgeofVictory-64689 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MartialDefenderStone-92126 (0.03s)
+        test_suite.go:250: DPS expected 24511.850 but was 24507.669!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RottingSkull-77116 (0.04s)
+        test_suite.go:250: DPS expected 24740.068 but was 24736.508!.
+        test_suite.go:261: TPS expected 15398.026 but was 15395.935!.
+    --- FAIL: TestBM/AllItems-FoulGiftoftheDemonLord-72898 (0.03s)
+        test_suite.go:250: DPS expected 24460.656 but was 24455.752!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-IndomitablePride-78003 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BottledLightning-66879 (0.04s)
+        test_suite.go:250: DPS expected 24278.980 but was 24274.696!.
+        test_suite.go:261: TPS expected 15157.158 but was 15155.448!.
+    --- FAIL: TestBM/AllItems-WrathofUnchaining-77974 (0.05s)
+        test_suite.go:250: DPS expected 26700.984 but was 26698.175!.
+        test_suite.go:261: TPS expected 16546.903 but was 16545.411!.
+    --- FAIL: TestBM/AllItems-SoulshifterVortex-77990 (0.03s)
+        test_suite.go:250: DPS expected 24764.289 but was 24759.596!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Figurine-DemonPanther-52199 (0.05s)
+        test_suite.go:250: DPS expected 25446.972 but was 25446.404!.
+        test_suite.go:261: TPS expected 15861.423 but was 15860.531!.
+    --- FAIL: TestBM/AllItems-ThundercallerStoneofDestruction-92119 (0.04s)
+        test_suite.go:250: DPS expected 24506.599 but was 24501.176!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Brawler'sTrophy-232015 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sInsigniaofVictory-70579 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ScourgeheartDefenderStone-92134 (0.05s)
+        test_suite.go:250: DPS expected 24516.224 but was 24510.938!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RightEyeofRajh-56431 (0.03s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-JarofAncientRemedies-65029 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-IndomitablePride-77983 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-FallofMortality-59500 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-AncientPetrifiedSeed-69001 (0.05s)
+        test_suite.go:250: DPS expected 25686.817 but was 25683.895!.
+        test_suite.go:261: TPS expected 15794.501 but was 15793.473!.
+    --- FAIL: TestBM/AllItems-DelivererStoneofWisdom-92115 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-SeaStar-55256 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-DarkmoonCard:Hurricane-62049 (0.05s)
+        test_suite.go:250: DPS expected 24637.104 but was 24634.393!.
+        test_suite.go:261: TPS expected 15480.429 but was 15479.577!.
+    --- FAIL: TestBM/AllItems-EnlightenedStoneofDestruction-92143 (0.05s)
+        test_suite.go:250: DPS expected 24508.689 but was 24503.500!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sBadgeofDominance-64688 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BlackBruise-50692 (0.07s)
+        test_suite.go:250: DPS expected 24066.313 but was 24062.562!.
+        test_suite.go:261: TPS expected 15039.879 but was 15039.335!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sEmblemofCruelty-61026 (0.05s)
+        test_suite.go:250: DPS expected 24516.906 but was 24513.491!.
+        test_suite.go:261: TPS expected 15271.994 but was 15269.388!.
+    --- FAIL: TestBM/AllItems-CunningoftheCruel-77980 (0.06s)
+        test_suite.go:250: DPS expected 24529.746 but was 24524.460!.
+        test_suite.go:261: TPS expected 15382.948 but was 15378.832!.
+    --- FAIL: TestBM/AllItems-ArrowofTime-72897 (0.04s)
+        test_suite.go:250: DPS expected 25895.956 but was 25893.366!.
+        test_suite.go:261: TPS expected 16159.911 but was 16158.536!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sInsigniaofDominance-70402 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-InsigniaoftheCorruptedMind-77991 (0.05s)
+        test_suite.go:250: DPS expected 24952.750 but was 24953.770!.
+        test_suite.go:261: TPS expected 15618.484 but was 15619.015!.
+    --- FAIL: TestBM/AllItems-KiroptyricSigil-77113 (0.04s)
+        test_suite.go:250: DPS expected 26147.564 but was 26148.851!.
+        test_suite.go:261: TPS expected 16312.649 but was 16315.212!.
+    --- FAIL: TestBM/AllItems-NecromanticFocus-69139 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-StumpofTime-62465 (0.04s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sInsigniaofConquest-70577 (0.06s)
+        test_suite.go:250: DPS expected 25480.107 but was 25471.939!.
+        test_suite.go:261: TPS expected 15854.883 but was 15851.023!.
+    --- FAIL: TestBM/AllItems-Za'brox'sLuckyTooth-63742 (0.03s)
+        test_suite.go:250: DPS expected 24316.260 but was 24311.824!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-Tank-CommanderInsignia-63841 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Dragonwrath,Tarecgosa'sRest-71086 (0.04s)
+        test_suite.go:250: DPS expected 26185.700 but was 26182.254!.
+        test_suite.go:261: TPS expected 16185.982 but was 16187.215!.
+    --- FAIL: TestBM/AllItems-BindingPromise-67037 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Bone-LinkFetish-77210 (0.04s)
+        test_suite.go:250: DPS expected 25177.492 but was 25177.272!.
+        test_suite.go:261: TPS expected 15963.926 but was 15964.047!.
+    --- FAIL: TestBM/AllItems-NecromanticFocus-68982 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-CataclysmicGladiator'sBadgeofVictory-73496 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sInsigniaofConquest-72309 (0.05s)
+        test_suite.go:250: DPS expected 25722.356 but was 25716.618!.
+        test_suite.go:261: TPS expected 16040.194 but was 16035.904!.
+    --- FAIL: TestBM/AllItems-CrushingWeight-65118 (0.05s)
+        test_suite.go:250: DPS expected 24188.972 but was 24183.082!.
+        test_suite.go:261: TPS expected 15046.554 but was 15042.401!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sBadgeofVictory-70400 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Gurthalak,VoiceoftheDeeps-78487 (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-ImpetuousQuery-55881 (0.06s)
+        test_suite.go:250: DPS expected 24365.115 but was 24359.806!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Prestor'sTalismanofMachination-65026 (0.04s)
+        test_suite.go:250: DPS expected 25746.614 but was 25748.161!.
+        test_suite.go:261: TPS expected 16062.168 but was 16060.642!.
+    --- FAIL: TestBM/AllItems-JawsofDefeat-69111 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MagnetiteMirror-55814 (0.04s)
+        test_suite.go:250: DPS expected 24186.273 but was 24181.698!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-Gurthalak,VoiceoftheDeeps-77191 (0.03s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-CrecheoftheFinalDragon-77972 (0.04s)
+        test_suite.go:250: DPS expected 25032.062 but was 25028.325!.
+        test_suite.go:261: TPS expected 15607.755 but was 15607.789!.
+    --- FAIL: TestBM/AllItems-CorpseTongueCoin-50349 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ImpatienceofYouth-62469 (0.05s)
+        test_suite.go:250: DPS expected 24413.587 but was 24408.271!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Shrine-CleansingPurifier-63838 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Bone-LinkFetish-77982 (0.04s)
+        test_suite.go:250: DPS expected 24915.472 but was 24911.632!.
+        test_suite.go:261: TPS expected 15774.827 but was 15772.191!.
+    --- FAIL: TestBM/AllItems-UnheededWarning-59520 (0.06s)
+        test_suite.go:250: DPS expected 25248.490 but was 25243.987!.
+        test_suite.go:261: TPS expected 15723.868 but was 15721.201!.
+    --- FAIL: TestBM/AllItems-LeadenDespair-55816 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-LeftEyeofRajh-56427 (0.03s)
+        test_suite.go:250: DPS expected 25407.519 but was 25401.531!.
+        test_suite.go:261: TPS expected 15705.665 but was 15702.756!.
+    --- FAIL: TestBM/AllItems-GearDetector-61462 (0.07s)
+        test_suite.go:250: DPS expected 24834.858 but was 24833.016!.
+        test_suite.go:261: TPS expected 15449.529 but was 15449.454!.
+    --- FAIL: TestBM/AllItems-Kiril,FuryofBeasts-78473 (0.05s)
+        test_suite.go:250: DPS expected 28901.343 but was 28897.268!.
+        test_suite.go:261: TPS expected 17860.927 but was 17859.135!.
+    --- FAIL: TestBM/AllItems-Soul'sAnguish-66994 (0.03s)
+        test_suite.go:250: DPS expected 24528.105 but was 24527.074!.
+        test_suite.go:261: TPS expected 15247.758 but was 15248.146!.
+    --- FAIL: TestBM/AllItems-SealoftheSevenSigns-77989 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-PorcelainCrab-55237 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-TalismanofSinisterOrder-65804 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WrathofUnchaining-77994 (0.06s)
+        test_suite.go:250: DPS expected 27424.893 but was 27424.514!.
+        test_suite.go:261: TPS expected 16921.348 but was 16919.362!.
+    --- FAIL: TestBM/AllItems-MartialIdolofBattle-92128 (0.04s)
+        test_suite.go:250: DPS expected 24502.098 but was 24499.227!.
+        test_suite.go:261: TPS expected 15256.619 but was 15253.786!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sInsigniaofConquest-61047 (0.04s)
+        test_suite.go:250: DPS expected 25325.059 but was 25320.356!.
+        test_suite.go:261: TPS expected 15782.595 but was 15780.228!.
+    --- FAIL: TestBM/AllItems-Souldrinker-77193 (0.06s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-VariablePulseLightningCapacitor-68925 (0.03s)
+        test_suite.go:250: DPS expected 24540.393 but was 24535.107!.
+        test_suite.go:261: TPS expected 15393.738 but was 15389.623!.
+    --- FAIL: TestBM/AllItems-Theralion'sMirror-65105 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sBadgeofDominance-61035 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-TearofBlood-56351 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Souldrinker-78479 (0.06s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-DarkmoonCard:Hurricane-62051 (0.05s)
+        test_suite.go:250: DPS expected 25678.681 but was 25678.340!.
+        test_suite.go:261: TPS expected 16081.817 but was 16081.148!.
+    --- FAIL: TestBM/AllItems-NaturalistStoneofDestruction-92136 (0.05s)
+        test_suite.go:250: DPS expected 24503.277 but was 24497.899!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-SoulshifterVortex-77970 (0.04s)
+        test_suite.go:250: DPS expected 24648.914 but was 24643.851!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-TendrilsofBurrowingDark-55810 (0.04s)
+        test_suite.go:250: DPS expected 24339.123 but was 24333.817!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WrathofUnchaining-77197 (0.03s)
+        test_suite.go:250: DPS expected 26998.516 but was 26997.968!.
+        test_suite.go:261: TPS expected 16728.843 but was 16728.021!.
+    --- FAIL: TestBM/AllItems-WillofUnbinding-77198 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-JujuofNimbleness-63840 (0.04s)
+        test_suite.go:250: DPS expected 25012.912 but was 25006.820!.
+        test_suite.go:261: TPS expected 15468.806 but was 15465.023!.
+    --- FAIL: TestBM/AllItems-Za'brox'sLuckyTooth-63745 (0.04s)
+        test_suite.go:250: DPS expected 24316.260 but was 24311.824!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-PorcelainCrab-56280 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Theralion'sMirror-59519 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Dwyer'sCaber-70141 (0.04s)
+        test_suite.go:250: DPS expected 24737.403 but was 24732.628!.
+        test_suite.go:261: TPS expected 15310.425 but was 15305.167!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sInsigniaofVictory-70403 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-PetrifiedTwilightScale-54591 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-CoreofRipeness-58184 (0.07s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Rathrak,thePoisonousMind-78475 (0.04s)
+        test_suite.go:250: DPS expected 23995.214 but was 23991.463!.
+        test_suite.go:261: TPS expected 15002.444 but was 15001.900!.
+    --- FAIL: TestBM/AllItems-Ti'tahk,theStepsofTime-77190 (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-MandalaofStirringPatterns-62472 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-DarkwalkerIdolofRage-92118 (0.03s)
+        test_suite.go:250: DPS expected 25501.760 but was 25497.995!.
+        test_suite.go:261: TPS expected 15771.440 but was 15769.165!.
+    --- FAIL: TestBM/AllItems-MandalaofStirringPatterns-62467 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-GaleofShadows-56462 (0.04s)
+        test_suite.go:250: DPS expected 24503.750 but was 24499.993!.
+        test_suite.go:261: TPS expected 15277.577 but was 15275.314!.
+    --- FAIL: TestBM/AllItems-GaleofShadows-56138 (0.04s)
+        test_suite.go:250: DPS expected 24515.615 but was 24511.686!.
+        test_suite.go:261: TPS expected 15191.336 but was 15189.679!.
+    --- FAIL: TestBM/AllItems-PhylacteryoftheNamelessLich-50365 (0.06s)
+        test_suite.go:250: DPS expected 24406.366 but was 24401.939!.
+        test_suite.go:261: TPS expected 15226.627 but was 15224.018!.
+    --- FAIL: TestBM/AllItems-HeartoftheVile-66969 (0.04s)
+        test_suite.go:250: DPS expected 25034.616 but was 25033.940!.
+        test_suite.go:261: TPS expected 15598.412 but was 15598.040!.
+    --- FAIL: TestBM/AllItems-LastWord-50708 (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-MagnetiteMirror-56345 (0.05s)
+        test_suite.go:250: DPS expected 24186.273 but was 24181.698!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-JawsofDefeat-68926 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sBadgeofConquest-64687 (0.04s)
+        test_suite.go:250: DPS expected 25177.250 but was 25173.609!.
+        test_suite.go:261: TPS expected 15704.080 but was 15703.172!.
+    --- FAIL: TestBM/AllItems-SealoftheSevenSigns-77204 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-LadyLa-La'sSingingShell-67152 (0.06s)
+        test_suite.go:250: DPS expected 24429.676 but was 24429.403!.
+        test_suite.go:261: TPS expected 15210.656 but was 15212.246!.
+    --- FAIL: TestBM/AllItems-CataclysmicGladiator'sInsigniaofConquest-73643 (0.07s)
+        test_suite.go:250: DPS expected 25909.251 but was 25898.621!.
+        test_suite.go:261: TPS expected 16111.028 but was 16106.598!.
+    --- FAIL: TestBM/AllItems-CataclysmicGladiator'sBadgeofDominance-73498 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-HeartofThunder-56370 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-PetrifiedPickledEgg-232014 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sBadgeofConquest-61033 (0.03s)
+        test_suite.go:250: DPS expected 25230.033 but was 25226.321!.
+        test_suite.go:261: TPS expected 15738.085 but was 15737.121!.
+    --- FAIL: TestBM/AllItems-Figurine-KingofBoars-52351 (0.03s)
+        test_suite.go:250: DPS expected 24388.297 but was 24382.985!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ThundercallerIdolofRage-92116 (0.05s)
+        test_suite.go:250: DPS expected 25606.336 but was 25601.523!.
+        test_suite.go:261: TPS expected 15754.321 but was 15751.395!.
+    --- FAIL: TestBM/AllItems-Kiril,FuryofBeasts-78482 (0.05s)
+        test_suite.go:250: DPS expected 28208.374 but was 28203.079!.
+        test_suite.go:261: TPS expected 17459.152 but was 17457.332!.
+    --- FAIL: TestBM/AllItems-WillofUnbinding-77975 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Oremantle'sFavor-61448 (0.07s)
+        test_suite.go:250: DPS expected 24362.378 but was 24358.646!.
+        test_suite.go:261: TPS expected 15217.381 but was 15216.382!.
+    --- FAIL: TestBM/AllItems-CunningoftheCruel-77208 (0.04s)
+        test_suite.go:250: DPS expected 24593.859 but was 24588.573!.
+        test_suite.go:261: TPS expected 15447.087 but was 15442.972!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sBadgeofConquest-70517 (0.04s)
+        test_suite.go:250: DPS expected 25328.179 but was 25324.395!.
+        test_suite.go:261: TPS expected 15812.990 but was 15812.774!.
+    --- FAIL: TestBM/AllItems-HeartofIgnacious-59514 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sEmblemofProficiency-61030 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-InsigniaoftheEarthenLord-61429 (0.04s)
+        test_suite.go:250: DPS expected 24322.527 but was 24317.929!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-IndomitablePride-77211 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ElectrosparkHeartstarter-67118 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Heartpierce-50641 (0.08s)
+        test_suite.go:250: DPS expected 25926.139 but was 25920.589!.
+        test_suite.go:261: TPS expected 16102.454 but was 16099.887!.
+    --- FAIL: TestBM/AllItems-SoulCasket-58183 (0.05s)
+        test_suite.go:250: DPS expected 24413.587 but was 24408.271!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BottledWishes-77114 (0.04s)
+        test_suite.go:250: DPS expected 24720.685 but was 24721.498!.
+        test_suite.go:261: TPS expected 15422.991 but was 15426.088!.
+    --- FAIL: TestBM/AllItems-JarofAncientRemedies-59354 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-NaturalistIdolofRage-92133 (0.05s)
+        test_suite.go:250: DPS expected 25665.292 but was 25661.233!.
+        test_suite.go:261: TPS expected 15804.810 but was 15802.079!.
+    --- FAIL: TestBM/AllItems-VesselofAcceleration-68995 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WaterdancerIdolofRage-92401 (0.06s)
+        test_suite.go:250: DPS expected 25602.557 but was 25599.704!.
+        test_suite.go:261: TPS expected 15785.830 but was 15784.701!.
+    --- FAIL: TestBM/AllItems-HeartofIgnacious-65110 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-PartisanDefenderStone-92114 (0.03s)
+        test_suite.go:250: DPS expected 24502.200 but was 24496.602!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-FireoftheDeep-77117 (0.04s)
+        test_suite.go:250: DPS expected 24509.828 but was 24504.500!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-HeartofRage-59224 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Schnottz'sMedallionofCommand-65805 (0.04s)
+        test_suite.go:250: DPS expected 24908.290 but was 24903.342!.
+        test_suite.go:261: TPS expected 15531.078 but was 15527.667!.
+    --- FAIL: TestBM/AllItems-Stonemother'sKiss-61411 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-World-QuellerFocus-63842 (0.05s)
+        test_suite.go:250: DPS expected 24341.933 but was 24336.627!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-LeadenDespair-56347 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Anhuur'sHymnal-56407 (0.07s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-KvaldirBattleStandard-59689 (0.05s)
+        test_suite.go:250: DPS expected 24325.703 but was 24326.001!.
+        test_suite.go:261: TPS expected 15143.098 but was 15142.603!.
+    --- FAIL: TestBM/AllItems-EyeofUnmaking-77200 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sInsigniaofVictory-61046 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sInsigniaofDominance-72449 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Ti'tahk,theStepsofTime-78477 (0.03s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-ForestwalkerIdolofRage-92142 (0.06s)
+        test_suite.go:250: DPS expected 25513.731 but was 25506.240!.
+        test_suite.go:261: TPS expected 15749.548 but was 15745.629!.
+    --- FAIL: TestBM/AllItems-SoulshifterVortex-77206 (0.06s)
+        test_suite.go:250: DPS expected 24726.392 but was 24721.293!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sEmblemofAccuracy-61027 (0.04s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-Shadowmourne-49623 (0.04s)
+        test_suite.go:250: DPS expected 26081.902 but was 26079.332!.
+        test_suite.go:261: TPS expected 16162.174 but was 16159.504!.
+    --- FAIL: TestBM/AllItems-Skardyn'sGrace-56440 (0.05s)
+        test_suite.go:250: DPS expected 25320.392 but was 25316.195!.
+        test_suite.go:261: TPS expected 15648.276 but was 15645.668!.
+    --- FAIL: TestBM/AllItems-Bryntroll,theBoneArbiter-50709 (0.05s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-KvaldirBattleStandard-59685 (0.05s)
+        test_suite.go:250: DPS expected 24325.703 but was 24326.001!.
+        test_suite.go:261: TPS expected 15143.098 but was 15142.603!.
+    --- FAIL: TestBM/AllItems-Val'anyr,HammerofAncientKings-46017 (0.04s)
+        test_suite.go:250: DPS expected 24033.528 but was 24031.614!.
+        test_suite.go:261: TPS expected 14979.107 but was 14979.038!.
+    --- FAIL: TestBM/AllItems-Rainsong-56377 (0.09s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-SymbioticWorm-65048 (0.15s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-CataclysmicGladiator'sInsigniaofVictory-73491 (0.07s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RosaryofLight-72901 (0.05s)
+        test_suite.go:250: DPS expected 24785.048 but was 24779.587!.
+        test_suite.go:261: TPS expected 15413.986 but was 15407.676!.
+    --- FAIL: TestBM/AllItems-TheHungerer-68927 (0.07s)
+        test_suite.go:250: DPS expected 25916.075 but was 25916.195!.
+        test_suite.go:261: TPS expected 16140.346 but was 16140.785!.
+    --- FAIL: TestBM/AllItems-EssenceoftheCyclone-59473 (0.05s)
+        test_suite.go:250: DPS expected 25683.422 but was 25680.010!.
+        test_suite.go:261: TPS expected 15975.211 but was 15972.864!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sInsigniaofDominance-70578 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MithrilStopwatch-232013 (0.04s)
+        test_suite.go:250: DPS expected 24497.222 but was 24493.562!.
+        test_suite.go:261: TPS expected 15269.294 but was 15266.449!.
+    --- FAIL: TestBM/AllItems-WaterdancerStoneofRage-92400 (0.06s)
+        test_suite.go:250: DPS expected 25585.584 but was 25580.407!.
+        test_suite.go:261: TPS expected 15723.868 but was 15721.201!.
+    --- FAIL: TestBM/AllItems-ScourgeheartStoneofBattle-92168 (0.04s)
+        test_suite.go:250: DPS expected 24513.572 but was 24508.782!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-EssenceoftheEternalFlame-69002 (0.03s)
+        test_suite.go:250: DPS expected 24457.141 but was 24451.820!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Althor'sAbacus-50366 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WaterdancerDefenderIdol-92399 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MarkofKhardros-56458 (0.09s)
+        test_suite.go:250: DPS expected 24355.434 but was 24351.040!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-BedrockTalisman-58182 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Tia'sGrace-56394 (0.06s)
+        test_suite.go:250: DPS expected 25487.618 but was 25483.039!.
+        test_suite.go:261: TPS expected 15740.573 but was 15737.906!.
+    --- FAIL: TestBM/AllItems-VialofStolenMemories-59515 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740 (0.07s)
+        test_suite.go:250: DPS expected 24507.228 but was 24503.164!.
+        test_suite.go:261: TPS expected 15281.890 but was 15278.791!.
+    --- FAIL: TestBM/AllItems-EyeofUnmaking-77977 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Rathrak,thePoisonousMind-78484 (0.04s)
+        test_suite.go:250: DPS expected 23994.650 but was 23990.899!.
+        test_suite.go:261: TPS expected 15001.880 but was 15001.336!.
+    --- FAIL: TestBM/AllItems-DarkmoonCard:Tsunami-62050 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VeilofLies-72900 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-GlowingTwilightScale-54589 (0.10s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VariablePulseLightningCapacitor-69110 (0.07s)
+        test_suite.go:250: DPS expected 24565.004 but was 24559.718!.
+        test_suite.go:261: TPS expected 15418.288 but was 15414.173!.
+    --- FAIL: TestBM/AllItems-SoulseizerIdolofDestruction-92125 (0.03s)
+        test_suite.go:250: DPS expected 24479.858 but was 24475.007!.
+        test_suite.go:261: TPS expected 15090.482 but was 15087.987!.
+    --- FAIL: TestBM/AllItems-ApparatusofKhaz'goroth-69113 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ReflectionoftheLight-77115 (0.04s)
+        test_suite.go:250: DPS expected 24186.273 but was 24181.698!.
+        test_suite.go:261: TPS expected 15041.176 but was 15038.170!.
+    --- FAIL: TestBM/AllItems-Sindragosa'sFlawlessFang-50364 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MatrixRestabilizer-68994 (0.04s)
+        test_suite.go:250: DPS expected 26176.279 but was 26173.835!.
+        test_suite.go:261: TPS expected 16210.673 but was 16210.550!.
+    --- FAIL: TestBM/AllItems-FieryQuintessence-69000 (0.05s)
+        test_suite.go:250: DPS expected 24224.723 but was 24219.805!.
+        test_suite.go:261: TPS expected 15110.105 but was 15107.971!.
+    --- FAIL: TestBM/AllItems-KeytotheEndlessChamber-55795 (0.04s)
+        test_suite.go:250: DPS expected 25418.195 but was 25415.045!.
+        test_suite.go:261: TPS expected 15796.680 but was 15796.500!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sBadgeofDominance-72448 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-StarcatcherCompass-77973 (0.05s)
+        test_suite.go:250: DPS expected 26092.401 but was 26093.233!.
+        test_suite.go:261: TPS expected 16151.772 but was 16151.882!.
+    --- FAIL: TestBM/AllItems-TendrilsofBurrowingDark-56339 (0.04s)
+        test_suite.go:250: DPS expected 24388.297 but was 24382.985!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-NaturalistStoneofWisdom-92139 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sBadgeofConquest-70399 (0.04s)
+        test_suite.go:250: DPS expected 25480.418 but was 25476.880!.
+        test_suite.go:261: TPS expected 15918.486 but was 15918.273!.
+    --- FAIL: TestBM/AllItems-HarmlightToken-63839 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MightoftheOcean-56285 (0.03s)
+        test_suite.go:250: DPS expected 24528.105 but was 24527.074!.
+        test_suite.go:261: TPS expected 15247.758 but was 15248.146!.
+    --- FAIL: TestBM/AllItems-Bone-LinkFetish-78002 (0.04s)
+        test_suite.go:250: DPS expected 25326.420 but was 25326.232!.
+        test_suite.go:261: TPS expected 16069.399 but was 16070.698!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sInsigniaofDominance-61045 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sEmblemofAlacrity-61028 (0.04s)
+        test_suite.go:250: DPS expected 24585.976 but was 24585.283!.
+        test_suite.go:261: TPS expected 15313.029 but was 15312.903!.
+    --- FAIL: TestBM/AllItems-RuneofZeth-68998 (0.04s)
+        test_suite.go:250: DPS expected 24531.609 but was 24527.801!.
+        test_suite.go:261: TPS expected 15285.435 but was 15282.958!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sBadgeofConquest-72304 (0.08s)
+        test_suite.go:250: DPS expected 25578.893 but was 25577.796!.
+        test_suite.go:261: TPS expected 15963.251 but was 15964.539!.
+    --- FAIL: TestBM/AllItems-FuryofAngerforge-59461 (0.04s)
+        test_suite.go:250: DPS expected 24502.098 but was 24499.227!.
+        test_suite.go:261: TPS expected 15256.619 but was 15253.786!.
+    --- FAIL: TestBM/AllItems-UnquenchableFlame-67101 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-SpidersilkSpindle-69138 (0.04s)
+        test_suite.go:250: DPS expected 24492.266 but was 24486.940!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sBadgeofDominance-70401 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Figurine-JeweledSerpent-52353 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Rainsong-55854 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sBadgeofVictory-61034 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sBadgeofVictory-72450 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ForestwalkerStoneofRage-92141 (0.05s)
+        test_suite.go:250: DPS expected 25576.829 but was 25572.697!.
+        test_suite.go:261: TPS expected 15723.868 but was 15721.201!.
+    --- FAIL: TestBM/AllItems-Rathrak,thePoisonousMind-77195 (0.06s)
+        test_suite.go:250: DPS expected 23991.339 but was 23987.588!.
+        test_suite.go:261: TPS expected 14998.569 but was 14998.025!.
+    --- FAIL: TestBM/AllItems-BellofEnragingResonance-65053 (0.05s)
+        test_suite.go:250: DPS expected 24511.403 but was 24507.806!.
+        test_suite.go:261: TPS expected 15270.209 but was 15267.469!.
+    --- FAIL: TestBM/AllItems-Harrison'sInsigniaofPanache-65803 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-No'Kaled,theElementsofDeath-78481 (0.06s)
+        test_suite.go:250: DPS expected 26501.100 but was 26495.170!.
+        test_suite.go:261: TPS expected 16437.126 but was 16433.592!.
+    --- FAIL: TestBM/AllItems-TearofBlood-55819 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Blood-SoakedAleMug-63843 (0.05s)
+        test_suite.go:250: DPS expected 25012.912 but was 25006.820!.
+        test_suite.go:261: TPS expected 15468.806 but was 15465.023!.
+    --- FAIL: TestBM/AllItems-WaterdancerDefenderStone-92398 (0.11s)
+        test_suite.go:250: DPS expected 24519.768 but was 24515.112!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Souldrinker-78488 (0.06s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-LeftEyeofRajh-56102 (0.04s)
+        test_suite.go:250: DPS expected 25218.197 but was 25212.759!.
+        test_suite.go:261: TPS expected 15640.444 but was 15636.386!.
+    --- FAIL: TestBM/AllItems-PartisanStoneofWisdom-92145 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ScalesofLife-69109 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ThundercallerStoneofWisdom-92122 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MirrorofBrokenImages-62471 (0.05s)
+        test_suite.go:250: DPS expected 24413.587 but was 24408.271!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ScourgeheartIdolofBattle-92167 (0.06s)
+        test_suite.go:250: DPS expected 24502.098 but was 24499.227!.
+        test_suite.go:261: TPS expected 15256.619 but was 15253.786!.
+    --- FAIL: TestBM/AllItems-ApparatusofKhaz'goroth-68972 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Ti'tahk,theStepsofTime-78486 (0.05s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-No'Kaled,theElementsofDeath-77188 (0.05s)
+        test_suite.go:250: DPS expected 26575.891 but was 26571.350!.
+        test_suite.go:261: TPS expected 16497.865 but was 16495.689!.
+    --- FAIL: TestBM/AllItems-DelivererIdolofDestruction-92113 (0.05s)
+        test_suite.go:250: DPS expected 24446.981 but was 24443.142!.
+        test_suite.go:261: TPS expected 15038.236 but was 15034.897!.
+    --- FAIL: TestBM/AllItems-BloodofIsiset-55995 (0.03s)
+        test_suite.go:250: DPS expected 24365.115 but was 24359.806!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-EnlightenedIdolofDestruction-92144 (0.05s)
+        test_suite.go:250: DPS expected 24413.360 but was 24408.106!.
+        test_suite.go:261: TPS expected 15044.807 but was 15040.724!.
+    --- FAIL: TestBM/AllItems-CataclysmicGladiator'sInsigniaofDominance-73497 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-SealoftheSevenSigns-77969 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Gurthalak,VoiceoftheDeeps-78478 (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763 (0.07s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MartialDefenderIdol-92127 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sEmblemofTenacity-61032 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ResolveofUndying-77998 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WitchingHourglass-56320 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WitchingHourglass-55787 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-SeaStar-56290 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-InsigniaofDiplomacy-61433 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-StumpofTime-62470 (0.04s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-BaubleofTrueBlood-50726 (0.03s)
+        test_suite.go:250: DPS expected 24187.888 but was 24182.601!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ResolveofUndying-77201 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-CrushingWeight-59506 (0.04s)
+        test_suite.go:250: DPS expected 24182.109 but was 24176.973!.
+        test_suite.go:261: TPS expected 15034.443 but was 15030.268!.
+    --- FAIL: TestBM/AllItems-FallofMortality-65124 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RuthlessGladiator'sInsigniaofVictory-72455 (0.07s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-PartisanIdolofBattle-92148 (0.05s)
+        test_suite.go:250: DPS expected 24502.098 but was 24499.227!.
+        test_suite.go:261: TPS expected 15256.619 but was 15253.786!.
+    --- FAIL: TestBM/AllItems-ShardofWoe-60233 (0.04s)
+        test_suite.go:250: DPS expected 24461.358 but was 24464.452!.
+        test_suite.go:261: TPS expected 15285.267 but was 15287.047!.
+    --- FAIL: TestBM/AllItems-SymbioticWorm-59332 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WaterdancerStoneofWisdom-92402 (0.07s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Deathbringer'sWill-50363 (0.03s)
+        test_suite.go:250: DPS expected 24793.104 but was 24792.707!.
+        test_suite.go:261: TPS expected 15445.243 but was 15444.269!.
+    --- FAIL: TestBM/AllItems-DarkmoonCard:Earthquake-62048 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-GraceoftheHerald-55266 (0.03s)
+        test_suite.go:250: DPS expected 24998.625 but was 24996.018!.
+        test_suite.go:261: TPS expected 15543.514 but was 15542.612!.
+    --- FAIL: TestBM/AllItems-EyeofUnmaking-77997 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VialofShadows-77999 (0.04s)
+        test_suite.go:250: DPS expected 27566.011 but was 27566.172!.
+        test_suite.go:261: TPS expected 17717.183 but was 17717.222!.
+    --- FAIL: TestBM/AllItems-Figurine-EarthenGuardian-52352 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MoonwellPhial-70143 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-HeartofThunder-55845 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Varo'then'sBrooch-72899 (0.04s)
+        test_suite.go:250: DPS expected 24531.772 but was 24526.407!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-CrecheoftheFinalDragon-77205 (0.04s)
+        test_suite.go:250: DPS expected 25002.902 but was 24999.107!.
+        test_suite.go:261: TPS expected 15601.476 but was 15601.532!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sEmblemofProwess-61029 (0.05s)
+        test_suite.go:250: DPS expected 24426.934 but was 24421.617!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VesselofAcceleration-69167 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ScourgeheartDefenderIdol-92135 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-EssenceoftheCyclone-65140 (0.05s)
+        test_suite.go:250: DPS expected 25801.331 but was 25802.237!.
+        test_suite.go:261: TPS expected 16071.391 but was 16070.390!.
+    --- FAIL: TestBM/AllItems-CrecheoftheFinalDragon-77992 (0.05s)
+        test_suite.go:250: DPS expected 25072.848 but was 25068.675!.
+        test_suite.go:261: TPS expected 15625.505 but was 15624.439!.
+    --- FAIL: TestBM/AllItems-InsigniaoftheCorruptedMind-77971 (0.04s)
+        test_suite.go:250: DPS expected 24771.371 but was 24770.132!.
+        test_suite.go:261: TPS expected 15511.015 but was 15511.126!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sBadgeofDominance-70518 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ResolveofUndying-77978 (0.07s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ThundercallerIdolofDestruction-92120 (0.05s)
+        test_suite.go:250: DPS expected 24499.276 but was 24493.913!.
+        test_suite.go:261: TPS expected 15069.603 but was 15065.794!.
+    --- FAIL: TestBM/AllItems-SoulseizerStoneofDestruction-92124 (0.04s)
+        test_suite.go:250: DPS expected 24515.774 but was 24510.429!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VialofShadows-77979 (0.04s)
+        test_suite.go:250: DPS expected 26847.867 but was 26846.111!.
+        test_suite.go:261: TPS expected 17141.490 but was 17142.713!.
+    --- FAIL: TestBM/AllItems-TheHungerer-69112 (0.04s)
+        test_suite.go:250: DPS expected 26021.084 but was 26020.082!.
+        test_suite.go:261: TPS expected 16260.811 but was 16259.554!.
+    --- FAIL: TestBM/AllItems-DelivererStoneofDestruction-92151 (0.03s)
+        test_suite.go:250: DPS expected 24501.543 but was 24495.730!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MightoftheOcean-55251 (0.06s)
+        test_suite.go:250: DPS expected 24528.105 but was 24527.074!.
+        test_suite.go:261: TPS expected 15247.758 but was 15248.146!.
+    --- FAIL: TestBM/AllItems-StarcatcherCompass-77993 (0.03s)
+        test_suite.go:250: DPS expected 26624.667 but was 26625.074!.
+        test_suite.go:261: TPS expected 16594.994 but was 16597.848!.
+    --- FAIL: TestBM/AllItems-Coren'sChilledChromiumCoaster-232012 (0.05s)
+        test_suite.go:250: DPS expected 25109.276 but was 25105.615!.
+        test_suite.go:261: TPS expected 15622.729 but was 15619.884!.
+    --- FAIL: TestBM/AllItems-DislodgedForeignObject-50348 (0.03s)
+        test_suite.go:250: DPS expected 24402.967 but was 24406.346!.
+        test_suite.go:261: TPS expected 15154.409 but was 15158.001!.
+    --- FAIL: TestBM/AllItems-Prestor'sTalismanofMachination-59441 (0.06s)
+        test_suite.go:250: DPS expected 25469.164 but was 25467.699!.
+        test_suite.go:261: TPS expected 15822.566 but was 15821.914!.
+    --- FAIL: TestBM/AllItems-CunningoftheCruel-78000 (0.05s)
+        test_suite.go:250: DPS expected 24641.578 but was 24636.291!.
+        test_suite.go:261: TPS expected 15494.853 but was 15490.738!.
+    --- FAIL: TestBM/AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761 (0.05s)
+        test_suite.go:250: DPS expected 25249.414 but was 25243.907!.
+        test_suite.go:261: TPS expected 15677.447 but was 15673.554!.
+    --- FAIL: TestBM/AllItems-MatrixRestabilizer-69150 (0.06s)
+        test_suite.go:250: DPS expected 26434.757 but was 26432.375!.
+        test_suite.go:261: TPS expected 16391.405 but was 16390.628!.
+    --- FAIL: TestBM/AllItems-BellofEnragingResonance-59326 (0.05s)
+        test_suite.go:250: DPS expected 24502.098 but was 24499.227!.
+        test_suite.go:261: TPS expected 15256.619 but was 15253.786!.
+    --- FAIL: TestBM/AllItems-CataclysmicGladiator'sBadgeofConquest-73648 (0.07s)
+        test_suite.go:250: DPS expected 25776.997 but was 25775.138!.
+        test_suite.go:261: TPS expected 16096.491 but was 16097.046!.
+    --- FAIL: TestBM/AllItems-BloodofIsiset-56414 (0.03s)
+        test_suite.go:250: DPS expected 24388.297 but was 24382.985!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Sorrowsong-55879 (0.04s)
+        test_suite.go:250: DPS expected 24365.115 but was 24359.806!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-WillofUnbinding-77995 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-HeartofSolace-55868 (0.07s)
+        test_suite.go:250: DPS expected 24515.615 but was 24511.686!.
+        test_suite.go:261: TPS expected 15191.336 but was 15189.679!.
+    --- FAIL: TestBM/AllItems-ViciousGladiator'sBadgeofVictory-70519 (0.03s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-ImpatienceofYouth-62464 (0.05s)
+        test_suite.go:250: DPS expected 24413.587 but was 24408.271!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-HeartofRage-65072 (0.05s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Tyrande'sFavoriteDoll-64645 (0.05s)
+        test_suite.go:250: DPS expected 23464.367 but was 23459.800!.
+        test_suite.go:261: TPS expected 14603.879 but was 14601.466!.
+    --- FAIL: TestBM/AllItems-SpidersilkSpindle-68981 (0.06s)
+        test_suite.go:250: DPS expected 24457.141 but was 24451.820!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MoonwellChalice-70142 (0.04s)
+        test_suite.go:250: DPS expected 24410.957 but was 24405.943!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-RightEyeofRajh-56100 (0.06s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-ThundercallerStoneofRage-92121 (0.05s)
+        test_suite.go:250: DPS expected 25582.508 but was 25577.906!.
+        test_suite.go:261: TPS expected 15723.868 but was 15721.201!.
+    --- FAIL: TestBM/AllItems-NaturalistStoneofRage-92138 (0.04s)
+        test_suite.go:250: DPS expected 25577.764 but was 25573.713!.
+        test_suite.go:261: TPS expected 15723.868 but was 15721.201!.
+    --- FAIL: TestBM/AllItems-GraceoftheHerald-56295 (0.06s)
+        test_suite.go:250: DPS expected 25411.032 but was 25408.294!.
+        test_suite.go:261: TPS expected 15771.798 but was 15768.555!.
+    --- FAIL: TestBM/AllItems-ScalesofLife-68915 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-PartisanDefenderIdol-92147 (0.08s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Throngus'sFinger-56449 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VialofShadows-77207 (0.05s)
+        test_suite.go:250: DPS expected 27163.630 but was 27164.665!.
+        test_suite.go:261: TPS expected 17444.325 but was 17445.898!.
+    --- FAIL: TestBM/AllItems-HeartofSolace-56393 (0.04s)
+        test_suite.go:250: DPS expected 24503.750 but was 24499.993!.
+        test_suite.go:261: TPS expected 15277.577 but was 15275.314!.
+    --- FAIL: TestBM/AllItems-MartialStoneofBattle-92129 (0.04s)
+        test_suite.go:250: DPS expected 24515.470 but was 24510.510!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-FluidDeath-58181 (0.04s)
+        test_suite.go:250: DPS expected 25732.209 but was 25731.953!.
+        test_suite.go:261: TPS expected 15953.807 but was 15954.668!.
+    --- FAIL: TestBM/AllItems-DarkmoonCard:Volcano-62047 (0.03s)
+        test_suite.go:250: DPS expected 24413.587 but was 24408.271!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Sorrowsong-56400 (0.04s)
+        test_suite.go:250: DPS expected 24388.297 but was 24382.985!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Ricket'sMagneticFireball-70144 (0.05s)
+        test_suite.go:250: DPS expected 25605.533 but was 25601.870!.
+        test_suite.go:261: TPS expected 16012.362 but was 16012.033!.
+    --- FAIL: TestBM/AllItems-StayofExecution-68996 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-VialofStolenMemories-65109 (0.04s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-MirrorofBrokenImages-62466 (0.04s)
+        test_suite.go:250: DPS expected 24413.587 but was 24408.271!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Skardyn'sGrace-56115 (0.03s)
+        test_suite.go:250: DPS expected 25164.295 but was 25158.797!.
+        test_suite.go:261: TPS expected 15567.403 but was 15564.009!.
+    --- FAIL: TestBM/AllItems-Kiril,FuryofBeasts-77194 (0.04s)
+        test_suite.go:250: DPS expected 28446.628 but was 28444.082!.
+        test_suite.go:261: TPS expected 17556.210 but was 17555.857!.
+    --- FAIL: TestBM/AllItems-TinyAbominationinaJar-50706 (0.04s)
+        test_suite.go:250: DPS expected 24344.182 but was 24339.329!.
+        test_suite.go:261: TPS expected 15140.414 but was 15137.299!.
+    --- FAIL: TestBM/AllItems-PartisanStoneofBattle-92149 (0.04s)
+        test_suite.go:250: DPS expected 24515.090 but was 24509.433!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-Anhuur'sHymnal-55889 (0.04s)
+        test_suite.go:250: DPS expected 24516.333 but was 24513.757!.
+        test_suite.go:261: TPS expected 15247.370 but was 15247.591!.
+    --- FAIL: TestBM/AllItems-InsigniaoftheCorruptedMind-77203 (0.06s)
+        test_suite.go:250: DPS expected 24866.487 but was 24867.489!.
+        test_suite.go:261: TPS expected 15561.655 but was 15563.210!.
+    --- FAIL: TestBM/AllItems-UnsolvableRiddle-62463 (0.04s)
+        test_suite.go:250: DPS expected 25464.036 but was 25460.256!.
+        test_suite.go:261: TPS expected 15738.085 but was 15737.121!.
+    --- FAIL: TestBM/AllItems-Tia'sGrace-55874 (0.04s)
+        test_suite.go:250: DPS expected 25334.647 but was 25330.150!.
+        test_suite.go:261: TPS expected 15661.516 but was 15658.873!.
+    --- FAIL: TestBM/AllItems-Figurine-DreamOwl-52354 (0.06s)
+        test_suite.go:250: DPS expected 24188.088 but was 24182.801!.
+        test_suite.go:261: TPS expected 15041.063 but was 15036.948!.
+    --- FAIL: TestBM/AllItems-No'Kaled,theElementsofDeath-78472 (0.04s)
+        test_suite.go:250: DPS expected 26691.375 but was 26687.147!.
+        test_suite.go:261: TPS expected 16573.643 but was 16571.721!.
+    --- FAIL: TestBM/AllItems-AgonyandTorment (0.03s)
+        test_suite.go:250: DPS expected 25042.280 but was 25040.237!.
+        test_suite.go:261: TPS expected 15589.561 but was 15588.562!.
+    --- FAIL: TestBM/AllItems-Flamewaker'sBattlegear (0.07s)
+        test_suite.go:250: DPS expected 26714.485 but was 26713.771!.
+        test_suite.go:261: TPS expected 16533.018 but was 16535.329!.
+    --- FAIL: TestBM/AllItems-WyrmstalkerBattlegear (0.05s)
+        test_suite.go:250: DPS expected 26424.482 but was 26424.524!.
+        test_suite.go:261: TPS expected 16469.498 but was 16468.820!.
+    --- FAIL: TestBM/AllItems-Lightning-ChargedBattlegear (0.09s)
+        test_suite.go:250: DPS expected 24993.019 but was 24994.102!.
+        test_suite.go:261: TPS expected 15467.105 but was 15467.931!.
+    --- FAIL: TestBM/AllItems-Gladiator'sPursuit (0.05s)
+        test_suite.go:250: DPS expected 26297.292 but was 26297.340!.
+        test_suite.go:261: TPS expected 16187.922 but was 16188.764!.
+    --- FAIL: TestBM/AllItems-Ahn'KaharBloodHunter'sBattlegear (0.07s)
+        test_suite.go:250: DPS expected 22182.082 but was 22186.344!.
+        test_suite.go:261: TPS expected 14076.194 but was 14079.599!.
+    --- FAIL: TestBM/AllItems-ReverberatingShadowspiritDiamond (0.05s)
+        test_suite.go:250: DPS expected 25604.549 but was 25600.273!.
+        test_suite.go:261: TPS expected 15905.596 but was 15904.416!.
+    --- FAIL: TestBM/AllItems-PowerfulShadowspiritDiamond (0.03s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-ChaoticShadowspiritDiamond (0.05s)
+        test_suite.go:250: DPS expected 25664.430 but was 25659.230!.
+        test_suite.go:261: TPS expected 15941.653 but was 15939.419!.
+    --- FAIL: TestBM/AllItems-FleetShadowspiritDiamond (0.04s)
+        test_suite.go:250: DPS expected 25432.643 but was 25428.448!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-EmberShadowspiritDiamond (0.04s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-EternalShadowspiritDiamond (0.08s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-AustereShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-DestructiveShadowspiritDiamond (0.08s)
+        test_suite.go:250: DPS expected 25450.719 but was 25445.629!.
+        test_suite.go:261: TPS expected 15727.942 but was 15725.818!.
+    --- FAIL: TestBM/AllItems-BurningShadowspiritDiamond (0.07s)
+        test_suite.go:250: DPS expected 25604.549 but was 25600.273!.
+        test_suite.go:261: TPS expected 15905.596 but was 15904.416!.
+    --- FAIL: TestBM/AllItems-RevitalizingShadowspiritDiamond (0.05s)
+        test_suite.go:250: DPS expected 25604.549 but was 25600.273!.
+        test_suite.go:261: TPS expected 15905.596 but was 15904.416!.
+    --- FAIL: TestBM/AllItems-BracingShadowspiritDiamond (0.05s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15379.596 but was 15378.533!.
+    --- FAIL: TestBM/AllItems-EnigmaticShadowspiritDiamond (0.05s)
+        test_suite.go:250: DPS expected 25450.719 but was 25445.629!.
+        test_suite.go:261: TPS expected 15727.942 but was 15725.818!.
+    --- FAIL: TestBM/AllItems-AgileShadowspiritDiamond (0.10s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-ForlornShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-EffulgentShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 25392.419 but was 25388.237!.
+        test_suite.go:261: TPS expected 15693.466 but was 15692.380!.
+    --- FAIL: TestBM/AllItems-ImpassiveShadowspiritDiamond (0.05s)
+        test_suite.go:250: DPS expected 25450.719 but was 25445.629!.
+        test_suite.go:261: TPS expected 15727.942 but was 15725.818!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Mending-4066 (0.04s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Avalanche-4067 (0.06s)
+        test_suite.go:250: DPS expected 25401.617 but was 25397.400!.
+        test_suite.go:261: TPS expected 15814.643 but was 15813.547!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-ElementalSlayer-4074 (0.06s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Hurricane-4083 (0.03s)
+        test_suite.go:250: DPS expected 25398.577 but was 25391.930!.
+        test_suite.go:261: TPS expected 15820.964 but was 15816.228!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Heartsong-4084 (0.04s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-PowerTorrent-4097 (0.04s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Windwalk-4098 (0.07s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Landslide-4099 (0.03s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-LightweaveEmbroidery-4115 (0.04s)
+        test_suite.go:250: DPS expected 25698.779 but was 25694.239!.
+        test_suite.go:261: TPS expected 15956.621 but was 15954.465!.
+    --- FAIL: TestBM/AllItems-DarkglowEmbroidery-4116 (0.04s)
+        test_suite.go:250: DPS expected 25698.779 but was 25694.239!.
+        test_suite.go:261: TPS expected 15956.621 but was 15954.465!.
+    --- FAIL: TestBM/AllItems-SwordguardEmbroidery-4118 (0.05s)
+        test_suite.go:250: DPS expected 26015.826 but was 26011.285!.
+        test_suite.go:261: TPS expected 16144.465 but was 16142.308!.
+    --- FAIL: TestBM/AllItems-ElementiumShieldSpike-4215 (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-PyriumShieldSpike-4216 (0.04s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-EnchantBoots-Tuskarr'sVitality-3232 (0.05s)
+        test_suite.go:250: DPS expected 25666.435 but was 25661.198!.
+        test_suite.go:261: TPS expected 15947.694 but was 15946.029!.
+    --- FAIL: TestBM/AllItems-EnchantBoots-Lavawalker-4104 (0.05s)
+        test_suite.go:250: DPS expected 25692.559 but was 25687.312!.
+        test_suite.go:261: TPS expected 15947.694 but was 15946.029!.
+    --- FAIL: TestBM/AllItems-EnchantBoots-Assassin'sStep-4105 (0.05s)
+        test_suite.go:250: DPS expected 25739.024 but was 25734.310!.
+        test_suite.go:261: TPS expected 15979.946 but was 15977.734!.
+    --- FAIL: TestBM/AllItems-EnchantBoots-EarthenVitality-4062 (0.04s)
+        test_suite.go:250: DPS expected 25666.435 but was 25661.198!.
+        test_suite.go:261: TPS expected 15947.694 but was 15946.029!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-GiantSlayer-3251 (0.06s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Icebreaker-3239 (0.04s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-TitaniumShieldSpike-3748 (0.03s)
+        test_suite.go:250: DPS expected 25774.567 but was 25770.085!.
+        test_suite.go:261: TPS expected 16007.942 but was 16005.945!.
+    --- FAIL: TestBM/AllItems-Enchant2HWeapon-Scourgebane-3247 (0.07s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantGloves-Armsman-3253 (0.03s)
+        test_suite.go:250: DPS expected 25707.683 but was 25703.010!.
+        test_suite.go:261: TPS expected 16278.813 but was 16276.613!.
+    --- FAIL: TestBM/AllItems-EnchantCloak-Wisdom-3296 (0.05s)
+        test_suite.go:250: DPS expected 25698.779 but was 25694.239!.
+        test_suite.go:261: TPS expected 15637.489 but was 15635.375!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Berserking-3789 (0.04s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-Lifeward-3241 (0.04s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-BlackMagic-3790 (0.08s)
+        test_suite.go:250: DPS expected 25330.986 but was 25319.739!.
+        test_suite.go:261: TPS expected 15795.923 but was 15792.176!.
+    --- FAIL: TestBM/AllItems-LightweaveEmbroidery-3722 (0.04s)
+        test_suite.go:250: DPS expected 25698.779 but was 25694.239!.
+        test_suite.go:261: TPS expected 15956.621 but was 15954.465!.
+    --- FAIL: TestBM/AllItems-DarkglowEmbroidery-3728 (0.05s)
+        test_suite.go:250: DPS expected 25698.779 but was 25694.239!.
+        test_suite.go:261: TPS expected 15956.621 but was 15954.465!.
+    --- FAIL: TestBM/AllItems-SwordguardEmbroidery-3730 (0.04s)
+        test_suite.go:250: DPS expected 25829.664 but was 25825.124!.
+        test_suite.go:261: TPS expected 16034.100 but was 16031.944!.
+    --- FAIL: TestBM/AllItems-EnchantWeapon-BloodDraining-3870 (0.03s)
+        test_suite.go:250: DPS expected 25370.092 but was 25365.874!.
+        test_suite.go:261: TPS expected 15782.921 but was 15781.824!.
+    --- FAIL: TestBM/SwitchInFrontOfTarget-Default (0.04s)
+        test_suite.go:250: DPS expected 25423.985 but was 25420.161!.
+        test_suite.go:261: TPS expected 15804.094 but was 15802.454!.
+    --- FAIL: TestBM/Average-Default (3.62s)
+        test_suite.go:250: DPS expected 25812.310 but was 25812.005!.
+        test_suite.go:261: TPS expected 16061.052 but was 16060.945!.
+    test_suite.go:331: One or more tests failed! If the changes are intentional, update the expected results with 'make test && make update-tests'. Otherwise go fix your bugs!
+FAIL
+FAIL	github.com/wowsims/cata/sim/hunter/beast_mastery	22.916s
+2025/05/26 00:23:09 Using DTR for spec SpecMarksmanshipHunter which is not implemented. Using default config
+--- FAIL: TestMM (31.29s)
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget (0.01s)
+        test_suite.go:250: DPS expected 18644.627 but was 18650.047!.
+        test_suite.go:261: TPS expected 16810.003 but was 16814.743!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget (0.01s)
+        test_suite.go:250: DPS expected 18964.582 but was 18969.047!.
+        test_suite.go:261: TPS expected 17000.970 but was 17004.720!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget#01 (0.02s)
+        test_suite.go:250: DPS expected 18644.627 but was 18650.047!.
+        test_suite.go:261: TPS expected 16810.003 but was 16814.743!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget#01 (0.01s)
+        test_suite.go:250: DPS expected 18964.582 but was 18969.047!.
+        test_suite.go:261: TPS expected 17000.970 but was 17004.720!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget (0.01s)
+        test_suite.go:250: DPS expected 30521.994 but was 30533.434!.
+        test_suite.go:261: TPS expected 27473.899 but was 27485.035!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget (0.02s)
+        test_suite.go:250: DPS expected 31106.411 but was 31118.019!.
+        test_suite.go:261: TPS expected 27851.313 but was 27862.602!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget#01 (0.02s)
+        test_suite.go:250: DPS expected 30521.994 but was 30533.434!.
+        test_suite.go:261: TPS expected 27473.899 but was 27485.035!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget#01 (0.01s)
+        test_suite.go:250: DPS expected 31106.411 but was 31118.019!.
+        test_suite.go:261: TPS expected 27851.313 but was 27862.602!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongSingleTarget (0.05s)
+        test_suite.go:250: DPS expected 16121.141 but was 16108.513!.
+        test_suite.go:261: TPS expected 14513.009 but was 14501.076!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongSingleTarget (0.05s)
+        test_suite.go:250: DPS expected 16246.477 but was 16234.760!.
+        test_suite.go:261: TPS expected 14540.975 but was 14530.047!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongSingleTarget#01 (0.06s)
+        test_suite.go:250: DPS expected 16121.141 but was 16108.513!.
+        test_suite.go:261: TPS expected 14513.009 but was 14501.076!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongSingleTarget#01 (0.04s)
+        test_suite.go:250: DPS expected 16246.477 but was 16234.760!.
+        test_suite.go:261: TPS expected 14540.975 but was 14530.047!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongSingleTarget (0.06s)
+        test_suite.go:250: DPS expected 23887.384 but was 23888.202!.
+        test_suite.go:261: TPS expected 21585.636 but was 21585.944!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongSingleTarget (0.08s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongSingleTarget#01 (0.06s)
+        test_suite.go:250: DPS expected 23887.384 but was 23888.202!.
+        test_suite.go:261: TPS expected 21585.636 but was 21585.944!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongSingleTarget#01 (0.04s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongMultiTarget (0.11s)
+        test_suite.go:250: DPS expected 17042.932 but was 17036.344!.
+        test_suite.go:261: TPS expected 15409.926 but was 15403.400!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongMultiTarget (0.12s)
+        test_suite.go:250: DPS expected 17202.326 but was 17195.756!.
+        test_suite.go:261: TPS expected 15473.412 but was 15466.879!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongMultiTarget#01 (0.09s)
+        test_suite.go:250: DPS expected 17042.932 but was 17036.344!.
+        test_suite.go:261: TPS expected 15409.926 but was 15403.400!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-NoBuffs-5.1yards-LongMultiTarget#01 (0.14s)
+        test_suite.go:250: DPS expected 17202.326 but was 17195.756!.
+        test_suite.go:261: TPS expected 15473.412 but was 15466.879!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongMultiTarget (0.08s)
+        test_suite.go:250: DPS expected 25187.429 but was 25185.670!.
+        test_suite.go:261: TPS expected 22896.614 but was 22894.483!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongMultiTarget (0.12s)
+        test_suite.go:250: DPS expected 25451.171 but was 25450.408!.
+        test_suite.go:261: TPS expected 23017.574 but was 23016.487!.
+    --- FAIL: TestMM/Settings-Dwarf-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongMultiTarget#01 (0.07s)
+        test_suite.go:250: DPS expected 25187.429 but was 25185.670!.
+        test_suite.go:261: TPS expected 22896.614 but was 22894.483!.
+    --- FAIL: TestMM/Settings-Orc-preraid_mm-Basic-mm-FullBuffs-5.1yards-LongMultiTarget#01 (0.08s)
+        test_suite.go:250: DPS expected 25451.171 but was 25450.408!.
+        test_suite.go:261: TPS expected 23017.574 but was 23016.487!.
+    --- FAIL: TestMM/AllItems-Ti'tahk,theStepsofTime-77190 (0.08s)
+        test_suite.go:250: DPS expected 25429.168 but was 25430.623!.
+        test_suite.go:261: TPS expected 22986.201 but was 22987.092!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sInsigniaofDominance-61045 (0.04s)
+        test_suite.go:250: DPS expected 22672.027 but was 22669.860!.
+        test_suite.go:261: TPS expected 20388.280 but was 20385.619!.
+    --- FAIL: TestMM/AllItems-Kiril,FuryofBeasts-77194 (0.05s)
+        test_suite.go:250: DPS expected 26569.021 but was 26569.184!.
+        test_suite.go:261: TPS expected 23862.818 but was 23862.532!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sEmblemofAlacrity-61028 (0.04s)
+        test_suite.go:250: DPS expected 22649.777 but was 22645.971!.
+        test_suite.go:261: TPS expected 20345.293 but was 20341.311!.
+    --- FAIL: TestMM/AllItems-CrushingWeight-65118 (0.05s)
+        test_suite.go:250: DPS expected 22508.988 but was 22507.610!.
+        test_suite.go:261: TPS expected 20224.858 but was 20222.949!.
+    --- FAIL: TestMM/AllItems-Throngus'sFinger-56121 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ThundercallerStoneofDestruction-92119 (0.07s)
+        test_suite.go:250: DPS expected 22856.922 but was 22859.427!.
+        test_suite.go:261: TPS expected 20587.740 but was 20589.586!.
+    --- FAIL: TestMM/AllItems-VesselofAcceleration-69167 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-NaturalistStoneofRage-92138 (0.05s)
+        test_suite.go:250: DPS expected 23943.962 but was 23948.028!.
+        test_suite.go:261: TPS expected 21570.895 but was 21574.361!.
+    --- FAIL: TestMM/AllItems-ThundercallerIdolofDestruction-92120 (0.05s)
+        test_suite.go:250: DPS expected 22851.212 but was 22855.042!.
+        test_suite.go:261: TPS expected 20583.779 but was 20587.472!.
+    --- FAIL: TestMM/AllItems-GaleofShadows-56138 (0.04s)
+        test_suite.go:250: DPS expected 22690.028 but was 22687.553!.
+        test_suite.go:261: TPS expected 20381.632 but was 20378.521!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sBadgeofConquest-70517 (0.07s)
+        test_suite.go:250: DPS expected 23510.125 but was 23509.009!.
+        test_suite.go:261: TPS expected 21127.726 but was 21125.970!.
+    --- FAIL: TestMM/AllItems-FieryQuintessence-69000 (0.06s)
+        test_suite.go:250: DPS expected 22509.598 but was 22507.371!.
+        test_suite.go:261: TPS expected 20252.825 but was 20250.171!.
+    --- FAIL: TestMM/AllItems-EssenceoftheEternalFlame-69002 (0.05s)
+        test_suite.go:250: DPS expected 22609.983 but was 22612.649!.
+        test_suite.go:261: TPS expected 20351.479 but was 20353.481!.
+    --- FAIL: TestMM/AllItems-BindingPromise-67037 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-PorcelainCrab-55237 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sEmblemofProficiency-61030 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-EssenceoftheCyclone-65140 (0.06s)
+        test_suite.go:250: DPS expected 24073.741 but was 24073.915!.
+        test_suite.go:261: TPS expected 21629.658 but was 21629.078!.
+    --- FAIL: TestMM/AllItems-Throngus'sFinger-56449 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-CrecheoftheFinalDragon-77205 (0.06s)
+        test_suite.go:250: DPS expected 23133.744 but was 23131.442!.
+        test_suite.go:261: TPS expected 20793.046 but was 20789.870!.
+    --- FAIL: TestMM/AllItems-Dwyer'sCaber-70141 (0.07s)
+        test_suite.go:250: DPS expected 22944.687 but was 22941.785!.
+        test_suite.go:261: TPS expected 20630.010 but was 20626.393!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sBadgeofVictory-61034 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-WillofUnbinding-77995 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-MightoftheOcean-56285 (0.05s)
+        test_suite.go:250: DPS expected 22793.952 but was 22791.717!.
+        test_suite.go:261: TPS expected 20497.020 but was 20494.321!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sBadgeofDominance-70518 (0.06s)
+        test_suite.go:250: DPS expected 22656.951 but was 22654.784!.
+        test_suite.go:261: TPS expected 20373.203 but was 20370.543!.
+    --- FAIL: TestMM/AllItems-MirrorofBrokenImages-62466 (0.06s)
+        test_suite.go:250: DPS expected 22734.190 but was 22736.712!.
+        test_suite.go:261: TPS expected 20467.304 but was 20469.561!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762 (0.04s)
+        test_suite.go:250: DPS expected 22646.495 but was 22644.328!.
+        test_suite.go:261: TPS expected 20362.747 but was 20360.087!.
+    --- FAIL: TestMM/AllItems-ResolveofUndying-77978 (0.09s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-PartisanStoneofWisdom-92145 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-InsigniaoftheCorruptedMind-77991 (0.06s)
+        test_suite.go:250: DPS expected 23535.303 but was 23535.233!.
+        test_suite.go:261: TPS expected 21138.965 but was 21138.398!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-World-QuellerFocus-63842 (0.08s)
+        test_suite.go:250: DPS expected 22596.958 but was 22596.409!.
+        test_suite.go:261: TPS expected 20309.553 but was 20308.497!.
+    --- FAIL: TestMM/AllItems-VariablePulseLightningCapacitor-69110 (0.04s)
+        test_suite.go:250: DPS expected 22839.495 but was 22837.328!.
+        test_suite.go:261: TPS expected 20555.540 but was 20552.879!.
+    --- FAIL: TestMM/AllItems-Shrine-CleansingPurifier-63838 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-KvaldirBattleStandard-59685 (0.05s)
+        test_suite.go:250: DPS expected 22594.073 but was 22590.344!.
+        test_suite.go:261: TPS expected 20306.969 but was 20302.641!.
+    --- FAIL: TestMM/AllItems-ResolveofUndying-77201 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Anhuur'sHymnal-55889 (0.06s)
+        test_suite.go:250: DPS expected 22733.348 but was 22731.373!.
+        test_suite.go:261: TPS expected 20426.977 but was 20424.486!.
+    --- FAIL: TestMM/AllItems-Althor'sAbacus-50366 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ShardofWoe-60233 (0.06s)
+        test_suite.go:250: DPS expected 22902.710 but was 22899.928!.
+        test_suite.go:261: TPS expected 20593.666 but was 20590.162!.
+    --- FAIL: TestMM/AllItems-BottledWishes-77114 (0.06s)
+        test_suite.go:250: DPS expected 23043.802 but was 23040.702!.
+        test_suite.go:261: TPS expected 20717.348 but was 20713.338!.
+    --- FAIL: TestMM/AllItems-Stonemother'sKiss-61411 (0.06s)
+        test_suite.go:250: DPS expected 22542.849 but was 22540.682!.
+        test_suite.go:261: TPS expected 20258.700 but was 20256.040!.
+    --- FAIL: TestMM/AllItems-GaleofShadows-56462 (0.04s)
+        test_suite.go:250: DPS expected 22718.802 but was 22717.333!.
+        test_suite.go:261: TPS expected 20427.062 but was 20425.055!.
+    --- FAIL: TestMM/AllItems-Heartpierce-50641 (0.06s)
+        test_suite.go:250: DPS expected 24218.836 but was 24219.730!.
+        test_suite.go:261: TPS expected 21758.314 but was 21758.671!.
+    --- FAIL: TestMM/AllItems-NecromanticFocus-69139 (0.06s)
+        test_suite.go:250: DPS expected 22386.507 but was 22388.109!.
+        test_suite.go:261: TPS expected 20121.875 but was 20122.947!.
+    --- FAIL: TestMM/AllItems-PartisanDefenderIdol-92147 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-IndomitablePride-77211 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Tyrande'sFavoriteDoll-64645 (0.06s)
+        test_suite.go:250: DPS expected 21849.440 but was 21847.004!.
+        test_suite.go:261: TPS expected 19650.055 but was 19647.182!.
+    --- FAIL: TestMM/AllItems-HeartofRage-65072 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-InsigniaoftheCorruptedMind-77203 (0.06s)
+        test_suite.go:250: DPS expected 23419.362 but was 23418.626!.
+        test_suite.go:261: TPS expected 21032.194 but was 21030.829!.
+    --- FAIL: TestMM/AllItems-Ricket'sMagneticFireball-70144 (0.04s)
+        test_suite.go:250: DPS expected 23919.822 but was 23918.852!.
+        test_suite.go:261: TPS expected 21503.461 but was 21501.661!.
+    --- FAIL: TestMM/AllItems-Rainsong-56377 (0.09s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sInsigniaofVictory-61046 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-NecromanticFocus-68982 (0.06s)
+        test_suite.go:250: DPS expected 22458.521 but was 22457.945!.
+        test_suite.go:261: TPS expected 20189.514 but was 20188.324!.
+    --- FAIL: TestMM/AllItems-BlackBruise-50692 (0.07s)
+        test_suite.go:250: DPS expected 22366.660 but was 22364.829!.
+        test_suite.go:261: TPS expected 20103.328 but was 20101.179!.
+    --- FAIL: TestMM/AllItems-JawsofDefeat-68926 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sInsigniaofConquest-72309 (0.07s)
+        test_suite.go:250: DPS expected 23909.699 but was 23908.008!.
+        test_suite.go:261: TPS expected 21477.700 but was 21475.575!.
+    --- FAIL: TestMM/AllItems-Sindragosa'sFlawlessFang-50364 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Figurine-DemonPanther-52199 (0.04s)
+        test_suite.go:250: DPS expected 23589.826 but was 23586.543!.
+        test_suite.go:261: TPS expected 21204.520 but was 21200.689!.
+    --- FAIL: TestMM/AllItems-No'Kaled,theElementsofDeath-78481 (0.10s)
+        test_suite.go:250: DPS expected 24675.439 but was 24676.659!.
+        test_suite.go:261: TPS expected 22167.061 but was 22167.666!.
+    --- FAIL: TestMM/AllItems-LicensetoSlay-58180 (0.06s)
+        test_suite.go:250: DPS expected 22733.348 but was 22731.373!.
+        test_suite.go:261: TPS expected 20426.977 but was 20424.486!.
+    --- FAIL: TestMM/AllItems-Sorrowsong-56400 (0.07s)
+        test_suite.go:250: DPS expected 22792.718 but was 22790.980!.
+        test_suite.go:261: TPS expected 20513.682 but was 20511.678!.
+    --- FAIL: TestMM/AllItems-ArrowofTime-72897 (0.07s)
+        test_suite.go:250: DPS expected 24201.119 but was 24200.639!.
+        test_suite.go:261: TPS expected 21763.898 but was 21762.546!.
+    --- FAIL: TestMM/AllItems-SpidersilkSpindle-69138 (0.06s)
+        test_suite.go:250: DPS expected 22707.480 but was 22709.387!.
+        test_suite.go:261: TPS expected 20439.130 but was 20440.441!.
+    --- FAIL: TestMM/AllItems-KiroptyricSigil-77113 (0.05s)
+        test_suite.go:250: DPS expected 24120.772 but was 24118.030!.
+        test_suite.go:261: TPS expected 21677.304 but was 21673.568!.
+    --- FAIL: TestMM/AllItems-DarkmoonCard:Volcano-62047 (0.07s)
+        test_suite.go:250: DPS expected 22738.431 but was 22740.953!.
+        test_suite.go:261: TPS expected 20471.515 but was 20473.771!.
+    --- FAIL: TestMM/AllItems-FireoftheDeep-77117 (0.06s)
+        test_suite.go:250: DPS expected 22917.524 but was 22918.863!.
+        test_suite.go:261: TPS expected 20639.275 but was 20640.175!.
+    --- FAIL: TestMM/AllItems-StarcatcherCompass-77202 (0.08s)
+        test_suite.go:250: DPS expected 24661.401 but was 24658.964!.
+        test_suite.go:261: TPS expected 22134.581 but was 22131.621!.
+    --- FAIL: TestMM/AllItems-Prestor'sTalismanofMachination-65026 (0.07s)
+        test_suite.go:250: DPS expected 24051.394 but was 24051.649!.
+        test_suite.go:261: TPS expected 21587.728 but was 21587.370!.
+    --- FAIL: TestMM/AllItems-BedrockTalisman-58182 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-MatrixRestabilizer-68994 (0.05s)
+        test_suite.go:250: DPS expected 24340.731 but was 24338.889!.
+        test_suite.go:261: TPS expected 21877.093 but was 21874.653!.
+    --- FAIL: TestMM/AllItems-FoulGiftoftheDemonLord-72898 (0.05s)
+        test_suite.go:250: DPS expected 22929.857 but was 22927.574!.
+        test_suite.go:261: TPS expected 20656.132 but was 20653.488!.
+    --- FAIL: TestMM/AllItems-MartialDefenderStone-92126 (0.06s)
+        test_suite.go:250: DPS expected 22921.055 but was 22924.158!.
+        test_suite.go:261: TPS expected 20656.472 but was 20658.641!.
+    --- FAIL: TestMM/AllItems-Bryntroll,theBoneArbiter-50709 (0.05s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-CunningoftheCruel-77208 (0.04s)
+        test_suite.go:250: DPS expected 22854.055 but was 22851.889!.
+        test_suite.go:261: TPS expected 20570.215 but was 20567.555!.
+    --- FAIL: TestMM/AllItems-Bone-LinkFetish-78002 (0.05s)
+        test_suite.go:250: DPS expected 23356.870 but was 23359.514!.
+        test_suite.go:261: TPS expected 21095.734 but was 21098.113!.
+    --- FAIL: TestMM/AllItems-MartialDefenderIdol-92127 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-StarcatcherCompass-77993 (0.05s)
+        test_suite.go:250: DPS expected 25068.427 but was 25066.695!.
+        test_suite.go:261: TPS expected 22507.005 but was 22505.018!.
+    --- FAIL: TestMM/AllItems-Prestor'sTalismanofMachination-59441 (0.05s)
+        test_suite.go:250: DPS expected 24114.855 but was 24112.445!.
+        test_suite.go:261: TPS expected 21688.393 but was 21684.592!.
+    --- FAIL: TestMM/AllItems-FuryofAngerforge-59461 (0.04s)
+        test_suite.go:250: DPS expected 22916.360 but was 22914.089!.
+        test_suite.go:261: TPS expected 20598.894 but was 20595.918!.
+    --- FAIL: TestMM/AllItems-SealoftheSevenSigns-77204 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-MartialStoneofBattle-92129 (0.04s)
+        test_suite.go:250: DPS expected 22818.833 but was 22822.511!.
+        test_suite.go:261: TPS expected 20571.792 but was 20574.764!.
+    --- FAIL: TestMM/AllItems-ScalesofLife-69109 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-InsigniaoftheCorruptedMind-77971 (0.08s)
+        test_suite.go:250: DPS expected 23213.868 but was 23213.931!.
+        test_suite.go:261: TPS expected 20857.818 but was 20857.407!.
+    --- FAIL: TestMM/AllItems-NaturalistIdolofRage-92133 (0.08s)
+        test_suite.go:250: DPS expected 23791.385 but was 23791.696!.
+        test_suite.go:261: TPS expected 21413.369 but was 21413.142!.
+    --- FAIL: TestMM/AllItems-EyeofUnmaking-77977 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-StumpofTime-62470 (0.05s)
+        test_suite.go:250: DPS expected 22759.534 but was 22757.558!.
+        test_suite.go:261: TPS expected 20453.163 but was 20450.672!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sBadgeofVictory-72450 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Gurthalak,VoiceoftheDeeps-78487 (0.07s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-ForestwalkerIdolofRage-92142 (0.04s)
+        test_suite.go:250: DPS expected 23766.275 but was 23766.854!.
+        test_suite.go:261: TPS expected 21389.799 but was 21390.006!.
+    --- FAIL: TestMM/AllItems-Kiril,FuryofBeasts-78473 (0.07s)
+        test_suite.go:250: DPS expected 26919.353 but was 26919.395!.
+        test_suite.go:261: TPS expected 24173.882 but was 24173.679!.
+    --- FAIL: TestMM/AllItems-SealoftheSevenSigns-77989 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-VialofShadows-77999 (0.06s)
+        test_suite.go:250: DPS expected 25351.755 but was 25348.535!.
+        test_suite.go:261: TPS expected 22909.119 but was 22905.363!.
+    --- FAIL: TestMM/AllItems-HeartoftheVile-66969 (0.04s)
+        test_suite.go:250: DPS expected 23288.787 but was 23288.090!.
+        test_suite.go:261: TPS expected 20916.636 but was 20915.048!.
+    --- FAIL: TestMM/AllItems-Figurine-JeweledSerpent-52353 (0.07s)
+        test_suite.go:250: DPS expected 22626.074 but was 22623.907!.
+        test_suite.go:261: TPS expected 20342.326 but was 20339.666!.
+    --- FAIL: TestMM/AllItems-HeartofSolace-55868 (0.05s)
+        test_suite.go:250: DPS expected 22685.559 but was 22683.084!.
+        test_suite.go:261: TPS expected 20377.163 but was 20374.051!.
+    --- FAIL: TestMM/AllItems-MatrixRestabilizer-69150 (0.05s)
+        test_suite.go:250: DPS expected 24522.416 but was 24521.117!.
+        test_suite.go:261: TPS expected 22037.259 but was 22035.185!.
+    --- FAIL: TestMM/AllItems-ThundercallerIdolofRage-92116 (0.04s)
+        test_suite.go:250: DPS expected 23697.146 but was 23698.496!.
+        test_suite.go:261: TPS expected 21320.300 but was 21321.356!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sBadgeofConquest-72304 (0.06s)
+        test_suite.go:250: DPS expected 23712.989 but was 23711.584!.
+        test_suite.go:261: TPS expected 21311.386 but was 21309.361!.
+    --- FAIL: TestMM/AllItems-SeaStar-55256 (0.07s)
+        test_suite.go:250: DPS expected 22570.847 but was 22568.680!.
+        test_suite.go:261: TPS expected 20287.100 but was 20284.439!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740 (0.04s)
+        test_suite.go:250: DPS expected 22868.081 but was 22865.737!.
+        test_suite.go:261: TPS expected 20554.059 but was 20551.022!.
+    --- FAIL: TestMM/AllItems-TheHungerer-68927 (0.07s)
+        test_suite.go:250: DPS expected 24286.278 but was 24280.945!.
+        test_suite.go:261: TPS expected 21858.468 but was 21852.695!.
+    --- FAIL: TestMM/AllItems-SoulCasket-58183 (0.04s)
+        test_suite.go:250: DPS expected 22915.072 but was 22917.593!.
+        test_suite.go:261: TPS expected 20648.186 but was 20650.442!.
+    --- FAIL: TestMM/AllItems-WrathofUnchaining-77974 (0.07s)
+        test_suite.go:250: DPS expected 24795.807 but was 24794.760!.
+        test_suite.go:261: TPS expected 22269.940 but was 22268.177!.
+    --- FAIL: TestMM/AllItems-Rainsong-55854 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-BloodofIsiset-56414 (0.06s)
+        test_suite.go:250: DPS expected 22792.718 but was 22790.980!.
+        test_suite.go:261: TPS expected 20513.682 but was 20511.678!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sEmblemofProwess-61029 (0.06s)
+        test_suite.go:250: DPS expected 22632.553 but was 22635.082!.
+        test_suite.go:261: TPS expected 20348.314 but was 20350.420!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sBadgeofVictory-64689 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Ti'tahk,theStepsofTime-78486 (0.03s)
+        test_suite.go:250: DPS expected 25272.449 but was 25273.904!.
+        test_suite.go:261: TPS expected 22829.482 but was 22830.374!.
+    --- FAIL: TestMM/AllItems-BellofEnragingResonance-65053 (0.06s)
+        test_suite.go:250: DPS expected 23148.885 but was 23146.581!.
+        test_suite.go:261: TPS expected 20829.419 but was 20826.404!.
+    --- FAIL: TestMM/AllItems-HeartofIgnacious-59514 (0.05s)
+        test_suite.go:250: DPS expected 22508.230 but was 22506.063!.
+        test_suite.go:261: TPS expected 20224.482 but was 20221.822!.
+    --- FAIL: TestMM/AllItems-Harrison'sInsigniaofPanache-65803 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-VeilofLies-72900 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ForestwalkerStoneofRage-92141 (0.07s)
+        test_suite.go:250: DPS expected 23638.263 but was 23639.901!.
+        test_suite.go:261: TPS expected 21270.378 but was 21271.674!.
+    --- FAIL: TestMM/AllItems-StarcatcherCompass-77973 (0.05s)
+        test_suite.go:250: DPS expected 24437.215 but was 24436.628!.
+        test_suite.go:261: TPS expected 21953.483 but was 21952.325!.
+    --- FAIL: TestMM/AllItems-GraceoftheHerald-55266 (0.04s)
+        test_suite.go:250: DPS expected 23184.896 but was 23184.640!.
+        test_suite.go:261: TPS expected 20830.686 but was 20829.783!.
+    --- FAIL: TestMM/AllItems-Dragonwrath,Tarecgosa'sRest-71086 (0.06s)
+        test_suite.go:250: DPS expected 25553.689 but was 25551.486!.
+        test_suite.go:261: TPS expected 23095.539 but was 23092.528!.
+    --- FAIL: TestMM/AllItems-EssenceoftheCyclone-59473 (0.06s)
+        test_suite.go:250: DPS expected 23924.685 but was 23923.088!.
+        test_suite.go:261: TPS expected 21492.828 but was 21490.682!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sInsigniaofVictory-70579 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ScourgeheartIdolofBattle-92167 (0.05s)
+        test_suite.go:250: DPS expected 22916.360 but was 22914.089!.
+        test_suite.go:261: TPS expected 20598.894 but was 20595.918!.
+    --- FAIL: TestMM/AllItems-HeartofIgnacious-65110 (0.07s)
+        test_suite.go:250: DPS expected 22508.411 but was 22506.244!.
+        test_suite.go:261: TPS expected 20224.664 but was 20222.003!.
+    --- FAIL: TestMM/AllItems-MarkofKhardros-56458 (0.10s)
+        test_suite.go:250: DPS expected 22692.537 but was 22691.599!.
+        test_suite.go:261: TPS expected 20437.968 but was 20436.170!.
+    --- FAIL: TestMM/AllItems-LeftEyeofRajh-56427 (0.06s)
+        test_suite.go:250: DPS expected 23598.012 but was 23596.202!.
+        test_suite.go:261: TPS expected 21194.044 but was 21191.602!.
+    --- FAIL: TestMM/AllItems-HarmlightToken-63839 (0.04s)
+        test_suite.go:250: DPS expected 22512.872 but was 22510.706!.
+        test_suite.go:261: TPS expected 20229.110 but was 20226.449!.
+    --- FAIL: TestMM/AllItems-SoulshifterVortex-77206 (0.06s)
+        test_suite.go:250: DPS expected 23087.601 but was 23086.573!.
+        test_suite.go:261: TPS expected 20812.826 but was 20811.518!.
+    --- FAIL: TestMM/AllItems-MandalaofStirringPatterns-62467 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-TearofBlood-55819 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sBadgeofConquest-70399 (0.07s)
+        test_suite.go:250: DPS expected 23644.772 but was 23643.434!.
+        test_suite.go:261: TPS expected 21249.881 but was 21247.903!.
+    --- FAIL: TestMM/AllItems-Skardyn'sGrace-56440 (0.06s)
+        test_suite.go:250: DPS expected 23480.652 but was 23480.817!.
+        test_suite.go:261: TPS expected 21122.695 but was 21122.432!.
+    --- FAIL: TestMM/AllItems-WaterdancerStoneofRage-92400 (0.05s)
+        test_suite.go:250: DPS expected 23813.355 but was 23813.400!.
+        test_suite.go:261: TPS expected 21433.837 but was 21432.717!.
+    --- FAIL: TestMM/AllItems-EyeofUnmaking-77200 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ScourgeheartDefenderIdol-92135 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-BellofEnragingResonance-59326 (0.04s)
+        test_suite.go:250: DPS expected 23088.053 but was 23085.783!.
+        test_suite.go:261: TPS expected 20770.587 but was 20767.612!.
+    --- FAIL: TestMM/AllItems-Souldrinker-78479 (0.05s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-BottledLightning-66879 (0.06s)
+        test_suite.go:250: DPS expected 22622.342 but was 22620.675!.
+        test_suite.go:261: TPS expected 20335.802 but was 20333.630!.
+    --- FAIL: TestMM/AllItems-MagnetiteMirror-55814 (0.06s)
+        test_suite.go:250: DPS expected 22491.693 but was 22491.152!.
+        test_suite.go:261: TPS expected 20218.002 but was 20217.084!.
+    --- FAIL: TestMM/AllItems-WaterdancerDefenderStone-92398 (0.06s)
+        test_suite.go:250: DPS expected 22714.915 but was 22715.584!.
+        test_suite.go:261: TPS expected 20456.294 but was 20456.212!.
+    --- FAIL: TestMM/AllItems-Theralion'sMirror-59519 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-StumpofTime-62465 (0.07s)
+        test_suite.go:250: DPS expected 22749.708 but was 22747.732!.
+        test_suite.go:261: TPS expected 20443.337 but was 20440.846!.
+    --- FAIL: TestMM/AllItems-LeftEyeofRajh-56102 (0.06s)
+        test_suite.go:250: DPS expected 23463.279 but was 23461.138!.
+        test_suite.go:261: TPS expected 21075.216 but was 21072.417!.
+    --- FAIL: TestMM/AllItems-Tank-CommanderInsignia-63841 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-CrecheoftheFinalDragon-77992 (0.07s)
+        test_suite.go:250: DPS expected 23262.756 but was 23261.565!.
+        test_suite.go:261: TPS expected 20907.745 but was 20905.753!.
+    --- FAIL: TestMM/AllItems-DislodgedForeignObject-50348 (0.05s)
+        test_suite.go:250: DPS expected 22552.440 but was 22548.619!.
+        test_suite.go:261: TPS expected 20263.876 but was 20259.782!.
+    --- FAIL: TestMM/AllItems-DarkwalkerStoneofRage-92117 (0.07s)
+        test_suite.go:250: DPS expected 23700.971 but was 23706.031!.
+        test_suite.go:261: TPS expected 21334.386 but was 21338.815!.
+    --- FAIL: TestMM/AllItems-DelivererStoneofWisdom-92115 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Gurthalak,VoiceoftheDeeps-77191 (0.06s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-PartisanIdolofBattle-92148 (0.05s)
+        test_suite.go:250: DPS expected 22916.360 but was 22914.089!.
+        test_suite.go:261: TPS expected 20598.894 but was 20595.918!.
+    --- FAIL: TestMM/AllItems-CataclysmicGladiator'sInsigniaofVictory-73491 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-WrathofUnchaining-77994 (0.08s)
+        test_suite.go:250: DPS expected 25360.672 but was 25359.714!.
+        test_suite.go:261: TPS expected 22769.824 but was 22768.223!.
+    --- FAIL: TestMM/AllItems-MandalaofStirringPatterns-62472 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-SeaStar-56290 (0.09s)
+        test_suite.go:250: DPS expected 22626.074 but was 22623.907!.
+        test_suite.go:261: TPS expected 20342.326 but was 20339.666!.
+    --- FAIL: TestMM/AllItems-WitchingHourglass-55787 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Bone-LinkFetish-77210 (0.16s)
+        test_suite.go:250: DPS expected 23054.398 but was 23054.483!.
+        test_suite.go:261: TPS expected 20797.722 but was 20797.313!.
+    --- FAIL: TestMM/AllItems-SpidersilkSpindle-68981 (0.08s)
+        test_suite.go:250: DPS expected 22609.983 but was 22612.649!.
+        test_suite.go:261: TPS expected 20351.479 but was 20353.481!.
+    --- FAIL: TestMM/AllItems-SealoftheSevenSigns-77969 (0.10s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-IndomitablePride-78003 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Blood-SoakedAleMug-63843 (0.07s)
+        test_suite.go:250: DPS expected 23184.237 but was 23184.766!.
+        test_suite.go:261: TPS expected 20833.835 but was 20834.148!.
+    --- FAIL: TestMM/AllItems-GearDetector-61462 (0.05s)
+        test_suite.go:250: DPS expected 23449.231 but was 23447.368!.
+        test_suite.go:261: TPS expected 21111.586 but was 21109.799!.
+    --- FAIL: TestMM/AllItems-CrecheoftheFinalDragon-77972 (0.08s)
+        test_suite.go:250: DPS expected 23208.203 but was 23206.759!.
+        test_suite.go:261: TPS expected 20866.969 but was 20864.743!.
+    --- FAIL: TestMM/AllItems-CunningoftheCruel-77980 (0.04s)
+        test_suite.go:250: DPS expected 22800.048 but was 22797.881!.
+        test_suite.go:261: TPS expected 20516.222 but was 20513.562!.
+    --- FAIL: TestMM/AllItems-UnsolvableRiddle-62463 (0.07s)
+        test_suite.go:250: DPS expected 23607.087 but was 23610.649!.
+        test_suite.go:261: TPS expected 21242.979 but was 21246.245!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sInsigniaofConquest-70577 (0.04s)
+        test_suite.go:250: DPS expected 23704.750 but was 23703.148!.
+        test_suite.go:261: TPS expected 21297.277 but was 21295.092!.
+    --- FAIL: TestMM/AllItems-SoulshifterVortex-77970 (0.10s)
+        test_suite.go:250: DPS expected 23211.509 but was 23213.286!.
+        test_suite.go:261: TPS expected 20939.997 but was 20940.835!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sInsigniaofConquest-61047 (0.04s)
+        test_suite.go:250: DPS expected 23575.326 but was 23574.229!.
+        test_suite.go:261: TPS expected 21179.412 but was 21177.769!.
+    --- FAIL: TestMM/AllItems-JarofAncientRemedies-65029 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-HeartofThunder-56370 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-SoulseizerIdolofDestruction-92125 (0.06s)
+        test_suite.go:250: DPS expected 22822.819 but was 22825.620!.
+        test_suite.go:261: TPS expected 20541.856 but was 20544.456!.
+    --- FAIL: TestMM/AllItems-Val'anyr,HammerofAncientKings-46017 (0.06s)
+        test_suite.go:250: DPS expected 22685.592 but was 22683.625!.
+        test_suite.go:261: TPS expected 20422.096 but was 20419.249!.
+    --- FAIL: TestMM/AllItems-LastWord-50708 (0.06s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-SymbioticWorm-59332 (0.09s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ApparatusofKhaz'goroth-69113 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-EyeofUnmaking-77997 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Deathbringer'sWill-50363 (0.07s)
+        test_suite.go:250: DPS expected 23203.132 but was 23202.907!.
+        test_suite.go:261: TPS expected 20854.470 but was 20853.595!.
+    --- FAIL: TestMM/AllItems-JawsofDefeat-69111 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-VialofShadows-77207 (0.05s)
+        test_suite.go:250: DPS expected 25041.154 but was 25041.390!.
+        test_suite.go:261: TPS expected 22633.441 but was 22632.735!.
+    --- FAIL: TestMM/AllItems-InsigniaoftheEarthenLord-61429 (0.05s)
+        test_suite.go:250: DPS expected 22687.742 but was 22689.158!.
+        test_suite.go:261: TPS expected 20385.400 but was 20386.128!.
+    --- FAIL: TestMM/AllItems-ElectrosparkHeartstarter-67118 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-AncientPetrifiedSeed-69001 (0.06s)
+        test_suite.go:250: DPS expected 23617.474 but was 23617.586!.
+        test_suite.go:261: TPS expected 21268.529 but was 21267.961!.
+    --- FAIL: TestMM/AllItems-CataclysmicGladiator'sInsigniaofDominance-73497 (0.06s)
+        test_suite.go:250: DPS expected 22770.483 but was 22768.316!.
+        test_suite.go:261: TPS expected 20486.735 but was 20484.075!.
+    --- FAIL: TestMM/AllItems-CataclysmicGladiator'sBadgeofVictory-73496 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-IndomitablePride-77983 (0.04s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-VialofStolenMemories-65109 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Skardyn'sGrace-56115 (0.06s)
+        test_suite.go:250: DPS expected 23326.748 but was 23326.596!.
+        test_suite.go:261: TPS expected 20983.325 but was 20982.607!.
+    --- FAIL: TestMM/AllItems-WaterdancerStoneofWisdom-92402 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ThundercallerStoneofWisdom-92122 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Coren'sChilledChromiumCoaster-232012 (0.10s)
+        test_suite.go:250: DPS expected 23481.017 but was 23478.673!.
+        test_suite.go:261: TPS expected 21095.003 but was 21091.967!.
+    --- FAIL: TestMM/AllItems-UnheededWarning-59520 (0.04s)
+        test_suite.go:250: DPS expected 23452.303 but was 23450.823!.
+        test_suite.go:261: TPS expected 21064.767 but was 21062.518!.
+    --- FAIL: TestMM/AllItems-Souldrinker-77193 (0.06s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-CataclysmicGladiator'sBadgeofDominance-73498 (0.04s)
+        test_suite.go:250: DPS expected 22709.249 but was 22707.082!.
+        test_suite.go:261: TPS expected 20425.501 but was 20422.841!.
+    --- FAIL: TestMM/AllItems-Rathrak,thePoisonousMind-78484 (0.06s)
+        test_suite.go:250: DPS expected 23421.461 but was 23419.631!.
+        test_suite.go:261: TPS expected 21166.284 but was 21164.135!.
+    --- FAIL: TestMM/AllItems-Oremantle'sFavor-61448 (0.04s)
+        test_suite.go:250: DPS expected 22691.008 but was 22689.998!.
+        test_suite.go:261: TPS expected 20393.572 but was 20391.887!.
+    --- FAIL: TestMM/AllItems-BloodofIsiset-55995 (0.07s)
+        test_suite.go:250: DPS expected 22654.583 but was 22653.601!.
+        test_suite.go:261: TPS expected 20374.853 but was 20373.518!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761 (0.05s)
+        test_suite.go:250: DPS expected 23441.724 but was 23438.400!.
+        test_suite.go:261: TPS expected 21063.835 but was 21060.024!.
+    --- FAIL: TestMM/AllItems-WaterdancerDefenderIdol-92399 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ScourgeheartDefenderStone-92134 (0.05s)
+        test_suite.go:250: DPS expected 22880.553 but was 22880.193!.
+        test_suite.go:261: TPS expected 20596.658 but was 20595.602!.
+    --- FAIL: TestMM/AllItems-CataclysmicGladiator'sBadgeofConquest-73648 (0.07s)
+        test_suite.go:250: DPS expected 23896.683 but was 23895.099!.
+        test_suite.go:261: TPS expected 21479.443 but was 21477.182!.
+    --- FAIL: TestMM/AllItems-ImpatienceofYouth-62464 (0.05s)
+        test_suite.go:250: DPS expected 22734.190 but was 22736.712!.
+        test_suite.go:261: TPS expected 20467.304 but was 20469.561!.
+    --- FAIL: TestMM/AllItems-PartisanStoneofBattle-92149 (0.07s)
+        test_suite.go:250: DPS expected 22749.024 but was 22753.333!.
+        test_suite.go:261: TPS expected 20478.634 but was 20481.992!.
+    --- FAIL: TestMM/AllItems-ScourgeheartStoneofBattle-92168 (0.05s)
+        test_suite.go:250: DPS expected 22825.643 but was 22824.273!.
+        test_suite.go:261: TPS expected 20567.397 but was 20565.829!.
+    --- FAIL: TestMM/AllItems-RightEyeofRajh-56100 (0.08s)
+        test_suite.go:250: DPS expected 22733.348 but was 22731.373!.
+        test_suite.go:261: TPS expected 20426.977 but was 20424.486!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sBadgeofConquest-61033 (0.07s)
+        test_suite.go:250: DPS expected 23401.098 but was 23400.095!.
+        test_suite.go:261: TPS expected 21030.648 but was 21028.971!.
+    --- FAIL: TestMM/AllItems-NaturalistStoneofWisdom-92139 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-RuneofZeth-68998 (0.05s)
+        test_suite.go:250: DPS expected 23009.599 but was 23007.829!.
+        test_suite.go:261: TPS expected 20686.193 but was 20683.736!.
+    --- FAIL: TestMM/AllItems-Gurthalak,VoiceoftheDeeps-78478 (0.10s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-CunningoftheCruel-78000 (0.06s)
+        test_suite.go:250: DPS expected 22894.751 but was 22892.584!.
+        test_suite.go:261: TPS expected 20610.898 but was 20608.238!.
+    --- FAIL: TestMM/AllItems-Bone-LinkFetish-77982 (0.07s)
+        test_suite.go:250: DPS expected 23141.612 but was 23145.143!.
+        test_suite.go:261: TPS expected 20874.427 but was 20877.530!.
+    --- FAIL: TestMM/AllItems-MoonwellPhial-70143 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Za'brox'sLuckyTooth-63745 (0.09s)
+        test_suite.go:250: DPS expected 22504.787 but was 22504.777!.
+        test_suite.go:261: TPS expected 20221.532 but was 20221.198!.
+    --- FAIL: TestMM/AllItems-RosaryofLight-72901 (0.05s)
+        test_suite.go:250: DPS expected 23136.432 but was 23135.951!.
+        test_suite.go:261: TPS expected 20812.830 but was 20811.663!.
+    --- FAIL: TestMM/AllItems-LeadenDespair-56347 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-WaterdancerIdolofRage-92401 (0.06s)
+        test_suite.go:250: DPS expected 23795.637 but was 23797.016!.
+        test_suite.go:261: TPS expected 21419.343 but was 21420.390!.
+    --- FAIL: TestMM/AllItems-VialofShadows-77979 (0.08s)
+        test_suite.go:250: DPS expected 24760.456 but was 24760.296!.
+        test_suite.go:261: TPS expected 22364.127 but was 22363.011!.
+    --- FAIL: TestMM/AllItems-UnsolvableRiddle-62468 (0.07s)
+        test_suite.go:250: DPS expected 23607.087 but was 23610.649!.
+        test_suite.go:261: TPS expected 21242.979 but was 21246.245!.
+    --- FAIL: TestMM/AllItems-MoonwellChalice-70142 (0.07s)
+        test_suite.go:250: DPS expected 22654.473 but was 22654.480!.
+        test_suite.go:261: TPS expected 20391.025 but was 20390.142!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sBadgeofDominance-70401 (0.05s)
+        test_suite.go:250: DPS expected 22676.615 but was 22674.448!.
+        test_suite.go:261: TPS expected 20392.867 but was 20390.207!.
+    --- FAIL: TestMM/AllItems-Soul'sAnguish-66994 (0.07s)
+        test_suite.go:250: DPS expected 22793.952 but was 22791.717!.
+        test_suite.go:261: TPS expected 20497.020 but was 20494.321!.
+    --- FAIL: TestMM/AllItems-VesselofAcceleration-68995 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-CoreofRipeness-58184 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sEmblemofAccuracy-61027 (0.07s)
+        test_suite.go:250: DPS expected 22733.348 but was 22731.373!.
+        test_suite.go:261: TPS expected 20426.977 but was 20424.486!.
+    --- FAIL: TestMM/AllItems-TendrilsofBurrowingDark-55810 (0.06s)
+        test_suite.go:250: DPS expected 22639.916 but was 22639.816!.
+        test_suite.go:261: TPS expected 20348.890 but was 20348.289!.
+    --- FAIL: TestMM/AllItems-Shadowmourne-49623 (0.05s)
+        test_suite.go:250: DPS expected 24290.170 but was 24288.684!.
+        test_suite.go:261: TPS expected 21835.317 but was 21833.164!.
+    --- FAIL: TestMM/AllItems-SoulseizerStoneofDestruction-92124 (0.09s)
+        test_suite.go:250: DPS expected 22927.577 but was 22924.710!.
+        test_suite.go:261: TPS expected 20658.221 but was 20654.948!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sInsigniaofConquest-70404 (0.04s)
+        test_suite.go:250: DPS expected 23897.462 but was 23897.474!.
+        test_suite.go:261: TPS expected 21468.811 but was 21468.277!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sBadgeofConquest-64687 (0.04s)
+        test_suite.go:250: DPS expected 23348.690 but was 23347.710!.
+        test_suite.go:261: TPS expected 20983.029 but was 20981.365!.
+    --- FAIL: TestMM/AllItems-Anhuur'sHymnal-56407 (0.11s)
+        test_suite.go:250: DPS expected 22733.348 but was 22731.373!.
+        test_suite.go:261: TPS expected 20426.977 but was 20424.486!.
+    --- FAIL: TestMM/AllItems-MarkofKhardros-56132 (0.06s)
+        test_suite.go:250: DPS expected 22524.703 but was 22521.948!.
+        test_suite.go:261: TPS expected 20263.833 but was 20260.612!.
+    --- FAIL: TestMM/AllItems-FallofMortality-65124 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-LadyLa-La'sSingingShell-67152 (0.06s)
+        test_suite.go:250: DPS expected 22560.961 but was 22562.364!.
+        test_suite.go:261: TPS expected 20292.490 but was 20293.126!.
+    --- FAIL: TestMM/AllItems-TinyAbominationinaJar-50706 (0.06s)
+        test_suite.go:250: DPS expected 22566.907 but was 22563.958!.
+        test_suite.go:261: TPS expected 20278.676 but was 20274.874!.
+    --- FAIL: TestMM/AllItems-Sorrowsong-55879 (0.05s)
+        test_suite.go:250: DPS expected 22654.583 but was 22653.601!.
+        test_suite.go:261: TPS expected 20374.853 but was 20373.518!.
+    --- FAIL: TestMM/AllItems-DarkmoonCard:Hurricane-62051 (0.07s)
+        test_suite.go:250: DPS expected 23746.577 but was 23748.209!.
+        test_suite.go:261: TPS expected 21372.253 but was 21373.791!.
+    --- FAIL: TestMM/AllItems-Figurine-KingofBoars-52351 (0.07s)
+        test_suite.go:250: DPS expected 22792.718 but was 22790.980!.
+        test_suite.go:261: TPS expected 20513.682 but was 20511.678!.
+    --- FAIL: TestMM/AllItems-TearofBlood-56351 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Souldrinker-78488 (0.05s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sInsigniaofVictory-70403 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-MirrorofBrokenImages-62471 (0.06s)
+        test_suite.go:250: DPS expected 22734.190 but was 22736.712!.
+        test_suite.go:261: TPS expected 20467.304 but was 20469.561!.
+    --- FAIL: TestMM/AllItems-JarofAncientRemedies-59354 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sInsigniaofDominance-70578 (0.10s)
+        test_suite.go:250: DPS expected 22693.297 but was 22691.106!.
+        test_suite.go:261: TPS expected 20409.549 but was 20406.864!.
+    --- FAIL: TestMM/AllItems-VialofStolenMemories-59515 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-DarkmoonCard:Earthquake-62048 (0.10s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-GlowingTwilightScale-54589 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-LeadenDespair-55816 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-CrushingWeight-59506 (0.06s)
+        test_suite.go:250: DPS expected 22513.248 but was 22511.807!.
+        test_suite.go:261: TPS expected 20228.184 but was 20226.293!.
+    --- FAIL: TestMM/AllItems-FallofMortality-59500 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ReflectionoftheLight-77115 (0.05s)
+        test_suite.go:250: DPS expected 22666.377 but was 22665.835!.
+        test_suite.go:261: TPS expected 20392.686 but was 20391.768!.
+    --- FAIL: TestMM/AllItems-TendrilsofBurrowingDark-56339 (0.05s)
+        test_suite.go:250: DPS expected 22798.299 but was 22796.560!.
+        test_suite.go:261: TPS expected 20519.263 but was 20517.259!.
+    --- FAIL: TestMM/AllItems-Za'brox'sLuckyTooth-63742 (0.08s)
+        test_suite.go:250: DPS expected 22504.787 but was 22504.777!.
+        test_suite.go:261: TPS expected 20221.532 but was 20221.198!.
+    --- FAIL: TestMM/AllItems-Tia'sGrace-55874 (0.06s)
+        test_suite.go:250: DPS expected 23601.750 but was 23599.920!.
+        test_suite.go:261: TPS expected 21231.111 but was 21229.060!.
+    --- FAIL: TestMM/AllItems-ResolveofUndying-77998 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-DarkmoonCard:Tsunami-62050 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-NaturalistStoneofDestruction-92136 (0.07s)
+        test_suite.go:250: DPS expected 22847.014 but was 22843.979!.
+        test_suite.go:261: TPS expected 20544.303 but was 20540.895!.
+    --- FAIL: TestMM/AllItems-MartialIdolofBattle-92128 (0.08s)
+        test_suite.go:250: DPS expected 22916.360 but was 22914.089!.
+        test_suite.go:261: TPS expected 20598.894 but was 20595.918!.
+    --- FAIL: TestMM/AllItems-StayofExecution-68996 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-BaubleofTrueBlood-50726 (0.08s)
+        test_suite.go:250: DPS expected 22506.844 but was 22504.677!.
+        test_suite.go:261: TPS expected 20222.936 but was 20220.276!.
+    --- FAIL: TestMM/AllItems-WillofUnbinding-77975 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-No'Kaled,theElementsofDeath-78472 (0.05s)
+        test_suite.go:250: DPS expected 24823.434 but was 24824.613!.
+        test_suite.go:261: TPS expected 22302.742 but was 22303.377!.
+    --- FAIL: TestMM/AllItems-ApparatusofKhaz'goroth-68972 (0.10s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-PorcelainCrab-56280 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-MightoftheOcean-55251 (0.05s)
+        test_suite.go:250: DPS expected 22793.952 but was 22791.717!.
+        test_suite.go:261: TPS expected 20497.020 but was 20494.321!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sInsigniaofDominance-70402 (0.04s)
+        test_suite.go:250: DPS expected 22720.992 but was 22718.826!.
+        test_suite.go:261: TPS expected 20437.245 but was 20434.584!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sBadgeofDominance-64688 (0.05s)
+        test_suite.go:250: DPS expected 22634.023 but was 22631.856!.
+        test_suite.go:261: TPS expected 20350.276 but was 20347.615!.
+    --- FAIL: TestMM/AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ScalesofLife-68915 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sBadgeofVictory-70519 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Rathrak,thePoisonousMind-78475 (0.11s)
+        test_suite.go:250: DPS expected 23734.975 but was 23733.144!.
+        test_suite.go:261: TPS expected 21479.797 but was 21477.648!.
+    --- FAIL: TestMM/AllItems-ImpatienceofYouth-62469 (0.08s)
+        test_suite.go:250: DPS expected 22734.190 but was 22736.712!.
+        test_suite.go:261: TPS expected 20467.304 but was 20469.561!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sEmblemofCruelty-61026 (0.09s)
+        test_suite.go:250: DPS expected 22950.051 but was 22947.772!.
+        test_suite.go:261: TPS expected 20631.278 but was 20628.287!.
+    --- FAIL: TestMM/AllItems-KvaldirBattleStandard-59689 (0.09s)
+        test_suite.go:250: DPS expected 22594.073 but was 22590.344!.
+        test_suite.go:261: TPS expected 20306.969 but was 20302.641!.
+    --- FAIL: TestMM/AllItems-HeartofThunder-55845 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Schnottz'sMedallionofCommand-65805 (0.06s)
+        test_suite.go:250: DPS expected 23159.514 but was 23159.718!.
+        test_suite.go:261: TPS expected 20804.849 but was 20804.377!.
+    --- FAIL: TestMM/AllItems-MagnetiteMirror-56345 (0.05s)
+        test_suite.go:250: DPS expected 22491.693 but was 22491.152!.
+        test_suite.go:261: TPS expected 20218.002 but was 20217.084!.
+    --- FAIL: TestMM/AllItems-Varo'then'sBrooch-72899 (0.05s)
+        test_suite.go:250: DPS expected 22841.316 but was 22841.533!.
+        test_suite.go:261: TPS expected 20559.013 but was 20558.303!.
+    --- FAIL: TestMM/AllItems-MithrilStopwatch-232013 (0.04s)
+        test_suite.go:250: DPS expected 22882.671 but was 22880.327!.
+        test_suite.go:261: TPS expected 20568.649 but was 20565.613!.
+    --- FAIL: TestMM/AllItems-CorpseTongueCoin-50349 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-FluidDeath-58181 (0.08s)
+        test_suite.go:250: DPS expected 23839.282 but was 23836.804!.
+        test_suite.go:261: TPS expected 21418.227 but was 21415.292!.
+    --- FAIL: TestMM/AllItems-DelivererStoneofDestruction-92151 (0.04s)
+        test_suite.go:250: DPS expected 22963.243 but was 22964.526!.
+        test_suite.go:261: TPS expected 20717.026 but was 20717.661!.
+    --- FAIL: TestMM/AllItems-KeytotheEndlessChamber-55795 (0.08s)
+        test_suite.go:250: DPS expected 23650.142 but was 23649.678!.
+        test_suite.go:261: TPS expected 21252.753 but was 21251.848!.
+    --- FAIL: TestMM/AllItems-VariablePulseLightningCapacitor-68925 (0.06s)
+        test_suite.go:250: DPS expected 22808.001 but was 22805.834!.
+        test_suite.go:261: TPS expected 20524.332 but was 20521.671!.
+    --- FAIL: TestMM/AllItems-SymbioticWorm-65048 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-SoulshifterVortex-77990 (0.05s)
+        test_suite.go:250: DPS expected 23183.609 but was 23181.661!.
+        test_suite.go:261: TPS expected 20899.799 but was 20897.605!.
+    --- FAIL: TestMM/AllItems-Theralion'sMirror-65105 (0.05s)
+        test_suite.go:250: DPS expected 22490.900 but was 22489.051!.
+        test_suite.go:261: TPS expected 20214.814 but was 20212.591!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sBadgeofDominance-72448 (0.05s)
+        test_suite.go:250: DPS expected 22686.237 but was 22684.071!.
+        test_suite.go:261: TPS expected 20402.490 but was 20399.829!.
+    --- FAIL: TestMM/AllItems-PetrifiedPickledEgg-232014 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-CataclysmicGladiator'sInsigniaofConquest-73643 (0.06s)
+        test_suite.go:250: DPS expected 24110.309 but was 24110.036!.
+        test_suite.go:261: TPS expected 21656.049 but was 21655.176!.
+    --- FAIL: TestMM/AllItems-PhylacteryoftheNamelessLich-50365 (0.06s)
+        test_suite.go:250: DPS expected 22735.810 but was 22736.072!.
+        test_suite.go:261: TPS expected 20439.328 but was 20438.869!.
+    --- FAIL: TestMM/AllItems-DelivererIdolofDestruction-92113 (0.08s)
+        test_suite.go:250: DPS expected 22778.716 but was 22781.902!.
+        test_suite.go:261: TPS expected 20506.259 but was 20509.176!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sInsigniaofDominance-72449 (0.07s)
+        test_suite.go:250: DPS expected 22730.794 but was 22728.627!.
+        test_suite.go:261: TPS expected 20447.047 but was 20444.386!.
+    --- FAIL: TestMM/AllItems-DarkmoonCard:Hurricane-62049 (0.07s)
+        test_suite.go:250: DPS expected 22816.374 but was 22817.090!.
+        test_suite.go:261: TPS expected 20540.590 but was 20540.704!.
+    --- FAIL: TestMM/AllItems-Figurine-DreamOwl-52354 (0.15s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-TheHungerer-69112 (0.04s)
+        test_suite.go:250: DPS expected 24254.786 but was 24248.586!.
+        test_suite.go:261: TPS expected 21799.032 but was 21792.111!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sBadgeofVictory-70400 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Rathrak,thePoisonousMind-77195 (0.05s)
+        test_suite.go:250: DPS expected 23563.479 but was 23561.648!.
+        test_suite.go:261: TPS expected 21308.302 but was 21306.153!.
+    --- FAIL: TestMM/AllItems-WrathofUnchaining-77197 (0.07s)
+        test_suite.go:250: DPS expected 25068.430 but was 25067.641!.
+        test_suite.go:261: TPS expected 22511.732 but was 22510.266!.
+    --- FAIL: TestMM/AllItems-HeartofSolace-56393 (0.05s)
+        test_suite.go:250: DPS expected 22713.795 but was 22712.326!.
+        test_suite.go:261: TPS expected 20422.055 but was 20420.048!.
+    --- FAIL: TestMM/AllItems-No'Kaled,theElementsofDeath-77188 (0.11s)
+        test_suite.go:250: DPS expected 24743.526 but was 24744.775!.
+        test_suite.go:261: TPS expected 22227.385 but was 22228.018!.
+    --- FAIL: TestMM/AllItems-Kiril,FuryofBeasts-78482 (0.04s)
+        test_suite.go:250: DPS expected 26343.410 but was 26342.802!.
+        test_suite.go:261: TPS expected 23661.783 but was 23660.639!.
+    --- FAIL: TestMM/AllItems-Figurine-EarthenGuardian-52352 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ImpetuousQuery-56406 (0.04s)
+        test_suite.go:250: DPS expected 22792.718 but was 22790.980!.
+        test_suite.go:261: TPS expected 20513.682 but was 20511.678!.
+    --- FAIL: TestMM/AllItems-ThundercallerStoneofRage-92121 (0.10s)
+        test_suite.go:250: DPS expected 23885.843 but was 23885.399!.
+        test_suite.go:261: TPS expected 21510.926 but was 21509.600!.
+    --- FAIL: TestMM/AllItems-Ti'tahk,theStepsofTime-78477 (0.04s)
+        test_suite.go:250: DPS expected 25604.897 but was 25606.352!.
+        test_suite.go:261: TPS expected 23161.930 but was 23162.821!.
+    --- FAIL: TestMM/AllItems-PartisanDefenderStone-92114 (0.05s)
+        test_suite.go:250: DPS expected 22746.751 but was 22745.020!.
+        test_suite.go:261: TPS expected 20481.630 but was 20479.184!.
+    --- FAIL: TestMM/AllItems-WitchingHourglass-56320 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-TalismanofSinisterOrder-65804 (0.04s)
+        test_suite.go:250: DPS expected 22457.420 but was 22454.285!.
+        test_suite.go:261: TPS expected 20176.873 but was 20173.068!.
+    --- FAIL: TestMM/AllItems-NaturalistIdolofDestruction-92137 (0.09s)
+        test_suite.go:250: DPS expected 22785.974 but was 22788.863!.
+        test_suite.go:261: TPS expected 20520.747 but was 20523.093!.
+    --- FAIL: TestMM/AllItems-EnlightenedStoneofDestruction-92143 (0.05s)
+        test_suite.go:250: DPS expected 22822.871 but was 22823.913!.
+        test_suite.go:261: TPS expected 20553.441 but was 20553.872!.
+    --- FAIL: TestMM/AllItems-JujuofNimbleness-63840 (0.05s)
+        test_suite.go:250: DPS expected 23184.237 but was 23184.766!.
+        test_suite.go:261: TPS expected 20833.835 but was 20834.148!.
+    --- FAIL: TestMM/AllItems-Tia'sGrace-56394 (0.04s)
+        test_suite.go:250: DPS expected 23706.245 but was 23705.123!.
+        test_suite.go:261: TPS expected 21328.708 but was 21327.106!.
+    --- FAIL: TestMM/AllItems-RightEyeofRajh-56431 (0.04s)
+        test_suite.go:250: DPS expected 22733.348 but was 22731.373!.
+        test_suite.go:261: TPS expected 20426.977 but was 20424.486!.
+    --- FAIL: TestMM/AllItems-DarkwalkerIdolofRage-92118 (0.06s)
+        test_suite.go:250: DPS expected 23813.691 but was 23815.951!.
+        test_suite.go:261: TPS expected 21435.650 but was 21437.518!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sBadgeofDominance-61035 (0.06s)
+        test_suite.go:250: DPS expected 22641.136 but was 22638.969!.
+        test_suite.go:261: TPS expected 20357.388 but was 20354.728!.
+    --- FAIL: TestMM/AllItems-RottingSkull-77116 (0.07s)
+        test_suite.go:250: DPS expected 23017.659 but was 23017.258!.
+        test_suite.go:261: TPS expected 20693.796 but was 20692.627!.
+    --- FAIL: TestMM/AllItems-PetrifiedTwilightScale-54591 (0.08s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-HeartofRage-59224 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-Brawler'sTrophy-232015 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-EnlightenedIdolofDestruction-92144 (0.06s)
+        test_suite.go:250: DPS expected 22695.951 but was 22699.064!.
+        test_suite.go:261: TPS expected 20424.400 but was 20427.368!.
+    --- FAIL: TestMM/AllItems-ViciousGladiator'sEmblemofTenacity-61032 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-GraceoftheHerald-56295 (0.06s)
+        test_suite.go:250: DPS expected 23542.065 but was 23541.424!.
+        test_suite.go:261: TPS expected 21154.957 but was 21153.671!.
+    --- FAIL: TestMM/AllItems-RuthlessGladiator'sInsigniaofVictory-72455 (0.07s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-ImpetuousQuery-55881 (0.06s)
+        test_suite.go:250: DPS expected 22654.583 but was 22653.601!.
+        test_suite.go:261: TPS expected 20374.853 but was 20373.518!.
+    --- FAIL: TestMM/AllItems-UnquenchableFlame-67101 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-InsigniaofDiplomacy-61433 (0.05s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-WillofUnbinding-77198 (0.06s)
+        test_suite.go:250: DPS expected 22506.834 but was 22504.668!.
+        test_suite.go:261: TPS expected 20223.087 but was 20220.426!.
+    --- FAIL: TestMM/AllItems-AgonyandTorment (0.05s)
+        test_suite.go:250: DPS expected 23548.548 but was 23548.433!.
+        test_suite.go:261: TPS expected 21190.162 but was 21189.533!.
+    --- FAIL: TestMM/AllItems-Flamewaker'sBattlegear (0.06s)
+        test_suite.go:250: DPS expected 24946.978 but was 24954.015!.
+        test_suite.go:261: TPS expected 22459.027 but was 22466.162!.
+    --- FAIL: TestMM/AllItems-WyrmstalkerBattlegear (0.05s)
+        test_suite.go:250: DPS expected 24132.683 but was 24133.220!.
+        test_suite.go:261: TPS expected 21672.152 but was 21672.042!.
+    --- FAIL: TestMM/AllItems-Lightning-ChargedBattlegear (0.06s)
+        test_suite.go:250: DPS expected 23350.551 but was 23349.874!.
+        test_suite.go:261: TPS expected 21067.469 but was 21066.848!.
+    --- FAIL: TestMM/AllItems-Gladiator'sPursuit (0.07s)
+        test_suite.go:250: DPS expected 24276.949 but was 24274.313!.
+        test_suite.go:261: TPS expected 21803.479 but was 21800.516!.
+    --- FAIL: TestMM/AllItems-Ahn'KaharBloodHunter'sBattlegear (0.07s)
+        test_suite.go:250: DPS expected 20471.174 but was 20469.274!.
+        test_suite.go:261: TPS expected 18444.453 but was 18442.232!.
+    --- FAIL: TestMM/AllItems-EmberShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 21121.345 but was 21122.398!.
+    --- FAIL: TestMM/AllItems-ChaoticShadowspiritDiamond (0.04s)
+        test_suite.go:250: DPS expected 23974.362 but was 23974.994!.
+        test_suite.go:261: TPS expected 21541.766 but was 21541.866!.
+    --- FAIL: TestMM/AllItems-FleetShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 23587.926 but was 23586.454!.
+        test_suite.go:261: TPS expected 21160.737 but was 21159.018!.
+    --- FAIL: TestMM/AllItems-ReverberatingShadowspiritDiamond (0.07s)
+        test_suite.go:250: DPS expected 23915.928 but was 23917.664!.
+        test_suite.go:261: TPS expected 21491.366 but was 21492.548!.
+    --- FAIL: TestMM/AllItems-AustereShadowspiritDiamond (0.08s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 21121.345 but was 21122.398!.
+    --- FAIL: TestMM/AllItems-EnigmaticShadowspiritDiamond (0.11s)
+        test_suite.go:250: DPS expected 23601.866 but was 23602.418!.
+        test_suite.go:261: TPS expected 21169.270 but was 21169.289!.
+    --- FAIL: TestMM/AllItems-RevitalizingShadowspiritDiamond (0.08s)
+        test_suite.go:250: DPS expected 23915.928 but was 23917.664!.
+        test_suite.go:261: TPS expected 21491.366 but was 21492.548!.
+    --- FAIL: TestMM/AllItems-ImpassiveShadowspiritDiamond (0.08s)
+        test_suite.go:250: DPS expected 23601.866 but was 23602.418!.
+        test_suite.go:261: TPS expected 21169.270 but was 21169.289!.
+    --- FAIL: TestMM/AllItems-PowerfulShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 21121.345 but was 21122.398!.
+    --- FAIL: TestMM/AllItems-EffulgentShadowspiritDiamond (0.07s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 21121.345 but was 21122.398!.
+    --- FAIL: TestMM/AllItems-ForlornShadowspiritDiamond (0.07s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 21121.345 but was 21122.398!.
+    --- FAIL: TestMM/AllItems-BracingShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 20698.918 but was 20699.951!.
+    --- FAIL: TestMM/AllItems-BurningShadowspiritDiamond (0.06s)
+        test_suite.go:250: DPS expected 23915.928 but was 23917.664!.
+        test_suite.go:261: TPS expected 21491.366 but was 21492.548!.
+    --- FAIL: TestMM/AllItems-AgileShadowspiritDiamond (0.07s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-DestructiveShadowspiritDiamond (0.12s)
+        test_suite.go:250: DPS expected 23601.866 but was 23602.418!.
+        test_suite.go:261: TPS expected 21169.270 but was 21169.289!.
+    --- FAIL: TestMM/AllItems-EternalShadowspiritDiamond (0.14s)
+        test_suite.go:250: DPS expected 23545.907 but was 23547.515!.
+        test_suite.go:261: TPS expected 21121.345 but was 21122.398!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Mending-4066 (0.10s)
+        test_suite.go:250: DPS expected 23722.321 but was 23723.544!.
+        test_suite.go:261: TPS expected 21315.308 but was 21315.955!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Avalanche-4067 (0.08s)
+        test_suite.go:250: DPS expected 23766.948 but was 23768.171!.
+        test_suite.go:261: TPS expected 21359.599 but was 21360.246!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-ElementalSlayer-4074 (0.08s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Hurricane-4083 (0.05s)
+        test_suite.go:250: DPS expected 23795.709 but was 23790.867!.
+        test_suite.go:261: TPS expected 21387.261 but was 21381.963!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Heartsong-4084 (0.08s)
+        test_suite.go:250: DPS expected 23722.319 but was 23723.542!.
+        test_suite.go:261: TPS expected 21315.409 but was 21316.057!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-PowerTorrent-4097 (0.07s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Windwalk-4098 (0.07s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Landslide-4099 (0.10s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-LightweaveEmbroidery-4115 (0.11s)
+        test_suite.go:250: DPS expected 24004.091 but was 24005.489!.
+        test_suite.go:261: TPS expected 21568.463 but was 21569.278!.
+    --- FAIL: TestMM/AllItems-DarkglowEmbroidery-4116 (0.09s)
+        test_suite.go:250: DPS expected 24004.091 but was 24005.489!.
+        test_suite.go:261: TPS expected 21568.463 but was 21569.278!.
+    --- FAIL: TestMM/AllItems-SwordguardEmbroidery-4118 (0.08s)
+        test_suite.go:250: DPS expected 24295.394 but was 24296.791!.
+        test_suite.go:261: TPS expected 21825.308 but was 21826.124!.
+    --- FAIL: TestMM/AllItems-ElementiumShieldSpike-4215 (0.10s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-PyriumShieldSpike-4216 (0.08s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-EnchantBoots-Tuskarr'sVitality-3232 (0.10s)
+        test_suite.go:250: DPS expected 23969.626 but was 23971.108!.
+        test_suite.go:261: TPS expected 21538.039 but was 21538.949!.
+    --- FAIL: TestMM/AllItems-EnchantBoots-Lavawalker-4104 (0.08s)
+        test_suite.go:250: DPS expected 24107.043 but was 24108.916!.
+        test_suite.go:261: TPS expected 21664.458 but was 21665.858!.
+    --- FAIL: TestMM/AllItems-EnchantBoots-Assassin'sStep-4105 (0.08s)
+        test_suite.go:250: DPS expected 24033.635 but was 24035.032!.
+        test_suite.go:261: TPS expected 21594.139 but was 21594.955!.
+    --- FAIL: TestMM/AllItems-EnchantBoots-EarthenVitality-4062 (0.10s)
+        test_suite.go:250: DPS expected 23969.626 but was 23971.108!.
+        test_suite.go:261: TPS expected 21538.039 but was 21538.949!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-GiantSlayer-3251 (0.06s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Icebreaker-3239 (0.06s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-TitaniumShieldSpike-3748 (0.06s)
+        test_suite.go:250: DPS expected 24063.211 but was 24064.666!.
+        test_suite.go:261: TPS expected 21620.244 but was 21621.136!.
+    --- FAIL: TestMM/AllItems-Enchant2HWeapon-Scourgebane-3247 (0.05s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantGloves-Armsman-3253 (0.08s)
+        test_suite.go:250: DPS expected 24009.444 but was 24010.841!.
+        test_suite.go:261: TPS expected 22004.764 but was 22005.596!.
+    --- FAIL: TestMM/AllItems-EnchantCloak-Wisdom-3296 (0.06s)
+        test_suite.go:250: DPS expected 24004.116 but was 24005.513!.
+        test_suite.go:261: TPS expected 21137.117 but was 21137.917!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Berserking-3789 (0.10s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-Lifeward-3241 (0.08s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-BlackMagic-3790 (0.13s)
+        test_suite.go:250: DPS expected 23755.743 but was 23754.311!.
+        test_suite.go:261: TPS expected 21336.926 but was 21334.878!.
+    --- FAIL: TestMM/AllItems-LightweaveEmbroidery-3722 (0.09s)
+        test_suite.go:250: DPS expected 24009.621 but was 24011.018!.
+        test_suite.go:261: TPS expected 21573.992 but was 21574.808!.
+    --- FAIL: TestMM/AllItems-DarkglowEmbroidery-3728 (0.08s)
+        test_suite.go:250: DPS expected 24004.116 but was 24005.513!.
+        test_suite.go:261: TPS expected 21568.487 but was 21569.303!.
+    --- FAIL: TestMM/AllItems-SwordguardEmbroidery-3730 (0.05s)
+        test_suite.go:250: DPS expected 24125.671 but was 24127.068!.
+        test_suite.go:261: TPS expected 21676.101 but was 21676.917!.
+    --- FAIL: TestMM/AllItems-EnchantWeapon-BloodDraining-3870 (0.05s)
+        test_suite.go:250: DPS expected 23722.343 but was 23723.566!.
+        test_suite.go:261: TPS expected 21315.433 but was 21316.081!.
+    --- FAIL: TestMM/SwitchInFrontOfTarget-Default (0.06s)
+        test_suite.go:250: DPS expected 23751.969 but was 23753.637!.
+        test_suite.go:261: TPS expected 21345.278 but was 21346.311!.
+    --- FAIL: TestMM/Average-Default (5.45s)
+        test_suite.go:250: DPS expected 23983.334 but was 23982.786!.
+        test_suite.go:261: TPS expected 21538.228 but was 21537.707!.
+    test_suite.go:331: One or more tests failed! If the changes are intentional, update the expected results with 'make test && make update-tests'. Otherwise go fix your bugs!
+FAIL
+FAIL	github.com/wowsims/cata/sim/hunter/marksmanship	31.372s
+2025/05/26 00:23:20 Using DTR for spec SpecSurvivalHunter which is not implemented. Using default config
+--- FAIL: TestSV (31.12s)
+    --- FAIL: TestSV/AllItems-GnomishX-RayScope-4175 (0.07s)
+        test_suite.go:250: DPS expected 50554.161 but was 50560.623!.
+        test_suite.go:261: TPS expected 46103.175 but was 46108.544!.
+    test_suite.go:331: One or more tests failed! If the changes are intentional, update the expected results with 'make test && make update-tests'. Otherwise go fix your bugs!
+FAIL
+FAIL	github.com/wowsims/cata/sim/hunter/survival	31.183s
+ok  	github.com/wowsims/cata/sim/mage/arcane	22.779s
+ok  	github.com/wowsims/cata/sim/mage/fire	28.188s
+ok  	github.com/wowsims/cata/sim/mage/frost	0.117s [no tests to run]
+ok  	github.com/wowsims/cata/sim/paladin/holy	0.100s [no tests to run]
+ok  	github.com/wowsims/cata/sim/paladin/protection	22.422s
+ok  	github.com/wowsims/cata/sim/paladin/retribution	69.980s
+ok  	github.com/wowsims/cata/sim/priest/discipline	0.088s [no tests to run]
+ok  	github.com/wowsims/cata/sim/priest/holy	0.094s [no tests to run]
+ok  	github.com/wowsims/cata/sim/priest/shadow	29.380s
+ok  	github.com/wowsims/cata/sim/rogue/assassination	74.922s
+?   	github.com/wowsims/cata/sim/warrior	[no test files]
+ok  	github.com/wowsims/cata/sim/rogue/combat	70.680s
+ok  	github.com/wowsims/cata/sim/rogue/subtlety	81.509s
+ok  	github.com/wowsims/cata/sim/shaman/elemental	64.918s
+ok  	github.com/wowsims/cata/sim/shaman/enhancement	63.577s
+ok  	github.com/wowsims/cata/sim/shaman/restoration	0.118s [no tests to run]
+ok  	github.com/wowsims/cata/sim/warlock/affliction	46.590s
+ok  	github.com/wowsims/cata/sim/warlock/demonology	49.070s
+ok  	github.com/wowsims/cata/sim/warlock/destruction	41.757s
+ok  	github.com/wowsims/cata/sim/warrior/arms	46.673s
+ok  	github.com/wowsims/cata/sim/warrior/fury	51.817s
+ok  	github.com/wowsims/cata/sim/warrior/protection	21.695s
+ok  	github.com/wowsims/cata/sim/web	1.181s
+FAIL

@@ -79,6 +79,7 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 		// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
 		if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
 			proc.Ppm = 1
+			proc.ProcChance = 0
 		}
 		pe.Type = proto.ItemEffectType_EffectTypeProc
 		pe.BuffId = statsSP.ID
