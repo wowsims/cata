@@ -232,6 +232,8 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents)
 
 	monk.PseudoStats.CanParry = true
+	monk.PseudoStats.BaseParryChance += 0.03
+	monk.PseudoStats.BaseDodgeChance += 0.03
 	monk.XuenPet = monk.NewXuen()
 
 	monk.registerSEFPets()
