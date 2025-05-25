@@ -221,22 +221,22 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 
 	switch {
 	case effect.EffectAura == A_MOD_RANGED_ATTACK_POWER:
-		if effect.Coefficient != 0 {
-			stats[proto.Stat_StatRangedAttackPower] = effect.CalcCoefficientStatValue(ilvl)
-			break
-		}
+		// if effect.Coefficient != 0 {
+		// 	stats[proto.Stat_StatRangedAttackPower] = effect.CalcCoefficientStatValue(ilvl)
+		// 	break
+		// }
 		stats[proto.Stat_StatRangedAttackPower] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_ATTACK_POWER:
-		if effect.Coefficient != 0 {
-			stats[proto.Stat_StatAttackPower] = effect.CalcCoefficientStatValue(ilvl)
-			break
-		}
+		// if effect.Coefficient != 0 {
+		// 	stats[proto.Stat_StatAttackPower] = effect.CalcCoefficientStatValue(ilvl)
+		// 	break
+		// }
 		stats[proto.Stat_StatAttackPower] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
-		if effect.Coefficient != 0 {
-			stats[stat] = effect.CalcCoefficientStatValue(ilvl)
-			break
-		}
+		// if effect.Coefficient != 0 {
+		// 	stats[stat] = effect.CalcCoefficientStatValue(ilvl)
+		// 	break
+		// }
 		// if Coefficient is not set, we fall back to EffectBasePoints
 		stats[stat] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_DAMAGE_DONE && effect.EffectType == E_APPLY_AURA:
@@ -266,10 +266,10 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 	case effect.EffectAura == A_MOD_RATING:
 		for _, rating := range getMatchingRatingMods(effect.EffectMiscValues[0]) {
 			if statMod := RatingModToStat[rating]; statMod != -1 {
-				if effect.Coefficient != 0 {
-					stats[statMod] = effect.CalcCoefficientStatValue(ilvl)
-					break
-				}
+				// if effect.Coefficient != 0 {
+				// 	stats[statMod] = effect.CalcCoefficientStatValue(ilvl)
+				// 	break
+				// }
 				stats[statMod] = float64(effect.EffectBasePoints)
 			}
 		}

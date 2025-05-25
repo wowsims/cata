@@ -510,8 +510,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 11027.65438
-  tps: 55205.59815
+  dps: 11027.32428
+  tps: 55203.94763
   hps: 355.12858
  }
 }
@@ -550,9 +550,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 10797.09732
-  tps: 54053.24912
-  hps: 358.34242
+  dps: 10714.41292
+  tps: 53639.97314
+  hps: 356.7355
  }
 }
 dps_results: {
@@ -567,7 +567,7 @@ dps_results: {
  key: "TestGuardian-AllItems-DelivererStoneofWisdom-92115"
  value: {
   dps: 10600.0862
-  tps: 53071.52338
+  tps: 53072.55715
   hps: 356.7355
  }
 }
@@ -806,9 +806,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 10900.65173
-  tps: 54571.60947
-  hps: 356.7355
+  dps: 10714.48374
+  tps: 53640.08952
+  hps: 358.34242
  }
 }
 dps_results: {
@@ -974,8 +974,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 11061.70109
-  tps: 55375.57251
+  dps: 11061.37146
+  tps: 55373.92437
   hps: 359.94933
  }
 }
@@ -1518,8 +1518,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 10998.887
-  tps: 55062.09376
+  dps: 10998.72318
+  tps: 55061.27465
   hps: 361.55625
  }
 }
@@ -1606,16 +1606,16 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 10765.14781
-  tps: 53893.15843
-  hps: 359.94933
+  dps: 10750.78744
+  tps: 53821.29076
+  hps: 356.7355
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 10980.85825
-  tps: 54971.07165
+  dps: 10980.53212
+  tps: 54969.44104
   hps: 355.12858
  }
 }
@@ -1639,7 +1639,7 @@ dps_results: {
  key: "TestGuardian-AllItems-NaturalistStoneofWisdom-92139"
  value: {
   dps: 10616.89845
-  tps: 53156.73699
+  tps: 53158.0292
   hps: 356.7355
  }
 }
@@ -1702,8 +1702,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 11000.50347
-  tps: 55070.17608
+  dps: 11000.33797
+  tps: 55069.34858
   hps: 361.55625
  }
 }
@@ -1719,7 +1719,7 @@ dps_results: {
  key: "TestGuardian-AllItems-PartisanStoneofWisdom-92145"
  value: {
   dps: 10600.0862
-  tps: 53069.16366
+  tps: 53069.68054
   hps: 356.7355
  }
 }
@@ -2078,8 +2078,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 10999.58338
-  tps: 55065.57565
+  dps: 10999.41883
+  tps: 55064.75292
   hps: 361.55625
  }
 }
@@ -2206,8 +2206,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 10766.09933
-  tps: 53898.8525
+  dps: 10691.94212
+  tps: 53526.94623
   hps: 351.91475
  }
 }
@@ -2470,16 +2470,16 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 10755.48812
-  tps: 53845.86787
-  hps: 351.91475
+  dps: 10753.90063
+  tps: 53836.34148
+  hps: 356.7355
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 10978.29298
-  tps: 54958.31197
+  dps: 10977.9789
+  tps: 54956.74159
   hps: 359.94933
  }
 }
@@ -2503,7 +2503,7 @@ dps_results: {
  key: "TestGuardian-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
   dps: 10616.89845
-  tps: 53157.52356
+  tps: 53158.98806
   hps: 356.7355
  }
 }
@@ -2870,8 +2870,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 11119.00549
-  tps: 55661.74039
+  dps: 11118.66304
+  tps: 55660.0281
   hps: 355.12858
  }
 }
@@ -2887,7 +2887,7 @@ dps_results: {
  key: "TestGuardian-AllItems-WaterdancerStoneofWisdom-92402"
  value: {
   dps: 10605.81663
-  tps: 53100.59381
+  tps: 53101.71372
   hps: 356.7355
  }
 }
