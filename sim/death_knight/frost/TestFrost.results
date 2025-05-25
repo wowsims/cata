@@ -142,9 +142,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-BindingPromise-67037"
  value: {
-  dps: 48434.65118
-  tps: 45848.63822
-  hps: 1665.75456
+  dps: 48345.77203
+  tps: 45773.57782
+  hps: 1671.26516
  }
 }
 dps_results: {
@@ -294,9 +294,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 48434.65118
-  tps: 45848.63822
-  hps: 1665.75456
+  dps: 48345.77203
+  tps: 45773.57782
+  hps: 1671.26516
  }
 }
 dps_results: {
@@ -918,9 +918,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 48453.95991
-  tps: 45867.94695
-  hps: 1725.55655
+  dps: 48365.17967
+  tps: 45792.98547
+  hps: 1731.26499
  }
 }
 dps_results: {
@@ -942,9 +942,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 49485.49175
-  tps: 46899.47879
-  hps: 1665.75456
+  dps: 49632.07294
+  tps: 47023.3423
+  hps: 1672.55772
  }
 }
 dps_results: {
@@ -1606,9 +1606,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 48457.71313
-  tps: 45871.70017
-  hps: 1737.18083
+  dps: 48368.95212
+  tps: 45796.75792
+  hps: 1742.92772
  }
 }
 dps_results: {
@@ -2742,17 +2742,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 48456.44698
-  tps: 45870.43402
-  hps: 1733.25938
+  dps: 48367.67949
+  tps: 45795.48529
+  hps: 1738.99331
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 48459.25059
-  tps: 45873.23763
-  hps: 1741.94258
+  dps: 48370.49746
+  tps: 45798.30326
+  hps: 1747.70523
  }
 }
 dps_results: {

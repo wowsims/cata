@@ -142,8 +142,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-BindingPromise-67037"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5300.29889
  }
 }
@@ -294,8 +294,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5300.29889
  }
 }
@@ -926,8 +926,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5498.87715
  }
 }
@@ -950,8 +950,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21869.41602
+  tps: 110028.37918
   hps: 5300.29889
  }
 }
@@ -1598,8 +1598,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5537.47667
  }
 }
@@ -2686,16 +2686,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5524.45514
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 21971.2473
-  tps: 110542.97145
+  dps: 21929.14491
+  tps: 110331.68873
   hps: 5553.28852
  }
 }
