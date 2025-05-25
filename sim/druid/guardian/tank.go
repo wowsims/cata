@@ -34,9 +34,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
-		StartingRage:   bear.Options.StartingRage,
-		RageMultiplier: 1,
-		MHSwingSpeed:   2.5,
+		StartingRage:  bear.Options.StartingRage,
+		BaseHitFactor: 4.34,
 	})
 	bear.EnableAutoAttacks(bear, core.AutoAttackOptions{
 		// Base paw weapon.
