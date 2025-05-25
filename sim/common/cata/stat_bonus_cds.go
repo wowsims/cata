@@ -106,13 +106,13 @@ func init() {
 	shared.NewHealthActive(64740, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Cruelty
 	shared.NewHealthActive(64741, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Meditation
 	shared.NewHealthActive(64742, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Tenacity
-	shared.NewHealthActive(62048, 15500, time.Second*15, time.Minute*2) // Darkmoon Card: Earthquake
-	shared.NewHealthActive(61026, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Cruelty
-	shared.NewHealthActive(61028, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Alacrity
-	shared.NewHealthActive(61029, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Prowess
-	shared.NewHealthActive(61032, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Tenacity
-	shared.NewHealthActive(61030, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Proficiency
-	shared.NewHealthActive(61027, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Accuracy
+	shared.NewHealthActive(62048, 15500, time.Second*15, time.Minute*3) // Darkmoon Card: Earthquake
+	shared.NewHealthActive(61026, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Cruelty
+	shared.NewHealthActive(61028, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Alacrity
+	shared.NewHealthActive(61029, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Prowess
+	shared.NewHealthActive(61032, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Tenacity
+	shared.NewHealthActive(61030, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Proficiency
+	shared.NewHealthActive(61027, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Accuracy
 
 	// INT
 	shared.NewIntActive(67118, 567, time.Second*20, time.Minute*2)   // Electrospark Heartstarter
