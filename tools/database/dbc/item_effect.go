@@ -1,6 +1,8 @@
 package dbc
 
 import (
+	"fmt"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -177,6 +179,10 @@ func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
 
 		e := &dbcInstance.ItemEffectsByParentID[int(parsed.Id)][i]
 		props := buildScalingProps(resolveStatsSpell(e.SpellID), int(parsed.Ilvl))
+		if parsed.Id == 92118 {
+			fmt.Println("Item found hello", resolveStatsSpell(e.SpellID), int(parsed.Ilvl))
+			fmt.Println(props)
+		}
 		if len(props.Stats) > 0 {
 			baseEff = e
 			break

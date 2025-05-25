@@ -262,7 +262,45 @@ func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldow
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
 	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MasteryRating: bonus})
 }
-func NewDbcStatsActive(itemID int32) {}
+
+func NewSimpleStatActive(itemID int32) {
+	core.NewItemEffect(itemID, func(agent core.Agent, scalingSelector proto.ItemLevelState) {
+		item := core.GetItemByID(itemID)
+		if item == nil {
+			panic(fmt.Sprintf("No item with ID: %d", itemID))
+		}
+
+		itemEffect := item.ItemEffect // Assuming it can be collapsed to one relevant effect per item in pre-processing
+		if itemEffect == nil {
+			panic(fmt.Sprintf("No effect data for item with ID: %d", itemID))
+		}
+
+		onUseData := itemEffect.GetOnUse()
+		if onUseData == nil {
+			panic(fmt.Sprintf("Item effect for item with ID: %d is not an active effect!", itemID))
+		}
+
+		spellConfig := core.SpellConfig{
+			ActionID: core.ActionID{ItemID: itemID},
+		}
+
+		character := agent.GetCharacter()
+		spellConfig.Cast.CD = core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Duration(onUseData.CooldownMs) * time.Millisecond,
+		}
+
+		sharedCDDuration := time.Duration(onUseData.CategoryCooldownMs) * time.Millisecond
+
+		sharedCDTimer := character.GetOrInitSpellCategoryTimer(onUseData.CategoryId)
+		spellConfig.Cast.SharedCD = core.Cooldown{
+			Timer:    sharedCDTimer,
+			Duration: sharedCDDuration,
+		}
+
+		core.RegisterTemporaryStatsOnUseCD(character, itemEffect.BuffName, stats.FromProtoMap(itemEffect.ScalingOptions[int32(scalingSelector)].Stats), time.Second*time.Duration(itemEffect.EffectDuration), spellConfig)
+	})
+}
 
 type StackingStatBonusCD struct {
 	Name        string

@@ -15,6 +15,7 @@ import (
 var WITH_DB = false
 
 var ItemsByID = map[int32]Item{}
+var OnUseItemIDs = []int32{}
 var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
@@ -32,7 +33,11 @@ func addToDatabase(newDB *proto.SimDatabase) {
 
 	for _, v := range newDB.Items {
 		if _, ok := ItemsByID[v.Id]; !ok {
+
 			ItemsByID[v.Id] = ItemFromProto(v)
+			if v.ItemEffect.GetOnUse() != nil {
+				OnUseItemIDs = append(OnUseItemIDs, v.Id)
+			}
 		}
 	}
 

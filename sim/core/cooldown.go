@@ -96,3 +96,14 @@ func (unit *Unit) GetOrInitTimer(timer **Timer) *Timer {
 	}
 	return *timer
 }
+
+// Helper for timers keyed by spellCategoryID so that we can keep shared cooldowns for on use effects locked to these
+func (u *Unit) GetOrInitSpellCategoryTimer(spellCategoryID int32) *Timer {
+	if u.SpellCategoryTimers == nil {
+		u.SpellCategoryTimers = make(map[int32]*Timer)
+	}
+	if u.SpellCategoryTimers[spellCategoryID] == nil {
+		u.SpellCategoryTimers[spellCategoryID] = u.NewTimer()
+	}
+	return u.SpellCategoryTimers[spellCategoryID]
+}

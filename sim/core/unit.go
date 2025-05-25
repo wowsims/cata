@@ -152,6 +152,9 @@ type Unit struct {
 	// Separate from GCD timer to support spell queueing and off-GCD actions
 	RotationTimer *Timer
 
+	// This stores a timer on spell category ID so that we can track on use effects.
+	SpellCategoryTimers map[int32]*Timer
+
 	// Used for applying the effect of a hardcast spell when casting finishes.
 	//  For channeled spells, only Expires is set.
 	// No more than one cast may be active at any given time.

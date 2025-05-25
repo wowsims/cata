@@ -9,7 +9,7 @@ import (
 )
 
 const MAX_SCALING_LEVEL = 100
-const BASE_LEVEL = 85
+const BASE_LEVEL = 90
 
 type SpellEffect struct {
 	ID                             int
@@ -207,12 +207,20 @@ func (data *SpellEffect) ClassFlag(index uint) uint32 {
 	return uint32(data.EffectSpellClassMasks[index/32]) & (1 << (index % 32))
 }
 func (effect *SpellEffect) CalcRandomPropStatValue(ilvl int) float64 {
-	propPoints := dbcInstance.RandomPropertiesByIlvl[ilvl][proto.ItemQuality_ItemQualityEpic][0] // Epic 0 for items
+	propPoints := effect.GetScalingValue(ilvl) // Epic 0 for items
 	return math.Floor(float64(propPoints) * effect.Coefficient)
+}
+func (effect *SpellEffect) GetScalingValue(ilvl int) float64 {
+	if ilvl > 0 {
+		// If item we get rand prop points
+		return float64(dbcInstance.RandomPropertiesByIlvl[ilvl][proto.ItemQuality_ItemQualityEpic][0])
+	}
+	// if not we get class scaling based on the spell
+	scale := effect.ScalingClass()
+	return dbcInstance.SpellScalings[BASE_LEVEL].Values[scale]
 }
 func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats.Stats {
 	stats := &stats.Stats{}
-	//scale := effect.ScalingClass()
 	spell := dbcInstance.Spells[effect.SpellID]
 	stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
 
@@ -232,6 +240,10 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 	case effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
 		if scalesWithIlvl && effect.Coefficient != 0 && spell.Attributes[8]&0x1000 != 0 {
 			stats[stat] = effect.CalcRandomPropStatValue(ilvl)
+			if stats[stat] <= 0 {
+				// Just a fallback
+				stats[stat] = float64(effect.EffectBasePoints)
+			}
 			break
 		}
 		//stats[stat] = math.Round(float64(effect.Coefficient * dbcInstance.SpellScaling(scale, spell.MaxScalingLevel)))
@@ -263,10 +275,13 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 
 	case effect.EffectAura == A_MOD_RATING:
 		for _, rating := range getMatchingRatingMods(effect.EffectMiscValues[0]) {
-
 			if statMod := RatingModToStat[rating]; statMod != -1 {
 				if scalesWithIlvl && effect.Coefficient != 0 && spell.Attributes[8]&0x1000 != 0 {
 					stats[statMod] = effect.CalcRandomPropStatValue(ilvl)
+					if stats[stat] <= 0 {
+						// Just a fallback
+						stats[stat] = float64(effect.EffectBasePoints)
+					}
 					break
 				}
 				stats[statMod] = float64(effect.EffectBasePoints)
@@ -274,7 +289,8 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 		}
 	case effect.EffectAura == A_MOD_INCREASE_ENERGY:
 		stats[proto.Stat_StatMana] = float64(effect.EffectBasePoints)
-
+	case effect.EffectAura == A_MOD_INCREASE_HEALTH_2:
+		stats[proto.Stat_StatHealth] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_PERIODIC_TRIGGER_SPELL && effect.EffectAuraPeriod == 10000:
 		for _, sub := range dbcInstance.SpellEffects[effect.EffectTriggerSpell] {
 			stats.AddInplace(sub.ParseStatEffect(false, 0))
