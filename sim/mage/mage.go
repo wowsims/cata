@@ -262,16 +262,15 @@ func (mage *Mage) applyArmorSpells() {
 		},
 	})
 
-	var hasteToAdd = float64(stats.HasteRating) * 1.06
 	frostArmor := mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 7302},
 		Label:    "Frost Armor",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.HasteRating, hasteToAdd) // NOTE: I know this isn't correct
+			mage.MultiplyCastSpeed(1.07)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.HasteRating, -hasteToAdd)
+			mage.MultiplyCastSpeed(1 / 1.07)
 		},
 	})
 
@@ -351,6 +350,7 @@ const (
 	MageSpellCombustion
 	MageSpellCombustionApplication
 	MageSpellLast
+	MageSpellIcicle
 	MageSpellsAll        = MageSpellLast<<1 - 1
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
 	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellCombustion // Ignite done manually in spell due to unique mechanic

@@ -1,8 +1,6 @@
 package mage
 
 import (
-	//"github.com/wowsims/mop/sim/core/proto"
-
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -66,56 +64,6 @@ func (mage *Mage) ApplyFrostTalents() {
 
 	//Ice Shards inside blizzard
 
-}
-
-func (mage *Mage) registerIcyVeinsCD() {
-	if !mage.Spec.Frost {
-		return
-	}
-
-	icyVeinsMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
-		FloatValue: -0.2,
-		Kind:       core.SpellMod_CastTime_Pct,
-	})
-
-	actionID := core.ActionID{SpellID: 12472}
-	icyVeinsAura := mage.RegisterAura(core.Aura{
-		Label:    "Icy Veins",
-		ActionID: actionID,
-		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			icyVeinsMod.Activate()
-		},
-		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-			icyVeinsMod.Deactivate()
-		},
-	})
-
-	mage.IcyVeins = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
-		ClassSpellMask: MageSpellIcyVeins,
-		Flags:          core.SpellFlagNoOnCastComplete,
-
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    mage.NewTimer(),
-				Duration: time.Second * 180,
-			},
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			icyVeinsAura.Activate(sim)
-		},
-	})
-
-	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.IcyVeins,
-		Type:  core.CooldownTypeDPS,
-	})
 }
 
 func (mage *Mage) applyFingersOfFrost() {
