@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (warlock *Warlock) registerHarvestLife() {
@@ -211,11 +212,22 @@ func (warlock *Warlock) registerGrimoireOfSacrifice() {
 
 			warlock.ApplyDotWithPandemic(spell.Dot(result.Target), sim)
 		},
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.15,
-		ClassMask:  WarlockSpellConflagrate | WarlockSpellShadowBurn | WarlockSpellFelFlame | WarlockSpellIncinerate | WarlockSpellDrainLife,
 	})
+
+	switch warlock.Spec {
+	case proto.Spec_SpecDemonologyWarlock:
+		buff.AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.25,
+			ClassMask:  WarlockSpellShadowBolt | WarlockSpellSoulBurn | WarlockSpellHandOfGuldan | WarlockSpellChaosWave | WarlockSpellTouchOfChaos | WarlockSpellDemonicSlash | WarlockSpellVoidray,
+		})
+	case proto.Spec_SpecDestructionWarlock:
+		buff.AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.15,
+			ClassMask:  WarlockSpellConflagrate | WarlockSpellShadowBurn | WarlockSpellFelFlame | WarlockSpellIncinerate | WarlockSpellDrainLife,
+		})
+	}
 
 	applyPetHook := func(pet *WarlockPet) {
 		oldEnable := pet.OnPetEnable

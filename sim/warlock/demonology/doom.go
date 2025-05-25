@@ -27,7 +27,7 @@ func (demonology *DemonologyWarlock) registerDoom() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Corruption",
+				Label: "Doom",
 			},
 			NumberOfTicks:       4,
 			TickLength:          15 * time.Second,

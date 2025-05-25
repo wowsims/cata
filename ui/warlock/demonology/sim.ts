@@ -31,8 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
-		itemSwap: Presets.P3_ITEM_SWAP.itemSwap,
+		gear: Presets.PRERAID_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
@@ -69,7 +68,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		consumables: Presets.DefaultConsumables,
 
 		// Default talents.
-		talents: Presets.DemonologyTalentsIncinerate.data,
+		talents: Presets.DemonologyTalentsDefaultP1.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 
@@ -89,7 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	playerIconInputs: [WarlockInputs.PetInput()],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [BuffDebuffInputs.AttackSpeedBuff, BuffDebuffInputs.MajorArmorDebuff, BuffDebuffInputs.PhysicalDamageDebuff],
 	excludeBuffDebuffInputs: [],
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -129,25 +128,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	presets: {
 		epWeights: [Presets.DEFAULT_EP_PRESET, Presets.Mastery_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.DemonologyTalentsShadowBolt, Presets.DemonologyTalentsIncinerate],
+		talents: [Presets.DemonologyTalentsDefaultP1],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.APL_ShadowBolt, Presets.APL_Incinerate],
+		rotations: [Presets.APL_Default],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		itemSwaps: [Presets.P3_ITEM_SWAP, Presets.P4_ITEM_SWAP],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
+		itemSwaps: [],
 
-		builds: [Presets.PRESET_BUILD_SHADOWBOLT, Presets.PRESET_BUILD_INCINERATE],
+		builds: [Presets.PRSET_BUILD_P1],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDemonologyWarlock>): APLRotation => {
-		return Presets.APL_Incinerate.rotation.rotation!;
+		return Presets.APL_Default.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecDemonologyWarlock,
-			talents: Presets.DemonologyTalentsIncinerate.data,
+			talents: Presets.DemonologyTalentsDefaultP1.data,
 			specOptions: Presets.DefaultOptions,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
@@ -160,12 +159,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 				[Faction.Alliance]: {
 					1: Presets.PRERAID_PRESET.gear,
 					2: Presets.P1_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.PRERAID_PRESET.gear,
 					2: Presets.P1_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

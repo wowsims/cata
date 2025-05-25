@@ -16,11 +16,11 @@ func (demonlogy *DemonologyWarlock) registerGrimoireOfSupremacy() {
 	// Pimp my demo pet
 	felGuard := demonlogy.Felguard
 	demonlogy.Felguard.PseudoStats.DamageDealtMultiplier *= 1.2
-	felGuard.Name = "Wrath Guard"
-	felGuard.Label = fmt.Sprintf("%s - %s", demonlogy.Label, "Wrath Guard")
+	felGuard.Name = "Wrathguard"
+	felGuard.Label = fmt.Sprintf("%s - %s", demonlogy.Label, "Wrathguard")
 
 	// Now dualwield with 1.5x less base damage
-	weaponConfig := warlock.ScaledAutoAttackConfig(3)
+	weaponConfig := warlock.ScaledAutoAttackConfig(2)
 	weaponConfig.MainHand.BaseDamageMax /= 1.5
 	weaponConfig.MainHand.BaseDamageMin /= 1.5
 	weaponConfig.OffHand = weaponConfig.MainHand

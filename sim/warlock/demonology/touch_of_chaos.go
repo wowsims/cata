@@ -40,6 +40,19 @@ func (demonology *DemonologyWarlock) registerTouchOfChaos() {
 			demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 28, 40), spell.ActionID, sim)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
+
+				corruption := demonology.Corruption.Dot(target)
+				if corruption.IsActive() {
+
+					// add two ticks up to a limit of pandemic
+					for idx := 0; idx < 2; idx++ {
+						extended := float64(corruption.RemainingDuration(sim) + corruption.TickPeriod())
+						maxLength := float64(corruption.BaseDuration() + corruption.BaseDuration()/2)
+						if extended < maxLength {
+							corruption.AddTick()
+						}
+					}
+				}
 			})
 		},
 	})

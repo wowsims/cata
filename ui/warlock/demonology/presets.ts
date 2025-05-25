@@ -9,13 +9,8 @@ import {
 } from '../../core/proto/warlock';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
-import IncinerateAPL from './apls/incinerate.apl.json';
-import ShadowBoltAPL from './apls/shadow-bolt.apl.json';
+import DefaultAPL from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P3Gear from './gear_sets/p3.gear.json';
-import ItemSwapP3 from './gear_sets/p3_item_swap.gear.json';
-import P4Gear from './gear_sets/p4.gear.json';
-import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -24,14 +19,8 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
-export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
-export const P4_PRESET = PresetUtils.makePresetGear('P4', P4Gear);
 
-export const P3_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P3 - Mastery', ItemSwapP3);
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Mastery', ItemSwapP4);
-
-export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', ShadowBoltAPL);
-export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);
+export const APL_Default = PresetUtils.makePresetAPLRotation('Incinerate', DefaultAPL);
 
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -60,21 +49,10 @@ export const Mastery_EP_PRESET = PresetUtils.makePresetEpWeights(
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wotlk.wowhead.com/talent-calc and copy the numbers in the url.
-
-export const DemonologyTalentsShadowBolt = {
-	name: 'Shadow bolt',
+export const DemonologyTalentsDefaultP1 = {
+	name: 'Default P1',
 	data: SavedTalents.create({
-		talentsString: '',
-		glyphs: Glyphs.create({
-			major2: MajorGlyph.GlyphOfLifeTap,
-			minor3: MinorGlyph.GlyphOfUnendingBreath,
-		}),
-	}),
-};
-export const DemonologyTalentsIncinerate = {
-	name: 'Incinerate',
-	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '231211',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
@@ -91,25 +69,31 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
-	tinkerId: 82174, // Synapse Springs
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 34749, // Shoveltusk Steak
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
+	tinkerId: 82174, // Synapse Springs II
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({});
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	blessingOfKings: true,
+	leaderOfThePack: true,
+	blessingOfMight: true,
+	bloodlust: true,
+	moonkinAura: true,
+	skullBannerCount: 2,
+	stormlashTotemCount: 4,
+	unholyAura: true,
+});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	// bloodFrenzy: true,
-	// sunderArmor: true,
-	// ebonPlaguebringer: true,
-	// mangle: true,
-	// criticalMass: false,
-	// demoralizingShout: true,
-	// frostFever: true,
+	curseOfElements: true,
+	weakenedArmor: true,
+	physicalVulnerability: true,
 });
 
 export const OtherDefaults = {
@@ -119,14 +103,9 @@ export const OtherDefaults = {
 	channelClipDelay: 150,
 };
 
-export const PRESET_BUILD_SHADOWBOLT = PresetUtils.makePresetBuild('Shadow Bolt', {
-	talents: DemonologyTalentsShadowBolt,
-	rotation: APL_ShadowBolt,
-});
-
-export const PRESET_BUILD_INCINERATE = PresetUtils.makePresetBuild('Incinerate', {
-	talents: DemonologyTalentsIncinerate,
-	rotation: APL_Incinerate,
+export const PRSET_BUILD_P1 = PresetUtils.makePresetBuild('Default P1', {
+	talents: DemonologyTalentsDefaultP1,
+	rotation: APL_Default,
 });
 
 export const DEMONOLOGY_BREAKPOINTS = [

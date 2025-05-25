@@ -11,7 +11,7 @@ const chaosWaveScale = 1
 const chaosWaveCoeff = 1.167
 
 func (demonology *DemonologyWarlock) registerChaosWave() {
-	demonology.RegisterSpell(core.SpellConfig{
+	demonology.ChaosWave = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 124916},
 		SpellSchool:    core.SpellSchoolChaos,
 		ProcMask:       core.ProcMaskSpellDamage,

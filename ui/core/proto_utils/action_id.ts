@@ -1084,6 +1084,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Felguard': ActionId.fromSpellId(30146),
 	'Wild Imp': ActionId.fromSpellId(114592),
 	'Grimoire: Felguard': ActionId.fromSpellId(111898),
+	'Wrathguard': ActionId.fromSpellId(112870)
 };
 
 // https://wowhead.com/mop-classic/hunter-pets

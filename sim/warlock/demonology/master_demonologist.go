@@ -28,7 +28,7 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonus()
-		demo.PseudoStats.DamageDealtMultiplier += 1 + demo.getNormalMasteryBonus()
+		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 	})
 
 	demo.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating, newMasteryRating float64) {
@@ -42,11 +42,13 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 
 		for _, pet := range demo.Pets {
 			if pet.IsActive() {
-				demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
-				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
+				pet.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
+				pet.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 			}
 		}
 	})
+
+	demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 
 	for _, pet := range demo.Pets {
 		oldEnable := pet.OnPetEnable

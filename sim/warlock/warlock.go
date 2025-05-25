@@ -110,6 +110,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	warlock.Doomguard = warlock.NewDoomguardPet()
 	warlock.FieryImp = warlock.NewFieryImp()
 
+	warlock.serviceTimer = character.NewTimer()
 	warlock.registerPets()
 	warlock.registerGrimoireOfService()
 

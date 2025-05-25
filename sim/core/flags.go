@@ -225,7 +225,7 @@ const (
 	SpellSchoolHoly
 	SpellSchoolNature
 	SpellSchoolShadow
-	SpellSchoolChaos       SpellSchool = 1<<iota - 1
+	SpellSchoolChaos       SpellSchool = 1<<iota - 3
 	SpellSchoolShadowFlame SpellSchool = SpellSchoolFire | SpellSchoolShadow
 )
 
