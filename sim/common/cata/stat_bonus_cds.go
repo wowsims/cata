@@ -135,5 +135,4 @@ func init() {
 	// RESISTANCE
 	shared.NewSimpleStatActive(62466) // Mirror of Broken Images (Alliance)
 	shared.NewSimpleStatActive(62471) // Mirror of Broken Images (Horde)
-
 }

@@ -244,7 +244,7 @@ func NewHasteActive(itemID int32, bonus float64, duration time.Duration, cooldow
 }
 
 func NewDodgeActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
 }
 
 func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
@@ -256,7 +256,7 @@ func NewHealthActive(itemID int32, bonus float64, duration time.Duration, cooldo
 }
 
 func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
 }
 
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
