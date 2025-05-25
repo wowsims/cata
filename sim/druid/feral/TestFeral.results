@@ -1622,8 +1622,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 48649.59025
-  tps: 66439.78769
+  dps: 48708.68147
+  tps: 66640.95155
   hps: 26.77086
  }
 }
@@ -2230,8 +2230,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 48713.40526
-  tps: 67011.93123
+  dps: 48695.26042
+  tps: 67070.53407
   hps: 26.77086
  }
 }

@@ -1379,7 +1379,7 @@ func init() {
 			Name:       name,
 			ItemID:     id,
 			AuraID:     126659,
-			Bonus:      stats.Stats{stats.HasteRating: 963},
+			Bonus:      stats.Stats{stats.HasteRating: 1928},
 			Duration:   time.Second * 20,
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskSpellOrSpellProc,
