@@ -33,15 +33,27 @@ var ItemSetArmorOfTheRedCrane = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			monk := agent.(MonkAgent).GetMonk()
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_Custom,
-				ClassMask: MonkSpellElusiveBrew,
-				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					spell.RelatedSelfBuff.AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseDodgeChance, 0.05)
-				},
-				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				},
-			}).ExposeToAPL(123157)
+
+			monk.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(MonkSpellElusiveBrew) {
+					return
+				}
+
+				hasDodgeBonus := false
+				spell.RelatedSelfBuff.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+					if setBonusAura.IsActive() {
+						monk.PseudoStats.BaseDodgeChance += 0.05
+						hasDodgeBonus = true
+					}
+				}).ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+					if hasDodgeBonus {
+						monk.PseudoStats.BaseDodgeChance -= 0.05
+						hasDodgeBonus = false
+					}
+				})
+			})
+
+			setBonusAura.ExposeToAPL(123157)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in guard.go
@@ -99,14 +111,19 @@ var ItemSetFireCharmArmor = core.NewItemSet(core.ItemSet{
 				Duration: 0,
 			})
 
-			if monk.ElusiveBrewAura != nil {
-				monk.ElusiveBrewAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+			monk.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(MonkSpellElusiveBrew) {
+					return
+				}
+
+				spell.RelatedSelfBuff.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
 					if setBonusAura.IsActive() {
 						monk.T15Brewmaster2P.Duration = time.Duration(monk.ElusiveBrewStacks) * time.Second
 						monk.T15Brewmaster2P.Activate(sim)
 					}
 				})
-			}
+			})
+
 			setBonusAura.ExposeToAPL(138231)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -142,24 +159,29 @@ var ItemSetBattlegearOfSevenSacredSeals = core.NewItemSet(core.ItemSet{
 			monk := agent.(MonkAgent).GetMonk()
 
 			registerComboBreakerDamageMod := func(spellID int32, spellMask int64) {
-				aura := monk.GetAuraByID(core.ActionID{SpellID: spellID})
-				if aura != nil {
-					damageMod := monk.AddDynamicMod(core.SpellModConfig{
-						Kind:       core.SpellMod_DamageDone_Pct,
-						ClassMask:  spellMask,
-						FloatValue: 0.4,
-					})
+				monk.OnSpellRegistered(func(spell *core.Spell) {
+					if !spell.Matches(spellMask) {
+						return
+					}
 
-					aura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-						if setBonusAura.IsActive() {
-							damageMod.Activate()
-						}
-					})
+					aura := monk.GetAuraByID(core.ActionID{SpellID: spellID})
+					if aura != nil {
+						damageMod := monk.AddDynamicMod(core.SpellModConfig{
+							Kind:       core.SpellMod_DamageDone_Pct,
+							ClassMask:  spellMask,
+							FloatValue: 0.4,
+						})
 
-					aura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-						damageMod.Deactivate()
-					})
-				}
+						aura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+							if setBonusAura.IsActive() {
+								damageMod.Activate()
+							}
+						}).ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+							damageMod.Deactivate()
+						})
+					}
+				})
+
 			}
 
 			registerComboBreakerDamageMod(118864, MonkSpellTigerPalm)
