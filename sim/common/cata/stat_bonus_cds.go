@@ -57,7 +57,7 @@ func init() {
 	// AGILITY
 	shared.NewAgilityActive(63840, 1095, time.Second*15, time.Second*90) // Juju of Nimbleness
 	shared.NewAgilityActive(63843, 1095, time.Second*15, time.Second*90) // Blood-Soaked Ale Mug
-	shared.NewAgilityActive(64687, 1520, time.Second*20, time.Second*90) // Bloodthirsty Gladiator's Badge of Conquest
+	shared.NewAgilityActive(64687, 1520, time.Second*20, time.Minute*2)  // Bloodthirsty Gladiator's Badge of Conquest
 	shared.NewAgilityActive(52199, 1425, time.Second*20, time.Minute*2)  // Figurine - Demon Panther
 	shared.NewAgilityActive(62468, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Alliance)
 	shared.NewAgilityActive(62463, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Horde)
@@ -106,13 +106,13 @@ func init() {
 	shared.NewHealthActive(64740, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Cruelty
 	shared.NewHealthActive(64741, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Meditation
 	shared.NewHealthActive(64742, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Tenacity
-	shared.NewHealthActive(62048, 15500, time.Second*15, time.Minute*2) // Darkmoon Card: Earthquake
-	shared.NewHealthActive(61026, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Cruelty
-	shared.NewHealthActive(61028, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Alacrity
-	shared.NewHealthActive(61029, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Prowess
-	shared.NewHealthActive(61032, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Tenacity
-	shared.NewHealthActive(61030, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Proficiency
-	shared.NewHealthActive(61027, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Accuracy
+	shared.NewHealthActive(62048, 15500, time.Second*15, time.Minute*3) // Darkmoon Card: Earthquake
+	shared.NewHealthActive(61026, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Cruelty
+	shared.NewHealthActive(61028, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Alacrity
+	shared.NewHealthActive(61029, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Prowess
+	shared.NewHealthActive(61032, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Tenacity
+	shared.NewHealthActive(61030, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Proficiency
+	shared.NewHealthActive(61027, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Accuracy
 
 	// INT
 	shared.NewIntActive(67118, 567, time.Second*20, time.Minute*2)   // Electrospark Heartstarter
@@ -133,7 +133,7 @@ func init() {
 	shared.NewParryActive(56406, 1425, time.Second*10, time.Minute) // Impetuous Query (Heroic)
 
 	// RESI
-	shared.CreateDefensiveStatActive(62466, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Alliance)
+	shared.CreateOffensiveStatActive(62466, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Alliance)
 		stats.ArcaneResistance: 400,
 		stats.FrostResistance:  400,
 		stats.FireResistance:   400,
@@ -141,7 +141,7 @@ func init() {
 		stats.NatureResistance: 400,
 	})
 
-	shared.CreateDefensiveStatActive(62471, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Horde)
+	shared.CreateOffensiveStatActive(62471, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Horde)
 		stats.ArcaneResistance: 400,
 		stats.FrostResistance:  400,
 		stats.FireResistance:   400,

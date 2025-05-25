@@ -174,8 +174,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 50512.08047
-  tps: 65977.80919
+  dps: 50055.42052
+  tps: 67256.14229
   hps: 26.77086
  }
 }
@@ -470,8 +470,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 48166.51575
-  tps: 67182.30583
+  dps: 48168.62291
+  tps: 66190.43828
   hps: 26.77086
  }
 }
@@ -2774,48 +2774,48 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 48221.4106
-  tps: 66958.96205
+  dps: 48122.40798
+  tps: 65817.48173
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 48558.63789
-  tps: 64404.30445
+  dps: 48622.41476
+  tps: 64372.36007
   hps: 40.08485
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 48849.0874
-  tps: 67451.80921
+  dps: 48762.46853
+  tps: 66789.20398
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 48218.87974
-  tps: 67070.17123
+  dps: 48087.63205
+  tps: 65874.41014
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 48821.19168
-  tps: 68326.49173
+  dps: 48828.63065
+  tps: 67279.48548
   hps: 26.77086
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 48166.51575
-  tps: 67182.30583
+  dps: 48168.62291
+  tps: 66190.43828
   hps: 26.77086
  }
 }

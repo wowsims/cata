@@ -174,9 +174,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 11287.70298
-  tps: 56505.91054
-  hps: 355.12858
+  dps: 11168.6416
+  tps: 55910.08092
+  hps: 356.7355
  }
 }
 dps_results: {
@@ -944,7 +944,7 @@ dps_results: {
  value: {
   dps: 10601.44821
   tps: 53073.64564
-  hps: 353.52167
+  hps: 355.12858
  }
 }
 dps_results: {
