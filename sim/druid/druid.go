@@ -33,9 +33,6 @@ type Druid struct {
 
 	MHAutoSpell *core.Spell
 
-	HotWCatDep  *stats.StatDependency
-	HotWBearDep *stats.StatDependency
-
 	Barkskin              *DruidSpell
 	Berserk               *DruidSpell
 	CatCharge             *DruidSpell
@@ -123,8 +120,9 @@ type Druid struct {
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
 
-	// Leather specialization tracker
-	LeatherSpec *core.Aura
+	// Guardian leather specialization is form-specific
+	GuardianLeatherSpecTracker *core.Aura
+	GuardianLeatherSpecDep     *stats.StatDependency
 
 	// Item sets
 	T11Feral2pBonus *core.Aura
@@ -344,18 +342,6 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerThrashBearSpell()
 }
 
-func (druid *Druid) RegisterLeatherSpecialization() {
-	// Druid armor spec behaves differently from other classes because the boosted stats are linked to form rather
-	// than talents. For this reason, we modify the default tracker Aura to activate at BuildPhaseGear rather than
-	// BuildPhaseTalents, and also add custom handlers for the cat Agi bonus and the bear Stam bonus in forms.go (the
-	// Int bonus applies in all forms).
-	druid.LeatherSpec = druid.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeLeather, 87505)
-
-	if druid.LeatherSpec.BuildPhase == core.CharacterBuildPhaseTalents {
-		druid.LeatherSpec.BuildPhase = core.CharacterBuildPhaseGear
-	}
-}
-
 func (druid *Druid) Reset(_ *core.Simulation) {
 	// druid.eclipseEnergyBar.reset()
 	druid.BleedsActive = 0
@@ -387,20 +373,6 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodgeChance += 0.03
-
-	druid.RegisterLeatherSpecialization()
-
-	// if druid.Talents.ForceOfNature {
-	// 	druid.Treants = &Treants{
-	// 		Treant1: druid.NewTreant(),
-	// 		Treant2: druid.NewTreant(),
-	// 		Treant3: druid.NewTreant(),
-	// 	}
-	// }
-
-	// if druid.CouldHaveSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
-	// 	druid.BurningTreant = druid.NewBurningTreant()
-	// }
 
 	return druid
 }

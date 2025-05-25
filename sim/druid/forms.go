@@ -88,22 +88,6 @@ func (druid *Druid) RegisterCatFormAura() {
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
-	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Agility, 1.05)
-
-	// Need redundant enabling/disabling of the dep both here and below
-	// because we don't know whether the leather spec tracker or Cat Form will
-	// activate first.
-	druid.LeatherSpec.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-		if druid.InForm(Cat) {
-			druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
-		}
-	})
-
-	druid.LeatherSpec.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-		if druid.InForm(Cat) {
-			druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
-		}
-	})
 
 	clawWeapon := druid.GetCatWeapon()
 
@@ -124,12 +108,6 @@ func (druid *Druid) RegisterCatFormAura() {
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.EnableBuildPhaseStatDep(sim, agiApDep)
-			if druid.HotWCatDep != nil {
-				druid.EnableBuildPhaseStatDep(sim, druid.HotWCatDep)
-			}
-			if druid.LeatherSpec.IsActive() {
-				druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
-			}
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetMH(clawWeapon)
@@ -154,12 +132,6 @@ func (druid *Druid) RegisterCatFormAura() {
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.DisableBuildPhaseStatDep(sim, agiApDep)
-			if druid.HotWCatDep != nil {
-				druid.DisableBuildPhaseStatDep(sim, druid.HotWCatDep)
-			}
-			if druid.LeatherSpec.IsActive() {
-				druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
-			}
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultCritMultiplier()))
@@ -237,22 +209,6 @@ func (druid *Druid) RegisterBearFormAura() {
 	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.4)
 	critDep := druid.NewDynamicMultiplyStat(stats.CritRating, 1.5) // TODO: Should this be implemented as EquipScaling instead? Need to check elixirs and procs.
 	hasteDep := druid.NewDynamicMultiplyStat(stats.HasteRating, 1.5) // TODO: Should this be implemented as EquipScaling instead? Need to check elixirs and procs.
-	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
-
-	// Need redundant enabling/disabling of the dep both here and below
-	// because we don't know whether the leather spec tracker or Bear Form
-	// will activate first.
-	druid.LeatherSpec.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-		if druid.InForm(Bear) {
-			druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
-		}
-	})
-
-	druid.LeatherSpec.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-		if druid.InForm(Bear) {
-			druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
-		}
-	})
 
 	clawWeapon := druid.GetBearWeapon()
 
@@ -280,11 +236,9 @@ func (druid *Druid) RegisterBearFormAura() {
 			// Preserve fraction of max health when shifting
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			druid.EnableBuildPhaseStatDep(sim, stamDep)
-			if druid.HotWBearDep != nil {
-				druid.EnableBuildPhaseStatDep(sim, druid.HotWBearDep)
-			}
-			if druid.LeatherSpec.IsActive() {
-				druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
+
+			if druid.GuardianLeatherSpecTracker.IsActive() {
+				druid.EnableBuildPhaseStatDep(sim, druid.GuardianLeatherSpecDep)
 			}
 
 			if !druid.Env.MeasuringStats {
@@ -308,11 +262,9 @@ func (druid *Druid) RegisterBearFormAura() {
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			druid.DisableBuildPhaseStatDep(sim, stamDep)
-			if druid.HotWBearDep != nil {
-				druid.DisableBuildPhaseStatDep(sim, druid.HotWBearDep)
-			}
-			if druid.LeatherSpec.IsActive() {
-				druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
+
+			if druid.GuardianLeatherSpecTracker.IsActive() {
+				druid.DisableBuildPhaseStatDep(sim, druid.GuardianLeatherSpecDep)
 			}
 
 			if !druid.Env.MeasuringStats {

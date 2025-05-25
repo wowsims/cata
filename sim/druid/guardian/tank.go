@@ -73,6 +73,7 @@ func (bear *GuardianDruid) ApplyTalents() {
 	// bear.Druid.ApplyTalents()
 	bear.applyMastery()
 	bear.applyThickHide()
+	bear.applyLeatherSpecialization()
 	bear.RegisterVengeance(84840, bear.BearFormAura)
 }
 
@@ -113,6 +114,25 @@ func (bear *GuardianDruid) applyThickHide() {
 
 	// Crit immunity
 	bear.PseudoStats.ReducedCritTakenChance += 0.06
+}
+
+func (bear *GuardianDruid) applyLeatherSpecialization() {
+	bear.GuardianLeatherSpecTracker = bear.RegisterArmorSpecializationTracker(proto.ArmorType_ArmorTypeLeather, 86096)
+	bear.GuardianLeatherSpecDep = bear.NewDynamicMultiplyStat(stats.Stamina, 1.05)
+
+	// Need redundant enabling/disabling of the dep both here and in forms.go because we
+	// don't know whether the leather spec tracker or Bear Form will activate first.
+	bear.GuardianLeatherSpecTracker.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+		if bear.InForm(druid.Bear) {
+			bear.EnableBuildPhaseStatDep(sim, bear.GuardianLeatherSpecDep)
+		}
+	})
+
+	bear.GuardianLeatherSpecTracker.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+		if bear.InForm(druid.Bear) {
+			bear.DisableBuildPhaseStatDep(sim, bear.GuardianLeatherSpecDep)
+		}
+	})
 }
 
 func (bear *GuardianDruid) Initialize() {
