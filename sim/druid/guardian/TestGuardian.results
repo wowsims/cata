@@ -550,9 +550,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 10797.09732
-  tps: 54053.24912
-  hps: 358.34242
+  dps: 10714.41292
+  tps: 53639.97314
+  hps: 356.7355
  }
 }
 dps_results: {
@@ -806,9 +806,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 10900.65173
-  tps: 54571.60947
-  hps: 356.7355
+  dps: 10714.48374
+  tps: 53640.08952
+  hps: 358.34242
  }
 }
 dps_results: {
@@ -1606,9 +1606,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 10765.14781
-  tps: 53893.15843
-  hps: 359.94933
+  dps: 10750.78744
+  tps: 53821.29076
+  hps: 356.7355
  }
 }
 dps_results: {
@@ -2206,8 +2206,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 10766.09933
-  tps: 53898.8525
+  dps: 10691.94212
+  tps: 53526.94623
   hps: 351.91475
  }
 }
@@ -2470,9 +2470,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 10755.48812
-  tps: 53845.86787
-  hps: 351.91475
+  dps: 10753.90063
+  tps: 53836.34148
+  hps: 356.7355
  }
 }
 dps_results: {
