@@ -19,27 +19,31 @@ Melee attack speed increased by 40%.
 */
 func (monk *Monk) registerWayOfTheMonk() {
 	aura := core.MakePermanent(monk.RegisterAura(core.Aura{
-		Label:    "Way of the Monk" + monk.Label,
-		ActionID: core.ActionID{SpellID: 120277},
+		Label:      "Way of the Monk" + monk.Label,
+		ActionID:   core.ActionID{SpellID: 120277},
+		BuildPhase: core.CharacterBuildPhaseBase,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)
 			} else {
-				monk.AutoAttacks.MHConfig().DamageMultiplier *= 1.4
-				monk.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
+				monk.MHAutoSpell.DamageMultiplier *= 1.4
+				if monk.OHAutoSpell != nil {
+					monk.OHAutoSpell.DamageMultiplier *= 1.4
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1/1.4)
 			} else {
-				monk.AutoAttacks.MHConfig().DamageMultiplier *= 1 / 1.4
-				monk.AutoAttacks.OHConfig().DamageMultiplier *= 1 / 1.4
+				monk.MHAutoSpell.DamageMultiplier /= 1.4
+				if monk.OHAutoSpell != nil {
+					monk.OHAutoSpell.DamageMultiplier /= 1.4
+				}
 			}
 		},
 	}))
 
-	// re-configure poisons when performing an item swap
 	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		aura.Deactivate(sim)
 		aura.Activate(sim)

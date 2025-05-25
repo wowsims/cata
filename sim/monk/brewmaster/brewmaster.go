@@ -37,11 +37,24 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 	// Brewmaster monks does a flat 85% of total damage as well as AP per DPS being 11 instead of 14
 	bm.PseudoStats.DamageDealtMultiplier *= 0.85
 
+	// Vengeance
+	bm.RegisterVengeance(120267, nil)
+
 	return bm
 }
 
 type BrewmasterMonk struct {
 	*monk.Monk
+
+	Stagger        *core.Spell
+	RefreshStagger func(sim *core.Simulation, target *core.Unit, damagePerTick float64)
+
+	// Auras
+	PowerGuardAura *core.Aura
+	ShuffleAura    *core.Aura
+	AvertHarmAura  *core.Aura
+
+	DizzyingHazeAuras core.AuraArray
 }
 
 func (bm *BrewmasterMonk) GetMonk() *monk.Monk {
@@ -56,8 +69,7 @@ func (bm *BrewmasterMonk) Initialize() {
 func (bm *BrewmasterMonk) ApplyTalents() {
 	bm.Monk.ApplyTalents()
 	bm.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypeLeather, 120225)
-
-	bm.registerGuard()
+	// core.ApplyVengeanceEffect(&bm.Character, bm.vengeance, 120267)
 }
 
 func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {
@@ -66,7 +78,20 @@ func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {
 
 func (bm *BrewmasterMonk) RegisterSpecializationEffects() {
 	bm.RegisterMastery()
+	bm.registerPassives()
+
+	bm.registerAvertHarm()
+	bm.registerPurifyingBrew()
+	bm.registerKegSmash()
+	bm.registerBreathOfFire()
+	bm.registerGuard()
+	bm.registerDizzyingHaze()
 }
 
 func (bm *BrewmasterMonk) RegisterMastery() {
+	bm.registerStagger()
+}
+
+func (bm *BrewmasterMonk) GetMasteryBonus() float64 {
+	return 0.2 + (0.05 + 0.00625*bm.GetMasteryPoints())
 }

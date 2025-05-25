@@ -158,7 +158,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	}
 
 	// Do half the iterations with a positive, and half with a negative value for better accuracy.
-	const defaultStatMod = 40.0 // match to the impact of a single gem
+	const defaultStatMod = 160.0 // match to the impact of a single gem
 	statModsLow := make([]float64, stats.UnitStatsLen)
 	statModsHigh := make([]float64, stats.UnitStatsLen)
 
