@@ -204,7 +204,7 @@ func main() {
 			db.AddItemIcon(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
 		if enchant.SpellId != 0 {
-			db.AddSpellIcon(enchant.ItemId, enchant.Icon, enchant.Name)
+			db.AddSpellIcon(enchant.SpellId, enchant.Icon, enchant.Name)
 		}
 	}
 

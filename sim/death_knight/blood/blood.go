@@ -28,8 +28,6 @@ func RegisterBloodDeathKnight() {
 
 type BloodDeathKnight struct {
 	*death_knight.DeathKnight
-
-	vengeance *core.VengeanceTracker
 }
 
 func NewBloodDeathKnight(character *core.Character, options *proto.Player) *BloodDeathKnight {
@@ -41,7 +39,6 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 			StartingRunicPower: dkOptions.Options.ClassOptions.StartingRunicPower,
 			Spec:               proto.Spec_SpecBloodDeathKnight,
 		}, options.TalentsString, 50034),
-		vengeance: &core.VengeanceTracker{},
 	}
 
 	return bdk
@@ -84,7 +81,7 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 	}))
 
 	// Vengeance
-	core.ApplyVengeanceEffect(&bdk.Character, bdk.vengeance, 93099)
+	bdk.RegisterVengeance(93099, nil)
 
 	// Mastery: Blood Shield
 	shieldAmount := 0.0

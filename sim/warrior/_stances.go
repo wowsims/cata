@@ -72,10 +72,12 @@ func (warrior *Warrior) registerBattleStanceAura() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.05
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.95
+			aura.Unit.MultiplyAutoAttackRageGen(2.0)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.05
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.95
+			aura.Unit.MultiplyAutoAttackRageGen(0.5)
 		},
 	})
 	warrior.BattleStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
