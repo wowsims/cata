@@ -809,8 +809,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 43836.36811
-  tps: 30316.96293
+  dps: 43828.38411
+  tps: 30267.61431
  }
 }
 dps_results: {
@@ -2323,8 +2323,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 43791.62663
-  tps: 30094.25072
+  dps: 43755.79666
+  tps: 30038.72501
  }
 }
 dps_results: {
@@ -2344,8 +2344,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 43159.31148
-  tps: 29652.05834
+  dps: 43112.99234
+  tps: 29593.00783
  }
 }
 dps_results: {

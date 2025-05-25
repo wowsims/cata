@@ -942,9 +942,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 49632.07294
-  tps: 47023.3423
-  hps: 1672.55772
+  dps: 49485.49175
+  tps: 46899.47879
+  hps: 1665.75456
  }
 }
 dps_results: {
@@ -2822,9 +2822,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 49059.07867
-  tps: 46426.61428
-  hps: 1690.16931
+  dps: 49062.95174
+  tps: 46430.48735
+  hps: 1700.98756
  }
 }
 dps_results: {
@@ -2846,9 +2846,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 48439.03387
-  tps: 45853.02091
-  hps: 1678.72387
+  dps: 48442.90694
+  tps: 45856.89398
+  hps: 1689.38043
  }
 }
 dps_results: {
