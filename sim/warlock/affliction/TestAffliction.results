@@ -1033,15 +1033,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 43573.31605
-  tps: 30018.50405
+  dps: 43221.14136
+  tps: 29859.82
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 43621.65334
-  tps: 30062.24236
+  dps: 43268.96599
+  tps: 29903.11542
  }
 }
 dps_results: {

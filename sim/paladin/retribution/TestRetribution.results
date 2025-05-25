@@ -1075,15 +1075,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 47076.15724
-  tps: 44550.38454
+  dps: 46964.51597
+  tps: 44428.97755
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 47151.21297
-  tps: 44625.44027
+  dps: 47039.44399
+  tps: 44503.90557
  }
 }
 dps_results: {

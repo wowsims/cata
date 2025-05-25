@@ -1214,17 +1214,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 49012.84293
-  tps: 46426.82997
-  hps: 1665.75456
+  dps: 49249.03591
+  tps: 46623.88688
+  hps: 1670.5814
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 49088.55852
-  tps: 46502.54556
-  hps: 1665.75456
+  dps: 49325.17995
+  tps: 46700.03092
+  hps: 1670.5814
  }
 }
 dps_results: {

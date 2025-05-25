@@ -1033,15 +1033,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 46404.00715
-  tps: 27076.73655
+  dps: 46353.15698
+  tps: 27071.10556
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 46467.04876
-  tps: 27116.42047
+  dps: 46416.23247
+  tps: 27110.80959
  }
 }
 dps_results: {
