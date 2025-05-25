@@ -41,8 +41,8 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:  protOptions.ClassOptions.StartingRage,
-		BaseHitFactor: 1.75,
+		StartingRage:       protOptions.ClassOptions.StartingRage,
+		BaseRageMultiplier: 1,
 	}
 
 	war.EnableRageBar(rbo)
