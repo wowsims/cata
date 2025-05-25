@@ -30,6 +30,9 @@ func TestBrewmaster(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBrewmaster},
 		Rotation:    core.GetAplRotation("../../../ui/monk/brewmaster/apls", "default"),
 
+		IsTank:          true,
+		InFrontOfTarget: true,
+
 		ItemFilter: ItemFilter,
 	}))
 }

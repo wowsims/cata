@@ -205,7 +205,9 @@ func (monk *Monk) registerSpells() {
 
 func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
-	monk.SefController.Reset(sim)
+	if monk.SefController != nil {
+		monk.SefController.Reset(sim)
+	}
 	monk.ElusiveBrewStacks = 0
 }
 

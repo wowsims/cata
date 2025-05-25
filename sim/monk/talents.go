@@ -893,8 +893,7 @@ func (monk *Monk) registerRushingJadeWind() {
 	})
 
 	isWiseSerpent := monk.StanceMatches(WiseSerpent)
-	var rushingJadeWindSpell *core.Spell
-	rushingJadeWindSpell = monk.RegisterSpell(rushingJadeWindSpellConfig(monk, false, core.SpellConfig{
+	rushingJadeWindSpell := monk.RegisterSpell(rushingJadeWindSpellConfig(monk, false, core.SpellConfig{
 		EnergyCost: core.EnergyCostOptions{
 			Cost: core.TernaryInt32(isWiseSerpent, 0, 40),
 		},
@@ -914,12 +913,6 @@ func (monk *Monk) registerRushingJadeWind() {
 		},
 
 		Dot: core.DotConfig{
-			Aura: core.Aura{
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					rushingJadeWindSpell.CD.Duration = monk.ApplyCastSpeed(baseCooldown)
-					rushingJadeWindBuff.Duration = rushingJadeWindSpell.CD.Duration
-				},
-			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				rushingJadeWindTickSpell.Cast(sim, target)
 			},
@@ -931,7 +924,7 @@ func (monk *Monk) registerRushingJadeWind() {
 			dot.TickOnce(sim)
 
 			remainingDuration := dot.RemainingDuration(sim)
-			rushingJadeWindSpell.CD.Duration = remainingDuration
+			spell.CD.Duration = remainingDuration
 			rushingJadeWindBuff.Duration = remainingDuration
 			rushingJadeWindBuff.Activate(sim)
 

@@ -27,8 +27,8 @@ func (monk *Monk) registerFortifyingBrew() {
 			monk.UpdateMaxHealth(sim, bonusHealth, healthMetrics)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			monk.UpdateMaxHealth(sim, -bonusHealth, healthMetrics)
 			monk.PseudoStats.DamageTakenMultiplier /= damageTakenModifier
+			monk.UpdateMaxHealth(sim, -bonusHealth, healthMetrics)
 		},
 	})
 

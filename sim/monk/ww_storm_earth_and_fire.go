@@ -4,12 +4,17 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
 var SEFSpellID = int32(138228)
 
 func (monk *Monk) registerStormEarthAndFire() {
+	if monk.Spec != proto.Spec_SpecWindwalkerMonk {
+		return
+	}
+
 	var sefTarget *core.Unit
 	damageMultiplier := []float64{1, 0.70, 0.55}
 
