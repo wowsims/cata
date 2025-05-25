@@ -274,9 +274,13 @@ export class ActionId {
 		const baseName = tooltipData['name'];
 		let name = baseName;
 
-		// handle DRT
 		let tag = this.tag;
-		if (tag >= 71086 && tag <= 71096) {
+		// Handle Monk's Storm, Earth and Fire
+		if (tag >= 138228) {
+			tag -= 138228;
+		}
+		// Handle DTR
+		else if (tag >= 71086 && tag <= 71096) {
 			name = 'Dragonwrath - ' + name;
 			tag -= 71086;
 		}
@@ -719,8 +723,10 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+
+			// Monk
 			case 'Tiger Strikes':
-				if (this.spellId === 12274) {
+				if (this.spellId === 120274) {
 					name += ' (Main Hand)';
 				} else {
 					name += ' (Off Hand)';
@@ -763,9 +769,23 @@ export class ActionId {
 					name += ' (Damage)';
 				}
 				break;
-			case 'Rushing Jade Wind':
-				if (this.spellId === 148187) {
-					name += ' (Hit)';
+			case 'Stagger':
+				if (this.tag === 1) {
+					name += ' (Dot)';
+				}
+				break;
+			case 'Dampen Harm':
+				break;
+			case 'Healing Sphere':
+				if (this.spellId === 115460) {
+					if (tag === 1) {
+						name += ' (Stacks)';
+					} else {
+						name += ' (Cast)';
+					}
+				}
+				if (this.spellId === 115464) {
+					name += ' (Heal)';
 				}
 				break;
 			case 'Vampiric Touch':
@@ -779,7 +799,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += " (Bounce)"
 				}
-				
+
 				break;
 			default:
 				if (tag) {
@@ -822,7 +842,8 @@ export class ActionId {
 		} else if (this.otherId) {
 			return 'other-' + this.otherId;
 		} else {
-			throw new Error('Empty action id!');
+			console.error('Empty action id!');
+			return '';
 		}
 	}
 
@@ -1065,6 +1086,10 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
+	'Xuen, The White Tiger': ActionId.fromSpellId(123904),
+	'Earth Spirit': ActionId.fromSpellId(138121),
+	'Storm Spirit': ActionId.fromSpellId(138122),
+	'Fire Spirit': ActionId.fromSpellId(138123),
 };
 
 // https://wowhead.com/mop-classic/hunter-pets
