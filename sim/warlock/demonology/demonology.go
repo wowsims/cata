@@ -31,6 +31,8 @@ func NewDemonologyWarlock(character *core.Character, options *proto.Player) *Dem
 	}
 
 	demonology.Felguard = demonology.registerFelguard()
+	demonology.registerWildImp(10)
+	demonology.registerGrimoireOfService()
 	return demonology
 }
 
@@ -39,7 +41,12 @@ type DemonologyWarlock struct {
 
 	DemonicFury   core.SecondaryResourceBar
 	Metamorphosis *core.Spell
-	Felguard      *warlock.WarlockPet
+	Soulfire      *core.Spell
+	HandOfGuildan *core.Spell
+	ChaosWave     *core.Spell
+
+	Felguard *warlock.WarlockPet
+	WildImps []*WildImpPet
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
@@ -63,12 +70,22 @@ func (demonology *DemonologyWarlock) Initialize() {
 	demonology.registerDrainLife()
 	demonology.registerHandOfGuldan()
 	demonology.registerHellfire()
-
-	// demonology.registerHandOfGuldan()
+	demonology.registerSoulfire()
+	demonology.registerMoltenCore()
+	demonology.registerCarrionSwarm()
+	demonology.registerChaosWave()
+	demonology.registerDoom()
+	demonology.registerImmolationAura()
+	demonology.registerTouchOfChaos()
+	demonology.registerVoidRay()
+	demonology.registerDarksoulKnowledge()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {
 	demonology.Warlock.ApplyTalents()
+
+	// Demo specific versions
+	demonology.registerGrimoireOfSupremacy()
 }
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {

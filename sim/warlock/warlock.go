@@ -42,6 +42,8 @@ type Warlock struct {
 	// EbonImp   *EbonImpPet
 	FieryImp *FieryImpPet
 
+	serviceTimer *core.Timer
+
 	// Item sets
 	T13_4pc *core.Aura
 	T15_2pc *core.Aura
@@ -68,32 +70,10 @@ func (warlock *Warlock) ApplyTalents() {
 func (warlock *Warlock) Initialize() {
 
 	warlock.registerCurseOfElements()
-
-	// warlock.registerBaneOfAgony()
-	// warlock.registerBaneOfDoom()
-	// warlock.registerCorruption()
-	// warlock.registerCurseOfElements()
-	// warlock.registerCurseOfTongues()
-	// warlock.registerCurseOfWeakness()
-	// warlock.registerDemonSoul()
-	// warlock.registerDrainLife()
-	// warlock.registerDrainSoul()
-	// warlock.registerFelFlame()
-	// warlock.registerImmolate()
-	// warlock.registerIncinerate()
-	// warlock.registerLifeTap()
-	// warlock.registerSearingPain()
-	// warlock.registerSeed()
-	// warlock.registerShadowBolt()
-	// warlock.registerShadowflame()
-	// warlock.registerSoulFire()
-	// warlock.registerSoulHarvest()
-	// warlock.registerSoulburn()
-	// warlock.registerSummonDemon()
-
 	doomguardInfernalTimer := warlock.NewTimer()
 	warlock.registerSummonDoomguard(doomguardInfernalTimer)
 	warlock.registerSummonInfernal(doomguardInfernalTimer)
+	warlock.registerLifeTap()
 
 	// Fel Armor 10% Stamina
 	core.MakePermanent(
@@ -166,17 +146,13 @@ const (
 	WarlockSpellHaunt
 	WarlockSpellUnstableAffliction
 	WarlockSpellCurseOfElements
-	WarlockSpellCurseOfWeakness
-	WarlockSpellCurseOfTongues
 	WarlockSpellBaneOfAgony
-	WarlockSpellBaneOfDoom
 	WarlockSpellDrainSoul
 	WarlockSpellDrainLife
 	WarlockSpellMetamorphosis
 	WarlockSpellSeedOfCorruption
 	WarlockSpellSeedOfCorruptionExposion
 	WarlockSpellHandOfGuldan
-	WarlockSpellImmolationAura
 	WarlockSpellHellfire
 	WarlockSpellSearingPain
 	WarlockSpellSummonDoomguard
@@ -202,32 +178,37 @@ const (
 	WarlockSpellRainOfFire
 	WarlockSpellFireAndBrimstone
 	WarlockSpellDarkSoulInsanity
+	WarlockSpellDarkSoulKnowledge
 	WarlockSpellMaleficGrasp
 	WarlockSpellDemonicSlash
 	WarlockSpellTouchOfChaos
+	WarlockSpellChaosWave
+	WarlockSpellCarrionSwarm
+	WarlockSpellDoom
+	WarlockSpellVoidray
 	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
-		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
+		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfAgony |
 		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan |
 		WarlockSpellShadowflame | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn
 
 	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
+		WarlockSpellDrainLife | WarlockSpellBaneOfAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
-		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
+		WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
 		WarlockSpellShadowflameDot | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn | WarlockSpellFaBConflagrate |
 		WarlockSpellFaBIncinerate
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
+		WarlockSpellDrainLife | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
 		WarlockSpellShadowflameDot | WarlockSpellBurningEmbers
 
 	WarlockSummonSpells = WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter |
 		WarlockSpellSummonFelguard
 
-	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity
+	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity | WarlockSpellDarkSoulKnowledge
 	WarlockAllSummons                = WarlockSummonSpells | WarlockSpellSummonInfernal | WarlockSpellSummonDoomguard
 	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons &^ WarlockSpellDrainLife
 )
@@ -291,5 +272,9 @@ func (s *SecondaryResourceCost) MeetsRequirement(_ *core.Simulation, spell *core
 
 // SpendCost implements core.ResourceCostImpl.
 func (s *SecondaryResourceCost) SpendCost(sim *core.Simulation, spell *core.Spell) {
-	spell.Unit.GetSecondaryResourceBar().Spend(int32(spell.CurCast.Cost), spell.ActionID, sim)
+
+	// during some hard casts resourc might tick down, make sure spells don't execute on exhaustion
+	if spell.Unit.GetSecondaryResourceBar().CanSpend(int32(spell.CurCast.Cost)) {
+		spell.Unit.GetSecondaryResourceBar().Spend(int32(spell.CurCast.Cost), spell.ActionID, sim)
+	}
 }

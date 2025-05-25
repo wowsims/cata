@@ -49,6 +49,7 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 		DamageMultiplier: 1,
 
 		Dot: core.DotConfig{
+			Aura:                 core.Aura{Label: "Hellfire"},
 			TickLength:           time.Second,
 			NumberOfTicks:        14,
 			HasteReducesDuration: true,

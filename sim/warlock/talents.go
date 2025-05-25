@@ -27,13 +27,13 @@ func (warlock *Warlock) registerArchimondesDarkness() {
 	warlock.AddStaticMod(core.SpellModConfig{
 		Kind:      core.SpellMod_ModCharges_Flat,
 		IntValue:  2,
-		ClassMask: WarlockSpellDarkSoulInsanity,
+		ClassMask: WarlockDarkSoulSpell,
 	})
 
 	warlock.AddStaticMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Second * 100,
-		ClassMask: WarlockSpellDarkSoulInsanity,
+		ClassMask: WarlockDarkSoulSpell,
 	})
 }
 
@@ -59,7 +59,7 @@ func (warlock *Warlock) registerMannarothsFury() {
 		Duration: time.Second * 10,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  WarlockSpellRainOfFire | WarlockSpellSeedOfCorruptionExposion | WarlockSpellSeedOfCorruption | WarlockSpellImmolationAura | WarlockSpellHellfire,
+		ClassMask:  WarlockSpellRainOfFire | WarlockSpellSeedOfCorruptionExposion | WarlockSpellSeedOfCorruption | WarlockSpellHellfire,
 		FloatValue: 1,
 	})
 
@@ -145,46 +145,51 @@ func (warlock *Warlock) registerGrimoireOfService() {
 	}
 
 	// build all pets as they're additional summons
-	imp := warlock.registerImpWithName("Grimoire: Imp", false)
+	imp := warlock.registerImpWithName("Grimoire: Imp", false, true)
 	imp.MinEnergy = 140
-	felHunter := warlock.registerFelHunterWithName("Grimoire: Felhunter", false)
+	felHunter := warlock.registerFelHunterWithName("Grimoire: Felhunter", false, true)
 	felHunter.MinEnergy = 100
-	voidWalker := warlock.registerVoidWalkerWithName("Grimoire: Voidwalker", false)
+	voidWalker := warlock.registerVoidWalkerWithName("Grimoire: Voidwalker", false, true)
 	voidWalker.MinEnergy = 120
-	succubus := warlock.registerSuccubusWithName("Grimoire: Succubus", false)
+	succubus := warlock.registerSuccubusWithName("Grimoire: Succubus", false, true)
 	succubus.MinEnergy = 160
 
-	timer := warlock.NewTimer()
-	summonSpellBuilder := func(id int32, pet *WarlockPet) {
-		warlock.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: id},
-			SpellSchool: core.SpellSchoolShadow,
-			Flags:       core.SpellFlagAPL,
-			ProcMask:    core.ProcMaskEmpty,
+	warlock.serviceTimer = warlock.NewTimer()
 
-			ThreatMultiplier: 1,
-			DamageMultiplier: 1,
+	warlock.BuildAndRegisterSummonSpell(111859, imp)
+	warlock.BuildAndRegisterSummonSpell(111895, voidWalker)
+	warlock.BuildAndRegisterSummonSpell(111896, succubus)
+	warlock.BuildAndRegisterSummonSpell(111897, felHunter)
+}
 
-			Cast: core.CastConfig{
-				DefaultCast: core.Cast{
-					GCD: core.GCDDefault,
-				},
-				CD: core.Cooldown{
-					Timer:    timer,
-					Duration: time.Minute * 2,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				pet.EnableWithTimeout(sim, pet, time.Second*20)
-			},
-		})
+func (warlock *Warlock) BuildAndRegisterSummonSpell(id int32, pet *WarlockPet) {
+	for _, spell := range pet.AutoCastAbilities {
+		spell.Flags &= ^core.SpellFlagAPL
 	}
 
-	summonSpellBuilder(111859, imp)
-	summonSpellBuilder(111895, voidWalker)
-	summonSpellBuilder(111896, succubus)
-	summonSpellBuilder(111897, felHunter)
+	warlock.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: id},
+		SpellSchool: core.SpellSchoolShadow,
+		Flags:       core.SpellFlagAPL,
+		ProcMask:    core.ProcMaskEmpty,
+
+		ThreatMultiplier: 1,
+		DamageMultiplier: 1,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    warlock.serviceTimer,
+				Duration: time.Minute * 2,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			pet.EnableWithTimeout(sim, pet, time.Second*20)
+		},
+	})
 }
 
 func (warlock *Warlock) registerGrimoireOfSacrifice() {

@@ -11,14 +11,42 @@ import (
 func (demo *DemonologyWarlock) registerFelguard() *warlock.WarlockPet {
 	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Felguard)]
 	enabledOnStart := proto.WarlockOptions_Felguard == demo.Options.Summon
-	pet := demo.RegisterPet(proto.WarlockOptions_Felguard, 2, 3.5, name, enabledOnStart)
+	return demo.registerFelguardWithName(name, enabledOnStart, false, false)
+}
+
+func (demo *DemonologyWarlock) registerFelguardWithName(name string, enabledOnStart bool, autoCastFelstorm bool, isGuardian bool) *warlock.WarlockPet {
+	pet := demo.RegisterPet(proto.WarlockOptions_Felguard, 2, 3.5, name, enabledOnStart, isGuardian)
 	registerLegionStrikeSpell(pet, demo)
+	// felStorm := registerFelstorm(pet, demo, autoCastFelstorm)
+
+	// if !isGuardian {
+	// 	demo.RegisterSpell(core.SpellConfig{
+	// 		ActionID:    core.ActionID{SpellID: 89751},
+	// 		SpellSchool: core.SpellSchoolPhysical,
+	// 		ProcMask:    core.ProcMaskEmpty,
+	// 		Flags:       core.SpellFlagAPL | core.SpellFlagNoMetrics,
+
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    demo.NewTimer(),
+	// 				Duration: time.Second * 45,
+	// 			},
+	// 		},
+
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			felStorm.CastOrQueue(sim, target)
+	// 		},
+	// 	})
+	// }
+
 	return pet
 }
 
+var legionStrikePetAction = core.ActionID{SpellID: 30213}
+
 func registerLegionStrikeSpell(pet *warlock.WarlockPet, demo *DemonologyWarlock) {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 30213},
+		ActionID:       legionStrikePetAction,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -31,6 +59,11 @@ func registerLegionStrikeSpell(pet *warlock.WarlockPet, demo *DemonologyWarlock)
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second * 1,
+			},
+
+			CD: core.Cooldown{
+				Timer:    pet.NewTimer(),
+				Duration: time.Millisecond * 1200, // add small cooldown to allow for proper rotation of abilities
 			},
 		},
 
@@ -49,4 +82,50 @@ func registerLegionStrikeSpell(pet *warlock.WarlockPet, demo *DemonologyWarlock)
 			demo.DemonicFury.Gain(12, core.ActionID{SpellID: 30213}, sim)
 		},
 	}))
+}
+
+func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast bool) *core.Spell {
+	felStorm := pet.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 89751},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagChanneled,
+		EnergyCost: core.EnergyCostOptions{
+			Cost: 60,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    pet.NewTimer(),
+				Duration: time.Second * 45,
+			},
+		},
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		CritMultiplier:   2,
+		Dot: core.DotConfig{
+			IsAOE:         true,
+			Aura:          core.Aura{Label: "Felstorm"},
+			NumberOfTicks: 6,
+			TickLength:    time.Second,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				baseDamage := dot.Spell.Unit.MHWeaponDamage(sim, dot.Spell.MeleeAttackPower())
+				for _, enemy := range sim.Encounter.TargetUnits {
+					dot.Spell.CalcAndDealDamage(sim, enemy, baseDamage, dot.Spell.OutcomeMeleeSpecialBlockAndCritNoHitCounter)
+				}
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.AOEDot().Apply(sim)
+		},
+	})
+
+	if autoCast {
+		pet.AutoCastAbilities = append(pet.AutoCastAbilities, felStorm)
+	}
+
+	return felStorm
 }

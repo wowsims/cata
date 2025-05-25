@@ -74,6 +74,7 @@ func (warlock *Warlock) makePet(
 	baseStats stats.Stats,
 	aaOptions *core.AutoAttackOptions,
 	statInheritance core.PetStatInheritance,
+	isGuardian bool,
 ) *WarlockPet {
 	pet := &WarlockPet{
 		Pet: core.NewPet(core.PetConfig{
@@ -82,7 +83,7 @@ func (warlock *Warlock) makePet(
 			BaseStats:                       baseStats,
 			StatInheritance:                 statInheritance,
 			EnabledOnStart:                  enabledOnStart,
-			IsGuardian:                      false,
+			IsGuardian:                      isGuardian,
 			HasDynamicMeleeSpeedInheritance: true,
 			HasDynamicCastSpeedInheritance:  true,
 			HasResourceRegenInheritance:     true,
@@ -126,11 +127,11 @@ func (warlock *Warlock) registerPets() {
 func (warlock *Warlock) registerImp() *WarlockPet {
 	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Imp)]
 	enabledOnStart := proto.WarlockOptions_Imp == warlock.Options.Summon
-	return warlock.registerImpWithName(name, enabledOnStart)
+	return warlock.registerImpWithName(name, enabledOnStart, false)
 }
 
-func (warlock *Warlock) registerImpWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.RegisterPet(proto.WarlockOptions_Imp, 0, 0, name, enabledOnStart)
+func (warlock *Warlock) registerImpWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
+	pet := warlock.RegisterPet(proto.WarlockOptions_Imp, 0, 0, name, enabledOnStart, isGuardian)
 	pet.registerFireboltSpell()
 	return pet
 }
@@ -138,11 +139,11 @@ func (warlock *Warlock) registerImpWithName(name string, enabledOnStart bool) *W
 func (warlock *Warlock) registerFelHunter() *WarlockPet {
 	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Felhunter)]
 	enabledOnStart := proto.WarlockOptions_Felhunter == warlock.Options.Summon
-	return warlock.registerFelHunterWithName(name, enabledOnStart)
+	return warlock.registerFelHunterWithName(name, enabledOnStart, false)
 }
 
-func (warlock *Warlock) registerFelHunterWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.RegisterPet(proto.WarlockOptions_Felhunter, 2, 3.5, name, enabledOnStart)
+func (warlock *Warlock) registerFelHunterWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
+	pet := warlock.RegisterPet(proto.WarlockOptions_Felhunter, 2, 3.5, name, enabledOnStart, isGuardian)
 	pet.registerShadowBiteSpell()
 	return pet
 }
@@ -150,11 +151,11 @@ func (warlock *Warlock) registerFelHunterWithName(name string, enabledOnStart bo
 func (warlock *Warlock) registerVoidWalker() *WarlockPet {
 	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Voidwalker)]
 	enabledOnStart := proto.WarlockOptions_Voidwalker == warlock.Options.Summon
-	return warlock.registerVoidWalkerWithName(name, enabledOnStart)
+	return warlock.registerVoidWalkerWithName(name, enabledOnStart, false)
 }
 
-func (warlock *Warlock) registerVoidWalkerWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.RegisterPet(proto.WarlockOptions_Voidwalker, 2, 3.5, name, enabledOnStart)
+func (warlock *Warlock) registerVoidWalkerWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
+	pet := warlock.RegisterPet(proto.WarlockOptions_Voidwalker, 2, 3.5, name, enabledOnStart, isGuardian)
 	pet.registerTormentSpell()
 	return pet
 }
@@ -162,11 +163,11 @@ func (warlock *Warlock) registerVoidWalkerWithName(name string, enabledOnStart b
 func (warlock *Warlock) registerSuccubus() *WarlockPet {
 	name := proto.WarlockOptions_Summon_name[int32(proto.WarlockOptions_Succubus)]
 	enabledOnStart := proto.WarlockOptions_Succubus == warlock.Options.Summon
-	return warlock.registerSuccubusWithName(name, enabledOnStart)
+	return warlock.registerSuccubusWithName(name, enabledOnStart, false)
 }
 
-func (warlock *Warlock) registerSuccubusWithName(name string, enabledOnStart bool) *WarlockPet {
-	pet := warlock.RegisterPet(proto.WarlockOptions_Succubus, 3, 1.667, name, enabledOnStart)
+func (warlock *Warlock) registerSuccubusWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
+	pet := warlock.RegisterPet(proto.WarlockOptions_Succubus, 3, 1.667, name, enabledOnStart, isGuardian)
 	pet.registerLashOfPainSpell()
 	return pet
 }
@@ -177,6 +178,7 @@ func (warlock *Warlock) RegisterPet(
 	apScale float64,
 	name string,
 	enabledOnStart bool,
+	isGuardian bool,
 ) *WarlockPet {
 	baseStats, ok := petBaseStats[t]
 	if !ok {
@@ -189,7 +191,7 @@ func (warlock *Warlock) RegisterPet(
 	}
 
 	inheritance := warlock.SimplePetStatInheritanceWithScale(apScale)
-	return warlock.makePet(name, enabledOnStart, *baseStats, attackOptions, inheritance)
+	return warlock.makePet(name, enabledOnStart, *baseStats, attackOptions, inheritance, isGuardian)
 }
 
 func (pet *WarlockPet) GetPet() *core.Pet {

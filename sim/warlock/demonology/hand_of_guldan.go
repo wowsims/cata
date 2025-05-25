@@ -43,7 +43,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		},
 	})
 
-	demonology.RegisterSpell(core.SpellConfig{
+	demonology.HandOfGuildan = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 105174},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -70,6 +70,9 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// keep stacks in sync as they're shared
+			demonology.ChaosWave.ConsumeCharge(sim)
+
 			sim.AddPendingAction(&core.PendingAction{
 				NextActionAt: sim.CurrentTime + time.Millisecond*1300, // Fixed delay of 1.3 seconds
 				Priority:     core.ActionPriorityAuto,

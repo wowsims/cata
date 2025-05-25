@@ -18,13 +18,11 @@ func (demo *DemonologyWarlock) registerMetamorphosis() {
 			queueMetaCost(sim)
 
 			// update cast cost
-			soulFire := demo.GetSpell(core.ActionID{SpellID: 6353})
-			soulFireManaCost = soulFire.Cost.ResourceCostImpl
-			soulFire.Cost.ResourceCostImpl = NewDemonicFuryCost(160)
+			soulFireManaCost = demo.Soulfire.Cost.ResourceCostImpl
+			demo.Soulfire.Cost.ResourceCostImpl = NewDemonicFuryCost(160)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			soulFire := demo.GetSpell(core.ActionID{SpellID: 6353})
-			soulFire.Cost.ResourceCostImpl = soulFireManaCost
+			demo.Soulfire.Cost.ResourceCostImpl = soulFireManaCost
 		},
 	})
 
@@ -37,7 +35,7 @@ func (demo *DemonologyWarlock) registerMetamorphosis() {
 					return
 				}
 
-				demo.DemonicFury.SpendUpTo(6, metaActionId, sim)
+				demo.DemonicFury.SpendUpTo(core.TernaryInt32(demo.T15_2pc.IsActive(), 4, 6), metaActionId, sim)
 				if demo.DemonicFury.Value() < 50 {
 					metaAura.Deactivate(sim)
 					return

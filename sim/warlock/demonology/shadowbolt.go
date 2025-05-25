@@ -33,7 +33,7 @@ func (demonology *DemonologyWarlock) registerShadowBolt() {
 		BonusCoefficient:         shadowBoltCoeff,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !demonology.Metamorphosis.RelatedSelfBuff.IsActive()
+			return !demonology.IsInMeta()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

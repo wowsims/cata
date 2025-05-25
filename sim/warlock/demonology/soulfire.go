@@ -13,7 +13,7 @@ const soulfireCoeff = 0.854
 const soulfireVariance = 0.2
 
 func (demonology *DemonologyWarlock) registerSoulfire() {
-	demonology.RegisterSpell(core.SpellConfig{
+	demonology.Soulfire = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6353},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -23,7 +23,7 @@ func (demonology *DemonologyWarlock) registerSoulfire() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 15,
-			PercentModifier: 100,
+			PercentModifier: 1,
 		},
 
 		Cast: core.CastConfig{

@@ -365,15 +365,38 @@ var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 				}
 			case proto.Spec_SpecDemonologyWarlock:
 				// TODO: Research if all pets or just the primary pet is affected
-				buff = warlock.RegisterAura(core.Aura{
-					ActionID: core.ActionID{SpellID: 145075},
-					Label:    "Regalia of the Horned Nightmare - Demo - 2pc",
-					Duration: time.Second * 10,
-				}).AttachMultiplicativePseudoStatBuff(&warlock.PseudoStats.DamageDealtMultiplier, 1.2)
+				buffAction := core.ActionID{SpellID: 145075}
+				applyBuffAura := func(unit *core.Unit) {
+					unit.RegisterAura(core.Aura{
+						ActionID: buffAction,
+						Label:    "Regalia of the Horned Nightmare - Demo - 2pc",
+						Duration: time.Second * 10,
+					}).AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.DamageDealtMultiplier, 1.2)
+				}
+
+				applyBuffAura(&warlock.Unit)
+				for _, pet := range warlock.Pets {
+					if pet.IsGuardian() {
+						continue
+					}
+
+					applyBuffAura(&pet.Unit)
+				}
 
 				setBonusAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.Matches(WarlockSpellSoulFire) && sim.Proc(0.2, "T16 - 2pc") {
-						buff.Activate(sim)
+						warlock.GetAuraByID(buffAction).Activate(sim)
+						for _, pet := range warlock.Pets {
+							if pet.IsGuardian() {
+								continue
+							}
+
+							if !pet.IsActive() {
+								continue
+							}
+
+							pet.GetAuraByID(buffAction).Activate(sim)
+						}
 					}
 				}
 			case proto.Spec_SpecDestructionWarlock:
@@ -400,6 +423,15 @@ var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 			switch agent.GetCharacter().Spec {
+			case proto.Spec_SpecDemonologyWarlock:
+				setBonusAura.AttachProcTrigger(core.ProcTrigger{
+					Callback:       core.CallbackOnCastComplete,
+					ClassSpellMask: WarlockSpellShadowBolt | WarlockSpellTouchOfChaos,
+					ProcChance:     0.08,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						// TODO: NOT IMPLEMENTED - Need to verify how this interacts with existing Shadow Flame DoT
+					},
+				})
 			case proto.Spec_SpecDestructionWarlock:
 				buff := warlock.RegisterAura(core.Aura{
 					ActionID: core.ActionID{SpellID: 145164},

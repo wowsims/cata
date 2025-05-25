@@ -244,6 +244,8 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	}
 
 	if pet.HasEnergyBar() {
+		// make sure to reset it to refresh energy
+		pet.energyBar.reset(sim)
 		pet.energyBar.enable(sim, sim.CurrentTime)
 	}
 }
