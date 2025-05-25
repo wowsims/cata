@@ -2790,8 +2790,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 48762.46853
-  tps: 66789.20398
+  dps: 48849.0874
+  tps: 67451.80921
   hps: 26.77086
  }
 }
@@ -2814,8 +2814,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 48168.62291
-  tps: 66190.43828
+  dps: 48166.51575
+  tps: 67182.30583
   hps: 26.77086
  }
 }

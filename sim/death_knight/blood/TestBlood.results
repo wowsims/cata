@@ -950,8 +950,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 21869.41602
-  tps: 110028.37918
+  dps: 21971.2473
+  tps: 110542.97145
   hps: 5300.29889
  }
 }
@@ -2768,7 +2768,7 @@ dps_results: {
  value: {
   dps: 22332.07157
   tps: 112492.08978
-  hps: 5396.86183
+  hps: 5410.71328
  }
 }
 dps_results: {
@@ -2792,7 +2792,7 @@ dps_results: {
  value: {
   dps: 21971.2473
   tps: 110542.97145
-  hps: 5387.28811
+  hps: 5401.05871
  }
 }
 dps_results: {

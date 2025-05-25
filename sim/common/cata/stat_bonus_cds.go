@@ -76,13 +76,13 @@ func init() {
 	shared.NewSpiritActive(58184, 1926, time.Second*20, time.Minute*2) // Core of Ripeness
 
 	// DODGE
-	shared.NewDodgeActive(67037, 512, time.Second*20, time.Minute*2)   // Binding Promise
-	shared.NewDodgeActive(52352, 1425, time.Second*20, time.Minute*2)  // Figurine - Earthen Guardian
-	shared.NewDodgeActive(59515, 1605, time.Second*20, time.Minute*2)  // Vial of Stolen Memories
-	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2)  // Vial of Stolen Memories (Heroic)
-	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2)  // Moonwell Phial
-	shared.NewDodgeActive(232015, 1520, time.Second*20, time.Minute*2) // Brawler's Trophy
-	shared.NewDodgeActive(77117, 2290, time.Second*15, time.Second*90) // Fire of the Deep 397 - Valor Points
+	shared.NewDodgeActive(67037, 512, time.Second*20, time.Minute*2)                                              // Binding Promise
+	shared.NewDodgeActive(52352, 1425, time.Second*20, time.Minute*2)                                             // Figurine - Earthen Guardian
+	shared.NewDodgeActive(59515, 1605, time.Second*20, time.Minute*2)                                             // Vial of Stolen Memories
+	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2)                                             // Vial of Stolen Memories (Heroic)
+	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2)                                             // Moonwell Phial
+	shared.NewDodgeActive(232015, 1520, time.Second*20, time.Minute*2)                                            // Brawler's Trophy
+	shared.CreateDefensiveStatActive(77117, time.Second*15, time.Second*90, stats.Stats{stats.DodgeRating: 2290}) // Fire of the Deep 397 - Valor Points - somehow on a different shared CD than the others
 
 	// SpellPower
 	shared.NewSpellPowerActive(61429, 970, time.Second*15, time.Second*90)  // Insignia of the Earthen Lord
@@ -107,10 +107,10 @@ func init() {
 	shared.NewHealthActive(64741, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Meditation
 	shared.NewHealthActive(64742, 15315, time.Second*15, time.Minute*2) // Bloodthirsty Gladiator's Emblem of Tenacity
 	shared.NewHealthActive(62048, 15500, time.Second*15, time.Minute*3) // Darkmoon Card: Earthquake
-	shared.NewHealthActive(61026, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Cruelty
+	shared.NewHealthActive(61026, 16169, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Cruelty
 	shared.NewHealthActive(61028, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Alacrity
 	shared.NewHealthActive(61029, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Prowess
-	shared.NewHealthActive(61032, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Tenacity
+	shared.NewHealthActive(61032, 16169, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Tenacity
 	shared.NewHealthActive(61030, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Proficiency
 	shared.NewHealthActive(61027, 16169, time.Second*15, time.Minute*3) // Vicious Gladiator's Emblem of Accuracy
 
