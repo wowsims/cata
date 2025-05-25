@@ -57,7 +57,7 @@ func init() {
 	// AGILITY
 	shared.NewAgilityActive(63840, 1095, time.Second*15, time.Second*90) // Juju of Nimbleness
 	shared.NewAgilityActive(63843, 1095, time.Second*15, time.Second*90) // Blood-Soaked Ale Mug
-	shared.NewAgilityActive(64687, 1520, time.Second*20, time.Second*90) // Bloodthirsty Gladiator's Badge of Conquest
+	shared.NewAgilityActive(64687, 1520, time.Second*20, time.Minute*2)  // Bloodthirsty Gladiator's Badge of Conquest
 	shared.NewAgilityActive(52199, 1425, time.Second*20, time.Minute*2)  // Figurine - Demon Panther
 	shared.NewAgilityActive(62468, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Alliance)
 	shared.NewAgilityActive(62463, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Horde)
