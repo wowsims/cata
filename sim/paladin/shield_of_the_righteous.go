@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (paladin *Paladin) registerShieldOfTheRighteous() {
@@ -71,7 +70,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return paladin.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield && paladin.HolyPower.CanSpend(3)
+			return paladin.PseudoStats.CanBlock && paladin.HolyPower.CanSpend(3)
 		},
 
 		DamageMultiplier: 1,
