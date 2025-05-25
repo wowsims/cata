@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-func (paladin *Paladin) registerDivineProtectionSpell() {
+func (paladin *Paladin) registerDivineProtection() {
 	glyphOfDivineProtection := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivineProtection)
 
 	spellDamageMultiplier := core.TernaryFloat64(glyphOfDivineProtection, 0.8, 0.6)

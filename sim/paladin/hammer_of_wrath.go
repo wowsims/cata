@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (paladin *Paladin) registerHammerOfWrathSpell() {
+func (paladin *Paladin) registerHammerOfWrath() {
 	actionID := core.ActionID{SpellID: 24275}
 	spCoef := 1.61000001431
 	scalingCoef := spCoef

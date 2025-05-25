@@ -1,7 +1,7 @@
 package paladin
 
 import (
-	cata "github.com/wowsims/mop/sim/common/cata"
+	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -25,21 +25,20 @@ type Paladin struct {
 	AncientGuardian    *AncientGuardianPet
 	GurthalakTentacles []*cata.TentacleOfTheOldOnesPet
 
-	Judgment       *core.Spell
-	Exorcism       *core.Spell
 	AvengersShield *core.Spell
+	Exorcism       *core.Spell
 	HammerOfWrath  *core.Spell
+	Judgment       *core.Spell
 
-	RighteousFuryAura       *core.Aura
-	SealOfTruthAura         *core.Aura
-	SealOfInsightAura       *core.Aura
-	SealOfRighteousnessAura *core.Aura
-	SealOfJusticeAura       *core.Aura
+	AncientPowerAura        *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
-	GoakAura                *core.Aura
-	AncientPowerAura        *core.Aura
 	DivinePurposeAura       *core.Aura
+	GoakAura                *core.Aura
+	SealOfInsightAura       *core.Aura
+	SealOfJusticeAura       *core.Aura
+	SealOfRighteousnessAura *core.Aura
+	SealOfTruthAura         *core.Aura
 
 	// Item sets
 	T11Ret4pc *core.Aura
@@ -82,29 +81,29 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 	return paladin
 }
 
-func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+func (paladin *Paladin) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-	paladin.applyGlyphs()
+	paladin.registerGlyphs()
 	paladin.registerSpells()
 	paladin.addCataclysmPvpGloves()
 	paladin.addMistsPvpGloves()
-	paladin.applySanctityOfBattle()
 }
 
 func (paladin *Paladin) registerSpells() {
 	paladin.registerAvengingWrath()
 	paladin.registerCrusaderStrike()
 	paladin.registerDevotionAura()
-	paladin.registerDivineProtectionSpell()
+	paladin.registerDivineProtection()
 	paladin.registerGuardianOfAncientKings()
 	paladin.registerHammerOfTheRighteous()
-	paladin.registerHammerOfWrathSpell()
+	paladin.registerHammerOfWrath()
 	paladin.registerJudgment()
+	paladin.registerSanctityOfBattle()
 	paladin.registerSealOfInsight()
 	paladin.registerSealOfRighteousness()
 	paladin.registerSealOfTruth()
@@ -164,9 +163,9 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStat(stats.ParryRating, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
 	paladin.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)
 
-	paladin.PseudoStats.BaseBlockChance += 0.05
-	paladin.PseudoStats.BaseDodgeChance += 0.05
-	paladin.PseudoStats.BaseParryChance += 0.05
+	paladin.PseudoStats.BaseBlockChance += 0.03
+	paladin.PseudoStats.BaseDodgeChance += 0.03
+	paladin.PseudoStats.BaseParryChance += 0.03
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
@@ -180,42 +179,6 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	}
 
 	return paladin
-}
-
-func (paladin *Paladin) applySanctityOfBattle() {
-	var classMask int64
-	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
-		classMask = SpellMaskSanctityOfBattleProt
-	} else if paladin.Spec == proto.Spec_SpecHolyPaladin {
-		classMask = SpellMaskSanctityOfBattleHoly
-	} else {
-		classMask = SpellMaskSanctityOfBattleRet
-	}
-
-	cooldownMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_Cooldown_Multiplier,
-		ClassMask: classMask,
-	})
-
-	updateFloatValue := func(castSpeed float64) {
-		cooldownMod.UpdateFloatValue(castSpeed)
-	}
-
-	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
-		updateFloatValue(castSpeed)
-	})
-
-	core.MakePermanent(paladin.GetOrRegisterAura(core.Aura{
-		Label:    "Sanctity of Battle",
-		ActionID: core.ActionID{SpellID: 25956},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			updateFloatValue(paladin.CastSpeed)
-			cooldownMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			cooldownMod.Deactivate()
-		},
-	}))
 }
 
 func (paladin *Paladin) CanTriggerHolyAvengerHpGain(actionID core.ActionID) {

@@ -30,9 +30,11 @@ func (paladin *Paladin) registerAvengingWrath() {
 				Duration: 3 * time.Minute,
 			},
 		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			spell.RelatedSelfBuff.Activate(sim)
 		},
+
 		RelatedSelfBuff: paladin.AvengingWrathAura,
 	})
 

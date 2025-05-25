@@ -18,6 +18,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 		Label:     "Bastion of Glory" + paladin.Label,
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
+
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks == 0 {
 				paladin.BastionOfGloryMultiplier = 0.0
@@ -29,6 +30,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 	}).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: SpellMaskWordOfGlory,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			bastionOfGloryAura.Deactivate(sim)
 		},
@@ -39,6 +41,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 		ActionID: core.ActionID{SpellID: 132403},
 		Label:    "Shield of the Righteous" + paladin.Label,
 		Duration: time.Second * 3,
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			snapshotDmgReduction = 1.0 +
 				(-0.25-paladin.ShieldOfTheRighteousAdditiveMultiplier)*(1.0+paladin.ShieldOfTheRighteousMultiplicativeMultiplier)

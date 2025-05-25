@@ -615,7 +615,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatOffHandDps:  character.AutoAttacks.OH().DPS(),
 		proto.PseudoStat_PseudoStatRangedDps:   character.AutoAttacks.Ranged().DPS(),
 
-		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
+		// Base values are modified by Enemy attackTables, but we display for LVL 90 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodgePercent: (character.PseudoStats.BaseDodgeChance + character.GetDiminishedDodgeChance()) * 100,
 		proto.PseudoStat_PseudoStatParryPercent: (character.PseudoStats.BaseParryChance + character.GetDiminishedParryChance()) * 100,
 		proto.PseudoStat_PseudoStatBlockPercent: (character.PseudoStats.BaseBlockChance + character.GetDiminishedBlockChance()) * 100,

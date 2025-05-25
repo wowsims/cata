@@ -101,6 +101,7 @@ func (paladin *Paladin) registerLongArmOfTheLaw() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: SpellMaskJudgment,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			longArmOfTheLawAura.Activate(sim)
 		},
@@ -191,9 +192,9 @@ func (paladin *Paladin) registerSelflessHealer() {
 			costMod.Deactivate()
 		},
 	}).AttachProcTrigger(core.ProcTrigger{
-		Name:           "Selfless Healer Consume Trigger" + paladin.Label,
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: classMask,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			selflessHealerAura.Deactivate(sim)
 		},
@@ -205,6 +206,7 @@ func (paladin *Paladin) registerSelflessHealer() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: SpellMaskJudgment,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			selflessHealerAura.Activate(sim)
 			selflessHealerAura.AddStack(sim)

@@ -7,13 +7,10 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (paladin *Paladin) applyGlyphs() {
+func (paladin *Paladin) registerGlyphs() {
 	// Major glyphs
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengingWrath) {
 		paladin.registerGlyphOfAvengingWrath()
-	}
-	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer) {
-		// TODO: Handle in seal_of_insight.go
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfBurdenOfGuilt) {
 		paladin.registerGlyphOfBurdenOfGuilt()
@@ -80,6 +77,9 @@ func (paladin *Paladin) applyGlyphs() {
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheAlabasterShield) {
 		paladin.registerGlyphOfTheAlabasterShield()
+	}
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer) {
+		// TODO: Handle in seal_of_insight.go
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfWordOfGlory) {
 		paladin.registerGlyphOfWordOfGlory()
