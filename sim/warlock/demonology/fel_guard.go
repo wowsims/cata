@@ -17,27 +17,27 @@ func (demo *DemonologyWarlock) registerFelguard() *warlock.WarlockPet {
 func (demo *DemonologyWarlock) registerFelguardWithName(name string, enabledOnStart bool, autoCastFelstorm bool, isGuardian bool) *warlock.WarlockPet {
 	pet := demo.RegisterPet(proto.WarlockOptions_Felguard, 2, 3.5, name, enabledOnStart, isGuardian)
 	registerLegionStrikeSpell(pet, demo)
-	// felStorm := registerFelstorm(pet, demo, autoCastFelstorm)
+	felStorm := registerFelstorm(pet, demo, autoCastFelstorm)
 
-	// if !isGuardian {
-	// 	demo.RegisterSpell(core.SpellConfig{
-	// 		ActionID:    core.ActionID{SpellID: 89751},
-	// 		SpellSchool: core.SpellSchoolPhysical,
-	// 		ProcMask:    core.ProcMaskEmpty,
-	// 		Flags:       core.SpellFlagAPL | core.SpellFlagNoMetrics,
+	if !isGuardian {
+		demo.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 89751},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagAPL | core.SpellFlagNoMetrics,
 
-	// 		Cast: core.CastConfig{
-	// 			CD: core.Cooldown{
-	// 				Timer:    demo.NewTimer(),
-	// 				Duration: time.Second * 45,
-	// 			},
-	// 		},
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    demo.NewTimer(),
+					Duration: time.Second * 45,
+				},
+			},
 
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			felStorm.CastOrQueue(sim, target)
-	// 		},
-	// 	})
-	// }
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				pet.AutoCastAbilities = append(pet.AutoCastAbilities, felStorm)
+			},
+		})
+	}
 
 	return pet
 }
@@ -63,7 +63,7 @@ func registerLegionStrikeSpell(pet *warlock.WarlockPet, demo *DemonologyWarlock)
 
 			CD: core.Cooldown{
 				Timer:    pet.NewTimer(),
-				Duration: time.Millisecond * 1200, // add small cooldown to allow for proper rotation of abilities
+				Duration: time.Millisecond * 1300, // add small cooldown to allow for proper rotation of abilities
 			},
 		},
 
@@ -120,6 +120,12 @@ func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.AOEDot().Apply(sim)
+			pet.AutoAttacks.DelayMeleeBy(sim, spell.AOEDot().BaseDuration())
+
+			// remove from auto cast again to trigger it once
+			if !pet.IsGuardian() {
+				pet.AutoCastAbilities = []*core.Spell{pet.AutoCastAbilities[0]}
+			}
 		},
 	})
 
