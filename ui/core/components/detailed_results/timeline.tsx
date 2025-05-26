@@ -980,7 +980,7 @@ export class Timeline extends ResultComponent {
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
 			.filter(auraUptimeLogs => actionId.equals(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!))
-			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem));
+			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem, true));
 
 		this.rotationTimeline.appendChild(rowElem);
 	}
@@ -993,10 +993,10 @@ export class Timeline extends ResultComponent {
 		this.rotationHiddenIdsContainer.appendChild(this.makeLabelElem(actionId, true, true));
 		this.rotationTimeline.appendChild(rowElem);
 
-		this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem);
+		this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem, false);
 	}
 
-	private applyAuraUptimeLogsToRow(auraUptimeLogs: Array<AuraUptimeLog>, rowElem: JSX.Element) {
+	private applyAuraUptimeLogsToRow(auraUptimeLogs: Array<AuraUptimeLog>, rowElem: JSX.Element, hasCast: boolean) {
 		auraUptimeLogs.forEach(aul => {
 			const auraElem = (
 				<div
@@ -1034,6 +1034,7 @@ export class Timeline extends ResultComponent {
 						style={{
 							left: this.timeToPx(scl.timestamp - aul.timestamp),
 							width: this.timeToPx(aul.stacksChange[i + 1] ? aul.stacksChange[i + 1].timestamp - scl.timestamp : aul.fadedAt - scl.timestamp),
+							textIndent: hasCast ? '30px' : undefined,
 						}}>
 						{String(scl.newStacks)}
 					</div>

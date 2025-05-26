@@ -13,9 +13,10 @@ func (ret *RetributionPaladin) registerInquisition() {
 	inquisitionDuration := time.Second * 20
 
 	inquisitionAura := ret.RegisterAura(core.Aura{
-		Label:    "Inquisition" + ret.Label,
-		ActionID: actionID,
-		Duration: inquisitionDuration,
+		Label:     "Inquisition" + ret.Label,
+		ActionID:  actionID,
+		Duration:  inquisitionDuration,
+		MaxStacks: 3,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.3,
@@ -28,11 +29,10 @@ func (ret *RetributionPaladin) registerInquisition() {
 	// Inquisition self-buff.
 	ret.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
 		ProcMask:       core.ProcMaskEmpty,
 		SpellSchool:    core.SpellSchoolHoly,
 		ClassSpellMask: paladin.SpellMaskInquisition,
-		MetricSplits:   4,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -40,7 +40,6 @@ func (ret *RetributionPaladin) registerInquisition() {
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				ret.DynamicHolyPowerSpent = ret.SpendableHolyPower()
-				spell.SetMetricsSplit(ret.DynamicHolyPowerSpent)
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -58,10 +57,12 @@ func (ret *RetributionPaladin) registerInquisition() {
 				result := math.Floor(carryover / 2)
 				carryover -= result * 2
 				duration += core.DurationFromSeconds(carryover)
+				spell.RelatedSelfBuff.Deactivate(sim)
 			}
 
 			spell.RelatedSelfBuff.Duration = duration
 			spell.RelatedSelfBuff.Activate(sim)
+			spell.RelatedSelfBuff.SetStacks(sim, ret.DynamicHolyPowerSpent)
 
 			ret.HolyPower.SpendUpTo(ret.DynamicHolyPowerSpent, actionID, sim)
 		},
