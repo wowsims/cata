@@ -30,9 +30,6 @@ var AvoidanceDRByClass = map[proto.Class]DiminishingReturnsConstants{
 func (unit *Unit) GetDiminishedDodgeChance() float64 {
 	// undiminished Dodge % = D
 	// diminished Dodge % = (D * Cd)/((k*Cd) + D)
-	if unit.avoidanceParams.c_d == 0 {
-		return 0
-	}
 	dodgePercent := unit.stats[stats.DodgeRating] / DodgeRatingPerDodgePercent
 	return (dodgePercent * unit.avoidanceParams.c_d) / (unit.avoidanceParams.k*unit.avoidanceParams.c_d + dodgePercent) / 100
 }
@@ -40,9 +37,6 @@ func (unit *Unit) GetDiminishedDodgeChance() float64 {
 func (unit *Unit) GetDiminishedParryChance() float64 {
 	// undiminished Parry % = P
 	// diminished Parry % = (P * Cp)/((k*Cp) + P)
-	if unit.avoidanceParams.c_p == 0 {
-		return 0
-	}
 	parryPercent := unit.stats[stats.ParryRating] / ParryRatingPerParryPercent
 	return (parryPercent * unit.avoidanceParams.c_p) / (unit.avoidanceParams.k*unit.avoidanceParams.c_p + parryPercent) / 100
 }
@@ -50,9 +44,6 @@ func (unit *Unit) GetDiminishedParryChance() float64 {
 func (unit *Unit) GetDiminishedBlockChance() float64 {
 	// undiminished Block % = B
 	// diminished Block % = (B * Cb)/((k*Cb) + B)
-	if unit.avoidanceParams.c_b == 0 {
-		return 0
-	}
 	blockPercent := unit.stats[stats.BlockPercent]
 	return (blockPercent * unit.avoidanceParams.c_b) / (unit.avoidanceParams.k*unit.avoidanceParams.c_b + blockPercent) / 100
 }

@@ -44,6 +44,7 @@ func spinningCraneKickTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellCon
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, target := range sim.Encounter.TargetUnits {
 				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
+				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},

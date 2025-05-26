@@ -23,7 +23,7 @@
 		{"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"monkCurrentChi":{}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":100784,"tag":1}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":115098}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":123986}}}},
-		{"action":{"condition":{"auraIsInactiveWithReactionTime":{"auraId":{"spellId":124081}}},"castSpell":{"spellId":{"spellId":124081}}}},
+		{"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":124081,"tag":1}}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":124081}}}},
 		{"hide":true,"action":{"castSpell":{"spellId":{"spellId":124081}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":100787}}}}
 	]

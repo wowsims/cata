@@ -10,6 +10,7 @@ import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, Pseu
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { Sim } from '../../core/sim';
+import { TypedEvent } from '../../core/typed_event';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
@@ -175,6 +176,16 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
+			const setTalentBasedSettings = () => {
+				const talents = player.getTalents();
+				// Zen sphere can be on 2 targets, so we set the target dummies to 1 if it is talented.
+				player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 1 : 0);
+			};
+
+			setTalentBasedSettings();
+			player.talentsChangeEmitter.on(() => {
+				setTalentBasedSettings();
+			});
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					// Dynamic adjustments to the static Hit soft cap EP
