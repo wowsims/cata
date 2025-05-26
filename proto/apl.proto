@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 100
+// NextIndex: 102
 message APLValue {
 	UUID uuid = 87;
 
@@ -203,6 +203,7 @@ message APLValue {
         APLValueFrontOfTarget front_of_target = 63;
 
         // Class or Spec-specific values
+		APLValueCurrentVengeancePercent current_vengeance_percent = 101;
         APLValueTotemRemainingTime totem_remaining_time = 49;
         APLValueCatExcessEnergy cat_excess_energy = 52;
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
@@ -214,6 +215,7 @@ message APLValue {
         APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
         APLValueMonkCurrentChi monk_current_chi = 95;
 		APLValueMonkMaxChi monk_max_chi = 96;
+		APLValueBrewmasterMonkCurrentStaggerPercent brewmaster_monk_current_stagger_percent = 100;
     }
 }
 
@@ -686,21 +688,18 @@ message APLValueSequenceTimeToReady {
 message APLValueTotemRemainingTime {
     ShamanTotems.TotemType totem_type = 1;
 }
-message APLValueCatExcessEnergy {
-}
-message APLValueCatNewSavageRoarDuration {
-}
-message APLValueWarlockShouldRecastDrainSoul {
-}
+message APLValueCatExcessEnergy {}
+message APLValueCatNewSavageRoarDuration {}
+message APLValueWarlockShouldRecastDrainSoul {}
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
-message APLValueMageCurrentCombustionDotEstimate {
-}
-message APLValueShamanCanSnapshotStrongerFireElemental {
-}
-message APLValueShamanFireElementalDuration {
-}
+message APLValueMageCurrentCombustionDotEstimate {}
+message APLValueShamanCanSnapshotStrongerFireElemental {}
+message APLValueShamanFireElementalDuration {}
 
 message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
+message APLValueBrewmasterMonkCurrentStaggerPercent {}
+
+message APLValueCurrentVengeancePercent {}
