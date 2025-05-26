@@ -512,6 +512,7 @@ export class ActionId {
 			case 'Innervate':
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
+			case 'Stormlash Totem':
 			case 'Time Warp':
 			case 'Unholy Frenzy':
 			case 'Power Infusion':

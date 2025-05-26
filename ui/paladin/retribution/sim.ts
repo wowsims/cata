@@ -116,6 +116,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			serpentsSwiftness: true,
 			timeWarp: true,
 			trueshotAura: true,
+			skullBannerCount: 1,
+			stormlashTotemCount: 1,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),

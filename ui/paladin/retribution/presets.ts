@@ -20,18 +20,18 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatAttackPower]: 1,
+			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatStrength]: 2.28,
 
-			[Stat.StatCritRating]: 1.1,
-			[Stat.StatHasteRating]: 1.0,
-			[Stat.StatMasteryRating]: 1.23,
+			[Stat.StatCritRating]: 0.94,
+			[Stat.StatHasteRating]: 1.24,
+			[Stat.StatMasteryRating]: 0.73,
 
-			[Stat.StatHitRating]: 2.33,
-			[Stat.StatExpertiseRating]: 1.88,
+			[Stat.StatHitRating]: 1.44,
+			[Stat.StatExpertiseRating]: 1.26,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.14,
+			[PseudoStat.PseudoStatMainHandDps]: 4.13,
 		},
 	),
 );
@@ -41,7 +41,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '221223',
+		talentsString: '221213',
 		glyphs: Glyphs.create({
 			major1: PaladinMajorGlyph.GlyphOfTemplarsVerdict,
 			major2: PaladinMajorGlyph.GlyphOfDoubleJeopardy,
@@ -64,11 +64,11 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	// flaskId: 76088, // Flask of Winter's Bite
-	// foodId: 74646, // Black Pepper Ribs and Shrimp
+	flaskId: 76088, // Flask of Winter's Bite
+	foodId: 74646, // Black Pepper Ribs and Shrimp
 	potId: 76095, // Potion of Mogu Power
 	prepotId: 76095, // Potion of Mogu Power
-	// tinkerId: 126734, // Synapse Springs Mark II
+	tinkerId: 126734, // Synapse Springs Mark II
 });
 
 export const OtherDefaults = {
