@@ -26,7 +26,12 @@ func RegisterFrostMage() {
 type FrostMage struct {
 	*mage.Mage
 
-	waterElemental *WaterElemental
+	waterElemental    *WaterElemental
+	frozenOrb         *core.Spell
+	frozenCritBuffMod *core.SpellMod
+	icicles           []float64
+	icicleDamageMod   *core.SpellMod
+	icicleCast        *core.Spell
 }
 
 func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
@@ -36,6 +41,7 @@ func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
 		Mage: mage.NewMage(character, options, frostOptions.ClassOptions),
 	}
 	frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
+	frostMage.icicles = make([]float64, 0)
 
 	return frostMage
 }
@@ -78,6 +84,16 @@ func (frostMage *FrostMage) ApplyTalents() {
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 
+	// frostMage.frozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
+	// 	FloatValue: frostMage.GetStat(stats.SpellCritPercent)*2 + 50,
+	// 	ClassMask:  mage.MageSpellIceLance | mage.MageSpellFrostfireBolt,
+	// 	Kind:       core.SpellMod_DamageDone_Pct,
+	// })
+
+	// frostMage.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, statsChangeWithoutDeps stats.Stats) {
+	// 	frostMage.frozenCritBuffMod.UpdateFloatValue(frostMage.GetStat(stats.SpellCritPercent)*2 + 50)
+	// })
+
 	// Frost Mastery Bonus
 
 	/*
@@ -114,5 +130,5 @@ func (frostMage *FrostMage) ApplyTalents() {
 }
 
 func (frostMage *FrostMage) GetMasteryBonus() float64 {
-	return (.05 + 0.025*frostMage.Mage.GetMasteryPoints())
+	return (.16 + 0.02*frostMage.Mage.GetMasteryPoints())
 }

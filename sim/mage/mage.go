@@ -45,6 +45,7 @@ type Mage struct {
 	invocationAura         *core.Aura
 	presenceOfMindAura     *core.Aura
 	FingersOfFrostAura     *core.Aura
+	IcyVeinsAura           *core.Aura
 
 	arcaneMissileCritSnapshot float64
 	brainFreezeProcChance     float64

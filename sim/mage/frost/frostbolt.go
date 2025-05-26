@@ -4,10 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/mage"
 )
 
-var frostboltVariance    = 0.24 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "Variance"
-var frostboltScale       = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "Coefficient"
+var frostboltVariance = 0.24   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "Variance"
+var frostboltScale = 1.5       // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "Coefficient"
 var frostboltCoefficient = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "BonusCoefficient"
 
 func (frostMage *FrostMage) registerFrostboltSpell() {
@@ -16,7 +18,7 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellFrostbolt,
+		ClassSpellMask: mage.MageSpellFrostbolt,
 		MissileSpeed:   28,
 
 		ManaCost: core.ManaCostOptions{
@@ -31,16 +33,31 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           frostMage.DefaultCritMultiplier(),
-		BonusCoefficient:         frostboltCoefficient
+		BonusCoefficient:         frostboltCoefficient,
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
-			
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
+			if frostMage.Mage.IcyVeinsAura.IsActive() && frostMage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins) {
+				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance) * .4
+				for idx := int32(0); idx < 3; idx++ {
+					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+						spell.DealDamage(sim, result)
+					})
+					if result.Landed() {
+						frostMage.handleIcicleGeneration(sim, target, baseDamage)
+					}
+				}
+			} else {
+				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				})
+				if result.Landed() {
+					frostMage.handleIcicleGeneration(sim, target, baseDamage)
+				}
+			}
 		},
 	})
 }
