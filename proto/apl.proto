@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 102
+// NextIndex: 101
 message APLValue {
 	UUID uuid = 87;
 
@@ -203,7 +203,6 @@ message APLValue {
         APLValueFrontOfTarget front_of_target = 63;
 
         // Class or Spec-specific values
-		APLValueCurrentVengeancePercent current_vengeance_percent = 101;
         APLValueTotemRemainingTime totem_remaining_time = 49;
         APLValueCatExcessEnergy cat_excess_energy = 52;
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
@@ -701,5 +700,3 @@ message APLValueShamanFireElementalDuration {}
 message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
 message APLValueBrewmasterMonkCurrentStaggerPercent {}
-
-message APLValueCurrentVengeancePercent {}

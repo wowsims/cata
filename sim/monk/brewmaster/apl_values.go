@@ -10,7 +10,7 @@ import (
 func (monk *BrewmasterMonk) NewAPLValue(_ *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_BrewmasterMonkCurrentStaggerPercent:
-		return monk.newValueCurrentVengeancePercent(config.GetBrewmasterMonkCurrentStaggerPercent(), config.Uuid)
+		return monk.newValueCurrentStaggerPercent(config.GetBrewmasterMonkCurrentStaggerPercent(), config.Uuid)
 	default:
 		return nil
 	}
@@ -22,7 +22,7 @@ type APLValueBrewmasterMonkCurrentStaggerPercent struct {
 	aura *core.Aura
 }
 
-func (monk *BrewmasterMonk) newValueCurrentVengeancePercent(config *proto.APLValueBrewmasterMonkCurrentStaggerPercent, uuid *proto.UUID) core.APLValue {
+func (monk *BrewmasterMonk) newValueCurrentStaggerPercent(config *proto.APLValueBrewmasterMonkCurrentStaggerPercent, uuid *proto.UUID) core.APLValue {
 	return &APLValueBrewmasterMonkCurrentStaggerPercent{
 		monk: monk,
 		aura: monk.Stagger.SelfHot().Aura,
