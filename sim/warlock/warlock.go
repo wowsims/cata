@@ -147,7 +147,7 @@ const (
 	WarlockSpellHaunt
 	WarlockSpellUnstableAffliction
 	WarlockSpellCurseOfElements
-	WarlockSpellBaneOfAgony
+	WarlockSpellAgony
 	WarlockSpellDrainSoul
 	WarlockSpellDrainLife
 	WarlockSpellMetamorphosis
@@ -180,6 +180,7 @@ const (
 	WarlockSpellFireAndBrimstone
 	WarlockSpellDarkSoulInsanity
 	WarlockSpellDarkSoulKnowledge
+	WarlockSpellDarkSoulMisery
 	WarlockSpellMaleficGrasp
 	WarlockSpellDemonicSlash
 	WarlockSpellTouchOfChaos
@@ -190,12 +191,12 @@ const (
 	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
-		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfAgony |
+		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellAgony |
 		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan |
 		WarlockSpellShadowflame | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn
 
 	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfAgony
+		WarlockSpellDrainLife | WarlockSpellAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
 		WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
@@ -203,7 +204,7 @@ const (
 		WarlockSpellFaBIncinerate
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
+		WarlockSpellDrainLife | WarlockSpellAgony | WarlockSpellImmolateDot |
 		WarlockSpellShadowflameDot | WarlockSpellBurningEmbers
 
 	WarlockSummonSpells = WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter |

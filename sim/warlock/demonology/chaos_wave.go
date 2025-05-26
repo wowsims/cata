@@ -37,7 +37,7 @@ func (demonology *DemonologyWarlock) registerChaosWave() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// keep stacks in sync as they're shared
-			demonology.HandOfGuildan.ConsumeCharge(sim)
+			demonology.HandOfGuldan.ConsumeCharge(sim)
 			demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 56, 80), spell.ActionID, sim)
 
 			sim.AddPendingAction(&core.PendingAction{

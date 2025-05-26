@@ -56,7 +56,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		},
 	})
 
-	demonology.HandOfGuildan = demonology.RegisterSpell(core.SpellConfig{
+	demonology.HandOfGuldan = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 105174},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,

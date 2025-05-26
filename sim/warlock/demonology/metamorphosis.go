@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/warlock"
 )
 
 func (demo *DemonologyWarlock) registerMetamorphosis() {
@@ -24,6 +25,10 @@ func (demo *DemonologyWarlock) registerMetamorphosis() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			demo.Soulfire.Cost.ResourceCostImpl = soulFireManaCost
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		TimeValue: -time.Millisecond * 500,
+		ClassMask: warlock.WarlockSpellSummonDoomguard | warlock.WarlockSpellSummonInfernal | warlock.WarlockSpellCarrionSwarm | warlock.WarlockSpellLifeTap,
 	})
 
 	queueMetaCost = func(sim *core.Simulation) {
