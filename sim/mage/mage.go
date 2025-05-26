@@ -227,18 +227,11 @@ func (mage *Mage) applyArmorSpells() {
 		},
 	})
 
-	var masteryToAdd = 3000.0
 	mageArmor := mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 6117},
 		Label:    "Mage Armor",
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.MasteryRating, masteryToAdd) // NOTE: Is this correct?
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.MasteryRating, -masteryToAdd)
-		},
-	})
+	}).AttachStatBuff(stats.MasteryRating, 3000.0)
 
 	mageArmor.NewExclusiveEffect(mageArmorEffectCategory, true, core.ExclusiveEffect{})
 
