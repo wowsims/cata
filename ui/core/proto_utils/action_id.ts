@@ -479,14 +479,16 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
-			case 'Seal of Righteousness':
-				if (tag === 2) {
-					name += ' (DS)';
+			case 'Hammer of the Righteous':
+				if (this.spellId === 88263) {
+					name += ' (Holy)';
+				} else {
+					name += ' (Physical)';
 				}
 				break;
-			case 'Inquisition':
-				if (tag > 0) {
-					name += ` (${tag} HP)`;
+			case 'Seal of Righteousness':
+				if (tag === 1) {
+					name += ' (DS)';
 				}
 				break;
 			case 'Harsh Word':

@@ -53,6 +53,10 @@ func (paladin *Paladin) registerWordOfGlory() {
 		BonusCoefficient: 0.49000000954,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if target.IsOpponent(&paladin.Unit) {
+				target = &paladin.Unit
+			}
+
 			baseHealing := paladin.CalcAndRollDamageRange(sim, scalingCoef, variance)
 
 			damageMultiplier := spell.DamageMultiplier

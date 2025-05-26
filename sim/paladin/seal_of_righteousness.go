@@ -12,7 +12,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ActionID:       core.ActionID{SpellID: 101423}.WithTag(tag),
 			SpellSchool:    core.SpellSchoolHoly,
 			ProcMask:       core.ProcMaskMeleeProc,
-			Flags:          core.SpellFlagMeleeMetrics,
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 			ClassSpellMask: SpellMaskSealOfRighteousness,
 
 			MaxRange: 8,
@@ -88,7 +88,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		ActionID:    core.ActionID{SpellID: 20154},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 16.4,

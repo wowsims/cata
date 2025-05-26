@@ -16,7 +16,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:    censureActionId.WithTag(1),
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskProc,
-		Flags:       core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
+		Flags:       core.SpellFlagNoMetrics | core.SpellFlagNoLogs | core.SpellFlagPassiveSpell,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dotResult := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
@@ -120,7 +120,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:    core.ActionID{SpellID: 31801},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 16.4,

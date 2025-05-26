@@ -29,7 +29,7 @@ func (ret *RetributionPaladin) registerInquisition() {
 	// Inquisition self-buff.
 	ret.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagMeleeMetrics,
 		ProcMask:       core.ProcMaskEmpty,
 		SpellSchool:    core.SpellSchoolHoly,
 		ClassSpellMask: paladin.SpellMaskInquisition,

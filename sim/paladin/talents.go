@@ -511,7 +511,7 @@ func (paladin *Paladin) registerHolyAvenger() {
 			return
 		}
 
-		if slices.Contains(paladin.HolyAvengerActionIDFilter, &triggeredActionID) {
+		if slices.Contains(paladin.HolyAvengerActionIDFilter, triggeredActionID) {
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt: sim.CurrentTime + core.SpellBatchWindow,
 				OnAction: func(sim *core.Simulation) {
@@ -522,9 +522,10 @@ func (paladin *Paladin) registerHolyAvenger() {
 	})
 
 	paladin.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
-		ProcMask: core.ProcMaskEmpty,
+		ActionID:    actionID,
+		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful,
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskEmpty,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -833,32 +834,52 @@ func (paladin *Paladin) registerExecutionSentence() {
 
 	tickSpCoef := spCoef * (1 / totalBonusCoef)
 
-	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 114916},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+	cd := paladin.NewTimer()
 
-		MaxRange: 40,
+	getBaseConfig := func(spellID int32, label string, isHealing bool) core.SpellConfig {
+		config := core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: spellID},
+			SpellSchool: core.SpellSchoolHoly,
+			Flags:       core.SpellFlagAPL,
 
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+			MaxRange: 40,
+
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				IgnoreHaste: true,
+				CD: core.Cooldown{
+					Timer:    cd,
+					Duration: time.Minute,
+				},
 			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: time.Minute,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   paladin.DefaultCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if isHealing {
+					if target.IsOpponent(&paladin.Unit) {
+						target = &paladin.Unit
+					}
+
+					spell.CalcAndDealOutcome(sim, target, spell.OutcomeHealingNoHitCounter)
+					spell.Hot(target).Apply(sim)
+				} else {
+					result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+					if result.Landed() {
+						spell.Dot(target).Apply(sim)
+					}
+					spell.DealOutcome(sim, result)
+				}
 			},
-		},
+		}
 
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
+		dotConfig := core.DotConfig{
 			Aura: core.Aura{
-				Label: "Execution Sentence" + paladin.Label,
+				Label: label + paladin.Label,
 			},
 			NumberOfTicks: 10,
 			TickLength:    time.Second,
@@ -873,18 +894,28 @@ func (paladin *Paladin) registerExecutionSentence() {
 				dot.SnapshotBaseDamage = tickMultiplier*baseTickDamage +
 					tickMultiplier*tickSpCoef*snapshotSpellPower
 
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				if isHealing {
+					dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeSnapshotCrit)
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				}
 
 				dot.SnapshotBaseDamage = snapshotSpellPower
 			},
-		},
+		}
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-			}
-			spell.DealOutcome(sim, result)
-		},
-	})
+		if isHealing {
+			config.Hot = dotConfig
+			config.Flags |= core.SpellFlagHelpful
+			config.ProcMask = core.ProcMaskSpellHealing
+		} else {
+			config.Dot = dotConfig
+			config.ProcMask = core.ProcMaskSpellDamage
+		}
+
+		return config
+	}
+
+	paladin.RegisterSpell(getBaseConfig(114916, "Execution Sentence", false))
+	paladin.RegisterSpell(getBaseConfig(146586, "Stay of Execution", true))
 }

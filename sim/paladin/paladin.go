@@ -43,7 +43,7 @@ type Paladin struct {
 	// Item sets
 	T11Ret4pc *core.Aura
 
-	HolyAvengerActionIDFilter []*core.ActionID
+	HolyAvengerActionIDFilter []core.ActionID
 
 	DynamicHolyPowerSpent                        int32
 	BastionOfGloryMultiplier                     float64
@@ -184,7 +184,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 }
 
 func (paladin *Paladin) CanTriggerHolyAvengerHpGain(actionID core.ActionID) {
-	paladin.HolyAvengerActionIDFilter = append(paladin.HolyAvengerActionIDFilter, &actionID)
+	paladin.HolyAvengerActionIDFilter = append(paladin.HolyAvengerActionIDFilter, actionID)
 }
 
 // Shared cooldown for CS and HotR

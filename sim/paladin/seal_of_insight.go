@@ -15,13 +15,10 @@ func (paladin *Paladin) registerSealOfInsight() {
 
 	// Seal of Insight on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags: core.SpellFlagHelpful |
-			core.SpellFlagNoLogs |
-			core.SpellFlagNoMetrics |
-			core.SpellFlagNoOnCastComplete,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealOfInsight,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

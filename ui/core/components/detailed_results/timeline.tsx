@@ -1307,35 +1307,41 @@ const idToCategoryMap: Record<number, number> = {
 	[77767]: MELEE_ACTION_CATEGORY + 0.34, // Cobra Shot
 
 	// Paladin
-	[76672]: MELEE_ACTION_CATEGORY + 0.1, // Hand of Light (mastery)
-	[35395]: MELEE_ACTION_CATEGORY + 0.2, // Crusader Strike
-	[99092]: MELEE_ACTION_CATEGORY + 0.21, // Flames of the Faithful (ret T12 2pc)
-	[53385]: MELEE_ACTION_CATEGORY + 0.3, // Divine Storm
-	[85256]: MELEE_ACTION_CATEGORY + 0.4, // Templar's Verdict
-	[20271]: MELEE_ACTION_CATEGORY + 0.5, // Judgment
-	[31930]: MELEE_ACTION_CATEGORY + 0.53, // Judgments of the Wise
-	[89906]: MELEE_ACTION_CATEGORY + 0.54, // Judgments of the Bold
-	[42463]: MELEE_ACTION_CATEGORY + 0.6, // Seal of Truth (on-hit)
-	[31803]: MELEE_ACTION_CATEGORY + 0.61, // Censure (Seal of Truth)
-	[101423]: MELEE_ACTION_CATEGORY + 0.63, // Seal of Righteousness
-	[53600]: MELEE_ACTION_CATEGORY + 0.7, // Shield of the Righteous
-	[99075]: MELEE_ACTION_CATEGORY + 0.71, // Righteous Flames (prot T12 2pc)
-	[53595]: MELEE_ACTION_CATEGORY + 0.8, // Hammer of the Righteous
-	[84963]: MELEE_ACTION_CATEGORY + 0.9, // Inquisition
-	[879]: MELEE_ACTION_CATEGORY + 0.91, // Exorcism
-	[54934]: MELEE_ACTION_CATEGORY + 0.92, // Glyph of Exorcism
-	[48952]: MELEE_ACTION_CATEGORY + 0.93, // Holy Shield
-	[26573]: MELEE_ACTION_CATEGORY + 0.94, // Consecration
-	[2812]: MELEE_ACTION_CATEGORY + 0.95, // Holy Wrath
-	[24275]: MELEE_ACTION_CATEGORY + 0.96, // Hammer of Wrath
-	[54428]: MELEE_ACTION_CATEGORY + 0.97, // Divine Plea
-	[498]: MELEE_ACTION_CATEGORY + 0.98, // Divine Protection
-	[99090]: MELEE_ACTION_CATEGORY + 0.99, // Flaming Aegis (Prot T12 4pc)
-	[66233]: SPELL_ACTION_CATEGORY + 0.1, // Ardent Defender
-	[31884]: SPELL_ACTION_CATEGORY + 0.2, // Avenging Wrath
-	[85696]: SPELL_ACTION_CATEGORY + 0.3, // Zealotry,
-	[86698]: SPELL_ACTION_CATEGORY + 0.4, // Guardian of Ancient Kings
-	[86704]: SPELL_ACTION_CATEGORY + 0.5, // Ancient Fury
+	[76672]: MELEE_ACTION_CATEGORY + 0.01, // Hand of Light (mastery)
+	[35395]: MELEE_ACTION_CATEGORY + 0.02, // Crusader Strike
+	[99092]: MELEE_ACTION_CATEGORY + 0.03, // Flames of the Faithful (ret T12 2pc)
+	[53595]: MELEE_ACTION_CATEGORY + 0.04, // Hammer of the Righteous (Physical)
+	[88263]: MELEE_ACTION_CATEGORY + 0.05, // Hammer of the Righteous (Holy)
+	[53385]: MELEE_ACTION_CATEGORY + 0.06, // Divine Storm
+	[85256]: MELEE_ACTION_CATEGORY + 0.07, // Templar's Verdict
+	[20271]: MELEE_ACTION_CATEGORY + 0.08, // Judgment
+	[42463]: MELEE_ACTION_CATEGORY + 0.09, // Seal of Truth (on-hit)
+	[31803]: MELEE_ACTION_CATEGORY + 0.1, // Censure (Seal of Truth)
+	[101423]: MELEE_ACTION_CATEGORY + 0.11, // Seal of Righteousness
+	[53600]: MELEE_ACTION_CATEGORY + 0.12, // Shield of the Righteous
+	[99075]: MELEE_ACTION_CATEGORY + 0.13, // Righteous Flames (prot T12 2pc)
+	[879]: MELEE_ACTION_CATEGORY + 0.15, // Exorcism
+	[26573]: MELEE_ACTION_CATEGORY + 0.16, // Consecration
+	[119072]: MELEE_ACTION_CATEGORY + 0.17, // Holy Wrath
+	[24275]: MELEE_ACTION_CATEGORY + 0.18, // Hammer of Wrath
+	[114852]: MELEE_ACTION_CATEGORY + 0.19, // Holy Prism (Damage)
+	[114919]: MELEE_ACTION_CATEGORY + 0.19, // Arcing Light (Damage)
+	[114916]: MELEE_ACTION_CATEGORY + 0.19, // Execution Sentence
+	[114871]: MELEE_ACTION_CATEGORY + 0.2, // Holy Prism (Heal)
+	[119952]: MELEE_ACTION_CATEGORY + 0.2, // Arcing Light (Heal)
+	[146586]: MELEE_ACTION_CATEGORY + 0.2, // Stay of Execution
+	[84963]: SPELL_ACTION_CATEGORY + 0.01, // Inquisition
+	[54428]: SPELL_ACTION_CATEGORY + 0.02, // Divine Plea
+	[498]: SPELL_ACTION_CATEGORY + 0.03, // Divine Protection
+	[99090]: SPELL_ACTION_CATEGORY + 0.04, // Flaming Aegis (Prot T12 4pc)
+	[66233]: SPELL_ACTION_CATEGORY + 0.05, // Ardent Defender
+	[31884]: SPELL_ACTION_CATEGORY + 0.06, // Avenging Wrath
+	[105809]: SPELL_ACTION_CATEGORY + 0.07, // Holy Avenger,
+	[86698]: SPELL_ACTION_CATEGORY + 0.08, // Guardian of Ancient Kings
+	[86704]: SPELL_ACTION_CATEGORY + 0.09, // Ancient Fury
+	[20925]: SPELL_ACTION_CATEGORY + 0.1, // Sacred Shield (Ret / Prot)
+	[148039]: SPELL_ACTION_CATEGORY + 0.1, // Sacred Shield (Holy)
+	[114039]: SPELL_ACTION_CATEGORY + 0.1, // Hand of Purity
 
 	// Priest
 	[48300]: SPELL_ACTION_CATEGORY + 0.11, // Devouring Plague

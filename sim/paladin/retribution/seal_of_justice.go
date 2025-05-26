@@ -27,7 +27,7 @@ func (ret *RetributionPaladin) registerSealOfJustice() {
 		ActionID:       core.ActionID{SpellID: 20170},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeProc,
-		Flags:          core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: paladin.SpellMaskSealOfJustice,
 
 		DamageMultiplier: 0.2,
@@ -71,7 +71,7 @@ func (ret *RetributionPaladin) registerSealOfJustice() {
 		ActionID:    core.ActionID{SpellID: 20164},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagPassiveSpell,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 16.4,

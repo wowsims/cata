@@ -97,7 +97,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 
 	return paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
 
 		Cast: core.CastConfig{
