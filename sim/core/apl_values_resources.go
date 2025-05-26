@@ -512,3 +512,34 @@ func (value *APLValueCurrentGenericResource) GetInt(sim *Simulation) int32 {
 func (value *APLValueCurrentGenericResource) String() string {
 	return "Current {GENERIC_RESOURCE}"
 }
+
+type APLValueCurrentVengeancePercent struct {
+	DefaultAPLValueImpl
+	unit *Unit
+	aura *Aura
+}
+
+func (rot *APLRotation) newValueCurrentVengeancePercent(config *proto.APLValueCurrentVengeancePercent, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if unit == nil {
+		return nil
+	}
+	vengeanceAura := unit.GetAura("Vengeance")
+	if vengeanceAura == nil {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not know Vengeance", unit.Label)
+		return nil
+	}
+	return &APLValueCurrentVengeancePercent{
+		unit: unit,
+		aura: vengeanceAura,
+	}
+}
+func (value *APLValueCurrentVengeancePercent) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueCurrentVengeancePercent) GetFloat(sim *Simulation) float64 {
+	return float64(value.aura.GetStacks()) / value.unit.MaxHealth()
+}
+func (value *APLValueCurrentVengeancePercent) String() string {
+	return fmt.Sprintf("Current Vengeance %%")
+}

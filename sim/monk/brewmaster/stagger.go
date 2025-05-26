@@ -61,6 +61,11 @@ func (bm *BrewmasterMonk) registerStagger() {
 			oldDamagePerTick := dot.SnapshotBaseDamage
 			dot.SnapshotBaseDamage = damagePerTick
 			bm.Stagger.Cast(sim, target)
+			newStaggerValue := int32(damagePerTick)
+			if newStaggerValue < 0 {
+				panic("Stagger is above 2.147 billion. Please check your Rotation/Encounter settings.")
+			}
+
 			dot.Aura.SetStacks(sim, int32(damagePerTick))
 
 			if sim.Log != nil && dot.Aura.IsActive() {
