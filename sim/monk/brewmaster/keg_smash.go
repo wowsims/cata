@@ -49,6 +49,7 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 			missedTargets := 0
 			for _, enemyTarget := range sim.Encounter.TargetUnits {
 				baseDamage := bm.CalculateMonkStrikeDamage(sim, spell)
+				baseDamage *= sim.Encounter.AOECapMultiplier()
 				result := spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				results = append(results, result)
 				if !result.Landed() {

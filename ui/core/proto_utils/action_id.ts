@@ -347,7 +347,7 @@ export class ActionId {
 					} else if (tag == 3) {
 						name += ' (3 Tick)';
 					} else if (tag == 77486) {
-						name += ' (Mastery)'
+						name += ' (Mastery)';
 					}
 				} else {
 					// Gurthalak, Voice of the Deeps
@@ -601,7 +601,7 @@ export class ActionId {
 				}
 			case 'Shadow Word: Death':
 				if (tag == 1) {
-					name += ' (No Orb)'
+					name += ' (No Orb)';
 				}
 			case 'Improved Steady Shot':
 				if (tag == 2) {
@@ -753,7 +753,11 @@ export class ActionId {
 				break;
 			case 'Zen Sphere':
 				if (this.spellId === 124081) {
-					name += ' (Heal)';
+					if (this.tag === 1) {
+						name += ' (# of Spheres)';
+					} else {
+						name += ' (Heal)';
+					}
 				} else if (this.spellId === 124098) {
 					name += ' (Damage)';
 				} else if (this.spellId === 124101) {
@@ -791,13 +795,13 @@ export class ActionId {
 			case 'Vampiric Touch':
 			case 'Shadow Word: Pain':
 				if (tag == 77486) {
-					name += " (Mastery)"
+					name += ' (Mastery)';
 				}
 
 				break;
 			case 'Cascade':
 				if (tag == 1) {
-					name += " (Bounce)"
+					name += ' (Bounce)';
 				}
 
 				break;

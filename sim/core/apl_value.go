@@ -142,9 +142,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueFocusTimeToTarget(config.GetFocusTimeToTarget(), config.Uuid)
 	case *proto.APLValue_CurrentGenericResource:
 		value = rot.newValueCurrentGenericResource(config.GetCurrentGenericResource(), config.Uuid)
-	// Tank "resource"
-	case *proto.APLValue_CurrentVengeancePercent:
-		value = rot.newValueCurrentVengeancePercent(config.GetCurrentVengeancePercent(), config.Uuid)
 
 	// Resources Runes
 	case *proto.APLValue_CurrentRuneCount:

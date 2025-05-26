@@ -279,6 +279,22 @@ func (monk *Monk) registerZenSphere() {
 		return
 	}
 
+	friendlyTargets := monk.Env.Raid.GetFirstNPlayersOrPets(2)
+	var nextTarget *core.Unit
+	for _, friendlyTarget := range friendlyTargets {
+		if friendlyTarget != &monk.Unit {
+			nextTarget = friendlyTarget
+			break
+		}
+	}
+
+	zenSphereAura := monk.RegisterAura(core.Aura{
+		Label:     "Zen Sphere" + monk.Label,
+		ActionID:  core.ActionID{SpellID: 124081}.WithTag(1),
+		Duration:  core.NeverExpires,
+		MaxStacks: 2,
+	})
+
 	avgTickScaling := monk.CalcScalingSpellDmg(0.1040000021)
 	// The 15% extra is from a hotfix not represented in the tooltip.
 	avgTickBonusCoefficient := 0.09 * 1.15
@@ -304,10 +320,11 @@ func (monk *Monk) registerZenSphere() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				for _, target := range sim.Encounter.TargetUnits {
+					baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
+					baseDamage *= sim.Encounter.AOECapMultiplier()
 					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
 					if result.Landed() {
@@ -407,6 +424,9 @@ func (monk *Monk) registerZenSphere() {
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					detonateHealingSpell.Cast(sim, aura.Unit)
+					if zenSphereAura.IsActive() {
+						zenSphereAura.RemoveStack(sim)
+					}
 				},
 			},
 			NumberOfTicks:       8,
@@ -418,8 +438,16 @@ func (monk *Monk) registerZenSphere() {
 			},
 		},
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !zenSphereAura.IsActive() || zenSphereAura.GetStacks() < zenSphereAura.MaxStacks
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			target := spell.Unit
+
+			if nextTarget != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
+				target = nextTarget
+			}
 
 			if target.CurrentHealthPercent() <= 0.35 {
 				detonateHealingSpell.Cast(sim, target)
@@ -427,6 +455,8 @@ func (monk *Monk) registerZenSphere() {
 				return
 			}
 
+			zenSphereAura.Activate(sim)
+			zenSphereAura.AddStack(sim)
 			spell.Hot(target).Activate(sim)
 			zenSphereDotSpell.Cast(sim, target.CurrentTarget)
 		},
@@ -464,10 +494,11 @@ func chiBurstDamageSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := chiBurstScaling + spell.MeleeAttackPower()*chiBurstBonusCoeff
 
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
 				for _, target := range sim.Encounter.TargetUnits {
+					baseDamage := chiBurstScaling + spell.MeleeAttackPower()*chiBurstBonusCoeff
+					baseDamage *= sim.Encounter.AOECapMultiplier()
 					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
 					if result.Landed() {
@@ -824,6 +855,7 @@ func rushingJadeWindTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfi
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, target := range sim.Encounter.TargetUnits {
 				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
+				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
