@@ -19,7 +19,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 
 	elemental.Thunderstorm = elemental.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | shaman.SpellFlagFocusable,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL | shaman.SpellFlagFocusable,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: shaman.SpellMaskThunderstorm,
@@ -45,16 +45,10 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 
 			if elemental.Shaman.ThunderstormInRange {
 				results := make([]*core.SpellResult, elemental.Env.GetNumTargets())
-				baseDamage := elemental.GetShaman().CalcAndRollDamageRange(sim, 1.62999999523, 0.13300000131)
-				aoeMult := sim.Encounter.AOECapMultiplier()
-				spell.DamageMultiplier *= aoeMult
 				for i, aoeTarget := range sim.Encounter.TargetUnits {
-					results[i] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+					baseDamage := elemental.GetShaman().CalcAndRollDamageRange(sim, 1.62999999523, 0.13300000131)
+					results[i] = spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
-				for i, _ := range sim.Encounter.TargetUnits {
-					spell.DealDamage(sim, results[i])
-				}
-				spell.DamageMultiplier /= aoeMult
 			}
 		},
 	})

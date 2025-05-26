@@ -311,7 +311,7 @@ func (monk *Monk) registerZenSphere() {
 		ActionID:       core.ActionID{SpellID: 125033},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellZenSphere,
 		MaxRange:       10,
 
@@ -324,7 +324,6 @@ func (monk *Monk) registerZenSphere() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				for _, target := range sim.Encounter.TargetUnits {
 					baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
-					baseDamage *= sim.Encounter.AOECapMultiplier()
 					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
 					if result.Landed() {
@@ -484,7 +483,7 @@ func chiBurstDamageSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
 		ActionID:       chiBurstDamageActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellChiBurst,
 		MissileSpeed:   30,
 		MaxRange:       40,
@@ -498,7 +497,6 @@ func chiBurstDamageSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
 				for _, target := range sim.Encounter.TargetUnits {
 					baseDamage := chiBurstScaling + spell.MeleeAttackPower()*chiBurstBonusCoeff
-					baseDamage *= sim.Encounter.AOECapMultiplier()
 					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
 					if result.Landed() {
@@ -844,7 +842,7 @@ func rushingJadeWindTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfi
 		ActionID:       rushingJadeWindDebuffActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellRushingJadeWind,
 		MaxRange:       8,
 
@@ -855,7 +853,6 @@ func rushingJadeWindTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfi
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, target := range sim.Encounter.TargetUnits {
 				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
