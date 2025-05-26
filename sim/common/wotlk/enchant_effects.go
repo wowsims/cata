@@ -325,17 +325,11 @@ func init() {
 
 	// Enchant: 3722, Spell: 55642 - Lightweave Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Lightweave Embroidery",
-		EnchantID:  3722,
-		ItemID:     55642,
-		AuraID:     55637,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 60,
-		ProcChance: 0.35,
-		Bonus:      stats.Stats{stats.SpellPower: 295},
-		Duration:   time.Second * 15,
+		Name:      "Lightweave Embroidery",
+		EnchantID: 3722,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 3728, Spell: 55769 - Darkglow Embroidery
@@ -372,17 +366,11 @@ func init() {
 
 	// Enchant: 3730, Spell: 55777 - Swordguard Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Swordguard Embroidery",
-		EnchantID:  3730,
-		ItemID:     55777,
-		AuraID:     55775,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-		ProcMask:   core.ProcMaskMeleeOrRanged,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 55,
-		ProcChance: 0.2,
-		Bonus:      stats.Stats{stats.AttackPower: 400, stats.RangedAttackPower: 400},
-		Duration:   time.Second * 15,
+		Name:      "Swordguard Embroidery",
+		EnchantID: 3730,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:  core.ProcMaskMeleeOrRanged,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 3870, Spell: 64568 - Blood Draining

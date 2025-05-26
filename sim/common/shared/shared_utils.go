@@ -10,19 +10,13 @@ import (
 )
 
 type ProcStatBonusEffect struct {
-	Name       string
-	ItemID     int32
-	EnchantID  int32
-	AuraID     int32
-	Bonus      stats.Stats
-	Duration   time.Duration
-	Callback   core.AuraCallback
-	ProcMask   core.ProcMask
-	Outcome    core.HitOutcome
-	Harmful    bool
-	ProcChance float64
-	PPM        float64
-	ICD        time.Duration
+	Name      string
+	ItemID    int32
+	EnchantID int32
+	Callback  core.AuraCallback
+	ProcMask  core.ProcMask
+	Outcome   core.HitOutcome
+	Harmful   bool
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
