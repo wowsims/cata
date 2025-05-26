@@ -43,9 +43,11 @@ type Mage struct {
 	arcanePotencyAura      *core.Aura
 	arcanePowerAura        *core.Aura
 	invocationAura         *core.Aura
+	runeOfPowerAura        *core.Aura
 	presenceOfMindAura     *core.Aura
 	FingersOfFrostAura     *core.Aura
 	IcyVeinsAura           *core.Aura
+	iceFloesfAura          *core.Aura
 
 	arcaneMissileCritSnapshot float64
 	brainFreezeProcChance     float64
@@ -327,6 +329,7 @@ const (
 	MageSpellFrostfireBolt
 	MageSpellFrostfireOrb
 	MageSpellFrozenOrb
+	MageSpellIceFloes
 	MageSpellIceLance
 	MageSpellIcyVeins
 	MageSpellIgnite
@@ -337,6 +340,7 @@ const (
 	MageSpellPresenceOfMind
 	MageSpellPyroblast
 	MageSpellPyroblastDot
+	MagespellRuneOfPower
 	MageSpellScorch
 	MageSpellMoltenArmor
 	MageSpellMageArmor
@@ -358,6 +362,6 @@ const (
 		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
 	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneMissilesTick | MageSpellFireBlast | MageSpellArcaneExplosion |
 		MageSpellBlastWave | MageSpellCombustionApplication | MageSpellConeOfCold | MageSpellDeepFreeze | MageSpellDragonsBreath | MageSpellIceLance |
-		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind | MageSpellMoltenArmor | MageSpellMageArmor | MageSpellFlameOrb
+		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind | MageSpellFlameOrb
 	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
 )

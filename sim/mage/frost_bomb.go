@@ -7,6 +7,11 @@ import (
 )
 
 func (mage *Mage) registerFrostBombSpell() {
+
+	if !mage.Talents.FrostBomb {
+		return
+	}
+
 	// Since Frost Bomb does double damage to all targets, these are the AOE values and the main target just gets double.
 	var frostBombExplosionCoefficient = 1.725 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "EffetBonusCoefficient"
 	var frostBombExplosionScaling = 2.21      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "Coefficient"
@@ -28,12 +33,13 @@ func (mage *Mage) registerFrostBombSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
 			baseDamage := mage.CalcAndRollDamageRange(sim, frostBombExplosionScaling, frostBombVariance)
-			damage := 0.0
 			for idx := int32(0); idx < numTargets; idx++ {
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				if idx == 0 {
-					damage = baseDamage * 2
+					result.Damage = result.Damage * 2
 				}
-				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit) //TODO How to tell if a spell is incapable of critting?
+				results[idx] = result
+
 			}
 
 			for idx := int32(0); idx < numTargets; idx++ {
@@ -41,6 +47,20 @@ func (mage *Mage) registerFrostBombSpell() {
 			}
 		},
 	})
+
+	// aura := mage.RegisterAura(core.Aura{
+	// 	Label:    "Frost Bomb",
+	// 	ActionID: core.ActionID{SpellID: 113092},
+	// 	Duration: time.Second * 4,
+
+	// 	ManaCost: core.ManaCostOptions{
+	// 		BaseCostPercent: 1.25,
+	// 	},
+
+	// 	OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+	// 		frostBombExplosionSpell.Cast(sim, aura.Unit)
+	// 	},
+	// })
 
 	mage.FrostBomb = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44457},

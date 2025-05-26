@@ -17,6 +17,11 @@ func (mage *Mage) registerLivingBombSpell() {
 	// 3) append the dot to the array
 	// 4) sort the array by remaining duration, such that the longest remaining duration is LAST, to fit step 1
 	// When a dot expires, remove the 1st element.
+
+	if !mage.Talents.LivingBomb {
+		return
+	}
+
 	var activeLivingBombs []*core.Dot
 	const maxLivingBombs int = 3
 

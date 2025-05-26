@@ -7,6 +7,11 @@ import (
 )
 
 func (mage *Mage) registerEvocation() {
+
+	if mage.Talents.RuneOfPower {
+		return
+	}
+
 	actionID := core.ActionID{SpellID: 12051}
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
@@ -22,7 +27,7 @@ func (mage *Mage) registerEvocation() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Minute * 4,
+				Duration: time.Minute * 2,
 			},
 		},
 
@@ -47,6 +52,39 @@ func (mage *Mage) registerEvocation() {
 			spell.SelfHot().TickOnce(sim)
 		},
 	})
+
+	invocationCooldownMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellEvocation,
+		FloatValue: -1.0,
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+	})
+
+	invocationSpeedUp := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellEvocation,
+		FloatValue: -1.0,
+		Kind:       core.SpellMod_DotTickLength_Flat,
+	})
+
+	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAllDamaging,
+		FloatValue: 0.15,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	mage.invocationAura = mage.RegisterAura(core.Aura{
+		Label:    "Invocation Aura",
+		ActionID: actionID,
+		Duration: time.Minute,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			invocationDamageMod.Activate()
+			aura.Activate(sim)
+		},
+	})
+
+	if mage.Talents.Invocation {
+		invocationCooldownMod.Activate()
+		invocationSpeedUp.Activate()
+	}
 
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: evocation,
