@@ -12,7 +12,7 @@ import (
 func init() {
 
 	// HASTE
-	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2) // Lady La-La's Singing Shell
+	shared.NewSimpleStatActive(67152) // Lady La-La's Singing Shell
 
 	// Shard of Woe
 	core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(60233, stats.Stats{stats.HasteRating: 1935}, time.Second*10, time.Minute*1, func(agent core.Agent, _ proto.ItemLevelState) {
@@ -120,13 +120,13 @@ func init() {
 	shared.NewSimpleStatActive(69000) // Fiery Quintessence
 
 	// MASTERY
-	shared.NewSimpleStatActive(63745)                                   // Za'brox's Lucky Tooth - Alliance
-	shared.NewSimpleStatActive(63742)                                   // Za'brox's Lucky Tooth - Horde
-	shared.NewSimpleStatActive(56115)                                   // Skardyn's Grace
-	shared.NewSimpleStatActive(56440)                                   // Skardyn's Grace (Heroic)
-	shared.NewSimpleStatActive(56132)                                   // Mark of Khardros
-	shared.NewSimpleStatActive(56458)                                   // Mark of Khardros (Heroic)
-	shared.NewMasteryActive(70142, 1700, time.Second*20, time.Minute*2) // Moonwell Chalice
+	shared.NewSimpleStatActive(63745)                                                                                      // Za'brox's Lucky Tooth - Alliance
+	shared.NewSimpleStatActive(63742)                                                                                      // Za'brox's Lucky Tooth - Horde
+	shared.NewSimpleStatActive(56115)                                                                                      // Skardyn's Grace
+	shared.NewSimpleStatActive(56440)                                                                                      // Skardyn's Grace (Heroic)
+	shared.NewSimpleStatActive(56132)                                                                                      // Mark of Khardros
+	shared.NewSimpleStatActive(56458)                                                                                      // Mark of Khardros (Heroic)
+	core.NewSimpleStatOffensiveTrinketEffect(70142, stats.Stats{stats.MasteryRating: 1700}, time.Second*20, time.Minute*2) // Moonwell Chalice
 
 	// PARRY
 	shared.NewSimpleStatActive(55881) // Impetuous Query
