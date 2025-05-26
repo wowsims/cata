@@ -24,10 +24,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		Stat.StatStrength,
 		Stat.StatAttackPower,
 		Stat.StatHitRating,
+		Stat.StatExpertiseRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
+		Stat.StatDodgeRating,
+		Stat.StatParryRating,
 		Stat.StatMasteryRating,
-		Stat.StatExpertiseRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP.
@@ -41,6 +43,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatDodgePercent,
+			PseudoStat.PseudoStatParryPercent,
 		],
 	),
 
