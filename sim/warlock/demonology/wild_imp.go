@@ -95,6 +95,7 @@ func (pet *WildImpPet) ExecuteCustomRotation(sim *core.Simulation) {
 	pet.WaitUntil(sim, sim.CurrentTime+offset+time.Millisecond*100)
 }
 
+// Hotfixes already included
 const felFireBoltScale = 0.242
 const felFireBoltVariance = 0.05
 const felFireBoltCoeff = 0.242

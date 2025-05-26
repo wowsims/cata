@@ -14,7 +14,7 @@ func (warlock Warlock) RegisterFelflame(callback WarlockSpellCastedCallback) *co
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellFelFlame,
 		MissileSpeed:   38,
-		ManaCost:       core.ManaCostOptions{BaseCostPercent: 3},
+		ManaCost:       core.ManaCostOptions{BaseCostPercent: 6},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
