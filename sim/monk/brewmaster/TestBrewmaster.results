@@ -3086,10 +3086,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-Average-Default"
  value: {
-  dps: 116510.47879
-  tps: 116510.47879
-  dtps: 46610.76715
-  hps: 12007.64212
+  dps: 120326.48676
+  tps: 120326.48676
+  dtps: 45251.02799
+  hps: 12038.29029
  }
 }
 dps_results: {
@@ -3479,9 +3479,9 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 118506.85627
-  tps: 118506.85627
-  dtps: 47636.38354
-  hps: 11687.65449
+  dps: 122342.63316
+  tps: 122342.63316
+  dtps: 45996.25251
+  hps: 11784.50849
  }
 }

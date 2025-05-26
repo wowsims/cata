@@ -89,7 +89,7 @@ func (monk *Monk) registerSwiftReflexes() {
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if icd.IsReady(sim) && result.Outcome.Matches(core.OutcomeParry) {
 				icd.Use(sim)
-				swiftReflexesAttack.Cast(sim, result.Target)
+				swiftReflexesAttack.Cast(sim, spell.Unit)
 			}
 		},
 	}).AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 0.05))
