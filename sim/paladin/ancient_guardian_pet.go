@@ -15,30 +15,36 @@ type AncientGuardianPet struct {
 func (guardian *AncientGuardianPet) Initialize() {
 }
 
-const PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.PhysicalHitRatingPerHitPercent // 0.8125
-
 func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 	ancientGuardian := &AncientGuardianPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:  "Ancient Guardian",
-			Owner: &paladin.Character,
-			BaseStats: stats.Stats{
-				stats.Stamina:             100,
-				stats.PhysicalCritPercent: 5,
-			},
+			Name:      "Ancient Guardian",
+			Owner:     &paladin.Character,
+			BaseStats: stats.Stats{},
 			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				// Draenei Heroic Presence is not included, so inherit HitRating
 				// rather than PhysicalHitPercent.
-				ownerHitRating := ownerStats[stats.HitRating]
+				hitRating := ownerStats[stats.HitRating]
+				expertiseRating := ownerStats[stats.ExpertiseRating]
+				combined := (hitRating + expertiseRating) * 0.5
 
 				return stats.Stats{
-					stats.HitRating:       ownerHitRating,
-					stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
-					stats.AttackPower:     ownerStats[stats.AttackPower] * 6.1,
+					stats.Armor:               ownerStats[stats.Armor],
+					stats.AttackPower:         ownerStats[stats.AttackPower] * 6.1,
+					stats.CritRating:          ownerStats[stats.CritRating],
+					stats.DodgeRating:         ownerStats[stats.DodgeRating],
+					stats.ExpertiseRating:     combined,
+					stats.HasteRating:         ownerStats[stats.HasteRating],
+					stats.Health:              ownerStats[stats.Health],
+					stats.HitRating:           combined,
+					stats.ParryRating:         ownerStats[stats.ParryRating],
+					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+					stats.Stamina:             ownerStats[stats.Stamina],
 				}
 			},
-			EnabledOnStart: false,
-			IsGuardian:     true,
+			EnabledOnStart:                  false,
+			IsGuardian:                      true,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		paladinOwner: paladin,
 	}
