@@ -41,6 +41,7 @@ import {
 	APLValueCurrentSolarEnergy,
 	APLValueCurrentTime,
 	APLValueCurrentTimePercent,
+	APLValueCurrentVengeancePercent,
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
 	APLValueDotTickFrequency,
@@ -1325,6 +1326,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Class/spec specific values
+	currentVengeancePercent: inputBuilder({
+		label: 'Current Vengeance (%)',
+		submenu: ['Tank'],
+		shortDescription: 'Amount of currently available Vengeance, as a percentage.',
+		newValue: APLValueCurrentVengeancePercent.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getPlayerSpec().isTankSpec,
+		fields: [],
+	}),
 	totemRemainingTime: inputBuilder({
 		label: 'Totem Remaining Time',
 		submenu: ['Shaman'],
@@ -1387,6 +1396,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Returns the current estimated size of your Combustion Dot.',
 		newValue: APLValueMageCurrentCombustionDotEstimate.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFireMage,
+		fields: [],
+	}),
+	brewmasterMonkCurrentStaggerPercent: inputBuilder({
+		label: 'Current Stagger (%)',
+		submenu: ['Tank'],
+		shortDescription: 'Amount of current Stagger, as a percentage.',
+		newValue: APLValueMonkCurrentChi.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() === Spec.SpecBrewmasterMonk,
 		fields: [],
 	}),
 };

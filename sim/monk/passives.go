@@ -21,7 +21,7 @@ func (monk *Monk) registerWayOfTheMonk() {
 	aura := core.MakePermanent(monk.RegisterAura(core.Aura{
 		Label:      "Way of the Monk" + monk.Label,
 		ActionID:   core.ActionID{SpellID: 120277},
-		BuildPhase: core.CharacterBuildPhaseBase,
+		BuildPhase: core.CharacterBuildPhaseTalents,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)
@@ -78,19 +78,16 @@ func (monk *Monk) registerSwiftReflexes() {
 		},
 	})
 
-	icd := &core.Cooldown{
-		Duration: time.Second,
-		Timer:    monk.NewTimer(),
-	}
-
-	core.MakePermanent(monk.RegisterAura(core.Aura{
-		Label:    "Swift Reflexes" + monk.Label,
+	aura := core.MakeProcTriggerAura(&monk.Unit, core.ProcTrigger{
+		Name:     "Swift Reflexes" + monk.Label,
 		ActionID: core.ActionID{SpellID: 124334},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if icd.IsReady(sim) && result.Outcome.Matches(core.OutcomeParry) {
-				icd.Use(sim)
-				swiftReflexesAttack.Cast(sim, result.Target)
-			}
+		Outcome:  core.OutcomeParry,
+		Callback: core.CallbackOnSpellHitTaken,
+		ICD:      time.Second,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			swiftReflexesAttack.Cast(sim, spell.Unit)
 		},
-	}).AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 0.05))
+	})
+	aura.BuildPhase = core.CharacterBuildPhaseTalents
+	aura.AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 0.05)
 }

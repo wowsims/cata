@@ -26,10 +26,28 @@ var baseStats = stats.Stats{
 func (monk *Monk) NewXuen() *Xuen {
 	xuen := &Xuen{
 		Pet: core.NewPet(core.PetConfig{
-			Name:                            "Xuen, The White Tiger",
-			Owner:                           &monk.Character,
-			BaseStats:                       baseStats,
-			StatInheritance:                 monk.xuenStatInheritance(),
+			Name:      "Xuen, The White Tiger",
+			Owner:     &monk.Character,
+			BaseStats: baseStats,
+			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
+
+				hitRating := ownerStats[stats.HitRating]
+				expertiseRating := ownerStats[stats.ExpertiseRating]
+				combinedHitExp := (hitRating + expertiseRating) * 0.5
+
+				return stats.Stats{
+					stats.Stamina:     ownerStats[stats.Stamina],
+					stats.AttackPower: ownerStats[stats.AttackPower] * 0.5,
+
+					stats.HitRating:       combinedHitExp,
+					stats.ExpertiseRating: combinedHitExp,
+					stats.DodgeRating:     ownerStats[stats.DodgeRating],
+					stats.ParryRating:     ownerStats[stats.ParryRating],
+
+					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+				}
+			},
 			EnabledOnStart:                  false,
 			IsGuardian:                      false,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -99,23 +117,6 @@ func (monk *Monk) NewXuen() *Xuen {
 	monk.AddPet(xuen)
 
 	return xuen
-}
-
-func (monk *Monk) xuenStatInheritance() core.PetStatInheritance {
-	return func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina],
-			stats.AttackPower: ownerStats[stats.AttackPower] * 0.5,
-
-			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
-			stats.SpellHitPercent:    ownerStats[stats.SpellHitPercent],
-
-			stats.ExpertiseRating: ownerStats[stats.ExpertiseRating],
-
-			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
-		}
-	}
 }
 
 func (xuen *Xuen) Initialize() {
