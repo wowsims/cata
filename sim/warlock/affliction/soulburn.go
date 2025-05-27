@@ -1,26 +1,27 @@
-package warlock
+package affliction
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/warlock"
 )
 
-func (warlock *Warlock) registerSoulburn() {
+func (affliction *AfflictionWarlock) registerSoulburn() {
 
-	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
+	castTimeMod := affliction.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockSpellSummonFelguard | WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter | WarlockSpellSoulFire,
+		ClassMask:  warlock.WarlockSpellSummonImp | warlock.WarlockSpellSummonSuccubus | warlock.WarlockSpellSummonFelhunter | warlock.WarlockSpellSoulFire,
 		FloatValue: -1.0,
 	})
 
-	drainLifeCastMod := warlock.AddDynamicMod(core.SpellModConfig{
+	drainLifeCastMod := affliction.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockSpellDrainLife,
+		ClassMask:  warlock.WarlockSpellDrainLife,
 		FloatValue: -0.5,
 	})
 
-	warlock.SoulBurnAura = warlock.RegisterAura(core.Aura{
+	affliction.SoulBurnAura = affliction.RegisterAura(core.Aura{
 		Label:    "Soulburn",
 		ActionID: core.ActionID{SpellID: 74434},
 		Duration: core.NeverExpires,
@@ -34,29 +35,27 @@ func (warlock *Warlock) registerSoulburn() {
 		},
 	})
 
-	warlock.RegisterSpell(core.SpellConfig{
+	affliction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 74434},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellSoulBurn,
+		ClassSpellMask: warlock.WarlockSpellSoulBurn,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
+				Timer:    affliction.NewTimer(),
 				Duration: 45 * time.Second,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			warlock.SoulBurnAura.Activate(sim)
-			if warlock.SoulShards.IsActive() {
-				warlock.SoulShards.RemoveStack(sim)
-			}
+			affliction.SoulBurnAura.Activate(sim)
+			affliction.SoulShards.Spend(1, spell.ActionID, sim)
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.SoulShards.GetStacks() > 0
+			return affliction.SoulShards.CanSpend(1)
 		},
 	})
 }

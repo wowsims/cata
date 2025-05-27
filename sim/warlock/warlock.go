@@ -15,19 +15,13 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	BaneOfAgony          *core.Spell
-	BaneOfDoom           *core.Spell
 	Corruption           *core.Spell
 	CurseOfElementsAuras core.AuraArray
-	CurseOfTonguesAuras  core.AuraArray
-	CurseOfWeaknessAuras core.AuraArray
-	HauntDebuffAuras     core.AuraArray
 	Immolate             *core.Spell
 	Metamorphosis        *core.Spell
 	Seed                 *core.Spell
 	ShadowEmbraceAuras   core.AuraArray
 	Shadowburn           *core.Spell
-	UnstableAffliction   *core.Spell
 	Hellfire             *core.Spell
 
 	ActivePet *WarlockPet
@@ -45,9 +39,10 @@ type Warlock struct {
 	serviceTimer *core.Timer
 
 	// Item sets
-	T13_4pc *core.Aura
-	T15_2pc *core.Aura
-	T15_4pc *core.Aura
+	T13_4pc      *core.Aura
+	T15_2pc      *core.Aura
+	T15_4pc      *core.Aura
+	T16_2pc_buff *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -210,7 +205,7 @@ const (
 	WarlockSummonSpells = WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter |
 		WarlockSpellSummonFelguard
 
-	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity | WarlockSpellDarkSoulKnowledge
+	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity | WarlockSpellDarkSoulKnowledge | WarlockSpellDarkSoulMisery
 	WarlockAllSummons                = WarlockSummonSpells | WarlockSpellSummonInfernal | WarlockSpellSummonDoomguard
 	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons &^ WarlockSpellDrainLife
 )

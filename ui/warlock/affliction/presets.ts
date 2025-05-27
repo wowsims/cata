@@ -11,9 +11,6 @@ import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P3Gear from './gear_sets/p3.gear.json';
-import P4Gear from './gear_sets/p4.gear.json';
-import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -22,10 +19,6 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
-export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
-export const P4_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4Gear);
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap', ItemSwapP4);
 
 export const APL_Default = PresetUtils.makePresetAPLRotation('Affliction', DefaultApl);
 
@@ -70,18 +63,24 @@ export const DefaultConsumables = ConsumesSpec.create({
 	tinkerId: 82174, // Synapse Springs
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({});
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	blessingOfKings: true,
+	leaderOfThePack: true,
+	blessingOfMight: true,
+	bloodlust: true,
+	moonkinAura: true,
+	skullBannerCount: 2,
+	stormlashTotemCount: 4,
+	unholyAura: true,
+});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	// bloodFrenzy: true,
-	// sunderArmor: true,
-	// ebonPlaguebringer: true,
-	// mangle: true,
-	// criticalMass: false,
-	// demoralizingShout: true,
-	// frostFever: true,
+	curseOfElements: true,
+	weakenedArmor: true,
+	physicalVulnerability: true,
 });
 
 export const OtherDefaults = {

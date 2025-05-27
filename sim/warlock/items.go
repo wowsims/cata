@@ -338,7 +338,7 @@ var ItemSetRegaliaOfTheThousandfeldHells = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// T15
+// T16
 var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Horned Nightmare",
 	Bonuses: map[int32]core.ApplySetBonus{
@@ -357,6 +357,7 @@ var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 					ClassMask:  WarlockSpellDrainSoul | WarlockSpellMaleficGrasp,
 				})
 
+				warlock.T16_2pc_buff = buff
 				setBonusAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.Matches(WarlockSpellUnstableAffliction) && result.DidCrit() && sim.Proc(0.5, "T16 - 2pc") {
 						buff.Activate(sim)
@@ -423,6 +424,20 @@ var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 			switch agent.GetCharacter().Spec {
+			case proto.Spec_SpecAfflictionWarlock:
+				warlock.OnSpellRegistered(func(spell *core.Spell) {
+					if !spell.Matches(WarlockSpellHaunt) {
+						return
+					}
+
+					for _, enemy := range warlock.Env.Encounter.TargetUnits {
+						spell.Dot(enemy).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+							if sim.Proc(0.1, "T16 4p") {
+								warlock.GetSecondaryResourceBar().Gain(1, spell.ActionID, sim)
+							}
+						})
+					}
+				})
 			case proto.Spec_SpecDemonologyWarlock:
 				setBonusAura.AttachProcTrigger(core.ProcTrigger{
 					Callback:       core.CallbackOnCastComplete,

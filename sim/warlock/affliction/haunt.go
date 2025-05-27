@@ -4,28 +4,30 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/warlock"
 )
 
+// Damage Done By Caster setup
+const (
+	DDBC_Haunt int = iota
+	DDBC_Total
+)
+
+const hauntScale = 2.625
+const hauntCoeff = 2.625
+
 func (affliction *AfflictionWarlock) registerHaunt() {
-	if !affliction.Talents.Haunt {
-		return
-	}
-
 	actionID := core.ActionID{SpellID: 48181}
-	debuffMult := core.TernaryFloat64(affliction.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfHaunt), 1.23, 1.2)
-
 	affliction.HauntDebuffAuras = affliction.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Haunt-" + affliction.Label,
 			ActionID: actionID,
-			Duration: 12 * time.Second,
+			Duration: 8 * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				affliction.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier *= debuffMult
+				core.EnableDamageDoneByCaster(DDBC_Haunt, DDBC_Total, affliction.AttackTables[aura.Unit.UnitIndex], hauntDamageDoneByCasterHandler)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				affliction.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier /= debuffMult
+				core.DisableDamageDoneByCaster(DDBC_Haunt, affliction.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 	})
@@ -44,20 +46,21 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 				GCD:      core.GCDDefault,
 				CastTime: 1500 * time.Millisecond,
 			},
-			CD: core.Cooldown{
-				Timer:    affliction.NewTimer(),
-				Duration: 8 * time.Second,
-			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   affliction.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.5577,
+		BonusCoefficient: hauntCoeff,
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return affliction.SoulShards.CanSpend(1)
+		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := affliction.CalcScalingSpellDmg(0.95810002089)
+			baseDamage := affliction.CalcScalingSpellDmg(hauntScale)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			affliction.SoulShards.Spend(1, spell.ActionID, sim)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() {
@@ -68,4 +71,18 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 
 		RelatedAuraArrays: affliction.HauntDebuffAuras.ToMap(),
 	})
+}
+
+func hauntDamageDoneByCasterHandler(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+	if spell.Matches(warlock.WarlockSpellSeedOfCorruption |
+		warlock.WarlockSpellCorruption |
+		warlock.WarlockSpellDrainLife |
+		warlock.WarlockSpellDrainSoul |
+		warlock.WarlockSpellMaleficGrasp |
+		warlock.WarlockSpellAgony |
+		warlock.WarlockSpellUnstableAffliction) {
+		return 1.35
+	}
+
+	return 1
 }

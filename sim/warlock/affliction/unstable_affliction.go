@@ -7,15 +7,18 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
+const uaCoeff = 0.29
+const uaScale = 0.29
+
 func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 	affliction.UnstableAffliction = affliction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30108},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellUnstableAffliction,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 15},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 1.5},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -29,13 +32,13 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 
 		Dot: core.DotConfig{
 			Aura:                core.Aura{Label: "UnstableAffliction"},
-			NumberOfTicks:       5,
-			TickLength:          3 * time.Second,
+			NumberOfTicks:       7,
+			TickLength:          2 * time.Second,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.20000000298,
+			BonusCoefficient:    uaCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, affliction.CalcScalingSpellDmg(0.23199999332))
+				dot.Snapshot(target, affliction.CalcScalingSpellDmg(uaScale))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -46,7 +49,6 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
-				affliction.Immolate.Dot(target).Deactivate(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},
