@@ -31,13 +31,11 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	bear := &GuardianDruid{
 		Druid:     druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
 		Options:   tankOptions.Options,
-		vengeance: &core.VengeanceTracker{},
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
-		StartingRage:   bear.Options.StartingRage,
-		RageMultiplier: 1,
-		MHSwingSpeed:   2.5,
+		StartingRage:       bear.Options.StartingRage,
+		BaseRageMultiplier: 2.5,
 	})
 	bear.EnableAutoAttacks(bear, core.AutoAttackOptions{
 		// Base paw weapon.
@@ -53,8 +51,7 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 type GuardianDruid struct {
 	*druid.Druid
 
-	Options   *proto.GuardianDruid_Options
-	vengeance *core.VengeanceTracker
+	Options *proto.GuardianDruid_Options
 
 	// Aura references
 	EnrageAura *core.Aura
@@ -75,7 +72,8 @@ func (bear *GuardianDruid) ApplyTalents() {
 	// bear.Druid.ApplyTalents()
 	bear.applyMastery()
 	bear.applyThickHide()
-	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
+	bear.applyLeatherSpecialization()
+	bear.RegisterVengeance(84840, bear.BearFormAura)
 }
 
 func (bear *GuardianDruid) applyMastery() {
@@ -115,6 +113,25 @@ func (bear *GuardianDruid) applyThickHide() {
 
 	// Crit immunity
 	bear.PseudoStats.ReducedCritTakenChance += 0.06
+}
+
+func (bear *GuardianDruid) applyLeatherSpecialization() {
+	bear.GuardianLeatherSpecTracker = bear.RegisterArmorSpecializationTracker(proto.ArmorType_ArmorTypeLeather, 86096)
+	bear.GuardianLeatherSpecDep = bear.NewDynamicMultiplyStat(stats.Stamina, 1.05)
+
+	// Need redundant enabling/disabling of the dep both here and in forms.go because we
+	// don't know whether the leather spec tracker or Bear Form will activate first.
+	bear.GuardianLeatherSpecTracker.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+		if bear.InForm(druid.Bear) {
+			bear.EnableBuildPhaseStatDep(sim, bear.GuardianLeatherSpecDep)
+		}
+	})
+
+	bear.GuardianLeatherSpecTracker.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+		if bear.InForm(druid.Bear) {
+			bear.DisableBuildPhaseStatDep(sim, bear.GuardianLeatherSpecDep)
+		}
+	})
 }
 
 func (bear *GuardianDruid) Initialize() {

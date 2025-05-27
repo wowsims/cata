@@ -724,6 +724,19 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 	}
 }
 
+// Desyncss the offhand swing
+func (aa *AutoAttacks) DesyncOffHand(sim *Simulation, readyAt time.Duration) {
+	if !aa.AutoSwingMelee { // if not auto swinging, don't auto restart.
+		return
+	}
+
+	if aa.IsDualWielding {
+		aa.oh.swingAt = readyAt + aa.oh.curSwingDuration
+		aa.oh.swingAt += aa.oh.curSwingDuration / 2
+		sim.rescheduleWeaponAttack(aa.oh.swingAt)
+	}
+}
+
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it
 // at end of cast, but with a reset swing timer (as if swings had just landed).
 func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, desyncOH bool) {
@@ -735,14 +748,10 @@ func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, de
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 
 	if aa.IsDualWielding {
-		aa.oh.swingAt = readyAt + aa.oh.curSwingDuration
-		if desyncOH {
-			// Used by warrior to desync offhand after unglyphed Shattering Throw.
-			aa.oh.swingAt += aa.oh.curSwingDuration / 2
-		}
-		sim.rescheduleWeaponAttack(aa.oh.swingAt)
+		aa.DesyncOffHand(sim, readyAt)
 	}
 }
+
 func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration) {
 	if !aa.AutoSwingRanged { // if not auto swinging, don't auto restart.
 		return

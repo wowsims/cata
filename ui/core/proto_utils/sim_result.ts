@@ -838,6 +838,7 @@ export class ActionMetrics {
 			this.avgCritDamage +
 			this.avgCritTickDamage -
 			this.avgGlanceDamage -
+			this.avgGlanceBlockDamage -
 			this.avgBlockDamage -
 			this.avgCritBlockDamage
 		);
@@ -873,6 +874,14 @@ export class ActionMetrics {
 
 	get avgGlanceDamage() {
 		return this.combinedMetrics.avgGlanceDamage;
+	}
+
+	get glanceBlockDamage() {
+		return this.combinedMetrics.glanceBlockDamage;
+	}
+
+	get avgGlanceBlockDamage() {
+		return this.combinedMetrics.avgGlanceBlockDamage;
 	}
 
 	get blockDamage() {
@@ -1092,6 +1101,14 @@ export class ActionMetrics {
 		return this.combinedMetrics.glancePercent;
 	}
 
+	get glanceBlocks() {
+		return this.combinedMetrics.glanceBlocks;
+	}
+
+	get glanceBlocksPercent() {
+		return this.combinedMetrics.glanceBlocksPercent;
+	}
+
 	get crits() {
 		return this.combinedMetrics.crits;
 	}
@@ -1115,6 +1132,7 @@ export class ActionMetrics {
 			this.avgCritDamage +
 			this.avgCritTickDamage -
 			this.avgGlanceDamage -
+			this.avgGlanceBlockDamage -
 			this.avgBlockDamage -
 			this.avgCritBlockDamage;
 
@@ -1145,7 +1163,12 @@ export class ActionMetrics {
 			glance: {
 				value: this.avgGlanceDamage,
 				percentage: (this.avgGlanceDamage / this.avgDamage) * 100,
-				average: this.avgGlanceDamage / this.glances,
+				average: this.avgGlanceDamage / this.glanceBlocks,
+			},
+			glanceBlock: {
+				value: this.avgGlanceBlockDamage,
+				percentage: (this.avgGlanceBlockDamage / this.avgDamage) * 100,
+				average: this.avgGlanceBlockDamage / this.glanceBlocks,
 			},
 			block: {
 				value: this.avgBlockDamage,
@@ -1243,11 +1266,18 @@ export class TargetedActionMetrics {
 		this.duration = duration;
 		this.data = data;
 
-		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.critBlocks + this.data.glances;
+		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.critBlocks + this.data.glances + this.data.glanceBlocks;
 		this.landedTicksRaw = this.data.ticks + this.data.critTicks;
 
 		this.hitAttempts =
-			this.data.misses + this.data.dodges + this.data.parries + this.data.critBlocks + this.data.blocks + this.data.glances + this.data.crits;
+			this.data.misses +
+			this.data.dodges +
+			this.data.parries +
+			this.data.critBlocks +
+			this.data.blocks +
+			this.data.glances +
+			this.data.glanceBlocks +
+			this.data.crits;
 
 		if (this.data.hits !== 0) {
 			this.hitAttempts += this.data.hits;
@@ -1294,6 +1324,14 @@ export class TargetedActionMetrics {
 
 	get avgGlanceDamage() {
 		return this.data.glanceDamage / this.iterations;
+	}
+
+	get glanceBlockDamage() {
+		return this.data.glanceBlockDamage;
+	}
+
+	get avgGlanceBlockDamage() {
+		return this.data.glanceBlockDamage / this.iterations;
 	}
 
 	get blockDamage() {
@@ -1496,6 +1534,14 @@ export class TargetedActionMetrics {
 		return (this.data.glances / this.hitAttempts) * 100;
 	}
 
+	get glanceBlocks() {
+		return this.data.glanceBlocks / this.iterations;
+	}
+
+	get glanceBlocksPercent() {
+		return (this.data.glanceBlocks / this.hitAttempts) * 100;
+	}
+
 	get crits() {
 		return this.data.crits / this.iterations;
 	}
@@ -1529,11 +1575,13 @@ export class TargetedActionMetrics {
 				blocks: sum(actions.map(a => a.data.blocks)),
 				critBlocks: sum(actions.map(a => a.data.critBlocks)),
 				glances: sum(actions.map(a => a.data.glances)),
+				glanceBlocks: sum(actions.map(a => a.data.glanceBlocks)),
 				damage: sum(actions.map(a => a.data.damage)),
 				critDamage: sum(actions.map(a => a.data.critDamage)),
 				tickDamage: sum(actions.map(a => a.data.tickDamage)),
 				critTickDamage: sum(actions.map(a => a.data.critTickDamage)),
 				glanceDamage: sum(actions.map(a => a.data.glanceDamage)),
+				glanceBlockDamage: sum(actions.map(a => a.data.glanceBlockDamage)),
 				blockDamage: sum(actions.map(a => a.data.blockDamage)),
 				critBlockDamage: sum(actions.map(a => a.data.critBlockDamage)),
 				threat: sum(actions.map(a => a.data.threat)),

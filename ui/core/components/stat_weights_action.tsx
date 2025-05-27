@@ -10,7 +10,7 @@ import { getStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { RequestTypes } from '../sim_signal_manager';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { stDevToConf90 } from '../utils.js';
+import { sanitizeId, stDevToConf90 } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './pickers/boolean_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
@@ -442,6 +442,7 @@ export class EpWeightsMenu extends BaseModal {
 	private makeTableRow(stat: UnitStat): HTMLElement {
 		const result = this.simUI.prevEpSimResult;
 		const epRatios = this.simUI.player.getEpRatios();
+
 		const rowTotalEp = scaledEpValue(stat, epRatios, result);
 		const currentEpRef = ref<HTMLTableCellElement>();
 		const row = (
@@ -458,8 +459,9 @@ export class EpWeightsMenu extends BaseModal {
 		) as HTMLElement;
 
 		const currentEpCell = currentEpRef.value!;
+
 		new NumberPicker(currentEpCell, this.simUI.player, {
-			id: `ep-weight-stat-${stat}`,
+			id: `ep-weight-stat-${sanitizeId(stat.getShortName(this.simUI.player.playerClass.classID))}`,
 			float: true,
 			changedEvent: (player: Player<any>) => player.epWeightsChangeEmitter,
 			getValue: () => this.simUI.player.getEpWeights().getUnitStat(stat),
@@ -475,6 +477,7 @@ export class EpWeightsMenu extends BaseModal {
 	private makeTableRowCells(stat: UnitStat, statWeights: StatWeightValues | undefined, className: string, epTotal: number, epRatio: number) {
 		let weightCell: Element | null = null;
 		let epCell: Element | null = null;
+
 		const isZeroEpRatio = epRatio === 0;
 		const weightRef = ref<HTMLTableCellElement>();
 		const epRef = ref<HTMLTableCellElement>();

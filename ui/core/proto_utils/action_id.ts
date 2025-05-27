@@ -274,9 +274,13 @@ export class ActionId {
 		const baseName = tooltipData['name'];
 		let name = baseName;
 
-		// handle DRT
 		let tag = this.tag;
-		if (tag >= 71086 && tag <= 71096) {
+		// Handle Monk's Storm, Earth and Fire
+		if (tag >= 138228) {
+			tag -= 138228;
+		}
+		// Handle DTR
+		else if (tag >= 71086 && tag <= 71096) {
 			name = 'Dragonwrath - ' + name;
 			tag -= 71086;
 		}
@@ -331,7 +335,7 @@ export class ActionId {
 					} else if (tag == 3) {
 						name += ' (3 Tick)';
 					} else if (tag == 77486) {
-						name += ' (Mastery)'
+						name += ' (Mastery)';
 					}
 				} else {
 					// Gurthalak, Voice of the Deeps
@@ -585,7 +589,7 @@ export class ActionId {
 				}
 			case 'Shadow Word: Death':
 				if (tag == 1) {
-					name += ' (No Orb)'
+					name += ' (No Orb)';
 				}
 			case 'Improved Steady Shot':
 				if (tag == 2) {
@@ -707,8 +711,10 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+
+			// Monk
 			case 'Tiger Strikes':
-				if (this.spellId === 12274) {
+				if (this.spellId === 120274) {
 					name += ' (Main Hand)';
 				} else {
 					name += ' (Off Hand)';
@@ -735,7 +741,11 @@ export class ActionId {
 				break;
 			case 'Zen Sphere':
 				if (this.spellId === 124081) {
-					name += ' (Heal)';
+					if (this.tag === 1) {
+						name += ' (# of Spheres)';
+					} else {
+						name += ' (Heal)';
+					}
 				} else if (this.spellId === 124098) {
 					name += ' (Damage)';
 				} else if (this.spellId === 124101) {
@@ -751,23 +761,37 @@ export class ActionId {
 					name += ' (Damage)';
 				}
 				break;
-			case 'Rushing Jade Wind':
-				if (this.spellId === 148187) {
-					name += ' (Hit)';
+			case 'Stagger':
+				if (this.tag === 1) {
+					name += ' (Dot)';
+				}
+				break;
+			case 'Dampen Harm':
+				break;
+			case 'Healing Sphere':
+				if (this.spellId === 115460) {
+					if (tag === 1) {
+						name += ' (Stacks)';
+					} else {
+						name += ' (Cast)';
+					}
+				}
+				if (this.spellId === 115464) {
+					name += ' (Heal)';
 				}
 				break;
 			case 'Vampiric Touch':
 			case 'Shadow Word: Pain':
 				if (tag == 77486) {
-					name += " (Mastery)"
+					name += ' (Mastery)';
 				}
 
 				break;
 			case 'Cascade':
 				if (tag == 1) {
-					name += " (Bounce)"
+					name += ' (Bounce)';
 				}
-				
+
 				break;
 			default:
 				if (tag) {
@@ -810,7 +834,8 @@ export class ActionId {
 		} else if (this.otherId) {
 			return 'other-' + this.otherId;
 		} else {
-			return 'unknown';
+			console.error('Empty action id!');
+			return '';
 		}
 	}
 
@@ -1053,6 +1078,10 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
+	'Xuen, The White Tiger': ActionId.fromSpellId(123904),
+	'Earth Spirit': ActionId.fromSpellId(138121),
+	'Storm Spirit': ActionId.fromSpellId(138122),
+	'Fire Spirit': ActionId.fromSpellId(138123),
 };
 
 // https://wowhead.com/mop-classic/hunter-pets

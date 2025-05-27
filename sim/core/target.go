@@ -85,7 +85,7 @@ func (encounter *Encounter) AOECapMultiplier() float64 {
 	return encounter.aoeCapMultiplier
 }
 func (encounter *Encounter) updateAOECapMultiplier() {
-	encounter.aoeCapMultiplier = min(10/float64(len(encounter.Targets)), 1)
+	encounter.aoeCapMultiplier = min(20/float64(len(encounter.Targets)), 1)
 }
 
 func (encounter *Encounter) doneIteration(sim *Simulation) {
@@ -256,9 +256,9 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	} else {
 		table.BaseSpellMissChance = UnitLevelFloat64(attacker.Level, 0.06, 0.03, 0, -0.03)
 		table.BaseMissChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
-		table.BaseBlockChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
-		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
-		table.BaseParryChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
+		table.BaseBlockChance = UnitLevelFloat64(attacker.Level, 0, -0.015, -0.03, -0.045)
+		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level, 0, -0.015, -0.03, -0.045)
+		table.BaseParryChance = UnitLevelFloat64(attacker.Level, 0, -0.015, -0.03, -0.045)
 	}
 
 	return table

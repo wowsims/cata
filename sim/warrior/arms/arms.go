@@ -47,11 +47,8 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:   armsOptions.ClassOptions.StartingRage,
-		RageMultiplier: 1.25, // Endless Rage is now part of Anger Management, now an Arms specialization passive
-	}
-	if mh := war.GetMHWeapon(); mh != nil {
-		rbo.MHSwingSpeed = mh.SwingSpeed
+		StartingRage:       armsOptions.ClassOptions.StartingRage,
+		BaseRageMultiplier: 1,
 	}
 	war.EnableRageBar(rbo)
 
