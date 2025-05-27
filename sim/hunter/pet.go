@@ -1,8 +1,6 @@
 package hunter
 
 import (
-	"fmt"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -11,7 +9,8 @@ import (
 type HunterPet struct {
 	core.Pet
 
-	config PetConfig
+	config    PetConfig
+	isPrimary bool
 
 	hunterOwner *Hunter
 
@@ -31,42 +30,9 @@ type HunterPet struct {
 	hasOwnerCooldown bool
 }
 
-func (hunter *Hunter) NewStampedePet() *HunterPet {
-	if hunter.Options.PetType == proto.HunterOptions_PetNone {
-		return nil
-	}
-	if hunter.Options.PetUptime <= 0 {
-		return nil
-	}
-	petConfig := DefaultPetConfigs[hunter.Options.PetType]
+func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 	conf := core.PetConfig{
-		Name:            petConfig.Name,
-		Owner:           &hunter.Character,
-		BaseStats:       hunterPetBaseStats,
-		StatInheritance: hunter.makeStatInheritance(),
-		EnabledOnStart:  true,
-		IsGuardian:      false,
-	}
-	stampedePet := &HunterPet{
-		Pet:         core.NewPet(conf),
-		config:      petConfig,
-		hunterOwner: hunter,
-
-		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
-	}
-	hunter.AddPet(stampedePet)
-	return stampedePet
-}
-func (hunter *Hunter) NewDireBeastPet() *HunterPet {
-	if hunter.Options.PetType == proto.HunterOptions_PetNone {
-		return nil
-	}
-	if hunter.Options.PetUptime <= 0 {
-		return nil
-	}
-	petConfig := DefaultPetConfigs[hunter.Options.PetType]
-	conf := core.PetConfig{
-		Name:            petConfig.Name,
+		Name:            "Stampede",
 		Owner:           &hunter.Character,
 		BaseStats:       hunterPetBaseStats,
 		StatInheritance: hunter.makeStatInheritance(),
@@ -75,15 +41,53 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	}
 	stampedePet := &HunterPet{
 		Pet:         core.NewPet(conf),
-		config:      petConfig,
+		config:      PetConfig{Name: "Stampede"},
 		hunterOwner: hunter,
 
 		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
 	}
-
+	stampedePet.EnableAutoAttacks(stampedePet, core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
+			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
+			CritMultiplier: 2,
+			SwingSpeed:     2.0,
+		},
+		AutoSwingMelee: true,
+	})
 	hunter.AddPet(stampedePet)
 	return stampedePet
 }
+
+func (hunter *Hunter) NewDireBeastPet() *HunterPet {
+	conf := core.PetConfig{
+		Name:            "Dire Beast Pet",
+		Owner:           &hunter.Character,
+		BaseStats:       hunterPetBaseStats,
+		StatInheritance: hunter.makeStatInheritance(),
+		EnabledOnStart:  false,
+		IsGuardian:      true,
+	}
+	direBeastPet := &HunterPet{
+		Pet:         core.NewPet(conf),
+		config:      PetConfig{Name: "Dire Beast"},
+		hunterOwner: hunter,
+
+		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
+	}
+	direBeastPet.EnableAutoAttacks(direBeastPet, core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
+			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
+			CritMultiplier: 2,
+			SwingSpeed:     2.0,
+		},
+		AutoSwingMelee: true,
+	})
+	hunter.AddPet(direBeastPet)
+	return direBeastPet
+}
+
 func (hunter *Hunter) NewHunterPet() *HunterPet {
 	if hunter.Options.PetType == proto.HunterOptions_PetNone {
 		return nil
@@ -104,6 +108,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		Pet:         core.NewPet(conf),
 		config:      petConfig,
 		hunterOwner: hunter,
+		isPrimary:   true,
 	}
 
 	//Todo: Verify this
@@ -118,8 +123,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	atkSpd := 2.0
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  73,
-			BaseDamageMax:  110,
+			BaseDamageMin:  hp.hunterOwner.ClassSpellScaling * 0.25,
+			BaseDamageMax:  hp.hunterOwner.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
 			SwingSpeed:     atkSpd,
 		},
@@ -145,8 +150,10 @@ func (hp *HunterPet) GetPet() *core.Pet {
 }
 
 func (hp *HunterPet) Initialize() {
+	if !hp.isPrimary {
+		return
+	}
 	cfg := DefaultPetConfigs[hp.hunterOwner.Options.PetType]
-	fmt.Println(cfg)
 	// Primary active ability (often a cooldown)
 	if cfg.SpecialAbility != Unknown {
 		hp.specialAbility = hp.NewPetAbility(cfg.SpecialAbility, true)
@@ -170,6 +177,9 @@ func (hp *HunterPet) Reset(_ *core.Simulation) {
 }
 
 func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
+	if !hp.isPrimary {
+		return
+	}
 	percentRemaining := sim.GetRemainingDurationPercent()
 	if percentRemaining < 1.0-hp.uptimePercent { // once fight is % completed, disable pet.
 		hp.Disable(sim)
@@ -224,17 +234,18 @@ var hunterPetBaseStats = stats.Stats{
 const PetExpertiseRatingScale = 3.25 * core.PhysicalHitRatingPerHitPercent
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
-
 	return func(ownerStats stats.Stats) stats.Stats {
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combinedHitExp := (hitRating + expertiseRating) * 0.5
 		return stats.Stats{
-			stats.Stamina:           ownerStats[stats.Stamina] * 0.3,
-			stats.Armor:             ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower:       ownerStats[stats.RangedAttackPower] * 0.425,
+			stats.Stamina:           ownerStats[stats.Stamina] * 0.45,
+			stats.Armor:             ownerStats[stats.Armor] * 1.05,
+			stats.AttackPower:       ownerStats[stats.RangedAttackPower],
 			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower],
-
-			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
-			stats.ExpertiseRating:    ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
-			stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
+			stats.SpellPower:        ownerStats[stats.RangedAttackPower] * 0.5,
+			stats.HitRating:         combinedHitExp,
+			stats.ExpertiseRating:   combinedHitExp,
 
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 			stats.SpellCritPercent:    ownerStats[stats.PhysicalCritPercent],

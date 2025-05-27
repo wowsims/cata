@@ -29,7 +29,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 24,
+				Duration: time.Second * 24, // 24 with trap mastery for survival
 			},
 		},
 		DamageMultiplier: 1.3,

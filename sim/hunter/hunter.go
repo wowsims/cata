@@ -132,8 +132,8 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 
 	hunter.Pet = hunter.NewHunterPet()
 	hunter.StampedePet = make([]*HunterPet, 4)
-	for index := range 3 {
-		hunter.StampedePet[index] = hunter.NewStampedePet()
+	for index := range 4 {
+		hunter.StampedePet[index] = hunter.NewStampedePet(index)
 	}
 
 	hunter.DireBeastPet = hunter.NewDireBeastPet()

@@ -18,11 +18,6 @@ func (survHunter *SurvivalHunter) ApplyMods() {
 		ClassMask:  hunter.HunterSpellSerpentSting,
 		FloatValue: 0.5,
 	})
-	survHunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  hunter.HunterSpellBlackArrow,
-		FloatValue: 0.3,
-	})
 }
 
 // Todo: Should we support precasting freezing/ice trap?

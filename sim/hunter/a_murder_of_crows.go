@@ -20,7 +20,7 @@ func (hunter *Hunter) registerAMOCSpell() {
 		MinRange: 0,
 		MaxRange: 40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 15,
+			Cost: 60,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

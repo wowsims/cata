@@ -20,7 +20,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 		MinRange:       0,
 		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 45,
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
