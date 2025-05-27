@@ -270,8 +270,11 @@ func (dot *Dot) periodicTick(sim *Simulation) {
 		}
 	}
 
-	dot.tickAction.NextActionAt = sim.CurrentTime + dot.tickPeriod
-	sim.AddPendingAction(dot.tickAction)
+	// Dot might have been disabled in tick
+	if dot.IsActive() {
+		dot.tickAction.NextActionAt = sim.CurrentTime + dot.tickPeriod
+		sim.AddPendingAction(dot.tickAction)
+	}
 }
 
 func newDot(config Dot) *Dot {
