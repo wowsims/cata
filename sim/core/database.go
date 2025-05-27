@@ -15,7 +15,6 @@ import (
 var WITH_DB = false
 
 var ItemsByID = map[int32]Item{}
-var OnUseItemIDs = []int32{}
 var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
@@ -33,11 +32,7 @@ func addToDatabase(newDB *proto.SimDatabase) {
 
 	for _, v := range newDB.Items {
 		if _, ok := ItemsByID[v.Id]; !ok {
-
 			ItemsByID[v.Id] = ItemFromProto(v)
-			if v.ItemEffect.GetOnUse() != nil {
-				OnUseItemIDs = append(OnUseItemIDs, v.Id)
-			}
 		}
 	}
 
@@ -384,12 +379,11 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	})
 }
 
-func GetEnchantByEffectID(effectID int32) Enchant {
-	return EnchantsByEffectID[effectID]
-}
-
-func GetItemById(itemID int32) Item {
-	return ItemsByID[itemID]
+func GetEnchantByEffectID(effectID int32) *Enchant {
+	if enchant, ok := EnchantsByEffectID[effectID]; ok {
+		return &enchant
+	}
+	return nil
 }
 
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
@@ -430,10 +424,10 @@ func NewItem(itemSpec ItemSpec) Item {
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
-	item.RandPropPoints = scalingOptions.RandPropPoints
 	item.UpgradeStep = itemSpec.UpgradeStep
 
 	if itemSpec.RandomSuffix != 0 {
+		item.RandPropPoints = scalingOptions.RandPropPoints
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
 			item.RandomSuffix = randomSuffix
 		} else {

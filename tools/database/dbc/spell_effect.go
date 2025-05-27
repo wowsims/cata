@@ -10,7 +10,7 @@ import (
 )
 
 const MAX_SCALING_LEVEL = 100
-const BASE_LEVEL = 90
+const BASE_LEVEL = 85
 
 type SpellEffect struct {
 	ID                             int

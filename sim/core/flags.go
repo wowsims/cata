@@ -274,9 +274,15 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	}
 }
 
+type RppmModifier uint
+
 const (
-	RPPM_HASTE = 1 << (iota)
-	RPPM_CRIT
+	RppmModifierNone RppmModifier = 0
+)
+
+const (
+	RppmModifierHaste RppmModifier = 1 << iota
+	RppmModifierCrit
 )
 
 /*

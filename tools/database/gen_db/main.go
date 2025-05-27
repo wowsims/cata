@@ -150,7 +150,7 @@ func main() {
 		if parsed.Icon == "" {
 			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
 		}
-		parsed.ItemEffect = dbc.MergeItemEffectsForAllStatesNew(parsed)
+		parsed.ItemEffect = dbc.MergeItemEffectsForAllStates(parsed)
 		db.MergeItem(parsed)
 	}
 

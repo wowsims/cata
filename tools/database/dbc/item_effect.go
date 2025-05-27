@@ -1,8 +1,6 @@
 package dbc
 
 import (
-	"fmt"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -47,7 +45,6 @@ func makeBaseProto(e *ItemEffect, statsSpellID int) *proto.ItemEffect {
 	base := &proto.ItemEffect{
 		BuffId:         int32(e.SpellID),
 		BuffName:       sp.NameLang,
-		Type:           proto.ItemEffectType_EffectTypeNone,
 		EffectDuration: int32(sp.Duration) / 1000,
 		ScalingOptions: make(map[int32]*proto.ScalingItemEffectProperties),
 	}
@@ -63,7 +60,6 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 	statsSP := dbcInstance.Spells[statsSpellID]
 	switch resolveTriggerType(e.TriggerType, e.SpellID) {
 	case ITEM_SPELLTRIGGER_ON_USE:
-		pe.Type = proto.ItemEffectType_EffectTypeOnUse
 		pe.Effect = &proto.ItemEffect_OnUse{OnUse: &proto.OnUseEffect{
 			CooldownMs:         int32(e.CoolDownMSec),
 			CategoryId:         int32(e.SpellCategoryID),
@@ -74,14 +70,13 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 			ProcChance: float64(spTop.ProcChance) / 100,
 			IcdMs:      spTop.ProcCategoryRecovery,
 			Ppm:        spTop.Rppm,
-			RppmScale:  int32(realPpmScale(spTop)),
+			RppmScale:  int32(realPpmScale(&spTop)),
 		}
 		// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
 		if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
 			proc.Ppm = 1
 			proc.ProcChance = 0
 		}
-		pe.Type = proto.ItemEffectType_EffectTypeProc
 		pe.BuffId = statsSP.ID
 		pe.BuffName = statsSP.NameLang
 		pe.Effect = &proto.ItemEffect_Proc{Proc: proc}
@@ -179,7 +174,7 @@ func ParseItemEffects(itemID, itemLevel int, levelState proto.ItemLevelState) []
 }
 
 // Parses a UIItem and loops through Scaling Options for that item.
-func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
+func MergeItemEffectsForAllStates(parsed *proto.UIItem) *proto.ItemEffect {
 	// pick a base effect that has stats if there is more than one effect on the item
 	var baseEff *ItemEffect
 	for i := range dbcInstance.ItemEffectsByParentID[int(parsed.Id)] {
@@ -200,15 +195,13 @@ func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
 
 	// add scaling for each saved state
 	for state, opt := range parsed.ScalingOptions {
-		if parsed.Id == 92127 {
-			fmt.Println("hello2", parsed, parsed.Ilvl, opt.Ilvl, opt)
-		}
 		ilvl := int(opt.Ilvl)
 		props := buildScalingProps(statsSpellID, ilvl)
 		pe.ScalingOptions[state] = props
 
 		if proc := pe.GetProc(); proc != nil {
-			_, specMods := realPpmModifier(dbcInstance.Spells[statsSpellID], ilvl)
+			spell := dbcInstance.Spells[statsSpellID]
+			_, specMods := realPpmModifier(&spell, ilvl)
 			proc.SpecModifiers = specMods
 		}
 	}
@@ -216,20 +209,20 @@ func MergeItemEffectsForAllStatesNew(parsed *proto.UIItem) *proto.ItemEffect {
 	return pe
 }
 
-func realPpmScale(spell Spell) int {
-	scale := 0
+func realPpmScale(spell *Spell) core.RppmModifier {
+	scale := core.RppmModifierNone
 	for _, mod := range spell.RppmModifiers {
 		switch mod.ModifierType {
 		case RPPMModifierHaste:
-			scale |= core.RPPM_HASTE
+			scale |= core.RppmModifierHaste
 		case RPPMModifierCrit:
-			scale |= core.RPPM_CRIT
+			scale |= core.RppmModifierCrit
 		}
 	}
 	return scale
 }
 
-func realPpmModifier(spell Spell, itemLevel int) (float64, map[int32]float64) {
+func realPpmModifier(spell *Spell, itemLevel int) (float64, map[int32]float64) {
 	specModifier := make(map[int32]float64)
 	ilvlModifier := 1.0
 	for _, mod := range spell.RppmModifiers {

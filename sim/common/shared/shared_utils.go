@@ -104,7 +104,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		} else {
 			eligibleSlots = character.ItemSwap.EligibleSlotsForItem(effectID)
 
-			item := core.GetItemById(effectID)
+			item := core.GetItemByID(effectID)
 			if item.ItemEffect != nil {
 				if item.ItemEffect.GetProc() != nil {
 					procEffect = item.ItemEffect
@@ -142,7 +142,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		var procSpell ExtraSpellInfo
 		if extraSpell != nil {
-			procSpell = extraSpell(agent, proto.ItemLevelState_Base)
+			procSpell = extraSpell(agent, itemLevelState)
 		}
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if customHandler != nil {

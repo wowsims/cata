@@ -4,11 +4,6 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
-enum ItemEffectType {
-	EffectTypeNone   = 0;
-	EffectTypeProc   = 1;
-	EffectTypeOnUse = 2;
-  }
 
 
 message ScalingItemEffectProperties {
@@ -18,15 +13,14 @@ message ScalingItemEffectProperties {
 }
   message ItemEffect {
 	int32            buff_id         = 1;
-	string buff_name = 9;
-	ItemEffectType   type            = 2;
-	int32            effect_duration = 3;  // seconds
+	string buff_name = 6;
+	int32            effect_duration = 2;  // seconds
 
-	map<int32, ScalingItemEffectProperties> scaling_options        = 4;
+	map<int32, ScalingItemEffectProperties> scaling_options        = 3;
 
 	oneof effect {
-	  ProcEffect  proc   = 7;
-	  OnUseEffect on_use = 8;
+	  ProcEffect  proc   = 4;
+	  OnUseEffect on_use = 5;
 	}
   }
 
@@ -34,7 +28,7 @@ message ScalingItemEffectProperties {
 	double      proc_chance = 1;  // e.g. 0.20 = 20%
 	double 		ppm = 3;
 	int32 rppm_scale = 4;
-	// The key represents a Class enum key
+	// The key represents a Spec
 	map<int32, double> spec_modifiers = 5;
 	int32       icd_ms         = 2;  // internal cooldown in milliseconds
   }
