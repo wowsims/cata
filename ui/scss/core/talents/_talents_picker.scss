@@ -283,6 +283,13 @@
 		background-image: url('/mop/assets/talent_calc/right2.png');
 	}
 }
+.talents-tab-left .pet-spec-picker {
+	grid-column: 1 / -1;
+	margin-top: 1rem;
+}
+.talents-tab-left > .talents-picker-root {
+	grid-column: 1 / -1;
+}
 .pet-spec-picker {
 	width: 100%;
 	display: flex;
@@ -295,15 +302,23 @@
 	padding: var(--talent-tree-header-padding-y) var(--talent-tree-header-padding-x);
 	display: flex;
 	align-items: center;
-	background: var(--bs-black);
+	border-bottom: var(--border-default);
+	background: none;
 	color: var(--bs-white);
 }
 
 .pet-spec-list {
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
 	gap: var(--spacer-1);
 	margin-top: var(--block-spacer);
+
+	@include media-breakpoint-down(md) {
+		flex-direction: column;
+	}
+	@include media-breakpoint-up(md) {
+		flex-direction: row;
+	}
 }
 
 .pet-spec-item {

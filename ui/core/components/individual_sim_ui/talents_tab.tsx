@@ -35,7 +35,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 		this.buildPresetConfigurationPicker();
 		this.buildSavedTalentsPicker();
 
-		this.buildHunterPetPicker(this.rightPanel);
+		this.buildHunterPetPicker(this.leftPanel);
 	}
 	private buildHunterPetPicker(parentElem: HTMLElement) {
 		if (this.simUI.player.isClass(Class.ClassHunter)) {
