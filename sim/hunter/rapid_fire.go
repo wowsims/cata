@@ -13,7 +13,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 53232})
 	var focusPA *core.PendingAction
 
-	hasteMultiplier := 1.4 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfRapidFire), 0.1, 0)
+	hasteMultiplier := 1.4
 
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
@@ -31,8 +31,8 @@ func (hunter *Hunter) registerRapidFireCD() {
 				Period:   time.Second * 3,
 				NumTicks: 5,
 				OnAction: func(sim *core.Simulation) {
-					if hunter.Talents.RapidRecuperation > 0 {
-						hunter.AddFocus(sim, 6*float64(hunter.Talents.RapidRecuperation), focusMetrics)
+					if hunter.Spec == proto.Spec_SpecMarksmanshipHunter {
+						hunter.AddFocus(sim, 12, focusMetrics)
 					}
 				},
 			})

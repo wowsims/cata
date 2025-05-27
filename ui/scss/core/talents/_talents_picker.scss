@@ -283,3 +283,80 @@
 		background-image: url('/mop/assets/talent_calc/right2.png');
 	}
 }
+.talents-tab-left .pet-spec-picker {
+	grid-column: 1 / -1;
+	margin-top: 1rem;
+}
+.talents-tab-left > .talents-picker-root {
+	grid-column: 1 / -1;
+}
+.pet-spec-picker {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacer-1);
+	margin: var(--block-spacer) 0;
+}
+
+.pet-spec-picker .talent-tree-header {
+	padding: var(--talent-tree-header-padding-y) var(--talent-tree-header-padding-x);
+	display: flex;
+	align-items: center;
+	border-bottom: var(--border-default);
+	background: none;
+	color: var(--bs-white);
+}
+
+.pet-spec-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacer-1);
+	margin-top: var(--block-spacer);
+
+	@include media-breakpoint-down(md) {
+		flex-direction: column;
+	}
+	@include media-breakpoint-up(md) {
+		flex-direction: row;
+	}
+}
+
+.pet-spec-item {
+	display: flex;
+	align-items: center;
+	gap: var(--spacer-2);
+	padding: calc(var(--talent-icon-size) / 5);
+	border: 2px solid transparent;
+	border-radius: 4px;
+	cursor: pointer;
+	transition:
+		border-color 150ms ease,
+		background 150ms ease;
+}
+
+.pet-spec-item:hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.pet-spec-item .talent-picker-icon {
+	width: var(--talent-icon-size);
+	height: var(--talent-icon-size);
+	background-position: center;
+	background-size: cover;
+	border: 1px solid var(--bs-gray-600);
+	border-radius: 4px;
+}
+
+.pet-spec-item .talent-picker-label {
+	font-size: var(--btn-font-size);
+	color: var(--bs-white);
+}
+
+.pet-spec-item.selected {
+	border-color: var(--bs-talent-full);
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.pet-spec-item.selected .talent-picker-icon {
+	border-color: var(--bs-talent-full);
+}

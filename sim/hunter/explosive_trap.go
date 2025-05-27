@@ -4,10 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
-	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
+	bonusPeriodicDamageMultiplier := core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 0.30, 0)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 13812},
@@ -17,7 +18,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 		Flags:          core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 0, // Todo: Verify focus cost https://warcraft.wiki.gg/index.php?title=Explosive_Trap&oldid=2963725
+			Cost: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -42,7 +43,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 292 + 0.546*dot.Spell.RangedAttackPower()
+				baseDamage := (27) + (0.03819999844 * dot.Spell.RangedAttackPower())
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage/10, dot.Spell.OutcomeRangedHitAndCritNoBlock)
@@ -64,8 +65,9 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 					DoAt: 0,
 					OnAction: func(sim *core.Simulation) {
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							baseDamage := 292 + (0.0546 * spell.RangedAttackPower())
+							baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower())
 							baseDamage *= sim.Encounter.AOECapMultiplier()
+							baseDamage *= core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 1.3, 1)
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 						}
 						hunter.ExplosiveTrap.AOEDot().Apply(sim)
@@ -73,57 +75,12 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				})
 			} else {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := 292 + (0.0546 * spell.RangedAttackPower())
+					baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower())
 					baseDamage *= sim.Encounter.AOECapMultiplier()
+					baseDamage *= core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 1.3, 1)
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 				}
 				hunter.ExplosiveTrap.AOEDot().Apply(sim)
-			}
-		},
-	})
-	// Todo: Gonna leave the trap weave code for now since we have trap launcher, but it incurrs a Focus cost, so we might wanna sim in AOE situations what's better.
-	timeToTrapWeave := time.Millisecond * time.Duration(hunter.Options.TimeToTrapWeaveMs)
-	halfWeaveTime := timeToTrapWeave / 2
-	hunter.TrapWeaveSpell = hunter.RegisterSpell(core.SpellConfig{
-		ActionID: hunter.ExplosiveTrap.ActionID.WithTag(1),
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagNoMetrics | core.SpellFlagNoLogs | core.SpellFlagAPL,
-
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.ExplosiveTrap.CanCast(sim, target)
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if sim.CurrentTime < 0 {
-				hunter.mayMoveAt = sim.CurrentTime
-			}
-
-			// Assume we started running after the most recent ranged auto, so that time
-			// can be subtracted from the run in.
-			reachLocationAt := hunter.mayMoveAt + halfWeaveTime
-			layTrapAt := max(reachLocationAt, sim.CurrentTime)
-			doneAt := layTrapAt + halfWeaveTime
-
-			hunter.AutoAttacks.DelayRangedUntil(sim, doneAt+time.Millisecond*500)
-
-			if layTrapAt == sim.CurrentTime {
-				hunter.ExplosiveTrap.Cast(sim, target)
-				if doneAt > hunter.GCD.ReadyAt() {
-					hunter.GCD.Set(doneAt)
-				}
-			} else {
-				// Make sure the GCD doesn't get used while we're waiting.
-				hunter.WaitUntil(sim, doneAt)
-
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: layTrapAt,
-					OnAction: func(sim *core.Simulation) {
-						hunter.GCD.Reset()
-						hunter.ExplosiveTrap.Cast(sim, target)
-						if doneAt > hunter.GCD.ReadyAt() {
-							hunter.GCD.Set(doneAt)
-						}
-					},
-				})
 			}
 		},
 	})
