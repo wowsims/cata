@@ -23,7 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Priest),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Some items may display and use stats a litle higher than their original value.'],
+	knownIssues: ['Some items may display and use stats a litle higher than their original value.', 'Procs from Weapons, Trinkets and other Items are not yet supported'],
 
 	// All stats for which EP should be calculated.
 	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
@@ -50,9 +50,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET.gear,
+		gear: Presets.PRE_RAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
@@ -77,7 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [PriestInputs.ArmorInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [BuffDebuffInputs.AttackSpeedBuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -90,20 +90,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	presets: {
-		epWeights: [Presets.P3_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.P4_T13_4PC_PRESET_DEFAULT],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRE_RAID, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		itemSwaps: [Presets.P4_ITEM_SWAP],
-		builds: [Presets.P3_PRESET_BUILD, Presets.P4_PRESET_BUILD],
+		gear: [Presets.PRE_RAID_PRESET, Presets.P1_PRESET],
+		itemSwaps: [],
+		builds: [],
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
-		if (hasT134(player)) {
-			return Presets.P4_T13_4PC_PRESET_DEFAULT.rotation.rotation!;
-		}
 		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
@@ -122,12 +119,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					0: Presets.PRE_RAID.gear,
-					1: Presets.P3_PRESET.gear,
+					1: Presets.PRE_RAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					0: Presets.PRE_RAID.gear,
-					1: Presets.P3_PRESET.gear,
+					1: Presets.PRE_RAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
 				},
 			},
 		},
@@ -137,21 +134,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecShadowPriest>) {
 		super(parentElem, player, SPEC_CONFIG);
-
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.SHADOW_BREAKPOINTS,
 				updateSoftCaps: softCaps => {
-					if (hasT134(player)) {
-						softCaps.push(
-							StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
-								breakpoints: [hasteBreakpoints.get('7-tick - VT')!],
-								capType: StatCapType.TypeSoftCap,
-								postCapEPs: [(Presets.P3_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.02) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
-							}),
-						);
-					}
-
 					return softCaps;
 				},
 			});

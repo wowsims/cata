@@ -32,7 +32,7 @@ func (value *APLValueCurrentChi) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueCurrentChi) GetInt(_ *core.Simulation) int32 {
-	return value.monk.ComboPoints()
+	return value.monk.GetChi()
 }
 func (value *APLValueCurrentChi) String() string {
 	return "Current Chi"

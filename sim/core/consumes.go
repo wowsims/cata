@@ -57,13 +57,18 @@ func applyConsumeEffects(agent Agent) {
 	}
 	if consumables.FoodId != 0 {
 		food := ConsumablesByID[consumables.FoodId]
-
+		isPanda := character.Race == proto.Race_RaceHordePandaren || character.Race == proto.Race_RaceAlliancePandaren
 		var foodBuffStats stats.Stats
 		if food.BuffsMainStat {
-			buffAmount := food.Stats[stats.Stamina]
+			buffAmount := TernaryFloat64(isPanda, food.Stats[stats.Stamina]*2, food.Stats[stats.Stamina])
 			foodBuffStats[stats.Stamina] = buffAmount
 			foodBuffStats[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})] = buffAmount
 		} else {
+			if isPanda {
+				for stat, amount := range food.Stats {
+					food.Stats[stat] = amount * 2
+				}
+			}
 			foodBuffStats = food.Stats
 		}
 		character.AddStats(foodBuffStats)

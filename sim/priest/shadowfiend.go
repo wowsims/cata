@@ -7,7 +7,7 @@ import (
 )
 
 func (priest *Priest) registerShadowfiendSpell() {
-	if !priest.UseShadowfiend {
+	if priest.Talents.Mindbender {
 		return
 	}
 
@@ -17,7 +17,7 @@ func (priest *Priest) registerShadowfiendSpell() {
 	priest.ShadowfiendAura = priest.RegisterAura(core.Aura{
 		ActionID: actionID,
 		Label:    "Shadowfiend",
-		Duration: time.Second * 15.0,
+		Duration: time.Second * 12.0,
 	})
 
 	priest.Shadowfiend = priest.RegisterSpell(core.SpellConfig{
@@ -33,12 +33,12 @@ func (priest *Priest) registerShadowfiendSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			priest.ShadowfiendPet.EnableWithTimeout(sim, priest.ShadowfiendPet, time.Second*15.0)
+			priest.ShadowfiendPet.EnableWithTimeout(sim, priest.ShadowfiendPet, time.Second*12.0)
 			priest.ShadowfiendAura.Activate(sim)
 		},
 	})

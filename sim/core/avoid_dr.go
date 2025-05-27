@@ -1,21 +1,28 @@
 package core
 
 import (
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-// Could be in constants.go, but they won't be used anywhere else
-// C values are divided by 100 so that we are working with 1% = 0.01
-// TODO: UPDATE FOR MOP
-// Reference for Cata values: https://web.archive.org/web/20130127084642/http://elitistjerks.com/f15/t29453-combat_ratings_level_85_cataclysm/
-const Diminish_k_Druid = 0.972
-const Diminish_k_Nondruid = 0.956
-const Diminish_Cd_Druid = 116.890707 / 100
-const Diminish_Cd_Nondruid = 65.631440 / 100
-const Diminish_Cp = 65.631440 / 100
-const Diminish_kCd_Druid = (Diminish_k_Druid * Diminish_Cd_Druid)
-const Diminish_kCd_Nondruid = (Diminish_k_Nondruid * Diminish_Cd_Nondruid)
-const Diminish_kCp = (Diminish_k_Nondruid * Diminish_Cp)
+type DiminishingReturnsConstants struct {
+	k, c_p, c_d, c_b float64
+}
+
+// https://github.com/raethkcj/MistsDiminishingReturns
+var AvoidanceDRByClass = map[proto.Class]DiminishingReturnsConstants{
+	proto.Class_ClassWarrior:     {0.956, 237.186, 90.6425, 150.376},
+	proto.Class_ClassPaladin:     {0.886, 237.186, 66.5675, 150.376},
+	proto.Class_ClassHunter:      {0.988, 0, 145.560, 0},
+	proto.Class_ClassRogue:       {0.988, 145.560, 145.560, 0},
+	proto.Class_ClassPriest:      {0.983, 0, 150.376, 0},
+	proto.Class_ClassDeathKnight: {0.956, 237.186, 90.6425, 0},
+	proto.Class_ClassShaman:      {0.988, 145.560, 145.560, 0},
+	proto.Class_ClassMonk:        {1.422, 90.6425, 501.253, 0},
+	proto.Class_ClassMage:        {0.983, 0, 150.376, 0},
+	proto.Class_ClassWarlock:     {0.983, 0, 150.376, 0},
+	proto.Class_ClassDruid:       {1.222, 0, 150.376, 0},
+}
 
 // Diminishing Returns for tank avoidance
 // Non-diminishing sources are added separately in spell outcome funcs
@@ -23,23 +30,20 @@ const Diminish_kCp = (Diminish_k_Nondruid * Diminish_Cp)
 func (unit *Unit) GetDiminishedDodgeChance() float64 {
 	// undiminished Dodge % = D
 	// diminished Dodge % = (D * Cd)/((k*Cd) + D)
-	dodgeChance := unit.stats[stats.DodgeRating] / DodgeRatingPerDodgePercent / 100
-
-	if unit.PseudoStats.CanParry {
-		return (dodgeChance * Diminish_Cd_Nondruid) / (Diminish_kCd_Nondruid + dodgeChance)
-	} else {
-		return (dodgeChance * Diminish_Cd_Druid) / (Diminish_kCd_Druid + dodgeChance)
-	}
+	dodgePercent := unit.stats[stats.DodgeRating] / DodgeRatingPerDodgePercent
+	return (dodgePercent * unit.avoidanceParams.c_d) / (unit.avoidanceParams.k*unit.avoidanceParams.c_d + dodgePercent) / 100
 }
 
 func (unit *Unit) GetDiminishedParryChance() float64 {
 	// undiminished Parry % = P
 	// diminished Parry % = (P * Cp)/((k*Cp) + P)
-	parryChance := unit.stats[stats.ParryRating] / ParryRatingPerParryPercent / 100
-	return (parryChance * Diminish_Cp) / (Diminish_kCp + parryChance)
+	parryPercent := unit.stats[stats.ParryRating] / ParryRatingPerParryPercent
+	return (parryPercent * unit.avoidanceParams.c_p) / (unit.avoidanceParams.k*unit.avoidanceParams.c_p + parryPercent) / 100
 }
 
-func (unit *Unit) GetDiminishedMissChance() float64 {
-	// Defense Rating is gone in Cata, so there are no diminished sources of Miss
-	return 0
+func (unit *Unit) GetDiminishedBlockChance() float64 {
+	// undiminished Block % = B
+	// diminished Block % = (B * Cb)/((k*Cb) + B)
+	blockPercent := unit.stats[stats.BlockPercent]
+	return (blockPercent * unit.avoidanceParams.c_b) / (unit.avoidanceParams.k*unit.avoidanceParams.c_b + blockPercent) / 100
 }

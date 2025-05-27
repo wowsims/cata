@@ -85,7 +85,7 @@ func (encounter *Encounter) AOECapMultiplier() float64 {
 	return encounter.aoeCapMultiplier
 }
 func (encounter *Encounter) updateAOECapMultiplier() {
-	encounter.aoeCapMultiplier = min(10/float64(len(encounter.Targets)), 1)
+	encounter.aoeCapMultiplier = min(20/float64(len(encounter.Targets)), 1)
 }
 
 func (encounter *Encounter) doneIteration(sim *Simulation) {
@@ -215,13 +215,13 @@ type AttackTable struct {
 	MeleeCritSuppression float64
 	SpellCritSuppression float64
 
-	DamageDealtMultiplier  float64 // attacker buff, applied in applyAttackerModifiers()
-	DamageTakenMultiplier  float64 // defender debuff, applied in applyTargetModifiers()
-	HealingDealtMultiplier float64
-	IgnoreArmor            bool    // Ignore defender's armor for specifically this attacker's attacks
-	ArmorIgnoreFactor      float64 // Percentage of armor to ignore for this attacker's attacks
-	BonusSpellCritPercent  float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but only for this attacker specifically
-
+	DamageDealtMultiplier       float64 // attacker buff, applied in applyAttackerModifiers()
+	DamageTakenMultiplier       float64 // defender debuff, applied in applyTargetModifiers()
+	HealingDealtMultiplier      float64
+	IgnoreArmor                 bool    // Ignore defender's armor for specifically this attacker's attacks
+	ArmorIgnoreFactor           float64 // Percentage of armor to ignore for this attacker's attacks
+	BonusSpellCritPercent       float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but only for this attacker specifically
+	RangedDamageTakenMulitplier float64
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
 	DamageDoneByCasterMultiplier DynamicDamageDoneByCaster
@@ -236,9 +236,10 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 		Attacker: attacker,
 		Defender: defender,
 
-		DamageDealtMultiplier:  1,
-		DamageTakenMultiplier:  1,
-		HealingDealtMultiplier: 1,
+		DamageDealtMultiplier:       1,
+		DamageTakenMultiplier:       1,
+		RangedDamageTakenMulitplier: 1,
+		HealingDealtMultiplier:      1,
 	}
 
 	if defender.Type == EnemyUnit {
@@ -255,9 +256,9 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	} else {
 		table.BaseSpellMissChance = UnitLevelFloat64(attacker.Level, 0.06, 0.03, 0, -0.03)
 		table.BaseMissChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
-		table.BaseBlockChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
-		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
-		table.BaseParryChance = UnitLevelFloat64(attacker.Level, 0.03, 0.015, 0, -0.015)
+		table.BaseBlockChance = UnitLevelFloat64(attacker.Level, 0, -0.015, -0.03, -0.045)
+		table.BaseDodgeChance = UnitLevelFloat64(attacker.Level, 0, -0.015, -0.03, -0.045)
+		table.BaseParryChance = UnitLevelFloat64(attacker.Level, 0, -0.015, -0.03, -0.045)
 	}
 
 	return table

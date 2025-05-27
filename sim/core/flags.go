@@ -136,14 +136,16 @@ func (ho HitOutcome) String() string {
 		return "Dodge"
 	} else if ho.Matches(OutcomeParry) {
 		return "Parry"
-	} else if ho.Matches(OutcomeGlance) {
-		return "Glance"
 	} else if ho.Matches(OutcomeBlock) {
 		if ho.Matches(OutcomeCrit) {
 			return "CriticalBlock"
+		} else if ho.Matches(OutcomeGlance) {
+			return "GlanceBlock"
 		} else {
 			return "Block"
 		}
+	} else if ho.Matches(OutcomeGlance) {
+		return "Glance"
 	} else if ho.Matches(OutcomeCrit) {
 		return "Crit" + ho.PartialResistString()
 	} else if ho.Matches(OutcomeHit) {
@@ -204,6 +206,7 @@ const (
 	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
 	SpellFlagSupressDoTApply                               // If present this spell will not apply dots (Used for DTR dot supression)
 	SpellFlagSwapped                                       // Indicates that this spell is not useable because it is from a currently swapped item
+	SpellFlagRanged
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

@@ -12,11 +12,7 @@ func applyRaceEffects(agent Agent) {
 
 	switch character.Race {
 	case proto.Race_RaceBloodElf:
-		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
-		character.PseudoStats.ReducedFireHitTakenChance += 0.02
-		character.PseudoStats.ReducedFrostHitTakenChance += 0.02
-		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
-		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.99
 
 		var actionID ActionID
 
@@ -25,6 +21,9 @@ func applyRaceEffects(agent Agent) {
 			if character.HasRunicPowerBar() {
 				actionID = ActionID{SpellID: 50613}
 				resourceMetrics = character.NewRunicPowerMetrics(actionID)
+			} else if character.Class == proto.Class_ClassMonk {
+				actionID = ActionID{SpellID: 129597}
+				resourceMetrics = character.NewChiMetrics(actionID)
 			} else if character.HasEnergyBar() {
 				actionID = ActionID{SpellID: 25046}
 				resourceMetrics = character.NewEnergyMetrics(actionID)
@@ -52,10 +51,12 @@ func applyRaceEffects(agent Agent) {
 			ApplyEffects: func(sim *Simulation, _ *Unit, spell *Spell) {
 				if spell.Unit.HasRunicPowerBar() {
 					spell.Unit.AddRunicPower(sim, 15.0, resourceMetrics)
+				} else if character.Class == proto.Class_ClassMonk {
+					spell.Unit.AddComboPoints(sim, 1, resourceMetrics)
 				} else if spell.Unit.HasEnergyBar() {
 					spell.Unit.AddEnergy(sim, 15.0, resourceMetrics)
 				} else if spell.Unit.HasManaBar() {
-					spell.Unit.AddMana(sim, spell.Unit.MaxMana()*0.06, resourceMetrics)
+					spell.Unit.AddMana(sim, spell.Unit.MaxMana()*0.02, resourceMetrics)
 				} else if spell.Unit.HasRageBar() {
 					spell.Unit.AddRage(sim, 15.0, resourceMetrics)
 				} else if spell.Unit.HasFocusBar() {
@@ -71,6 +72,8 @@ func applyRaceEffects(agent Agent) {
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				if spell.Unit.HasRunicPowerBar() {
 					return character.CurrentRunicPower() <= character.maxRunicPower-15
+				} else if character.Class == proto.Class_ClassMonk {
+					return character.ComboPoints() <= character.maxComboPoints-1
 				} else if spell.Unit.HasEnergyBar() {
 					return character.CurrentEnergy() <= character.maxEnergy-15
 				} else if spell.Unit.HasRageBar() {
@@ -82,14 +85,14 @@ func applyRaceEffects(agent Agent) {
 			},
 		})
 	case proto.Race_RaceDraenei:
-		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
 		character.AddStats(stats.Stats{
 			stats.PhysicalHitPercent: 1,
 			stats.SpellHitPercent:    1,
 		})
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.99
 		// TODO: Gift of the naaru for healers
 	case proto.Race_RaceDwarf:
-		character.PseudoStats.ReducedFrostHitTakenChance += 0.02
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.99
 
 		// Crack Shot: 1% Expertise with Ranged Weapons
 		ranged := character.Ranged()
@@ -99,18 +102,17 @@ func applyRaceEffects(agent Agent) {
 			character.AddStat(stats.ExpertiseRating, ExpertisePerQuarterPercentReduction*4)
 		}
 
-		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
+		applyWeaponSpecialization(character, 4*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeMace)
 
 		actionID := ActionID{SpellID: 20594}
 
-		statDep := character.NewDynamicMultiplyStat(stats.Armor, 1.1)
 		stoneFormAura := character.NewTemporaryStatsAuraWrapped("Stoneform", actionID, stats.Stats{}, time.Second*8, func(aura *Aura) {
 			aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
-				aura.Unit.EnableDynamicStatDep(sim, statDep)
+				character.PseudoStats.DamageTakenMultiplier *= 0.90
 			})
 			aura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
-				aura.Unit.DisableDynamicStatDep(sim, statDep)
+				character.PseudoStats.DamageTakenMultiplier /= 0.90
 			})
 		})
 
@@ -133,16 +135,16 @@ func applyRaceEffects(agent Agent) {
 			Type:  CooldownTypeDPS,
 		})
 	case proto.Race_RaceGnome:
-		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.99
 		character.MultiplyStat(stats.Mana, 1.05)
-		applyOneHandWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
+		applyOneHandWeaponSpecialization(character, 4*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeSword, proto.WeaponType_WeaponTypeDagger)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.03)
-		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
+		applyWeaponSpecialization(character, 4*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeMace, proto.WeaponType_WeaponTypeSword)
 	case proto.Race_RaceNightElf:
-		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.99
 		character.PseudoStats.ReducedPhysicalHitTakenChance += 0.02
 
 		// Shadowmeld
@@ -192,9 +194,9 @@ func applyRaceEffects(agent Agent) {
 		})
 
 	case proto.Race_RaceOrc:
-		// Command (Pet damage +5%)
+		// Command (Pet damage +2%)
 		for _, pet := range character.Pets {
-			pet.PseudoStats.DamageDealtMultiplier *= 1.05
+			pet.PseudoStats.DamageDealtMultiplier *= 1.02
 		}
 
 		// Blood Fury
@@ -204,14 +206,17 @@ func applyRaceEffects(agent Agent) {
 
 		switch character.Class {
 		case proto.Class_ClassMage:
-			spBonus = 584.5
+			spBonus = 2257.0
 		case proto.Class_ClassWarlock:
-			spBonus = 584.5
+			spBonus = 2257.0
 		case proto.Class_ClassShaman:
-			spBonus = 584.5
-			apBonus = 1169.0
+			spBonus = 2257.0
+			apBonus = 4514.0
+		case proto.Class_ClassMonk:
+			spBonus = 2257.0
+			apBonus = 4514.0
 		default:
-			apBonus = 1169.0
+			apBonus = 4514.0
 		}
 
 		buffStats := stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}
@@ -227,10 +232,10 @@ func applyRaceEffects(agent Agent) {
 		})
 
 		// Axe specialization
-		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
+		applyWeaponSpecialization(character, 4*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist)
 	case proto.Race_RaceTauren:
-		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.99
 		character.AddStat(stats.Health, character.GetBaseStats()[stats.Health]*0.05)
 	case proto.Race_RaceTroll:
 		// Dead Eye: 1% Expertise with Guns, Bows or Crossbows.
@@ -285,14 +290,48 @@ func applyRaceEffects(agent Agent) {
 			Type:  CooldownTypeDPS,
 		})
 	case proto.Race_RaceUndead:
-		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.99
+
+		touchOfTheGraveSpell := character.RegisterSpell(SpellConfig{
+			ActionID:       ActionID{SpellID: 127802},
+			SpellSchool:    SpellSchoolShadow,
+			ProcMask:       ProcMaskSpellProc,
+			CritMultiplier: character.DefaultCritMultiplier(),
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				baseDamage := sim.Roll(CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassUnknown, 8, 0.15000000596))
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+				healAmount := result.Damage * spell.Unit.PseudoStats.HealingTakenMultiplier
+				spell.DealDamage(sim, result)
+				result.Target = spell.Unit
+				result.Damage = healAmount
+				spell.DealHealing(sim, result)
+			},
+		})
+
+		MakeProcTriggerAura(&character.Unit, ProcTrigger{
+			Name:       "Touch of the Grave",
+			ActionID:   ActionID{SpellID: 5227},
+			Callback:   CallbackOnSpellHitDealt | CallbackOnPeriodicDamageDealt,
+			ProcMask:   ProcMaskSpellDamage | ProcMaskMelee,
+			Outcome:    OutcomeLanded,
+			ProcChance: 0.2,
+			ICD:        time.Second * 15,
+			Handler: func(sim *Simulation, spell *Spell, result *SpellResult) {
+				touchOfTheGraveSpell.Cast(sim, result.Target)
+			},
+		})
 	case proto.Race_RaceWorgen:
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.99
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.99
 		character.AddStat(stats.PhysicalCritPercent, 1)
 		character.AddStat(stats.SpellCritPercent, 1)
 	case proto.Race_RaceGoblin:
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
 		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 		character.PseudoStats.CastSpeedMultiplier *= 1.01
+	case proto.Race_RaceAlliancePandaren:
+	case proto.Race_RaceHordePandaren:
+		//Epicurean in consumes.go
 	}
 }
 
