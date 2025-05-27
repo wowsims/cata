@@ -24,8 +24,8 @@ type DBC struct {
 	ArmorLocation          map[int]ArmorLocation
 	SpellScalings          map[int]SpellScaling
 	Consumables            map[int]Consumable   // Item ID
-	ItemEffects            map[int]ItemEffect   // Parent Item ID
-	ItemEffectsByParentID  map[int][]ItemEffect // new
+	ItemEffects            map[int]ItemEffect   // Effect ID
+	ItemEffectsByParentID  map[int][]ItemEffect // ParentItemID
 }
 
 func NewDBC() *DBC {
@@ -173,14 +173,6 @@ func (d *DBC) loadItemEffects(filename string) error {
 			Field:  "ItemEffect",
 			Reason: err.Error(),
 		}
-	}
-
-	// Initialize maps if needed
-	if d.ItemEffects == nil {
-		d.ItemEffects = make(map[int]ItemEffect)
-	}
-	if d.ItemEffectsByParentID == nil {
-		d.ItemEffectsByParentID = make(map[int][]ItemEffect)
 	}
 
 	// Populate both maps
