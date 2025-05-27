@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 type PetAbilityType int
@@ -13,16 +14,39 @@ const PetGCD = time.Millisecond * 1200
 
 const (
 	Unknown PetAbilityType = iota
-	AcidSpit
-	Bite
-	Claw
-	DemoralizingScreech
-	FireBreath
-	Smack
-	Stampede
-	CorrosiveSpit
-	TailSpin
-	FrostStormBreath
+
+	// Beast Master Specific Buffs
+	AncientHysteria         // Corehound: Burst Haste
+	EmbraceOfTheShaleSpider // Shale Spider: Kings
+	QirajiFortitude         // Silithid: Stamina
+
+	// Enemy Debuffs
+	Gore                // Boar: Phys Dmg Taken ↑
+	Ravage              // Ravager: Phys Dmg Taken ↑
+	StampedeDebuff      // Rhino: Phys Dmg Taken ↑
+	AcidSpitDebuff      // Worm: Phys Dmg Taken ↑
+	DemoralizingRoar    // Bear: Enemy DPS ↓
+	DemoralizingScreech // Carrion Bird: Enemy DPS ↓
+	FireBreathDebuff    // Dragonhawk: Magic Dmg Taken ↑
+	LightningBreath     // Wind Serpent: Magic Dmg Taken ↑
+	SporeCloud          // Spore Bat: Reduce Cast Speed
+	TailSpin            // Fox: Reduce Cast Speed
+	Trample             // Goat: Reduce Cast Speed
+	LavaBreath          // Corehound: Exotic Cast Speed Debuff
+	DustCloud           // Tallstrider: Reduce Armor
+	TearArmor           // Raptor: Reduce Armor
+
+	// Utility
+	BurrowAttack        // Worm: AoE Damage
+	FroststormBreathAoE // Chimera: AoE Damage
+
+	MonstrousBite // Devilsaur: Reduce Healing
+	SpiritMend    // Spirit Beast: Healing
+
+	// Basic Attacks
+	Bite  // FocusDump: Bite
+	Claw  // FocusDump: Claw
+	Smack // FocusDump: Smack
 )
 
 // These IDs are needed for certain talents.
@@ -33,45 +57,50 @@ const SmackSpellID = 49966
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {
 	switch abilityType {
 
+	case Gore:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.PhysVulnerabilityAura})
+	case Ravage:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50518, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.PhysVulnerabilityAura})
+	case StampedeDebuff:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 57386, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.PhysVulnerabilityAura})
+	case AcidSpitDebuff:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 55749, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.PhysVulnerabilityAura})
+	case DemoralizingRoar:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50256, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.WeakenedBlowsAura})
+	case DemoralizingScreech:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 24423, CD: time.Second * 8, School: core.SpellSchoolNature, DebuffAura: core.WeakenedBlowsAura})
+	case FireBreathDebuff:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 34889, CD: time.Second * 30, School: core.SpellSchoolFire, DebuffAura: core.FireBreathDebuff})
+	case LightningBreath:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 24844, CD: time.Second * 30, School: core.SpellSchoolFire, DebuffAura: core.LightningBreathDebuff})
+	case SporeCloud:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50274, CD: time.Second * 8, School: core.SpellSchoolFire, DebuffAura: core.SporeCloud})
+	case TailSpin:
+		return hp.newTailSpin()
+	case Trample:
+		return hp.newTrample()
+	case LavaBreath:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 58604, CD: time.Second * 8, School: core.SpellSchoolFire, DebuffAura: core.LavaBreathAura})
+	case DustCloud:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50285, CD: time.Second * 6, School: core.SpellSchoolNature, DebuffAura: core.WeakenedArmorAura})
+	case TearArmor:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50498, CD: time.Second * 25, School: core.SpellSchoolNature, DebuffAura: core.WeakenedArmorAura})
+	case BurrowAttack:
+		return hp.newBurrowAttack()
+	case FroststormBreathAoE:
+		return hp.newFrostStormBreath()
+	case MonstrousBite:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 54680, CD: time.Second * 8, School: core.SpellSchoolNature, DebuffAura: core.MortalWoundsAura})
+	case SpiritMend:
+		return hp.newSpiritMend()
+
 	case Bite:
 		return hp.newBite()
 	case Claw:
 		return hp.newClaw()
 	case Smack:
 		return hp.newSmack()
-	case FrostStormBreath:
-		return hp.newFrostStormBreath()
-	case DemoralizingScreech:
-		return hp.newDemoralizingScreech()
-		//return nil
-	case FireBreath: // 8% Spell Damage Taken
-		return hp.newPetDebuff(PetDebuffSpellConfig{
-			SpellID:    24844,
-			CD:         time.Second * 30,
-			School:     core.SpellSchoolFire,
-			DebuffAura: core.FireBreathDebuff,
-		})
-	case AcidSpit: // 4% Phys Dmg Taken
-		return hp.newPetDebuff(PetDebuffSpellConfig{
-			SpellID:    55749,
-			CD:         time.Second * 10,
-			School:     core.SpellSchoolNature,
-			DebuffAura: core.AcidSpitAura,
-		})
-	case CorrosiveSpit: // 10% Armor Reduction
-		return hp.newPetDebuff(PetDebuffSpellConfig{
-			SpellID:    35387,
-			CD:         time.Second * 6,
-			School:     core.SpellSchoolNature,
-			DebuffAura: core.CorrosiveSpitAura,
-		})
-	case Stampede: // Bleed Damage 30%
-		return hp.newPetDebuff(PetDebuffSpellConfig{
-			SpellID:    35290,
-			CD:         time.Second * 10,
-			School:     core.SpellSchoolPhysical,
-			DebuffAura: core.StampedeAura,
-		})
+
 	case Unknown:
 		return nil
 	default:
@@ -106,11 +135,11 @@ func (hp *HunterPet) RegisterKillCommandSpell() *core.Spell {
 				GCD: time.Second * 0,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hp.CritMultiplier(1.0, 0.0),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.5,
+		CritMultiplier:   hp.CritMultiplier(1.0, 0.0),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.516*spell.RangedAttackPower() + 923
+			baseDamage := 0.938*spell.RangedAttackPower() + 935
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
@@ -132,7 +161,7 @@ func (hp *HunterPet) newPetDebuff(config PetDebuffSpellConfig) *core.Spell {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(config.CD),
+				Duration: config.CD,
 			},
 		},
 
@@ -251,7 +280,7 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(config.CD),
+				Duration: config.CD,
 			},
 		},
 		ApplyEffects: applyEffects,
@@ -327,37 +356,51 @@ func (hp *HunterPet) newFrostStormBreath() *core.Spell {
 	return hp.frostStormBreath
 }
 
-func (hp *HunterPet) newDemoralizingScreech() *core.Spell {
-	debuffs := hp.NewEnemyAuraArray(core.DemoralizingScreechAura)
+func (hp *HunterPet) newTailSpin() *core.Spell { panic("newTailSpin not implemented") }
+func (hp *HunterPet) newTrample() *core.Spell  { panic("newTrample not implemented") }
 
-	return hp.newSpecialAbility(PetSpecialAbilityConfig{
-		Type: DemoralizingScreech,
+func (hp *HunterPet) newBurrowAttack() *core.Spell { panic("newBurrowAttack not implemented") }
+func (hp *HunterPet) newSpiritMend() *core.Spell   { panic("newSpiritMend not implemented") }
 
-		GCD:     PetGCD,
-		CD:      time.Second * 10,
-		SpellID: 55487,
-		School:  core.SpellSchoolPhysical,
-		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					debuffs.Get(aoeTarget).Activate(sim)
-				}
-			}
+func (hp *HunterPet) registerRabidCD() {
+	hunter := hp.hunterOwner
+	if hunter.Options.PetSpec != proto.PetSpec_Ferocity {
+		return
+	}
+	actionID := core.ActionID{SpellID: 53401}
+
+	buffAura := hp.RegisterAura(core.Aura{
+		Label:    "Rabid",
+		ActionID: actionID,
+		Duration: time.Second * 20,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hp.MultiplyAttackSpeed(sim, 1.7)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hp.MultiplyAttackSpeed(sim, 1/1.7)
 		},
 	})
-}
 
-func (hp *HunterPet) newStampede() *core.Spell {
-	debuffs := hp.NewEnemyAuraArray(core.StampedeAura)
-	return hp.newSpecialAbility(PetSpecialAbilityConfig{
-		Type:    Stampede,
-		CD:      time.Second * 60,
-		SpellID: 57386,
-		School:  core.SpellSchoolPhysical,
-		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				debuffs.Get(result.Target).Activate(sim)
-			}
+	rabidSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: time.Second * 90,
+			},
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hp.IsEnabled()
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			buffAura.Activate(sim)
+		},
+	})
+
+	hunter.AddMajorCooldown(core.MajorCooldown{
+		Spell: rabidSpell,
+		Type:  core.CooldownTypeDPS,
 	})
 }
