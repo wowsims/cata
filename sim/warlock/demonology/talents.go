@@ -51,7 +51,7 @@ func (demonlogy *DemonologyWarlock) registerGrimoireOfSupremacy() {
 		CritMultiplier:   2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 1.6
+			baseDmg := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 1.95
 			baseDmg /= float64(sim.Environment.GetNumTargets())
 
 			for _, target := range sim.Encounter.TargetUnits {
