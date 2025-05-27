@@ -163,8 +163,10 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyBlinkStrike()
 	hunter.ApplyHotfixes()
 
-	//hunter.Pet.ApplyTalents()
-	hunter.Pet.ApplySpecialization()
+	if hunter.Pet != nil {
+
+		hunter.Pet.ApplyTalents()
+	}
 }
 
 func (hunter *Hunter) RegisterSpells() {
@@ -197,10 +199,8 @@ func (hunter *Hunter) AddStatDependencies() {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// TODO: Fix this to work with the new talent system.
-	// if hunter.Talents.TrueshotAura {
-	// 	raidBuffs.TrueshotAura = true
-	// }
+	raidBuffs.TrueshotAura = true
+
 	// if hunter.Talents.FerociousInspiration && hunter.Options.PetType != proto.HunterOptions_PetNone {
 	// 	raidBuffs.FerociousInspiration = true
 	// }
@@ -208,7 +208,30 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if hunter.Options.PetType == proto.HunterOptions_CoreHound {
 		raidBuffs.Bloodlust = true
 	}
+	switch hunter.Options.PetType {
+	case proto.HunterOptions_CoreHound:
+		raidBuffs.Bloodlust = true
 
+	case proto.HunterOptions_ShaleSpider:
+		raidBuffs.EmbraceOfTheShaleSpider = true
+
+	case proto.HunterOptions_Wolf:
+		raidBuffs.FuriousHowl = true
+	case proto.HunterOptions_Devilsaur:
+		raidBuffs.TerrifyingRoar = true
+	case proto.HunterOptions_WaterStrider:
+		raidBuffs.StillWater = true
+	case proto.HunterOptions_Hyena:
+		raidBuffs.CacklingHowl = true
+	case proto.HunterOptions_Serpent:
+		raidBuffs.SerpentsSwiftness = true
+	case proto.HunterOptions_SporeBat:
+		raidBuffs.MindQuickening = true
+	case proto.HunterOptions_Cat:
+		raidBuffs.RoarOfCourage = true
+	case proto.HunterOptions_SpiritBeast:
+		raidBuffs.SpiritBeastBlessing = true
+	}
 	// if hunter.Options.PetType == proto.HunterOptions_ShaleSpider {
 	// 	raidBuffs.BlessingOfKings = true
 	// }

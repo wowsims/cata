@@ -8,9 +8,8 @@ import (
 
 func (hunter *Hunter) getBarrageConfig() core.SpellConfig {
 	return core.SpellConfig{
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskSpellProc,
-		//ClassSpellMask:           PriestSpellMindSear,
+		SpellSchool:              core.SpellSchoolPhysical,
+		ProcMask:                 core.ProcMaskSpellProc,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
@@ -23,16 +22,15 @@ func (hunter *Hunter) getBarrageTickSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 120361}
 	config.MissileSpeed = 30
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower()) * 0.4
+		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower()) * 0.2
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
-
-			// Calc spell damage but deal as periodic for metric purposes
+			if aoeTarget == target {
+				sharedDmg *= 2
+			}
 			result := spell.CalcDamage(sim, aoeTarget, sharedDmg, spell.OutcomeRangedHitAndCrit)
-			// Will see if this works in dot effect
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealPeriodicDamage(sim, result)
 
-				// Adjust metrics just for Mind Sear as it is a edgecase and needs to be handled manually
 				if result.DidCrit() {
 					spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 				} else {
@@ -73,7 +71,7 @@ func (hunter *Hunter) registerBarrageSpell() {
 		Aura: core.Aura{
 			Label: "Barrage-" + hunter.Label,
 		},
-		NumberOfTicks:       15,
+		NumberOfTicks:       16,
 		TickLength:          time.Millisecond * 200,
 		AffectedByCastSpeed: true,
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -87,7 +85,7 @@ func (hunter *Hunter) registerBarrageSpell() {
 		}
 	}
 	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower()) * 0.4
+		sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower()) * 0.2
 		return spell.CalcDamage(sim, target, sharedDmg, spell.OutcomeRangedHitAndCrit)
 	}
 

@@ -74,6 +74,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 3.47,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.56,
+			[Stat.StatExpertiseRating]: 22.222,
 			[Stat.StatCritRating]: 1.45,
 			[Stat.StatHasteRating]: 1.09,
 			[Stat.StatMasteryRating]: 1.04,

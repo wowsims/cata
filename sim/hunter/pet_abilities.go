@@ -15,17 +15,6 @@ const PetGCD = time.Millisecond * 1200
 const (
 	Unknown PetAbilityType = iota
 
-	// Raid/Party-Wide Buffs
-	RoarOfCourage       // Cat: Increase Mastery
-	SpiritBeastBlessing // Spirit Beast: Increase Mastery
-	CacklingHowl        // Hyena: Increase Haste
-	SerpentsSwiftness   // Serpent: Increase Haste
-	BellowingRoar       // Hydra (retired): Increase Crit
-	FuriousHowl         // Wolf: Increase Crit
-	TerrifyingRoar      // Devilsaur: Increase Crit
-	FearlessRoar        // Quilen: Increase Crit
-	StillWater          // Water Strider: Spell Power + Crit
-
 	// Beast Master Specific Buffs
 	AncientHysteria         // Corehound: Burst Haste
 	EmbraceOfTheShaleSpider // Shale Spider: Kings
@@ -50,34 +39,9 @@ const (
 	// Utility
 	BurrowAttack        // Worm: AoE Damage
 	FroststormBreathAoE // Chimera: AoE Damage
-	EternalGuardian     // Quilen: Battle Res
-	SonicBlast          // Bat: Stun
-	Sting               // Wasp: Stun
-	WebWrap             // Shale Spider: Stun
-	ParalyzingQuill     // Porcupine: Incapacitate
-	NetherShock         // Nether Ray: Interrupt
-	Pummel              // Gorilla: Interrupt
-	SerenityDust        // Moth: Interrupt
-	Clench              // Scorpid: Disarm
-	Snatch              // BirdOfPrey: Disarm
-	BadManners          // Monkey: CC
-	PetrifyingGaze      // Basilisk: CC
-	Lullaby             // Crane: CC
-	AnkleCrack          // Crocodile: Slow
-	TimeWarp            // Warpstalker: Slow
-	FrostBreathSlow     // Chimera: Slow
-	Pin                 // Crab: Root
-	LockJaw             // Dog: Root
-	Web                 // Spider: Root
-	VenomWebSpray       // Silithid: Root
-	MonstrousBite       // Devilsaur: Reduce Healing
-	HornToss            // Rhino: Knockback
-	SpiritMend          // Spirit Beast: Healing
 
-	// Hunter-Specific Utility
-	ShellShield    // Turtle: Damage Reduction
-	HardenCarapace // Beetle: Damage Reduction
-	SurfaceTrot    // Water Strider: Water Walking
+	MonstrousBite // Devilsaur: Reduce Healing
+	SpiritMend    // Spirit Beast: Healing
 
 	// Basic Attacks
 	Bite  // FocusDump: Bite
@@ -92,117 +56,43 @@ const SmackSpellID = 49966
 
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {
 	switch abilityType {
-	case RoarOfCourage:
-		return hp.newRoarOfCourage()
-	case SpiritBeastBlessing:
-		return hp.newSpiritBeastBlessing()
-	case CacklingHowl:
-		return hp.newCacklingHowl()
-	case SerpentsSwiftness:
-		return hp.newSerpentsSwiftness()
-	case BellowingRoar:
-		return hp.newBellowingRoar()
-	case FuriousHowl:
-		return hp.newFuriousHowl()
-	case TerrifyingRoar:
-		return hp.newTerrifyingRoar()
-	case FearlessRoar:
-		return hp.newFearlessRoar()
-	case StillWater:
-		return hp.newStillWater()
 
-	case AncientHysteria:
-		return hp.newAncientHysteria()
-	case EmbraceOfTheShaleSpider:
-		return hp.newEmbraceOfTheShaleSpider()
-	case QirajiFortitude:
-		return hp.newQirajiFortitude()
 	case Gore:
-		//return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 25, School: core.SpellSchoolPhysical, DebuffAura: core.GoreAura})
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.PhysVulnerabilityAura})
 	case Ravage:
-		//return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 25, School: core.SpellSchoolPhysical, DebuffAura: core.RavageAura})
-	// case StampedeDebuff:
-	// 	return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 35290, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.StampedeAura})
-	// case AcidSpitDebuff:
-	// 	return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 55749, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.AcidSpitAura})
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50518, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.PhysVulnerabilityAura})
+	case StampedeDebuff:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 57386, CD: time.Second * 10, School: core.SpellSchoolPhysical, DebuffAura: core.PhysVulnerabilityAura})
+	case AcidSpitDebuff:
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 55749, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.PhysVulnerabilityAura})
 	case DemoralizingRoar:
-		//return hp.newDemoralizingRoar()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50256, CD: time.Second * 10, School: core.SpellSchoolNature, DebuffAura: core.WeakenedBlowsAura})
 	case DemoralizingScreech:
-		//return hp.newDemoralizingScreech()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 24423, CD: time.Second * 8, School: core.SpellSchoolNature, DebuffAura: core.WeakenedBlowsAura})
 	case FireBreathDebuff:
-		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 24844, CD: time.Second * 30, School: core.SpellSchoolFire, DebuffAura: core.FireBreathDebuff})
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 34889, CD: time.Second * 30, School: core.SpellSchoolFire, DebuffAura: core.FireBreathDebuff})
 	case LightningBreath:
-		return hp.newLightningBreath()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 24844, CD: time.Second * 30, School: core.SpellSchoolFire, DebuffAura: core.LightningBreathDebuff})
 	case SporeCloud:
-		return hp.newSporeCloud()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50274, CD: time.Second * 8, School: core.SpellSchoolFire, DebuffAura: core.SporeCloud})
 	case TailSpin:
 		return hp.newTailSpin()
 	case Trample:
 		return hp.newTrample()
 	case LavaBreath:
-		return hp.newLavaBreath()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 58604, CD: time.Second * 8, School: core.SpellSchoolFire, DebuffAura: core.LavaBreathAura})
 	case DustCloud:
-		return hp.newDustCloud()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50285, CD: time.Second * 6, School: core.SpellSchoolNature, DebuffAura: core.WeakenedArmorAura})
 	case TearArmor:
-		return hp.newTearArmor()
-
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 50498, CD: time.Second * 25, School: core.SpellSchoolNature, DebuffAura: core.WeakenedArmorAura})
 	case BurrowAttack:
 		return hp.newBurrowAttack()
 	case FroststormBreathAoE:
 		return hp.newFrostStormBreath()
-	case EternalGuardian:
-		return hp.newEternalGuardian()
-	case SonicBlast:
-		return hp.newSonicBlast()
-	case Sting:
-		return hp.newSting()
-	case WebWrap:
-		return hp.newWebWrap()
-	case ParalyzingQuill:
-		return hp.newParalyzingQuill()
-	case NetherShock:
-		return hp.newNetherShock()
-	case Pummel:
-		return hp.newPummel()
-	case SerenityDust:
-		return hp.newSerenityDust()
-	case Clench:
-		return hp.newClench()
-	case Snatch:
-		return hp.newSnatch()
-	case BadManners:
-		return hp.newBadManners()
-	case PetrifyingGaze:
-		return hp.newPetrifyingGaze()
-	case Lullaby:
-		return hp.newLullaby()
-	case AnkleCrack:
-		return hp.newAnkleCrack()
-	case TimeWarp:
-		return hp.newTimeWarp()
-	case FrostBreathSlow:
-		return hp.newFrostBreathSlow()
-	case Pin:
-		return hp.newPin()
-	case LockJaw:
-		return hp.newLockJaw()
-	case Web:
-		return hp.newWeb()
-	case VenomWebSpray:
-		return hp.newVenomWebSpray()
 	case MonstrousBite:
-		return hp.newMonstrousBite()
-	case HornToss:
-		return hp.newHornToss()
+		return hp.newPetDebuff(PetDebuffSpellConfig{SpellID: 54680, CD: time.Second * 8, School: core.SpellSchoolNature, DebuffAura: core.MortalWoundsAura})
 	case SpiritMend:
 		return hp.newSpiritMend()
-
-	case ShellShield:
-		return hp.newShellShield()
-	case HardenCarapace:
-		return hp.newHardenCarapace()
-	case SurfaceTrot:
-		return hp.newSurfaceTrot()
 
 	case Bite:
 		return hp.newBite()
@@ -216,7 +106,6 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 	default:
 		panic("Invalid pet ability type")
 	}
-	return nil
 }
 
 type PetDebuffSpellConfig struct {
@@ -467,62 +356,11 @@ func (hp *HunterPet) newFrostStormBreath() *core.Spell {
 	return hp.frostStormBreath
 }
 
-func (hp *HunterPet) newRoarOfCourage() *core.Spell { panic("newRoarOfCourage not implemented") }
-func (hp *HunterPet) newSpiritBeastBlessing() *core.Spell {
-	panic("newSpiritBeastBlessing not implemented")
-}
-func (hp *HunterPet) newCacklingHowl() *core.Spell { panic("newCacklingHowl not implemented") }
-func (hp *HunterPet) newSerpentsSwiftness() *core.Spell {
-	panic("newSerpentsSwiftness not implemented")
-}
-func (hp *HunterPet) newBellowingRoar() *core.Spell  { panic("newBellowingRoar not implemented") }
-func (hp *HunterPet) newFuriousHowl() *core.Spell    { return hp.focusDump }
-func (hp *HunterPet) newTerrifyingRoar() *core.Spell { panic("newTerrifyingRoar not implemented") }
-func (hp *HunterPet) newFearlessRoar() *core.Spell   { panic("newFearlessRoar not implemented") }
-func (hp *HunterPet) newStillWater() *core.Spell     { panic("newStillWater not implemented") }
+func (hp *HunterPet) newTailSpin() *core.Spell { panic("newTailSpin not implemented") }
+func (hp *HunterPet) newTrample() *core.Spell  { panic("newTrample not implemented") }
 
-func (hp *HunterPet) newAncientHysteria() *core.Spell { panic("newAncientHysteria not implemented") }
-func (hp *HunterPet) newEmbraceOfTheShaleSpider() *core.Spell {
-	panic("newEmbraceOfTheShaleSpider not implemented")
-}
-func (hp *HunterPet) newQirajiFortitude() *core.Spell { panic("newQirajiFortitude not implemented") }
-
-func (hp *HunterPet) newLightningBreath() *core.Spell { panic("newLightningBreath not implemented") }
-func (hp *HunterPet) newSporeCloud() *core.Spell      { panic("newSporeCloud not implemented") }
-func (hp *HunterPet) newTailSpin() *core.Spell        { panic("newTailSpin not implemented") }
-func (hp *HunterPet) newTrample() *core.Spell         { panic("newTrample not implemented") }
-func (hp *HunterPet) newLavaBreath() *core.Spell      { panic("newLavaBreath not implemented") }
-func (hp *HunterPet) newDustCloud() *core.Spell       { panic("newDustCloud not implemented") }
-func (hp *HunterPet) newTearArmor() *core.Spell       { panic("newTearArmor not implemented") }
-
-func (hp *HunterPet) newBurrowAttack() *core.Spell    { panic("newBurrowAttack not implemented") }
-func (hp *HunterPet) newEternalGuardian() *core.Spell { panic("newEternalGuardian not implemented") }
-func (hp *HunterPet) newSonicBlast() *core.Spell      { panic("newSonicBlast not implemented") }
-func (hp *HunterPet) newSting() *core.Spell           { panic("newSting not implemented") }
-func (hp *HunterPet) newWebWrap() *core.Spell         { panic("newWebWrap not implemented") }
-func (hp *HunterPet) newParalyzingQuill() *core.Spell { panic("newParalyzingQuill not implemented") }
-func (hp *HunterPet) newNetherShock() *core.Spell     { panic("newNetherShock not implemented") }
-func (hp *HunterPet) newPummel() *core.Spell          { panic("newPummel not implemented") }
-func (hp *HunterPet) newSerenityDust() *core.Spell    { panic("newSerenityDust not implemented") }
-func (hp *HunterPet) newClench() *core.Spell          { panic("newClench not implemented") }
-func (hp *HunterPet) newSnatch() *core.Spell          { panic("newSnatch not implemented") }
-func (hp *HunterPet) newBadManners() *core.Spell      { panic("newBadManners not implemented") }
-func (hp *HunterPet) newPetrifyingGaze() *core.Spell  { panic("newPetrifyingGaze not implemented") }
-func (hp *HunterPet) newLullaby() *core.Spell         { panic("newLullaby not implemented") }
-func (hp *HunterPet) newAnkleCrack() *core.Spell      { panic("newAnkleCrack not implemented") }
-func (hp *HunterPet) newTimeWarp() *core.Spell        { panic("newTimeWarp not implemented") }
-func (hp *HunterPet) newFrostBreathSlow() *core.Spell { panic("newFrostBreathSlow not implemented") }
-func (hp *HunterPet) newPin() *core.Spell             { panic("newPin not implemented") }
-func (hp *HunterPet) newLockJaw() *core.Spell         { panic("newLockJaw not implemented") }
-func (hp *HunterPet) newWeb() *core.Spell             { panic("newWeb not implemented") }
-func (hp *HunterPet) newVenomWebSpray() *core.Spell   { panic("newVenomWebSpray not implemented") }
-func (hp *HunterPet) newMonstrousBite() *core.Spell   { panic("newMonstrousBite not implemented") }
-func (hp *HunterPet) newHornToss() *core.Spell        { panic("newHornToss not implemented") }
-func (hp *HunterPet) newSpiritMend() *core.Spell      { panic("newSpiritMend not implemented") }
-
-func (hp *HunterPet) newShellShield() *core.Spell    { panic("newShellShield not implemented") }
-func (hp *HunterPet) newHardenCarapace() *core.Spell { panic("newHardenCarapace not implemented") }
-func (hp *HunterPet) newSurfaceTrot() *core.Spell    { panic("newSurfaceTrot not implemented") }
+func (hp *HunterPet) newBurrowAttack() *core.Spell { panic("newBurrowAttack not implemented") }
+func (hp *HunterPet) newSpiritMend() *core.Spell   { panic("newSpiritMend not implemented") }
 
 func (hp *HunterPet) registerRabidCD() {
 	hunter := hp.hunterOwner

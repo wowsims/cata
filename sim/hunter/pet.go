@@ -1,6 +1,8 @@
 package hunter
 
 import (
+	"fmt"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -133,7 +135,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hunter.AddPet(hp)
 	return hp
 }
-func (hp *HunterPet) ApplySpecialization() {
+func (hp *HunterPet) ApplyTalents() {
 	hp.ApplyCombatExperience() // All pets have this
 	hp.ApplySpikedCollar()
 
@@ -144,13 +146,12 @@ func (hp *HunterPet) GetPet() *core.Pet {
 
 func (hp *HunterPet) Initialize() {
 	cfg := DefaultPetConfigs[hp.hunterOwner.Options.PetType]
-
+	fmt.Println(cfg)
 	// Primary active ability (often a cooldown)
 	if cfg.SpecialAbility != Unknown {
 		hp.specialAbility = hp.NewPetAbility(cfg.SpecialAbility, true)
 	}
 
-	// Focus-generating basic attack
 	if cfg.FocusDump != Unknown {
 		hp.focusDump = hp.NewPetAbility(cfg.FocusDump, false)
 	}
@@ -256,47 +257,47 @@ type PetConfig struct {
 
 var DefaultPetConfigs = [...]PetConfig{
 	proto.HunterOptions_PetNone:      {},
-	proto.HunterOptions_Bat:          {Name: "Bat", FocusDump: Smack, SpecialAbility: SonicBlast},
+	proto.HunterOptions_Bat:          {Name: "Bat", FocusDump: Smack},
 	proto.HunterOptions_Bear:         {Name: "Bear", FocusDump: Claw, SpecialAbility: DemoralizingRoar},
-	proto.HunterOptions_BirdOfPrey:   {Name: "Bird of Prey", FocusDump: Claw, SpecialAbility: Snatch},
+	proto.HunterOptions_BirdOfPrey:   {Name: "Bird of Prey", FocusDump: Claw},
 	proto.HunterOptions_Boar:         {Name: "Boar", FocusDump: Bite, SpecialAbility: Gore},
 	proto.HunterOptions_CarrionBird:  {Name: "Carrion Bird", FocusDump: Bite, SpecialAbility: DemoralizingScreech},
 	proto.HunterOptions_Cat:          {Name: "Cat", FocusDump: Claw},
 	proto.HunterOptions_Chimaera:     {Name: "Chimaera", FocusDump: Bite, ExoticAbility: FroststormBreathAoE},
 	proto.HunterOptions_CoreHound:    {Name: "Core Hound", FocusDump: Bite, ExoticAbility: LavaBreath},
-	proto.HunterOptions_Crab:         {Name: "Crab", FocusDump: Claw, SpecialAbility: Pin},
+	proto.HunterOptions_Crab:         {Name: "Crab", FocusDump: Claw},
 	proto.HunterOptions_Crocolisk:    {Name: "Crocolisk", FocusDump: Bite},
-	proto.HunterOptions_Devilsaur:    {Name: "Devilsaur", FocusDump: Bite, SpecialAbility: TerrifyingRoar, ExoticAbility: MonstrousBite},
+	proto.HunterOptions_Devilsaur:    {Name: "Devilsaur", FocusDump: Bite, ExoticAbility: MonstrousBite},
 	proto.HunterOptions_Dragonhawk:   {Name: "Dragonhawk", FocusDump: Bite, SpecialAbility: FireBreathDebuff},
 	proto.HunterOptions_Fox:          {Name: "Fox", FocusDump: Bite, SpecialAbility: TailSpin},
-	proto.HunterOptions_Gorilla:      {Name: "Gorilla", FocusDump: Smack, SpecialAbility: Pummel},
-	proto.HunterOptions_Hyena:        {Name: "Hyena", FocusDump: Bite, SpecialAbility: CacklingHowl},
-	proto.HunterOptions_Moth:         {Name: "Moth", FocusDump: Smack, SpecialAbility: SerenityDust},
-	proto.HunterOptions_NetherRay:    {Name: "Nether Ray", FocusDump: Bite, SpecialAbility: NetherShock},
+	proto.HunterOptions_Gorilla:      {Name: "Gorilla", FocusDump: Smack},
+	proto.HunterOptions_Hyena:        {Name: "Hyena", FocusDump: Bite},
+	proto.HunterOptions_Moth:         {Name: "Moth", FocusDump: Smack},
+	proto.HunterOptions_NetherRay:    {Name: "Nether Ray", FocusDump: Bite},
 	proto.HunterOptions_Raptor:       {Name: "Raptor", FocusDump: Claw, SpecialAbility: TearArmor},
 	proto.HunterOptions_Ravager:      {Name: "Ravager", FocusDump: Bite, SpecialAbility: Ravage},
-	proto.HunterOptions_Rhino:        {Name: "Rhino", FocusDump: Bite, SpecialAbility: StampedeDebuff, ExoticAbility: HornToss},
-	proto.HunterOptions_Scorpid:      {Name: "Scorpid", FocusDump: Bite, SpecialAbility: Clench},
-	proto.HunterOptions_Serpent:      {Name: "Serpent", FocusDump: Bite, SpecialAbility: SerpentsSwiftness},
-	proto.HunterOptions_Silithid:     {Name: "Silithid", FocusDump: Claw, SpecialAbility: QirajiFortitude, ExoticAbility: VenomWebSpray},
-	proto.HunterOptions_Spider:       {Name: "Spider", FocusDump: Bite, SpecialAbility: Web},
-	proto.HunterOptions_SpiritBeast:  {Name: "Spirit Beast", FocusDump: Claw, SpecialAbility: SpiritBeastBlessing, ExoticAbility: SpiritMend},
+	proto.HunterOptions_Rhino:        {Name: "Rhino", FocusDump: Bite, SpecialAbility: StampedeDebuff},
+	proto.HunterOptions_Scorpid:      {Name: "Scorpid", FocusDump: Bite},
+	proto.HunterOptions_Serpent:      {Name: "Serpent", FocusDump: Bite},
+	proto.HunterOptions_Silithid:     {Name: "Silithid", FocusDump: Claw, SpecialAbility: QirajiFortitude},
+	proto.HunterOptions_Spider:       {Name: "Spider", FocusDump: Bite},
+	proto.HunterOptions_SpiritBeast:  {Name: "Spirit Beast", FocusDump: Claw, ExoticAbility: SpiritMend},
 	proto.HunterOptions_SporeBat:     {Name: "Spore Bat", FocusDump: Smack, SpecialAbility: SporeCloud},
 	proto.HunterOptions_Tallstrider:  {Name: "Tallstrider", FocusDump: Claw, SpecialAbility: DustCloud},
-	proto.HunterOptions_Turtle:       {Name: "Turtle", FocusDump: Bite, SpecialAbility: ShellShield},
-	proto.HunterOptions_WarpStalker:  {Name: "Warp Stalker", FocusDump: Bite, SpecialAbility: TimeWarp},
-	proto.HunterOptions_Wasp:         {Name: "Wasp", FocusDump: Smack, SpecialAbility: Sting},
+	proto.HunterOptions_Turtle:       {Name: "Turtle", FocusDump: Bite},
+	proto.HunterOptions_WarpStalker:  {Name: "Warp Stalker", FocusDump: Bite},
+	proto.HunterOptions_Wasp:         {Name: "Wasp", FocusDump: Smack},
 	proto.HunterOptions_WindSerpent:  {Name: "Wind Serpent", FocusDump: Bite, SpecialAbility: LightningBreath},
-	proto.HunterOptions_Wolf:         {Name: "Wolf", FocusDump: Bite, SpecialAbility: FuriousHowl},
+	proto.HunterOptions_Wolf:         {Name: "Wolf", FocusDump: Bite},
 	proto.HunterOptions_Worm:         {Name: "Worm", FocusDump: Bite, SpecialAbility: AcidSpitDebuff, ExoticAbility: BurrowAttack},
-	proto.HunterOptions_ShaleSpider:  {Name: "Shale Spider", FocusDump: Bite, SpecialAbility: EmbraceOfTheShaleSpider, ExoticAbility: WebWrap},
+	proto.HunterOptions_ShaleSpider:  {Name: "Shale Spider", FocusDump: Bite, SpecialAbility: EmbraceOfTheShaleSpider},
 	proto.HunterOptions_Goat:         {Name: "Goat", FocusDump: Bite, SpecialAbility: Trample},
-	proto.HunterOptions_Porcupine:    {Name: "Porcupine", FocusDump: Bite, SpecialAbility: ParalyzingQuill},
-	proto.HunterOptions_Monkey:       {Name: "Monkey", FocusDump: Bite, SpecialAbility: BadManners},
-	proto.HunterOptions_Basilisk:     {Name: "Basilisk", FocusDump: Bite, SpecialAbility: PetrifyingGaze},
-	proto.HunterOptions_Crane:        {Name: "Crane", FocusDump: Bite, SpecialAbility: Lullaby},
-	proto.HunterOptions_Dog:          {Name: "Dog", FocusDump: Bite, SpecialAbility: LockJaw},
-	proto.HunterOptions_Beetle:       {Name: "Beetle", FocusDump: Bite, SpecialAbility: HardenCarapace},
-	proto.HunterOptions_Quilen:       {Name: "Quilen", FocusDump: Bite, SpecialAbility: FearlessRoar, ExoticAbility: EternalGuardian},
-	proto.HunterOptions_WaterStrider: {Name: "Water Strider", FocusDump: Claw, SpecialAbility: StillWater, ExoticAbility: SurfaceTrot},
+	proto.HunterOptions_Porcupine:    {Name: "Porcupine", FocusDump: Bite},
+	proto.HunterOptions_Monkey:       {Name: "Monkey", FocusDump: Bite},
+	proto.HunterOptions_Basilisk:     {Name: "Basilisk", FocusDump: Bite},
+	proto.HunterOptions_Crane:        {Name: "Crane", FocusDump: Bite},
+	proto.HunterOptions_Dog:          {Name: "Dog", FocusDump: Bite},
+	proto.HunterOptions_Beetle:       {Name: "Beetle", FocusDump: Bite},
+	proto.HunterOptions_Quilen:       {Name: "Quilen", FocusDump: Bite},
+	proto.HunterOptions_WaterStrider: {Name: "Water Strider", FocusDump: Claw},
 }
