@@ -22,7 +22,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		ActionID:    core.ActionID{SpellID: 77758},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,

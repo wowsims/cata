@@ -59,8 +59,8 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	expectedDamageReduction := 0.349334
 	attackTable := NewAttackTable(&attacker, &target)
 	tolerance := 0.0001
-	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.GetArmorDamageModifier(spell), tolerance) {
-		t.Fatalf("Expected no armor modifiers to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.GetArmorDamageModifier(spell))
+	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.getArmorDamageModifier(spell), tolerance) {
+		t.Fatalf("Expected no armor modifiers to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.getArmorDamageModifier(spell))
 	}
 
 	// Major
@@ -68,8 +68,8 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	weakenedArmorAura.Activate(&sim)
 	weakenedArmorAura.SetStacks(&sim, 3)
 	expectedDamageReduction = 0.320864
-	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.GetArmorDamageModifier(spell), tolerance) {
-		t.Fatalf("Expected major armor modifier to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.GetArmorDamageModifier(spell))
+	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.getArmorDamageModifier(spell), tolerance) {
+		t.Fatalf("Expected major armor modifier to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.getArmorDamageModifier(spell))
 	}
 	weakenedArmorAura.Deactivate(&sim)
 
@@ -77,7 +77,7 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	shatteringThrowAura := ShatteringThrowAura(&target, attacker.UnitIndex)
 	shatteringThrowAura.Activate(&sim)
 	expectedDamageReduction = 0.300459
-	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.GetArmorDamageModifier(spell), tolerance) {
-		t.Fatalf("Expected major & shattering modifier to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.GetArmorDamageModifier(spell))
+	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.getArmorDamageModifier(spell), tolerance) {
+		t.Fatalf("Expected major & shattering modifier to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.getArmorDamageModifier(spell))
 	}
 }

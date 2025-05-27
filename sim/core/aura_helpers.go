@@ -238,7 +238,7 @@ func (aura *StatBuffAura) CanProc(sim *Simulation) bool {
 func (aura *StatBuffAura) InferCDType() CooldownType {
 	cdType := CooldownTypeUnknown
 
-	if aura.BuffsMatchingStat([]stats.Stat{stats.Armor, stats.BlockPercent, stats.DodgeRating, stats.ParryRating, stats.Health, stats.ArcaneResistance, stats.FireResistance, stats.FrostResistance, stats.NatureResistance, stats.ShadowResistance}) {
+	if aura.BuffsMatchingStat([]stats.Stat{stats.Armor, stats.BlockPercent, stats.DodgeRating, stats.ParryRating, stats.Health}) {
 		cdType |= CooldownTypeSurvival
 	} else {
 		cdType |= CooldownTypeDPS

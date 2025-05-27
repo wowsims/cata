@@ -30,16 +30,11 @@ const (
 	DodgeRating
 	ParryRating
 	MasteryRating
+	PvpResilienceRating
+	PvpPowerRating
 	AttackPower
 	RangedAttackPower
 	SpellPower
-	SpellPenetration
-	ResilienceRating
-	ArcaneResistance
-	FireResistance
-	FrostResistance
-	NatureResistance
-	ShadowResistance
 	Armor
 	BonusArmor
 	Health
@@ -140,20 +135,10 @@ func (s Stat) StatName() string {
 		return "RangedAttackPower"
 	case SpellPower:
 		return "SpellPower"
-	case SpellPenetration:
-		return "SpellPenetration"
-	case ResilienceRating:
-		return "ResilienceRating"
-	case ArcaneResistance:
-		return "ArcaneResistance"
-	case FireResistance:
-		return "FireResistance"
-	case FrostResistance:
-		return "FrostResistance"
-	case NatureResistance:
-		return "NatureResistance"
-	case ShadowResistance:
-		return "ShadowResistance"
+	case PvpResilienceRating:
+		return "PvpResilience"
+	case PvpPowerRating:
+		return "PvpPower"
 	case Armor:
 		return "Armor"
 	case BonusArmor:

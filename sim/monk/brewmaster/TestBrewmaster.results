@@ -13,14 +13,9 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 5227
+  final_stats: 0
+  final_stats: 0
   final_stats: 39383.025
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 18523
@@ -646,9 +641,9 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
  value: {
-  dps: 55819.88249
-  tps: 55819.88249
-  hps: 2603.92666
+  dps: 57392.06557
+  tps: 57392.06557
+  hps: 2797.16383
  }
 }
 dps_results: {
@@ -1565,22 +1560,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-MightoftheOcean-56285"
- value: {
-  dps: 51756.80281
-  tps: 51756.80281
-  hps: 2480.55589
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-MirrorofBrokenImages-62466"
- value: {
-  dps: 51756.80281
-  tps: 51756.80281
-  hps: 2480.55589
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-MirrorofBrokenImages-62471"
  value: {
   dps: 51756.80281
   tps: 51756.80281
@@ -2574,25 +2553,25 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 56060.34821
-  tps: 56060.34821
-  hps: 2603.92666
+  dps: 57719.07756
+  tps: 57719.07756
+  hps: 2808.26144
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 56446.25342
-  tps: 56446.25342
-  hps: 2603.92666
+  dps: 58318.37667
+  tps: 58318.37667
+  hps: 2834.54891
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 55717.44423
-  tps: 55717.44423
-  hps: 2603.92666
+  dps: 57185.86452
+  tps: 57185.86452
+  hps: 2784.81774
  }
 }
 dps_results: {
@@ -2654,9 +2633,9 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 52167.46184
-  tps: 52167.46184
-  hps: 2597.71199
+  dps: 52227.77932
+  tps: 52227.77932
+  hps: 2605.6522
  }
 }
 dps_results: {
