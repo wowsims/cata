@@ -274,17 +274,6 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	}
 }
 
-type RppmModifier uint
-
-const (
-	RppmModifierNone RppmModifier = 0
-)
-
-const (
-	RppmModifierHaste RppmModifier = 1 << iota
-	RppmModifierCrit
-)
-
 /*
 outcome roll hit/miss/crit/glance (assigns Outcome mask) -> If Hit, Crit Roll -> damage (applies metrics) -> trigger proc
 

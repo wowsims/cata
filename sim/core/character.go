@@ -82,8 +82,6 @@ type Character struct {
 	// This character's index within its party [0-4].
 	PartyIndex int
 
-	potionCD *Timer
-
 	// This stores a timer on spell category ID so that we can track on use effects.
 	spellCategoryTimers map[int32]*Timer
 
@@ -727,7 +725,7 @@ func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitSpellCategoryTimer(30)
 }
 func (character *Character) GetPotionCD() *Timer {
-	return character.GetOrInitTimer(&character.potionCD)
+	return character.GetOrInitSpellCategoryTimer(4)
 }
 
 func (character *Character) AddStatProcBuff(effectID int32, procAura *StatBuffAura, isEnchant bool, eligibleSlots []proto.ItemSlot) {

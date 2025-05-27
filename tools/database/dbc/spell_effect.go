@@ -4,7 +4,6 @@ import (
 	"math"
 	"slices"
 
-	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -212,7 +211,7 @@ func (effect *SpellEffect) GetScalingValue(ilvl int) float64 {
 	spell := dbcInstance.Spells[effect.SpellID]
 	// if not we get class scaling based on the spell
 	scale := effect.ScalingClass()
-	return dbcInstance.SpellScalings[core.TernaryInt(spell.MaxScalingLevel > BASE_LEVEL, BASE_LEVEL, spell.MaxScalingLevel)].Values[scale]
+	return dbcInstance.SpellScalings[min(spell.MaxScalingLevel, BASE_LEVEL)].Values[scale]
 }
 func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats.Stats {
 	stats := &stats.Stats{}

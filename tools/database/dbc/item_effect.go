@@ -1,7 +1,6 @@
 package dbc
 
 import (
-	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -43,14 +42,14 @@ func GetItemEffect(effectId int) ItemEffect {
 func makeBaseProto(e *ItemEffect, statsSpellID int) *proto.ItemEffect {
 	sp := dbcInstance.Spells[e.SpellID]
 	base := &proto.ItemEffect{
-		BuffId:         int32(e.SpellID),
-		BuffName:       sp.NameLang,
-		EffectDuration: int32(sp.Duration) / 1000,
-		ScalingOptions: make(map[int32]*proto.ScalingItemEffectProperties),
+		BuffId:           int32(e.SpellID),
+		BuffName:         sp.NameLang,
+		EffectDurationMs: int32(sp.Duration),
+		ScalingOptions:   make(map[int32]*proto.ScalingItemEffectProperties),
 	}
 	// override duration if stats spell defines its own
 	if dur := dbcInstance.Spells[statsSpellID].Duration; dur > 0 {
-		base.EffectDuration = int32(dur) / 1000
+		base.EffectDurationMs = int32(dur)
 	}
 	return base
 }
@@ -70,7 +69,7 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 			ProcChance: float64(spTop.ProcChance) / 100,
 			IcdMs:      spTop.ProcCategoryRecovery,
 			Ppm:        spTop.Rppm,
-			RppmScale:  int32(realPpmScale(&spTop)),
+			RppmScale:  uint32(realPpmScale(&spTop)),
 		}
 		// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
 		if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
@@ -150,7 +149,8 @@ func collectStats(spellID, itemLevel int) stats.Stats {
 
 		sp := dbcInstance.Spells[id]
 		for _, se := range dbcInstance.SpellEffects[id] {
-			if s := se.ParseStatEffect(sp.HasAttributeAt(11, 0x4), itemLevel); s != &emptyStats {
+			s := se.ParseStatEffect(sp.HasAttributeAt(11, 0x4), itemLevel)
+			if s != nil && *s != emptyStats {
 				total.AddInplace(s)
 			} else if se.EffectAura == A_PROC_TRIGGER_SPELL {
 				recurse(se.EffectTriggerSpell)
@@ -209,14 +209,14 @@ func MergeItemEffectsForAllStates(parsed *proto.UIItem) *proto.ItemEffect {
 	return pe
 }
 
-func realPpmScale(spell *Spell) core.RppmModifier {
-	scale := core.RppmModifierNone
+func realPpmScale(spell *Spell) proto.RppmScalingType {
+	scale := proto.RppmScalingType_RppmScalingTypeNone
 	for _, mod := range spell.RppmModifiers {
 		switch mod.ModifierType {
 		case RPPMModifierHaste:
-			scale |= core.RppmModifierHaste
+			scale |= proto.RppmScalingType_RppmScalingTypeHaste
 		case RPPMModifierCrit:
-			scale |= core.RppmModifierCrit
+			scale |= proto.RppmScalingType_RppmScalingTypeCrit
 		}
 	}
 	return scale

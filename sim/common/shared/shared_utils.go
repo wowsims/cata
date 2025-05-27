@@ -117,7 +117,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		proc := procEffect.GetProc()
 		procAction := core.ActionID{SpellID: procEffect.BuffId}
-		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats), time.Second*time.Duration(procEffect.EffectDuration))
+		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats), time.Millisecond*time.Duration(procEffect.EffectDurationMs))
 		var dpm *core.DynamicProcManager
 		if (proc.Ppm != 0) && (config.ProcMask == core.ProcMaskUnknown) {
 			if isEnchant {
@@ -215,7 +215,7 @@ func NewSimpleStatActive(itemID int32) {
 		if onUseData.CategoryId > 0 {
 			sharedCDDuration := time.Duration(onUseData.CategoryCooldownMs) * time.Millisecond
 			if sharedCDDuration == 0 {
-				sharedCDDuration = time.Second * time.Duration(itemEffect.EffectDuration)
+				sharedCDDuration = time.Millisecond * time.Duration(itemEffect.EffectDurationMs)
 			}
 
 			sharedCDTimer := character.GetOrInitSpellCategoryTimer(onUseData.CategoryId)
@@ -225,7 +225,7 @@ func NewSimpleStatActive(itemID int32) {
 			}
 		}
 
-		core.RegisterTemporaryStatsOnUseCD(character, itemEffect.BuffName, stats.FromProtoMap(itemEffect.ScalingOptions[int32(scalingSelector)].Stats), time.Second*time.Duration(itemEffect.EffectDuration), spellConfig)
+		core.RegisterTemporaryStatsOnUseCD(character, itemEffect.BuffName, stats.FromProtoMap(itemEffect.ScalingOptions[int32(scalingSelector)].Stats), time.Millisecond*time.Duration(itemEffect.EffectDurationMs), spellConfig)
 	})
 }
 
