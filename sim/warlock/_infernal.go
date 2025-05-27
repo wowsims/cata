@@ -133,6 +133,7 @@ func (infernal *InfernalPet) Initialize() {
 		ActionID:    core.ActionID{SpellID: 20153},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAoE,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -150,7 +151,7 @@ func (infernal *InfernalPet) Initialize() {
 				// base formula is 25 + (lvl-50)*0.5 * Warlock_SP*0.2
 				// note this scales with the warlocks SP, NOT with the pets
 				warlockSP := infernal.owner.Unit.GetStat(stats.SpellPower)
-				baseDmg := (40 + warlockSP*0.2) * sim.Encounter.AOECapMultiplier()
+				baseDmg := (40 + warlockSP*0.2)
 
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)

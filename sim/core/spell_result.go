@@ -164,6 +164,9 @@ func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *Spe
 	for i := range result.Target.DynamicDamageTakenModifiers {
 		result.Target.DynamicDamageTakenModifiers[i](sim, spell, result)
 	}
+	if spell.Flags.Matches(SpellFlagAoE) {
+		result.Damage *= sim.Encounter.AOECapMultiplier()
+	}
 	result.Damage = max(0, result.Damage)
 }
 
@@ -242,11 +245,7 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 	if spell.BonusCoefficient > 0 {
 		baseDamage += spell.BonusCoefficient * spell.BonusDamage()
 	}
-	result := spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
-	if spell.Flags.Matches(SpellFlagAoE) {
-		result.Damage *= sim.Encounter.AOECapMultiplier()
-	}
-	return result
+	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex], true)

@@ -81,6 +81,7 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAoE,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
