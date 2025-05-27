@@ -17,6 +17,7 @@ func (ret *RetributionPaladin) registerExorcism() {
 	ret.CanTriggerHolyAvengerHpGain(exoHpActionID)
 
 	hasMassExorcism := ret.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfMassExorcism)
+	numTargets := core.TernaryInt32(hasMassExorcism, ret.Env.GetNumTargets(), 1)
 
 	ret.Exorcism = ret.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 879},
@@ -45,16 +46,32 @@ func (ret *RetributionPaladin) registerExorcism() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := ret.CalcAndRollDamageRange(sim, scalingCoef, variance) +
-				apCoef*spell.MeleeAttackPower()
+			results := make([]*core.SpellResult, numTargets)
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			currentTarget := target
+			for idx := int32(0); idx < numTargets; idx++ {
+				baseDamage := ret.CalcAndRollDamageRange(sim, scalingCoef, variance) +
+					apCoef*spell.MeleeAttackPower()
 
-			if result.Landed() {
+				damageMultiplier := spell.DamageMultiplier
+				if currentTarget != target {
+					spell.DamageMultiplier *= 0.25
+				}
+
+				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+				spell.DamageMultiplier = damageMultiplier
+
+				currentTarget = sim.Environment.NextTargetUnit(currentTarget)
+			}
+
+			if results[0].Landed() {
 				ret.HolyPower.Gain(1, exoHpActionID, sim)
 			}
 
-			spell.DealOutcome(sim, result)
+			for idx := int32(0); idx < numTargets; idx++ {
+				spell.DealDamage(sim, results[idx])
+			}
 		},
 	})
 }
