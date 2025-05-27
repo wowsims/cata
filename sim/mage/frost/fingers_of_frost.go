@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/mage"
 )
 
@@ -20,6 +19,12 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		ActionID:  core.ActionID{SpellID: 112965},
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frost.iceLanceFrozenCritBuffMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			frost.iceLanceFrozenCritBuffMod.Deactivate()
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 4.0,
@@ -28,15 +33,7 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.25,
 		ClassMask:  mage.MageSpellIceLance,
-	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellIceLance,
-		FloatValue: frost.GetStat(stats.SpellCritPercent)*2 + 50,
-		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
-	/*
-		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
-		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
-	*/
 
 	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
 		Name:           "Fingers of Frost - Trigger",

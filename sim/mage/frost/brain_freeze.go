@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/mage"
 )
 
@@ -17,6 +16,12 @@ func (frost *FrostMage) registerBrainFreeze() {
 		ActionID:  core.ActionID{SpellID: 44549},
 		Duration:  time.Second * 15,
 		MaxStacks: 1,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frost.frostfireFrozenCritBuffMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			frost.frostfireFrozenCritBuffMod.Deactivate()
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -1,
@@ -25,10 +30,6 @@ func (frost *FrostMage) registerBrainFreeze() {
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1,
 		ClassMask:  mage.MageSpellFrostfireBolt,
-	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellFrostfireBolt,
-		FloatValue: frost.GetStat(stats.SpellCritPercent)*2 + 50,
-		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	/*
