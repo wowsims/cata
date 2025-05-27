@@ -36,7 +36,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		Stat.StatExpertiseRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
-		Stat.StatNatureResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -53,7 +52,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			Stat.StatStrength,
 			Stat.StatAttackPower,
 			Stat.StatExpertiseRating,
-			Stat.StatNatureResistance,
 		],
 		[
 			PseudoStat.PseudoStatDodgePercent,
