@@ -30,11 +30,11 @@ const (
 	DodgeRating
 	ParryRating
 	MasteryRating
-	PvpResilienceRating
-	PvpPowerRating
 	AttackPower
 	RangedAttackPower
 	SpellPower
+	PvpResilienceRating
+	PvpPowerRating
 	Armor
 	BonusArmor
 	Health
@@ -136,9 +136,9 @@ func (s Stat) StatName() string {
 	case SpellPower:
 		return "SpellPower"
 	case PvpResilienceRating:
-		return "PvpResilience"
+		return "PvpResilienceRating"
 	case PvpPowerRating:
-		return "PvpPower"
+		return "PvpPowerRating"
 	case Armor:
 		return "Armor"
 	case BonusArmor:
