@@ -89,9 +89,8 @@ export function talentStringToProto<TalentsProto>(proto: TalentsProto, talentStr
 	talents.forEach(talent => {
 		(proto[talent.fieldName as keyof TalentsProto] as unknown as boolean) = false;
 	});
-
 	talentStringArray.forEach((talentValue, rowIndex) => {
-		const talentIndex = Number(talentValue);
+		const talentIndex = Number(talentValue) - 1;
 		const talent = talents.find(talent => talent.location.rowIdx == rowIndex && talent.location.colIdx == talentIndex);
 		if (talent) {
 			(proto[talent.fieldName as keyof TalentsProto] as unknown as boolean) = true;

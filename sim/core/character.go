@@ -617,8 +617,8 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 
 		// Base values are modified by Enemy attackTables, but we display for LVL 90 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodgePercent: (character.PseudoStats.BaseDodgeChance + character.GetDiminishedDodgeChance()) * 100,
-		proto.PseudoStat_PseudoStatParryPercent: (character.PseudoStats.BaseParryChance + character.GetDiminishedParryChance()) * 100,
-		proto.PseudoStat_PseudoStatBlockPercent: (character.PseudoStats.BaseBlockChance + character.GetDiminishedBlockChance()) * 100,
+		proto.PseudoStat_PseudoStatParryPercent: Ternary(character.PseudoStats.CanParry, (character.PseudoStats.BaseParryChance+character.GetDiminishedParryChance())*100, 0),
+		proto.PseudoStat_PseudoStatBlockPercent: Ternary(character.PseudoStats.CanBlock, (character.PseudoStats.BaseBlockChance+character.GetDiminishedBlockChance())*100, 0),
 
 		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
@@ -686,10 +686,7 @@ func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.St
 }
 
 // Uses proto reflection to set fields in a talents proto (e.g. MageTalents,
-// WarriorTalents) based on a talentsStr. treeSizes should contain the number
-// of talents in each tree, usually around 30. This is needed because talent
-// strings truncate 0's at the end of each tree, so we can't infer the start index
-// of the tree from the string.
+// WarriorTalents) based on a talentsStr.
 func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 	fieldDescriptors := data.Descriptor().Fields()
 

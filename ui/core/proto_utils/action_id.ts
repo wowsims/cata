@@ -769,7 +769,11 @@ export class ActionId {
 				break;
 			case 'Zen Sphere':
 				if (this.spellId === 124081) {
-					name += ' (Heal)';
+					if (this.tag === 1) {
+						name += ' (# of Spheres)';
+					} else {
+						name += ' (Heal)';
+					}
 				} else if (this.spellId === 124098) {
 					name += ' (Damage)';
 				} else if (this.spellId === 124101) {

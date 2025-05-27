@@ -85,7 +85,7 @@ func (encounter *Encounter) AOECapMultiplier() float64 {
 	return encounter.aoeCapMultiplier
 }
 func (encounter *Encounter) updateAOECapMultiplier() {
-	encounter.aoeCapMultiplier = min(10/float64(len(encounter.Targets)), 1)
+	encounter.aoeCapMultiplier = min(20/float64(len(encounter.Targets)), 1)
 }
 
 func (encounter *Encounter) doneIteration(sim *Simulation) {
