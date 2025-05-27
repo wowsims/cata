@@ -291,7 +291,6 @@
 	margin: var(--block-spacer) 0;
 }
 
-/* Header inherits talent-tree-header */
 .pet-spec-picker .talent-tree-header {
 	padding: var(--talent-tree-header-padding-y) var(--talent-tree-header-padding-x);
 	display: flex;
@@ -300,7 +299,6 @@
 	color: var(--bs-white);
 }
 
-/* Container for spec items */
 .pet-spec-list {
 	display: flex;
 	flex-direction: column;
@@ -308,7 +306,6 @@
 	margin-top: var(--block-spacer);
 }
 
-/* Each spec item matches talent-picker-root style */
 .pet-spec-item {
 	display: flex;
 	align-items: center;
@@ -326,7 +323,6 @@
 	background: rgba(255, 255, 255, 0.05);
 }
 
-/* Icon styling */
 .pet-spec-item .talent-picker-icon {
 	width: var(--talent-icon-size);
 	height: var(--talent-icon-size);
@@ -341,7 +337,6 @@
 	color: var(--bs-white);
 }
 
-/* Selected state mimics talent-picker selected */
 .pet-spec-item.selected {
 	border-color: var(--bs-talent-full);
 	background: rgba(0, 0, 0, 0.2);
