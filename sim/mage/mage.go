@@ -107,7 +107,6 @@ func (mage *Mage) Initialize() {
 	// mage.registerFlameOrbSpell()
 	// mage.registerFlameOrbExplodeSpell()
 	mage.registerFlamestrikeSpell()
-	mage.registerFreezeSpell()
 	// mage.registerFrostboltSpell()
 	// mage.registerFrostfireOrbSpell()
 	mage.registerIceLanceSpell()
