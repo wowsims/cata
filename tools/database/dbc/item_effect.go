@@ -69,8 +69,18 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 			ProcChance: float64(spTop.ProcChance) / 100,
 			IcdMs:      spTop.ProcCategoryRecovery,
 			Ppm:        spTop.Rppm,
-			RppmScale:  uint32(realPpmScale(&spTop)),
 		}
+
+		// There is no item with both a Haste and a Crit modifier
+		for _, mod := range spTop.RppmModifiers {
+			switch mod.ModifierType {
+			case RPPMModifierHaste:
+				proc.RppmHasteModifier = mod.Coeff
+			case RPPMModifierCrit:
+				proc.RppmCritModifier = mod.Coeff
+			}
+		}
+
 		// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
 		if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
 			proc.Ppm = 1
@@ -207,19 +217,6 @@ func MergeItemEffectsForAllStates(parsed *proto.UIItem) *proto.ItemEffect {
 	}
 
 	return pe
-}
-
-func realPpmScale(spell *Spell) proto.RppmScalingType {
-	scale := proto.RppmScalingType_RppmScalingTypeNone
-	for _, mod := range spell.RppmModifiers {
-		switch mod.ModifierType {
-		case RPPMModifierHaste:
-			scale |= proto.RppmScalingType_RppmScalingTypeHaste
-		case RPPMModifierCrit:
-			scale |= proto.RppmScalingType_RppmScalingTypeCrit
-		}
-	}
-	return scale
 }
 
 func realPpmModifier(spell *Spell, itemLevel int) (float64, map[int32]float64) {

@@ -15,7 +15,7 @@ message ScalingItemEffectProperties {
 	int32            buff_id         = 1;
 	string buff_name = 6;
 	int32            effect_duration_ms = 2;  // milliseconds
-
+	// Keyed to itemlevelstate
 	map<int32, ScalingItemEffectProperties> scaling_options        = 3;
 
 	oneof effect {
@@ -27,17 +27,12 @@ message ScalingItemEffectProperties {
   message ProcEffect {
 	double      proc_chance = 1;  // e.g. 0.20 = 20%
 	double 		ppm = 3;
-	uint32 rppm_scale = 4; // Bitmask of RppmScalingType
+	double rppm_haste_modifier = 4; // The SpellProcsPerMinuteMod Coeff of the haste modifier
+	double rppm_crit_modifier = 6; // The SpellProcsPerMinuteMod Coeff of the crit modifier
 	// The key represents a Spec
 	map<int32, double> spec_modifiers = 5;
 	int32       icd_ms         = 2;  // internal cooldown in milliseconds
   }
-
-enum RppmScalingType {
-	RppmScalingTypeNone  = 0;
-	RppmScalingTypeHaste = 1;
-	RppmScalingTypeCrit  = 2;
-}
 
   message OnUseEffect {
 	int32 cooldown_ms = 1;  // milliseconds between uses
