@@ -103,8 +103,11 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				results := make([]*core.SpellResult, shaman.Env.GetNumTargets())
 				baseDamage := shaman.CalcScalingSpellDmg(0.26699998975)
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				for i, aoeTarget := range sim.Encounter.TargetUnits {
+					results[i] = dot.Spell.CalcPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				}
+				for i := range sim.Encounter.TargetUnits {
+					dot.Spell.DealPeriodicDamage(sim, results[i])
 				}
 			},
 		},
