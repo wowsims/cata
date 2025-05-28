@@ -86,7 +86,7 @@ func registerLegionStrikeSpell(pet *warlock.WarlockPet, demo *DemonologyWarlock)
 	}))
 }
 
-func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast bool) *core.Spell {
+func registerFelstorm(pet *warlock.WarlockPet, _ *DemonologyWarlock, autoCast bool) *core.Spell {
 	felStorm := pet.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 89751},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -113,7 +113,7 @@ func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast
 			NumberOfTicks: 6,
 			TickLength:    time.Second,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := dot.Spell.Unit.MHWeaponDamage(sim, dot.Spell.MeleeAttackPower())
+				baseDamage := dot.Spell.Unit.MHWeaponDamage(sim, dot.Spell.MeleeAttackPower()) + dot.Spell.Unit.OHWeaponDamage(sim, dot.Spell.MeleeAttackPower())
 				for _, enemy := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, enemy, baseDamage, dot.Spell.OutcomeMeleeSpecialBlockAndCritNoHitCounter)
 				}
@@ -122,6 +122,7 @@ func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.AOEDot().Apply(sim)
+			spell.AOEDot().TickOnce(sim)
 			pet.AutoAttacks.DelayMeleeBy(sim, spell.AOEDot().BaseDuration())
 
 			// remove from auto cast again to trigger it once
