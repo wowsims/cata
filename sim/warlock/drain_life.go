@@ -13,7 +13,7 @@ func (warlock *Warlock) RegisterDrainLife(callback WarlockSpellCastedCallback) {
 	manaMetric := warlock.NewManaMetrics(core.ActionID{SpellID: 689})
 	healthMetric := warlock.NewHealthMetrics(core.ActionID{SpellID: 689})
 
-	warlock.RegisterSpell(core.SpellConfig{
+	warlock.DrainLife = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 689},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,

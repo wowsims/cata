@@ -23,6 +23,7 @@ type Warlock struct {
 	ShadowEmbraceAuras   core.AuraArray
 	Shadowburn           *core.Spell
 	Hellfire             *core.Spell
+	DrainLife            *core.Spell
 
 	ActivePet *WarlockPet
 	Felhunter *WarlockPet
