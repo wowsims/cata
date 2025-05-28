@@ -183,7 +183,7 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 			Label:    "Unleashed Fury FT-" + shaman.Label,
 			ActionID: core.ActionID{SpellID: 118470},
 			Duration: time.Second * 10,
-		}).AttachDDBC(DDBC_UnleashedFury, DDBC_Total, shaman.AttackTables, unleashedFuryDDBCHandler)
+		}).AttachDDBC(DDBC_UnleashedFury, DDBC_Total, &shaman.AttackTables, unleashedFuryDDBCHandler)
 	})
 
 	windfuryProcAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{

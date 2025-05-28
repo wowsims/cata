@@ -496,17 +496,17 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 
 // Attaches a Damage Done By Caster buff to a parent Aura
 // Returns parent aura for chaining
-func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables []*AttackTable, handler DynamicDamageDoneByCaster) *Aura {
+func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*AttackTable, handler DynamicDamageDoneByCaster) *Aura {
 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
-		EnableDamageDoneByCaster(index, maxIndex, attackTables[parentAura.Unit.UnitIndex], handler)
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
 	})
 
 	parentAura.ApplyOnExpire(func(aura *Aura, _ *Simulation) {
-		DisableDamageDoneByCaster(index, attackTables[parentAura.Unit.UnitIndex])
+		DisableDamageDoneByCaster(index, (*attackTables)[parentAura.Unit.UnitIndex])
 	})
 
 	if parentAura.IsActive() {
-		EnableDamageDoneByCaster(index, maxIndex, attackTables[parentAura.Unit.UnitIndex], handler)
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
 	}
 
 	return parentAura

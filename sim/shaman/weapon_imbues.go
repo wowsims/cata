@@ -255,7 +255,7 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 		Label:    "Frostbrand Attack-" + shaman.Label,
 		ActionID: core.ActionID{SpellID: 8034},
 		Duration: time.Second * 8,
-	}).AttachDDBC(DDBC_FrostbrandWeapon, DDBC_Total, shaman.AttackTables, shaman.frostbrandDDBCHandler)
+	}).AttachDDBC(DDBC_FrostbrandWeapon, DDBC_Total, &shaman.AttackTables, shaman.frostbrandDDBCHandler)
 }
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
