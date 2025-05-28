@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (shaman *Shaman) registerAscendanceSpell() {
@@ -24,6 +25,9 @@ func (shaman *Shaman) registerAscendanceSpell() {
 			//Lava Beam cast gets cancelled if ascendance fades during it
 			if (shaman.Hardcast.ActionID.SpellID == 114074) && shaman.Hardcast.Expires > sim.CurrentTime {
 				shaman.CancelHardcast(sim)
+			}
+			if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+				shaman.Stormstrike.CD.Set(shaman.Stormblast.CD.ReadyAt())
 			}
 		},
 	}).AttachSpellMod(core.SpellModConfig{

@@ -22,8 +22,9 @@ func (shaman *Shaman) registerStormalshCD() {
 	}
 
 	spell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskStormlashTotem,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5.9,

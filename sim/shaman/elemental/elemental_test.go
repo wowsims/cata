@@ -18,19 +18,19 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p4.default"),
-		Talents: TalentsTotemDuration,
+		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "preraid"),
+		Talents: TalentsASEB,
 		Glyphs:  StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{
 			{
-				Label:   "TalentsAoE",
-				Talents: TalentsImprovedShields,
+				Label:   "TalentsEchoUnleashed",
+				Talents: TalentsEEUF,
 				Glyphs:  AoEGlyphs,
 			},
 			{
-				Label:   "TalentsImprovedShields",
-				Talents: TalentsImprovedShields,
-				Glyphs:  AlternateGlyphs,
+				Label:   "TalentsEMPrimal",
+				Talents: TalentsEMPE,
+				Glyphs:  StandardGlyphs,
 			},
 		},
 		Consumables: FullConsumesSpec,
@@ -40,7 +40,6 @@ func TestElemental(t *testing.T) {
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
 		},
-		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/shaman/elemental/gear_sets", "p4_item_swap"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -58,61 +57,34 @@ func TestElemental(t *testing.T) {
 	}))
 }
 
-var TalentsTotemDuration = "303202321223110132-201-20302"
-var TalentsImprovedShields = "3032023212231101321-2030022"
+var TalentsEMUF = "313131"
+var TalentsEMPE = "313132"
+var TalentsEMEB = "313133"
+
+var TalentsASUF = "313231"
+var TalentsASPE = "313232"
+var TalentsASEB = "313233"
+
+var TalentsEEUF = "313331"
+var TalentsEEPE = "313332"
+var TalentsEEEB = "313333"
+
 var StandardGlyphs = &proto.Glyphs{
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
-	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
 }
 var AoEGlyphs = &proto.Glyphs{
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfChainLightning),
-	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
-}
-var AlternateGlyphs = &proto.Glyphs{
-	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
-	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
-	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
 }
 
 var NoTotems = &proto.ShamanTotems{}
-var TotemsBasic = &proto.ShamanTotems{
-	Earth: proto.EarthTotem_TremorTotem,
-	Air:   proto.AirTotem_WrathOfAirTotem,
-	Water: proto.WaterTotem_ManaSpringTotem,
-	Fire:  proto.FireTotem_SearingTotem,
-}
-
-var TotemsFireElemental = &proto.ShamanTotems{
-	Elements: &proto.TotemSet{
-		Earth: proto.EarthTotem_TremorTotem,
-		Air:   proto.AirTotem_WrathOfAirTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
-	},
-	Ancestors: &proto.TotemSet{
-		Earth: proto.EarthTotem_EarthElementalTotem,
-		Fire:  proto.FireTotem_FireElementalTotem,
-	},
-	Spirits: &proto.TotemSet{
-		Earth: proto.EarthTotem_TremorTotem,
-		Air:   proto.AirTotem_WrathOfAirTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
-	},
-	Earth: proto.EarthTotem_TremorTotem,
-	Air:   proto.AirTotem_WrathOfAirTotem,
-	Water: proto.WaterTotem_ManaSpringTotem,
-	Fire:  proto.FireTotem_SearingTotem,
-}
 
 var PlayerOptionsFireElemental = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
 		Options: &proto.ElementalShaman_Options{
 			ClassOptions: &proto.ShamanOptions{
 				Shield: proto.ShamanShield_LightningShield,
-				Totems: TotemsFireElemental,
 			},
 		},
 	},

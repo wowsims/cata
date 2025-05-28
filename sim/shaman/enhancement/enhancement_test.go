@@ -19,9 +19,21 @@ func TestEnhancement(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll},
 
 		// The above line is the actual line for the ring but it is causing an error in the test
-		GearSet:     core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "p4.orc"),
-		Talents:     StandardTalents,
-		Glyphs:      StandardGlyphs,
+		GearSet: core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "preraid"),
+		Talents: TalentsASEB,
+		Glyphs:  StandardGlyphs,
+		OtherTalentSets: []core.TalentsCombo{
+			{
+				Label:   "TalentsEchoUnleashed",
+				Talents: TalentsEEUF,
+				Glyphs:  StandardGlyphs,
+			},
+			{
+				Label:   "TalentsEMPrimal",
+				Talents: TalentsEMPE,
+				Glyphs:  StandardGlyphs,
+			},
+		},
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsStandard},
 		Rotation:    core.GetAplRotation("../../../ui/shaman/enhancement/apls", "default"),
@@ -42,11 +54,22 @@ func TestEnhancement(t *testing.T) {
 	}))
 }
 
-var StandardTalents = "3020023-2333310013003012321"
+var TalentsEMUF = "313131"
+var TalentsEMPE = "313132"
+var TalentsEMEB = "313133"
+
+var TalentsASUF = "313231"
+var TalentsASPE = "313232"
+var TalentsASEB = "313233"
+
+var TalentsEEUF = "313331"
+var TalentsEEPE = "313332"
+var TalentsEEEB = "313333"
+
 var StandardGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfLavaLash),
-	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfWindfuryWeapon),
-	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit),
+	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
+	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
+	Major3: int32(proto.ShamanMajorGlyph_GlyphOfFireNova),
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
@@ -56,37 +79,11 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	PrepotId: 58145, // Potion of the Tol'vir
 }
 
-var TotemsBasic = &proto.ShamanTotems{
-	Elements: &proto.TotemSet{
-		Earth: proto.EarthTotem_StrengthOfEarthTotem,
-		Air:   proto.AirTotem_WindfuryTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
-	},
-	Ancestors: &proto.TotemSet{
-		Earth: proto.EarthTotem_StrengthOfEarthTotem,
-		Air:   proto.AirTotem_WindfuryTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
-	},
-	Spirits: &proto.TotemSet{
-		Earth: proto.EarthTotem_StrengthOfEarthTotem,
-		Air:   proto.AirTotem_WindfuryTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
-	},
-	Earth: proto.EarthTotem_StrengthOfEarthTotem,
-	Air:   proto.AirTotem_WindfuryTotem,
-	Water: proto.WaterTotem_ManaSpringTotem,
-	Fire:  proto.FireTotem_SearingTotem,
-}
-
 var PlayerOptionsStandard = &proto.Player_EnhancementShaman{
 	EnhancementShaman: &proto.EnhancementShaman{
 		Options: &proto.EnhancementShaman_Options{
 			ClassOptions: &proto.ShamanOptions{
 				Shield:  proto.ShamanShield_LightningShield,
-				Totems:  TotemsBasic,
 				ImbueMh: proto.ShamanImbue_WindfuryWeapon,
 			},
 			ImbueOh: proto.ShamanImbue_FlametongueWeapon,

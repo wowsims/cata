@@ -285,6 +285,7 @@ const (
 	SpellMaskNone               int64 = 0
 	SpellMaskFireElementalTotem int64 = 1 << iota
 	SpellMaskEarthElementalTotem
+	SpellMaskFireElementalMelee
 	SpellMaskFlameShockDirect
 	SpellMaskFlameShockDot
 	SpellMaskLavaBurst
@@ -321,13 +322,16 @@ const (
 	SpellMaskShamanisticRage
 	SpellMaskElementalBlast
 	SpellMaskElementalBlastOverload
+	SpellMaskStormlashTotem
+	SpellMaskBloodlust
 
-	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
-	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
-	SpellMaskFire        = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame | SpellMaskLavaBeam | SpellMaskLavaBeamOverload | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
-	SpellMaskNature      = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
-	SpellMaskFrost       = SpellMaskUnleashFrost | SpellMaskFrostShock | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
-	SpellMaskOverload    = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload | SpellMaskElementalBlastOverload | SpellMaskLavaBeamOverload
-	SpellMaskShock       = SpellMaskFlameShock | SpellMaskEarthShock | SpellMaskFrostShock
-	SpellMaskTotem       = SpellMaskMagmaTotem | SpellMaskSearingTotem | SpellMaskFireElementalTotem | SpellMaskEarthElementalTotem
+	SpellMaskStormstrike  = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
+	SpellMaskFlameShock   = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
+	SpellMaskFire         = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame | SpellMaskLavaBeam | SpellMaskLavaBeamOverload | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
+	SpellMaskNature       = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
+	SpellMaskFrost        = SpellMaskUnleashFrost | SpellMaskFrostShock | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
+	SpellMaskOverload     = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload | SpellMaskElementalBlastOverload | SpellMaskLavaBeamOverload
+	SpellMaskShock        = SpellMaskFlameShock | SpellMaskEarthShock | SpellMaskFrostShock
+	SpellMaskTotem        = SpellMaskMagmaTotem | SpellMaskSearingTotem | SpellMaskFireElementalTotem | SpellMaskEarthElementalTotem | SpellMaskStormlashTotem
+	SpellMaskInstantSpell = SpellMaskAscendance | SpellMaskFeralSpirit | SpellMaskUnleashElements | SpellMaskBloodlust
 )

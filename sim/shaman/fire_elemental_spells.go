@@ -30,7 +30,7 @@ func (fireElemental *FireElemental) registerFireBlast() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.42899999022,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 14.0 //Magic number from beta testing
+			baseDamage := 13.8 //Magic number from beta testing
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -62,8 +62,8 @@ func (fireElemental *FireElemental) registerFireNova() {
 		BonusCoefficient: 1.00,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			levelScalingMultiplier := 91.517600 / 12.102900
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				levelScalingMultiplier := 91.517600 / 12.102900
 				baseDamage := sim.Roll(49*levelScalingMultiplier, 58*levelScalingMultiplier) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing 49 58
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

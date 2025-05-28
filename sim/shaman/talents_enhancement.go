@@ -14,20 +14,21 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskShock,
 		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  90,
+		IntValue:  -90,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskTotem,
+		ClassMask: SpellMaskTotem | SpellMaskInstantSpell,
 		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  75,
+		IntValue:  -75,
 	})
+	primalWisdomManaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 63375})
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:       "Mental Quickness",
 		ProcMask:   core.ProcMaskMelee,
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcChance: 0.4,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			shaman.AddMana(sim, 0.05*shaman.MaxMana(), shaman.NewManaMetrics(core.ActionID{SpellID: 63375}))
+			shaman.AddMana(sim, 0.05*shaman.MaxMana(), primalWisdomManaMetrics)
 		},
 	})
 
@@ -98,9 +99,20 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	//TODO fire ele melee also procs this
+	core.MakeProcTriggerAura(&shaman.FireElemental.Unit, core.ProcTrigger{
+		Name:           "Searing Flames Dummy Fire ele",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskFireElementalMelee,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     1,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			searingFlameStackingAura.Activate(sim)
+			searingFlameStackingAura.AddStack(sim)
+		},
+	})
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-		Name:           "Searing Flames Dummy",
+		Name:           "Searing Flames Dummy Shaman",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: SpellMaskSearingTotem,
 		Outcome:        core.OutcomeLanded,
@@ -115,7 +127,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 	//Static Shock
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:           "Static Shock",
-		Callback:       core.CallbackOnCastComplete,
+		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: SpellMaskStormstrikeCast | SpellMaskLavaLash,
 		ProcChance:     0.45,
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {

@@ -17,7 +17,9 @@ func (enh *EnhancementShaman) registerStormblastSpell() {
 	config := enh.newStormstrikeSpellConfig(115356, &enh.StormStrikeDebuffAuras, mhHit, ohHit)
 	config.SpellSchool = core.SpellSchoolNature
 	config.ManaCost.BaseCostPercent = 9.372
-	config.Cast.CD.Timer = enh.NewTimer()
+	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+		return enh.GetAura("Ascendance").IsActive()
+	}
 
 	enh.Stormblast = enh.RegisterSpell(config)
 }

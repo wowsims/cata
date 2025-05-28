@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -37,10 +38,11 @@ var ItemSetRegaliaOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 
 			lightningStrike := shaman.RegisterSpell(core.SpellConfig{
-				ActionID:     core.ActionID{SpellID: 138146},
-				SpellSchool:  core.SpellSchoolNature,
-				ProcMask:     core.ProcMaskSpellProc,
-				MissileSpeed: 20,
+				ActionID:       core.ActionID{SpellID: 138146},
+				SpellSchool:    core.SpellSchoolNature,
+				ProcMask:       core.ProcMaskSpellProc,
+				CritMultiplier: shaman.DefaultCritMultiplier(),
+				MissileSpeed:   20,
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					baseDamage := sim.RollWithLabel(32375, 37625, "Lighting Strike 2pT14")
 					nTargets := shaman.Env.GetNumTargets()
@@ -94,7 +96,7 @@ var ItemSetCelestialHarmonyRegalia = core.NewItemSet(core.ItemSet{
 				return target.GetOrRegisterAura(core.Aura{
 					Label:     "Elemental Discharge - " + shaman.Label,
 					ActionID:  core.ActionID{SpellID: 144999},
-					Duration:  2,
+					Duration:  time.Second * 2,
 					MaxStacks: 6,
 					OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 						aura.Duration = time.Second * 2 * time.Duration(newStacks)
@@ -107,6 +109,7 @@ var ItemSetCelestialHarmonyRegalia = core.NewItemSet(core.ItemSet{
 						})
 					},
 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Duration = time.Second * 2
 						core.DisableDamageDoneByCaster(DDBC_2PT16, shaman.AttackTables[aura.Unit.UnitIndex])
 					},
 				})
@@ -205,25 +208,22 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 			wfActionId := core.ActionID{SpellID: 8232}
 			ftActionId := core.ActionID{SpellID: 8024}
 			fbActionId := core.ActionID{SpellID: 8033}
-			var mhWindfurySpell *core.Spell
-			var ohWindfurySpell *core.Spell
-			var frostbrandSpell *core.Spell
-			var flametongueSpell *core.Spell
+			var imbueSpells []*core.Spell
 			shaman.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.ActionID.WithTag(1) == wfActionId.WithTag(1) {
-					mhWindfurySpell = spell
+					imbueSpells = append(imbueSpells, spell)
 					return
 				}
 				if spell.ActionID.WithTag(2) == wfActionId.WithTag(2) {
-					ohWindfurySpell = spell
+					imbueSpells = append(imbueSpells, spell)
 					return
 				}
 				if spell.ActionID == fbActionId {
-					frostbrandSpell = spell
+					imbueSpells = append(imbueSpells, spell)
 					return
 				}
 				if spell.ActionID == ftActionId {
-					flametongueSpell = spell
+					imbueSpells = append(imbueSpells, spell)
 					return
 				}
 			})
@@ -236,20 +236,11 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 				ProcChance: 0.1,
 				Duration:   time.Second * 10,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					rand := sim.RandomFloat("Celestial Harmony Battlegear 2P Proc")
-					if rand < 1.0/3.0 {
-						if spell.ProcMask.Matches(core.ProcMaskMeleeMH | core.ProcMaskMeleeProc) {
-							mhWindfurySpell.Cast(sim, result.Target)
-							return
-						}
-						ohWindfurySpell.Cast(sim, result.Target)
+					if len(imbueSpells) == 0 {
 						return
 					}
-					if rand < 2.0/3.0 {
-						flametongueSpell.Cast(sim, result.Target)
-						return
-					}
-					frostbrandSpell.Cast(sim, result.Target)
+					rand := int(math.Floor(sim.RollWithLabel(0, float64(len(imbueSpells)), "Enh 4PT16 Proc")))
+					imbueSpells[rand].Cast(sim, result.Target)
 				},
 			})
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
@@ -270,9 +261,11 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 				ProcChance:     0.05,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					sfAura := shaman.GetAura("Searing Flames")
-					sfAura.Activate(sim)
-					sfAura.SetStacks(sim, sfAura.GetStacks()+5)
-					shaman.LavaLash.CD.Reset()
+					if sfAura != nil {
+						sfAura.Activate(sim)
+						sfAura.SetStacks(sim, sfAura.GetStacks()+5)
+						shaman.LavaLash.CD.Reset()
+					}
 				},
 			})
 		},

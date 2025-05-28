@@ -415,6 +415,7 @@ export class ActionId {
 				}
 				break;
 			case 'Stormstrike':
+			case 'Stormblast' :
 				if (tag == 0) {
 					name += ' (Cast)';
 				} else if (tag == 1) {
@@ -453,7 +454,7 @@ export class ActionId {
 				}
 				break;
 			case 'Fulmination':
-				name += ` (${tag + 3})`;
+				name += ` (${tag + 2})`;
 				break;
 			case 'Lightning Shield':
 				if (tag == 1) {

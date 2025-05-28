@@ -22,8 +22,9 @@ func (shaman *Shaman) registerBloodlustCD() {
 	}
 
 	spell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskBloodlust,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 21.5,

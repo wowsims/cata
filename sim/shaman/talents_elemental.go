@@ -62,8 +62,11 @@ func (shaman *Shaman) ApplyElementalTalents() {
 				NonEmpty: true,
 			},
 			ModifyCast: func(s1 *core.Simulation, spell *core.Spell, c *core.Cast) {
-				spell.SetMetricsSplit(shaman.LightningShieldAura.GetStacks() - 1)
+				spell.SetMetricsSplit(shaman.LightningShieldAura.GetStacks() - 2)
 			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return shaman.LightningShieldAura.GetStacks() > 1
 		},
 		MetricSplits: 6,
 
@@ -80,7 +83,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		Name:           "Fulmination Proc",
 		ProcChance:     1.0,
 		ClassSpellMask: SpellMaskEarthShock,
-		Callback:       core.CallbackOnCastComplete,
+		Callback:       core.CallbackOnApplyEffects,
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
 			return shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield
 		},

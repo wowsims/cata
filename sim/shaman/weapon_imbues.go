@@ -127,12 +127,11 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: int32(8024)},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamageProc,
-		ClassSpellMask: SpellMaskFlametongueWeapon,
-		Flags:          core.SpellFlagPassiveSpell,
-
+		ActionID:         core.ActionID{SpellID: int32(8024)},
+		SpellSchool:      core.SpellSchoolFire,
+		ProcMask:         core.ProcMaskSpellDamageProc,
+		ClassSpellMask:   SpellMaskFlametongueWeapon,
+		Flags:            core.SpellFlagPassiveSpell,
 		DamageMultiplier: weapon.SwingSpeed / 2.6, //WIll be updated on item swap L232
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,

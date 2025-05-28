@@ -1169,6 +1169,7 @@ var StormLashSpellExceptions = map[int32]float64{
 
 // Source: https://www.wowhead.com/mop-classic/spell=120668/stormlash-totem#comments
 func StormLashAura(character *Character, actionTag int32) *Aura {
+	actionId := ActionID{SpellID: 120687, Tag: actionTag}
 	for _, pet := range character.Pets {
 		if !pet.IsGuardian() {
 			StormLashAura(&pet.Character, actionTag)
@@ -1178,7 +1179,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 	damage := 0.0
 
 	stormlashSpell := character.RegisterSpell(SpellConfig{
-		ActionID:    ActionID{SpellID: 120687, Tag: actionTag},
+		ActionID:    actionId,
 		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
@@ -1258,8 +1259,8 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		aura.Icd.Use(sim)
 	}
 
-	return character.RegisterAura(Aura{
-		Label:    "Stormlash Totem",
+	return character.GetOrRegisterAura(Aura{
+		Label:    "Stormlash Totem-" + actionId.String(),
 		Tag:      StormLashAuraTag,
 		ActionID: ActionID{SpellID: 120668, Tag: actionTag},
 		Duration: StormLashDuration,
