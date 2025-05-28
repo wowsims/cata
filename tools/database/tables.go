@@ -429,7 +429,10 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		    WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
 		    ELSE sn.Name_lang
 		END AS name,
-		se.SpellID as spellId,
+		CASE
+			WHEN sie.Effect_0 IN (1, 3) THEN sie.EffectArg_0
+			ELSE se.SpellID
+		END AS spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,
 		sie.Field_1_15_3_55112_014 as professionId,
 		sie.Effect as Effect,
@@ -1157,10 +1160,10 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 	SELECT DISTINCT
 		sn.Name_lang,
 		sn.ID,
-		sm.SchoolMask,
-		sm.Speed,
-		sm.LaunchDelay,
-		sm.MinDuration,
+		COALESCE(sm.SchoolMask,0),
+		COALESCE(sm.Speed,0),
+		COALESCE(sm.LaunchDelay,0),
+		COALESCE(sm.MinDuration,0),
 		COALESCE(ss.MaxScalingLevel, 0),
 		COALESCE(ss.MinScalingLevel, 0),
 		COALESCE(ss.ScalesFromItemLevel, 0),

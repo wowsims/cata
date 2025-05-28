@@ -152,6 +152,7 @@ type Item struct {
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	RandPropPoints int32
 	UpgradeStep    proto.ItemLevelState
+	ItemEffect     *proto.ItemEffect
 	ChallengeMode  bool
 }
 
@@ -170,6 +171,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		ScalingOptions:   pData.ScalingOptions,
+		ItemEffect:       pData.ItemEffect,
 	}
 }
 
@@ -209,14 +211,20 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 }
 
 type Enchant struct {
-	EffectID int32 // Used by UI to apply effect to tooltip
-	Stats    stats.Stats
+	EffectID      int32 // Used by UI to apply effect to tooltip
+	Stats         stats.Stats
+	EnchantEffect *proto.ItemEffect
+	Name          string         // Only needed for unit tests
+	Type          proto.ItemType // Only needed for unit tests
 }
 
 func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 	return Enchant{
-		EffectID: pData.EffectId,
-		Stats:    stats.FromProtoArray(pData.Stats),
+		EffectID:      pData.EffectId,
+		Stats:         stats.FromProtoArray(pData.Stats),
+		EnchantEffect: pData.EnchantEffect,
+		Name:          pData.Name,
+		Type:          pData.Type,
 	}
 }
 
@@ -369,6 +377,13 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	})
 }
 
+func GetEnchantByEffectID(effectID int32) *Enchant {
+	if enchant, ok := EnchantsByEffectID[effectID]; ok {
+		return &enchant
+	}
+	return nil
+}
+
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 	return &proto.EquipmentSpec{
 		Items: MapSlice(equipment[:], func(item Item) *proto.ItemSpec {
@@ -417,10 +432,10 @@ func NewItem(itemSpec ItemSpec) Item {
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
-	item.RandPropPoints = scalingOptions.RandPropPoints
 	item.UpgradeStep = itemSpec.UpgradeStep
 
 	if itemSpec.RandomSuffix != 0 {
+		item.RandPropPoints = scalingOptions.RandPropPoints
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
 			item.RandomSuffix = randomSuffix
 		} else {
