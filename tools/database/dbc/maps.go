@@ -71,6 +71,10 @@ func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 		return proto.Stat_StatRangedAttackPower, true
 	case 41, 42, 45: // SpellHealing, SpellDamage, or SpellPower
 		return proto.Stat_StatSpellPower, true
+	case 47: // SpellPenetration
+		return proto.Stat_StatPvpPowerRating, true
+	case 35: // ResilienceRating
+		return proto.Stat_StatPvpResilienceRating, true
 	case 50: // ExtraArmor maps to BonusArmor (green armor)
 		return proto.Stat_StatBonusArmor, true
 	case 43: // ManaRegeneration
@@ -215,6 +219,11 @@ type EnchantMetaType struct {
 }
 
 var SpellSchoolToStat = map[SpellSchool]proto.Stat{
+	FIRE:     -1,
+	ARCANE:   -1,
+	NATURE:   -1,
+	FROST:    -1,
+	SHADOW:   -1,
 	PHYSICAL: proto.Stat_StatArmor,
 }
 var MapInventoryTypeToEnchantMetaType = map[InventoryTypeFlag]EnchantMetaType{
@@ -340,7 +349,7 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_MULTISTRIKE:  -1,
 	RATING_MOD_READINESS:    -1,
 	RATING_MOD_SPEED:        -1,
-	RATING_MOD_RESILIENCE:   -1,
+	RATING_MOD_RESILIENCE:   proto.Stat_StatPvpResilienceRating,
 	RATING_MOD_LEECH:        -1,
 	RATING_MOD_HASTE_MELEE:  proto.Stat_StatHasteRating,
 	RATING_MOD_HASTE_RANGED: proto.Stat_StatHasteRating,

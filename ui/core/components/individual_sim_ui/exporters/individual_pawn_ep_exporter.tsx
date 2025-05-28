@@ -65,8 +65,9 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends IndividualE
 		[Stat.StatRangedAttackPower]: 'Ap',
 		[Stat.StatDodgeRating]: 'DodgeRating',
 		[Stat.StatParryRating]: 'ParryRating',
-		[Stat.StatPvpResilienceRating]: 'pvpResilienceRating',
-		[Stat.StatPvpPowerRating]: 'pvpPowerRating',
+		// TODO: Change PVP Resilience and Power once Pawn exists for MoP
+		[Stat.StatPvpResilienceRating]: 'ResilienceRating',
+		[Stat.StatPvpPowerRating]: 'PVPPowerRating',
 		[Stat.StatHealth]: 'Health',
 		[Stat.StatBonusArmor]: 'Armor2',
 	};

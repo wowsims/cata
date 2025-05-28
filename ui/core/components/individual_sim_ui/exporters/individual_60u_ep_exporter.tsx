@@ -59,6 +59,7 @@ export class Individual60UEPExporter<SpecType extends Spec> extends IndividualEx
 		[Stat.StatAttackPower]: 'attackPower',
 		[Stat.StatMasteryRating]: 'masteryRating',
 		[Stat.StatExpertiseRating]: 'expertiseRating',
+		// TODO: Change PVP Resilience and Power once 60U exists for MoP
 		[Stat.StatPvpResilienceRating]: 'pvpResilienceRating',
 		[Stat.StatPvpPowerRating]: 'pvpPowerRating',
 		[Stat.StatMana]: 'mana',
