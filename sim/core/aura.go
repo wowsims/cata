@@ -970,3 +970,30 @@ func (auraArrays LabeledAuraArrays) Append(auras AuraArray) LabeledAuraArrays {
 	auraArrays[auras.FindLabel()] = auras
 	return auraArrays
 }
+
+type AuraState struct {
+	RemainingDuration time.Duration
+	Stacks            int32
+}
+
+func (aura *Aura) SaveState(sim *Simulation) AuraState {
+	if !aura.active {
+		return AuraState{}
+	}
+
+	return AuraState{
+		RemainingDuration: aura.expires - sim.CurrentTime,
+		Stacks:            aura.stacks,
+	}
+}
+
+func (aura *Aura) RestoreState(state AuraState, sim *Simulation) {
+	if !aura.active {
+		aura.Activate(sim)
+	}
+
+	aura.UpdateExpires(state.RemainingDuration + sim.CurrentTime)
+	if aura.MaxStacks > 0 {
+		aura.SetStacks(sim, state.Stacks)
+	}
+}

@@ -370,3 +370,47 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		}
 	}
 }
+
+type DotState struct {
+	AuraState
+
+	SnapshotBaseDamage         float64
+	SnapshotAttackerMultiplier float64
+	SnapshotCritChance         float64
+	TicksRemaining             int32
+	ExtraTicks                 int32
+	TickPeriod                 time.Duration
+	NextTickIn                 time.Duration
+}
+
+func (dot *Dot) SaveState(sim *Simulation) DotState {
+	aura := dot.Aura.SaveState(sim)
+	return DotState{
+		AuraState:                  aura,
+		SnapshotBaseDamage:         dot.SnapshotBaseDamage,
+		SnapshotAttackerMultiplier: dot.SnapshotAttackerMultiplier,
+		SnapshotCritChance:         dot.SnapshotCritChance,
+		TicksRemaining:             dot.remainingTicks,
+		ExtraTicks:                 dot.tmpExtraTicks,
+		TickPeriod:                 dot.tickPeriod,
+		NextTickIn:                 dot.NextTickAt() - sim.CurrentTime,
+	}
+}
+
+func (dot *Dot) RestoreState(state DotState, sim *Simulation) {
+	dot.tickPeriod = state.TickPeriod
+	dot.remainingTicks = state.TicksRemaining
+	dot.tmpExtraTicks = state.ExtraTicks
+	dot.Aura.RestoreState(state.AuraState, sim)
+
+	// recreate with new period, resetting the next tick.
+	if dot.tickAction != nil {
+		dot.tickAction.Cancel(sim)
+	}
+	pa := &PendingAction{
+		NextActionAt: sim.CurrentTime + state.NextTickIn,
+		OnAction:     dot.periodicTick,
+	}
+	dot.tickAction = pa
+	sim.AddPendingAction(dot.tickAction)
+}
