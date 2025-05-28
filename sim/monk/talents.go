@@ -1019,7 +1019,7 @@ func (monk *Monk) registerInvokeXuenTheWhiteTiger() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				NonEmpty: true,
 			},
 			CD: core.Cooldown{
 				Timer:    monk.NewTimer(),

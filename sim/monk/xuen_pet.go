@@ -56,7 +56,6 @@ func (monk *Monk) NewXuen() *Xuen {
 	}
 
 	xuen.OnPetEnable = xuen.enable
-	xuen.DelayInitialInheritance(time.Millisecond * 500)
 
 	actionID := core.ActionID{SpellID: 123996}
 	xuen.CracklingTigerLightning = xuen.RegisterSpell(core.SpellConfig{
