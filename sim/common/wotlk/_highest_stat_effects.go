@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -49,7 +50,7 @@ func NewHighestStatAura(statOptions []stats.Stat, auraFactory func(stat stats.St
 
 func init() {
 	newDMCGreatnessEffect := func(itemID int32) {
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			auraIDs := map[stats.Stat]core.ActionID{
@@ -97,7 +98,7 @@ func init() {
 	newDMCGreatnessEffect(44255)
 
 	newDeathsChoiceEffect := func(itemID int32, auraIDs map[stats.Stat]core.ActionID, name string, amount float64) {
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			hsa := NewHighestStatAura(

@@ -39,6 +39,14 @@ func (enchant *Enchant) ToProto() *proto.UIEnchant {
 		Quality:            enchant.Quality.ToProto(),
 		RequiredProfession: GetProfession(enchant.RequiredProfession),
 	}
+	eff := ItemEffect{TriggerType: 2, SpellID: enchant.SpellId}
+	parsedEffect, hasStats := eff.ToProto(0, 0)
+	if hasStats {
+		uiEnchant.EnchantEffect = parsedEffect
+	}
+	if uiEnchant.EnchantEffect.GetOnUse() == nil && uiEnchant.EnchantEffect.GetProc() == nil {
+		uiEnchant.EnchantEffect = nil
+	}
 	if enchant.FDID == 0 {
 		uiEnchant.Icon = "trade_engraving"
 	}

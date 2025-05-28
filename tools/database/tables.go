@@ -428,7 +428,10 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		    WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
 		    ELSE sn.Name_lang
 		END AS name,
-		se.SpellID as spellId,
+		CASE
+			WHEN sie.Effect_0 IN (1, 3) THEN sie.EffectArg_0
+			ELSE se.SpellID
+		END AS spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,
 		sie.Field_1_15_3_55112_014 as professionId,
 		sie.Effect as Effect,
@@ -1096,7 +1099,6 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	var stringAuraIFlags string            //2
 	var stringChannelInterruptFlags string // 2
 	var stringShapeShift string            //2
-
 	err := rows.Scan(
 		&spell.NameLang,
 		&spell.ID,
@@ -1135,6 +1137,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		&stringAuraIFlags,
 		&stringChannelInterruptFlags,
 		&stringShapeShift,
+		&spell.MaxStacks,
 	)
 	if err != nil {
 		return spell, fmt.Errorf("scanning spell data: %w", err)
@@ -1165,7 +1168,6 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	if err != nil {
 		return spell, fmt.Errorf("parsing stringShapeShift args for spell %d (%s): %w", spell.ID, stringShapeShift, err)
 	}
-
 	return spell, nil
 }
 
@@ -1174,10 +1176,10 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		SELECT DISTINCT
 		sn.Name_lang,
 		sn.ID,
-		sm.SchoolMask,
-		sm.Speed,
-		sm.LaunchDelay,
-		sm.MinDuration,
+		COALESCE(sm.SchoolMask,0),
+		COALESCE(sm.Speed,0),
+		COALESCE(sm.LaunchDelay,0),
+		COALESCE(sm.MinDuration,0),
 		COALESCE(ss.MaxScalingLevel, 0),
 		COALESCE(ss.MinScalingLevel, 0),
 		COALESCE(ss.ScalesFromItemLevel, 0),
@@ -1208,7 +1210,8 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		COALESCE(sco.SpellClassSet, 0),
 		COALESCE(si.AuraInterruptFlags, ""),
 		COALESCE(si.ChannelInterruptFlags, ""),
-		COALESCE(ssp.ShapeshiftMask, "")
+		COALESCE(ssp.ShapeshiftMask, ""),
+		COALESCE(sao.CumulativeAura, 0)
 		FROM Spell s
 		LEFT JOIN SpellName sn ON s.ID = sn.ID
 		LEFT JOIN SpellEffect se ON s.ID = se.SpellID
@@ -1226,7 +1229,6 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		LEFT JOIN SpellAuraOptions sao ON sao.SpellID = s.ID
 		LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
 		LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
-		WHERE sco.SpellClassSet is not null
 		GROUP BY s.ID
 `
 

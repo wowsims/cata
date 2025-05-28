@@ -120,7 +120,7 @@ package wotlk
 // 					character.PseudoStats.DamageDealtMultiplier *= 1.01
 // 				}
 // 			},
-// 			3: func(agent core.Agent) {
+// 			3: func(agent core.Agent, _ proto.ItemLevelState) {
 // 				character := agent.GetCharacter()
 // 				if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 // 					character.PseudoStats.DamageDealtMultiplier *= 1.02 / 1.01

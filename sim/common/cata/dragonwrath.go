@@ -193,7 +193,7 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 }
 
 func init() {
-	core.NewItemEffect(71086, func(a core.Agent) {
+	core.NewItemEffect(71086, func(a core.Agent, _ proto.ItemLevelState) {
 		character := a.GetCharacter()
 		unit := &character.Unit
 		registerSpells(unit)

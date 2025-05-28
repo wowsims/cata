@@ -1,7 +1,7 @@
 package tbc
 
 // func init() {
-// 	core.NewItemEffect(30892, func(agent core.Agent) {
+// 	core.NewItemEffect(30892, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		for _, pet := range agent.GetCharacter().Pets {
 // 			if pet.IsGuardian() {
 // 				continue // not sure if this applies to guardians.

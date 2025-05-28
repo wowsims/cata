@@ -25,11 +25,12 @@ message ProtoVersion {
 	// protos need to define an api_version field so that the UI code knows
 	// to up-convert these protos to the new format whenever api_version is
 	// missing (0) or lower than current_version_number.
-	option (current_version_number) = 4;
+	option (current_version_number) = 5;
 
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
 }
+
 enum ItemLevelState {
     Base = 0;
     ChallengeMode = -1;
@@ -38,6 +39,7 @@ enum ItemLevelState {
     UpgradeStepThree = 3;
     UpgradeStepFour = 4;
 }
+
 message ScalingItemProperties {
     int32 rand_prop_points = 1;
     double weapon_damage_min = 2;
@@ -45,6 +47,7 @@ message ScalingItemProperties {
     map<int32, double> stats = 4; // for compactness
 	int32 ilvl = 6;
 }
+
 enum Spec {
 	SpecUnknown = 0;
 
@@ -923,14 +926,6 @@ enum EnchantType {
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
 	EnchantTypeOffHand = 5;
-}
-
-// Contains only the Enchant info needed by the sim.
-message SimEnchant {
-        int32 effect_id = 1;
-        repeated double stats = 2;
-        string name = 3; // Only needed for unit tests.
-        ItemType type = 4; // Only needed for unit tests.
 }
 
 // Contains only the Gem info needed by the sim.

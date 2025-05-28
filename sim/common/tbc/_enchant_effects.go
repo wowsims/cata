@@ -14,14 +14,14 @@ package tbc
 // 		w.BaseDamageMax += 5
 // 	})
 
-// 	core.NewEnchantEffect(2523, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2523, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().AddBonusRangedHitPercent(30 / core.PhysicalHitRatingPerHitPercent)
 // 	})
-// 	core.NewEnchantEffect(2724, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2724, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().AddBonusRangedCritPercent(28 / core.CritRatingPerCritPercent)
 // 	})
 
-// 	core.NewEnchantEffect(2671, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2671, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		// Sunfire
 // 		agent.GetCharacter().OnSpellRegistered(func(spell *core.Spell) {
 // 			if spell.SpellSchool.Matches(core.SpellSchoolArcane | core.SpellSchoolFire) {
@@ -29,7 +29,7 @@ package tbc
 // 			}
 // 		})
 // 	})
-// 	core.NewEnchantEffect(2672, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2672, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		// Soulfrost
 // 		agent.GetCharacter().OnSpellRegistered(func(spell *core.Spell) {
 // 			if spell.SpellSchool.Matches(core.SpellSchoolFrost | core.SpellSchoolShadow) {
@@ -50,7 +50,7 @@ package tbc
 // 	// ApplyCrusaderEffect will be applied twice if there is two weapons with this enchant.
 // 	//   However, it will automatically overwrite one of them, so it should be ok.
 // 	//   A single application of the aura will handle both mh and oh procs.
-// 	core.NewEnchantEffect(1900, func(agent core.Agent) {
+// 	core.NewEnchantEffect(1900, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		// -4 str per level over 60
@@ -76,14 +76,14 @@ package tbc
 // 		character.ItemSwap.RegisterEnchantProc(1900, aura)
 // 	})
 
-// 	core.NewEnchantEffect(2929, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2929, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		agent.GetCharacter().PseudoStats.BonusDamage += 2
 // 	})
 
 // 	// ApplyMongooseEffect will be applied twice if there is two weapons with this enchant.
 // 	//   However, it will automatically overwrite one of them, so it should be ok.
 // 	//   A single application of the aura will handle both mh and oh procs.
-// 	core.NewEnchantEffect(2673, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2673, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(2673, 0.73, 0)
@@ -121,16 +121,16 @@ package tbc
 // 		w.BaseDamageMax += 12
 // 	})
 
-// 	core.NewEnchantEffect(2621, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2621, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		character.PseudoStats.ThreatMultiplier *= 0.98
 // 	})
-// 	core.NewEnchantEffect(2613, func(agent core.Agent) {
+// 	core.NewEnchantEffect(2613, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 // 		character.PseudoStats.ThreatMultiplier *= 1.02
 // 	})
 
-// 	core.NewEnchantEffect(3225, func(agent core.Agent) {
+// 	core.NewEnchantEffect(3225, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3225, 1.0, 0)
@@ -200,7 +200,7 @@ package tbc
 // 		character.ItemSwap.RegisterEnchantProcWithSlots(3273, aura, core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:]))
 // 	}
 
-// 	core.NewEnchantEffect(3273, func(agent core.Agent) {
+// 	core.NewEnchantEffect(3273, func(agent core.Agent, _ proto.ItemLevelState) {
 // 		character := agent.GetCharacter()
 
 // 		actionID := core.ActionID{SpellID: 46579}

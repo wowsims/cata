@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
@@ -42,7 +43,7 @@ func init() {
 		},
 	})
 
-	core.NewItemEffect(68925, func(agent core.Agent) {
+	core.NewItemEffect(68925, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		// Proc chance determined to be p=.48 by video research - Researched by InDebt & Frostbitten
 		// Research: https://github.com/wowsims/cata/pull/1009#issuecomment-2348700653
@@ -96,7 +97,7 @@ func init() {
 		character.ItemSwap.RegisterProc(68925, aura)
 	})
 
-	core.NewItemEffect(69110, func(agent core.Agent) {
+	core.NewItemEffect(69110, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		// Proc chance determined to be p=.48 by video research - Researched by InDebt & Frostbitten
 		// Research: https://github.com/wowsims/cata/pull/1009#issuecomment-2348700653

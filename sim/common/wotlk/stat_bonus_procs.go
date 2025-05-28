@@ -1,11 +1,8 @@
 package wotlk
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func init() {
@@ -495,15 +492,10 @@ func init() {
 	// 	ICD:        time.Second * 100,
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Phylactery of the Nameless Lich H",
-		ItemID:     50365,
-		AuraID:     71636,
-		Bonus:      stats.Stats{stats.SpellPower: 1207},
-		Duration:   time.Second * 20,
-		Callback:   core.CallbackOnPeriodicDamageDealt,
-		ProcMask:   core.ProcMaskSpellDamage,
-		ProcChance: 0.30,
-		ICD:        time.Second * 100,
+		Name:     "Phylactery of the Nameless Lich H",
+		ItemID:   50365,
+		Callback: core.CallbackOnPeriodicDamageDealt,
+		ProcMask: core.ProcMaskSpellDamage,
 	})
 
 	core.AddEffectsToTest = false
@@ -523,28 +515,18 @@ func init() {
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Wisdom
-		Name:       "Chilling Knowledge",
-		ItemID:     50400,
-		AuraID:     72418,
-		Bonus:      stats.Stats{stats.SpellPower: 285},
-		Duration:   time.Second * 10,
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskSpellHealing,
-		ProcChance: 0.10,
-		ICD:        time.Second * 60,
+		Name:     "Chilling Knowledge",
+		ItemID:   50400,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskSpellHealing,
 	})
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Destruction
-		Name:       "Frostforged Sage",
-		ItemID:     50398,
-		AuraID:     72416,
-		Bonus:      stats.Stats{stats.SpellPower: 285},
-		Duration:   time.Second * 10,
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskSpellDamage,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.10,
-		ICD:        time.Second * 60,
+		Name:     "Frostforged Sage",
+		ItemID:   50398,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskSpellDamage,
+		Outcome:  core.OutcomeLanded,
 	})
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	// 	// Ashen Band of Unmatched Vengeance
@@ -563,14 +545,9 @@ func init() {
 		// Ashen Band of Endless Vengeance
 		Name:     "Frostforged Champion",
 		ItemID:   50402,
-		AuraID:   72412,
-		Bonus:    stats.Stats{stats.AttackPower: 480, stats.RangedAttackPower: 480},
-		Duration: time.Second * 10,
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeOrRanged,
 		Outcome:  core.OutcomeLanded,
-		PPM:      1,
-		ICD:      time.Second * 60,
 	})
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	// 	// Ashen Band of Unmatched Courage
@@ -587,16 +564,11 @@ func init() {
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Courage
-		Name:       "Frostforged Defender",
-		ItemID:     50404,
-		AuraID:     72414,
-		Bonus:      stats.Stats{stats.Armor: 2400},
-		Duration:   time.Second * 10,
-		Callback:   core.CallbackOnSpellHitTaken,
-		ProcMask:   core.ProcMaskMelee,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.03,
-		ICD:        time.Second * 60,
+		Name:     "Frostforged Defender",
+		ItemID:   50404,
+		Callback: core.CallbackOnSpellHitTaken,
+		ProcMask: core.ProcMaskMelee,
+		Outcome:  core.OutcomeLanded,
 	})
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	// 	// Ashen Band of Unmatched Might
@@ -615,14 +587,9 @@ func init() {
 		// Ashen Band of Endless Might
 		Name:     "Frostforged Champion",
 		ItemID:   52572,
-		AuraID:   72412,
-		Bonus:    stats.Stats{stats.AttackPower: 480, stats.RangedAttackPower: 480},
-		Duration: time.Second * 10,
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeOrRanged,
 		Outcome:  core.OutcomeLanded,
-		PPM:      1,
-		ICD:      time.Second * 60,
 	})
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	// 	Name:       "Sharpened Twilight Scale",
@@ -637,16 +604,11 @@ func init() {
 	// 	ICD:        time.Second * 45,
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Sharpened Twilight Scale H",
-		ItemID:     54590,
-		AuraID:     75456,
-		Bonus:      stats.Stats{stats.AttackPower: 1472, stats.RangedAttackPower: 1472},
-		Duration:   time.Second * 15,
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
-		Harmful:    true, // doesn't matter what, just that 'when you deal damage'
-		ProcChance: 0.35,
-		ICD:        time.Second * 45,
+		Name:     "Sharpened Twilight Scale H",
+		ItemID:   54590,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskDirect | core.ProcMaskProc,
+		Harmful:  true, // doesn't matter what, just that 'when you deal damage'
 	})
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	// 	Name:       "Charred Twilight Scale",
@@ -660,15 +622,10 @@ func init() {
 	// 	ICD:        time.Second * 50,
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Charred Twilight Scale H",
-		ItemID:     54588,
-		AuraID:     75473,
-		Bonus:      stats.Stats{stats.SpellPower: 861},
-		Duration:   time.Second * 15,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask:   core.ProcMaskSpellOrSpellProc,
-		ProcChance: 0.10,
-		ICD:        time.Second * 50,
+		Name:     "Charred Twilight Scale H",
+		ItemID:   54588,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask: core.ProcMaskSpellOrSpellProc,
 	})
 
 	core.AddEffectsToTest = true

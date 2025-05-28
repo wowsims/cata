@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -12,11 +13,11 @@ func init() {
 
 	// TODO: Destructive Skyflare (1% spell reflect)
 
-	core.NewItemEffect(41333, func(agent core.Agent) {
+	core.NewItemEffect(41333, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().MultiplyStat(stats.Intellect, 1.02)
 	})
 
-	core.NewItemEffect(41377, func(agent core.Agent) {
+	core.NewItemEffect(41377, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.98
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.98
@@ -26,12 +27,12 @@ func init() {
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.98
 	})
 
-	core.NewItemEffect(41380, func(agent core.Agent) {
+	core.NewItemEffect(41380, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		character.ApplyEquipScaling(stats.Armor, 1.02)
 	})
 
-	core.NewItemEffect(41385, func(agent core.Agent) {
+	core.NewItemEffect(41385, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		healSpell := character.RegisterSpell(core.SpellConfig{
@@ -63,21 +64,21 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(41389, func(agent core.Agent) {
+	core.NewItemEffect(41389, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().MultiplyStat(stats.Mana, 1.02)
 	})
 
-	core.NewItemEffect(41395, func(agent core.Agent) {
+	core.NewItemEffect(41395, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		character.PseudoStats.ThreatMultiplier *= 0.98
 	})
 
 	// Eternal Earthsiege
-	core.NewItemEffect(41396, func(agent core.Agent) {
+	core.NewItemEffect(41396, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().PseudoStats.BlockDamageReduction += 0.01
 	})
 
-	core.NewItemEffect(41400, func(agent core.Agent) {
+	core.NewItemEffect(41400, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		procAura := character.NewTemporaryStatsAura("Thundering Skyflare Diamond Proc", core.ActionID{SpellID: 55379}, stats.Stats{stats.MeleeHaste: 480}, time.Second*6)
 
@@ -96,7 +97,7 @@ func init() {
 		procAura.Icd = triggerAura.Icd
 	})
 
-	core.NewItemEffect(41401, func(agent core.Agent) {
+	core.NewItemEffect(41401, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		manaMetrics := character.NewManaMetrics(core.ActionID{SpellID: 55382})
 

@@ -12,7 +12,7 @@ import (
 func init() {
 
 	// Enchant: 4066, Spell: 74195 - Enchant Weapon - Mending
-	core.NewEnchantEffect(4066, func(agent core.Agent) {
+	core.NewEnchantEffect(4066, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 74194})
 
@@ -51,7 +51,7 @@ func init() {
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
 	// http://elitistjerks.com/f79/t110302-enhsim_cataclysm/p4/#post1832162
 	// Research indicates that the proc itself does not behave as game tables suggest <.<
-	core.NewEnchantEffect(4067, func(agent core.Agent) {
+	core.NewEnchantEffect(4067, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74196},
@@ -118,7 +118,7 @@ func init() {
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
-	core.NewEnchantEffect(4074, func(agent core.Agent) {
+	core.NewEnchantEffect(4074, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74208},
@@ -153,7 +153,7 @@ func init() {
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
-	core.NewEnchantEffect(4083, func(agent core.Agent) {
+	core.NewEnchantEffect(4083, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		procBuilder := func(name string, tag int32) *core.StatBuffAura {
@@ -249,46 +249,32 @@ func init() {
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Heartsong",
-		EnchantID:  4084,
-		AuraID:     74224,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 20,
-		ProcChance: 0.15,
-		Bonus:      stats.Stats{stats.Spirit: 200},
-		Duration:   time.Second * 15,
+		Name:      "Heartsong",
+		EnchantID: 4084,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Power Torrent",
-		EnchantID:  4097,
-		AuraID:     74241,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 45,
-		ProcChance: 0.2,
-		Bonus:      stats.Stats{stats.Intellect: 500},
-		Duration:   time.Second * 12,
+		Name:      "Power Torrent",
+		EnchantID: 4097,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:      "Windwalk",
 		EnchantID: 4098,
-		AuraID:    74243,
 		Callback:  core.CallbackOnSpellHitDealt,
 		Outcome:   core.OutcomeLanded,
-		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
-		Bonus:     stats.Stats{stats.DodgeRating: 600},
-		Duration:  time.Second * 10,
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
-	core.NewEnchantEffect(4099, func(agent core.Agent) {
+	core.NewEnchantEffect(4099, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		mainHand := character.NewTemporaryStatsAura(
@@ -328,68 +314,47 @@ func init() {
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Lightweave Embroidery Cata",
-		EnchantID:  4115,
-		AuraID:     75170,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 64,
-		ProcChance: 0.25,
-		Bonus:      stats.Stats{stats.Intellect: 580},
-		Duration:   time.Second * 15,
+		Name:      "Lightweave Embroidery Cata",
+		EnchantID: 4115,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Darkglow Embroidery Cata",
-		EnchantID:  4116,
-		AuraID:     75173,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 57,
-		ProcChance: 0.30,
-		Bonus:      stats.Stats{stats.Spirit: 580},
-		Duration:   time.Second * 15,
+		Name:      "Darkglow Embroidery Cata",
+		EnchantID: 4116,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Swordguard Embroidery Cata",
-		EnchantID:  4118,
-		AuraID:     75178,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-		ProcMask:   core.ProcMaskMeleeOrRanged,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 55,
-		ProcChance: 0.15,
-		Bonus:      stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
-		Duration:   time.Second * 15,
+		Name:      "Swordguard Embroidery Cata",
+		EnchantID: 4118,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:  core.ProcMaskMeleeOrRanged,
+		Outcome:   core.OutcomeLanded,
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:      "Gnomish X-Ray Scope",
 		EnchantID: 4175,
-		ItemID:    59594,
-		AuraID:    95712,
 		Callback:  core.CallbackOnSpellHitDealt,
 		ProcMask:  core.ProcMaskRanged,
 		Outcome:   core.OutcomeLanded,
-		ICD:       time.Second * 40,
-		PPM:       1,
-		Bonus:     stats.Stats{stats.RangedAttackPower: 800},
-		Duration:  time.Second * 10,
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
-	core.NewEnchantEffect(4176, func(agent core.Agent) {
+	core.NewEnchantEffect(4176, func(agent core.Agent, _ proto.ItemLevelState) {
 		agent.GetCharacter().AddBonusRangedHitPercent(88 / core.PhysicalHitRatingPerHitPercent)
 	})
 
 	// Enchant: 4177, Item: 59596 - Safety Catch Removal Kit
-	core.NewEnchantEffect(4177, func(agent core.Agent) {
+	core.NewEnchantEffect(4177, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		// TODO: This should be ranged-only haste. For now just make it hunter-only.
 		if character.Class == proto.Class_ClassHunter {
@@ -433,17 +398,11 @@ func init() {
 
 	// Enchant: 4267, Spell: 99623, Item: 70139 - Flintlocke's Woodchucker
 	shared.NewProcStatBonusEffectWithDamageProc(shared.ProcStatBonusEffect{
-		Name:       "Flintlocke's Woodchucker",
-		EnchantID:  4267,
-		ItemID:     70139,
-		AuraID:     99621,
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskRanged,
-		Outcome:    core.OutcomeLanded,
-		ICD:        time.Second * 40,
-		ProcChance: 0.1,
-		Bonus:      stats.Stats{stats.Agility: 300},
-		Duration:   time.Second * 10,
+		Name:      "Flintlocke's Woodchucker",
+		EnchantID: 4267,
+		Callback:  core.CallbackOnSpellHitDealt,
+		ProcMask:  core.ProcMaskRanged,
+		Outcome:   core.OutcomeLanded,
 	},
 		shared.DamageEffect{
 			SpellID:  99621,
@@ -463,7 +422,7 @@ func init() {
 	}
 
 	for _, enchantID := range movementSpeedEnchants {
-		core.NewEnchantEffect(enchantID, func(agent core.Agent) {
+		core.NewEnchantEffect(enchantID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			aura := character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
 

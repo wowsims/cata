@@ -82,10 +82,8 @@ type Character struct {
 	// This character's index within its party [0-4].
 	PartyIndex int
 
-	defensiveTrinketCD *Timer
-	offensiveTrinketCD *Timer
-	conjuredCD         *Timer
-	potionCD           *Timer
+	// This stores a timer on spell category ID so that we can track on use effects.
+	spellCategoryTimers map[int32]*Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 }
@@ -718,16 +716,16 @@ func (character *Character) GetMetricsProto() *proto.UnitMetrics {
 }
 
 func (character *Character) GetDefensiveTrinketCD() *Timer {
-	return character.GetOrInitTimer(&character.defensiveTrinketCD)
+	return character.GetOrInitSpellCategoryTimer(1190)
 }
 func (character *Character) GetOffensiveTrinketCD() *Timer {
-	return character.GetOrInitTimer(&character.offensiveTrinketCD)
+	return character.GetOrInitSpellCategoryTimer(1141)
 }
 func (character *Character) GetConjuredCD() *Timer {
-	return character.GetOrInitTimer(&character.conjuredCD)
+	return character.GetOrInitSpellCategoryTimer(30)
 }
 func (character *Character) GetPotionCD() *Timer {
-	return character.GetOrInitTimer(&character.potionCD)
+	return character.GetOrInitSpellCategoryTimer(4)
 }
 
 func (character *Character) AddStatProcBuff(effectID int32, procAura *StatBuffAura, isEnchant bool, eligibleSlots []proto.ItemSlot) {
