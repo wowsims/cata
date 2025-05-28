@@ -1,6 +1,7 @@
 package demonology
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -45,13 +46,20 @@ func (demonology *DemonologyWarlock) registerTouchOfChaos() {
 				if corruption.IsActive() {
 					corruption.TakeSnapshot(sim, false)
 
-					// add two ticks up to a limit of pandemic
-					for idx := 0; idx < 2; idx++ {
-						extended := float64(corruption.RemainingDuration(sim) + corruption.TickPeriod())
-						maxLength := float64(corruption.BaseDuration() + corruption.BaseDuration()/2)
-						if extended < maxLength {
-							corruption.AddTick()
-						}
+					// most sane way I can think off to keep tick count but update haste tick rate and roll over properly
+					// duration is actually extended on refresh for lower haste
+					state := corruption.SaveState(sim)
+					corruption.ApplyRollover(sim)
+					state.ExtraTicks = 0
+					state.TickPeriod = corruption.TickPeriod()
+					state.RemainingDuration = state.TickPeriod*time.Duration(state.TicksRemaining) + state.NextTickIn
+					corruption.RestoreState(state, sim)
+
+					// add up to the max duration or up to 5 seconds
+					maxLength := math.Min(float64(corruption.BaseDuration()+corruption.BaseDuration()/2), float64(corruption.RemainingDuration(sim)+time.Second*5))
+
+					for idx := 0; float64(corruption.RemainingDuration(sim)+corruption.TickPeriod()) < maxLength; idx++ {
+						corruption.AddTick()
 					}
 				}
 			})
