@@ -1,16 +1,16 @@
 package core
 
-func (result *SpellResult) applyResistances(sim *Simulation, spell *Spell, isPeriodic bool, attackTable *AttackTable) {
-	resistanceMultiplier := spell.resistanceMultiplier(sim, isPeriodic, attackTable)
+func (result *SpellResult) applyArmor(spell *Spell, isPeriodic bool, attackTable *AttackTable) {
+	armorMitigationMultiplier := spell.averageArmorMitigationFrac(isPeriodic, attackTable)
 
-	result.Damage *= resistanceMultiplier
+	result.Damage *= armorMitigationMultiplier
 
-	result.ArmorMultiplier = resistanceMultiplier
+	result.ArmorMultiplier = armorMitigationMultiplier
 	result.PreOutcomeDamage = result.Damage
 }
 
-// Modifies damage based on Armor
-func (spell *Spell) resistanceMultiplier(sim *Simulation, isPeriodic bool, attackTable *AttackTable) float64 {
+// Returns Armor mitigation fraction for the spell
+func (spell *Spell) averageArmorMitigationFrac(isPeriodic bool, attackTable *AttackTable) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreArmor) {
 		return 1
 	}
@@ -25,12 +25,12 @@ func (spell *Spell) resistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 		return 1
 	}
 
-	// Physical resistance (armor).
-	return attackTable.getArmorDamageModifier(spell)
+	// return armor mitigation fraction
+	return attackTable.getArmorDamageModifier()
 }
 
 // https://web.archive.org/web/20130511200023/http://elitistjerks.com/f15/t29453-combat_ratings_level_85_cataclysm/p40/#post2171306
-func (at *AttackTable) getArmorDamageModifier(spell *Spell) float64 {
+func (at *AttackTable) getArmorDamageModifier() float64 {
 	if at.IgnoreArmor {
 		return 1.0
 	}
