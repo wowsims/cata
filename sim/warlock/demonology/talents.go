@@ -74,3 +74,14 @@ func (demonology *DemonologyWarlock) registerGrimoireOfService() {
 	felGuard.MinEnergy = 90
 	demonology.BuildAndRegisterSummonSpell(111898, felGuard)
 }
+
+func (demonology *DemonologyWarlock) registerGrimoireOfSacrifice() {
+	if !demonology.Talents.GrimoireOfSacrifice {
+		return
+	}
+
+	// rest handle din talents.go of warlock
+	for _, pet := range demonology.WildImps {
+		pet.Fireball.DamageMultiplier *= 1.25
+	}
+}

@@ -19,7 +19,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagNoOnCastComplete,
-		ClassSpellMask: warlock.WarlockSpellHandOfGuldan,
+		ClassSpellMask: warlock.WarlockSpellShadowflameDot,
 
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,

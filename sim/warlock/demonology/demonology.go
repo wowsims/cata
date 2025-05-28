@@ -86,6 +86,7 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 
 	// Demo specific versions
 	demonology.registerGrimoireOfSupremacy()
+	demonology.registerGrimoireOfSacrifice()
 }
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {

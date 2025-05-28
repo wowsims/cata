@@ -221,7 +221,7 @@ func (warlock *Warlock) registerGrimoireOfSacrifice() {
 		buff.AttachSpellMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.25,
-			ClassMask:  WarlockSpellShadowBolt | WarlockSpellSoulBurn | WarlockSpellHandOfGuldan | WarlockSpellChaosWave | WarlockSpellTouchOfChaos | WarlockSpellDemonicSlash | WarlockSpellVoidray,
+			ClassMask:  WarlockSpellShadowBolt | WarlockSpellSoulBurn | WarlockSpellHandOfGuldan | WarlockSpellChaosWave | WarlockSpellTouchOfChaos | WarlockSpellDemonicSlash | WarlockSpellVoidray | WarlockSpellSoulFire,
 		})
 	case proto.Spec_SpecAfflictionWarlock:
 		buff.AttachSpellMod(core.SpellModConfig{
