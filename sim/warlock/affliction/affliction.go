@@ -79,6 +79,7 @@ func (affliction *AfflictionWarlock) Initialize() {
 	affliction.registerDarkSoulMisery()
 	affliction.registerSoulburn()
 	affliction.registerSeed()
+	affliction.registerSoulSwap()
 }
 
 func (affliction *AfflictionWarlock) ApplyTalents() {
