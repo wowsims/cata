@@ -17,9 +17,6 @@ func (shaman *Shaman) registerFireElementalTotem(isGuardian bool) {
 		Label:    "Fire Elemental Totem",
 		ActionID: actionID,
 		Duration: totalDuration,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.FireElemental.ChangeStatInheritance(shaman.FireElemental.shamanOwner.fireElementalStatInheritance(isGuardian))
-		},
 	})
 
 	shaman.FireElementalTotem = shaman.RegisterSpell(core.SpellConfig{

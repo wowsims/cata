@@ -1082,6 +1082,8 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),
 	'Greater Earth Elemental': ActionId.fromSpellId(2062),
 	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	'Primal Earth Elemental': ActionId.fromSpellId(2062),
+	'Primal Fire Elemental': ActionId.fromSpellId(2894),
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
 	'Rune Weapon': ActionId.fromSpellId(49028),

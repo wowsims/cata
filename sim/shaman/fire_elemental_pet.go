@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -48,7 +49,7 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 	})
 	fireElemental.AutoAttacks.MHConfig().ProcMask |= core.ProcMaskSpellDamage
 
-	fireElemental.OnPetEnable = fireElemental.enable
+	fireElemental.OnPetEnable = fireElemental.enable(isGuardian)
 	fireElemental.OnPetDisable = fireElemental.disable
 
 	shaman.AddPet(fireElemental)
@@ -56,7 +57,10 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 	return fireElemental
 }
 
-func (fireElemental *FireElemental) enable(sim *core.Simulation) {
+func (fireElemental *FireElemental) enable(isGuardian bool) func(*core.Simulation) {
+	return func(sim *core.Simulation) {
+		fireElemental.EnableDynamicStats(fireElemental.shamanOwner.fireElementalStatInheritance(isGuardian))
+	}
 }
 
 func (fireElemental *FireElemental) disable(sim *core.Simulation) {
@@ -124,20 +128,20 @@ func (shaman *Shaman) fireElementalBaseStats(isGuardian bool) stats.Stats {
 
 func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
-		ownerPhysicalHitPercent := ownerStats[stats.PhysicalHitPercent]
+		ownerHitRating := ownerStats[stats.HitRating]
 		ownerExpertiseRating := ownerStats[stats.ExpertiseRating]
 		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
 
+		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
+
 		return stats.Stats{
 			stats.Stamina:    ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 0.75, 0.75*1.2),
-			stats.SpellPower: shaman.GetSpellPowerValue(shaman.FireElementalTotem) * core.TernaryFloat64(isGuardian, FireElementalSpellPowerScaling, FireElementalSpellPowerScaling*1.8),
+			stats.SpellPower: power * core.TernaryFloat64(isGuardian, FireElementalSpellPowerScaling, FireElementalSpellPowerScaling*1.8),
 
-			stats.PhysicalHitPercent:  max(ownerSpellHitPercent/2, ownerPhysicalHitPercent),
-			stats.SpellHitPercent:     max(ownerSpellHitPercent, ownerExpertiseRating/core.ExpertisePerQuarterPercentReduction/4+ownerPhysicalHitPercent),
-			stats.ExpertiseRating:     max(ownerSpellHitPercent*core.ExpertisePerQuarterPercentReduction*2, ownerExpertiseRating),
+			stats.HitRating:           ownerHitRating,
+			stats.ExpertiseRating:     ownerExpertiseRating,
 			stats.SpellCritPercent:    ownerSpellCritPercent,
 			stats.PhysicalCritPercent: ownerPhysicalCritPercent,
 			stats.HasteRating:         ownerHasteRating,

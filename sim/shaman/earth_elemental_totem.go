@@ -17,9 +17,6 @@ func (shaman *Shaman) registerEarthElementalTotem(isGuardian bool) {
 		Label:    "Earth Elemental Totem",
 		ActionID: actionID,
 		Duration: totalDuration,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.EarthElemental.ChangeStatInheritance(shaman.EarthElemental.shamanOwner.earthElementalStatInheritance(isGuardian))
-		},
 	})
 
 	shaman.EarthElementalTotem = shaman.RegisterSpell(core.SpellConfig{

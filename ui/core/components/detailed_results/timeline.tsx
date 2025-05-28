@@ -411,7 +411,7 @@ export class Timeline extends ResultComponent {
 		});
 
 		return {
-			maxDps: dpsLogs[maxIndex(dpsLogs.map(l => l.dps))!].dps,
+			maxDps: dpsLogs[maxIndex(dpsLogs.map(l => l.dps))!]?.dps,
 			tooltipHandler: (dataPointIndex: number) => {
 				const log = dpsLogs[dataPointIndex];
 				return this.dpsTooltip(log, true, unit, colorOverride);

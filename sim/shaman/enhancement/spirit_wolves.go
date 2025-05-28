@@ -58,6 +58,10 @@ func (enh *EnhancementShaman) NewSpiritWolf(index int) *SpiritWolf {
 		AutoSwingMelee: true,
 	})
 
+	spiritWolf.OnPetEnable = func(sim *core.Simulation) {
+		spiritWolf.EnableDynamicStats(spiritWolf.shamanOwner.makeStatInheritance())
+	}
+
 	enh.AddPet(spiritWolf)
 
 	return spiritWolf
@@ -68,8 +72,7 @@ func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 		return stats.Stats{
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,
 			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
-			stats.PhysicalHitPercent:  ownerStats[stats.PhysicalHitPercent],
-			stats.SpellHitPercent:     ownerStats[stats.SpellHitPercent],
+			stats.HitRating:           ownerStats[stats.HitRating],
 			stats.ExpertiseRating:     ownerStats[stats.ExpertiseRating],
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
