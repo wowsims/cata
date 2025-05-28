@@ -20,11 +20,6 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,
 		BonusCoefficient: hellFireCoeff,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{NonEmpty: true},
-		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]core.SpellResult, len(sim.Encounter.TargetUnits))
 			for idx := 0; idx < len(sim.Encounter.TargetUnits); idx++ {
