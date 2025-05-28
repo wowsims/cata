@@ -74,7 +74,13 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label:      "Ancestral Swiftness Passive",
 		BuildPhase: core.CharacterBuildPhaseTalents,
-	}).AttachMultiplicativePseudoStatBuff(&shaman.PseudoStats.CastSpeedMultiplier, 1.05).AttachMultiplicativePseudoStatBuff(&shaman.PseudoStats.MeleeSpeedMultiplier, 1.1))
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, 1/1.1)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, 1/1.1)
+		},
+	}).AttachMultiplyCastSpeed(1.05))
 
 	asCdTimer := shaman.NewTimer()
 	asCd := time.Second * 90
