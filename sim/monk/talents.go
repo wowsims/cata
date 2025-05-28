@@ -279,14 +279,9 @@ func (monk *Monk) registerZenSphere() {
 		return
 	}
 
-	friendlyTargets := monk.Env.Raid.GetFirstNPlayersOrPets(2)
-	var nextTarget *core.Unit
-	for _, friendlyTarget := range friendlyTargets {
-		if friendlyTarget != &monk.Unit {
-			nextTarget = friendlyTarget
-			break
-		}
-	}
+	friendlyTargets := core.FilterSlice(monk.Env.Raid.GetFirstNPlayersOrPets(3), func(unit *core.Unit) bool {
+		return &monk.Unit != unit
+	})
 
 	zenSphereAura := monk.RegisterAura(core.Aura{
 		Label:     "Zen Sphere" + monk.Label,
@@ -443,10 +438,9 @@ func (monk *Monk) registerZenSphere() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			target := spell.Unit
-
-			if nextTarget != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
-				target = nextTarget
+			target := friendlyTargets[0]
+			if friendlyTargets[1] != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
+				target = friendlyTargets[1]
 			}
 
 			if target.CurrentHealthPercent() <= 0.35 {
@@ -1019,7 +1013,7 @@ func (monk *Monk) registerInvokeXuenTheWhiteTiger() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				NonEmpty: true,
 			},
 			CD: core.Cooldown{
 				Timer:    monk.NewTimer(),

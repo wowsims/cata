@@ -77,7 +77,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			legacyOfTheEmperor: true,
+			legacyOfTheWhiteTiger: true,
+			darkIntent: true,
+			trueshotAura: true,
+			unleashedRage: true,
+			moonkinAura: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
@@ -179,7 +190,7 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 			const setTalentBasedSettings = () => {
 				const talents = player.getTalents();
 				// Zen sphere can be on 2 targets, so we set the target dummies to 1 if it is talented.
-				player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 1 : 0);
+				player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 2 : 0);
 			};
 
 			setTalentBasedSettings();
