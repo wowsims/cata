@@ -18,8 +18,7 @@ func (demonology *DemonologyWarlock) registerDoom() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellDoom,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 1.25},
-		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
+		Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           demonology.DefaultCritMultiplier(),
