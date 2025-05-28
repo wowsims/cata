@@ -190,7 +190,7 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 			const setTalentBasedSettings = () => {
 				const talents = player.getTalents();
 				// Zen sphere can be on 2 targets, so we set the target dummies to 1 if it is talented.
-				player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 1 : 0);
+				player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 2 : 0);
 			};
 
 			setTalentBasedSettings();
