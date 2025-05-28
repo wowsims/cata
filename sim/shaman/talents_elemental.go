@@ -11,8 +11,8 @@ import (
 func (shaman *Shaman) ApplyElementalTalents() {
 
 	//Elemental Precision
-	shaman.AddStat(stats.SpellHitPercent, -shaman.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
-	shaman.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 1.0/core.SpellHitRatingPerHitPercent)
+	shaman.AddStat(stats.HitRating, -shaman.GetBaseStats()[stats.Spirit])
+	shaman.AddStatDependency(stats.Spirit, stats.HitRating, 1.0)
 
 	//Shamanism
 	shaman.AddStaticMod(core.SpellModConfig{
