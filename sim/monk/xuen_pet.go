@@ -45,7 +45,7 @@ func (monk *Monk) NewXuen() *Xuen {
 					stats.ParryRating:     ownerStats[stats.ParryRating],
 
 					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+					stats.SpellCritPercent:    ownerStats[stats.PhysicalCritPercent],
 				}
 			},
 			EnabledOnStart:                  false,
@@ -85,10 +85,7 @@ func (monk *Monk) NewXuen() *Xuen {
 				if index > 3 {
 					break
 				}
-				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
-				if result.Landed() {
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-				}
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
