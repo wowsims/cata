@@ -28,6 +28,8 @@ func (demonology *DemonologyWarlock) registerCarrionSwarm() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: carrionSwarmCoeff,
+		CritMultiplier:   demonology.DefaultCritMultiplier(),
+
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return demonology.IsInMeta() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 35, 50))
 		},
