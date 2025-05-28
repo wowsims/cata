@@ -85,7 +85,10 @@ func (monk *Monk) NewXuen() *Xuen {
 				if index > 3 {
 					break
 				}
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+				if result.Landed() {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+				}
 			}
 		},
 	})
