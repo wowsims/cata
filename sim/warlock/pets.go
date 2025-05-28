@@ -133,6 +133,7 @@ func (warlock *Warlock) registerImp() *WarlockPet {
 func (warlock *Warlock) registerImpWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
 	pet := warlock.RegisterPet(proto.WarlockOptions_Imp, 0, 0, name, enabledOnStart, isGuardian)
 	pet.registerFireboltSpell()
+	pet.MinEnergy = 140
 	return pet
 }
 
@@ -145,6 +146,7 @@ func (warlock *Warlock) registerFelHunter() *WarlockPet {
 func (warlock *Warlock) registerFelHunterWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
 	pet := warlock.RegisterPet(proto.WarlockOptions_Felhunter, 2, 3.5, name, enabledOnStart, isGuardian)
 	pet.registerShadowBiteSpell()
+	pet.MinEnergy = 100
 	return pet
 }
 
@@ -157,6 +159,7 @@ func (warlock *Warlock) registerVoidWalker() *WarlockPet {
 func (warlock *Warlock) registerVoidWalkerWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
 	pet := warlock.RegisterPet(proto.WarlockOptions_Voidwalker, 2, 3.5, name, enabledOnStart, isGuardian)
 	pet.registerTormentSpell()
+	pet.MinEnergy = 120
 	return pet
 }
 
@@ -169,6 +172,7 @@ func (warlock *Warlock) registerSuccubus() *WarlockPet {
 func (warlock *Warlock) registerSuccubusWithName(name string, enabledOnStart bool, isGuardian bool) *WarlockPet {
 	pet := warlock.RegisterPet(proto.WarlockOptions_Succubus, 3, 1.667, name, enabledOnStart, isGuardian)
 	pet.registerLashOfPainSpell()
+	pet.MinEnergy = 160
 	return pet
 }
 
@@ -234,7 +238,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		},
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 50,
+			Cost: 60,
 		},
 
 		DamageMultiplier: 1,
@@ -243,55 +247,13 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		BonusCoefficient: 0.38,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.38), spell.OutcomeMagicHitAndCrit)
-		},
-	}))
-}
-
-func (pet *WarlockPet) registerFelstormSpell() {
-	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 89751},
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellFelGuardFelstorm,
-
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			CD: core.Cooldown{
-				Timer:    pet.NewTimer(),
-				Duration: 45 * time.Second,
-			},
-			IgnoreHaste: true,
-		},
-
-		DamageMultiplier: 1.0,
-		CritMultiplier:   2,
-
-		Dot: core.DotConfig{
-			IsAOE: true,
-			Aura: core.Aura{
-				Label: "Felstorm",
-			},
-			NumberOfTicks: 6,
-			TickLength:    1 * time.Second,
-			OnTick: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot) {
-				spell := dot.Spell
-				baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				baseDmg += pet.Owner.CalcScalingSpellDmg(0.1155000031) + 0.231*spell.MeleeAttackPower()
-
-				for _, target := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.38), spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				switch pet.Owner.Spec {
+				case proto.Spec_SpecDemonologyWarlock:
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(12, spell.ActionID, sim)
 				}
-			},
-		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			dot := spell.AOEDot()
-			dot.Apply(sim)
-			dot.TickOnce(sim)
+			}
 		},
 	}))
 }
@@ -326,6 +288,13 @@ func (pet *WarlockPet) registerFireboltSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
+
+			if result.Landed() {
+				switch pet.Owner.Spec {
+				case proto.Spec_SpecDemonologyWarlock:
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(8, spell.ActionID, sim)
+				}
+			}
 		},
 	}))
 }
@@ -353,7 +322,14 @@ func (pet *WarlockPet) registerLashOfPainSpell() {
 		BonusCoefficient: 0.907,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.907), spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.907), spell.OutcomeMagicHitAndCrit)
+
+			if result.Landed() {
+				switch pet.Owner.Spec {
+				case proto.Spec_SpecDemonologyWarlock:
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(12, spell.ActionID, sim)
+				}
+			}
 		},
 	}))
 }
@@ -381,7 +357,13 @@ func (pet *WarlockPet) registerTormentSpell() {
 		BonusCoefficient: 0.3,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.3), spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, pet.CalcScalingSpellDmg(0.3), spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				switch pet.Owner.Spec {
+				case proto.Spec_SpecDemonologyWarlock:
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(12, spell.ActionID, sim)
+				}
+			}
 		},
 	}))
 }

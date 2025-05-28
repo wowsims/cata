@@ -39,7 +39,7 @@ func (affliction *AfflictionWarlock) registerSeed() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 				if isSoulBurn && result.Landed() {
-					affliction.Corruption.Dot(aoeTarget).Apply(sim)
+					affliction.Corruption.Proc(sim, aoeTarget)
 				}
 			}
 		},

@@ -147,13 +147,9 @@ func (warlock *Warlock) registerGrimoireOfService() {
 
 	// build all pets as they're additional summons
 	imp := warlock.registerImpWithName("Grimoire: Imp", false, true)
-	imp.MinEnergy = 140
 	felHunter := warlock.registerFelHunterWithName("Grimoire: Felhunter", false, true)
-	felHunter.MinEnergy = 100
 	voidWalker := warlock.registerVoidWalkerWithName("Grimoire: Voidwalker", false, true)
-	voidWalker.MinEnergy = 120
 	succubus := warlock.registerSuccubusWithName("Grimoire: Succubus", false, true)
-	succubus.MinEnergy = 160
 
 	warlock.serviceTimer = warlock.NewTimer()
 

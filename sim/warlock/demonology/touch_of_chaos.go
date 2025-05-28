@@ -43,6 +43,7 @@ func (demonology *DemonologyWarlock) registerTouchOfChaos() {
 
 				corruption := demonology.Corruption.Dot(target)
 				if corruption.IsActive() {
+					corruption.TakeSnapshot(sim, false)
 
 					// add two ticks up to a limit of pandemic
 					for idx := 0; idx < 2; idx++ {

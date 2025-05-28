@@ -41,7 +41,7 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const AfflictionTalents = {
 	name: 'Affliction',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '231211',
 		glyphs: Glyphs.create({
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),

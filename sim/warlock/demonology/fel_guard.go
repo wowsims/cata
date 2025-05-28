@@ -1,6 +1,7 @@
 package demonology
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -18,6 +19,7 @@ func (demo *DemonologyWarlock) registerFelguardWithName(name string, enabledOnSt
 	pet := demo.RegisterPet(proto.WarlockOptions_Felguard, 2, 3.5, name, enabledOnStart, isGuardian)
 	registerLegionStrikeSpell(pet, demo)
 	felStorm := registerFelstorm(pet, demo, autoCastFelstorm)
+	pet.MinEnergy = 120
 
 	if !isGuardian {
 		demo.RegisterSpell(core.SpellConfig{
@@ -34,7 +36,7 @@ func (demo *DemonologyWarlock) registerFelguardWithName(name string, enabledOnSt
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				pet.AutoCastAbilities = append(pet.AutoCastAbilities, felStorm)
+				pet.AutoCastAbilities = slices.Insert(pet.AutoCastAbilities, 0, felStorm)
 			},
 		})
 	}
@@ -124,7 +126,7 @@ func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast
 
 			// remove from auto cast again to trigger it once
 			if !pet.IsGuardian() {
-				pet.AutoCastAbilities = []*core.Spell{pet.AutoCastAbilities[0]}
+				pet.AutoCastAbilities = pet.AutoCastAbilities[1:]
 			}
 		},
 	})

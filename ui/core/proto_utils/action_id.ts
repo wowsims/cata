@@ -781,6 +781,14 @@ export class ActionId {
 				}
 				
 				break;
+			case 'Agony':
+			case 'Unstable Affliction':
+			case 'Corruption':
+				if (tag == 1) {
+					name += " (Malefic)"
+				}
+
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';

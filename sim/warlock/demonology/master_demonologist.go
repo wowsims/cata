@@ -1,6 +1,8 @@
 package demonology
 
-import "github.com/wowsims/mop/sim/core"
+import (
+	"github.com/wowsims/mop/sim/core"
+)
 
 // Caster Form + Pet Damage = 1% per Masterypoint
 func (demo *DemonologyWarlock) getNormalMasteryBonus() float64 {
@@ -26,9 +28,23 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
 	})
 
+	var scaleAction *core.PendingAction
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonus()
-		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
+		if scaleAction != nil {
+			return
+		}
+
+		// Gain of new mastery bonus is dealy and seems to be refrence accurate
+		scaleAction = &core.PendingAction{
+			NextActionAt: sim.CurrentTime + core.GCDDefault,
+			Priority:     core.ActionPriorityAuto,
+			OnAction: func(sim *core.Simulation) {
+				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
+				scaleAction = nil
+			},
+		}
+		sim.AddPendingAction(scaleAction)
 	})
 
 	demo.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating, newMasteryRating float64) {
@@ -37,7 +53,9 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 			demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
 		} else {
 			demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
-			demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
+			if scaleAction == nil {
+				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
+			}
 		}
 
 		for _, pet := range demo.Pets {

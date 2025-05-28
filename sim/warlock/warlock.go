@@ -230,7 +230,7 @@ func (warlock *Warlock) ApplyDotWithPandemic(dot *core.Dot, sim *core.Simulation
 
 	// First do usual dot carry over
 	dot.Apply(sim)
-	for dot.RemainingDuration(sim)+dot.TickPeriod() < extend {
+	for dot.RemainingDuration(sim)-dot.TimeUntilNextTick(sim)+dot.TickPeriod() <= extend {
 		dot.AddTick()
 	}
 }

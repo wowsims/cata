@@ -45,7 +45,7 @@ func (affliction *AfflictionWarlock) registerSoulburn() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    affliction.NewTimer(),
-				Duration: 45 * time.Second,
+				Duration: time.Second,
 			},
 		},
 

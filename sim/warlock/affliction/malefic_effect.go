@@ -1,8 +1,6 @@
 package affliction
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/warlock"
 )
@@ -10,7 +8,7 @@ import (
 func (affliction *AfflictionWarlock) registerMaleficEffect() {
 	buildSpell := func(id int32) *core.Spell {
 		return affliction.RegisterSpell(core.SpellConfig{
-			ActionID:       core.ActionID{SpellID: id},
+			ActionID:       core.ActionID{SpellID: id}.WithTag(1),
 			Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagNoSpellMods | core.SpellFlagIgnoreAttackerModifiers,
 			SpellSchool:    core.SpellSchoolShadow,
 			ProcMask:       core.ProcMaskSpellDamage,
@@ -26,21 +24,17 @@ func (affliction *AfflictionWarlock) registerMaleficEffect() {
 				},
 			},
 
-			Dot: core.DotConfig{
-				NumberOfTicks: 1,
-				TickLength:    1 * time.Second,
-			},
-
 			BonusSpellPower: 0, // used to transmit base damage
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealPeriodicDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHit)
+				result := spell.CalcDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHit)
+				spell.DealPeriodicDamage(sim, result)
 			},
 		})
 	}
 
-	corruptionProc := buildSpell(131740)
-	agonyProc := buildSpell(131737)
-	uaProc := buildSpell(131736)
+	corruptionProc := buildSpell(172)
+	agonyProc := buildSpell(980)
+	uaProc := buildSpell(30108)
 
 	procTable := map[*core.Spell]**core.Spell{
 		corruptionProc: &affliction.Corruption,
