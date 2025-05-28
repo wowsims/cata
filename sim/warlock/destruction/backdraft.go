@@ -50,9 +50,7 @@ func (destruction *DestructionWarlock) registerBackdraft() {
 			buff.Activate(sim)
 
 			// always grants 3 stacks
-			buff.AddStack(sim)
-			buff.AddStack(sim)
-			buff.AddStack(sim)
+			buff.SetStacks(sim, buff.GetStacks()+3)
 		},
 	})
 }
