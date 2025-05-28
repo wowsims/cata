@@ -2,6 +2,7 @@ package demonology
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/warlock"
 )
 
 // Caster Form + Pet Damage = 1% per Masterypoint
@@ -18,22 +19,40 @@ func (demo *DemonologyWarlock) getMetaMasteryBonus() float64 {
 	return demo.getMetaMasteryBonusFrom(demo.GetMasteryPoints())
 }
 
-func (demo DemonologyWarlock) getMetaMasteryBonusFrom(points float64) float64 {
+func (demo *DemonologyWarlock) getMetaMasteryBonusFrom(points float64) float64 {
 	return (points + 8.0) * 3 / 100
 }
 
 func (demo *DemonologyWarlock) registerMasterDemonologist() {
 	var scaleAction *core.PendingAction
+	corruptionMod := demo.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: -1 + 1/demo.getMetaMasteryBonus(),
+		ClassMask:  warlock.WarlockSpellCorruption,
+	})
+
+	corruptionModCaster := demo.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: demo.getNormalMasteryBonus(),
+		ClassMask:  warlock.WarlockSpellCorruption,
+	})
+
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 		if scaleAction != nil {
 			scaleAction.Cancel(sim)
 		}
 
+		corruptionMod.UpdateFloatValue(-1 + 1/(1+demo.getMetaMasteryBonus()))
+		corruptionModCaster.UpdateFloatValue(demo.getNormalMasteryBonus())
+		corruptionMod.Activate()
+		corruptionModCaster.Activate()
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonus()
 		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
 	})
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonus()
+		corruptionMod.Deactivate()
+		corruptionModCaster.Deactivate()
 		if scaleAction != nil {
 			return
 		}
@@ -58,6 +77,8 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 		if demo.Metamorphosis.RelatedSelfBuff.IsActive() {
 			demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
 			demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
+			corruptionMod.UpdateFloatValue(-1 + 1/(1+demo.getMetaMasteryBonus()))
+			corruptionModCaster.UpdateFloatValue(demo.getNormalMasteryBonus())
 		} else {
 			if scaleAction == nil {
 				demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
