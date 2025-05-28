@@ -74,9 +74,6 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 
 func (frozenOrb *FrozenOrb) enable(sim *core.Simulation) {
 
-	frozenOrb.PseudoStats.DamageDealtMultiplier = frozenOrb.Owner.PseudoStats.DamageDealtMultiplier
-	frozenOrb.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] = frozenOrb.Owner.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost]
-
 	frozenOrb.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
 			stats.SpellPower: ownerStats[stats.SpellPower],
