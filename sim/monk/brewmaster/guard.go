@@ -20,11 +20,13 @@ Increases the amount your Guard absorbs by 10%, but your Guard can only absorb m
 -- Glyph of Guard --
 */
 func (bm *BrewmasterMonk) registerGuard() {
-	actionID := core.ActionID{SpellID: 115295}
-
+	hasGlyph := bm.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfGuard)
+	spellId := core.TernaryInt32(hasGlyph, 123402, 115295)
+	actionID := core.ActionID{SpellID: spellId}
+	chiMetrics := bm.NewChiMetrics(actionID)
 	spellSchool := core.SpellSchoolPhysical | core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow
 
-	if bm.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfGuard) {
+	if hasGlyph {
 		spellSchool ^= core.SpellSchoolPhysical
 	}
 
@@ -34,7 +36,11 @@ func (bm *BrewmasterMonk) registerGuard() {
 		30*time.Second,
 		spellSchool,
 		func(_ *core.Unit) float64 {
-			return bm.GetStat(stats.AttackPower)*1.971 + bm.CalcScalingSpellDmg(13)
+			return (bm.GetStat(stats.AttackPower)*1.971+bm.CalcScalingSpellDmg(13))*
+				1 +
+				core.TernaryFloat64(hasGlyph, 0.1, 0) +
+				core.TernaryFloat64(bm.PowerGuardAura.IsActive(), 0.15, 0) +
+				core.TernaryFloat64(bm.T14Brewmaster4P != nil && bm.T14Brewmaster4P.IsActive(), 0.2, 0)
 		},
 	)
 
@@ -56,11 +62,14 @@ func (bm *BrewmasterMonk) registerGuard() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bm.ComboPoints() >= 2
+			return bm.StanceMatches(monk.SturdyOx) && bm.GetChi() >= 2
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			aura.Activate(sim)
+			bm.PowerGuardAura.Deactivate(sim)
+			bm.SpendChi(sim, 2, chiMetrics)
 		},
+		RelatedSelfBuff: aura.Aura,
 	})
 }

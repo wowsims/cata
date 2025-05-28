@@ -8,6 +8,7 @@ import (
 
 const MaxRage = 100.0
 const ThreatPerRageGained = 5
+const BaseRageHitFactor = 1.75
 
 type rageBar struct {
 	unit *Unit
@@ -25,8 +26,8 @@ type rageBar struct {
 }
 
 type RageBarOptions struct {
-	StartingRage  float64
-	BaseHitFactor float64
+	StartingRage       float64
+	BaseRageMultiplier float64
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
@@ -81,7 +82,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	unit.rageBar = rageBar{
 		unit:              unit,
 		startingRage:      max(0, min(options.StartingRage, MaxRage)),
-		startingHitFactor: options.BaseHitFactor,
+		startingHitFactor: BaseRageHitFactor * options.BaseRageMultiplier,
 		RageRefundMetrics: unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }

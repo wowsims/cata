@@ -148,6 +148,9 @@ func init() {
 					Timer:    sharedTimer,
 				},
 			},
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return character.HasManaBar()
+			},
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, storedMana, spell.OutcomeMagicHitAndCrit)
@@ -476,6 +479,9 @@ func init() {
 						Timer:    character.NewTimer(),
 						Duration: time.Minute * 2,
 					},
+				},
+				ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+					return character.HasManaBar()
 				},
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					procAura.Deactivate(sim)

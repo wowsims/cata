@@ -254,7 +254,7 @@ func (aura *Aura) ExpiresAt() time.Duration {
 }
 
 // Adds a handler to be called OnGain, in addition to any current handlers.
-func (aura *Aura) ApplyOnGain(newOnGain OnGain) {
+func (aura *Aura) ApplyOnGain(newOnGain OnGain) *Aura {
 	oldOnGain := aura.OnGain
 	if oldOnGain == nil {
 		aura.OnGain = newOnGain
@@ -264,10 +264,12 @@ func (aura *Aura) ApplyOnGain(newOnGain OnGain) {
 			newOnGain(aura, sim)
 		}
 	}
+
+	return aura
 }
 
 // Adds a handler to be called OnExpire, in addition to any current handlers.
-func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) {
+func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {
 	oldOnExpire := aura.OnExpire
 	if oldOnExpire == nil {
 		aura.OnExpire = newOnExpire
@@ -277,6 +279,8 @@ func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) {
 			newOnExpire(aura, sim)
 		}
 	}
+
+	return aura
 }
 
 type AuraFactory func(*Simulation) *Aura

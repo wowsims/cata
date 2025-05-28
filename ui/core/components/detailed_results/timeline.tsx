@@ -1,4 +1,5 @@
 import ApexCharts from 'apexcharts';
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -574,6 +575,14 @@ export class Timeline extends ResultComponent {
 		debuffsById.sort((a, b) => stringComparator(a[0].actionId!.name, b[0].actionId!.name));
 		const buffsAndDebuffsById = buffsById.concat(debuffsById);
 
+		auraAsResource.forEach(auraId => {
+			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs[0].actionId!.spellId === auraId);
+			if (auraIndex !== -1) {
+				this.addAuraRow(buffsById[auraIndex], duration);
+				delete buffsById[auraIndex];
+			}
+		});
+
 		const playerCastsByAbility = this.getSortedCastsByAbility(player);
 		playerCastsByAbility.forEach(castLogs => this.addCastRow(castLogs, buffsAndDebuffsById, duration));
 
@@ -670,8 +679,8 @@ export class Timeline extends ResultComponent {
 		const labelIcon = ref<HTMLAnchorElement>();
 		const hideElem = ref<HTMLElement>();
 		const labelElem = (
-			<div className={`rotation-label rotation-row ${isHiddenLabel ? 'rotation-label-hidden' : ''}`}>
-				<span ref={hideElem} className={`fas fa-eye${isHiddenLabel ? '' : '-slash'}`}></span>
+			<div className={clsx('rotation-label rotation-row', isHiddenLabel && 'rotation-label-hidden')}>
+				<span ref={hideElem} className={clsx('fas', isHiddenLabel ? 'fa-eye' : 'fa-eye-slash')}></span>
 				<a ref={labelIcon} className="rotation-label-icon"></a>
 				<span className="rotation-label-text">{labelText}</span>
 			</div>
@@ -1241,6 +1250,18 @@ const MELEE_ACTION_CATEGORY = 1;
 const SPELL_ACTION_CATEGORY = 2;
 const DEFAULT_ACTION_CATEGORY = 3;
 
+const auraAsResource = [
+	// Vengeance
+	84840, // Druid
+	84839, // Paladin
+	93098, // Warrior
+	93099, // Death Knight
+	120267, // Monk
+
+	// Monk
+	124255, // Stagger
+];
+
 // Hard-coded spell categories for controlling rotation ordering.
 const idToCategoryMap: Record<number, number> = {
 	[OtherAction.OtherActionMove]: 0,
@@ -1266,7 +1287,6 @@ const idToCategoryMap: Record<number, number> = {
 	[48463]: SPELL_ACTION_CATEGORY + 0.5, // Moonfire
 
 	// Hunter
-	[48996]: 0.1, // Raptor Strike
 	[53217]: 0.6, // Wild Quiver
 	[53209]: MELEE_ACTION_CATEGORY + 0.1, // Chimera Shot
 	[53353]: MELEE_ACTION_CATEGORY + 0.11, // Chimera Shot Serpent
@@ -1278,7 +1298,7 @@ const idToCategoryMap: Record<number, number> = {
 	[56641]: MELEE_ACTION_CATEGORY + 0.27, // Steady Shot
 	[53351]: MELEE_ACTION_CATEGORY + 0.28, // Kill Shot
 	[34490]: MELEE_ACTION_CATEGORY + 0.29, // Silencing Shot
-	[49001]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
+	[1978]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
 	[53238]: MELEE_ACTION_CATEGORY + 0.31, // Piercing Shots
 	[63672]: MELEE_ACTION_CATEGORY + 0.32, // Black Arrow
 	[49067]: MELEE_ACTION_CATEGORY + 0.33, // Explosive Trap

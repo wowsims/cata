@@ -1,12 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
-import {
-	HunterMajorGlyph as MajorGlyph,
-	HunterOptions_PetType as PetType,
-	HunterStingType,
-	SurvivalHunter_Options as HunterOptions,
-} from '../../core/proto/hunter';
+import { HunterMajorGlyph as MajorGlyph, HunterOptions_PetType as PetType, SurvivalHunter_Options as HunterOptions } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
@@ -29,7 +24,7 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '312111',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDisengage,
 		}),
@@ -37,19 +32,18 @@ export const SurvivalTalents = {
 };
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P2',
+	'P1',
 	Stats.fromMap(
 		{
 			[Stat.StatStamina]: 0.5,
-			[Stat.StatAgility]: 3.27,
-			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatAgility]: 5.92,
 			[Stat.StatHitRating]: 2.16,
-			[Stat.StatCritRating]: 1.17,
-			[Stat.StatHasteRating]: 0.89,
-			[Stat.StatMasteryRating]: 0.88,
+			[Stat.StatCritRating]: 1.72,
+			[Stat.StatHasteRating]: 1.09,
+			[Stat.StatMasteryRating]: 0.98,
 		},
 		{
-			[PseudoStat.PseudoStatRangedDps]: 3.75,
+			[PseudoStat.PseudoStatRangedDps]: 3.64,
 		},
 	),
 );
@@ -80,6 +74,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 3.47,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.56,
+			[Stat.StatExpertiseRating]: 22.222,
 			[Stat.StatCritRating]: 1.45,
 			[Stat.StatHasteRating]: 1.09,
 			[Stat.StatMasteryRating]: 1.04,
@@ -89,8 +84,14 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 	),
 );
+export const PRERAID_PRESET = PresetUtils.makePresetBuild('P1', {
+	gear: SV_PRERAID_PRESET,
+	epWeights: P1_EP_PRESET,
+	talents: SurvivalTalents,
+	rotationType: APLRotationType.TypeAuto,
+});
 
-export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
+export const P2_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: SV_P1_PRESET,
 	epWeights: P1_EP_PRESET,
 	talents: SurvivalTalents,
@@ -119,14 +120,13 @@ export const SVDefaultOptions = HunterOptions.create({
 		petType: PetType.Wolf,
 		petUptime: 1,
 	},
-	sniperTrainingUptime: 0.9,
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId: 76084, // Flask of the Winds
+	foodId: 62661, // Seafood Magnifique Feast
+	potId: 76089, // Potion of the Tol'vir
+	prepotId: 76089, // Potion of the Tol'vir
 	conjuredId: 5512, // Conjured Healthstone
 	tinkerId: 82174, // Synapse Springs
 });
