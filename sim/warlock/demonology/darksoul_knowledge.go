@@ -29,6 +29,9 @@ func (demonology *DemonologyWarlock) registerDarksoulKnowledge() {
 				Duration: time.Minute * 2,
 			},
 		},
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 5,
+		},
 		RechargeTime: time.Minute * 2,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			buff.Activate(sim)
