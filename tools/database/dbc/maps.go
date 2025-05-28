@@ -71,7 +71,7 @@ func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 		return proto.Stat_StatRangedAttackPower, true
 	case 41, 42, 45: // SpellHealing, SpellDamage, or SpellPower
 		return proto.Stat_StatSpellPower, true
-	case 47: // SpellPenetration
+	case 57: // PvPPowerRating
 		return proto.Stat_StatPvpPowerRating, true
 	case 35: // ResilienceRating
 		return proto.Stat_StatPvpResilienceRating, true
