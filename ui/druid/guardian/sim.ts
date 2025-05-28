@@ -153,13 +153,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 		builds: [
-			Presets.PRESET_BUILD_BOSS_DUMMY,
-			Presets.PRESET_BUILD_MAGMAW,
-			Presets.PRESET_BUILD_NEF,
-			Presets.PRESET_BUILD_BETHTILAC,
-			Presets.PRESET_BUILD_BALEROC_MT,
-			Presets.PRESET_BUILD_BALEROC_OT,
-			Presets.PRESET_BUILD_BLACKHORN_OT,
+			//Presets.PRESET_BUILD_BOSS_DUMMY,
 		],
 	},
 

@@ -63,7 +63,7 @@ export class Entity {
 	//   'Target 1' if a target,
 	//   'PlayerName (#1)' if a player, or
 	//   'PlayerName (#1) - PetName' if a pet.
-	static parseRegex = /\[(Target (\d+))|(([a-zA-Z0-9]+) \(#(\d+)\) - ([a-zA-Z0-9\s]+))|(([a-zA-Z0-9\s]+) \(#(\d+)\))\]/g;
+	static parseRegex = /\[(Target (\d+))|(([a-zA-Z0-9]+) \(#(\d+)\) - ([a-zA-Z0-9\s,]+))|(([a-zA-Z0-9\s]+) \(#(\d+)\))\]/g;
 	static parseAll(str: string): Array<Entity> {
 		return Array.from(str.matchAll(Entity.parseRegex)).map(match => {
 			if (match[1]) {
@@ -395,12 +395,14 @@ export class DamageDealtLog extends SimLog {
 							? 'Dodge'
 							: this.parry
 							? 'Parry'
-							: this.glance
-							? 'Glance'
 							: this.block
 							? this.crit
 								? 'Critical Block'
+								: this.glance
+								? 'Blocked Glance'
 								: 'Block'
+							: this.glance
+							? 'Glance'
 							: this.crit
 							? 'Crit'
 							: this.crush
@@ -456,7 +458,7 @@ export class DamageDealtLog extends SimLog {
 
 	static parse(params: SimLogParams): Promise<DamageDealtLog> | null {
 		const match = params.raw.match(
-			/] (.*?) (tick )?((Miss)|(Hit)|(CriticalBlock)|(Crit)|(Crush)|(Glance)|(Dodge)|(Parry)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) ((damage)|(healing)|(shielding)))?/,
+			/] (.*?) (tick )?((Miss)|(Hit)|(CriticalBlock)|(Crit)|(Crush)|(GlanceBlock)|(Glance)|(Dodge)|(Parry)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) ((damage)|(healing)|(shielding)))?/,
 		);
 		if (match) {
 			return ActionId.fromLogString(match[1])
@@ -464,8 +466,8 @@ export class DamageDealtLog extends SimLog {
 				.then(cause => {
 					params.actionId = cause;
 
-					const amount = match[16] ? parseFloat(match[16]) : 0;
-					const type = match[17] || '';
+					const amount = match[17] ? parseFloat(match[17]) : 0;
+					const type = match[18] || '';
 
 					return new DamageDealtLog(
 						params,
@@ -474,14 +476,14 @@ export class DamageDealtLog extends SimLog {
 						match[3] == 'Miss',
 						match[3] == 'Crit' || match[3] == 'CriticalBlock',
 						match[3] == 'Crush',
-						match[3] == 'Glance',
+						match[3] == 'Glance' || match[3] == 'GlanceBlock',
 						match[3] == 'Dodge',
 						match[3] == 'Parry',
-						match[3] == 'Block' || match[3] == 'CriticalBlock',
+						match[3] == 'Block' || match[3] == 'CriticalBlock' || match[3] == 'GlanceBlock',
 						Boolean(match[2]) && match[2].includes('tick'),
-						match[14] == '10',
-						match[14] == '20',
-						match[14] == '30',
+						match[15] == '10',
+						match[15] == '20',
+						match[15] == '30',
 					);
 				});
 		} else {
@@ -782,7 +784,15 @@ export class ResourceChangedLog extends SimLog {
 	readonly total: number;
 	readonly secondaryResourceType?: SecondaryResourceType;
 
-	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean, total: number, secondaryType?: SecondaryResourceType) {
+	constructor(
+		params: SimLogParams,
+		resourceType: ResourceType,
+		valueBefore: number,
+		valueAfter: number,
+		isSpend: boolean,
+		total: number,
+		secondaryType?: SecondaryResourceType,
+	) {
 		super(params);
 		this.resourceType = resourceType;
 		this.valueBefore = valueBefore;
@@ -797,7 +807,8 @@ export class ResourceChangedLog extends SimLog {
 			const signedDiff = (this.valueAfter - this.valueBefore) * (this.isSpend ? -1 : 1);
 			const isHealth = this.resourceType == ResourceType.ResourceTypeHealth;
 			const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
-			const resourceName = this.secondaryResourceType !== undefined ? SECONDARY_RESOURCES.get(this.secondaryResourceType)!.name : resourceNames.get(this.resourceType)!;
+			const resourceName =
+				this.secondaryResourceType !== undefined ? SECONDARY_RESOURCES.get(this.secondaryResourceType)!.name : resourceNames.get(this.resourceType)!;
 			const resourceClass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
 
 			return (
@@ -823,9 +834,7 @@ export class ResourceChangedLog extends SimLog {
 	}
 
 	static parse(params: SimLogParams): Promise<ResourceChangedLog> | null {
-		const match = params.raw.match(
-			/(Gained|Spent) (\d+\.?\d*) (\S.+?\S) from (.*?) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/,
-		);
+		const match = params.raw.match(/(Gained|Spent) (\d+\.?\d*) (\S.+?\S) from (.*?) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/);
 		if (match) {
 			const [resourceType, secondaryType] = stringToResourceType(match[3]);
 			const total = match[8] !== undefined ? parseFloat(match[8]) : 0;
@@ -1071,9 +1080,10 @@ export class CastLog extends SimLog {
 		const damageDealtLogs = logs.filter((log): log is DamageDealtLog => log.isDamageDealt());
 
 		const toBucketKey = (actionId: ActionId) => {
-			if (actionId.spellId == 30451) {
+			if (actionId.spellId == 30451 || actionId.spellId == 127632) {
 				// Arcane Blast is unique because it can finish its cast as a different
 				// spell than it started (if stacks drop).
+				// Also handle Shadow's Cascade for bouncing
 				return actionId.toStringIgnoringTag();
 			} else {
 				return actionId.toString();

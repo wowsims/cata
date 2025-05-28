@@ -84,13 +84,16 @@ func (spell *Spell) RangedAttackPower() float64 {
 	return spell.Unit.stats[stats.RangedAttackPower]
 }
 
-func (spell *Spell) DodgeParrySuppression() float64 {
-	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
-	// percent intervals. Note that in-game character sheet tooltips will still
-	// display the truncated values, but it has been tested to behave continuously in
-	// reality since the patch.
+func (spell *Spell) DodgeSuppression() float64 {
 	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
 	return expertiseRating / ExpertisePerQuarterPercentReduction / 400
+}
+
+// MoP reworked Parry. Rather than being innately ~2x Dodge chance, expertise now applies to Dodge first (down to 0), and then Parry.
+// The base chance for Dodge/Parry are both 7.5%, assuming a +3 target. The 7.5% Dodge chance must be fully suppressed before Parry will go down.
+// This makes the effect of each point of Expertise linear when attacking from the front
+func (spell *Spell) ParrySuppression(attackTable *AttackTable) float64 {
+	return max(0, spell.DodgeSuppression()-attackTable.BaseDodgeChance)
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
@@ -286,7 +289,11 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 				}
 			}
 		} else if result.DidGlance() {
-			spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+			if result.DidBlock() {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceBlockDamage += result.Damage
+			} else {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+			}
 		} else if result.DidBlock() {
 			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockDamage += result.Damage
 		}
@@ -507,6 +514,10 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 
 	if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+	}
+
+	if spell.Flags.Matches(SpellFlagRanged) {
+		multiplier *= attackTable.RangedDamageTakenMulitplier
 	}
 
 	if attackTable.DamageDoneByCasterMultiplier != nil {

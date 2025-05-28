@@ -122,6 +122,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueCurrentComboPoints(config.GetCurrentComboPoints(), config.Uuid)
 	case *proto.APLValue_CurrentRunicPower:
 		value = rot.newValueCurrentRunicPower(config.GetCurrentRunicPower(), config.Uuid)
+	case *proto.APLValue_MaxHealth:
+		value = rot.newValueMaxHealth(config.GetMaxHealth(), config.Uuid)
 	case *proto.APLValue_MaxComboPoints:
 		value = rot.newValueMaxComboPoints(config.GetMaxComboPoints(), config.Uuid)
 	case *proto.APLValue_MaxEnergy:
@@ -192,6 +194,10 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueSpellChanneledTicks(config.GetSpellChanneledTicks(), config.Uuid)
 	case *proto.APLValue_SpellCurrentCost:
 		value = rot.newValueSpellCurrentCost(config.GetSpellCurrentCost(), config.Uuid)
+	case *proto.APLValue_SpellNumCharges:
+		value = rot.newValueSpellNumCharges(config.GetSpellNumCharges(), config.Uuid)
+	case *proto.APLValue_SpellTimeToCharge:
+		value = rot.newValueSpellTimeToCharge(config.GetSpellTimeToCharge(), config.Uuid)
 
 	// Auras
 	case *proto.APLValue_AuraIsKnown:

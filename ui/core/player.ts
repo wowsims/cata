@@ -402,13 +402,18 @@ export class Player<SpecType extends Spec> {
 	}
 
 	canEnableTargetDummies(): boolean {
-		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman];
+		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman, Class.ClassMonk];
 		return healingSpellClasses.includes(this.getClass());
 	}
 
 	shouldEnableTargetDummies(): boolean {
 		if (this.getPlayerSpec().isHealingSpec) {
 			return true;
+		}
+
+		// Monks use a target dummy for Zen Sphere (max targets of 2)
+		if (this.getClass() == Class.ClassMonk){
+			return true
 		}
 
 		if (!this.itemSwapSettings.getEnableItemSwap()) {
@@ -567,6 +572,7 @@ export class Player<SpecType extends Spec> {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
 		}
+
 		return defaultRatios;
 	}
 
@@ -1379,7 +1385,7 @@ export class Player<SpecType extends Spec> {
 				if (!filters.weaponTypes.includes(item.weaponType) && item.handType > HandType.HandTypeUnknown) {
 					return false;
 				}
-				
+
 				if (!filters.oneHandedWeapons && item.handType != HandType.HandTypeTwoHand) {
 					return false;
 				}

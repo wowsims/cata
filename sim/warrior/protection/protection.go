@@ -29,8 +29,6 @@ type ProtectionWarrior struct {
 
 	Options *proto.ProtectionWarrior_Options
 
-	core.VengeanceTracker
-
 	shieldSlam *core.Spell
 }
 
@@ -43,19 +41,8 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:   protOptions.ClassOptions.StartingRage,
-		RageMultiplier: 1.0,
-
-		OnHitDealtRageGain: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, rage float64) float64 {
-			if result.Target != nil && result.Target.CurrentTarget != &war.Unit {
-				return rage * 1.5 // Sentinel: Generate 50% addl rage from attacking targets not attacking the warrior
-			}
-
-			return rage
-		},
-	}
-	if mh := war.GetMHWeapon(); mh != nil {
-		rbo.MHSwingSpeed = mh.SwingSpeed
+		StartingRage:       protOptions.ClassOptions.StartingRage,
+		BaseRageMultiplier: 1,
 	}
 
 	war.EnableRageBar(rbo)
@@ -76,7 +63,7 @@ func (war *ProtectionWarrior) RegisterSpecializationEffects() {
 	war.AddStat(stats.BlockPercent, 15)
 
 	// Vengeance
-	core.ApplyVengeanceEffect(war.GetCharacter(), &war.VengeanceTracker, 93098)
+	war.RegisterVengeance(93098, war.DefensiveStanceAura)
 }
 
 func (war *ProtectionWarrior) RegisterMastery() {

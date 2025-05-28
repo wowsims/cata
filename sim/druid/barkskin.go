@@ -8,10 +8,6 @@ import (
 )
 
 func (druid *Druid) registerBarkskinCD() {
-	if !druid.InForm(Bear) {
-		return
-	}
-
 	actionId := core.ActionID{SpellID: 22812}
 	hasGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfBarkskin)
 
@@ -30,10 +26,6 @@ func (druid *Druid) registerBarkskinCD() {
 			if hasGlyph {
 				druid.PseudoStats.ReducedCritTakenChance -= 0.25
 			}
-
-			if druid.T12Feral4pBonus.IsActive() {
-				druid.SmokescreenAura.Activate(sim)
-			}
 		},
 	})
 
@@ -43,7 +35,7 @@ func (druid *Druid) registerBarkskinCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second * 60.0,
+				Duration: core.TernaryDuration(druid.Spec == proto.Spec_SpecGuardianDruid, time.Second * 30, time.Second * 60),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {

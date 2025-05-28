@@ -4,39 +4,35 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func (monk *Monk) ApplyTalents() {
-	if monk.Level >= 15 {
-		monk.registerCelerity()
-		monk.registerTigersLust()
-		monk.registerMomentum()
-	}
+	// Level 15
+	monk.registerCelerity()
+	monk.registerTigersLust()
+	monk.registerMomentum()
 
-	if monk.Level >= 30 {
-		monk.registerChiWave()
-		monk.registerZenSphere()
-		monk.registerChiBurst()
-	}
+	// Level 30
+	monk.registerChiWave()
+	monk.registerZenSphere()
+	monk.registerChiBurst()
 
-	if monk.Level >= 45 {
-		monk.registerPowerStrikes()
-		monk.registerAscension()
-		monk.registerChiBrew()
-	}
+	// Level 45
+	monk.registerPowerStrikes()
+	monk.registerAscension()
+	monk.registerChiBrew()
 
-	if monk.Level >= 75 {
-		monk.registerHealingElixirs()
-		monk.registerDampenHarm()
-		monk.registerDiffuseMagic()
-	}
+	// Level 75
+	monk.registerHealingElixirs()
+	monk.registerDampenHarm()
+	monk.registerDiffuseMagic()
 
-	if monk.Level >= 90 {
-		monk.registerRushingJadeWind()
-		monk.registerInvokeXuenTheWhiteTiger()
-		monk.registerChiTorpedo()
-	}
+	// Level 90
+	monk.registerRushingJadeWind()
+	monk.registerInvokeXuenTheWhiteTiger()
+	monk.registerChiTorpedo()
 }
 
 func (monk *Monk) registerCelerity() {
@@ -57,49 +53,60 @@ When bouncing to allies, Chi Wave will prefer those injured over full health.
 $damage=${<avg>+$ap*0.45}
 $healing=${<avg>+$ap*0.45}
 */
-func (monk *Monk) registerChiWave() {
-	if !monk.Talents.ChiWave {
-		return
+var chiWaveActionID = core.ActionID{SpellID: 115098}
+var chiWaveDamageActionID = core.ActionID{SpellID: 132467}
+var chiWaveHealActionID = core.ActionID{SpellID: 132463}
+var chiWaveMaxBounces = 7
+var chiWaveBonusCoeff = 0.45
+var chiWaveScaling = core.CalcScalingSpellAverageEffect(proto.Class_ClassMonk, chiWaveBonusCoeff)
+
+func chiWaveSpellConfig(_ *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiWaveActionID,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MonkSpellChiWave,
+		MaxRange:       40,
+
+		Cast: overrides.Cast,
+
+		ApplyEffects: overrides.ApplyEffects,
 	}
 
-	avgScaling := monk.CalcScalingSpellDmg(0.4499999881)
-	var nextTarget *core.Unit
-	tickIndex := 0
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
 
-	var chiWaveDamageSpell *core.Spell
-	var chiWaveHealingSpell *core.Spell
-	chiWaveDamageSpell = monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 132467},
+	return config
+}
+func chiWaveDamageSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiWaveDamageActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellChiWave,
+		MaxRange:       40,
 		MissileSpeed:   8,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgScaling + spell.MeleeAttackPower()*0.45
+		ApplyEffects: overrides.ApplyEffects,
+	}
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
 
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
+	return config
+}
 
-				if tickIndex < 7 {
-					tickIndex++
-
-					nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
-					chiWaveHealingSpell.Cast(sim, &monk.Unit)
-				}
-			})
-		},
-	})
-
-	chiWaveHealingSpell = monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 132463},
+func chiWaveHealSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiWaveHealActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellHealing,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
@@ -110,30 +117,61 @@ func (monk *Monk) registerChiWave() {
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
+		ApplyEffects: overrides.ApplyEffects,
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+}
+
+func (monk *Monk) registerChiWave() {
+	if !monk.Talents.ChiWave {
+		return
+	}
+
+	var nextTarget *core.Unit
+	tickIndex := 0
+
+	var chiWaveHealingSpell *core.Spell
+	chiWaveDamageSpell := monk.RegisterSpell(chiWaveDamageSpellConfig(monk, false, core.SpellConfig{
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := avgScaling + spell.MeleeAttackPower()*0.45
+			baseDamage := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
+
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+			if result.Landed() {
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					result = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					if tickIndex < chiWaveMaxBounces {
+						tickIndex++
+						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
+						chiWaveHealingSpell.Cast(sim, &monk.Unit)
+					}
+				})
+			}
+		},
+	}))
+
+	chiWaveHealingSpell = monk.RegisterSpell(chiWaveHealSpellConfig(monk, false, core.SpellConfig{
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseHealing := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
 
 			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealHealing(sim, result)
 
-				if tickIndex < 7 {
+				if tickIndex < chiWaveMaxBounces {
 					tickIndex++
 					chiWaveDamageSpell.Cast(sim, nextTarget)
 				}
 			})
 		},
-	})
+	}))
 
-	monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 115098},
-		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MonkSpellChiWave,
-		MaxRange:       40,
-
+	monk.RegisterSpell(chiWaveSpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -155,7 +193,73 @@ func (monk *Monk) registerChiWave() {
 				chiWaveHealingSpell.Cast(sim, target)
 			}
 		},
-	})
+	}))
+}
+
+func (pet *StormEarthAndFirePet) registerSEFChiWave() {
+	if !pet.owner.Talents.ChiWave {
+		return
+	}
+
+	var nextTarget *core.Unit
+	tickIndex := 0
+
+	var chiWaveHealingSpell *core.Spell
+	chiWaveDamageSpell := pet.RegisterSpell(chiWaveDamageSpellConfig(pet.owner, true, core.SpellConfig{
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
+
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
+			if result.Landed() {
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					if tickIndex < chiWaveMaxBounces {
+						tickIndex++
+						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
+						chiWaveHealingSpell.Cast(sim, &pet.Unit)
+					}
+				})
+			}
+		},
+	}))
+
+	chiWaveHealingSpell = pet.RegisterSpell(chiWaveHealSpellConfig(pet.owner, true, core.SpellConfig{
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseHealing := chiWaveScaling + spell.MeleeAttackPower()*chiWaveBonusCoeff
+
+			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealHealing(sim, result)
+
+				if tickIndex < chiWaveMaxBounces {
+					tickIndex++
+					chiWaveDamageSpell.Cast(sim, nextTarget)
+				}
+			})
+		},
+	}))
+
+	pet.RegisterSpell(chiWaveSpellConfig(pet.owner, true, core.SpellConfig{
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			tickIndex = 0
+			if pet.IsOpponent(target) {
+				nextTarget = target.Env.NextTargetUnit(target)
+				chiWaveDamageSpell.Cast(sim, target)
+			} else {
+				nextTarget = target.CurrentTarget
+				chiWaveHealingSpell.Cast(sim, target)
+			}
+		},
+	}))
 }
 
 /*
@@ -175,7 +279,21 @@ func (monk *Monk) registerZenSphere() {
 		return
 	}
 
-	numTargets := monk.Env.GetNumTargets()
+	friendlyTargets := monk.Env.Raid.GetFirstNPlayersOrPets(2)
+	var nextTarget *core.Unit
+	for _, friendlyTarget := range friendlyTargets {
+		if friendlyTarget != &monk.Unit {
+			nextTarget = friendlyTarget
+			break
+		}
+	}
+
+	zenSphereAura := monk.RegisterAura(core.Aura{
+		Label:     "Zen Sphere" + monk.Label,
+		ActionID:  core.ActionID{SpellID: 124081}.WithTag(1),
+		Duration:  core.NeverExpires,
+		MaxStacks: 2,
+	})
 
 	avgTickScaling := monk.CalcScalingSpellDmg(0.1040000021)
 	// The 15% extra is from a hotfix not represented in the tooltip.
@@ -202,18 +320,18 @@ func (monk *Monk) registerZenSphere() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
 
-			results := make([]*core.SpellResult, numTargets)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				for _, target := range sim.Encounter.TargetUnits {
+					baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
+					baseDamage *= sim.Encounter.AOECapMultiplier()
+					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
-			}
+					if result.Landed() {
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					}
+				}
+			})
 		},
 	})
 
@@ -306,6 +424,9 @@ func (monk *Monk) registerZenSphere() {
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					detonateHealingSpell.Cast(sim, aura.Unit)
+					if zenSphereAura.IsActive() {
+						zenSphereAura.RemoveStack(sim)
+					}
 				},
 			},
 			NumberOfTicks:       8,
@@ -317,8 +438,16 @@ func (monk *Monk) registerZenSphere() {
 			},
 		},
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !zenSphereAura.IsActive() || zenSphereAura.GetStacks() < zenSphereAura.MaxStacks
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			target := spell.Unit
+
+			if nextTarget != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
+				target = nextTarget
+			}
 
 			if target.CurrentHealthPercent() <= 0.35 {
 				detonateHealingSpell.Cast(sim, target)
@@ -326,6 +455,8 @@ func (monk *Monk) registerZenSphere() {
 				return
 			}
 
+			zenSphereAura.Activate(sim)
+			zenSphereAura.AddStack(sim)
 			spell.Hot(target).Activate(sim)
 			zenSphereDotSpell.Cast(sim, target.CurrentTarget)
 		},
@@ -341,46 +472,54 @@ While casting Chi Burst, you continue to dodge, parry, and auto-attack.
 $damage=${<avg>+$ap*1.21}
 $healing=${<avg>+$ap}
 */
-func (monk *Monk) registerChiBurst() {
-	if !monk.Talents.ChiBurst {
-		return
-	}
+var chiBurstActionID = core.ActionID{SpellID: 123986}
+var chiBurstDamageActionID = core.ActionID{SpellID: 148135}
+var chiBurstHealActionID = core.ActionID{SpellID: 130654}
+var chiBurstBonusCoeff = 1.21
+var chiBurstScaling = core.CalcScalingSpellAverageEffect(proto.Class_ClassMonk, chiWaveBonusCoeff)
 
-	numTargets := monk.Env.GetNumTargets()
-	avgDmgScaling := monk.CalcScalingSpellDmg(1.2100000381)
+func chiBurstDamageSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
 
-	chiBurstDamageSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 148135},
+	config := core.SpellConfig{
+		ActionID:       chiBurstDamageActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellChiBurst,
 		MissileSpeed:   30,
+		MaxRange:       40,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgDmgScaling + spell.MeleeAttackPower()*1.21
-
-			results := make([]*core.SpellResult, numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
 
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
-				for idx := int32(0); idx < numTargets; idx++ {
-					spell.DealDamage(sim, results[idx])
+				for _, target := range sim.Encounter.TargetUnits {
+					baseDamage := chiBurstScaling + spell.MeleeAttackPower()*chiBurstBonusCoeff
+					baseDamage *= sim.Encounter.AOECapMultiplier()
+					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
+					if result.Landed() {
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					}
 				}
 			})
-		},
-	})
 
-	chiBurstHealingSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 130654},
+		},
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+
+}
+func chiBurstHealSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       chiBurstHealActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellHealing,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
@@ -400,12 +539,27 @@ func (monk *Monk) registerChiBurst() {
 				spell.DealHealing(sim, result)
 			})
 		},
-	})
+	}
 
-	actionID := core.ActionID{SpellID: 123986}
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+}
+
+func (monk *Monk) registerChiBurst() {
+	if !monk.Talents.ChiBurst {
+		return
+	}
+
+	chiBurstDamageSpell := monk.RegisterSpell(chiBurstDamageSpellConfig(monk, false))
+
+	chiBurstHealingSpell := monk.RegisterSpell(chiBurstHealSpellConfig(monk, false))
+
 	chiBurstFakeCastAura := monk.RegisterAura(core.Aura{
 		Label:    "Chi Burst" + monk.Label,
-		ActionID: actionID,
+		ActionID: chiBurstActionID,
 		Duration: time.Second,
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			chiBurstDamageSpell.Cast(sim, monk.CurrentTarget)
@@ -414,7 +568,7 @@ func (monk *Monk) registerChiBurst() {
 	})
 
 	monk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       chiBurstActionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -438,6 +592,15 @@ func (monk *Monk) registerChiBurst() {
 	})
 }
 
+func (pet *StormEarthAndFirePet) registerSEFChiBurst() {
+	if !pet.owner.Talents.ChiBurst {
+		return
+	}
+
+	pet.RegisterSpell(chiBurstDamageSpellConfig(pet.owner, true))
+	pet.RegisterSpell(chiBurstHealSpellConfig(pet.owner, true))
+}
+
 func (monk *Monk) registerPowerStrikes() {
 	if !monk.Talents.PowerStrikes {
 		return
@@ -446,10 +609,13 @@ func (monk *Monk) registerPowerStrikes() {
 	chiSphereSpellActionID := core.ActionID{SpellID: 121283}
 	chiSphereChiMetrics := monk.NewChiMetrics(chiSphereSpellActionID)
 
+	hasGlyph := monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfEnduringHealingSphere)
+	chiSphereduration := time.Minute*2 + core.TernaryDuration(hasGlyph, time.Minute*3, 0)
+
 	monk.ChiSphereAura = monk.RegisterAura(core.Aura{
 		Label:     "Chi Sphere" + monk.Label,
 		ActionID:  core.ActionID{SpellID: 121286},
-		Duration:  time.Minute * 2,
+		Duration:  time.Minute * chiSphereduration,
 		MaxStacks: 10,
 	})
 
@@ -563,57 +729,6 @@ func (monk *Monk) registerChiBrew() {
 
 	actionID := core.ActionID{SpellID: 115399}
 	chiMetrics := monk.NewChiMetrics(actionID)
-
-	chiBrewAura := monk.RegisterAura(core.Aura{
-		Label:     "Chi Brew" + monk.Label,
-		ActionID:  actionID,
-		Duration:  core.NeverExpires,
-		MaxStacks: 2,
-
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			if monk.chiBrewRecharge != nil {
-				monk.chiBrewRecharge.Cancel(sim)
-			}
-
-			aura.Activate(sim)
-			aura.SetStacks(sim, 2)
-		},
-
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if !aura.IsActive() {
-				return
-			}
-
-			if newStacks < oldStacks {
-				nextRecharge := &core.PendingAction{
-					NextActionAt: sim.CurrentTime + time.Second*45,
-					OnAction: func(sim *core.Simulation) {
-						aura.Activate(sim)
-						aura.AddStack(sim)
-					},
-				}
-
-				if monk.chiBrewRecharge != nil {
-					// If we have an existing stack recharging, set this new one as current when it's done.
-					// This way we can always check next recharge time from the APL.
-					oldAction := monk.chiBrewRecharge.OnAction
-					monk.chiBrewRecharge.OnAction = func(sim *core.Simulation) {
-						monk.chiBrewRecharge = nextRecharge
-						oldAction(sim)
-					}
-				} else {
-					monk.chiBrewRecharge = nextRecharge
-				}
-
-				sim.AddPendingAction(nextRecharge)
-			} else if newStacks > oldStacks {
-				if newStacks == 2 || monk.chiBrewRecharge.IsConsumed() {
-					monk.chiBrewRecharge = nil
-				}
-			}
-		},
-	})
-
 	monk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
@@ -625,29 +740,88 @@ func (monk *Monk) registerChiBrew() {
 			},
 		},
 
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return chiBrewAura.GetStacks() >= 1
-		},
-
+		Charges:      2,
+		RechargeTime: time.Second * 45,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Add 5 Elusive Brew stacks for Brewmasters
 			// TODO: Add 2 Mana Tea stacks for Mistweavers
 
-			monk.AddChi(sim, spell, 2, chiMetrics)
-			monk.AddBrewStacks(sim, 2)
+			if monk.Spec == proto.Spec_SpecBrewmasterMonk {
+				monk.AddBrewStacks(sim, 5)
+			} else if monk.Spec == proto.Spec_SpecWindwalkerMonk {
+				monk.AddBrewStacks(sim, 2)
+			}
 
-			chiBrewAura.RemoveStack(sim)
+			monk.AddChi(sim, spell, 2, chiMetrics)
 		},
 	})
 }
 
 func (monk *Monk) registerHealingElixirs() {
+	if !monk.Talents.HealingElixirs {
+		return
+	}
 }
 
 func (monk *Monk) registerDampenHarm() {
+	if !monk.Talents.DampenHarm {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 122278}
+
+	monk.DampenHarmAura = monk.RegisterAura(core.Aura{
+		Label:     "Dampen Harm" + monk.Label,
+		ActionID:  actionId.WithTag(1),
+		MaxStacks: 3,
+		Duration:  time.Second * 45,
+	})
+
+	// Dampen Harms Damage Reduction for BRM is implemented in stagger.go
+	if monk.Spec != proto.Spec_SpecBrewmasterMonk {
+		monk.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !monk.DampenHarmAura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
+				return
+			}
+
+			monk.DampenHarmAura.RemoveStack(sim)
+			result.Damage /= 2
+		})
+	}
+
+	spell := monk.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: MonkSpellDampenHarm,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
+			},
+			CD: core.Cooldown{
+				Timer:    monk.NewTimer(),
+				Duration: 90 * time.Second,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			monk.DampenHarmAura.Activate(sim)
+			monk.DampenHarmAura.SetStacks(sim, 3)
+		},
+	})
+
+	monk.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeSurvival,
+		ShouldActivate: func(_ *core.Simulation, _ *core.Character) bool {
+			return monk.Spec == proto.Spec_SpecBrewmasterMonk && monk.CurrentHealthPercent() < 0.5
+		},
+	})
 }
 
 func (monk *Monk) registerDiffuseMagic() {
+	if !monk.Talents.DiffuseMagic {
+		return
+	}
 }
 
 /*
@@ -662,18 +836,12 @@ every 0.75 sec, within 8 yards. Generates 1 Chi, if it hits at least 3 targets. 
 
 Replaces Spinning Crane Kick.
 */
-func (monk *Monk) registerRushingJadeWind() {
-	if !monk.Talents.RushingJadeWind {
-		return
-	}
+var rushingJadeWindActionID = core.ActionID{SpellID: 116847}
+var rushingJadeWindDebuffActionID = core.ActionID{SpellID: 148187}
 
-	actionID := core.ActionID{SpellID: 116847}
-	debuffActionID := core.ActionID{SpellID: 148187}
-	chiMetrics := monk.NewChiMetrics(actionID)
-	numTargets := monk.Env.GetNumTargets()
-
-	rushingJadeWindTickSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       debuffActionID,
+func rushingJadeWindTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       rushingJadeWindDebuffActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
@@ -685,35 +853,77 @@ func (monk *Monk) registerRushingJadeWind() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
+			for _, target := range sim.Encounter.TargetUnits {
 				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
+				baseDamage *= sim.Encounter.AOECapMultiplier()
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
-	})
+	}
 
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+	}
+
+	return config
+
+}
+
+func rushingJadeWindSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       rushingJadeWindActionID,
+		Flags:          SpellFlagBuilder | core.SpellFlagAPL,
+		ClassSpellMask: MonkSpellRushingJadeWind,
+
+		EnergyCost: overrides.EnergyCost,
+		ManaCost:   overrides.ManaCost,
+		Cast:       overrides.Cast,
+
+		Dot: core.DotConfig{
+			IsAOE: true,
+			Aura: core.Aura{
+				Label:    "Rushing Jade Wind" + monk.Label,
+				ActionID: rushingJadeWindDebuffActionID,
+				OnInit:   overrides.Dot.Aura.OnInit,
+			},
+			NumberOfTicks:        8,
+			TickLength:           time.Millisecond * 750,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: true,
+
+			OnTick: overrides.Dot.OnTick,
+		},
+
+		ApplyEffects: overrides.ApplyEffects,
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+		config.Flags &= ^(core.SpellFlagAPL | SpellFlagBuilder)
+	}
+
+	return config
+}
+
+func (monk *Monk) registerRushingJadeWind() {
+	if !monk.Talents.RushingJadeWind {
+		return
+	}
+
+	chiMetrics := monk.NewChiMetrics(rushingJadeWindActionID)
+	numTargets := monk.Env.GetNumTargets()
 	baseCooldown := time.Second * 6
+
+	rushingJadeWindTickSpell := monk.RegisterSpell(rushingJadeWindTickSpellConfig(monk, false))
 
 	rushingJadeWindBuff := monk.RegisterAura(core.Aura{
 		Label:    "Rushing Jade Wind" + monk.Label,
-		ActionID: actionID,
+		ActionID: rushingJadeWindActionID,
 		Duration: baseCooldown,
 	})
 
 	isWiseSerpent := monk.StanceMatches(WiseSerpent)
-	var rushingJadeWindSpell *core.Spell
-	rushingJadeWindSpell = monk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
-		Flags:          SpellFlagBuilder | core.SpellFlagAPL,
-		ClassSpellMask: MonkSpellRushingJadeWind,
-
+	monk.RegisterSpell(rushingJadeWindSpellConfig(monk, false, core.SpellConfig{
 		EnergyCost: core.EnergyCostOptions{
 			Cost: core.TernaryInt32(isWiseSerpent, 0, 40),
 		},
@@ -733,20 +943,6 @@ func (monk *Monk) registerRushingJadeWind() {
 		},
 
 		Dot: core.DotConfig{
-			IsAOE: true,
-			Aura: core.Aura{
-				Label:    "Rushing Jade Wind" + monk.Label,
-				ActionID: debuffActionID,
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					rushingJadeWindSpell.CD.Duration = monk.ApplyCastSpeed(baseCooldown)
-					rushingJadeWindBuff.Duration = rushingJadeWindSpell.CD.Duration
-				},
-			},
-			NumberOfTicks:        8,
-			TickLength:           time.Millisecond * 750,
-			AffectedByCastSpeed:  true,
-			HasteReducesDuration: true,
-
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				rushingJadeWindTickSpell.Cast(sim, target)
 			},
@@ -758,7 +954,7 @@ func (monk *Monk) registerRushingJadeWind() {
 			dot.TickOnce(sim)
 
 			remainingDuration := dot.RemainingDuration(sim)
-			rushingJadeWindSpell.CD.Duration = remainingDuration
+			spell.CD.Set(sim.CurrentTime + remainingDuration)
 			rushingJadeWindBuff.Duration = remainingDuration
 			rushingJadeWindBuff.Activate(sim)
 
@@ -766,15 +962,82 @@ func (monk *Monk) registerRushingJadeWind() {
 				monk.AddChi(sim, spell, 1, chiMetrics)
 			}
 		},
-	})
+	}))
+}
 
-	monk.AddOnCastSpeedChanged(func(_ float64, _ float64) {
-		rushingJadeWindSpell.CD.Duration = monk.ApplyCastSpeed(baseCooldown)
-		rushingJadeWindBuff.Duration = rushingJadeWindSpell.CD.Duration
-	})
+func (pet *StormEarthAndFirePet) registerSEFRushingJadeWind() {
+	if !pet.owner.Talents.RushingJadeWind {
+		return
+	}
+
+	rushingJadeWindTickSpell := pet.RegisterSpell(rushingJadeWindTickSpellConfig(pet.owner, true))
+
+	pet.RegisterSpell(rushingJadeWindSpellConfig(pet.owner, true, core.SpellConfig{
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+		},
+
+		Dot: core.DotConfig{
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				rushingJadeWindTickSpell.Cast(sim, target)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dot := spell.AOEDot()
+			dot.Apply(sim)
+			dot.TickOnce(sim)
+		},
+	}))
 }
 
 func (monk *Monk) registerInvokeXuenTheWhiteTiger() {
+	if !monk.Talents.InvokeXuenTheWhiteTiger {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 123904}
+
+	// For timeline only
+	monk.XuenAura = monk.RegisterAura(core.Aura{
+		ActionID: actionID,
+		Label:    "Xuen, the White Tiger",
+		Duration: time.Second * 45.0,
+	})
+
+	spell := monk.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MonkSpellInvokeXuenTheWhiteTiger,
+
+		MaxRange: 40,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    monk.NewTimer(),
+				Duration: time.Minute * 3,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			monk.XuenPet.EnableWithTimeout(sim, monk.XuenPet, time.Second*45.0)
+			monk.XuenAura.Activate(sim)
+		},
+	})
+
+	monk.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
+
 }
 
 func (monk *Monk) registerChiTorpedo() {

@@ -210,7 +210,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 		stats.Strength:    104,
 		stats.Intellect:   169,
 		stats.Spirit:      188,
-		stats.Stamina:     119,
+		stats.Stamina:     114,
 		stats.AttackPower: float64(CharacterLevel)*3.0 - 10,
 	},
 	proto.Class_ClassMonk: {
@@ -225,6 +225,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 }
 
 var ClassBaseScaling = map[proto.Class]float64{
+	proto.Class_ClassUnknown:     1710.000000,
 	proto.Class_ClassWarrior:     1246.298600,
 	proto.Class_ClassPaladin:     1141.926000,
 	proto.Class_ClassHunter:      1246.298600,

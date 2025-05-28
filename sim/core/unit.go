@@ -146,6 +146,7 @@ type Unit struct {
 	AttackTables                []*AttackTable
 	DynamicDamageTakenModifiers []DynamicDamageTakenModifier
 	Blockhandler                func(sim *Simulation, spell *Spell, result *SpellResult)
+	avoidanceParams             DiminishingReturnsConstants
 
 	GCD *Timer
 
@@ -364,6 +365,21 @@ func (unit *Unit) DisableDynamicStatDep(sim *Simulation, dep *stats.StatDependen
 	}
 }
 
+func (unit *Unit) UpdateDynamicStatDep(sim *Simulation, dep *stats.StatDependency, newAmount float64) {
+	dep.UpdateValue(newAmount)
+
+	if unit.Env.IsFinalized() {
+		oldStats := unit.stats
+		unit.stats = unit.ApplyStatDependencies(unit.statsWithoutDeps)
+		statsChange := unit.stats.Subtract(oldStats)
+		unit.processDynamicBonus(sim, statsChange)
+
+		if sim.Log != nil {
+			unit.Log(sim, "Dynamic dep updated (%s): %s", dep.String(), statsChange.FlatString())
+		}
+	}
+}
+
 func (unit *Unit) EnableBuildPhaseStatDep(sim *Simulation, dep *stats.StatDependency) {
 	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
 		unit.StatDependencyManager.EnableDynamicStatDep(dep)
@@ -519,6 +535,7 @@ func (unit *Unit) GetCurrentPowerBar() PowerBarType {
 func (unit *Unit) addUniversalStatDependencies() {
 	unit.AddStatDependency(stats.HitRating, stats.PhysicalHitPercent, 1/PhysicalHitRatingPerHitPercent)
 	unit.AddStatDependency(stats.HitRating, stats.SpellHitPercent, 1/SpellHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.ExpertiseRating, stats.SpellHitPercent, 1/SpellHitRatingPerHitPercent)
 	unit.AddStatDependency(stats.CritRating, stats.PhysicalCritPercent, 1/CritRatingPerCritPercent)
 	unit.AddStatDependency(stats.CritRating, stats.SpellCritPercent, 1/CritRatingPerCritPercent)
 }
@@ -699,14 +716,14 @@ func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
 
 func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseMissChance +
-		unit.GetDiminishedMissChance() +
 		unit.PseudoStats.ReducedPhysicalHitTakenChance
 	return math.Max(chance, 0.0)
 }
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
-	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.BlockPercent)/100
+	chance := unit.PseudoStats.BaseBlockChance +
+		atkTable.BaseBlockChance +
+		unit.GetDiminishedBlockChance()
 	return math.Max(chance, 0.0)
 }
 

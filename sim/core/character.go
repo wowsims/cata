@@ -101,6 +101,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			Metrics:     NewUnitMetrics(),
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
+			avoidanceParams:       AvoidanceDRByClass[player.Class],
 
 			ReactionTime:            time.Duration(max(player.ReactionTimeMs, 10)) * time.Millisecond,
 			ChannelClipDelay:        max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
@@ -616,8 +617,8 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodgePercent: (character.PseudoStats.BaseDodgeChance + character.GetDiminishedDodgeChance()) * 100,
-		proto.PseudoStat_PseudoStatParryPercent: (character.PseudoStats.BaseParryChance + character.GetDiminishedParryChance()) * 100,
-		proto.PseudoStat_PseudoStatBlockPercent: 5 + character.GetStat(stats.BlockPercent),
+		proto.PseudoStat_PseudoStatParryPercent: Ternary(character.PseudoStats.CanParry, (character.PseudoStats.BaseParryChance+character.GetDiminishedParryChance())*100, 0),
+		proto.PseudoStat_PseudoStatBlockPercent: Ternary(character.PseudoStats.CanBlock, (character.PseudoStats.BaseBlockChance+character.GetDiminishedBlockChance())*100, 0),
 
 		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
@@ -685,10 +686,7 @@ func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.St
 }
 
 // Uses proto reflection to set fields in a talents proto (e.g. MageTalents,
-// WarriorTalents) based on a talentsStr. treeSizes should contain the number
-// of talents in each tree, usually around 30. This is needed because talent
-// strings truncate 0's at the end of each tree, so we can't infer the start index
-// of the tree from the string.
+// WarriorTalents) based on a talentsStr.
 func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 	fieldDescriptors := data.Descriptor().Fields()
 
@@ -719,8 +717,7 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
-	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+func (character *Character) RegisterArmorSpecializationTracker(armorType proto.ArmorType, spellID int32) *Aura {
 	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
 
 	aura := character.RegisterAura(Aura{
@@ -729,8 +726,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		BuildPhase: Ternary(isEnabled, CharacterBuildPhaseTalents, CharacterBuildPhaseNone),
 		Duration:   NeverExpires,
 	})
-
-	aura.AttachStatDependency(armorSpecializationDependency)
 
 	if isEnabled {
 		aura = MakePermanent(aura)
@@ -748,4 +743,11 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		})
 
 	return aura
+}
+
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
+	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	trackerAura := character.RegisterArmorSpecializationTracker(armorType, spellID)
+	trackerAura.AttachStatDependency(armorSpecializationDependency)
+	return trackerAura
 }

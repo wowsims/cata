@@ -407,7 +407,6 @@ type PseudoStats struct {
 
 	DisableDWMissPenalty bool    // Used by Heroic Strike and Cleave
 	IncreasedMissChance  float64 // Insect Swarm and Scorpid Sting
-	DodgeReduction       float64 // Used by Warrior talent 'Weapon Mastery' and SWP boss auras.
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
@@ -437,7 +436,7 @@ type PseudoStats struct {
 	// probabilities (between 0 and 1).
 	BaseDodgeChance float64
 	BaseParryChance float64
-	//BaseMiss is not needed, this is always 5%
+	BaseBlockChance float64
 
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
