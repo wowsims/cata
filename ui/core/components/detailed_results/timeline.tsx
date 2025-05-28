@@ -576,10 +576,9 @@ export class Timeline extends ResultComponent {
 		const buffsAndDebuffsById = buffsById.concat(debuffsById);
 
 		auraAsResource.forEach(auraId => {
-			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs[0].actionId!.spellId === auraId);
+			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs?.[0].actionId!.spellId === auraId);
 			if (auraIndex !== -1) {
 				this.addAuraRow(buffsById[auraIndex], duration);
-				delete buffsById[auraIndex];
 			}
 		});
 
@@ -610,9 +609,11 @@ export class Timeline extends ResultComponent {
 			});
 		}
 
-		// Don't add a row for buffs that were already visualized in a cast row.
+		// Don't add a row for buffs that were already visualized in a cast row or are prioritized.
 		const buffsToShow = buffsById.filter(auraUptimeLogs =>
-			playerCastsByAbility.findIndex(casts => casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId!)),
+			playerCastsByAbility.findIndex(
+				casts => auraUptimeLogs[0].actionId && (casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
+			),
 		);
 		if (buffsToShow.length > 0) {
 			this.addSeparatorRow(duration);
@@ -1287,7 +1288,6 @@ const idToCategoryMap: Record<number, number> = {
 	[48463]: SPELL_ACTION_CATEGORY + 0.5, // Moonfire
 
 	// Hunter
-	[48996]: 0.1, // Raptor Strike
 	[53217]: 0.6, // Wild Quiver
 	[53209]: MELEE_ACTION_CATEGORY + 0.1, // Chimera Shot
 	[53353]: MELEE_ACTION_CATEGORY + 0.11, // Chimera Shot Serpent
@@ -1299,7 +1299,7 @@ const idToCategoryMap: Record<number, number> = {
 	[56641]: MELEE_ACTION_CATEGORY + 0.27, // Steady Shot
 	[53351]: MELEE_ACTION_CATEGORY + 0.28, // Kill Shot
 	[34490]: MELEE_ACTION_CATEGORY + 0.29, // Silencing Shot
-	[49001]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
+	[1978]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
 	[53238]: MELEE_ACTION_CATEGORY + 0.31, // Piercing Shots
 	[63672]: MELEE_ACTION_CATEGORY + 0.32, // Black Arrow
 	[49067]: MELEE_ACTION_CATEGORY + 0.33, // Explosive Trap

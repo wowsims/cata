@@ -1201,7 +1201,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		}
 
 		baseMultiplierExtension := getStormLashSpellOverride(spell)
-		ap := Ternary(spell.IsMelee(), stormlashSpell.MeleeAttackPower(), stormlashSpell.RangedAttackPower())
+		ap := Ternary(spell.IsRanged(), stormlashSpell.RangedAttackPower(), stormlashSpell.MeleeAttackPower())
 		sp := stormlashSpell.SpellPower()
 		scaledAP := ap * 0.2
 		scaledSP := sp * 0.3

@@ -91,55 +91,55 @@ enum HunterStingType {
 }
 
 message HunterOptions {
-	enum Ammo {
-		AmmoNone = 0;
-		IcebladeArrow = 1;
-		SaroniteRazorheads = 2;
-		TerrorshaftArrow = 3;
-		TimelessArrow = 4;
-		MysteriousArrow = 5;
-		AdamantiteStinger = 6;
-		BlackflightArrow = 7;
-	}
-	Ammo ammo = 1;
-
 	enum PetType {
-		PetNone = 0;
-		Bat = 1;
-		Bear = 2;
-		BirdOfPrey = 3;
-		Boar = 4;
-		CarrionBird = 5;
-		Cat = 6;
-		Chimaera = 7;
-		CoreHound = 8;
-		Crab = 9;
-		Crocolisk = 10;
-		Devilsaur = 11;
-		Dragonhawk = 12;
-		Gorilla = 13;
-		Hyena = 14;
-		Moth = 15;
-		NetherRay = 16;
-		Raptor = 17;
-		Ravager = 18;
-		Rhino = 19;
-		Scorpid = 20;
-		Serpent = 21;
-		Silithid = 22;
-		Spider = 23;
-		SpiritBeast = 24;
-		SporeBat = 25;
-		Tallstrider = 26;
-		Turtle = 27;
-		WarpStalker = 28;
-		Wasp = 29;
-		WindSerpent = 30;
-		Wolf = 31;
-		Worm = 32;
-		ShaleSpider = 33;
-		Fox = 34;
+		PetNone        = 0;
+		Bat            = 1;
+		Bear           = 2;
+		BirdOfPrey     = 3;
+		Boar           = 4;
+		CarrionBird    = 5;
+		Cat            = 6;
+		Chimaera       = 7;
+		CoreHound      = 8;
+		Crab           = 9;
+		Crocolisk      = 10;
+		Devilsaur      = 11;
+		Dragonhawk     = 12;
+		Gorilla        = 13;
+		Hyena          = 14;
+		Moth           = 15;
+		NetherRay      = 16;
+		Raptor         = 17;
+		Ravager        = 18;
+		Rhino          = 19;
+		Scorpid        = 20;
+		Serpent        = 21;
+		Silithid       = 22;
+		Spider         = 23;
+		SpiritBeast    = 24;
+		SporeBat       = 25;
+		Tallstrider    = 26;
+		Turtle         = 27;
+		WarpStalker    = 28;
+		Wasp           = 29;
+		WindSerpent    = 30;
+		Wolf           = 31;
+		Worm           = 32;
+		ShaleSpider    = 33;
+		Fox            = 34;
+
+		// new additions in MoP
+		Goat           = 35;
+		Porcupine      = 36;
+		Monkey         = 37;
+		Basilisk       = 38;
+		Crane          = 39;
+		Dog            = 40;
+		Beetle         = 41;
+		Quilen         = 42;
+		WaterStrider   = 43;
 	}
+
 	PetType pet_type = 2;
 
 	PetSpec pet_spec = 3;
@@ -201,21 +201,10 @@ message SurvivalHunter {
 		RotationType type = 9;
 		HunterStingType sting = 5;
 
-		bool trap_weave = 1;
-
-		// Switch to Aspect of the Viper when mana goes below this percent.
-		double viper_start_mana_percent = 6;
-		// Switch back to Aspect of the Hawk when mana goes above this percent.
-		double viper_stop_mana_percent = 7;
-
-		// Allow use of Explosive Shot Rank 3 during LNL procs.
-		bool allow_explosive_shot_downrank = 10;
-
 		bool multi_dot_serpent_sting = 11;
 	}
 	message Options {
 		HunterOptions class_options = 1;
-		double sniper_training_uptime = 2;
 	}
 	Options options = 1;
 }

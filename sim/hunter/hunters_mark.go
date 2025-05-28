@@ -1,32 +1,54 @@
 package hunter
 
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+)
+
 func (hunter *Hunter) registerHuntersMarkSpell() {
-	//core.Aura.Unit.NewEnemyAuraArray()
-	// enemyHuntersMarks := hunter.NewEnemyAuraArray(core.HuntersMarkAura)
+	actionID := core.ActionID{SpellID: 1130}
+	rangedMult := 1.05
+	hunter.HuntersMarkAura = hunter.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    "HuntersMark-" + hunter.Label,
+			ActionID: actionID,
+			Duration: 5 * time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.AttackTables[aura.Unit.UnitIndex].RangedDamageTakenMulitplier *= rangedMult
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.AttackTables[aura.Unit.UnitIndex].RangedDamageTakenMulitplier /= rangedMult
+			},
+		})
+	})
 
-	// hunter.RegisterSpell(core.SpellConfig{
-	// 	ActionID: core.ActionID{SpellID: 1130},
-	// 	ProcMask: core.ProcMaskEmpty,
-	// 	Flags:    core.SpellFlagAPL,
+	config := core.SpellConfig{
+		ActionID: actionID,
+		ProcMask: core.ProcMaskEmpty,
+		FocusCost: core.FocusCostOptions{
+			Cost: 0,
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, aura := range hunter.HuntersMarkAura {
+				if aura.IsActive() {
+					aura.Deactivate(sim)
+				}
+			}
+			// Activating Hunters Mark for the new target
+			hunter.HuntersMarkAura.Get(target).Activate(sim)
+		},
+	}
 
-	// 	FocusCost: core.FocusCostOptions{
-	// 		Cost: 0,
-	// 	},
-	// 	Cast: core.CastConfig{
-	// 		DefaultCast: core.Cast{
-	// 			GCD: core.GCDDefault,
-	// 		},
-	// 		IgnoreHaste: true,
-	// 	},
+	hunter.HuntersMarkSpell = hunter.RegisterSpell(config)
 
-	// 	ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 		for _, aura := range enemyHuntersMarks {
-	// 			if aura.IsActive() {
-	// 				aura.Deactivate(sim)
-	// 			}
-	// 		}
-	// 		// Activating Hunters Mark for the new target
-	// 		enemyHuntersMarks.Get(target).Activate(sim)
-	// 	},
-	// })
+	config.Cast = core.CastConfig{
+		DefaultCast: core.Cast{
+			GCD: core.GCDDefault,
+		},
+		IgnoreHaste: true,
+	}
+	config.Flags = core.SpellFlagAPL
+
+	hunter.RegisterSpell(config)
 }
