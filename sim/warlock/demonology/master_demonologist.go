@@ -23,23 +23,30 @@ func (demo DemonologyWarlock) getMetaMasteryBonusFrom(points float64) float64 {
 }
 
 func (demo *DemonologyWarlock) registerMasterDemonologist() {
+	var scaleAction *core.PendingAction
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		if scaleAction != nil {
+			scaleAction.Cancel(sim)
+		}
+
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonus()
 		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
 	})
-
-	var scaleAction *core.PendingAction
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonus()
 		if scaleAction != nil {
 			return
 		}
 
-		// Gain of new mastery bonus is dealy and seems to be refrence accurate
+		// Gain of new mastery bonus is dealyed and seems to be refrence accurate
 		scaleAction = &core.PendingAction{
 			NextActionAt: sim.CurrentTime + core.GCDDefault,
 			Priority:     core.ActionPriorityAuto,
 			OnAction: func(sim *core.Simulation) {
+				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
+				scaleAction = nil
+			},
+			CleanUp: func(sim *core.Simulation) {
 				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 				scaleAction = nil
 			},
@@ -52,8 +59,8 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 			demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
 			demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
 		} else {
-			demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
 			if scaleAction == nil {
+				demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonusFrom(core.MasteryRatingToMasteryPoints(oldMasteryRating))
 				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 			}
 		}
