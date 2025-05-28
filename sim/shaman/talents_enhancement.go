@@ -43,7 +43,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1/1.15)
 		},
-	}).AttachStatBuff(stats.HasteRating, shaman.Equipment.Stats()[stats.HasteRating]*1.5)
+	}).AttachStatDependency(shaman.NewDynamicMultiplyStat(stats.HasteRating, 1.5))
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:     "Flurry",
