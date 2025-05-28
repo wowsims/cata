@@ -133,6 +133,12 @@ func (warlock *Warlock) registerGrimoireOfSupremacy() {
 
 	updateName(&warlock.Doomguard.Pet, "Terrorguard")
 	warlock.Doomguard.PseudoStats.DamageDealtMultiplier *= 1.2
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.5,
+		ClassMask:  WarlockSpellSummonInfernal | WarlockSpellSummonDoomguard,
+	})
 }
 
 func updateName(pet *core.Pet, name string) {
