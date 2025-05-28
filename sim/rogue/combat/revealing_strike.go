@@ -10,7 +10,7 @@ import (
 func (comRogue *CombatRogue) registerRevealingStrike() {
 	multiplier := 1.35
 	actionID := core.ActionID{SpellID: 84617}
-	cpMetric := comRogue.NewComboPointMetrics(core.ActionID{SpellID: 1752}) // Sinister Strike spell ID
+	cpMetric := comRogue.NewComboPointMetrics(core.ActionID{SpellID: 139546}) // Random "Combo Point" Spell ID - resolves a multithreading test error
 
 	wepDamage := 1.6
 
@@ -36,6 +36,9 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				core.DisableDamageDoneByCaster(DDBC_RevealingStrike, comRogue.AttackTables[aura.Unit.UnitIndex])
+				aura.Deactivate(sim)
+			},
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Deactivate(sim)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
