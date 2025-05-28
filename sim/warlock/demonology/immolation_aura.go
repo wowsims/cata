@@ -33,7 +33,7 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 			TickLength:           time.Second,
 			NumberOfTicks:        8,
 			HasteReducesDuration: true,
-			IsAOE:                true,
+			SelfOnly:             true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if !demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25)) {
@@ -50,7 +50,7 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 			return demonology.IsInMeta() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25))
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Hot(&demonology.Unit).Apply(sim)
+			spell.SelfHot().Apply(sim)
 		},
 	})
 }

@@ -23,7 +23,9 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]core.SpellResult, len(sim.Encounter.TargetUnits))
 			for idx := 0; idx < len(sim.Encounter.TargetUnits); idx++ {
-				results[idx] = *spell.CalcAndDealPeriodicDamage(sim, sim.Encounter.TargetUnits[idx], baseDamage, spell.OutcomeMagicHit)
+				result := spell.CalcDamage(sim, sim.Encounter.TargetUnits[idx], baseDamage, spell.OutcomeMagicHit)
+				spell.DealPeriodicDamage(sim, result)
+				results[idx] = *result
 			}
 
 			if callback != nil {
@@ -43,6 +45,12 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,
 
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
 		Dot: core.DotConfig{
 			Aura:                 core.Aura{Label: "Hellfire"},
 			TickLength:           time.Second,
@@ -51,8 +59,7 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 			AffectedByCastSpeed:  true,
 			IsAOE:                true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if warlock.CurrentHealthPercent() <= 0.02 {
-					dot.Deactivate(sim)
+				if warlock.CurrentHealthPercent() <= 0.04 {
 					return
 				}
 
@@ -60,6 +67,16 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 
 				warlock.SpendMana(sim, warlock.MaxMana()*0.02, manaMetric)
 				warlock.RemoveHealth(sim, warlock.MaxHealth()*0.02)
+
+				if warlock.CurrentHealthPercent() < 0.04 {
+					sim.AddPendingAction(&core.PendingAction{
+						NextActionAt: sim.CurrentTime,
+						Priority:     core.ActionPriorityAuto,
+						OnAction: func(sim *core.Simulation) {
+							dot.Deactivate(sim)
+						},
+					})
+				}
 			},
 		},
 
