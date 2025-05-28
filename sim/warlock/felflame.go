@@ -6,7 +6,7 @@ const felFlameVariance = 0.1
 const felFlameScale = 0.85
 const felFlameCoeff = 0.85
 
-func (warlock Warlock) RegisterFelflame(callback WarlockSpellCastedCallback) *core.Spell {
+func (warlock *Warlock) RegisterFelflame(callback WarlockSpellCastedCallback) *core.Spell {
 	return warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77799},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
