@@ -33,7 +33,7 @@ type FrostMage struct {
 	iceLanceFrozenCritBuffMod  *core.SpellMod
 	icicles                    []float64
 	icicleDamageMod            *core.SpellMod
-	icicleCast                 *core.Spell
+	icicle                     *core.Spell
 }
 
 func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {

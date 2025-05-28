@@ -8,7 +8,7 @@ import (
 func (frostMage *FrostMage) ApplyMastery() {
 	//These aren't technically spells but I'm not sure how else to create them
 
-	frostMage.icicleCast = frostMage.Mage.RegisterSpell(core.SpellConfig{
+	frostMage.icicle = frostMage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 148022},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -22,12 +22,6 @@ func (frostMage *FrostMage) ApplyMastery() {
 				spell.DealDamage(sim, result)
 			})
 		},
-	})
-
-	frostMage.icicleDamageMod = frostMage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
-		ClassMask:  mage.MageSpellIcicle,
 	})
 
 	// leaving this as a stub as I still have to redo the water elemental code.
@@ -52,9 +46,9 @@ func (frostMage *FrostMage) ApplyMastery() {
 }
 
 func (frostMage *FrostMage) castIcicleWithDamage(sim *core.Simulation, target *core.Unit, damage float64) {
-	frostMage.icicleDamageMod.UpdateFloatValue(damage)
-	frostMage.icicleCast.Cast(sim, target)
-	frostMage.icicleDamageMod.UpdateFloatValue(0.0)
+	frostMage.icicle.DamageMultiplier *= damage
+	frostMage.icicle.Cast(sim, target)
+	frostMage.icicle.DamageMultiplier /= damage
 }
 
 func (frostMage *FrostMage) handleIcicleGeneration(sim *core.Simulation, target *core.Unit, baseDamage float64) {
@@ -67,8 +61,8 @@ func (frostMage *FrostMage) handleIcicleGeneration(sim *core.Simulation, target 
 }
 
 func (frostMage *FrostMage) handleUseAllIcicles(sim *core.Simulation, target *core.Unit) {
-	for i := int32(0); i < int32(len(frostMage.icicles)); i++ {
-		frostMage.castIcicleWithDamage(sim, target, frostMage.icicles[i])
+	for _, icicle := range frostMage.icicles {
+		frostMage.castIcicleWithDamage(sim, target, icicle)
 	}
 	frostMage.icicles = make([]float64, 0) // Note this only really works if the code executes purely sequentially.
 }

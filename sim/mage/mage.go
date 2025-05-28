@@ -189,7 +189,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 }
 
 func (mage *Mage) applyArmorSpells() {
-	var critPercentToAdd = 5.0
 
 	mageArmorEffectCategory := "MageArmors"
 
@@ -197,13 +196,7 @@ func (mage *Mage) applyArmorSpells() {
 		Label:    "Molten Armor",
 		ActionID: core.ActionID{SpellID: 30482},
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.SpellCritPercent, critPercentToAdd)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.SpellCritPercent, -critPercentToAdd)
-		},
-	})
+	}).AttachStatBuff(stats.SpellCritPercent, 5)
 
 	moltenArmor.NewExclusiveEffect(mageArmorEffectCategory, true, core.ExclusiveEffect{})
 
@@ -261,13 +254,7 @@ func (mage *Mage) applyArmorSpells() {
 		ActionID: core.ActionID{SpellID: 7302},
 		Label:    "Frost Armor",
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.MultiplyCastSpeed(1.07)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.MultiplyCastSpeed(1 / 1.07)
-		},
-	})
+	}).AttachMultiplyCastSpeed(1.07)
 
 	frostArmor.NewExclusiveEffect(mageArmorEffectCategory, true, core.ExclusiveEffect{})
 

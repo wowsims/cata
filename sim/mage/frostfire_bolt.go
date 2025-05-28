@@ -13,6 +13,8 @@ var frostfireBoltVariance = 0.24   // Per https://wago.tools/db2/SpellEffect?bui
 
 func (mage *Mage) registerFrostfireBoltSpell() {
 
+	hasGlyph := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins)
+
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44614},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolFrost,
@@ -38,9 +40,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if mage.IcyVeinsAura.IsActive() && mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins) {
+			if mage.IcyVeinsAura.IsActive() && hasGlyph {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance) * .4
-				for idx := int32(0); idx < 3; idx++ {
+				for _ = range 3 {
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)

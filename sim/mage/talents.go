@@ -31,7 +31,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			pomSpell.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast^MageSpellEvocation) == 0 {
+			if !spell.Matches(MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation) {
 				return
 			}
 			if spell.DefaultCast.CastTime == 0 {
@@ -92,7 +92,7 @@ func (mage *Mage) registerIceFloesCD() {
 			iceFloesMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast^MageSpellEvocation) == 0 {
+			if !spell.Matches(MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation) {
 				return
 			}
 			if spell.DefaultCast.CastTime == 0 {
@@ -128,22 +128,14 @@ func (mage *Mage) registerRuneOfPower() {
 		return
 	}
 
-	runeOfPowerDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: 0.15,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
 	mage.runeOfPowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Rune of Power",
 		ActionID: core.ActionID{SpellID: 116011},
 		Duration: time.Minute,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			runeOfPowerDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			runeOfPowerDamageMod.Deactivate()
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: .15,
+		ClassMask:  MageSpellsAllDamaging,
 	})
 
 	mage.RegisterSpell(core.SpellConfig{

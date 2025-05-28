@@ -13,6 +13,9 @@ var frostboltScale = 1.5       // Per https://wago.tools/db2/SpellEffect?build=5
 var frostboltCoefficient = 1.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A116 Field: "BonusCoefficient"
 
 func (frostMage *FrostMage) registerFrostboltSpell() {
+
+	hasGlyph := frostMage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins)
+
 	frostMage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 116},
 		SpellSchool:    core.SpellSchoolFrost,
@@ -37,9 +40,9 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if frostMage.Mage.IcyVeinsAura.IsActive() && frostMage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins) {
+			if frostMage.Mage.IcyVeinsAura.IsActive() && hasGlyph {
 				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance) * .4
-				for idx := int32(0); idx < 3; idx++ {
+				for _ = range 3 {
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)

@@ -11,6 +11,10 @@ var iceLanceCoefficient = 0.34
 var iceLanceVariance = 0.25
 
 func (mage *Mage) registerIceLanceSpell() {
+
+	hasGlyphIcyVeins := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins)
+	hasGlyphSplittingIce := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce)
+
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30455},
 		SpellSchool:    core.SpellSchoolFrost,
@@ -38,11 +42,11 @@ func (mage *Mage) registerIceLanceSpell() {
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
-			if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce) {
+			if hasGlyphSplittingIce {
 
-				if mage.IcyVeinsAura.IsActive() && mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins) {
+				if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
 					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) / 2 * .4
-					for idx := int32(0); idx < 3; idx++ {
+					for _ = range 3 {
 						result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 						spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 							spell.DealDamage(sim, result)
@@ -56,9 +60,9 @@ func (mage *Mage) registerIceLanceSpell() {
 					})
 				}
 			}
-			if mage.IcyVeinsAura.IsActive() && mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins) {
+			if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
 				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) * .4
-				for idx := int32(0); idx < 3; idx++ {
+				for _ = range 3 {
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
@@ -72,17 +76,14 @@ func (mage *Mage) registerIceLanceSpell() {
 				})
 			}
 
-			if mage.Spec == "frost" {
+			if mage.Spec == proto.Spec_SpecFrostMage {
 				//I've confirmed in game Icicles launch even if ice lance misses.
-				if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce) {
-					for i := int32(0); i < int32(len(frostMage.icicles)); i++ {
-						frostMage.castIcicleWithDamage(sim, randomTarget, frostMage.icicles[i]/2)
+				for _, icicle := range frostMage.icicles {
+					if hasGlyphSplittingIce {
+						frostMage.castIcicleWithDamage(sim, randomTarget, icicle/2)
 					}
+					frostMage.castIcicleWithDamage(sim, target, icicle)
 				}
-				for i := int32(0); i < int32(len(frostMage.icicles)); i++ {
-					frostMage.castIcicleWithDamage(sim, target, frostMage.icicles[i])
-				}
-
 				frostMage.icicles = make([]float64, 0)
 
 			}

@@ -10,7 +10,7 @@ import (
 
 func (frost *FrostMage) registerFrozenOrbSpell() {
 
-	frozenOrb := mage.RegisterSpell(core.SpellConfig{
+	frost.frozenOrb = frost.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 84714},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -25,7 +25,7 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    mage.NewTimer(),
+				Timer:    frost.NewTimer(),
 				Duration: time.Minute,
 			},
 		},
@@ -35,8 +35,8 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 		},
 	})
 
-	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: frozenOrb,
+	frost.AddMajorCooldown(core.MajorCooldown{
+		Spell: frost.frozenOrb,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -67,7 +67,7 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 
 	frozenOrb.Pet.OnPetEnable = frozenOrb.enable
 
-	mage.AddPet(frozenOrb)
+	frost.AddPet(frozenOrb)
 
 	return frozenOrb
 }
@@ -125,7 +125,7 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 84721},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: MageSpellFrozenOrb,
+		ClassSpellMask: mage.MageSpellFrozenOrb,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -137,15 +137,14 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		CritMultiplier:   frozenOrb.mageOwner.DefaultCritMultiplier(),
 		BonusCoefficient: frozenOrbCoefficient,
 		ThreatMultiplier: 1,
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return frozenOrb.TickCount < 10
+		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 
 			damage := frozenOrb.mageOwner.CalcAndRollDamageRange(sim, frozenOrbScaling, frozenOrbVariance)
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-
 			frozenOrb.TickCount += 1
-			if frozenOrb.TickCount == 10 {
-				frozenOrb.TickCount = 0
-			}
 		},
 	})
 }
