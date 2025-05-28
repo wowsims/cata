@@ -80,6 +80,7 @@ import {
 	MistweaverMonk,
 	MistweaverMonk_Options,
 	MistweaverMonk_Rotation,
+	MonkOptions,
 	MonkTalents,
 	WindwalkerMonk,
 	WindwalkerMonk_Options,
@@ -240,6 +241,8 @@ export type ClassSpecs<T extends Class> = T extends Class.ClassDeathKnight
 	? HunterSpecs
 	: T extends Class.ClassMage
 	? MageSpecs
+	: T extends Class.ClassMonk
+	? MonkSpecs
 	: T extends Class.ClassPaladin
 	? PaladinSpecs
 	: T extends Class.ClassPriest
@@ -266,6 +269,9 @@ export type SpecClasses<T extends Spec> = T extends DeathKnightSpecs
 	: // Mage
 	T extends MageSpecs
 	? Class.ClassMage
+	: // Monk
+	T extends MonkSpecs
+	? Class.ClassMonk
 	: // Paladin
 	T extends PaladinSpecs
 	? Class.ClassPaladin
@@ -284,9 +290,6 @@ export type SpecClasses<T extends Spec> = T extends DeathKnightSpecs
 	: // Warrior
 	T extends WarriorSpecs
 	? Class.ClassWarrior
-	: // Monk
-	T extends MonkSpecs
-	? Class.ClassMonk
 	: // Should never reach this case
 	  Class.ClassUnknown;
 
@@ -386,6 +389,9 @@ export type SpecTalents<T extends Spec> =
 		: // Mage
 		T extends MageSpecs
 		? MageTalents
+		: // Monk
+		T extends MonkSpecs
+		? MonkTalents
 		: // Paladin
 		T extends PaladinSpecs
 		? PaladinTalents
@@ -420,6 +426,9 @@ export type ClassOptions<T extends Spec> =
 		: // Mage
 		T extends MageSpecs
 		? MageOptions
+		: // Monk
+		T extends MonkSpecs
+		? MonkOptions
 		: // Paladin
 		T extends PaladinSpecs
 		? PaladinOptions

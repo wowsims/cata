@@ -12,17 +12,16 @@ import { TypedEvent } from '../../core/typed_event';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
 
-
 const modifyDisplayStats = (player: Player<Spec.SpecDestructionWarlock>) => {
 	let stats = new Stats();
 
 	TypedEvent.freezeAllAndDo(() => {
-		const currentStats = player.getCurrentStats().finalStats?.stats
+		const currentStats = player.getCurrentStats().finalStats?.stats;
 		if (currentStats === undefined) {
-			return {}
+			return {};
 		}
 
-		stats = stats.addStat(Stat.StatMP5, currentStats[Stat.StatMP5] * currentStats[Stat.StatHasteRating] / HASTE_RATING_PER_HASTE_PERCENT / 100)
+		stats = stats.addStat(Stat.StatMP5, (currentStats[Stat.StatMP5] * currentStats[Stat.StatHasteRating]) / HASTE_RATING_PER_HASTE_PERCENT / 100);
 	});
 
 	return {
@@ -92,13 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 			OtherInputs.ChannelClipDelay,
 		],
 	},
-	itemSwapSlots: [
-		ItemSlot.ItemSlotHands,
-		ItemSlot.ItemSlotMainHand,
-		ItemSlot.ItemSlotOffHand,
-		ItemSlot.ItemSlotTrinket1,
-		ItemSlot.ItemSlotTrinket2,
-	],
+	itemSwapSlots: [ItemSlot.ItemSlotHands, ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -112,7 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		rotations: [Presets.DEFAULT_APL],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PREBIS_PRESET, Presets.P1_PRESET,],
+		gear: [Presets.P1_PREBIS_PRESET, Presets.P1_PRESET],
 		itemSwaps: [],
 	},
 

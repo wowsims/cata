@@ -47,8 +47,8 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:  armsOptions.ClassOptions.StartingRage,
-		BaseHitFactor: 1.75,
+		StartingRage:       armsOptions.ClassOptions.StartingRage,
+		BaseRageMultiplier: 1,
 	}
 	war.EnableRageBar(rbo)
 
