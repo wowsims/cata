@@ -44,7 +44,6 @@ type Spell struct {
 	MaxCumulativeStacks   int32
 	MaxTargets            int32
 	IconPath              string
-	Rppm                  float64
 	RppmModifiers         []RPPMModifier
 }
 

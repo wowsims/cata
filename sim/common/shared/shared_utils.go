@@ -184,6 +184,12 @@ func NewProcStatBonusEffect(config ProcStatBonusEffect) {
 }
 
 func NewSimpleStatActive(itemID int32) {
+
+	// Soft fail to allow for overrides for bad effects
+	if core.HasItemEffect(itemID) {
+		return
+	}
+
 	core.NewItemEffect(itemID, func(agent core.Agent, scalingSelector proto.ItemLevelState) {
 		item := core.GetItemByID(itemID)
 		if item == nil {

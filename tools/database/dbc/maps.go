@@ -455,6 +455,11 @@ var SpecByID = map[int32]proto.Spec{
 	71: proto.Spec_SpecArmsWarrior,
 	72: proto.Spec_SpecFuryWarrior,
 	73: proto.Spec_SpecProtectionWarrior,
+
+	// Monk
+	268: proto.Spec_SpecBrewmasterMonk,
+	269: proto.Spec_SpecWindwalkerMonk,
+	270: proto.Spec_SpecMistweaverMonk,
 }
 
 func SpecFromID(id int32) proto.Spec {

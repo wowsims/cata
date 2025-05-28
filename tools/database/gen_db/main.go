@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"slices"
+	"sort"
 	"strings"
 
 	"github.com/wowsims/mop/sim"
@@ -17,6 +18,7 @@ import (
 	"github.com/wowsims/mop/tools"
 	"github.com/wowsims/mop/tools/database"
 	"github.com/wowsims/mop/tools/database/dbc"
+	"github.com/wowsims/mop/tools/tooltip"
 )
 
 // To do a full re-scrape, delete the previous output file first.
@@ -150,16 +152,66 @@ func main() {
 	instance.LoadSpellScaling()
 
 	database.GenerateProtos(instance)
-
+	groupMap := map[string]database.Group{}
+	groupMapProc := map[string]database.Group{}
+	// Example loop over your items
 	for _, item := range instance.Items {
 		parsed := item.ToUIItem()
+
 		if parsed.Icon == "" {
 			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
 		}
 		parsed.ItemEffect = dbc.MergeItemEffectsForAllStates(parsed)
+		if parsed.ItemEffect.GetOnUse() != nil && item.ItemLevel > 416 { // MoP constraints
+			stats := parsed.ItemEffect.ScalingOptions[int32(proto.ItemLevelState_Base)].Stats
+			var firstStat proto.Stat = proto.Stat_StatStrength
+			found := false
+			for k := range stats {
+				stat := proto.Stat(k)
+				if !found || stat < firstStat {
+					firstStat = stat
+					found = true
+				}
+			}
+
+			groupName := firstStat.String()
+			grp, exists := groupMap[groupName]
+			if !exists {
+				grp = database.Group{Name: groupName}
+			}
+			grp.Entries = append(grp.Entries, database.Entry{ID: int(parsed.Id), Name: parsed.Name})
+			groupMap[groupName] = grp
+		}
+		if parsed.ItemEffect.GetProc() != nil && item.ItemLevel > 416 {
+			tooltipString, id := dbc.GetItemEffectSpellTooltip(item.Id)
+			tooltip, _ := tooltip.ParseTooltip(tooltipString, tooltip.DBCTooltipDataProvider{DBC: instance}, int64(id))
+
+			grp, exists := groupMapProc["Procs"]
+			if !exists {
+				grp = database.Group{Name: "Procs"}
+			}
+			fmt.Println(parsed.ItemEffect, parsed.ItemEffect.GetBuffId(), parsed.ItemEffect.GetBuffName())
+			grp.Entries = append(grp.Entries, database.Entry{Tooltip: tooltip.String(), ID: int(parsed.ItemEffect.BuffId), Name: parsed.ItemEffect.BuffName})
+			groupMapProc["Procs"] = grp
+		}
 		db.MergeItem(parsed)
 	}
-
+	var groups []database.Group
+	for _, grp := range groupMap {
+		fmt.Println(len(groupMap))
+		sort.Slice(grp.Entries, func(i, j int) bool { return grp.Entries[i].ID < grp.Entries[j].ID })
+		groups = append(groups, grp)
+	}
+	sort.Slice(groups, func(i, j int) bool { return groups[i].Name < groups[j].Name })
+	var procGroups []database.Group
+	for _, grp := range groupMapProc {
+		fmt.Println(len(groupMapProc), 12)
+		sort.Slice(grp.Entries, func(i, j int) bool { return grp.Entries[i].ID < grp.Entries[j].ID })
+		procGroups = append(procGroups, grp)
+	}
+	sort.Slice(groups, func(i, j int) bool { return groups[i].Name < groups[j].Name })
+	database.GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds.go", database.TmplStrOnUse)
+	database.GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs.go", database.TmplStrProc)
 	for _, gem := range instance.Gems {
 		parsed := gem.ToProto()
 		if parsed.Icon == "" {

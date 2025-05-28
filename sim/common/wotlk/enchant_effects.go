@@ -123,14 +123,6 @@ func init() {
 		IsMelee: true,
 	})
 
-	// Enchant: 3247, Spell: 44595 - Scourgebane
-	core.NewEnchantEffect(3247, func(agent core.Agent, _ proto.ItemLevelState) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeAttackPower += 140
-		}
-	})
-
 	// Enchant: 3253, Spell: 44625 - Armsman
 	core.NewEnchantEffect(3253, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
@@ -242,91 +234,17 @@ func init() {
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
-	core.NewEnchantEffect(3843, func(agent core.Agent, _ proto.ItemLevelState) {
+	core.AddWeaponEffect(3843, func(agent core.Agent, _ proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 15
 		w.BaseDamageMax += 15
 	})
 
-	//core.NewEnchantEffect(3603, func(agent core.Agent, _ proto.ItemLevelState) {
-	//	character := agent.GetCharacter()
-	//	actionID := core.ActionID{SpellID: 54757}
-
-	//	spell := character.GetOrRegisterSpell(core.SpellConfig{
-	//		ActionID:    actionID,
-	//		SpellSchool: core.SpellSchoolFire,
-	//		ProcMask:    core.ProcMaskEmpty,
-	//		Flags:       core.SpellFlagNoOnCastComplete,
-
-	//		Cast: core.CastConfig{
-	//			CD: core.Cooldown{
-	//				Timer:    character.NewTimer(),
-	//				Duration: time.Second * 45,
-	//			},
-	//			SharedCD: core.Cooldown{
-	//				Timer:    character.GetOffensiveTrinketCD(),
-	//				Duration: time.Second * 10,
-	//			},
-	//		},
-
-	//		DamageMultiplier: 1,
-	//		CritMultiplier:   character.GetSpellCritMultiplier(),
-	//		ThreatMultiplier: 1,
-
-	//		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	//			spell.CalcAndDealDamage(sim, target, sim.Roll(1654, 2020), spell.OutcomeMagicCrit)
-	//		},
-	//	})
-
-	//	character.AddMajorCooldown(core.MajorCooldown{
-	//		Spell:    spell,
-	//		Priority: core.CooldownPriorityLow, // Use low prio so other actives get used first.
-	//		Type:     core.CooldownTypeDPS,
-	//	})
-	//})
-
-	//core.NewEnchantEffect(3604, func(agent core.Agent, _ proto.ItemLevelState) {
-	//	character := agent.GetCharacter()
-	//	actionID := core.ActionID{SpellID: 54758}
-
-	//	procAura := character.NewTemporaryStatsAura("Hyperspeed Acceleration", actionID, stats.Stats{stats.HasteRating: 340}, time.Second*12)
-
-	//	spell := character.GetOrRegisterSpell(core.SpellConfig{
-	//		ActionID:    actionID,
-	//		SpellSchool: core.SpellSchoolPhysical,
-	//		Flags:       core.SpellFlagNoOnCastComplete,
-
-	//		Cast: core.CastConfig{
-	//			CD: core.Cooldown{
-	//				Timer:    character.NewTimer(),
-	//				Duration: time.Second * 60,
-	//			},
-	//			// Shared CD with Offensive trinkets has been removed.
-	//			// https://twitter.com/AggrendWoW/status/1579664462843633664
-	//			// Change possibly temporary, but developers have confirmed it was intended.
-
-	//			// SharedCD: core.Cooldown{
-	//			// 	Timer:    character.GetOffensiveTrinketCD(),
-	//			// 	Duration: time.Second * 12,
-	//			// },
-	//		},
-
-	//		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-	//			procAura.Activate(sim)
-	//		},
-	//	})
-
-	//	character.AddMajorCooldown(core.MajorCooldown{
-	//		Spell:    spell,
-	//		Priority: core.CooldownPriorityLow, // Use low prio so other actives get used first.
-	//		Type:     core.CooldownTypeDPS,
-	//	})
-	//})
-
 	// Enchant: 3722, Spell: 55642 - Lightweave Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:      "Lightweave Embroidery",
 		EnchantID: 3722,
+		ItemID:    55642,
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 		Outcome:   core.OutcomeLanded,
@@ -368,6 +286,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:      "Swordguard Embroidery",
 		EnchantID: 3730,
+		ItemID:    55777,
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 		ProcMask:  core.ProcMaskMeleeOrRanged,
 		Outcome:   core.OutcomeLanded,

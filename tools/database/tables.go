@@ -1075,7 +1075,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	var stringChannelInterruptFlags string // 2
 	var stringShapeShift string            //2
 	var iconId int                         //
-
+	var rppmModsJSON string
 	err := rows.Scan(
 		&spell.NameLang,
 		&spell.ID,
@@ -1120,6 +1120,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		&spell.MaxCumulativeStacks,
 		&spell.MaxTargets,
 		&iconId,
+		&rppmModsJSON,
 	)
 	if err != nil {
 		return spell, fmt.Errorf("scanning spell data: %w", err)
@@ -1150,7 +1151,12 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	if err != nil {
 		return spell, fmt.Errorf("parsing stringShapeShift args for spell %d (%s): %w", spell.ID, stringShapeShift, err)
 	}
-
+	if err := json.Unmarshal([]byte(rppmModsJSON), &spell.RppmModifiers); err != nil {
+		return spell, fmt.Errorf(
+			"parsing RPPM modifiers for spell %d (%s): %w",
+			spell.ID, rppmModsJSON, err,
+		)
+	}
 	spell.IconPath = iconsMap[iconId]
 	return spell, nil
 }
@@ -1200,7 +1206,17 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		COALESCE(sdv.Variables, ""),
 		COALESCE(sao.CumulativeAura, 0),
 		COALESCE(str.MaxTargets, 0),
-		COALESCE(sm.SpellIconFileDataID, 0)
+		COALESCE(sm.SpellIconFileDataID, 0),
+		COALESCE(
+			json_group_array(
+			json_object(
+				'ModifierType', sppmm.Type,
+				'Coeff',        sppmm.Coeff,
+				'Param',        sppmm.Param
+			)
+			),
+			'[]'
+		) AS RppmModifiersJson
 		FROM Spell s
 		LEFT JOIN SpellName sn ON s.ID = sn.ID
 		LEFT JOIN SpellEffect se ON s.ID = se.SpellID
@@ -1223,6 +1239,7 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		LEFT JOIN SpellTargetRestrictions str ON s.ID = str.SpellID
 		LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
 		LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
+		LEFT JOIN SpellProcsPerMinuteMod sppmm ON sppmm.SpellProcsPerMinuteID = sao.SpellProcsPerMinuteID
 		WHERE sco.SpellClassSet is not null
 		GROUP BY s.ID
 `

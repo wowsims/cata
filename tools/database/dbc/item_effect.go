@@ -1,8 +1,8 @@
 package dbc
 
 import (
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // ItemEffect represents an item effect in the game.
@@ -68,7 +68,7 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 		proc := &proto.ProcEffect{
 			ProcChance: float64(spTop.ProcChance) / 100,
 			IcdMs:      spTop.ProcCategoryRecovery,
-			Ppm:        spTop.Rppm,
+			Ppm:        float64(spTop.SpellProcsPerMinute),
 		}
 
 		// There is no item with both a Haste and a Crit modifier
@@ -181,6 +181,15 @@ func ParseItemEffects(itemID, itemLevel int, levelState proto.ItemLevelState) []
 		}
 	}
 	return out
+}
+
+func GetItemEffectSpellTooltip(itemID int) (string, int) {
+	raw := dbcInstance.ItemEffectsByParentID[itemID]
+	for _, effect := range raw {
+		spell := dbcInstance.Spells[effect.SpellID]
+		return spell.Description, effect.SpellID
+	}
+	return "", 0
 }
 
 // Parses a UIItem and loops through Scaling Options for that item.

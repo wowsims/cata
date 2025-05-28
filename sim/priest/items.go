@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -575,7 +576,7 @@ var shaWeaponIDs = []int32{86990, 86865, 86227, 97296}
 
 func init() {
 	for _, id := range shaWeaponIDs {
-		core.NewItemEffect(id, func(agent core.Agent) {
+		core.NewItemEffect(id, func(agent core.Agent, _ proto.ItemLevelState) {
 			priest := agent.(PriestAgent).GetPriest()
 			priest.AddStaticMod(core.SpellModConfig{
 				Kind:      core.SpellMod_GlobalCooldown_Flat,

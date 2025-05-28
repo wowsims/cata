@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
@@ -17,6 +15,9 @@ import (
 // Passing Character instead of Agent would work for almost all cases,
 // but there are occasionally class-specific item effects.
 type ApplyEffect func(Agent, proto.ItemLevelState)
+
+// Function for applying permanent effects to an agent's weapon
+type ApplyWeaponEffect func(Agent, proto.ItemSlot)
 
 var itemEffects = map[int32]ApplyEffect{}
 var weaponEffects = map[int32]ApplyWeaponEffect{}
@@ -109,7 +110,7 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 		}
 
 		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyEnchantEffect(agent)
+			applyEnchantEffect(agent, proto.ItemLevelState_Base)
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
 
@@ -178,6 +179,6 @@ func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, durati
 
 // Applies 3% Crit Damage effect
 // https://www.wowhead.com/mop-classic/spell=44797/3-increased-critical-effect
-func ApplyMetaGemCriticalDamageEffect(agent Agent) {
+func ApplyMetaGemCriticalDamageEffect(agent Agent, _ proto.ItemLevelState) {
 	agent.GetCharacter().PseudoStats.CritDamageMultiplier *= 1.03
 }
