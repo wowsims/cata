@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-// The numbers in this file are VERY rough approximations based on logs.
-
 func (Mage *FrostMage) registerSummonWaterElementalSpell() {
 
 	Mage.SummonWaterElemental = Mage.RegisterSpell(core.SpellConfig{
@@ -35,9 +33,8 @@ func (Mage *FrostMage) registerSummonWaterElementalSpell() {
 	})
 
 	Mage.AddMajorCooldown(core.MajorCooldown{
-		Spell:    Mage.SummonWaterElemental,
-		Priority: core.CooldownPriorityDrums + 1000, // Always prefer to cast before drums or lust so the ele gets their benefits.
-		Type:     core.CooldownTypeDPS,
+		Spell: Mage.SummonWaterElemental,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 
@@ -46,14 +43,10 @@ type WaterElemental struct {
 
 	mageOwner *FrostMage
 
-	// Water Ele almost never just stands still and spams like we want, it sometimes
-	// does its own thing. This controls how much it does that.
-	disobeyChance float64
-
 	Waterbolt *core.Spell
 }
 
-func (Mage *FrostMage) NewWaterElemental(disobeyChance float64) *WaterElemental {
+func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
 	waterElemental := &WaterElemental{
 		Pet: core.NewPet(core.PetConfig{
 			Name:            "Water Elemental",
@@ -63,8 +56,7 @@ func (Mage *FrostMage) NewWaterElemental(disobeyChance float64) *WaterElemental 
 			EnabledOnStart:  true,
 			IsGuardian:      true,
 		}),
-		mageOwner:     Mage,
-		disobeyChance: disobeyChance,
+		mageOwner: Mage,
 	}
 	waterElemental.EnableManaBarWithModifier(0.333)
 
@@ -86,40 +78,28 @@ func (we *WaterElemental) Reset(_ *core.Simulation) {
 
 func (we *WaterElemental) ExecuteCustomRotation(sim *core.Simulation) {
 	spell := we.Waterbolt
-
-	if sim.Proc(we.disobeyChance, "Disobey") {
-		// Water ele has decided not to cooperate, so just wait for the cast time
-		// instead of casting.
-		we.WaitUntil(sim, sim.CurrentTime+spell.DefaultCast.CastTime)
-		return
-	}
-
 	spell.Cast(sim, we.CurrentTarget)
 }
 
-// These numbers are just rough guesses based on looking at some logs.
 var waterElementalBaseStats = stats.Stats{
-	// TODO update. taken at level 80 on beta
-	stats.Mana:      16123,
-	stats.Intellect: 369, //unsure on beta
+	// Mana seems to always be at 300k on beta
+	stats.Mana: 300000,
 }
 
 var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
-	// These numbers are just rough guesses based on looking at some logs.
 	return stats.Stats{
-		// TODO Pet stats scale dynamically in combat
-		stats.Stamina:    ownerStats[stats.Stamina] * 0.2,
-		stats.Intellect:  ownerStats[stats.Intellect] * 0.3,
-		stats.SpellPower: ownerStats[stats.SpellPower] * 0.333,
-
-		// TODO test crit chance. It does crit, so figure out how often and if it scales
-		/* Results: owner 5% crit, Waterbolt 13% crit
-		owner 18% crit, waterbolt 18% crit
-		*/
+		stats.Stamina:          ownerStats[stats.Stamina] * 0.2,
+		stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
+		stats.SpellPower:       ownerStats[stats.SpellPower],
 		stats.HasteRating:      ownerStats[stats.HasteRating],
-		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent] * 0.5,
+		// 500 hits 85 misses 4.2% crit with character at 8.09% crit, it's likely around 50%
 	}
 }
+
+var waterboltVariance = 0.25   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Variance"
+var waterboltScale = 0.5       // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Coefficient"
+var waterboltCoefficient = 0.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "BonusCoefficient"
 
 func (we *WaterElemental) registerWaterboltSpell() {
 	we.Waterbolt = we.RegisterSpell(core.SpellConfig{
@@ -140,11 +120,14 @@ func (we *WaterElemental) registerWaterboltSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   we.mageOwner.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.833,
+		BonusCoefficient: waterboltCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := .405 * we.mageOwner.ClassSpellScaling
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := we.CalcAndRollDamageRange(sim, waterboltScale, waterboltVariance)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

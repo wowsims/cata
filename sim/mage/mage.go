@@ -28,6 +28,7 @@ type Mage struct {
 	Combustion              *core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
+	NetherTempest           *core.Spell
 	FireBlast               *core.Spell
 	FlameOrbExplode         *core.Spell
 	Flamestrike             *core.Spell
@@ -323,6 +324,7 @@ const (
 	MageSpellLivingBombDot
 	MageSpellManaGems
 	MageSpellMirrorImage
+	MageSpellNetherTempest
 	MageSpellPresenceOfMind
 	MageSpellPyroblast
 	MageSpellPyroblastDot
