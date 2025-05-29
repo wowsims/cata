@@ -32,7 +32,7 @@ func (demonology *DemonologyWarlock) registerTouchOfChaos() {
 		BonusCoefficient:         tocCoeff,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return demonology.Metamorphosis.RelatedSelfBuff.IsActive() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 28, 40))
+			return demonology.IsInMeta() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 28, 40))
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

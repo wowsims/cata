@@ -361,7 +361,7 @@ func (pet *WarlockPet) registerTormentSpell() {
 			if result.Landed() {
 				switch pet.Owner.Spec {
 				case proto.Spec_SpecDemonologyWarlock:
-					pet.Owner.Unit.GetSecondaryResourceBar().Gain(12, spell.ActionID, sim)
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(10, spell.ActionID, sim)
 				}
 			}
 		},

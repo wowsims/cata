@@ -23,6 +23,10 @@ func (demonology *DemonologyWarlock) registerCarrionSwarm() {
 				GCDMin: time.Millisecond * 500,
 				GCD:    time.Millisecond * 1000,
 			},
+			CD: core.Cooldown{
+				Timer:    demonology.NewTimer(),
+				Duration: time.Second * 12,
+			},
 		},
 
 		DamageMultiplier: 1,

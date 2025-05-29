@@ -6,36 +6,12 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-const hellFireScale = 1
-const hellFireCoeff = 1
+const hellFireScale = 0.20999999344
+const hellFireCoeff = 0.20999999344
 
 func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *core.Spell {
 	var baseDamage = warlock.CalcScalingSpellDmg(hellFireScale)
-	hellfireTick := warlock.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 5857},
-		SpellSchool:      core.SpellSchoolFire,
-		Flags:            core.SpellFlagNoOnCastComplete,
-		ProcMask:         core.ProcMaskSpellDamage,
-		ClassSpellMask:   WarlockSpellHellfire,
-		ThreatMultiplier: 1,
-		DamageMultiplier: 1,
-		BonusCoefficient: hellFireCoeff,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{NonEmpty: true},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]core.SpellResult, len(sim.Encounter.TargetUnits))
-			for idx := 0; idx < len(sim.Encounter.TargetUnits); idx++ {
-				results[idx] = *spell.CalcAndDealPeriodicDamage(sim, sim.Encounter.TargetUnits[idx], baseDamage, spell.OutcomeMagicHit)
-			}
-
-			if callback != nil {
-				callback(results, spell, sim)
-			}
-		},
-	})
+	results := make([]core.SpellResult, len(warlock.Env.Encounter.TargetUnits))
 
 	hellfireActionID := core.ActionID{SpellID: 1949}
 	manaMetric := warlock.NewManaMetrics(hellfireActionID)
@@ -48,23 +24,31 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,
 
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
+
 		Dot: core.DotConfig{
-			Aura:                 core.Aura{Label: "Hellfire"},
+			Aura: core.Aura{
+				Label: "Hellfire",
+			},
+
+			IsAOE:                true,
 			TickLength:           time.Second,
 			NumberOfTicks:        14,
 			HasteReducesDuration: true,
 			AffectedByCastSpeed:  true,
-			IsAOE:                true,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if warlock.CurrentHealthPercent() <= 0.02 {
-					dot.Deactivate(sim)
-					return
-				}
+			BonusCoefficient:     hellFireCoeff,
 
-				hellfireTick.Cast(sim, target)
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				for idx, unit := range sim.Encounter.TargetUnits {
+					results[idx] = *dot.Spell.CalcAndDealPeriodicDamage(sim, unit, baseDamage, dot.Spell.OutcomeMagicHit)
+				}
 
 				warlock.SpendMana(sim, warlock.MaxMana()*0.02, manaMetric)
 				warlock.RemoveHealth(sim, warlock.MaxHealth()*0.02)
+
+				if callback != nil {
+					callback(results, dot.Spell, sim)
+				}
 			},
 		},
 
@@ -73,10 +57,19 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.AOEDot().Activate(sim)
+			spell.AOEDot().Apply(sim)
 		},
+	})
 
-		RelatedDotSpell: hellfireTick,
+	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
+		Name:     "Hellfire - Health Monitor",
+		Callback: core.CallbackOnSpellHitTaken,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			hellfireDot := warlock.Hellfire.AOEDot()
+			if hellfireDot != nil && hellfireDot.IsActive() && warlock.CurrentHealthPercent() <= 0.02 {
+				hellfireDot.Deactivate(sim)
+			}
+		},
 	})
 
 	return warlock.Hellfire

@@ -150,6 +150,7 @@ const (
 	WarlockSpellSeedOfCorruptionExposion
 	WarlockSpellHandOfGuldan
 	WarlockSpellHellfire
+	WarlockSpellImmolationAura
 	WarlockSpellSearingPain
 	WarlockSpellSummonDoomguard
 	WarlockSpellDoomguardDoomBolt

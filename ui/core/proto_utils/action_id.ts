@@ -601,6 +601,11 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Immolation Aura':
+				if (tag == 2) {
+					name += ' (Tick)';
+				}
+				break;
 			case 'Frozen Blows':
 			case 'Opportunity Strike':
 				break;
@@ -1066,6 +1071,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 124081, tag: 3 }), { spellId: 124098 }],
 	[JSON.stringify({ spellId: 124081, tag: 4 }), { spellId: 124101 }],
 	[JSON.stringify({ spellId: 124081, tag: 5 }), { spellId: 125033 }],
+
+	// Warlock - Immolation Aura
+	[JSON.stringify({ spellId: 104025, tag: 2 }), { spellId: 129476 }],
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

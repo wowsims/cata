@@ -60,7 +60,7 @@ func (warlock *Warlock) registerMannarothsFury() {
 		Duration: time.Second * 10,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  WarlockSpellRainOfFire | WarlockSpellSeedOfCorruptionExposion | WarlockSpellSeedOfCorruption | WarlockSpellHellfire,
+		ClassMask:  WarlockSpellRainOfFire | WarlockSpellSeedOfCorruptionExposion | WarlockSpellSeedOfCorruption | WarlockSpellHellfire | WarlockSpellImmolationAura,
 		FloatValue: 1,
 	})
 
@@ -215,7 +215,7 @@ func (warlock *Warlock) registerGrimoireOfSacrifice() {
 		buff.AttachSpellMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.25,
-			ClassMask:  WarlockSpellShadowBolt | WarlockSpellSoulBurn | WarlockSpellHandOfGuldan | WarlockSpellChaosWave | WarlockSpellTouchOfChaos | WarlockSpellDemonicSlash | WarlockSpellVoidray,
+			ClassMask:  WarlockSpellShadowBolt | WarlockSpellSoulBurn | WarlockSpellHandOfGuldan | WarlockSpellChaosWave | WarlockSpellTouchOfChaos | WarlockSpellDemonicSlash | WarlockSpellVoidray | WarlockSpellFelFlame,
 		})
 	case proto.Spec_SpecAfflictionWarlock:
 		buff.AttachSpellMod(core.SpellModConfig{
