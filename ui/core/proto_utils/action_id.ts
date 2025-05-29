@@ -360,6 +360,7 @@ export class ActionId {
 				}
 
 				break;
+			case 'Devotion Aura':
 			case 'Shattering Throw':
 			case 'Skull Banner':
 			case 'Stormlash':
@@ -457,9 +458,9 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
-			case 'Holy Shield':
-				if (tag == 1) {
-					name += ' (Proc)';
+			case 'Sacred Shield':
+				if (this.spellId === 65148) {
+					name += ' (Absorb)';
 				}
 				break;
 			case 'Censure':
@@ -487,11 +488,9 @@ export class ActionId {
 				name += ')';
 				break;
 			case 'Word of Glory':
-				name = 'Word of Glory (Healing';
 				if (tag > 0) {
-					name += `, ${tag} HP`;
+					name += `(${tag} HP)`;
 				}
-				name += ')';
 				break;
 			case 'Eternal Flame':
 				if (tag > 0) {

@@ -1339,9 +1339,10 @@ const idToCategoryMap: Record<number, number> = {
 	[114232]: SPELL_ACTION_CATEGORY + 0.07, // Sanctified Wrath
 	[105809]: SPELL_ACTION_CATEGORY + 0.08, // Holy Avenger,
 	[86698]: SPELL_ACTION_CATEGORY + 0.09, // Guardian of Ancient Kings
-	[86704]: SPELL_ACTION_CATEGORY + 0.10, // Ancient Fury
+	[86704]: SPELL_ACTION_CATEGORY + 0.1, // Ancient Fury
 	[20925]: SPELL_ACTION_CATEGORY + 0.11, // Sacred Shield (Ret / Prot)
-	[148039]: SPELL_ACTION_CATEGORY + 0.12, // Sacred Shield (Holy)
+	[148039]: SPELL_ACTION_CATEGORY + 0.11, // Sacred Shield (Holy)
+	[65148]: SPELL_ACTION_CATEGORY + 0.12, // Sacred Shield (Absorb)
 	[114039]: SPELL_ACTION_CATEGORY + 0.13, // Hand of Purity
 
 	// Priest
