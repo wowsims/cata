@@ -309,6 +309,10 @@ func (paladin *Paladin) registerSacredShield() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if target.IsOpponent(&paladin.Unit) {
+				target = &paladin.Unit
+			}
+
 			if !isHoly {
 				for _, unit := range paladin.Env.AllUnits {
 					if unit.Type == core.EnemyUnit {
