@@ -97,7 +97,7 @@ func (paladin *Paladin) registerWordOfGlory() {
 				paladin.HolyPower.SpendUpTo(paladin.DynamicHolyPowerSpent, actionID, sim)
 			}
 
-			spell.DealOutcome(sim, result)
+			spell.DealHealing(sim, result)
 
 			if eternalFlame {
 				spell.Hot(target).Apply(sim)

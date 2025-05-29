@@ -43,7 +43,7 @@ func (paladin *Paladin) registerTemplarsVerdict() {
 				paladin.HolyPower.Spend(3, actionID, sim)
 			}
 
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 	})
 }

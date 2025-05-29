@@ -14,7 +14,7 @@ func RegisterRetributionPaladin() {
 		func(character *core.Character, options *proto.Player) core.Agent {
 			return NewRetributionPaladin(character, options)
 		},
-		func(player *proto.Player, spec interface{}) {
+		func(player *proto.Player, spec any) {
 			playerSpec, ok := spec.(*proto.Player_RetributionPaladin)
 			if !ok {
 				panic("Invalid spec value for Retribution Paladin!")

@@ -46,7 +46,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				for idx := range numTargets {
-					spell.DealOutcome(sim, results[idx])
+					spell.DealDamage(sim, results[idx])
 					aura := auraArray.Get(results[idx].Target)
 					if hasGlyphOfHammerOfTheRighteous && aura.Duration != core.NeverExpires {
 						aura.Duration = core.DurationFromSeconds(core.WeakenedBlowsDuration.Seconds() * 1.5)
@@ -94,7 +94,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 				hammerOfTheRighteousAoe.Cast(sim, target)
 			}
 
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 	})
 }

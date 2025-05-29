@@ -52,7 +52,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 				paladin.HolyPower.Gain(1, actionID, sim)
 			}
 
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 	})
 }

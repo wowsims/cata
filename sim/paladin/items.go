@@ -162,7 +162,7 @@ func (paladin *Paladin) registerHolyDamageTemplarsVerdict() *core.Spell {
 				paladin.T15Ret4pc.Deactivate(sim)
 			}
 
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 	})
 }

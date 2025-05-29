@@ -58,7 +58,7 @@ func (prot *ProtectionPaladin) registerConsecrationSpell() {
 				}
 
 				for idx := range numTargets {
-					dot.Spell.DealOutcome(sim, results[idx])
+					dot.Spell.DealPeriodicDamage(sim, results[idx])
 				}
 			},
 		},

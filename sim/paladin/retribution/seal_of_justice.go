@@ -66,7 +66,7 @@ func (ret *RetributionPaladin) registerSealOfJustice() {
 				return
 			}
 
-			// SoJ only procs on white hits, CS, TV and HoW
+			// SoI only procs on white hits, CS, HoW, ShotR and TV
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) &&
 				!spell.Matches(paladin.SpellMaskCanTriggerSealOfJustice) {
 				return

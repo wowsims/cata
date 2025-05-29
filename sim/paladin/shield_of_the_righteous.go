@@ -116,7 +116,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 			paladin.BastionOfGloryAura.Activate(sim)
 			paladin.BastionOfGloryAura.AddStack(sim)
 
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 
 		RelatedSelfBuff: shieldOfTheRighteousAura,

@@ -53,7 +53,7 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 			}
 
 			for idx := range numTargets {
-				spell.DealOutcome(sim, results[idx])
+				spell.DealDamage(sim, results[idx])
 			}
 		},
 	})

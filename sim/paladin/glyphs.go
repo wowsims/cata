@@ -441,7 +441,7 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 				paladin.HolyPower.SpendUpTo(paladin.DynamicHolyPowerSpent, actionID, sim)
 			}
 
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 	})
 }
