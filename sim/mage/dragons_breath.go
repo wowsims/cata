@@ -15,7 +15,7 @@ func (mage *Mage) registerDragonsBreathSpell() {
 		ActionID:       core.ActionID{SpellID: 31661},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellDragonsBreath,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 7,
@@ -36,7 +36,6 @@ func (mage *Mage) registerDragonsBreathSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := 1.378 * mage.ClassSpellScaling
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

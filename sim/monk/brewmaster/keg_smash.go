@@ -16,7 +16,7 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | monk.SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | monk.SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: monk.MonkSpellKegSmash,
 		MaxRange:       core.MaxMeleeRange,
 		MissileSpeed:   30,
@@ -49,7 +49,6 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 			missedTargets := 0
 			for i, enemyTarget := range sim.Encounter.TargetUnits {
 				baseDamage := bm.CalculateMonkStrikeDamage(sim, spell)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				result := spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				results[i] = result
 				if !result.Landed() {
