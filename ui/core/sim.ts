@@ -684,7 +684,7 @@ export class Sim {
 	}
 
 	getShowHealingMetrics(): boolean {
-		return this.showHealingMetrics || (this.showThreatMetrics && this.raid.getPlayer(0)?.playerSpec.specID == Spec.SpecBloodDeathKnight);
+		return this.showHealingMetrics || (this.showThreatMetrics && [Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid].includes(this.raid.getPlayer(0)?.playerSpec.specID));
 	}
 	setShowHealingMetrics(eventID: EventID, newShowHealingMetrics: boolean) {
 		if (newShowHealingMetrics != this.showHealingMetrics) {

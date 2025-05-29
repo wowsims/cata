@@ -8,9 +8,7 @@ import (
 )
 
 func (druid *Druid) registerMaulSpell() {
-	flatBaseDamage := 34.0
 	numHits := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMaul) && druid.Env.GetNumTargets() > 1, 2, 1)
-	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6807},
@@ -30,7 +28,7 @@ func (druid *Druid) registerMaulSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.1,
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  30,
@@ -38,28 +36,31 @@ func (druid *Druid) registerMaulSpell() {
 		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + 0.19*spell.MeleeAttackPower()
-
 			curTarget := target
+			anyLanded := false
+
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				modifier := 1.0
-				if druid.BleedCategories.Get(curTarget).AnyActive() {
-					modifier += .3
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+
+				if druid.AssumeBleedActive || druid.Rip.Dot(curTarget).IsActive() || druid.Rake.Dot(curTarget).IsActive() || druid.Lacerate.Dot(curTarget).IsActive() || druid.Thrash.Dot(curTarget).IsActive() {
+					baseDamage *= 1.2
 				}
-				if druid.AssumeBleedActive || druid.Rip.Dot(curTarget).IsActive() || druid.Rake.Dot(curTarget).IsActive() || druid.Lacerate.Dot(curTarget).IsActive() {
-					modifier *= rendAndTearMod
-				}
+
 				if hitIndex > 0 {
-					modifier *= 0.5
+					baseDamage *= 0.5
 				}
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*modifier, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-				if !result.Landed() {
-					spell.IssueRefund(sim)
+				if result.Landed() {
+					anyLanded = true
 				}
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
+
+			if !anyLanded {
+				spell.IssueRefund(sim)
 			}
 		},
 	})
