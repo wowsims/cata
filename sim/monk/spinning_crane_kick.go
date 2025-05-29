@@ -35,7 +35,7 @@ func spinningCraneKickTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellCon
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		ClassSpellMask: MonkSpellSpinningCraneKick,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		MaxRange:       8,
 
 		DamageMultiplier: 1.75, // 1.59 * (1.75 / 1.59),
@@ -44,7 +44,6 @@ func spinningCraneKickTickSpellConfig(monk *Monk, isSEFClone bool) core.SpellCon
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, target := range sim.Encounter.TargetUnits {
 				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
