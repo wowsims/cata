@@ -320,7 +320,7 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBerserkCD()
 	//druid.registerDemoralizingRoarSpell()
 	// druid.registerEnrageSpell()
-	//druid.registerFrenziedRegenerationCD()
+	druid.registerFrenziedRegenerationSpell()
 	// druid.registerMangleBearSpell()
 	// druid.registerMaulSpell()
 	// druid.registerLacerateSpell()
