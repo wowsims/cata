@@ -60,7 +60,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		ActionID:       core.ActionID{SpellID: 105174},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellHandOfGuldan,
 
 		ManaCost: core.ManaCostOptions{BaseCostPercent: 5},

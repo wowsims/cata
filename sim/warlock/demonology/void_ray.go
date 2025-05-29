@@ -14,7 +14,7 @@ func (demonology *DemonologyWarlock) registerVoidRay() {
 		ActionID:       core.ActionID{SpellID: 115422},
 		SpellSchool:    core.SpellSchoolShadowFlame,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellVoidray,
 		MissileSpeed:   38,
 		Cast: core.CastConfig{

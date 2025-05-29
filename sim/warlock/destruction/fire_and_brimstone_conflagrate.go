@@ -10,7 +10,7 @@ import (
 func (destruction *DestructionWarlock) registerFireAndBrimstoneConflagrate() {
 	destruction.FABConflagrate = destruction.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 108685},
-		Flags:            core.SpellFlagAPL,
+		Flags:            core.SpellFlagAoE | core.SpellFlagAPL,
 		SpellSchool:      core.SpellSchoolFire,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

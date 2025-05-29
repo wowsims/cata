@@ -15,7 +15,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneIncinerate() {
 		ActionID:       core.ActionID{SpellID: 114654},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		MissileSpeed:   24,
 		ClassSpellMask: warlock.WarlockSpellFaBIncinerate,
 

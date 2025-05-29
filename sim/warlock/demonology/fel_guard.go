@@ -91,7 +91,7 @@ func registerFelstorm(pet *warlock.WarlockPet, demo *DemonologyWarlock, autoCast
 		ActionID:    core.ActionID{SpellID: 89751},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagChanneled,
+		Flags:       core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagChanneled,
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 60,
 		},

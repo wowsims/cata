@@ -18,7 +18,7 @@ func (warlock *Warlock) RegisterHellfire(callback WarlockSpellCastedCallback) *c
 	warlock.Hellfire = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:         hellfireActionID,
 		SpellSchool:      core.SpellSchoolFire,
-		Flags:            core.SpellFlagChanneled | core.SpellFlagAPL,
+		Flags:            core.SpellFlagAoE | core.SpellFlagChanneled | core.SpellFlagAPL,
 		ProcMask:         core.ProcMaskSpellDamage,
 		ClassSpellMask:   WarlockSpellHellfire,
 		ThreatMultiplier: 1,

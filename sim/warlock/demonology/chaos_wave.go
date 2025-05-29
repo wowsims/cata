@@ -15,7 +15,7 @@ func (demonology *DemonologyWarlock) registerChaosWave() {
 		ActionID:       core.ActionID{SpellID: 124916},
 		SpellSchool:    core.SpellSchoolChaos,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellChaosWave,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -17,7 +17,7 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 		ActionID:       core.ActionID{SpellID: 104025},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL | core.SpellFlagNoMetrics,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL | core.SpellFlagNoMetrics,
 		ClassSpellMask: warlock.WarlockSpellImmolationAura,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
