@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 99
+// NextIndex: 101
 message APLValue {
 	UUID uuid = 87;
 
@@ -125,6 +125,7 @@ message APLValue {
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
 		APLValueCurrentGenericResource current_generic_resource = 75;
+        APLValueMaxHealth max_health = 99;
 		APLValueMaxComboPoints max_combo_points = 94;
 		APLValueMaxEnergy max_energy = 88;
 		APLValueMaxFocus max_focus = 89;
@@ -213,6 +214,7 @@ message APLValue {
         APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
         APLValueMonkCurrentChi monk_current_chi = 95;
 		APLValueMonkMaxChi monk_max_chi = 96;
+		APLValueBrewmasterMonkCurrentStaggerPercent brewmaster_monk_current_stagger_percent = 100;
     }
 }
 
@@ -472,6 +474,7 @@ message APLValueCurrentRunicPower {}
 message APLValueCurrentSolarEnergy {}
 message APLValueCurrentLunarEnergy {}
 message APLValueCurrentGenericResource {}
+message APLValueMaxHealth {}
 message APLValueMaxComboPoints {}
 message APLValueMaxEnergy {}
 message APLValueMaxFocus {}
@@ -684,21 +687,16 @@ message APLValueSequenceTimeToReady {
 message APLValueTotemRemainingTime {
     ShamanTotems.TotemType totem_type = 1;
 }
-message APLValueCatExcessEnergy {
-}
-message APLValueCatNewSavageRoarDuration {
-}
-message APLValueWarlockShouldRecastDrainSoul {
-}
+message APLValueCatExcessEnergy {}
+message APLValueCatNewSavageRoarDuration {}
+message APLValueWarlockShouldRecastDrainSoul {}
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
-message APLValueMageCurrentCombustionDotEstimate {
-}
-message APLValueShamanCanSnapshotStrongerFireElemental {
-}
-message APLValueShamanFireElementalDuration {
-}
+message APLValueMageCurrentCombustionDotEstimate {}
+message APLValueShamanCanSnapshotStrongerFireElemental {}
+message APLValueShamanFireElementalDuration {}
 
 message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
+message APLValueBrewmasterMonkCurrentStaggerPercent {}

@@ -289,7 +289,11 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 				}
 			}
 		} else if result.DidGlance() {
-			spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+			if result.DidBlock() {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceBlockDamage += result.Damage
+			} else {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+			}
 		} else if result.DidBlock() {
 			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockDamage += result.Damage
 		}
@@ -510,6 +514,10 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 
 	if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+	}
+
+	if spell.Flags.Matches(SpellFlagRanged) {
+		multiplier *= attackTable.RangedDamageTakenMulitplier
 	}
 
 	if attackTable.DamageDoneByCasterMultiplier != nil {

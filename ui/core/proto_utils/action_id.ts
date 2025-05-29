@@ -274,9 +274,13 @@ export class ActionId {
 		const baseName = tooltipData['name'];
 		let name = baseName;
 
-		// handle DRT
 		let tag = this.tag;
-		if (tag >= 71086) {
+		// Handle Monk's Storm, Earth and Fire
+		if (tag >= 138228) {
+			tag -= 138228;
+		}
+		// Handle DTR
+		else if (tag >= 71086 && tag <= 71096) {
 			name = 'Dragonwrath - ' + name;
 			tag -= 71086;
 		}
@@ -284,18 +288,6 @@ export class ActionId {
 		switch (baseName) {
 			case 'Minor Speed':
 				name = 'Minor Run Speed (8%)';
-				break;
-			case 'Explosive Shot':
-				if (this.spellId == 53301) {
-					name += ' (First)';
-				} else if (this.spellId == 1215485) {
-					name += ' (Second)';
-				}
-				break;
-			case 'Explosive Trap':
-				if (tag == 1) {
-					name += ' (Weaving)';
-				}
 				break;
 			case 'Arcane Blast':
 				if (tag == 1) {
@@ -342,6 +334,8 @@ export class ActionId {
 						name += ' (2 Tick)';
 					} else if (tag == 3) {
 						name += ' (3 Tick)';
+					} else if (tag == 77486) {
+						name += ' (Mastery)';
 					}
 				} else {
 					// Gurthalak, Voice of the Deeps
@@ -361,7 +355,10 @@ export class ActionId {
 					name += ' (2 Tick)';
 				} else if (tag == 3) {
 					name += ' (3 Tick)';
+				} else if (tag == 77486) {
+					name += ' (Mastery)';
 				}
+
 				break;
 			case 'Shattering Throw':
 			case 'Skull Banner':
@@ -583,8 +580,16 @@ export class ActionId {
 				break;
 			case 'Devouring Plague':
 				if (tag == 1) {
-					name += ' (Improved)';
+					name += ' (DoT)';
 					break;
+				}
+				if (tag == 77486) {
+					name += ' (Mastery)';
+					break;
+				}
+			case 'Shadow Word: Death':
+				if (tag == 1) {
+					name += ' (No Orb)';
 				}
 			case 'Improved Steady Shot':
 				if (tag == 2) {
@@ -706,8 +711,10 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+
+			// Monk
 			case 'Tiger Strikes':
-				if (this.spellId === 12274) {
+				if (this.spellId === 120274) {
 					name += ' (Main Hand)';
 				} else {
 					name += ' (Off Hand)';
@@ -734,7 +741,11 @@ export class ActionId {
 				break;
 			case 'Zen Sphere':
 				if (this.spellId === 124081) {
-					name += ' (Heal)';
+					if (this.tag === 1) {
+						name += ' (# of Spheres)';
+					} else {
+						name += ' (Heal)';
+					}
 				} else if (this.spellId === 124098) {
 					name += ' (Damage)';
 				} else if (this.spellId === 124101) {
@@ -750,10 +761,37 @@ export class ActionId {
 					name += ' (Damage)';
 				}
 				break;
-			case 'Rushing Jade Wind':
-				if (this.spellId === 148187) {
-					name += ' (Hit)';
+			case 'Stagger':
+				if (this.tag === 1) {
+					name += ' (Dot)';
 				}
+				break;
+			case 'Dampen Harm':
+				break;
+			case 'Healing Sphere':
+				if (this.spellId === 115460) {
+					if (tag === 1) {
+						name += ' (Stacks)';
+					} else {
+						name += ' (Cast)';
+					}
+				}
+				if (this.spellId === 115464) {
+					name += ' (Heal)';
+				}
+				break;
+			case 'Vampiric Touch':
+			case 'Shadow Word: Pain':
+				if (tag == 77486) {
+					name += ' (Mastery)';
+				}
+
+				break;
+			case 'Cascade':
+				if (tag == 1) {
+					name += ' (Bounce)';
+				}
+
 				break;
 			default:
 				if (tag) {
@@ -796,7 +834,8 @@ export class ActionId {
 		} else if (this.otherId) {
 			return 'other-' + this.otherId;
 		} else {
-			throw new Error('Empty action id!');
+			console.error('Empty action id!');
+			return '';
 		}
 	}
 
@@ -1032,12 +1071,17 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
 	'Rune Weapon': ActionId.fromSpellId(49028),
 	Shadowfiend: ActionId.fromSpellId(34433),
+	Mindbender: ActionId.fromSpellId(123040),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 	Valkyr: ActionId.fromSpellId(71844),
 	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
+	'Xuen, The White Tiger': ActionId.fromSpellId(123904),
+	'Earth Spirit': ActionId.fromSpellId(138121),
+	'Storm Spirit': ActionId.fromSpellId(138122),
+	'Fire Spirit': ActionId.fromSpellId(138123),
 };
 
 // https://wowhead.com/mop-classic/hunter-pets

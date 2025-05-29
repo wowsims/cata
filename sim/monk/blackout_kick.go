@@ -35,18 +35,38 @@ Kick with a blast of Chi energy, dealing ${7.12*$<low>} to ${7.12*$<high>} Physi
 
 -- Teachings of the Monastery --
 */
-func (monk *Monk) registerBlackoutKick() {
-	actionID := core.ActionID{SpellID: 100784}.WithTag(1)
-	chiMetrics := monk.NewChiMetrics(actionID)
+var blackoutKickActionID = core.ActionID{SpellID: 100784}.WithTag(1)
 
-	monk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	config := core.SpellConfig{
+		ActionID:       blackoutKickActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSpender | core.SpellFlagAPL,
 		ClassSpellMask: MonkSpellBlackoutKick,
 		MaxRange:       core.MaxMeleeRange,
 
+		DamageMultiplier: 7.12,
+		ThreatMultiplier: 1,
+		CritMultiplier:   monk.DefaultCritMultiplier(),
+
+		Cast:               overrides.Cast,
+		ExtraCastCondition: overrides.ExtraCastCondition,
+		ApplyEffects:       overrides.ApplyEffects,
+	}
+
+	if isSEFClone {
+		config.ActionID = config.ActionID.WithTag(SEFSpellID)
+		config.Flags &= ^(core.SpellFlagAPL | SpellFlagSpender)
+	}
+
+	return config
+}
+
+func (monk *Monk) registerBlackoutKick() {
+	chiMetrics := monk.NewChiMetrics(blackoutKickActionID)
+
+	monk.RegisterSpell(blackoutKickSpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -54,12 +74,8 @@ func (monk *Monk) registerBlackoutKick() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 7.12,
-		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultCritMultiplier(),
-
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return monk.ComboPoints() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()
+			return monk.GetChi() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -77,5 +93,22 @@ func (monk *Monk) registerBlackoutKick() {
 
 			spell.DealOutcome(sim, result)
 		},
-	})
+	}))
+}
+
+func (pet *StormEarthAndFirePet) registerSEFBlackoutKick() {
+	pet.RegisterSpell(blackoutKickSpellConfig(pet.owner, true, core.SpellConfig{
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := pet.owner.CalculateMonkStrikeDamage(sim, spell)
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	}))
 }
