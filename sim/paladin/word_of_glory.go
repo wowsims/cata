@@ -38,7 +38,7 @@ func (paladin *Paladin) registerWordOfGlory() {
 	isProt := paladin.Spec == proto.Spec_SpecProtectionPaladin
 	eternalFlame := paladin.Talents.EternalFlame
 
-	actionID := core.ActionID{SpellID: 85673}
+	actionID := core.ActionID{SpellID: core.TernaryInt32(eternalFlame, 114163, 85673)}
 
 	config := core.SpellConfig{
 		ActionID:       actionID,

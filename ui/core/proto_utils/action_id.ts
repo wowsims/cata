@@ -493,6 +493,11 @@ export class ActionId {
 				}
 				name += ')';
 				break;
+			case 'Eternal Flame':
+				if (tag > 0) {
+					name += `(${tag} HP)`;
+				}
+				break;
 			case 'Exorcism':
 				if (tag === 2) {
 					name = 'Glyph of Mass Exorcism';
