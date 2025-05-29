@@ -16,7 +16,7 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          monk.SpellFlagSpender | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | monk.SpellFlagSpender | core.SpellFlagAPL,
 		ClassSpellMask: monk.MonkSpellBreathOfFire,
 		MaxRange:       8,
 
@@ -59,10 +59,8 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			for _, enemyTarget := range sim.Encounter.TargetUnits {
 				baseDamage := bm.CalcAndRollDamageRange(sim, 1.475, 0.242) + 0.3626*spell.MeleeAttackPower()
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				result := spell.CalcOutcome(sim, enemyTarget, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
 				if result.Landed() {

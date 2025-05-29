@@ -40,6 +40,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 					for j, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
 							results[i][j] = spell.CalcDamage(sim, newTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+							results[i][j].Damage *= sim.Encounter.AOECapMultiplier()
 						}
 					}
 				}

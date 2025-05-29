@@ -13,7 +13,7 @@ func (warlock *Warlock) registerSeed() {
 		ActionID:       actionID.WithTag(1), // actually 27285
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagHauntSE | core.SpellFlagNoLogs | core.SpellFlagPassiveSpell,
 		ClassSpellMask: WarlockSpellSeedOfCorruptionExposion,
 
 		DamageMultiplierAdditive: 1,
@@ -22,8 +22,8 @@ func (warlock *Warlock) registerSeed() {
 		BonusCoefficient:         0.22920000553,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := warlock.CalcAndRollDamageRange(sim, 0.76560002565, 0.15000000596) * sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDmg := warlock.CalcAndRollDamageRange(sim, 0.76560002565, 0.15000000596)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 			}
 		},
