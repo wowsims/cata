@@ -357,7 +357,7 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_AVOIDANCE:    -1,
 	RATING_MOD_EXPERTISE:    proto.Stat_StatExpertiseRating,
 	RATING_MOD_MASTERY:      proto.Stat_StatMasteryRating,
-	RATING_MOD_PVP_POWER:    -1,
+	RATING_MOD_PVP_POWER:    proto.Stat_StatPvpPowerRating,
 
 	RATING_MOD_VERS_DAMAGE: -1,
 	RATING_MOD_VERS_HEAL:   -1,

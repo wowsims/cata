@@ -21,13 +21,19 @@ func (raw RandomSuffix) ToProto() *proto.ItemRandomSuffix {
 	}
 	for i, effect := range raw.Effects {
 		if effect == 5 || effect == 4 {
-			stat, _ := MapBonusStatIndexToStat(raw.EffectArgs[i])
+			match := false
+			stat, assignedBonusStat := MapBonusStatIndexToStat(raw.EffectArgs[i])
+			match = assignedBonusStat
 			if effect == 4 {
-				stat, _ = MapResistanceToStat(raw.EffectArgs[i])
+				resistanceStat, assignedResistanceStat := MapResistanceToStat(raw.EffectArgs[i])
+				stat = resistanceStat
+				match = assignedResistanceStat
+			}
+			if !match {
+				continue
 			}
 			amount := raw.AllocationPct[i]
 			suffix.Stats[stat] = float64(amount)
-
 		}
 	}
 	return suffix

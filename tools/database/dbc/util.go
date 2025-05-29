@@ -98,13 +98,13 @@ func processEnchantmentEffects(
 			}
 			outStats[stat] = float64(effectPoints[i])
 		case ITEM_ENCHANTMENT_STAT:
-			stat, _ := MapBonusStatIndexToStat(effectArgs[i])
+			stat, success := MapBonusStatIndexToStat(effectArgs[i])
+			if !success {
+				continue
+			}
 			outStats[stat] = float64(effectPoints[i])
 			// If the bonus stat is attack power, copy it to ranged attack power
 			if addRanged && stat == proto.Stat_StatAttackPower {
-				if effectPoints[i] == 72 {
-					fmt.Println("Add to APRange", stat)
-				}
 				outStats[proto.Stat_StatRangedAttackPower] = float64(effectPoints[i])
 			}
 		case ITEM_ENCHANTMENT_EQUIP_SPELL: //Buff
