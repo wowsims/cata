@@ -199,7 +199,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		try {
 			jsonData = JSON.parse(dataStr);
 		} catch (e) {
-			console.warn('Invalid json for local storage value: ' + dataStr);
+			console.warn('Invalid json for local storage value: ', dataStr, e);
 		}
 
 		for (const name in jsonData) {
@@ -209,7 +209,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 					data: this.config.fromJson(jsonData[name]),
 				});
 			} catch (e) {
-				console.warn('Failed parsing saved data: ' + jsonData[name]);
+				console.warn('Failed parsing saved data: ', jsonData[name], e);
 			}
 		}
 	}

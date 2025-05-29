@@ -59,14 +59,20 @@ func (druid *Druid) registerFaerieFireSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.0
 			outcome := spell.OutcomeMagicHit
+
 			if druid.InForm(Bear) {
 				baseDamage = 10.0 + 0.302*spell.MeleeAttackPower()
 				outcome = spell.OutcomeMagicHitAndCrit
 			}
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, outcome)
+
 			if result.Landed() {
 				druid.TryApplyFaerieFireEffect(sim, target)
+
+				if druid.InForm(Bear) && sim.Proc(0.25, "Mangle CD Reset") {
+					druid.MangleBear.CD.Reset()
+				}
 			}
 		},
 
