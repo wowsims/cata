@@ -74,10 +74,15 @@ func (paladin *Paladin) registerDivineProtection() {
 		},
 	})
 
-	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+	if paladin.Spec == proto.Spec_SpecProtectionPaladin && hasGlyphOfDivineProtection {
+		paladin.AddDefensiveCooldownAura(paladin.DivineProtectionAura)
 		paladin.AddMajorCooldown(core.MajorCooldown{
-			Spell: divineProtection,
-			Type:  core.CooldownTypeSurvival,
+			Spell:    divineProtection,
+			Type:     core.CooldownTypeSurvival,
+			Priority: core.CooldownPriorityLow + 30,
+			ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+				return !paladin.AnyActiveDefensiveCooldown()
+			},
 		})
 	}
 }

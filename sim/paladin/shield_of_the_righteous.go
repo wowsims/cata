@@ -66,6 +66,8 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 		},
 	})
 
+	paladin.AddDefensiveCooldownAura(shieldOfTheRighteousAura)
+
 	actionID := core.ActionID{SpellID: 53600}
 
 	paladin.RegisterSpell(core.SpellConfig{

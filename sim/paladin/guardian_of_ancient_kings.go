@@ -22,21 +22,15 @@ func (paladin *Paladin) goakBaseDuration() time.Duration {
 func (paladin *Paladin) registerGuardianOfAncientKings() {
 	duration := paladin.goakBaseDuration()
 
-	var spell *core.Spell
 	switch paladin.Spec {
 	case proto.Spec_SpecHolyPaladin:
-		spell = paladin.registerHolyGuardian(duration)
+		paladin.registerHolyGuardian(duration)
 	case proto.Spec_SpecProtectionPaladin:
-		spell = paladin.registerProtectionGuardian(duration)
+		paladin.registerProtectionGuardian(duration)
 	default:
 	case proto.Spec_SpecRetributionPaladin:
-		spell = paladin.registerRetributionGuardian(duration)
+		paladin.registerRetributionGuardian(duration)
 	}
-
-	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
-		Type:  core.CooldownTypeDPS,
-	})
 }
 
 /*
@@ -44,7 +38,7 @@ Summons a Guardian of Ancient Kings to help you heal for 15 sec.
 
 The Guardian of Ancient Kings will heal the targets of your heals for an additional 100% of the amount healed and grants you 10% haste for its duration.
 */
-func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell {
+func (paladin *Paladin) registerHolyGuardian(duration time.Duration) {
 	actionID := core.ActionID{SpellID: 86669}
 
 	paladin.GoakAura = paladin.RegisterAura(core.Aura{
@@ -60,7 +54,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 		},
 	}).AttachMultiplyCastSpeed(1.1)
 
-	return paladin.RegisterSpell(core.SpellConfig{
+	spell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
@@ -81,6 +75,11 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 			paladin.AncientGuardian.CancelGCDTimer(sim)
 		},
 	})
+
+	paladin.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeSurvival,
+	})
 }
 
 /*
@@ -88,7 +87,7 @@ Summons a Guardian of Ancient Kings to protect you for 12 sec.
 
 The Guardian of Ancient Kings reduces damage taken by 50%.
 */
-func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core.Spell {
+func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) {
 	actionID := core.ActionID{SpellID: 86659}
 
 	paladin.GoakAura = paladin.RegisterAura(core.Aura{
@@ -105,7 +104,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 		},
 	})
 
-	return paladin.RegisterSpell(core.SpellConfig{
+	spell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
@@ -124,6 +123,16 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 			paladin.GoakAura.Activate(sim)
 		},
 	})
+
+	paladin.AddDefensiveCooldownAura(paladin.GoakAura)
+	paladin.AddMajorCooldown(core.MajorCooldown{
+		Spell:    spell,
+		Type:     core.CooldownTypeSurvival,
+		Priority: core.CooldownPriorityLow + 20,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return !paladin.AnyActiveDefensiveCooldown()
+		},
+	})
 }
 
 /*
@@ -139,7 +148,7 @@ When your Guardian of Ancient Kings departs, you release Ancient Fury, causing (
 Ancient Fury
 Unleash the fury of ancient kings, causing (<229-311> + 0.107 * <SP>) Holy damage per application of Ancient Power, divided evenly among all targets within 10 yards.
 */
-func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *core.Spell {
+func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) {
 	var strDepByStackCount = map[int32]*stats.StatDependency{}
 
 	for i := 1; i <= 12; i++ {
@@ -219,7 +228,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		},
 	}).AttachDependentAura(paladin.AncientPowerAura)
 
-	return paladin.RegisterSpell(core.SpellConfig{
+	spell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ProcMask:       core.ProcMaskEmpty,
@@ -242,5 +251,10 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		},
 
 		RelatedSelfBuff: paladin.GoakAura,
+	})
+
+	paladin.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }

@@ -99,8 +99,13 @@ func (prot *ProtectionPaladin) registerArdentDefender() {
 		}
 	})
 
+	prot.AddDefensiveCooldownAura(adAura)
 	prot.AddMajorCooldown(core.MajorCooldown{
-		Spell: ardentDefender,
-		Type:  core.CooldownTypeSurvival,
+		Spell:    ardentDefender,
+		Type:     core.CooldownTypeSurvival,
+		Priority: core.CooldownPriorityLow + 10,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return !prot.AnyActiveDefensiveCooldown()
+		},
 	})
 }

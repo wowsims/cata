@@ -53,6 +53,7 @@ type Paladin struct {
 
 	HolyAvengerActionIDFilter  []core.ActionID
 	JudgmentsOfTheWiseActionID core.ActionID
+	DefensiveCooldownAuras     []*core.Aura
 
 	DynamicHolyPowerSpent                        int32
 	BastionOfGloryMultiplier                     float64
@@ -206,4 +207,18 @@ func (paladin *Paladin) BuilderCooldown() *core.Timer {
 
 func (paladin *Paladin) SpendableHolyPower() int32 {
 	return min(paladin.HolyPower.Value(), 3)
+}
+
+func (paladin *Paladin) AddDefensiveCooldownAura(aura *core.Aura) {
+	paladin.DefensiveCooldownAuras = append(paladin.DefensiveCooldownAuras, aura)
+}
+
+func (paladin *Paladin) AnyActiveDefensiveCooldown() bool {
+	for _, aura := range paladin.DefensiveCooldownAuras {
+		if aura.IsActive() {
+			return true
+		}
+	}
+
+	return false
 }
