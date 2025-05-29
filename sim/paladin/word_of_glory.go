@@ -86,7 +86,7 @@ func (paladin *Paladin) registerWordOfGlory() {
 			damageMultiplier := spell.DamageMultiplier
 			spell.DamageMultiplier *= float64(paladin.DynamicHolyPowerSpent)
 			if target == &paladin.Unit {
-				spell.DamageMultiplier *= float64(paladin.BastionOfGloryMultiplier)
+				spell.DamageMultiplier *= 1.0 + paladin.BastionOfGloryMultiplier
 			}
 
 			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
