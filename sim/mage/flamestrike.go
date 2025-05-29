@@ -17,7 +17,7 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 		ActionID:       core.ActionID{SpellID: spellId},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAoE | core.SpellFlag(core.TernaryInt32(isProc, 0, int32(core.SpellFlagAPL))),
+		Flags:          core.SpellFlagAoE | core.Ternary(isProc, core.SpellFlagNone, core.SpellFlagAPL),
 		ClassSpellMask: MageSpellFlamestrike,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

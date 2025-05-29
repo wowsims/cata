@@ -17,6 +17,8 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 		manaRestore = 0.02
 	}
 
+	results := make([]*core.SpellResult, elemental.Env.GetNumTargets())
+
 	elemental.Thunderstorm = elemental.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAoE | core.SpellFlagAPL | shaman.SpellFlagFocusable,
@@ -44,7 +46,6 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 			elemental.AddMana(sim, elemental.MaxMana()*manaRestore, manaMetrics)
 
 			if elemental.Shaman.ThunderstormInRange {
-				results := make([]*core.SpellResult, elemental.Env.GetNumTargets())
 				for i, aoeTarget := range sim.Encounter.TargetUnits {
 					baseDamage := elemental.GetShaman().CalcAndRollDamageRange(sim, 1.62999999523, 0.13300000131)
 					results[i] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
