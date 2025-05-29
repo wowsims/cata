@@ -13,7 +13,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ActionID:       core.ActionID{SpellID: 101423}.WithTag(tag),
 			SpellSchool:    core.SpellSchoolHoly,
 			ProcMask:       core.ProcMaskMeleeProc,
-			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell | core.SpellFlagAoE,
 			ClassSpellMask: SpellMaskSealOfRighteousness,
 
 			MaxRange: 8,
@@ -35,7 +35,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	// otherwise it would be DS hits 10 targets -> SoR procs 100 times
 	onHitSingleTarget := registerOnHitSpell(1, func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-		baseDamage *= sim.Encounter.AOECapMultiplier()
 
 		// can't miss if melee swing landed, but can crit
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -48,7 +47,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		for idx := range numTargets {
 			currentTarget := sim.Environment.GetTargetUnit(idx)
 			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 			// can't miss if melee swing landed, but can crit
 			results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		}

@@ -14,7 +14,7 @@ func (prot *ProtectionPaladin) registerConsecrationSpell() {
 		ActionID:       core.ActionID{SpellID: 26573},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagAoE,
 		ClassSpellMask: paladin.SpellMaskConsecration,
 
 		MaxRange: 8,
@@ -50,7 +50,6 @@ func (prot *ProtectionPaladin) registerConsecrationSpell() {
 
 				// Consecration recalculates everything on each tick
 				baseDamage := prot.CalcScalingSpellDmg(0.8) + 0.08*dot.Spell.MeleeAttackPower()
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 
 				for idx := range numTargets {
 					currentTarget := sim.Environment.GetTargetUnit(idx)

@@ -20,7 +20,7 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagAoE,
 		ClassSpellMask: paladin.SpellMaskDivineStorm,
 
 		MaxRange: 8,
@@ -44,7 +44,6 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 			for idx := range numTargets {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				baseDamage := ret.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 

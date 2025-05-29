@@ -773,7 +773,7 @@ func (paladin *Paladin) registerLightsHammer() {
 		ActionID:    core.ActionID{SpellID: 114919},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagAoE,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
@@ -793,7 +793,6 @@ func (paladin *Paladin) registerLightsHammer() {
 				for idx, currentTarget := range enemyTargets {
 					baseDamage := paladin.CalcAndRollDamageRange(sim, 3.179, 0.2) +
 						0.321*dot.Spell.SpellPower()
-					baseDamage *= sim.Encounter.AOECapMultiplier()
 					results[idx] = dot.Spell.CalcPeriodicDamage(sim, &currentTarget.Unit, baseDamage, dot.OutcomeTickMagicHitAndCrit)
 				}
 

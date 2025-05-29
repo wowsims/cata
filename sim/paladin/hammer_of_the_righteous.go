@@ -25,7 +25,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		ActionID:       core.ActionID{SpellID: 88263},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell | core.SpellFlagAoE,
 		ClassSpellMask: SpellMaskHammerOfTheRighteousAoe,
 
 		MaxRange: 8,
@@ -40,7 +40,6 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 			for idx := range numTargets {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 

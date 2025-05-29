@@ -534,7 +534,7 @@ func (paladin *Paladin) registerGlyphOfMassExorcism() {
 		ActionID:       core.ActionID{SpellID: 879}.WithTag(2), // Actual 122032
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete | core.SpellFlagAoE,
 		ClassSpellMask: SpellMaskExorcism,
 
 		MaxRange: core.MaxMeleeRange,
@@ -550,7 +550,6 @@ func (paladin *Paladin) registerGlyphOfMassExorcism() {
 			for idx := range numTargets {
 				baseDamage := paladin.CalcAndRollDamageRange(sim, 6.095, 0.11) +
 					0.677*spell.MeleeAttackPower()
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 
