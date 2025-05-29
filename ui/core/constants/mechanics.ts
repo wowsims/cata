@@ -27,7 +27,7 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecGuardianDruid, 2.0],
 	[Spec.SpecRestorationDruid, 1.25],
 	[Spec.SpecHolyPaladin, 1.5],
-	[Spec.SpecProtectionPaladin, 2.25],
+	[Spec.SpecProtectionPaladin, 1.0],
 	[Spec.SpecRetributionPaladin, 1.85],
 	[Spec.SpecElementalShaman, 2.0],
 	[Spec.SpecEnhancementShaman, 2.5],

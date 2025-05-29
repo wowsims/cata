@@ -49,7 +49,7 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 		},
 	})).AttachStatDependency(
 		prot.NewDynamicMultiplyStat(stats.Stamina, 1.25),
-	).AttachMultiplicativePseudoStatBuff(
+	).AttachAdditivePseudoStatBuff(
 		&prot.PseudoStats.BaseBlockChance,
 		0.1,
 	).AttachAdditivePseudoStatBuff(
