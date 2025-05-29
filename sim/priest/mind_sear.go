@@ -25,7 +25,7 @@ func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 
 func (priest *Priest) getMindSearTickSpell() *core.Spell {
 	config := priest.getMindSearBaseConfig()
-	config.Flags = core.SpellFlagNoOnDamageDealt
+	config.Flags = core.SpellFlagNoOnDamageDealt | core.SpellFlagAoE
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := priest.CalcAndRollDamageRange(sim, SearScale, SearVariance)

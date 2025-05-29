@@ -53,6 +53,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellFlameOrb,
+		Flags:          core.SpellFlagAoE,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),

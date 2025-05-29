@@ -164,6 +164,9 @@ func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *Spe
 	for i := range result.Target.DynamicDamageTakenModifiers {
 		result.Target.DynamicDamageTakenModifiers[i](sim, spell, result)
 	}
+	if spell.Flags.Matches(SpellFlagAoE) {
+		result.Damage *= sim.Encounter.AOECapMultiplier()
+	}
 	result.Damage = max(0, result.Damage)
 }
 

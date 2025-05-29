@@ -22,7 +22,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		ActionID:    core.ActionID{SpellID: 77758},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,
@@ -63,7 +63,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatBaseDamage + 0.0982*spell.MeleeAttackPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				perTargetDamage := (baseDamage + (sim.RandomFloat("Thrash") * damageSpread)) * sim.Encounter.AOECapMultiplier()
+				perTargetDamage := (baseDamage + (sim.RandomFloat("Thrash") * damageSpread))
 				if druid.BleedCategories.Get(aoeTarget).AnyActive() {
 					perTargetDamage *= 1.3
 				}

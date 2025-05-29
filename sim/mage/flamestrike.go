@@ -17,7 +17,7 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 		ActionID:       core.ActionID{SpellID: spellId},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlag(core.TernaryInt32(isProc, 0, int32(core.SpellFlagAPL))),
+		Flags:          core.SpellFlagAoE | core.Ternary(isProc, core.SpellFlagNone, core.SpellFlagAPL),
 		ClassSpellMask: MageSpellFlamestrike,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -53,7 +53,6 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := 0.662 * mage.ClassSpellScaling
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 
