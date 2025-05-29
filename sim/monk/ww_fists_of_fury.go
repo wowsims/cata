@@ -20,6 +20,7 @@ var fofDebuffActionID = core.ActionID{SpellID: 117418}
 
 func fistsOfFuryTickSpellConfig(monk *Monk, pet *StormEarthAndFirePet) core.SpellConfig {
 	numTargets := monk.Env.GetNumTargets()
+	results := make([]*core.SpellResult, numTargets)
 
 	config := core.SpellConfig{
 		ActionID:       fofDebuffActionID,
@@ -33,20 +34,18 @@ func fistsOfFuryTickSpellConfig(monk *Monk, pet *StormEarthAndFirePet) core.Spel
 		ThreatMultiplier: 1,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
 
 			// Damage is split between all mobs, each hit rolls for hit/crit separately
 			baseDamage /= float64(numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				results[idx] = result
+			for i, enemyTarget := range sim.Encounter.TargetUnits {
+				result := spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				results[i] = result
 			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	}
