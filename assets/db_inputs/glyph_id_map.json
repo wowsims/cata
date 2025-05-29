@@ -135,7 +135,7 @@
 	{"itemId":  45745, "spellId":  63223},
 	{"itemId":  45747, "spellId":  63225},
 	{"itemId": 204385, "spellId": 405004},
-	{"itemId":  43365, "spellId":  57937},
+	{"itemId":  43365, "spellId": 125043},
 	{"itemId":  43340, "spellId":  57958},
 	{"itemId":  43368, "spellId":  57947},
 	{"itemId":  43369, "spellId":  57954},
@@ -344,6 +344,17 @@
 	{"itemId":  43376, "spellId":  58032},
 	{"itemId":  43378, "spellId":  58033},
 	{"itemId":  43380, "spellId":  58038},
-	{"itemId":  43379, "spellId":  58039}
+	{"itemId":  43379, "spellId":  58039},
+	{"itemId":  80581, "spellId": 115738},
+	{"itemId":  80584, "spellId": 115931},
+	{"itemId":  80585, "spellId": 115933},
+	{"itemId":  80586, "spellId": 115934},
+	{"itemId":  81956, "spellId": 119477},
+	{"itemId":  83107, "spellId": 122028},
+	{"itemId":  85716, "spellId": 115933},
+	{"itemId": 104050, "spellId": 146956},
+	{"itemId": 104051, "spellId": 146957},
+	{"itemId": 104107, "spellId": 146958},
+	{"itemId": 104108, "spellId": 146959}
   ]
   
