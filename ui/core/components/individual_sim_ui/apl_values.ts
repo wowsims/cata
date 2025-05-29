@@ -72,6 +72,7 @@ import {
 	APLValueNumEquippedStatProcTrinkets,
 	APLValueNumStatBuffCooldowns,
 	APLValueOr,
+	APLValueProtectionPaladinDamageTakenLastGlobal,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
 	APLValueRuneCooldown,
@@ -1395,6 +1396,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of current Stagger, as a percentage.',
 		newValue: APLValueMonkCurrentChi.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() === Spec.SpecBrewmasterMonk,
+		fields: [],
+	}),
+	protectionPaladinDamageTakenLastGlobal: inputBuilder({
+		label: 'Damage Taken Last Global',
+		submenu: ['Tank'],
+		shortDescription: 'Amount of damage taken in the last 1.5s.',
+		newValue: APLValueProtectionPaladinDamageTakenLastGlobal.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() === Spec.SpecProtectionPaladin,
 		fields: [],
 	}),
 };
