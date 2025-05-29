@@ -197,7 +197,7 @@ func (monk *Monk) registerChiWave() {
 }
 
 func (pet *StormEarthAndFirePet) registerSEFChiWave() {
-	if !pet.owner.Talents.ChiWave {
+	if pet.owner.Spec != proto.Spec_SpecWindwalkerMonk || !pet.owner.Talents.ChiWave {
 		return
 	}
 
@@ -279,20 +279,14 @@ func (monk *Monk) registerZenSphere() {
 		return
 	}
 
-	friendlyTargets := monk.Env.Raid.GetFirstNPlayersOrPets(2)
-	var nextTarget *core.Unit
-	for _, friendlyTarget := range friendlyTargets {
-		if friendlyTarget != &monk.Unit {
-			nextTarget = friendlyTarget
-			break
-		}
-	}
+	targetDummies := monk.Env.Raid.GetTargetDummies()
+	maxTargets := int32(max(1, len(targetDummies)))
 
 	zenSphereAura := monk.RegisterAura(core.Aura{
 		Label:     "Zen Sphere" + monk.Label,
 		ActionID:  core.ActionID{SpellID: 124081}.WithTag(1),
 		Duration:  core.NeverExpires,
-		MaxStacks: 2,
+		MaxStacks: maxTargets,
 	})
 
 	avgTickScaling := monk.CalcScalingSpellDmg(0.1040000021)
@@ -308,7 +302,7 @@ func (monk *Monk) registerZenSphere() {
 	avgDetonateDmgBonusCoefficient := 0.368 * 1.15
 
 	detonateDamageSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 125033},
+		ActionID:       core.ActionID{SpellID: 124081}.WithTag(5), // Real Spell ID: 125033
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAoE | core.SpellFlagPassiveSpell,
@@ -335,7 +329,7 @@ func (monk *Monk) registerZenSphere() {
 	})
 
 	detonateHealingSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 124101},
+		ActionID:       core.ActionID{SpellID: 124081}.WithTag(4), // Real Spell ID: 124101
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellHealing,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
@@ -354,7 +348,7 @@ func (monk *Monk) registerZenSphere() {
 
 	var currentTargetIndex int32
 	zenSphereDotSpell := monk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 124098},
+		ActionID:       core.ActionID{SpellID: 124081}.WithTag(3), // Real Spell ID: 124098
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
@@ -414,7 +408,8 @@ func (monk *Monk) registerZenSphere() {
 
 		Hot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Zen Sphere (Heal)" + monk.Label,
+				Label:    "Zen Sphere (Heal)" + monk.Label,
+				ActionID: core.ActionID{SpellID: 124081}.WithTag(2),
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if aura.Unit.CurrentHealthPercent() <= 0.35 {
 						aura.Deactivate(sim)
@@ -441,11 +436,14 @@ func (monk *Monk) registerZenSphere() {
 			return !zenSphereAura.IsActive() || zenSphereAura.GetStacks() < zenSphereAura.MaxStacks
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			target := spell.Unit
 
-			if nextTarget != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
-				target = nextTarget
+			if len(targetDummies) > 1 {
+				target = &targetDummies[0].Unit
+				if targetDummies[1] != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
+					target = &targetDummies[1].Unit
+				}
 			}
 
 			if target.CurrentHealthPercent() <= 0.35 {
@@ -591,7 +589,7 @@ func (monk *Monk) registerChiBurst() {
 }
 
 func (pet *StormEarthAndFirePet) registerSEFChiBurst() {
-	if !pet.owner.Talents.ChiBurst {
+	if pet.owner.Spec != proto.Spec_SpecWindwalkerMonk || !pet.owner.Talents.ChiBurst {
 		return
 	}
 
@@ -630,7 +628,7 @@ func (monk *Monk) registerPowerStrikes() {
 		ClassSpellMask: MonkSpellChiSphere,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !chiSphereUseAura.IsActive() && monk.ChiSphereAura.IsActive() && monk.ChiSphereAura.GetStacks() > 0
+			return monk.GetChi() != monk.GetMaxChi() && !chiSphereUseAura.IsActive() && monk.ChiSphereAura.IsActive() && monk.ChiSphereAura.GetStacks() > 0
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -683,7 +681,7 @@ func (monk *Monk) TriggerPowerStrikes(sim *core.Simulation) {
 		return
 	}
 
-	if monk.ComboPoints() == monk.MaxComboPoints() {
+	if monk.GetChi() == monk.GetMaxChi() {
 		monk.ChiSphereAura.Activate(sim)
 		monk.ChiSphereAura.AddStack(sim)
 	} else {
@@ -963,7 +961,7 @@ func (monk *Monk) registerRushingJadeWind() {
 }
 
 func (pet *StormEarthAndFirePet) registerSEFRushingJadeWind() {
-	if !pet.owner.Talents.RushingJadeWind {
+	if pet.owner.Spec != proto.Spec_SpecWindwalkerMonk || !pet.owner.Talents.RushingJadeWind {
 		return
 	}
 
@@ -1016,7 +1014,7 @@ func (monk *Monk) registerInvokeXuenTheWhiteTiger() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				NonEmpty: true,
 			},
 			CD: core.Cooldown{
 				Timer:    monk.NewTimer(),
