@@ -23,13 +23,13 @@ func (demo DemonologyWarlock) getMetaMasteryBonusFrom(points float64) float64 {
 }
 
 func (demo *DemonologyWarlock) registerMasterDemonologist() {
+	var scaleAction *core.PendingAction
+
 	demo.Metamorphosis.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonus()
 		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
-	})
 
-	var scaleAction *core.PendingAction
-	demo.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonus()
 		if scaleAction != nil {
 			return
@@ -40,11 +40,16 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 			NextActionAt: sim.CurrentTime + core.GCDDefault,
 			Priority:     core.ActionPriorityAuto,
 			OnAction: func(sim *core.Simulation) {
-				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 				scaleAction = nil
+				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 			},
 		}
 		sim.AddPendingAction(scaleAction)
+	}).ApplyOnReset(func(aura *core.Aura, sim *core.Simulation) {
+		// Make sure to execute the pending scale action if we reset the iteration
+		if scaleAction != nil {
+			scaleAction.OnAction(sim)
+		}
 	})
 
 	demo.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating, newMasteryRating float64) {
