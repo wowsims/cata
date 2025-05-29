@@ -5,6 +5,7 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+// Your Crusader Strike, Hammer of the Righteous, Hammer of Wrath, Templar's Verdict and Divine Storm deal ((8 + <Mastery Rating> / 600) * 1.85)% additional damage as Holy damage.
 func (ret *RetributionPaladin) registerMastery() {
 	handOfLight := ret.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 96172},

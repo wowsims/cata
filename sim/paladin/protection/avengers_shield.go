@@ -7,20 +7,26 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
+/*
+Hurls your shield at an enemy target, dealing (<6058-7405> + 0.8175 * <AP> + 0.315 * <SP>) Holy damage,
+
+-- Glyph of Dazing Shield --
+dazing,
+-- /Glyph of Dazing Shield --
+
+silencing and interrupting spellcasting for 3 sec, and then jumping to additional nearby enemies.
+
+Affects 3 total targets.
+*/
 func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
-	actionID := core.ActionID{SpellID: 31935}
-	scalingCoef := 5.89499998093
-	variance := 0.20000000298
-	spCoef := 0.31499999762
-	apCoef := 0.81749999523
-	glyphedSingleTargetAS := prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFocusedShield)
+	hasGlyphOfFocusedShield := prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFocusedShield)
 
 	// Glyph to single target, OR apply to up to 3 targets
-	numTargets := core.TernaryInt32(glyphedSingleTargetAS, 1, min(3, prot.Env.GetNumTargets()))
+	numTargets := core.TernaryInt32(hasGlyphOfFocusedShield, 1, min(3, prot.Env.GetNumTargets()))
 	results := make([]*core.SpellResult, numTargets)
 
 	prot.AvengersShield = prot.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    core.ActionID{SpellID: 31935},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -41,23 +47,23 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return prot.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
+			return prot.PseudoStats.CanBlock
 		},
 
-		DamageMultiplier: core.TernaryFloat64(glyphedSingleTargetAS, 1.3, 1),
+		DamageMultiplier: 1,
 		CritMultiplier:   prot.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			constBaseDamage := spCoef*spell.SpellPower() + apCoef*spell.MeleeAttackPower()
+			bonusDamage := 0.315*spell.SpellPower() + 0.8175*spell.MeleeAttackPower()
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				baseDamage := constBaseDamage + prot.CalcAndRollDamageRange(sim, scalingCoef, variance)
+			for idx := range numTargets {
+				baseDamage := prot.CalcAndRollDamageRange(sim, 5.895, 0.2) + bonusDamage
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				spell.DealDamage(sim, results[idx])
 			}
 		},

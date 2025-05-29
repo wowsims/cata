@@ -6,9 +6,22 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+/*
+Fills you with Holy Light, causing melee attacks to deal 12% additional weapon damage as Holy and apply Censure to the target.
+Replaces Seal of Command.
+
+Censure
+Deals
+
+-- Ardent Defender --
+108 + 0.094 * <SP>
+-- else --
+108 * 5 + (0.094 * <SP>)
+----------
+
+additional Holy damage over 15 sec. Stacks up to 5 times.
+*/
 func (paladin *Paladin) registerSealOfTruth() {
-	spCoef := 0.09399999678
-	baseDamage := paladin.CalcScalingSpellDmg(spCoef)
 	censureActionId := core.ActionID{SpellID: 31803}
 
 	// Censure DoT application
@@ -50,12 +63,9 @@ func (paladin *Paladin) registerSealOfTruth() {
 			TickLength:          time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickValue := float64(dot.GetStacks()) * (baseDamage + spCoef*dot.Spell.SpellPower())
-
-				dot.SnapshotBaseDamage = tickValue
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
+				tickValue := paladin.CalcScalingSpellDmg(0.094) + 0.094*dot.Spell.SpellPower()
+				tickValue *= float64(dot.GetStacks())
+				dot.SnapshotPhysical(target, tickValue)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)

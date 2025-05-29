@@ -35,7 +35,7 @@ func (hunter *Hunter) registerPowerShotSpell() {
 			},
 
 			CastTime: func(spell *core.Spell) time.Duration {
-				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
+				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedAttackSpeed)
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),

@@ -4,9 +4,9 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+// A powerful weapon strike that consumes 3 charges of Holy Power to deal 275% weapon damage plus 628.
 func (paladin *Paladin) registerTemplarsVerdict() {
 	actionID := core.ActionID{SpellID: 85256}
-	bonusDamage := paladin.CalcScalingSpellDmg(0.55000001192)
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -29,7 +29,13 @@ func (paladin *Paladin) registerTemplarsVerdict() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + bonusDamage
+			if paladin.T15Ret4pc.IsActive() {
+				paladin.T15Ret4pcTemplarsVerdict.Cast(sim, target)
+				spell.SpellMetrics[target.UnitIndex].Casts--
+				return
+			}
+
+			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + paladin.CalcScalingSpellDmg(0.55)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

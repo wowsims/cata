@@ -7,10 +7,9 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+// Consecrates the land beneath you, causing 8222 Holy damage over 9 sec to enemies who enter the area.
 func (prot *ProtectionPaladin) registerConsecrationSpell() {
-	consAvgDamage := prot.CalcScalingSpellDmg(0.80000001192)
-	apMod := 0.07999999821
-
+	numTargets := prot.Env.GetNumTargets()
 	prot.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 26573},
 		SpellSchool:    core.SpellSchoolHoly,
@@ -47,10 +46,19 @@ func (prot *ProtectionPaladin) registerConsecrationSpell() {
 			TickLength:    time.Second * 1,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				results := make([]*core.SpellResult, numTargets)
+
 				// Consecration recalculates everything on each tick
-				baseDamage := consAvgDamage + apMod*dot.Spell.MeleeAttackPower()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				baseDamage := prot.CalcScalingSpellDmg(0.8) + 0.08*dot.Spell.MeleeAttackPower()
+				baseDamage *= sim.Encounter.AOECapMultiplier()
+
+				for idx := range numTargets {
+					currentTarget := sim.Environment.GetTargetUnit(idx)
+					results[idx] = dot.Spell.CalcPeriodicDamage(sim, currentTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				}
+
+				for idx := range numTargets {
+					dot.Spell.DealOutcome(sim, results[idx])
 				}
 			},
 		},

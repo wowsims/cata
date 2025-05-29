@@ -8,6 +8,17 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+Increases your total Stamina by 25% and your block chance by 10%.
+
+Reduces the chance you will be critically hit by melee attacks by 6%.
+
+Word of Glory is no longer on the global cooldown.
+
+Your spell power is now equal to 50% of your attack power, and you no longer benefit from other sources of spell power.
+
+Grants 15% of your maximum mana every 2 sec.
+*/
 func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 	actionID := core.ActionID{SpellID: 53592}
 	manaMetrics := prot.NewManaMetrics(actionID)
@@ -45,10 +56,12 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 		&prot.PseudoStats.ReducedCritTakenChance,
 		0.06,
 	).AttachSpellMod(core.SpellModConfig{
+		// Not in tooltip: Crusader Strike costs 80% less mana
 		Kind:      core.SpellMod_PowerCost_Pct,
 		ClassMask: paladin.SpellMaskCrusaderStrike,
 		IntValue:  -80,
 	}).AttachSpellMod(core.SpellModConfig{
+		// Not in tooltip: Judgmentcosts 40% less mana
 		Kind:      core.SpellMod_PowerCost_Pct,
 		ClassMask: paladin.SpellMaskJudgment,
 		IntValue:  -40,

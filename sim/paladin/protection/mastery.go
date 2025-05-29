@@ -5,6 +5,11 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
+/*
+Increases the damage reduction of your Shield of the Righteous by (8 + <Mastery Rating> / 600)%,
+adds (8 + <Mastery Rating> / 600)% to your Bastion of Glory,
+and increases your chance to block melee attacks by (8 + <Mastery Rating> / 600)%.
+*/
 func (prot *ProtectionPaladin) registerMastery() {
 	core.MakePermanent(prot.RegisterAura(core.Aura{
 		Label:      "Mastery: Divine Bulwark" + prot.Label,

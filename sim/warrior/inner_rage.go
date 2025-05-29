@@ -14,7 +14,7 @@ func (warrior *Warrior) RegisterInnerRage() {
 	costMod := warrior.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
 		Kind:       core.SpellMod_Cooldown_Multiplier,
-		FloatValue: -0.5,
+		FloatValue: 0.5,
 	})
 
 	warrior.InnerRageAura = warrior.RegisterAura(core.Aura{

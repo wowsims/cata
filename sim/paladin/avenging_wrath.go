@@ -6,6 +6,17 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+/*
+Increases all damage and healing caused by 20% for 20 sec.
+
+-- Glyph of Avenging Wrath --
+You heal for 1% of your maximum health every 2 sec.
+-- /Glyph of Avenging Wrath --
+
+-- Glyph of the Falling Avenger --
+Your falling speed is slowed.
+-- /Glyph of the Falling Avenger --
+*/
 func (paladin *Paladin) registerAvengingWrath() {
 	actionID := core.ActionID{SpellID: 31884}
 

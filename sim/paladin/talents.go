@@ -42,6 +42,7 @@ func (paladin *Paladin) ApplyTalents() {
 	}
 }
 
+// Increases your movement speed by 70% for 8 sec.
 func (paladin *Paladin) registerSpeedOfLight() {
 	if !paladin.Talents.SpeedOfLight {
 		return
@@ -83,6 +84,7 @@ func (paladin *Paladin) registerSpeedOfLight() {
 	})
 }
 
+// A successful Judgment increases your movement speed by 45% for 3 sec.
 func (paladin *Paladin) registerLongArmOfTheLaw() {
 	if !paladin.Talents.LongArmOfTheLaw {
 		return
@@ -108,6 +110,7 @@ func (paladin *Paladin) registerLongArmOfTheLaw() {
 	})
 }
 
+// You gain 15% movement speed at all times, plus an additional 5% movement speed for each current charge of Holy Power up to 3.
 func (paladin *Paladin) registerPursuitOfJustice() {
 	if !paladin.Talents.PursuitOfJustice {
 		return
@@ -149,6 +152,23 @@ func (paladin *Paladin) registerPursuitOfJustice() {
 	})
 }
 
+/*
+Your successful Judgments
+
+-- Holy Insight --
+generate a charge of Holy Power and
+-- /Holy Insight --
+
+reduce the cast time and mana cost of your next Flash of Light
+
+-- Denounce --
+, Divine Light, or Holy Radiance
+-- /Denounce --
+
+by 35% per stack and improves its effectiveness by 20% per stack when used to heal others.
+Stacks up to 3 times.
+(500ms cooldown)
+*/
 func (paladin *Paladin) registerSelflessHealer() {
 	if !paladin.Talents.SelflessHealer {
 		return
@@ -218,6 +238,19 @@ func (paladin *Paladin) registerSelflessHealer() {
 	})
 }
 
+/*
+Ret & Prot:
+
+Protects the target with a shield of Holy Light for 30 sec.
+The shield absorbs up to (240 + 0.819 * <SP>) damage every 6 sec.
+Can be active only on one target at a time.
+
+Holy:
+
+Protects the target with a shield of Holy Light for 30 sec.
+The shield absorbs up to (343 + 1.17 * <SP>) damage every 6 sec.
+Max 3 charges.
+*/
 func (paladin *Paladin) registerSacredShield() {
 	if !paladin.Talents.SacredShield {
 		return
@@ -240,9 +273,6 @@ func (paladin *Paladin) registerSacredShield() {
 		}
 	}
 
-	scalingCoef := core.TernaryFloat64(isHoly, 0.30000001192, 0.20999999344)
-	baseHealing := paladin.CalcScalingSpellDmg(scalingCoef)
-	spCoef := core.TernaryFloat64(isHoly, 1.17, 0.819)
 	absorbDuration := time.Second * 6
 
 	var absorbAuras core.DamageAbsorptionAuraArray
@@ -300,6 +330,8 @@ func (paladin *Paladin) registerSacredShield() {
 		},
 	})
 
+	baseHealing := paladin.CalcScalingSpellDmg(core.TernaryFloat64(isHoly, 0.3, 0.21))
+	spCoef := core.TernaryFloat64(isHoly, 1.17, 0.819)
 	absorbAuras = paladin.NewAllyDamageAbsorptionAuraArray(func(unit *core.Unit) *core.DamageAbsorptionAura {
 		return unit.NewDamageAbsorptionAura(
 			"Sacred Shield (Absorb)",
@@ -311,6 +343,10 @@ func (paladin *Paladin) registerSacredShield() {
 	})
 }
 
+/*
+Places a Hand on the friendly target, reducing damage taken by 10% and damage from harmful periodic effects by an additional 80% (less for some creature attacks) for 6 sec.
+Players may only have one Hand on them per Paladin at any one time.
+*/
 func (paladin *Paladin) registerHandOfPurity() {
 	if !paladin.Talents.HandOfPurity {
 		return
@@ -369,6 +405,7 @@ func (paladin *Paladin) registerHandOfPurity() {
 	})
 }
 
+// Reduces the cooldown of your Divine Shield, Divine Protection and Lay on Hands by 50%.
 func (paladin *Paladin) registerUnbreakableSpirit() {
 	if !paladin.Talents.UnbreakableSpirit {
 		return
@@ -380,107 +417,11 @@ func (paladin *Paladin) registerUnbreakableSpirit() {
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_Cooldown_Multiplier,
 		ClassMask:  SpellMaskDivineProtection | SpellMaskLayOnHands | SpellMaskDivineShield,
-		FloatValue: -0.5,
+		FloatValue: 0.5,
 	})
 }
 
-func (paladin *Paladin) registerSanctifiedWrath() {
-	if !paladin.Talents.SanctifiedWrath {
-		return
-	}
-
-	sanctifiedWrathAura := paladin.RegisterAura(core.Aura{
-		Label:    "Sanctified Wrath" + paladin.Label,
-		ActionID: core.ActionID{SpellID: 114232},
-		Duration: time.Second * 30,
-	})
-
-	var cdClassMask int64
-	if paladin.Spec == proto.Spec_SpecHolyPaladin {
-		// Reduces the cooldown of Holy Shock by 50% and increases the critical strike chance of Holy Shock by 20%.
-		cdClassMask = SpellMaskHolyShock
-
-		sanctifiedWrathAura.AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Percent,
-			ClassMask:  SpellMaskHolyShock,
-			FloatValue: 0.2,
-		})
-	} else if paladin.Spec == proto.Spec_SpecProtectionPaladin {
-		// Reduces the cooldown of Judgment by 50%, and causes Judgment to generate one additional Holy Power.
-		// Avenging Wrath also increases healing received by 20%.
-		cdClassMask = SpellMaskJudgment
-
-		paladin.HolyPower.RegisterOnGain(func(gain, realGain int32, actionID core.ActionID, sim *core.Simulation) {
-			if actionID.SpellID == 105427 && paladin.AvengingWrathAura.IsActive() {
-				paladin.HolyPower.Gain(1, core.ActionID{SpellID: 53376}, sim)
-			}
-		})
-
-		sanctifiedWrathAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			paladin.PseudoStats.HealingTakenMultiplier *= 1.2
-		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			paladin.PseudoStats.HealingTakenMultiplier /= 1.2
-		})
-	} else if paladin.Spec == proto.Spec_SpecRetributionPaladin {
-		// Reduces the cooldown of Hammer of Wrath by 50%.
-		cdClassMask = SpellMaskHammerOfWrath
-	}
-
-	sanctifiedWrathAura.AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-		ClassMask:  cdClassMask,
-		FloatValue: -0.5,
-	})
-
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(SpellMaskAvengingWrath) {
-			paladin.AvengingWrathAura.AttachDependentAura(sanctifiedWrathAura)
-		}
-	})
-}
-
-func (paladin *Paladin) registerDivinePurpose() {
-	if !paladin.Talents.DivinePurpose {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: 90174}
-	duration := time.Second * 8
-	procChances := []float64{0, 0.08, 0.166, 0.25}
-	paladin.DivinePurposeAura = paladin.RegisterAura(core.Aura{
-		Label:    "Divine Purpose" + paladin.Label,
-		ActionID: actionID,
-		Duration: duration,
-	}).AttachProcTrigger(core.ProcTrigger{
-		Name:           "Divine Purpose Consume Trigger" + paladin.Label,
-		Callback:       core.CallbackOnCastComplete,
-		ClassSpellMask: SpellMaskSpender,
-
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			var hpSpent int32
-			if paladin.DivinePurposeAura.IsActive() {
-				paladin.DivinePurposeAura.Deactivate(sim)
-				hpSpent = 3
-			} else if spell.Matches(SpellMaskDivineStorm | SpellMaskTemplarsVerdict | SpellMaskShieldOfTheRighteous) {
-				hpSpent = 3
-			} else if spell.Matches(SpellMaskInquisition | SpellMaskWordOfGlory | SpellMaskHarshWords) {
-				hpSpent = paladin.DynamicHolyPowerSpent
-			} else {
-				return
-			}
-
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
-				OnAction: func(sim *core.Simulation) {
-					if sim.Proc(procChances[hpSpent], "Divine Purpose"+paladin.Label) {
-						paladin.DivinePurposeAura.Activate(sim)
-					}
-				},
-			})
-		},
-	})
-}
-
+// Abilities that generate Holy Power will deal 30% additional damage and healing, and generate 3 charges of Holy Power for the next 18 sec.
 func (paladin *Paladin) registerHolyAvenger() {
 	if !paladin.Talents.HolyAvenger {
 		return
@@ -547,176 +488,282 @@ func (paladin *Paladin) registerHolyAvenger() {
 	})
 }
 
+// Avenging Wrath lasts 50% longer and grants more frequent access to one of your abilities while it lasts.
+func (paladin *Paladin) registerSanctifiedWrath() {
+	if !paladin.Talents.SanctifiedWrath {
+		return
+	}
+
+	sanctifiedWrathAura := paladin.RegisterAura(core.Aura{
+		Label:    "Sanctified Wrath" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 114232},
+		Duration: time.Second * 30,
+	})
+
+	var cdClassMask int64
+	if paladin.Spec == proto.Spec_SpecHolyPaladin {
+		// Reduces the cooldown of Holy Shock by 50% and increases the critical strike chance of Holy Shock by 20%.
+		cdClassMask = SpellMaskHolyShock
+
+		sanctifiedWrathAura.AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Percent,
+			ClassMask:  SpellMaskHolyShock,
+			FloatValue: 0.2,
+		})
+	} else if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+		// Reduces the cooldown of Judgment by 50%, and causes Judgment to generate one additional Holy Power.
+		// Avenging Wrath also increases healing received by 20%.
+		cdClassMask = SpellMaskJudgment
+		hpGainActionID := core.ActionID{SpellID: 53376}
+
+		paladin.HolyPower.RegisterOnGain(func(gain, realGain int32, actionID core.ActionID, sim *core.Simulation) {
+			if actionID.SameAction(paladin.JudgmentsOfTheWiseActionID) && paladin.AvengingWrathAura.IsActive() {
+				paladin.HolyPower.Gain(1, hpGainActionID, sim)
+			}
+		})
+
+		sanctifiedWrathAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.HealingTakenMultiplier *= 1.2
+		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.HealingTakenMultiplier /= 1.2
+		})
+	} else if paladin.Spec == proto.Spec_SpecRetributionPaladin {
+		// Reduces the cooldown of Hammer of Wrath by 50%.
+		cdClassMask = SpellMaskHammerOfWrath
+	}
+
+	sanctifiedWrathAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+		ClassMask:  cdClassMask,
+		FloatValue: 0.5,
+	})
+
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Matches(SpellMaskAvengingWrath) {
+			paladin.AvengingWrathAura.AttachDependentAura(sanctifiedWrathAura)
+		}
+	})
+}
+
+type AuraDeactivationCheck func(aura *core.Aura, spell *core.Spell) bool
+
+func (paladin *Paladin) divinePurposeFactory(label string, spellID int32, duration time.Duration, auraDeactivationCheck AuraDeactivationCheck) *core.Aura {
+	procChances := []float64{0, 0.25 * (1 / 3), 0.25 * (2 / 3), 0.25}
+	aura := paladin.RegisterAura(core.Aura{
+		Label:    label + paladin.Label,
+		ActionID: core.ActionID{SpellID: spellID},
+		Duration: duration,
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           label + " Consume Trigger" + paladin.Label,
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: SpellMaskSpender,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			var hpSpent int32
+			if aura.IsActive() && (auraDeactivationCheck == nil || auraDeactivationCheck(aura, spell)) {
+				aura.Deactivate(sim)
+				hpSpent = 3
+			} else if spell.Matches(SpellMaskDivineStorm | SpellMaskTemplarsVerdict | SpellMaskShieldOfTheRighteous) {
+				hpSpent = 3
+			} else if spell.Matches(SpellMaskInquisition | SpellMaskWordOfGlory | SpellMaskHarshWords) {
+				hpSpent = paladin.DynamicHolyPowerSpent
+			} else {
+				return
+			}
+
+			if sim.Proc(procChances[hpSpent], label+paladin.Label) {
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					OnAction: func(sim *core.Simulation) {
+						aura.Activate(sim)
+					},
+				})
+			}
+		},
+	})
+
+	return aura
+}
+
+/*
+Abilities that cost Holy Power have a 25% chance to cause the Divine Purpose effect.
+
+Divine Purpose
+Your next Holy Power ability will consume no Holy Power and will cast as if 3 Holy Power were consumed.
+Lasts 8 sec.
+*/
+func (paladin *Paladin) registerDivinePurpose() {
+	if !paladin.Talents.DivinePurpose {
+		return
+	}
+
+	paladin.DivinePurposeAura = paladin.divinePurposeFactory("Divine Purpose", 90174, time.Second*8, func(aura *core.Aura, spell *core.Spell) bool {
+		return true
+	})
+}
+
+func (paladin *Paladin) holyPrismFactory(spellID int32, targets []*core.Unit, timer *core.Timer, isHealing bool) {
+	numTargets := len(targets)
+	actionID := core.ActionID{SpellID: spellID}
+
+	aoeConfig := core.SpellConfig{
+		ActionID:    actionID.WithTag(2),
+		Flags:       core.SpellFlagPassiveSpell,
+		SpellSchool: core.SpellSchoolHoly,
+
+		MaxRange:     40,
+		MissileSpeed: 100,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		BonusCoefficient: 0.962,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			results := make([]*core.SpellResult, numTargets)
+
+			for idx, aoeTarget := range targets {
+				base := paladin.CalcAndRollDamageRange(sim, 9.529, 0.2)
+				// isHealing = true means the direct spell is a heal and the aoe spell is damage
+				if !isHealing {
+					results[idx] = spell.CalcHealing(sim, aoeTarget, base, spell.OutcomeHealingCrit)
+				} else {
+					results[idx] = spell.CalcDamage(sim, aoeTarget, base, spell.OutcomeMagicCrit)
+				}
+			}
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				for _, result := range results {
+					// isHealing = true means the direct spell is a heal and the aoe spell is damage
+					if !isHealing {
+						spell.DealHealing(sim, result)
+					} else {
+						spell.DealDamage(sim, result)
+					}
+				}
+			})
+		},
+	}
+
+	// isHealing = true means the direct spell is a heal and the aoe spell is damage
+	if !isHealing {
+		aoeConfig.Flags |= core.SpellFlagHelpful
+		aoeConfig.ProcMask = core.ProcMaskSpellHealing
+	} else {
+		aoeConfig.ProcMask = core.ProcMaskSpellDamage
+	}
+
+	aoeSpell := paladin.RegisterSpell(aoeConfig)
+
+	directSpellConfig := core.SpellConfig{
+		ActionID:    actionID.WithTag(1),
+		Flags:       core.SpellFlagAPL,
+		SpellSchool: core.SpellSchoolHoly,
+
+		MaxRange:     40,
+		MissileSpeed: 100,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 5.4,
+		},
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    timer,
+				Duration: time.Second * 20,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		BonusCoefficient: 1.428,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if isHealing && target.IsOpponent(&paladin.Unit) {
+				target = &paladin.Unit
+			}
+
+			base := paladin.CalcAndRollDamageRange(sim, 14.131, 0.2)
+
+			var result *core.SpellResult
+			if isHealing {
+				result = spell.CalcHealing(sim, target, base, spell.OutcomeHealingCrit)
+			} else {
+				result = spell.CalcDamage(sim, target, base, spell.OutcomeMagicHitAndCrit)
+			}
+
+			if isHealing {
+				aoeSpell.Cast(sim, paladin.CurrentTarget)
+			} else if result.Landed() {
+				aoeSpell.Cast(sim, &paladin.Unit)
+			}
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if isHealing {
+					spell.DealHealing(sim, result)
+				} else {
+					spell.DealDamage(sim, result)
+				}
+			})
+		},
+	}
+
+	if isHealing {
+		directSpellConfig.Flags |= core.SpellFlagHelpful
+		directSpellConfig.ProcMask = core.ProcMaskSpellHealing
+	} else {
+		directSpellConfig.ProcMask = core.ProcMaskSpellDamage
+	}
+
+	paladin.RegisterSpell(directSpellConfig)
+}
+
+/*
+Sends a beam of light toward a target, turning them into a prism for Holy energy.
+If an enemy is the prism, they take (<14522-17751> + 1.428 * <SP>) Holy damage and radiate (<9793-11970> + 0.962 * <SP>) healing to 5 nearby allies within 15 yards.
+If an ally is the prism, they are healed for (<14522-17751> + 1.428 * <SP>) and radiate (<9793-11970> + 0.962 * <SP>) Holy damage to 5 nearby enemies within 15 yards.
+*/
 func (paladin *Paladin) registerHolyPrism() {
 	if !paladin.Talents.HolyPrism {
 		return
 	}
 
-	numEnemyTargets := min(5, paladin.Env.GetNumTargets())
-
-	damageActionID := core.ActionID{SpellID: 114852}
-	healActionID := core.ActionID{SpellID: 114871}
-
 	onUseTimer := paladin.NewTimer()
-	onUseCD := time.Second * 20
 
-	targetScalingCoef := 14.13099956512
-	targetVariance := 0.20000000298
-	targetSpCoef := 1.4279999733
+	friendlyTargets := paladin.Env.Raid.GetFirstNPlayersOrPets(5)
+	paladin.holyPrismFactory(114852, friendlyTargets, onUseTimer, false)
 
-	aoeScalingCoef := 9.52900028229
-	aoeVariance := 0.20000000298
-	aoeSpCoef := 0.9620000124
-
-	aoeHealSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    damageActionID.WithTag(2),
-		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
-		ProcMask:    core.ProcMaskSpellHealing,
-		SpellSchool: core.SpellSchoolHoly,
-
-		MaxRange:     40,
-		MissileSpeed: 100,
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := paladin.CalcAndRollDamageRange(sim, aoeScalingCoef, aoeVariance) +
-				aoeSpCoef*spell.SpellPower()
-			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
-
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealOutcome(sim, result)
-			})
-		},
+	enemyTargets := core.MapSlice(paladin.Env.Encounter.ActiveTargets[:min(5, int32(len(paladin.Env.Encounter.ActiveTargets)))], func(target *core.Target) *core.Unit {
+		return &target.Unit
 	})
-
-	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    damageActionID.WithTag(1),
-		Flags:       core.SpellFlagAPL,
-		ProcMask:    core.ProcMaskSpellDamage,
-		SpellSchool: core.SpellSchoolHoly,
-
-		MaxRange:     40,
-		MissileSpeed: 100,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 5.4,
-		},
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    onUseTimer,
-				Duration: onUseCD,
-			},
-		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcAndRollDamageRange(sim, targetScalingCoef, targetVariance) +
-				targetSpCoef*spell.SpellPower()
-
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-			if result.Landed() {
-				aoeHealSpell.Cast(sim, &paladin.Unit)
-			}
-
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealOutcome(sim, result)
-			})
-		},
-	})
-
-	aoeDamageSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    healActionID.WithTag(2),
-		Flags:       core.SpellFlagPassiveSpell,
-		ProcMask:    core.ProcMaskSpellDamage,
-		SpellSchool: core.SpellSchoolHoly,
-
-		MaxRange:     40,
-		MissileSpeed: 100,
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numEnemyTargets)
-
-			for i := 0; i < len(results); i++ {
-				baseDamage := paladin.CalcAndRollDamageRange(sim, aoeScalingCoef, aoeVariance) +
-					aoeSpCoef*spell.SpellPower()
-				results[i] = spell.CalcDamage(sim, paladin.Env.Raid.AllPlayerUnits[i], baseDamage, spell.OutcomeMagicCrit)
-			}
-
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				for _, result := range results {
-					spell.DealOutcome(sim, result)
-				}
-			})
-		},
-	})
-
-	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    healActionID.WithTag(1),
-		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful,
-		ProcMask:    core.ProcMaskSpellHealing,
-		SpellSchool: core.SpellSchoolHoly,
-
-		MaxRange:     40,
-		MissileSpeed: 100,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 5.4,
-		},
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    onUseTimer,
-				Duration: onUseCD,
-			},
-		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := paladin.CalcAndRollDamageRange(sim, targetScalingCoef, targetVariance) +
-				targetSpCoef*spell.SpellPower()
-
-			result := spell.CalcHealing(sim, &paladin.Unit, baseHealing, spell.OutcomeHealingCrit)
-
-			aoeDamageSpell.Cast(sim, target)
-
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealOutcome(sim, result)
-			})
-		},
-	})
+	paladin.holyPrismFactory(114871, enemyTargets, onUseTimer, true)
 }
 
+/*
+Hurl a Light-infused hammer into the ground, where it will blast a 10 yard area with Arcing Light for 14 sec.
+
+Arcing Light
+Deals (<3267-3994> + 0.321 * <SP>) Holy damage to enemies and reduces their movement speed by 50% for 2 sec.
+Heals allies for (<3267-3994> + 0.321 * <SP>) every 2 sec.
+*/
 func (paladin *Paladin) registerLightsHammer() {
 	if !paladin.Talents.LightsHammer {
 		return
 	}
 
-	scalingCoef := 3.17899990082
-	variance := 0.20000000298
-	spCoef := 0.32100000978
+	enemyTargets := paladin.Env.Encounter.ActiveTargets
+	friendlyTargets := paladin.Env.Raid.GetFirstNPlayersOrPets(6)
+
+	tickCount := int32(8)
 
 	arcingLightDamage := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 114919},
@@ -733,16 +780,28 @@ func (paladin *Paladin) registerLightsHammer() {
 			Aura: core.Aura{
 				Label: "Arcing Light (Damage)" + paladin.Label,
 			},
-			NumberOfTicks: 8,
+			NumberOfTicks: tickCount,
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := paladin.CalcAndRollDamageRange(sim, scalingCoef, variance) +
-						spCoef*dot.Spell.SpellPower()
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.OutcomeTickMagicHitAndCrit)
+				results := make([]*core.SpellResult, len(enemyTargets))
+
+				for idx, currentTarget := range enemyTargets {
+					baseDamage := paladin.CalcAndRollDamageRange(sim, 3.179, 0.2) +
+						0.321*dot.Spell.SpellPower()
+					baseDamage *= sim.Encounter.AOECapMultiplier()
+					results[idx] = dot.Spell.CalcPeriodicDamage(sim, &currentTarget.Unit, baseDamage, dot.OutcomeTickMagicHitAndCrit)
+				}
+
+				for _, result := range results {
+					dot.Spell.DealPeriodicDamage(sim, result)
 				}
 			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dot := spell.AOEDot()
+			dot.BaseTickCount = tickCount
+			dot.Apply(sim)
 		},
 	})
 
@@ -761,16 +820,27 @@ func (paladin *Paladin) registerLightsHammer() {
 			Aura: core.Aura{
 				Label: "Arcing Light (Healing)" + paladin.Label,
 			},
-			NumberOfTicks: 8,
+			NumberOfTicks: tickCount,
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				for _, aoeTarget := range sim.Raid.AllUnits {
-					baseHealing := paladin.CalcAndRollDamageRange(sim, scalingCoef, variance) +
-						spCoef*dot.Spell.SpellPower()
-					dot.Spell.CalcAndDealPeriodicHealing(sim, aoeTarget, baseHealing, dot.OutcomeTickHealingCrit)
+				results := make([]*core.SpellResult, len(friendlyTargets))
+
+				for idx, aoeTarget := range friendlyTargets {
+					baseHealing := paladin.CalcAndRollDamageRange(sim, 3.179, 0.2) +
+						0.321*dot.Spell.SpellPower()
+					results[idx] = dot.Spell.CalcHealing(sim, aoeTarget, baseHealing, dot.OutcomeTickHealingCrit)
+				}
+
+				for _, result := range results {
+					dot.Spell.DealPeriodicHealing(sim, result)
 				}
 			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			hot := spell.AOEHot()
+			hot.BaseTickCount = tickCount
+			hot.Apply(sim)
 		},
 	})
 
@@ -795,32 +865,116 @@ func (paladin *Paladin) registerLightsHammer() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			aoeDamageDot := arcingLightDamage.AOEDot()
-			aoeHealingDot := arcingLightHealing.AOEDot()
-
 			if sim.Proc(0.5, "Arcing Light 9 ticks"+paladin.Label) {
-				aoeDamageDot.BaseTickCount = 9
-				aoeHealingDot.BaseTickCount = 9
+				tickCount = 9
 			} else {
-				aoeDamageDot.BaseTickCount = 8
-				aoeHealingDot.BaseTickCount = 8
+				tickCount = 8
 			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				aoeDamageDot.Apply(sim)
-				aoeHealingDot.Apply(sim)
+				arcingLightDamage.Cast(sim, target)
+				arcingLightHealing.Cast(sim, target)
 			})
 		},
 	})
 }
 
+func (paladin *Paladin) executionSentenceFactory(spellID int32, label string, cd *core.Timer, tickMultipliers []float64, bonusCoef float64, tickSpCoef float64, isHealing bool) {
+	config := core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolHoly,
+		Flags:       core.SpellFlagAPL,
+
+		MaxRange: 40,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    cd,
+				Duration: time.Minute,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if isHealing {
+				if target.IsOpponent(&paladin.Unit) {
+					target = &paladin.Unit
+				}
+
+				spell.Hot(target).Apply(sim)
+			} else {
+				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			}
+		},
+	}
+
+	dotConfig := core.DotConfig{
+		Aura: core.Aura{
+			Label: label + paladin.Label,
+		},
+		NumberOfTicks: 10,
+		TickLength:    time.Second,
+
+		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+			dot.Snapshot(target, dot.Spell.SpellPower())
+		},
+		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+			snapshotSpellPower := dot.SnapshotBaseDamage
+
+			tickMultiplier := tickMultipliers[dot.TickCount()]
+			dot.SnapshotBaseDamage = tickMultiplier*paladin.CalcScalingSpellDmg(0.426) +
+				tickMultiplier*tickSpCoef*snapshotSpellPower
+
+			if isHealing {
+				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeSnapshotCrit)
+			} else {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			}
+
+			dot.SnapshotBaseDamage = snapshotSpellPower
+		},
+	}
+
+	if isHealing {
+		config.Hot = dotConfig
+		config.Flags |= core.SpellFlagHelpful
+		config.ProcMask = core.ProcMaskSpellHealing
+	} else {
+		config.Dot = dotConfig
+		config.ProcMask = core.ProcMaskSpellDamage
+	}
+
+	paladin.RegisterSpell(config)
+}
+
+/*
+Execution Sentence:
+
+A hammer slowly falls from the sky, causing (<SP> * 5936 / 1000 + 26.72716306 * 486) Holy damage over 10 sec.
+This damage is dealt slowly at first and increases over time, culminating in a final burst of damage.
+Dispelling the effect triggers the final burst.
+
+Stay of Execution:
+
+If used on friendly targets, the falling hammer heals the target for (<SP> * 5936 / 1000 + 26.72716306 * 486) healing over 10 sec.
+This healing is dealt slowly at first and increases over time, culminating in a final burst of healing.
+Dispelling the effect triggers the final burst.
+*/
 func (paladin *Paladin) registerExecutionSentence() {
 	if !paladin.Talents.ExecutionSentence {
 		return
 	}
 
-	baseTickDamage := paladin.CalcScalingSpellDmg(0.42599999905)
-	spCoef := 5936 / 1000.0
 	totalBonusCoef := 0.0
 
 	tickMultipliers := make([]float64, 11)
@@ -832,90 +986,10 @@ func (paladin *Paladin) registerExecutionSentence() {
 	tickMultipliers[10] = tickMultipliers[9] * 5
 	totalBonusCoef += tickMultipliers[10]
 
-	tickSpCoef := spCoef * (1 / totalBonusCoef)
+	tickSpCoef := 5936 / 1000.0 * (1 / totalBonusCoef)
 
 	cd := paladin.NewTimer()
 
-	getBaseConfig := func(spellID int32, label string, isHealing bool) core.SpellConfig {
-		config := core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: spellID},
-			SpellSchool: core.SpellSchoolHoly,
-			Flags:       core.SpellFlagAPL,
-
-			MaxRange: 40,
-
-			Cast: core.CastConfig{
-				DefaultCast: core.Cast{
-					GCD: core.GCDDefault,
-				},
-				IgnoreHaste: true,
-				CD: core.Cooldown{
-					Timer:    cd,
-					Duration: time.Minute,
-				},
-			},
-
-			DamageMultiplier: 1,
-			CritMultiplier:   paladin.DefaultCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if isHealing {
-					if target.IsOpponent(&paladin.Unit) {
-						target = &paladin.Unit
-					}
-
-					spell.CalcAndDealOutcome(sim, target, spell.OutcomeHealingNoHitCounter)
-					spell.Hot(target).Apply(sim)
-				} else {
-					result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
-					if result.Landed() {
-						spell.Dot(target).Apply(sim)
-					}
-					spell.DealOutcome(sim, result)
-				}
-			},
-		}
-
-		dotConfig := core.DotConfig{
-			Aura: core.Aura{
-				Label: label + paladin.Label,
-			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, dot.Spell.SpellPower())
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				snapshotSpellPower := dot.SnapshotBaseDamage
-
-				tickMultiplier := tickMultipliers[dot.TickCount()]
-				dot.SnapshotBaseDamage = tickMultiplier*baseTickDamage +
-					tickMultiplier*tickSpCoef*snapshotSpellPower
-
-				if isHealing {
-					dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeSnapshotCrit)
-				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				}
-
-				dot.SnapshotBaseDamage = snapshotSpellPower
-			},
-		}
-
-		if isHealing {
-			config.Hot = dotConfig
-			config.Flags |= core.SpellFlagHelpful
-			config.ProcMask = core.ProcMaskSpellHealing
-		} else {
-			config.Dot = dotConfig
-			config.ProcMask = core.ProcMaskSpellDamage
-		}
-
-		return config
-	}
-
-	paladin.RegisterSpell(getBaseConfig(114916, "Execution Sentence", false))
-	paladin.RegisterSpell(getBaseConfig(146586, "Stay of Execution", true))
+	paladin.executionSentenceFactory(114916, "Execution Sentence", cd, tickMultipliers, totalBonusCoef, tickSpCoef, false)
+	paladin.executionSentenceFactory(146586, "Stay of Execution", cd, tickMultipliers, totalBonusCoef, tickSpCoef, true)
 }

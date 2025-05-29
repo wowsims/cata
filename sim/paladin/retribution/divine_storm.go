@@ -5,6 +5,13 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+An area attack that consumes 3 charges of Holy Power to cause 100% weapon damage as Holy damage to all enemies within 8 yards.
+
+-- Glyph of Divine Storm --
+Using Divine Storm will also heal you for 5% of your maximum health.
+-- /Glyph of Divine Storm --
+*/
 func (ret *RetributionPaladin) registerDivineStorm() {
 	numTargets := ret.Env.GetNumTargets()
 	actionID := core.ActionID{SpellID: 53385}
@@ -24,7 +31,7 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return ret.HolyPower.CanSpend(3)
+			return ret.DivineCrusaderAura.IsActive() || ret.HolyPower.CanSpend(3)
 		},
 
 		DamageMultiplier: 1,
@@ -34,15 +41,18 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				baseDamage := ret.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage *= sim.Encounter.AOECapMultiplier()
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 
-			ret.HolyPower.Spend(3, actionID, sim)
+			if !ret.DivineCrusaderAura.IsActive() {
+				ret.HolyPower.Spend(3, actionID, sim)
+			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				spell.DealOutcome(sim, results[idx])
 			}
 		},

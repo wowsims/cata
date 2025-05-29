@@ -4,6 +4,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+// Fills you with Holy Light, causing melee attacks to deal 9% weapon damage to all targets within 8 yards.
 func (paladin *Paladin) registerSealOfRighteousness() {
 	numTargets := paladin.Env.GetNumTargets()
 
@@ -34,6 +35,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	// otherwise it would be DS hits 10 targets -> SoR procs 100 times
 	onHitSingleTarget := registerOnHitSpell(1, func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+		baseDamage *= sim.Encounter.AOECapMultiplier()
 
 		// can't miss if melee swing landed, but can crit
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -43,14 +45,15 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	onHitMultiTarget := registerOnHitSpell(2, func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		results := make([]*core.SpellResult, numTargets)
 
-		for idx := int32(0); idx < numTargets; idx++ {
+		for idx := range numTargets {
 			currentTarget := sim.Environment.GetTargetUnit(idx)
 			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage *= sim.Encounter.AOECapMultiplier()
 			// can't miss if melee swing landed, but can crit
 			results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		}
 
-		for idx := int32(0); idx < numTargets; idx++ {
+		for idx := range numTargets {
 			spell.DealDamage(sim, results[idx])
 		}
 	})

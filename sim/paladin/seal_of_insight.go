@@ -6,6 +6,23 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+/*
+Fills you with Holy Light, increasing your casting speed by 10%, improving healing spells by 5% and giving melee attacks a chance to heal
+
+-- Glyph of the Battle Healer --
+the most wounded member of your party or raid
+-- else --
+you
+----------
+
+for
+
+-- Holy Insight --
+(0.15 * <AP> + 0.15 * <SP>) * 1.25.
+-- else --
+(0.15 * <AP> + 0.15 * <SP>).
+----------
+*/
 func (paladin *Paladin) registerSealOfInsight() {
 	actionID := core.ActionID{SpellID: 20167}
 	healthMetrics := paladin.NewHealthMetrics(actionID)

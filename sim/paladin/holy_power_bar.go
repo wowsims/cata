@@ -1,6 +1,8 @@
 package paladin
 
-import "github.com/wowsims/mop/sim/core"
+import (
+	"github.com/wowsims/mop/sim/core"
+)
 
 type HolyPowerBar struct {
 	*core.DefaultSecondaryResourceBarImpl
@@ -27,7 +29,7 @@ func (h HolyPowerBar) SpendUpTo(limit int32, action core.ActionID, sim *core.Sim
 
 // Value implements core.SecondaryResourceBar.
 func (h HolyPowerBar) Value() int32 {
-	if h.paladin.DivinePurposeAura != nil && h.paladin.DivinePurposeAura.IsActive() {
+	if h.paladin.DivinePurposeAura.IsActive() {
 		return 5
 	}
 
@@ -35,7 +37,7 @@ func (h HolyPowerBar) Value() int32 {
 }
 
 func (h HolyPowerBar) CanSpend(amount int32) bool {
-	if h.paladin.DivinePurposeAura != nil && h.paladin.DivinePurposeAura.IsActive() {
+	if h.paladin.DivinePurposeAura.IsActive() {
 		return true
 	}
 

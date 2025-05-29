@@ -46,7 +46,7 @@ func (paladin *Paladin) registerGlyphs() {
 		paladin.registerGlyphOfFlashOfLight()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFocusedShield) {
-		// Handled in protection/avengers_shield.go
+		paladin.registerGlyphOfFocusedShield()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHammerOfTheRighteous) {
 		// Handled in hammer_of_the_righteous.go
@@ -67,7 +67,7 @@ func (paladin *Paladin) registerGlyphs() {
 		paladin.registerGlyphOfLightOfDawn()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfMassExorcism) {
-		// Handled in retribution/exorcism.go
+		paladin.registerGlyphOfMassExorcism()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfProtectorOfTheInnocent) {
 		paladin.registerGlyphOfProtectorOfTheInnocent()
@@ -245,7 +245,7 @@ func (paladin *Paladin) registerGlyphOfDivinePlea() {
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_Cooldown_Multiplier,
 		ClassMask:  SpellMaskDivinePlea,
-		FloatValue: -0.5,
+		FloatValue: 0.5,
 	})
 }
 
@@ -366,6 +366,22 @@ func (paladin *Paladin) registerGlyphOfFlashOfLight() {
 	})
 }
 
+// Your Avenger's Shield hits 2 fewer targets, but for 30% more damage.
+func (paladin *Paladin) registerGlyphOfFocusedShield() {
+	if paladin.Spec != proto.Spec_SpecProtectionPaladin {
+		return
+	}
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of Focused Shield" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 54930},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskAvengersShield,
+		FloatValue: 0.3,
+	})
+}
+
 // Your Word of Glory can now also be used on enemy targets, causing Holy damage approximately equal to the amount it would have healed.
 // Does not work with Eternal Flame.
 func (paladin *Paladin) registerGlyphOfHarshWords() {
@@ -375,9 +391,6 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 
 	isProt := paladin.Spec == proto.Spec_SpecProtectionPaladin
 	actionID := core.ActionID{SpellID: 130552}
-	scalingCoef := 3.73000001907
-	variance := 0.1080000028
-	spCoef := 0.37700000405
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -413,14 +426,15 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: spCoef,
+		BonusCoefficient: 0.377,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcAndRollDamageRange(sim, scalingCoef, variance)
-
 			damageMultiplier := spell.DamageMultiplier
 			spell.DamageMultiplier *= float64(paladin.DynamicHolyPowerSpent)
+
+			baseDamage := paladin.CalcAndRollDamageRange(sim, 3.73, 0.108)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			spell.DamageMultiplier = damageMultiplier
 
 			if result.Landed() {
@@ -508,6 +522,64 @@ func (paladin *Paladin) registerGlyphOfLightOfDawn() {
 	})
 }
 
+// Reduces the range of Exorcism to melee range, but causes 25% damage to all enemies within 8 yards of the primary target.
+func (paladin *Paladin) registerGlyphOfMassExorcism() {
+	if paladin.Spec != proto.Spec_SpecRetributionPaladin {
+		return
+	}
+
+	numTargets := paladin.Env.GetNumTargets() - 1
+
+	massExorcism := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 879}.WithTag(2), // Actual 122032
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: SpellMaskExorcism,
+
+		MaxRange: core.MaxMeleeRange,
+
+		DamageMultiplier: 0.25,
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			results := make([]*core.SpellResult, numTargets)
+
+			currentTarget := sim.Environment.NextTargetUnit(target)
+			for idx := range numTargets {
+				baseDamage := paladin.CalcAndRollDamageRange(sim, 6.095, 0.11) +
+					0.677*spell.MeleeAttackPower()
+				baseDamage *= sim.Encounter.AOECapMultiplier()
+
+				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+				currentTarget = sim.Environment.NextTargetUnit(currentTarget)
+			}
+
+			for idx := range numTargets {
+				spell.DealDamage(sim, results[idx])
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Mass Exorcism" + paladin.Label,
+		ActionID:       core.ActionID{SpellID: 122028},
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskExorcism,
+		Outcome:        core.OutcomeLanded,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ActionID.Tag == 2 || numTargets == 0 {
+				return
+			}
+
+			massExorcism.Cast(sim, result.Target)
+		},
+	}).ExposeToAPL(122028)
+}
+
 // When you use Word of Glory to heal another target, it also heals you for 20% of the amount.
 func (paladin *Paladin) registerGlyphOfProtectorOfTheInnocent() {
 	var lastHeal float64
@@ -553,7 +625,7 @@ func (paladin *Paladin) registerGlyphOfTemplarsVerdict() {
 		Name:           "Glyph of Templar's Verdict Trigger" + paladin.Label,
 		ActionID:       core.ActionID{SpellID: 54926},
 		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: SpellMaskTemplarsVerdict,
+		ClassSpellMask: SpellMaskExorcism | SpellMaskTemplarsVerdict,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			glyphOfTemplarVerdictAura.Activate(sim)

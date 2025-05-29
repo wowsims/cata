@@ -7,9 +7,12 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+Your autoattacks have a 20% chance of resetting the cooldown of your Exorcism.
+(Proc chance: 20%)
+*/
 func (ret *RetributionPaladin) registerArtOfWar() {
-	var artOfWarAura *core.Aura
-	artOfWarAura = ret.RegisterAura(core.Aura{
+	ret.TheArtOfWarAura = ret.RegisterAura(core.Aura{
 		Label:    "The Art Of War" + ret.Label,
 		ActionID: core.ActionID{SpellID: 59578},
 		Duration: time.Second * 6,
@@ -18,11 +21,12 @@ func (ret *RetributionPaladin) registerArtOfWar() {
 			ret.Exorcism.CD.Reset()
 		},
 	}).AttachProcTrigger(core.ProcTrigger{
-		Callback:       core.CallbackOnCastComplete,
-		ClassSpellMask: paladin.SpellMaskExorcism,
+		Callback:          core.CallbackOnCastComplete,
+		ClassSpellMask:    paladin.SpellMaskExorcism,
+		SpellFlagsExclude: core.SpellFlagPassiveSpell,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			artOfWarAura.Deactivate(sim)
+			ret.TheArtOfWarAura.Deactivate(sim)
 		},
 	})
 
@@ -35,7 +39,7 @@ func (ret *RetributionPaladin) registerArtOfWar() {
 		ProcChance: 0.20,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			artOfWarAura.Activate(sim)
+			ret.TheArtOfWarAura.Activate(sim)
 		},
 	})
 }

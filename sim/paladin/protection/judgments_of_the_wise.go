@@ -5,9 +5,10 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+// Your Judgment hits grant one charge of Holy Power.
 func (prot *ProtectionPaladin) registerJudgmentsOfTheWise() {
-	jotwHpActionID := core.ActionID{SpellID: 105427}
-	prot.CanTriggerHolyAvengerHpGain(jotwHpActionID)
+	prot.JudgmentsOfTheWiseActionID = core.ActionID{SpellID: 105427}
+	prot.CanTriggerHolyAvengerHpGain(prot.JudgmentsOfTheWiseActionID)
 
 	core.MakeProcTriggerAura(&prot.Unit, core.ProcTrigger{
 		Name:           "Judgments of the Wise" + prot.Label,
@@ -17,7 +18,7 @@ func (prot *ProtectionPaladin) registerJudgmentsOfTheWise() {
 		ClassSpellMask: paladin.SpellMaskJudgment,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			prot.HolyPower.Gain(1, jotwHpActionID, sim)
+			prot.HolyPower.Gain(1, prot.JudgmentsOfTheWiseActionID, sim)
 		},
 	})
 }

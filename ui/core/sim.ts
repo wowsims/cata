@@ -43,7 +43,7 @@ import { Raid } from './raid.js';
 import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues, isDevMode, noop } from './utils.js';
+import { getEnumValues, noop } from './utils.js';
 import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {

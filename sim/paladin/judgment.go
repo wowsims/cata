@@ -6,11 +6,23 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (paladin *Paladin) registerJudgment() {
-	apCoef := 0.32800000906
-	spCoef := 0.54600000381
-	baseDamage := paladin.CalcScalingSpellDmg(spCoef)
+/*
+A magic attack that unleashes the energy of a Seal to cause (623 + 0.328 * <AP> + 0.546 * <SP>) Holy damage
 
+-- Judgments of the Wise --
+and generates one charge of Holy Power
+-- /Judgments of the Wise --
+
+-- Judgments of the Bold --
+generate one charge of Holy Power, and apply the Physical Vulnerability debuff to a target
+
+Physical Vulnerability
+Weakens the constitution of an enemy target, increasing their physical damage taken by 4% for 30 sec
+-- /Judgments of the Bold --
+
+.
+*/
+func (paladin *Paladin) registerJudgment() {
 	paladin.Judgment = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 20271},
 		SpellSchool:    core.SpellSchoolHoly,
@@ -38,11 +50,10 @@ func (paladin *Paladin) registerJudgment() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage +
-				apCoef*spell.MeleeAttackPower() +
-				spCoef*spell.SpellPower()
-
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			baseDamage := paladin.CalcScalingSpellDmg(0.546) +
+				0.328*spell.MeleeAttackPower() +
+				0.546*spell.SpellPower()
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
 }

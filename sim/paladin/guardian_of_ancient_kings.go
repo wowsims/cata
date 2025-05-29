@@ -39,6 +39,11 @@ func (paladin *Paladin) registerGuardianOfAncientKings() {
 	})
 }
 
+/*
+Summons a Guardian of Ancient Kings to help you heal for 15 sec.
+
+The Guardian of Ancient Kings will heal the targets of your heals for an additional 100% of the amount healed and grants you 10% haste for its duration.
+*/
 func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell {
 	actionID := core.ActionID{SpellID: 86669}
 
@@ -53,7 +58,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.AncientGuardian.Pet.Disable(sim)
 		},
-	})
+	}).AttachMultiplyCastSpeed(1.1)
 
 	return paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -78,6 +83,11 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 	})
 }
 
+/*
+Summons a Guardian of Ancient Kings to protect you for 12 sec.
+
+The Guardian of Ancient Kings reduces damage taken by 50%.
+*/
 func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core.Spell {
 	actionID := core.ActionID{SpellID: 86659}
 
@@ -116,6 +126,19 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 	})
 }
 
+/*
+Summons a Guardian of Ancient Kings to help you deal damage for 30 sec.
+
+The Guardian of Ancient Kings will attack your current enemy.
+Both your attacks and the attacks of the Guardian will infuse you with Ancient Power that is unleashed as Ancient Fury when the Guardian departs.
+
+Ancient Power
+Strength increased by 1%.
+When your Guardian of Ancient Kings departs, you release Ancient Fury, causing (<229-311> + 0.107 * <SP>) Holy damage, split among all enemies within 10 yards.
+
+Ancient Fury
+Unleash the fury of ancient kings, causing (<229-311> + 0.107 * <SP>) Holy damage per application of Ancient Power, divided evenly among all targets within 10 yards.
+*/
 func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *core.Spell {
 	var strDepByStackCount = map[int32]*stats.StatDependency{}
 
@@ -141,9 +164,6 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 	})
 
 	numTargets := paladin.Env.GetNumTargets()
-	scalingCoef := 0.23659999669
-	variance := 0.30000001192
-	spCoef := 0.10700000077
 
 	ancientFury := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 86704},
@@ -158,8 +178,8 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcAndRollDamageRange(sim, scalingCoef, variance) +
-				spCoef*spell.SpellPower()
+			baseDamage := paladin.CalcAndRollDamageRange(sim, 0.2366, 0.3) +
+				0.107*spell.SpellPower()
 
 			// Deals X Holy damage per application of Ancient Power,
 			// divided evenly among all targets within 10 yards.
@@ -167,12 +187,12 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 			baseDamage /= float64(numTargets)
 
 			results := make([]*core.SpellResult, numTargets)
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				spell.DealDamage(sim, results[idx])
 			}
 		},
@@ -193,15 +213,11 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 
 			paladin.AncientPowerAura.AddStack(sim)
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AncientPowerAura.Activate(sim)
-		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.AncientGuardian.Pet.Disable(sim)
 			ancientFury.Cast(sim, paladin.CurrentTarget)
-			paladin.AncientPowerAura.Deactivate(sim)
 		},
-	})
+	}).AttachDependentAura(paladin.AncientPowerAura)
 
 	return paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -220,9 +236,11 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			paladin.GoakAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 			paladin.AncientGuardian.Enable(sim, paladin.AncientGuardian)
 			paladin.AncientGuardian.CancelGCDTimer(sim)
 		},
+
+		RelatedSelfBuff: paladin.GoakAura,
 	})
 }

@@ -8,16 +8,21 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
-func (ret *RetributionPaladin) registerExorcism() {
-	apCoef := 0.67699998617
-	scalingCoef := 6.09499979019
-	variance := 0.1099999994
+/*
+Forcefully attempt to expel the evil from the target with a blast of Holy Light.
+Causes (<6577-7343> + 0.677 * <AP>) Holy damage
 
+-- Glyph of Mass Exorcism --
+to the target and 25% of that to other enemies within 8 yards
+-- /Glyph of Mass Exorcism --
+
+and generates a charge of Holy Power.
+*/
+func (ret *RetributionPaladin) registerExorcism() {
 	exoHpActionID := core.ActionID{SpellID: 147715}
 	ret.CanTriggerHolyAvengerHpGain(exoHpActionID)
 
-	hasMassExorcism := ret.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfMassExorcism)
-	numTargets := core.TernaryInt32(hasMassExorcism, ret.Env.GetNumTargets(), 1)
+	hasGlyphOfMassExorcism := ret.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfMassExorcism)
 
 	ret.Exorcism = ret.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 879},
@@ -26,7 +31,7 @@ func (ret *RetributionPaladin) registerExorcism() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: paladin.SpellMaskExorcism,
 
-		MaxRange: core.TernaryFloat64(hasMassExorcism, core.MaxMeleeRange, 30),
+		MaxRange: core.TernaryFloat64(hasGlyphOfMassExorcism, core.MaxMeleeRange, 30),
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 4,
@@ -46,32 +51,16 @@ func (ret *RetributionPaladin) registerExorcism() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
+			baseDamage := ret.CalcAndRollDamageRange(sim, 6.095, 0.11) +
+				0.677*spell.MeleeAttackPower()
 
-			currentTarget := target
-			for idx := int32(0); idx < numTargets; idx++ {
-				baseDamage := ret.CalcAndRollDamageRange(sim, scalingCoef, variance) +
-					apCoef*spell.MeleeAttackPower()
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-				damageMultiplier := spell.DamageMultiplier
-				if currentTarget != target {
-					spell.DamageMultiplier *= 0.25
-				}
-
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-				spell.DamageMultiplier = damageMultiplier
-
-				currentTarget = sim.Environment.NextTargetUnit(currentTarget)
-			}
-
-			if results[0].Landed() {
+			if result.Landed() {
 				ret.HolyPower.Gain(1, exoHpActionID, sim)
 			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
-			}
+			spell.DealDamage(sim, result)
 		},
 	})
 }

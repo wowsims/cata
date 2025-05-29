@@ -8,11 +8,22 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-func (paladin *Paladin) registerDivineProtection() {
-	glyphOfDivineProtection := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivineProtection)
+/*
+Reduces magical damage taken by
 
-	spellDamageMultiplier := core.TernaryFloat64(glyphOfDivineProtection, 0.8, 0.6)
-	physDamageMultiplier := core.TernaryFloat64(glyphOfDivineProtection, 0.8, 1.0)
+-- Glyph of Divine Protection --
+20% and physical damage taken by 20%
+-- else --
+40%
+-- /Glyph of Divine Protection --
+
+for 10 sec.
+*/
+func (paladin *Paladin) registerDivineProtection() {
+	hasGlyphOfDivineProtection := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivineProtection)
+
+	spellDamageMultiplier := core.TernaryFloat64(hasGlyphOfDivineProtection, 0.8, 0.6)
+	physDamageMultiplier := core.TernaryFloat64(hasGlyphOfDivineProtection, 0.8, 1.0)
 
 	actionID := core.ActionID{SpellID: 498}
 	paladin.DivineProtectionAura = paladin.RegisterAura(core.Aura{

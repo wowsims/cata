@@ -8,6 +8,10 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+Consumes up to 3 Holy Power to increase your Holy Damage by 30% and critical strike chance by 10%.
+Lasts 20 sec per charge of Holy Power consumed.
+*/
 func (ret *RetributionPaladin) registerInquisition() {
 	actionID := core.ActionID{SpellID: 84963}
 	inquisitionDuration := time.Second * 20

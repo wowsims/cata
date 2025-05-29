@@ -29,14 +29,19 @@ const (
 	SpellMaskSealOfJustice
 
 	// Protection abilities
+	SpellMaskArdentDefender
 	SpellMaskAvengersShield
 	SpellMaskConsecration
 	SpellMaskHolyWrath
 
 	// Holy abilities
+	SpellMaskBeaconOfLight
+	SpellMaskDaybreak
 	SpellMaskDenounce
+	SpellMaskDivineFavor
 	SpellMaskDivineLight
 	SpellMaskDivinePlea
+	SpellMaskHolyLight
 	SpellMaskHolyRadiance
 	SpellMaskHolyShockDamage
 	SpellMaskHolyShockHeal
@@ -111,7 +116,6 @@ const SpellMaskCanTriggerSealOfRighteousness = SpellMaskCrusaderStrike |
 const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 	SpellMaskTemplarsVerdict |
 	SpellMaskJudgment |
-	SpellMaskExorcism |
 	SpellMaskHammerOfTheRighteousMelee |
 	SpellMaskShieldOfTheRighteous
 
@@ -129,3 +133,8 @@ const SpellMaskDamageModifiedBySwordOfLight = SpellMaskSealOfTruth |
 	SpellMaskDivineStorm |
 	SpellMaskHammerOfWrath |
 	SpellMaskJudgment
+
+const SpellMaskSeals = SpellMaskSealOfJustice |
+	SpellMaskSealOfInsight |
+	SpellMaskSealOfRighteousness |
+	SpellMaskSealOfTruth

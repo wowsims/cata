@@ -14,46 +14,28 @@ import (
 Sends bolts of power in all directions, causing ${($m1+$M1)/2+$SPH*0.91} Holy damage
 
 -- Glyph of Focused Wrath --
-
-	divided among all enemies within 10 yards
-
+divided among all enemies within 10 yards
 -- else --
-
-	to your target
-
---
+to your target
+----------
 
 , stunning Demons
 
 -- Glyph of Holy Wrath --
+, Aberrations, Dragonkin, Elementals
+-- /Glyph of Holy Wrath --
 
-	, Aberrations, Dragonkin, Elementals
-
---
-
-	and Undead for 3 sec.
+and Undead for 3 sec.
 
 -- Glyph of Final Wrath --
-
-	Causes 50% additional damage to targets with less than 20% health.
-
---
+Causes 50% additional damage to targets with less than 20% health.
+-- /Glyph of Final Wrath --
 */
 func (prot *ProtectionPaladin) registerHolyWrath() {
-	scalingCoef := 7.53200006485
-	baseDamage := prot.CalcScalingSpellDmg(scalingCoef / 2) // The scaling coef is divided by 2 in the game (and sort of matches the tooltip)
-	// variance := 0.1099999994 // unused???
-	apCoef := 0.91 // This coef is only in the tooltip, where it says it's an SP coef but that's wrong
+	hasGlyphOfFinalWrath := prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFinalWrath)
+	hasGlyphOfFocusedWrath := prot.HasMinorGlyph(proto.PaladinMinorGlyph_GlyphOfFocusedWrath)
 
-	hasFinalWrath := prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFinalWrath)
-	hasFocusedWrath := prot.HasMinorGlyph(proto.PaladinMinorGlyph_GlyphOfFocusedWrath)
-
-	var numTargets int32
-	if hasFocusedWrath {
-		numTargets = 1
-	} else {
-		numTargets = prot.Env.GetNumTargets()
-	}
+	numTargets := core.TernaryInt32(hasGlyphOfFocusedWrath, 1, prot.Env.GetNumTargets())
 
 	prot.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 119072},
@@ -84,18 +66,22 @@ func (prot *ProtectionPaladin) registerHolyWrath() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
-			damage := baseDamage + apCoef*spell.MeleeAttackPower()
+
+			// The scaling coef is divided by 2 in the game (and sort of matches the tooltip)
+			// The AP coef is only in the tooltip, where it says it's an SP coef but that's wrong
+			// variance := 0.11 // unused???
+			baseDamage := prot.CalcScalingSpellDmg(7.532/2) + 0.91*spell.MeleeAttackPower()
 
 			// Damage is split between all mobs, each hit rolls for hit/crit separately
-			damage /= float64(numTargets)
+			baseDamage /= float64(numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				multiplier := spell.DamageMultiplier
-				if hasFinalWrath && target.CurrentHealthPercent() < 0.2 {
+				if hasGlyphOfFinalWrath && target.CurrentHealthPercent() < 0.2 {
 					spell.DamageMultiplier *= 1.5
 				}
 
-				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 				spell.DamageMultiplier = multiplier
 
@@ -103,7 +89,7 @@ func (prot *ProtectionPaladin) registerHolyWrath() {
 			}
 
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
-				for idx := int32(0); idx < numTargets; idx++ {
+				for idx := range numTargets {
 					spell.DealDamage(sim, results[idx])
 				}
 			})

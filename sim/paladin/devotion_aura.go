@@ -5,6 +5,18 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
+/*
+Inspire
+
+-- Glyph of Devotion Aura --
+yourself, granting you
+-- else --
+all party and raid members within 40 yards, granting them
+----------
+
+immunity to Silence and Interrupt effects and reducing all magic damage taken by 20%.
+Lasts 6 sec.
+*/
 func (paladin *Paladin) registerDevotionAura() {
 	devotionAura := core.DevotionAuraAura(&paladin.Character, 0)
 

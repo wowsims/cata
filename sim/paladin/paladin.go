@@ -11,7 +11,7 @@ type Paladin struct {
 	core.Character
 
 	Seal      proto.PaladinSeal
-	HolyPower core.SecondaryResourceBar
+	HolyPower HolyPowerBar
 
 	Talents *proto.PaladinTalents
 
@@ -32,18 +32,27 @@ type Paladin struct {
 
 	AncientPowerAura        *core.Aura
 	AvengingWrathAura       *core.Aura
+	BastionOfGloryAura      *core.Aura
+	BastionOfPowerAura      *core.Aura
+	DivineCrusaderAura      *core.Aura
+	DivineFavorAura         *core.Aura
 	DivineProtectionAura    *core.Aura
 	DivinePurposeAura       *core.Aura
 	GoakAura                *core.Aura
+	InfusionOfLightAura     *core.Aura
 	SealOfInsightAura       *core.Aura
 	SealOfJusticeAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	SealOfTruthAura         *core.Aura
+	TheArtOfWarAura         *core.Aura
 
 	// Item sets
-	T11Ret4pc *core.Aura
+	T11Ret4pc                *core.Aura
+	T15Ret4pc                *core.Aura
+	T15Ret4pcTemplarsVerdict *core.Spell
 
-	HolyAvengerActionIDFilter []core.ActionID
+	HolyAvengerActionIDFilter  []core.ActionID
+	JudgmentsOfTheWiseActionID core.ActionID
 
 	DynamicHolyPowerSpent                        int32
 	BastionOfGloryMultiplier                     float64
@@ -141,11 +150,14 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.HolyPower = paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
-		Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
-		Max:     5,
-		Default: paladin.StartingHolyPower,
-	})
+	paladin.HolyPower = HolyPowerBar{
+		DefaultSecondaryResourceBarImpl: paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
+			Max:     5,
+			Default: paladin.StartingHolyPower,
+		}),
+		paladin: paladin,
+	}
 	paladin.RegisterSecondaryResourceBar(paladin.HolyPower)
 
 	// Only retribution and holy are actually pets performing some kind of action
@@ -175,7 +187,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	if mh := paladin.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
 		paladin.GurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
 
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			paladin.GurthalakTentacles[i] = paladin.NewTentacleOfTheOldOnesPet()
 		}
 	}

@@ -31,8 +31,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				cast.CastTime = spell.CastTime()
 			},
 			CastTime: func(spell *core.Spell) time.Duration {
-				ss := hunter.RangedSwingSpeed()
-				return time.Duration(float64(spell.DefaultCast.CastTime) / ss)
+				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedAttackSpeed)
 			},
 		},
 		DamageMultiplier: 0.77,

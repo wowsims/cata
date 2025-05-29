@@ -6,13 +6,28 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (paladin *Paladin) registerShieldOfTheRighteous() {
-	actionID := core.ActionID{SpellID: 53600}
-	baseDamage := paladin.CalcScalingSpellDmg(0.73199999332)
-	apCoef := 0.61699998379
+/*
+Instantly slam the target with your shield, causing (836 + 0.617 * <AP>) Holy damage, reducing the physical damage you take by (25 + <Divine Bulwark>)% for 3 sec, and causing Bastion of Glory.
 
-	var bastionOfGloryAura *core.Aura
-	bastionOfGloryAura = paladin.RegisterAura(core.Aura{
+Bastion of Glory
+Increases the strength of
+
+-- Eternal Flame --
+your Eternal Flame
+-- else --
+your Word of Glory
+----------
+
+when used to heal yourself by 10%.
+
+-- Selfless Healer --
+Selfless Healer also increases healing from Flash of Light on yourself by 20% per stack
+-- /Selfless Healer --
+
+Stacks up to 5 times.
+*/
+func (paladin *Paladin) registerShieldOfTheRighteous() {
+	paladin.BastionOfGloryAura = paladin.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 114637},
 		Label:     "Bastion of Glory" + paladin.Label,
 		Duration:  time.Second * 20,
@@ -31,7 +46,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 		ClassSpellMask: SpellMaskWordOfGlory,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			bastionOfGloryAura.Deactivate(sim)
+			paladin.BastionOfGloryAura.Deactivate(sim)
 		},
 	})
 
@@ -50,6 +65,8 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 			paladin.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] /= snapshotDmgReduction
 		},
 	})
+
+	actionID := core.ActionID{SpellID: 53600}
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -78,9 +95,9 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + apCoef*spell.MeleeAttackPower()
+			baseDamage := paladin.CalcScalingSpellDmg(0.732) + 0.617*spell.MeleeAttackPower()
 
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				paladin.HolyPower.Spend(3, actionID, sim)
@@ -94,8 +111,8 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 				spell.RelatedSelfBuff.Activate(sim)
 			}
 
-			bastionOfGloryAura.Activate(sim)
-			bastionOfGloryAura.AddStack(sim)
+			paladin.BastionOfGloryAura.Activate(sim)
+			paladin.BastionOfGloryAura.AddStack(sim)
 
 			spell.DealOutcome(sim, result)
 		},

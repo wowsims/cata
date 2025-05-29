@@ -7,6 +7,13 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
+/*
+Hammer the current target for 20% weapon damage, causing a wave of light that hits all targets within 8 yards for 35% Holy weapon damage and applying the Weakened Blows effect.
+Grants a charge of Holy Power.
+
+Weakened Blows
+Demoralizes the target, reducing their physical damage dealt by 10% for 30 sec.
+*/
 func (paladin *Paladin) registerHammerOfTheRighteous() {
 	numTargets := paladin.Env.GetNumTargets()
 	actionID := core.ActionID{SpellID: 53595}
@@ -30,14 +37,15 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
+			for idx := range numTargets {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage *= sim.Encounter.AOECapMultiplier()
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicCrit)
 			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				for idx := int32(0); idx < numTargets; idx++ {
+				for idx := range numTargets {
 					spell.DealOutcome(sim, results[idx])
 					aura := auraArray.Get(results[idx].Target)
 					if hasGlyphOfHammerOfTheRighteous && aura.Duration != core.NeverExpires {

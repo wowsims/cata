@@ -227,9 +227,9 @@ func (bm *BrewmasterMonk) registerDesperateMeasures() {
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  monk.MonkSpellExpelHarm,
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-		FloatValue: -1,
+		ClassMask: monk.MonkSpellExpelHarm,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: time.Second * -15,
 	})
 
 	core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{

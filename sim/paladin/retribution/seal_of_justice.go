@@ -7,11 +7,16 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+Fills you with Holy Light, causing melee attacks to deal 20% additional Holy damage and reduce the target's movement speed by 50% for 8 sec.
+(100ms cooldown)
+*/
 func (ret *RetributionPaladin) registerSealOfJustice() {
+	actionID := core.ActionID{SpellID: 20170}
 	sealOfJusticeDebuff := ret.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
 		return unit.RegisterAura(core.Aura{
 			Label:    "Seal of Justice" + unit.Label,
-			ActionID: core.ActionID{SpellID: 20170},
+			ActionID: actionID,
 			Duration: time.Second * 8,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				unit.PseudoStats.MovementSpeedMultiplier *= 0.5
@@ -24,7 +29,7 @@ func (ret *RetributionPaladin) registerSealOfJustice() {
 
 	// Seal of Justice on-hit proc
 	onSpecialOrSwingProc := ret.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 20170},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeProc,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
@@ -44,6 +49,11 @@ func (ret *RetributionPaladin) registerSealOfJustice() {
 		},
 	})
 
+	icd := core.Cooldown{
+		Timer:    ret.NewTimer(),
+		Duration: time.Millisecond * 100,
+	}
+
 	ret.SealOfJusticeAura = ret.RegisterAura(core.Aura{
 		Label:    "Seal of Justice" + ret.Label,
 		Tag:      "Seal",
@@ -62,6 +72,11 @@ func (ret *RetributionPaladin) registerSealOfJustice() {
 				return
 			}
 
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			icd.Use(sim)
 			onSpecialOrSwingProc.Cast(sim, result.Target)
 		},
 	})

@@ -346,7 +346,22 @@ func (raid *Raid) GetPlayerFromUnit(unit *Unit) Agent {
 }
 
 func (raid *Raid) GetFirstNPlayersOrPets(n int32) []*Unit {
-	return raid.AllUnits[:min(n, int32(len(raid.AllUnits)))]
+	units := []*Unit{}
+
+	for _, party := range raid.Parties {
+		for _, player := range party.Players {
+			units = append(units, &player.GetCharacter().Unit)
+		}
+
+		for _, petAgent := range party.Pets {
+			pet := petAgent.GetPet()
+			if !pet.IsGuardian() {
+				units = append(units, &pet.Unit)
+			}
+		}
+	}
+
+	return units[:min(n, int32(len(units)))]
 }
 
 func (raid *Raid) GetPlayerFromUnitIndex(unitIndex int32) Agent {

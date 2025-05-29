@@ -5,6 +5,12 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+Your Judgment hits grant one charge of Holy Power and cause the Physical Vulnerability effect.
+
+Physical Vulnerability
+Weakens the constitution of an enemy target, increasing their physical damage taken by 4% for 30 sec.
+*/
 func (ret *RetributionPaladin) registerJudgmentsOfTheBold() {
 	actionID := core.ActionID{SpellID: 111528}
 	ret.CanTriggerHolyAvengerHpGain(actionID)

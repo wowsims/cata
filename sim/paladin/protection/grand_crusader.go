@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+When you dodge or parry a melee attack you have a 30% chance of refreshing the cooldown on your next Avenger's Shield and causing it to generate a charge of Holy Power if used within 6 sec.
+(Proc chance: 30%, 1s cooldown)
+*/
 func (prot *ProtectionPaladin) registerGrandCrusader() {
 	hpActionID := core.ActionID{SpellID: 98057}
 	prot.CanTriggerHolyAvengerHpGain(hpActionID)
@@ -16,6 +20,10 @@ func (prot *ProtectionPaladin) registerGrandCrusader() {
 		Label:    "Grand Crusader" + prot.Label,
 		ActionID: core.ActionID{SpellID: 85416},
 		Duration: time.Second * 6,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			prot.AvengersShield.CD.Reset()
+		},
 	}).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: paladin.SpellMaskAvengersShield,
@@ -35,7 +43,6 @@ func (prot *ProtectionPaladin) registerGrandCrusader() {
 		ICD:        time.Second,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			prot.AvengersShield.CD.Reset()
 			grandCrusaderAura.Activate(sim)
 		},
 	})

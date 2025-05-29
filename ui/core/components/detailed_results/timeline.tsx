@@ -1335,12 +1335,13 @@ const idToCategoryMap: Record<number, number> = {
 	[99090]: SPELL_ACTION_CATEGORY + 0.04, // Flaming Aegis (Prot T12 4pc)
 	[66233]: SPELL_ACTION_CATEGORY + 0.05, // Ardent Defender
 	[31884]: SPELL_ACTION_CATEGORY + 0.06, // Avenging Wrath
-	[105809]: SPELL_ACTION_CATEGORY + 0.07, // Holy Avenger,
-	[86698]: SPELL_ACTION_CATEGORY + 0.08, // Guardian of Ancient Kings
-	[86704]: SPELL_ACTION_CATEGORY + 0.09, // Ancient Fury
-	[20925]: SPELL_ACTION_CATEGORY + 0.1, // Sacred Shield (Ret / Prot)
-	[148039]: SPELL_ACTION_CATEGORY + 0.1, // Sacred Shield (Holy)
-	[114039]: SPELL_ACTION_CATEGORY + 0.1, // Hand of Purity
+	[114232]: SPELL_ACTION_CATEGORY + 0.07, // Sanctified Wrath
+	[105809]: SPELL_ACTION_CATEGORY + 0.08, // Holy Avenger,
+	[86698]: SPELL_ACTION_CATEGORY + 0.09, // Guardian of Ancient Kings
+	[86704]: SPELL_ACTION_CATEGORY + 0.10, // Ancient Fury
+	[20925]: SPELL_ACTION_CATEGORY + 0.11, // Sacred Shield (Ret / Prot)
+	[148039]: SPELL_ACTION_CATEGORY + 0.12, // Sacred Shield (Holy)
+	[114039]: SPELL_ACTION_CATEGORY + 0.13, // Hand of Purity
 
 	// Priest
 	[48300]: SPELL_ACTION_CATEGORY + 0.11, // Devouring Plague

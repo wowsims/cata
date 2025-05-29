@@ -4,8 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/paladin"
 )
 
+/*
+Reduce damage taken by 20% for 10 sec.
+While Ardent Defender is active, the next attack that would otherwise kill you will instead cause you to be healed for 15% of your maximum health.
+*/
 func (prot *ProtectionPaladin) registerArdentDefender() {
 	actionID := core.ActionID{SpellID: 31850}
 
@@ -23,9 +28,10 @@ func (prot *ProtectionPaladin) registerArdentDefender() {
 	})
 
 	ardentDefender := prot.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful,
-		SpellSchool: core.SpellSchoolHoly,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		SpellSchool:    core.SpellSchoolHoly,
+		ClassSpellMask: paladin.SpellMaskArdentDefender,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
