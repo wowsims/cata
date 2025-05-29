@@ -1,9 +1,8 @@
 package paladin
 
 import (
-	"math"
-
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 /*
@@ -24,25 +23,24 @@ for
 ----------
 */
 func (paladin *Paladin) registerSealOfInsight() {
-	actionID := core.ActionID{SpellID: 20167}
-	healthMetrics := paladin.NewHealthMetrics(actionID)
-	manaMetrics := paladin.NewManaMetrics(actionID)
-	// It's 4% of base mana per tick.
-	manaPerTick := math.Round(0.04 * paladin.BaseMana)
+	hasGlyphOfTheBattleHealer := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer)
 
 	// Seal of Insight on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       core.ActionID{SpellID: 20167},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealOfInsight,
 
+		DamageMultiplier: 1,
+		CritMultiplier:   0,
+		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			heal := 0.15*spell.SpellPower() +
 				0.15*spell.MeleeAttackPower()
-			paladin.GainHealth(sim, heal, healthMetrics)
-			paladin.AddMana(sim, manaPerTick, manaMetrics)
+			spell.CalcAndDealHealing(sim, target, heal, spell.OutcomeHealing)
 		},
 	})
 
@@ -60,19 +58,26 @@ func (paladin *Paladin) registerSealOfInsight() {
 				return
 			}
 
-			// SoJ only procs on white hits, CS, TV and HoW
+			// SoI only procs on white hits, CS, HoW, ShotR and TV
 			if (spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
 				!spell.Matches(SpellMaskCanTriggerSealOfInsight)) ||
 				!dpm.Proc(sim, spell.ProcMask, "Seal of Insight"+paladin.Label) {
 				return
 			}
 
-			onSpecialOrSwingProc.Cast(sim, result.Target)
+			if hasGlyphOfTheBattleHealer {
+				onSpecialOrSwingProc.Cast(sim, sim.Raid.GetLowestHealthAllyUnit())
+			} else {
+				onSpecialOrSwingProc.Cast(sim, &paladin.Unit)
+			}
 		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskModifiedBySealOfInsight,
+		FloatValue: 0.05,
+	}).AttachMultiplyCastSpeed(1.1)
 
 	// Seal of Insight self-buff.
-	aura := paladin.SealOfInsightAura
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20165},
 		SpellSchool: core.SpellSchoolHoly,
@@ -95,7 +100,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 			if paladin.CurrentSeal != nil {
 				paladin.CurrentSeal.Deactivate(sim)
 			}
-			paladin.CurrentSeal = aura
+			paladin.CurrentSeal = paladin.SealOfInsightAura
 			paladin.CurrentSeal.Activate(sim)
 		},
 	})

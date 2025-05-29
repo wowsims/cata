@@ -79,7 +79,7 @@ func (paladin *Paladin) registerGlyphs() {
 		paladin.registerGlyphOfTheAlabasterShield()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer) {
-		// TODO: Handle in seal_of_insight.go
+		paladin.registerGlyphOfTheBattleHealer()
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfWordOfGlory) {
 		paladin.registerGlyphOfWordOfGlory()
@@ -672,6 +672,19 @@ func (paladin *Paladin) registerGlyphOfTheAlabasterShield() {
 			alabasterShieldAura.Activate(sim)
 			alabasterShieldAura.AddStack(sim)
 		},
+	})
+}
+
+// Melee attacks from Seal of Insight heal the most wounded member of your raid or party for 30% of the normal heal instead of you.
+func (paladin *Paladin) registerGlyphOfTheBattleHealer() {
+	// Targeting handled in seal_of_insight.go
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Glyph of the Battle Healer" + paladin.Label,
+		ActionID: core.ActionID{SpellID: 119477},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskSealOfInsight,
+		FloatValue: -0.7,
 	})
 }
 

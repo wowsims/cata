@@ -150,6 +150,16 @@ func (raid *Raid) GetActiveAllyUnits() []*Unit {
 	return activeAllyUnits
 }
 
+func (raid *Raid) GetLowestHealthAllyUnit() *Unit {
+	var lowestHealthUnit *Unit
+	for _, unit := range raid.AllUnits {
+		if unit.IsActive() && unit.Type != EnemyUnit && unit.HasHealthBar() && (lowestHealthUnit == nil || unit.CurrentHealth() < lowestHealthUnit.CurrentHealth()) {
+			lowestHealthUnit = unit
+		}
+	}
+	return lowestHealthUnit
+}
+
 // Makes a new raid.
 func NewRaid(raidConfig *proto.Raid) *Raid {
 	numParties := int(raidConfig.NumActiveParties)

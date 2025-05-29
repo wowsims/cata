@@ -101,9 +101,9 @@ const SpellMaskSanctityOfBattleHoly = SpellMaskSanctityOfBattleBase |
 const SpellMaskHammerOfTheRighteous = SpellMaskHammerOfTheRighteousMelee | SpellMaskHammerOfTheRighteousAoe
 
 const SpellMaskCanTriggerSealOfJustice = SpellMaskCrusaderStrike |
-	SpellMaskTemplarsVerdict |
-	SpellMaskHammerOfWrath |
-	SpellMaskShieldOfTheRighteous
+	SpellMaskHammerOfTheRighteousMelee |
+	SpellMaskShieldOfTheRighteous |
+	SpellMaskTemplarsVerdict
 
 const SpellMaskCanTriggerSealOfInsight = SpellMaskCanTriggerSealOfJustice
 
@@ -138,3 +138,11 @@ const SpellMaskSeals = SpellMaskSealOfJustice |
 	SpellMaskSealOfInsight |
 	SpellMaskSealOfRighteousness |
 	SpellMaskSealOfTruth
+
+const SpellMaskModifiedBySealOfInsight = SpellMaskDivineLight |
+	SpellMaskFlashOfLight |
+	SpellMaskHolyLight |
+	SpellMaskHolyRadiance |
+	SpellMaskLayOnHands |
+	SpellMaskLightOfDawn |
+	SpellMaskWordOfGlory
