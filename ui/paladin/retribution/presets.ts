@@ -21,17 +21,17 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatStrength]: 2.28,
+			[Stat.StatStrength]: 2.29,
 
-			[Stat.StatCritRating]: 0.94,
-			[Stat.StatHasteRating]: 1.24,
-			[Stat.StatMasteryRating]: 0.73,
+			[Stat.StatCritRating]: 1.00,
+			[Stat.StatHasteRating]: 1.11,
+			[Stat.StatMasteryRating]: 1.05,
 
-			[Stat.StatHitRating]: 1.44,
-			[Stat.StatExpertiseRating]: 1.26,
+			[Stat.StatHitRating]: 1.32,
+			[Stat.StatExpertiseRating]: 1.18,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.13,
+			[PseudoStat.PseudoStatMainHandDps]: 4.21,
 		},
 	),
 );
@@ -41,7 +41,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '221213',
+		talentsString: '221223',
 		glyphs: Glyphs.create({
 			major1: PaladinMajorGlyph.GlyphOfTemplarsVerdict,
 			major2: PaladinMajorGlyph.GlyphOfDoubleJeopardy,
