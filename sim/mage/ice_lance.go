@@ -43,9 +43,9 @@ func (mage *Mage) registerIceLanceSpell() {
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
 			if hasGlyphSplittingIce {
-
+				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) / 2
 				if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
-					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) / 2 * .4
+					baseDamage = baseDamage * .4
 					for _ = range 3 {
 						result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 						spell.WaitTravelTime(sim, func(sim *core.Simulation) {
@@ -53,15 +53,15 @@ func (mage *Mage) registerIceLanceSpell() {
 						})
 					}
 				} else {
-					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) / 2
 					result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
 					})
 				}
 			}
+			baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 			if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
-				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) * .4
+				baseDamage = baseDamage * .4
 				for _ = range 3 {
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
@@ -69,7 +69,6 @@ func (mage *Mage) registerIceLanceSpell() {
 					})
 				}
 			} else {
-				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
@@ -78,13 +77,13 @@ func (mage *Mage) registerIceLanceSpell() {
 
 			if mage.Spec == proto.Spec_SpecFrostMage {
 				//I've confirmed in game Icicles launch even if ice lance misses.
-				for _, icicle := range frostMage.icicles {
+				for _, icicle := range mage.icicles {
 					if hasGlyphSplittingIce {
-						frostMage.castIcicleWithDamage(sim, randomTarget, icicle/2)
+						mage.castIcicleWithDamage(sim, randomTarget, icicle/2)
 					}
-					frostMage.castIcicleWithDamage(sim, target, icicle)
+					mage.castIcicleWithDamage(sim, target, icicle)
 				}
-				frostMage.icicles = make([]float64, 0)
+				mage.icicles = make([]float64, 0)
 
 			}
 

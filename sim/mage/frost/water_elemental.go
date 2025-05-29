@@ -43,7 +43,8 @@ type WaterElemental struct {
 
 	mageOwner *FrostMage
 
-	Waterbolt *core.Spell
+	Waterbolt               *core.Spell
+	waterElementalDamageMod *core.SpellMod
 }
 
 func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
@@ -88,12 +89,11 @@ var waterElementalBaseStats = stats.Stats{
 
 var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
 	return stats.Stats{
-		stats.Stamina:          ownerStats[stats.Stamina] * 0.2,
-		stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
+		stats.Stamina:          ownerStats[stats.Stamina] * 0.7, // Correct me if this is wrong, but HP value for elemental is generally about 70% of the Mage Owner.
 		stats.SpellPower:       ownerStats[stats.SpellPower],
 		stats.HasteRating:      ownerStats[stats.HasteRating],
-		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent] * 0.5,
-		// 500 hits 85 misses 4.2% crit with character at 8.09% crit, it's likely around 50%
+		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+		// this needs to be tested more thoroughly when pet hit is not bugged
 	}
 }
 

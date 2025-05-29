@@ -18,8 +18,6 @@ type Mage struct {
 	FrostOptions  *proto.FrostMage_Options
 
 	mirrorImage *MirrorImage
-	// flameOrb     *FlameOrb
-	// frostfireOrb *FrostfireOrb
 
 	t12MirrorImage *T12MirrorImage
 	t13ProcAura    *core.StatBuffAura
@@ -37,6 +35,7 @@ type Mage struct {
 	Pyroblast               *core.Spell
 	SummonWaterElemental    *core.Spell
 	IcyVeins                *core.Spell
+	Icicle                  *core.Spell
 
 	arcanePowerGCDmod *core.SpellMod
 
@@ -57,6 +56,7 @@ type Mage struct {
 	combustionDotEstimate int32
 
 	ClassSpellScaling float64
+	icicles           []float64
 
 	// Item sets
 	T12_4pc *core.Aura
@@ -84,6 +84,10 @@ func (mage *Mage) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
+}
+
+func (mage *Mage) GetFrostMasteryBonus() float64 {
+	return (.16 + 0.02*mage.GetMasteryPoints())
 }
 
 func (mage *Mage) ApplyTalents() {
@@ -301,7 +305,6 @@ const (
 	MageSpellBlastWave
 	MageSpellBlizzard
 	MageSpellConeOfCold
-	MageSpellFrostNova
 	MageSpellDeepFreeze
 	MageSpellDragonsBreath
 	MageSpellEvocation
@@ -311,32 +314,33 @@ const (
 	MageSpellFlameOrb
 	MageSpellFocusMagic
 	MageSpellFreeze
+	MageSpellFrostArmor
 	MageSpellFrostbolt
 	MageSpellFrostBomb
 	MageSpellFrostfireBolt
 	MageSpellFrostfireOrb
+	MageSpellFrostNova
 	MageSpellFrozenOrb
+	MageSpellIcicle
 	MageSpellIceFloes
 	MageSpellIceLance
 	MageSpellIcyVeins
 	MageSpellIgnite
 	MageSpellLivingBombExplosion
 	MageSpellLivingBombDot
+	MageSpellMageArmor
 	MageSpellManaGems
 	MageSpellMirrorImage
+	MageSpellMoltenArmor
 	MageSpellNetherTempest
 	MageSpellPresenceOfMind
 	MageSpellPyroblast
 	MageSpellPyroblastDot
 	MagespellRuneOfPower
 	MageSpellScorch
-	MageSpellMoltenArmor
-	MageSpellMageArmor
-	MageSpellFrostArmor
 	MageSpellCombustion
 	MageSpellCombustionApplication
 	MageSpellLast
-	MageSpellIcicle
 	MageSpellsAll        = MageSpellLast<<1 - 1
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
 	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellCombustion // Ignite done manually in spell due to unique mechanic

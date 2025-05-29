@@ -31,9 +31,6 @@ type FrostMage struct {
 	frozenOrb                  *core.Spell
 	frostfireFrozenCritBuffMod *core.SpellMod
 	iceLanceFrozenCritBuffMod  *core.SpellMod
-	icicles                    []float64
-	icicleDamageMod            *core.SpellMod
-	icicle                     *core.Spell
 }
 
 func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
@@ -42,8 +39,7 @@ func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
 	frostMage := &FrostMage{
 		Mage: mage.NewMage(character, options, frostOptions.ClassOptions),
 	}
-	frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
-	frostMage.icicles = make([]float64, 0)
+	frostMage.waterElemental = frostMage.NewWaterElemental()
 
 	return frostMage
 }

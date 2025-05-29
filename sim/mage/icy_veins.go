@@ -8,7 +8,7 @@ import (
 )
 
 func (mage *Mage) registerIcyVeinsCD() {
-	if !mage.Spec == proto.Spec_SpecFrostMage {
+	if mage.Spec != proto.Spec_SpecFrostMage {
 		return
 	}
 
