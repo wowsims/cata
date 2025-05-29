@@ -1,7 +1,7 @@
 package core
 
 func (result *SpellResult) applyArmor(spell *Spell, isPeriodic bool, attackTable *AttackTable) {
-	armorMitigationMultiplier := spell.averageArmorMitigationFrac(isPeriodic, attackTable)
+	armorMitigationMultiplier := spell.armorMultiplier(isPeriodic, attackTable)
 
 	result.Damage *= armorMitigationMultiplier
 
@@ -10,7 +10,7 @@ func (result *SpellResult) applyArmor(spell *Spell, isPeriodic bool, attackTable
 }
 
 // Returns Armor mitigation fraction for the spell
-func (spell *Spell) averageArmorMitigationFrac(isPeriodic bool, attackTable *AttackTable) float64 {
+func (spell *Spell) armorMultiplier(isPeriodic bool, attackTable *AttackTable) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreArmor) {
 		return 1
 	}
@@ -39,6 +39,6 @@ func (at *AttackTable) getArmorDamageModifier() float64 {
 
 	// Assume target > 80
 	armorConstant := float64(at.Attacker.Level)*4037.5 - 317117.5
-	defenderArmor := at.Defender.Armor() - (at.Defender.Armor() * ignoreArmorFactor)
+	defenderArmor := at.Defender.Armor() * (1.0 - ignoreArmorFactor)
 	return 1 - defenderArmor/(defenderArmor+armorConstant)
 }
