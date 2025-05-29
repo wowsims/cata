@@ -484,6 +484,18 @@ func (spell *Spell) reset(sim *Simulation) {
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {
 	spell.SpellMetrics = spell.splitSpellMetrics[splitIdx]
 	spell.ActionID.Tag = splitIdx
+
+	// Also set the tag on any dots to have them line up in the timeline
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil && dot.ActionID.SameActionIgnoreTag(spell.ActionID) {
+				dot.ActionID.Tag = splitIdx
+			}
+		}
+	}
+	if spell.aoeDot != nil && spell.aoeDot.ActionID.SameActionIgnoreTag(spell.ActionID) {
+		spell.aoeDot.ActionID.Tag = splitIdx
+	}
 }
 
 func (spell *Spell) GetMetricSplitCount() int {
