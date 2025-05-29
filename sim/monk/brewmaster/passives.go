@@ -180,7 +180,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return giftOfTheOxStackingAura.IsActive() && giftOfTheOxStackingAura.GetStacks() > 0
+			return bm.CurrentHealth() < bm.MaxHealth() && giftOfTheOxStackingAura.IsActive() && giftOfTheOxStackingAura.GetStacks() > 0
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

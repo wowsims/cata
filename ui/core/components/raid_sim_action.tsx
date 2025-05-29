@@ -483,7 +483,7 @@ export class RaidSimResultsManager {
 					classes: this.getResultsLineClasses('dtps'),
 				});
 
-				if ([Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid].includes(players[0].spec?.specID)) {
+				if ([Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid, Spec.SpecBrewmasterMonk].includes(players[0].spec?.specID)) {
 					const { hps } = playerMetrics;
 					resultColumns.push({
 						name: 'HPS',
@@ -540,7 +540,7 @@ export class RaidSimResultsManager {
 					});
 				}
 
-				if ([Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid].includes(players[0].spec?.specID)) {
+				if ([Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid, Spec.SpecBrewmasterMonk].includes(players[0].spec?.specID)) {
 					resultColumns.push({
 						name: 'HPS',
 						average: playerMetrics.hps.avg,
@@ -550,7 +550,7 @@ export class RaidSimResultsManager {
 				}
 			}
 
-			if (![Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid].includes(players[0].spec?.specID)) {
+			if (![Spec.SpecBloodDeathKnight, Spec.SpecGuardianDruid, Spec.SpecBrewmasterMonk].includes(players[0].spec?.specID)) {
 				resultColumns.push({
 					name: 'TTO',
 					average: playerMetrics.tto.avg,
