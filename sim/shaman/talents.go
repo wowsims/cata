@@ -75,7 +75,7 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 		Label:      "Ancestral Swiftness Passive",
 		BuildPhase: core.CharacterBuildPhaseTalents,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1/1.1)
+			shaman.MultiplyMeleeSpeed(sim, 1.1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1/1.1)

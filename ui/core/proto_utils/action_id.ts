@@ -425,15 +425,6 @@ export class ActionId {
 				}
 				break;
 			case 'Elemental Blast':
-				if (tag == 9) {
-					name += ' (Mastery)';
-				} else if (tag == 10) {
-					name += ' (Haste)';
-				} else if (tag == 11) {
-					name += ' (Crit)';
-				} else if (tag == 12) {
-					name += ' (Agi)';
-				}
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
 			case 'Lava Beam':
@@ -444,6 +435,14 @@ export class ActionId {
 					name += ' (Echo)'	
 				} else if (tag == 8) {
 					name += ' (Echo Overload)'	
+				} else if (tag == 9) {
+					name += ' (Mastery)';
+				} else if (tag == 10) {
+					name += ' (Haste)';
+				} else if (tag == 11) {
+					name += ' (Crit)';
+				} else if (tag == 12) {
+					name += ' (Agi)';
 				} else if (tag) {
 					name += ` (${tag} MW)`;
 				}
