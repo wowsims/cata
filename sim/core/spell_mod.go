@@ -259,7 +259,7 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
-	// Increases or decreases spell.CD.Multiplier by flat amount
+	// Will multiply the spell CD multiplier. -5% = 0.95
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
