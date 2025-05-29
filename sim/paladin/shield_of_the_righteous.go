@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -52,14 +53,23 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 
 	var snapshotDmgReduction float64
 	shieldOfTheRighteousAura := paladin.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 132403},
-		Label:    "Shield of the Righteous" + paladin.Label,
-		Duration: time.Second * 3,
+		ActionID:  core.ActionID{SpellID: 132403},
+		Label:     "Shield of the Righteous" + paladin.Label,
+		Duration:  time.Second * 3,
+		MaxStacks: 100,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			snapshotDmgReduction = 1.0 +
 				(-0.25-paladin.ShieldOfTheRighteousAdditiveMultiplier)*(1.0+paladin.ShieldOfTheRighteousMultiplicativeMultiplier)
+
+			snapshotDmgReduction = max(0.2, snapshotDmgReduction)
+
 			paladin.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] *= snapshotDmgReduction
+
+			percent := int32(math.Round((1.0 - snapshotDmgReduction) * 100))
+			if percent > 0 {
+				aura.SetStacks(sim, percent)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] /= snapshotDmgReduction
