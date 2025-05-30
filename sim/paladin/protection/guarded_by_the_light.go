@@ -21,7 +21,6 @@ Grants 15% of your maximum mana every 2 sec.
 */
 func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 	actionID := core.ActionID{SpellID: 53592}
-	manaMetrics := prot.NewManaMetrics(actionID)
 
 	oldGetSpellPowerValue := prot.GetSpellPowerValue
 	newGetSpellPowerValue := func(spell *core.Spell) float64 {
@@ -34,14 +33,6 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 		BuildPhase: core.CharacterBuildPhaseTalents,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period:   time.Second * 2,
-				Priority: core.ActionPriorityRegen,
-				OnAction: func(*core.Simulation) {
-					prot.AddMana(sim, 0.15*prot.MaxMana(), manaMetrics)
-				},
-			})
-
 			prot.GetSpellPowerValue = newGetSpellPowerValue
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -66,4 +57,18 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 		ClassMask: paladin.SpellMaskJudgment,
 		IntValue:  -40,
 	})
+
+	manaMetrics := prot.NewManaMetrics(actionID)
+	core.MakePermanent(prot.RegisterAura(core.Aura{
+		Label: "Guarded by the Light Mana Regen" + prot.Label,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:   time.Second * 2,
+				Priority: core.ActionPriorityRegen,
+				OnAction: func(*core.Simulation) {
+					prot.AddMana(sim, 0.15*prot.MaxMana(), manaMetrics)
+				},
+			})
+		},
+	}))
 }

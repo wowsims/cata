@@ -20,7 +20,6 @@ Increases the healing done by Word of Glory by 60% and Flash of Light by 100%.
 */
 func (ret *RetributionPaladin) registerSwordOfLight() {
 	actionID := core.ActionID{SpellID: 53503}
-	manaMetrics := ret.NewManaMetrics(actionID)
 	swordOfLightHpActionID := core.ActionID{SpellID: 141459}
 	ret.CanTriggerHolyAvengerHpGain(swordOfLightHpActionID)
 
@@ -43,14 +42,6 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 			}
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period:   time.Second * 2,
-				Priority: core.ActionPriorityRegen,
-				OnAction: func(*core.Simulation) {
-					ret.AddMana(sim, 0.06*ret.MaxMana(), manaMetrics)
-				},
-			})
-
 			ret.GetSpellPowerValue = newGetSpellPowerValue
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -89,6 +80,20 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 		ClassMask: paladin.SpellMaskAvengingWrath,
 		TimeValue: time.Minute * -1,
 	})
+
+	manaMetrics := ret.NewManaMetrics(actionID)
+	core.MakePermanent(ret.RegisterAura(core.Aura{
+		Label: "Sword of Light Mana Regen" + ret.Label,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:   time.Second * 2,
+				Priority: core.ActionPriorityRegen,
+				OnAction: func(*core.Simulation) {
+					ret.AddMana(sim, 0.06*ret.MaxMana(), manaMetrics)
+				},
+			})
+		},
+	}))
 
 	holyTwoHandDamageMod := ret.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,

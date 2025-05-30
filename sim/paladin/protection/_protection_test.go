@@ -88,7 +88,7 @@ var DefaultOptions = &proto.Player_ProtectionPaladin{
 	ProtectionPaladin: &proto.ProtectionPaladin{
 		Options: &proto.ProtectionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
-				Seal: proto.PaladinSeal_Truth,
+				Seal: proto.PaladinSeal_Insight,
 			},
 		},
 	},
