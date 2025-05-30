@@ -5,7 +5,6 @@ import (
 )
 
 func init() {
-
 	// Keep these in order by item ID
 	// Agile Primal Diamond
 	core.NewItemEffect(76884, core.ApplyMetaGemCriticalDamageEffect)
