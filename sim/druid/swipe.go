@@ -35,7 +35,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 		ThreatMultiplier: 1,
 		MaxRange:         8,
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			baseDamage := flatBaseDamage + 0.225 * spell.MeleeAttackPower()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -67,10 +67,14 @@ func (druid *Druid) registerSwipeCatSpell() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+				if result.Landed() && (aoeTarget == druid.CurrentTarget) {
+					druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				}
 			}
 		},
 
