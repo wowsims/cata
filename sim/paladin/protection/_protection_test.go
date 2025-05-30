@@ -14,11 +14,10 @@ func init() {
 
 func TestProtection(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassPaladin,
-		Race:       proto.Race_RaceBloodElf,
-		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+		Class: proto.Class_ClassPaladin,
+		Race:  proto.Race_RaceBloodElf,
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/protection/gear_sets", "T12"),
+		GearSet:     core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumables: FullConsumesSpec,
@@ -52,7 +51,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
-				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "T12").GearSet,
+				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1").GearSet,
 				Consumables:    FullConsumesSpec,
 				Spec:           DefaultOptions,
 				Glyphs:         StandardGlyphs,
@@ -77,14 +76,12 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "-32023013122121101231-032032"
+var StandardTalents = "112222"
 var StandardGlyphs = &proto.Glyphs{
-	Major1: int32(proto.PaladinMajorGlyph_GlyphOfTheAsceticCrusader),
-	Major2: int32(proto.PaladinMajorGlyph_GlyphOfLayOnHands),
-	Major3: int32(proto.PaladinMajorGlyph_GlyphOfFocusedShield),
-	Minor1: int32(proto.PaladinMinorGlyph_GlyphOfTruth),
-	Minor2: int32(proto.PaladinMinorGlyph_GlyphOfBlessingOfMight),
-	Minor3: int32(proto.PaladinMinorGlyph_GlyphOfInsight),
+	Major1: int32(proto.PaladinMajorGlyph_GlyphOfFocusedShield),
+	Major2: int32(proto.PaladinMajorGlyph_GlyphOfTheAlabasterShield),
+	Major3: int32(proto.PaladinMajorGlyph_GlyphOfDivineProtection),
+	Minor1: int32(proto.PaladinMinorGlyph_GlyphOfFocusedWrath),
 }
 
 var DefaultOptions = &proto.Player_ProtectionPaladin{
@@ -92,16 +89,15 @@ var DefaultOptions = &proto.Player_ProtectionPaladin{
 		Options: &proto.ProtectionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
 				Seal: proto.PaladinSeal_Truth,
-				Aura: proto.PaladinAura_Retribution,
 			},
 		},
 	},
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  58085, // Flask of Steelskin
-	FoodId:   62663, // Lavascale Minestrone
-	PotId:    58146, // Golemblood Potion
-	PrepotId: 58146, // Golemblood Potion
-	TinkerId: 82174, // Synapse Springs
+	FlaskId:  76087,  // Flask of the Earth
+	FoodId:   74656,  // Lavascale Minestrone
+	PotId:    76095,  // Potion of Mogu Power
+	PrepotId: 76095,  // Potion of Mogu Power
+	TinkerId: 126734, // Synapse Springs Mark II
 }

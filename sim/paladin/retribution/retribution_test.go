@@ -17,12 +17,11 @@ func TestRetribution(t *testing.T) {
 		Class: proto.Class_ClassPaladin,
 		Race:  proto.Race_RaceBloodElf,
 
-		GearSet:       core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p1"),
-		OtherGearSets: []core.GearSetCombo{},
-		Talents:       StandardTalents,
-		Glyphs:        StandardGlyphs,
-		Consumables:   FullConsumesSpec,
-		SpecOptions:   core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
+		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p1"),
+		Talents:     StandardTalents,
+		Glyphs:      StandardGlyphs,
+		Consumables: FullConsumesSpec,
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "Aoe", SpecOptions: AoeOptions},
 		},
