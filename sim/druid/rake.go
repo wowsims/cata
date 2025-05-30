@@ -6,54 +6,49 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (druid *Druid) registerThrashBearSpell() {
+func (druid *Druid) registerRakeSpell() {
 	// Raw parameters from spell database
-	hitCoefficient := 1.05599999428
-	hitVariance := 0.20999999344
-	bleedCoefficient := 0.58899998665
+	const coefficient = 0.09000000358
+	const bonusCoefficientFromAP = 0.30000001192
 
 	// Scaled parameters for spell code
-	avgBaseDamage := hitCoefficient * druid.ClassSpellScaling // second factor is defined in druid.go
-	damageSpread := hitVariance * avgBaseDamage
-	flatBaseDamage := avgBaseDamage - damageSpread/2
-	flatBleedDamage := bleedCoefficient * druid.ClassSpellScaling
+	flatBaseDamage := coefficient * druid.ClassSpellScaling // ~98.5266
 
-	druid.Thrash = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 77758},
+	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 1822},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 
-		RageCost: core.RageCostOptions{
-			Cost: 25,
+		EnergyCost: core.EnergyCostOptions{
+			Cost:   35,
+			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: time.Second,
 			},
 			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    druid.NewTimer(),
-				Duration: time.Second * 6,
-			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		Dot: core.DotConfig{
 			Aura: druid.applyRendAndTear(core.Aura{
-				Label:    "Thrash",
-				Duration: time.Second * 6,
+				Label:    "Rake",
+				Duration: time.Second * 15,
 			}),
-			NumberOfTicks: 3,
-			TickLength:    time.Second * 2,
+			NumberOfTicks: 5,
+			TickLength:    time.Second * 3,
+
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = flatBleedDamage + 0.0167*dot.Spell.MeleeAttackPower()
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
+				dot.SnapshotPhysical(target, flatBaseDamage + bonusCoefficientFromAP * dot.Spell.MeleeAttackPower())
+
+				// Store snapshot power parameters for later use.
+				druid.UpdateBleedPower(druid.Rake, sim, target, true, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -61,21 +56,19 @@ func (druid *Druid) registerThrashBearSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + 0.0982*spell.MeleeAttackPower()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				perTargetDamage := (baseDamage + (sim.RandomFloat("Thrash") * damageSpread))
-				if druid.BleedCategories.Get(aoeTarget).AnyActive() {
-					perTargetDamage *= 1.3
-				}
-				result := spell.CalcAndDealDamage(sim, aoeTarget, perTargetDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				if result.Landed() {
-					spell.Dot(aoeTarget).Apply(sim)
-				}
+			baseDamage := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			if result.Landed() {
+				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				spell.Dot(target).Apply(sim)
+			} else {
+				spell.IssueRefund(sim)
 			}
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := avgBaseDamage + 0.0982*spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -85,7 +78,7 @@ func (druid *Druid) registerThrashBearSpell() {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := (flatBleedDamage + 0.0167*spell.MeleeAttackPower())
+			tickBase := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -96,4 +89,10 @@ func (druid *Druid) registerThrashBearSpell() {
 			return ticks
 		},
 	})
+
+	druid.Rake.ShortName = "Rake"
+}
+
+func (druid *Druid) CurrentRakeCost() float64 {
+	return druid.Rake.Cost.GetCurrentCost()
 }
