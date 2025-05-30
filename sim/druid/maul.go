@@ -28,7 +28,7 @@ func (druid *Druid) registerMaulSpell() {
 			},
 		},
 
-		DamageMultiplier: 1.1,
+		DamageMultiplier: 1.1 * core.TernaryFloat64(druid.AssumeBleedActive, RendAndTearDamageMultiplier, 1),
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  30,
@@ -41,10 +41,6 @@ func (druid *Druid) registerMaulSpell() {
 
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-
-				if druid.AssumeBleedActive || druid.Rip.Dot(curTarget).IsActive() || druid.Rake.Dot(curTarget).IsActive() || druid.Lacerate.Dot(curTarget).IsActive() || druid.Thrash.Dot(curTarget).IsActive() {
-					baseDamage *= 1.2
-				}
 
 				if hitIndex > 0 {
 					baseDamage *= 0.5
