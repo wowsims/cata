@@ -113,6 +113,8 @@ func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetSta
 		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
+		hit_exp_rating := (ownerHitRating + ownerExpertiseRating) / 2
+		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
 
@@ -120,10 +122,10 @@ func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetSta
 			stats.Stamina:     ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 1, 1.5),
 			stats.AttackPower: power * core.TernaryFloat64(isGuardian, EarthElementalSpellPowerScaling, EarthElementalSpellPowerScaling*1.8),
 
-			stats.HitRating:           ownerHitRating,
-			stats.ExpertiseRating:     ownerExpertiseRating,
-			stats.SpellCritPercent:    ownerSpellCritPercent,
-			stats.PhysicalCritPercent: ownerPhysicalCritPercent,
+			stats.HitRating:           hit_exp_rating,
+			stats.ExpertiseRating:     hit_exp_rating,
+			stats.SpellCritPercent:    critPercent,
+			stats.PhysicalCritPercent: critPercent,
 			stats.HasteRating:         ownerHasteRating,
 		}
 	}

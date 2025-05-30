@@ -134,6 +134,8 @@ func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStat
 		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
+		hit_exp_rating := (ownerHitRating + ownerExpertiseRating) / 2
+		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
 
@@ -141,10 +143,10 @@ func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStat
 			stats.Stamina:    ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 0.75, 0.75*1.2),
 			stats.SpellPower: power * core.TernaryFloat64(isGuardian, FireElementalSpellPowerScaling, FireElementalSpellPowerScaling*1.8),
 
-			stats.HitRating:           ownerHitRating,
-			stats.ExpertiseRating:     ownerExpertiseRating,
-			stats.SpellCritPercent:    ownerSpellCritPercent,
-			stats.PhysicalCritPercent: ownerPhysicalCritPercent,
+			stats.HitRating:           hit_exp_rating,
+			stats.ExpertiseRating:     hit_exp_rating,
+			stats.SpellCritPercent:    critPercent,
+			stats.PhysicalCritPercent: critPercent,
 			stats.HasteRating:         ownerHasteRating,
 		}
 	}

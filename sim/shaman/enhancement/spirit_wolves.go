@@ -69,13 +69,22 @@ func (enh *EnhancementShaman) NewSpiritWolf(index int) *SpiritWolf {
 
 func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
+		ownerHitRating := ownerStats[stats.HitRating]
+		ownerExpertiseRating := ownerStats[stats.ExpertiseRating]
+		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
+		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
+		ownerHasteRating := ownerStats[stats.HasteRating]
+		hit_exp_rating := (ownerHitRating + ownerExpertiseRating) / 2
+		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
+
 		return stats.Stats{
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,
 			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
-			stats.HitRating:           ownerStats[stats.HitRating],
-			stats.ExpertiseRating:     ownerStats[stats.ExpertiseRating],
-			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+			stats.HitRating:           hit_exp_rating,
+			stats.ExpertiseRating:     hit_exp_rating,
+			stats.PhysicalCritPercent: critPercent,
+			stats.SpellCritPercent:    critPercent,
+			stats.HasteRating:         ownerHasteRating,
 		}
 	}
 }
