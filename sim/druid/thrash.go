@@ -7,14 +7,14 @@ import (
 )
 
 func (druid *Druid) registerThrashBearSpell() {
-	flatHitDamage := 1.125 * druid.ClassSpellScaling // ~1232
+	flatHitDamage := 1.125 * druid.ClassSpellScaling          // ~1232
 	flatTickDamage := 0.62699997425 * druid.ClassSpellScaling // ~686
 
 	druid.ThrashBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77758},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | core.SpellFlagAoE,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagAPL | core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -44,7 +44,7 @@ func (druid *Druid) registerThrashBearSpell() {
 					panic("Thrash cannot roll-over snapshots!")
 				}
 
-				dot.SnapshotPhysical(target, flatTickDamage + 0.141 * dot.Spell.MeleeAttackPower())
+				dot.SnapshotPhysical(target, flatTickDamage+0.141*dot.Spell.MeleeAttackPower())
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -53,7 +53,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			baseDamage := flatHitDamage + 0.191 * spell.MeleeAttackPower()
+			baseDamage := flatHitDamage + 0.191*spell.MeleeAttackPower()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -74,14 +74,14 @@ func (druid *Druid) registerThrashBearSpell() {
 }
 
 func (druid *Druid) registerThrashCatSpell() {
-	flatHitDamage := 1.125 * druid.ClassSpellScaling // ~1232
+	flatHitDamage := 1.125 * druid.ClassSpellScaling          // ~1232
 	flatTickDamage := 0.62699997425 * druid.ClassSpellScaling // ~686
 
 	druid.ThrashCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 106830},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | core.SpellFlagAoE,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagAPL | core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -111,7 +111,7 @@ func (druid *Druid) registerThrashCatSpell() {
 					panic("Thrash cannot roll-over snapshots!")
 				}
 
-				dot.SnapshotPhysical(target, flatTickDamage + 0.141 * dot.Spell.MeleeAttackPower())
+				dot.SnapshotPhysical(target, flatTickDamage+0.141*dot.Spell.MeleeAttackPower())
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -120,7 +120,7 @@ func (druid *Druid) registerThrashCatSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			baseDamage := flatHitDamage + 0.191 * spell.MeleeAttackPower()
+			baseDamage := flatHitDamage + 0.191*spell.MeleeAttackPower()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
