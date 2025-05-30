@@ -25,11 +25,6 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		DamageMultiplier: 1,
 		CritMultiplier:   demonology.DefaultCritMultiplier(),
 		BonusCoefficient: shadowFlameCoeff,
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
