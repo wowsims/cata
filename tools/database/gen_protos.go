@@ -9,6 +9,7 @@ import (
 	"text/template"
 	"unicode"
 
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/tools/database/dbc"
 	"github.com/wowsims/mop/tools/tooltip"
 	"golang.org/x/text/cases"
@@ -431,7 +432,7 @@ func convertRawGlyphToGlyph(r RawGlyph, dbc *dbc.DBC) Glyph {
 	}
 }
 
-func GenerateProtos(dbcData *dbc.DBC) {
+func GenerateProtos(dbcData *dbc.DBC, db *WowDatabase) {
 	helper, err := NewDBHelper()
 	if err != nil {
 		fmt.Printf("Error creating DB helper: %v\n", err)
@@ -439,7 +440,7 @@ func GenerateProtos(dbcData *dbc.DBC) {
 	}
 	defer helper.Close()
 
-	var ignoredGlyphs = []int32{102153, 104054}
+	var ignoredGlyphs = []int32{85716, 102153, 104054}
 	rawGlyphs, err := LoadGlyphs(helper)
 	if err != nil {
 		fmt.Printf("Error loading glyphs: %v\n", err)
@@ -452,6 +453,7 @@ func GenerateProtos(dbcData *dbc.DBC) {
 		return
 	}
 
+	allGlyphSpellIds := []*proto.GlyphID{}
 	var classesData []ClassData
 	iconsMap, _ := LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	for _, dbcClass := range dbc.Classes {
@@ -480,7 +482,9 @@ func GenerateProtos(dbcData *dbc.DBC) {
 					data.GlyphsMinor = append(data.GlyphsMinor, g)
 				default:
 					fmt.Printf("Unknown glyph type %d in raw glyph %+v\n", raw.GlyphType, raw)
+					continue
 				}
+				allGlyphSpellIds = append(allGlyphSpellIds, &proto.GlyphID{ItemId: raw.ItemId, SpellId: raw.SpellId})
 			}
 		}
 		classTalents := []RawTalent{}
@@ -522,6 +526,11 @@ func GenerateProtos(dbcData *dbc.DBC) {
 	if err := GenerateTalentJsonFromDB(helper); err != nil {
 		fmt.Printf("Error generating talent json files: %v\n", err)
 	}
+
+	slices.SortFunc(allGlyphSpellIds, func(a, b *proto.GlyphID) int {
+		return cmp.Compare(a.ItemId, b.ItemId)
+	})
+	db.GlyphIDs = allGlyphSpellIds
 }
 
 func toSnakeCase(s string) string {

@@ -909,4 +909,7 @@ var GemDenyList = map[int32]struct{}{
 	38550: {},
 	63696: {},
 	63697: {},
+	97306: {}, // Unused Revitalizing Primal Diamond
+	97534: {}, // Unused Burning Primal Diamond
+	97937: {}, // Unused Burning Primal Diamond
 }

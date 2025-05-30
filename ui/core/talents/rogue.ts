@@ -22,7 +22,7 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfSharpKnives]: {
 			name: "Glyph of Sharp Knives",
-			description: "Your Fan of Kinves also damages the armor of its victims, applying 1 application of the Weakened Armor effect to each target.",
+			description: "Your Fan of Knives also damages the armor of its victims, applying 1 application of the Weakened Armor effect to each target.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_stone_sharpeningstone_05.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfRecuperate]: {
