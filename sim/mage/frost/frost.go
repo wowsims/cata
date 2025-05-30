@@ -58,6 +58,8 @@ func (frostMage *FrostMage) Initialize() {
 	frostMage.registerSummonWaterElementalSpell()
 	frostMage.registerFingersOfFrost()
 	frostMage.registerBrainFreeze()
+	frostMage.registerFrostboltSpell()
+	frostMage.registerFrozenOrbSpell()
 }
 
 func (frostMage *FrostMage) ApplyTalents() {
@@ -81,7 +83,7 @@ func (frostMage *FrostMage) ApplyTalents() {
 	})
 
 	frostMasteryMod := frostMage.Mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellIceLance, //TODO: I need to learn more about ClassMask so that I can place in the water elemental Water Bolt spell here.
+		ClassMask:  mage.MageSpellIceLance,
 		FloatValue: frostMage.GetMasteryBonus(),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})

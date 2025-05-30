@@ -4,9 +4,18 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
-func (mage *Mage) registerPresenceOfMindCD() {
+func (mage *Mage) ApplyTalents() {
+	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89744)
+	// Cooldowns/Special Implementations
+	mage.applyPresenceOfMindCD()
+	mage.applyIceFloesCD()
+	mage.applyRuneOfPower()
+}
+func (mage *Mage) applyPresenceOfMindCD() {
 	if !mage.Talents.PresenceOfMind {
 		return
 	}
@@ -68,7 +77,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	})
 }
 
-func (mage *Mage) registerIceFloesCD() {
+func (mage *Mage) applyIceFloesCD() {
 	if !mage.Talents.IceFloes {
 		return
 	}
@@ -123,7 +132,7 @@ func (mage *Mage) registerIceFloesCD() {
 
 }
 
-func (mage *Mage) registerRuneOfPower() {
+func (mage *Mage) applyRuneOfPower() {
 	if !mage.Talents.RuneOfPower {
 		return
 	}

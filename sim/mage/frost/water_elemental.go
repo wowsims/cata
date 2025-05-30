@@ -45,8 +45,7 @@ type WaterElemental struct {
 
 	mageOwner *FrostMage
 
-	Waterbolt               *core.Spell
-	waterElementalDamageMod *core.SpellMod
+	Waterbolt *core.Spell
 }
 
 func (Mage *FrostMage) NewWaterElemental() *WaterElemental {

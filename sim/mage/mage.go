@@ -91,34 +91,21 @@ func (mage *Mage) GetFrostMasteryBonus() float64 {
 	return (.16 + 0.02*mage.GetMasteryPoints())
 }
 
-func (mage *Mage) ApplyTalents() {
-	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89744)
-
-	// mage.ApplyArcaneTalents()
-	// mage.ApplyFireTalents()
-	// mage.ApplyFrostTalents()
-
-	// mage.applyGlyphs()
-}
-
 func (mage *Mage) Initialize() {
-	// mage.applyArmorSpells()
+	mage.applyArmorSpells()
 	// mage.registerArcaneBlastSpell()
 	// mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
-	// mage.registerBlizzardSpell()
+	mage.registerBlizzardSpell()
+	mage.registerConeOfColdSpell()
 	mage.registerDeepFreezeSpell()
 	mage.registerFireballSpell()
 	mage.registerFireBlastSpell()
-	// mage.registerFlameOrbSpell()
-	// mage.registerFlameOrbExplodeSpell()
 	mage.registerFlamestrikeSpell()
-	// mage.registerFrostboltSpell()
-	// mage.registerFrostfireOrbSpell()
 	mage.registerIceLanceSpell()
 	mage.registerScorchSpell()
 	mage.registerLivingBombSpell()
-	// mage.registerFrostfireBoltSpell()
+	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
 	// mage.registerManaGemsCD()
 	mage.registerMirrorImageCD()
@@ -126,8 +113,9 @@ func (mage *Mage) Initialize() {
 	// mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
 	mage.registerFrostBombSpell()
-	// mage.registerSummonWaterElementalCD()
-
+	mage.registerfrostNovaSpell()
+	mage.registerIceLanceSpell()
+	mage.registerIcyVeinsCD()
 	// mage.applyArcaneMissileProc()
 }
 
@@ -187,9 +175,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	mage.mirrorImage = mage.NewMirrorImage()
 	// mage.flameOrb = mage.NewFlameOrb()
 	// mage.frostfireOrb = mage.NewFrostfireOrb()
-
-	// Wizardry
-	mage.MultiplyStat(stats.Intellect, 1.05)
 
 	if mage.CouldHaveSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
 		mage.t12MirrorImage = mage.NewT12MirrorImage()
@@ -294,10 +279,6 @@ func (mage *Mage) applyArmorSpells() {
 type MageAgent interface {
 	GetMage() *Mage
 }
-
-// func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
-// 	return spell.ClassSpellMask&MageSpellChill > 0 || (spell.ClassSpellMask == MageSpellBlizzard && mage.Talents.IceShards > 0)
-// }
 
 const (
 	MageSpellFlagNone      int64 = 0
