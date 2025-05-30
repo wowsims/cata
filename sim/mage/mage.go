@@ -186,6 +186,9 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	// mage.flameOrb = mage.NewFlameOrb()
 	// mage.frostfireOrb = mage.NewFrostfireOrb()
 
+	// Wizardry
+	mage.MultiplyStat(stats.Intellect, 1.05)
+
 	if mage.CouldHaveSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
 		mage.t12MirrorImage = mage.NewT12MirrorImage()
 	}
