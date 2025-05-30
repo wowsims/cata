@@ -15,10 +15,4 @@ func init() {
 	core.NewItemEffect(76886, core.ApplyMetaGemCriticalDamageEffect)
 	// Revitalizing Primal Diamond
 	core.NewItemEffect(76888, core.ApplyMetaGemCriticalDamageEffect)
-	// Burning Primal Diamond
-	core.NewItemEffect(97937, core.ApplyMetaGemCriticalDamageEffect)
-	// Burning Primal Diamond
-	core.NewItemEffect(97534, core.ApplyMetaGemCriticalDamageEffect)
-	// Revitalizing Primal Diamond
-	core.NewItemEffect(97306, core.ApplyMetaGemCriticalDamageEffect)
 }
