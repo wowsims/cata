@@ -75,7 +75,6 @@ enum PaladinMinorGlyph {
     GlyphOfTheFallingAvenger = 80584;
     GlyphOfTheRighteousRetreat = 80585;
     GlyphOfBladedJudgment = 80586;
-    GlyphOfRighteousRetreat = 85716;
     GlyphOfTheExorcist = 104107;
     GlyphOfPillarOfLight = 104108;
 }

@@ -142,14 +142,13 @@ func main() {
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
-	db.GlyphIDs = getGlyphIDsFromJson(fmt.Sprintf("%s/glyph_id_map.json", inputsDir))
 	db.ReforgeStats = reforgeStats.ToProto()
 
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
 
-	database.GenerateProtos(instance)
+	database.GenerateProtos(instance, db)
 
 	for _, item := range instance.Items {
 		parsed := item.ToUIItem()
