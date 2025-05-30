@@ -15,7 +15,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 		ActionID:       core.ActionID{SpellID: 6343},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskThunderClap | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
@@ -41,7 +41,6 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 303.0 + 0.228*spell.MeleeAttackPower()
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

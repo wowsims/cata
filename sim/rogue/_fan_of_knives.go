@@ -26,7 +26,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 	rogue.FanOfKnives = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51723},
 		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 35,
@@ -45,7 +45,6 @@ func (rogue *Rogue) registerFanOfKnives() {
 			rogue.BreakStealth(sim)
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower())
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 
 				results[i] = fokSpell.CalcDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)
 			}
