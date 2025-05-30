@@ -52,7 +52,7 @@ func (paladin *Paladin) registerSanctityOfBattle() {
 		ActionID: core.ActionID{SpellID: 25956},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			updateFloatValue(paladin.MeleeAttackSpeed)
+			updateFloatValue(paladin.SwingSpeed())
 			cooldownMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

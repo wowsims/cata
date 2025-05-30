@@ -496,7 +496,7 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 	aa.oh.swingAt = NeverExpires
 
 	if aa.AutoSwingMelee {
-		aa.mh.updateSwingDuration(aa.mh.unit.MeleeAttackSpeed)
+		aa.mh.updateSwingDuration(aa.mh.unit.SwingSpeed())
 		aa.mh.swingAt = 0
 
 		if aa.IsDualWielding {
@@ -520,7 +520,7 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 	aa.ranged.swingAt = NeverExpires
 
 	if aa.AutoSwingRanged {
-		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedAttackSpeed)
+		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedSwingSpeed())
 		aa.ranged.swingAt = 0
 	}
 }
@@ -567,7 +567,7 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 
 		if aa.mh.IsInRange() {
 			aa.mh.enabled = true
-			aa.mh.addWeaponAttack(sim, aa.mh.unit.MeleeAttackSpeed)
+			aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
 	}
 
@@ -577,7 +577,7 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 		}
 		if aa.ranged.IsInRange() {
 			aa.ranged.enabled = true
-			aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedAttackSpeed)
+			aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 		}
 
 	}
@@ -612,14 +612,14 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 	aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
 	if aa.mh.IsInRange() && !aa.mh.enabled {
 		aa.mh.enabled = true
-		aa.mh.addWeaponAttack(sim, aa.mh.unit.MeleeAttackSpeed)
+		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 	}
 
 	if aa.IsDualWielding && !aa.oh.enabled {
 		aa.oh.swingAt = max(aa.oh.swingAt, sim.CurrentTime, 0)
 		if aa.oh.IsInRange() {
 			aa.oh.enabled = true
-			aa.oh.addWeaponAttack(sim, aa.mh.unit.MeleeAttackSpeed)
+			aa.oh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
 	}
 
@@ -641,7 +641,7 @@ func (aa *AutoAttacks) EnableRangedSwing(sim *Simulation) {
 	aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
 	if aa.ranged.IsInRange() {
 		aa.ranged.enabled = true
-		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedAttackSpeed)
+		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
 }
 
@@ -697,13 +697,13 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 	}
 
 	if aa.AutoSwingRanged && aa.ranged.enabled {
-		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedAttackSpeed)
+		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedSwingSpeed())
 		// ranged attack speed changes aren't applied mid-"swing"
 	}
 
 	if aa.AutoSwingMelee && aa.mh.enabled {
 		oldSwingSpeed := aa.mh.curSwingSpeed
-		aa.mh.updateSwingDuration(aa.mh.unit.MeleeAttackSpeed)
+		aa.mh.updateSwingDuration(aa.mh.unit.SwingSpeed())
 		f := oldSwingSpeed / aa.mh.curSwingSpeed
 
 		if remainingSwingTime := aa.mh.swingAt - sim.CurrentTime; remainingSwingTime > 0 {

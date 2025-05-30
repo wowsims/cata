@@ -167,8 +167,8 @@ type Unit struct {
 	manaTickWhileNotCombat float64
 
 	CastSpeed         float64
-	MeleeAttackSpeed  float64
-	RangedAttackSpeed float64
+	meleeAttackSpeed  float64
+	rangedAttackSpeed float64
 
 	CurrentTarget   *Unit
 	defaultTarget   *Unit
@@ -337,11 +337,12 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 		}
 	}
 	if bonus[stats.HasteRating] != 0 {
+		unit.updateAttackSpeed()
+		unit.AutoAttacks.UpdateSwingTimers(sim)
 		unit.runicPowerBar.updateRegenTimes(sim)
 		unit.energyBar.processDynamicHasteRatingChange(sim)
 		unit.focusBar.processDynamicHasteRatingChange(sim)
 		unit.updateCastSpeed()
-		unit.updateAttackSpeed(sim)
 	}
 	if bonus[stats.MasteryRating] != 0 {
 		newMasteryRating := unit.stats[stats.MasteryRating]
@@ -423,12 +424,12 @@ func (unit *Unit) HasTemporarySpellCastSpeedIncrease() bool {
 
 // Returns if melee swings have any temporary increases active.
 func (unit *Unit) HasTemporaryMeleeSwingSpeedIncrease() bool {
-	return unit.MeleeAttackSpeed != unit.initialMeleeSwingSpeed
+	return unit.meleeAttackSpeed != unit.initialMeleeSwingSpeed
 }
 
 // Returns if ranged swings have any temporary increases active.
 func (unit *Unit) HasTemporaryRangedSwingSpeedIncrease() bool {
-	return unit.RangedAttackSpeed != unit.initialRangedSwingSpeed
+	return unit.rangedAttackSpeed != unit.initialRangedSwingSpeed
 }
 
 func (unit *Unit) InitialCastSpeed() float64 {
@@ -452,7 +453,6 @@ func (unit *Unit) updateCastSpeed() {
 		unit.OnCastSpeedChanged[i](oldCastSpeed, newCastSpeed)
 	}
 }
-
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 
@@ -466,12 +466,11 @@ func (unit *Unit) MultiplyCastSpeed(amount float64) {
 func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
 	return time.Duration(float64(dur) * unit.CastSpeed)
 }
-
 func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.Duration {
 	return time.Duration(float64(dur) * unit.CastSpeed * max(0, spell.CastTimeMultiplier))
 }
 
-func (unit *Unit) TotalMeleeHasteMultiplier() float64 {
+func (unit *Unit) SwingSpeed() float64 {
 	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
@@ -483,18 +482,16 @@ func (unit *Unit) BlockDamageReduction() float64 {
 	return unit.PseudoStats.BlockDamageReduction
 }
 
-func (unit *Unit) TotalRangedHasteMultiplier() float64 {
+func (unit *Unit) RangedSwingSpeed() float64 {
 	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
-func (unit *Unit) updateMeleeAttackSpeed(sim *Simulation) {
-	oldMeleeAttackSpeed := unit.MeleeAttackSpeed
-	unit.MeleeAttackSpeed = unit.TotalMeleeHasteMultiplier()
-
-	unit.AutoAttacks.UpdateSwingTimers(sim)
+func (unit *Unit) updateMeleeAttackSpeed() {
+	oldMeleeAttackSpeed := unit.meleeAttackSpeed
+	unit.meleeAttackSpeed = unit.SwingSpeed()
 
 	for i := range unit.OnMeleeAttackSpeedChanged {
-		unit.OnMeleeAttackSpeedChanged[i](oldMeleeAttackSpeed, unit.MeleeAttackSpeed)
+		unit.OnMeleeAttackSpeedChanged[i](oldMeleeAttackSpeed, unit.meleeAttackSpeed)
 	}
 }
 
@@ -502,46 +499,42 @@ func (unit *Unit) updateMeleeAttackSpeed(sim *Simulation) {
 func (unit *Unit) MultiplyMeleeSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 
+	unit.updateMeleeAttackSpeed()
+
 	for _, pet := range unit.DynamicMeleeSpeedPets {
 		pet.dynamicMeleeSpeedInheritance(amount)
 	}
-
-	unit.updateMeleeAttackSpeed(sim)
+	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
-func (unit *Unit) updateRangedAttackSpeed(sim *Simulation) {
-	oldRangedAttackSpeed := unit.RangedAttackSpeed
-	unit.RangedAttackSpeed = unit.TotalRangedHasteMultiplier()
-
-	unit.AutoAttacks.UpdateSwingTimers(sim)
+func (unit *Unit) updateRangedAttackSpeed() {
+	oldRangedAttackSpeed := unit.rangedAttackSpeed
+	unit.rangedAttackSpeed = unit.RangedSwingSpeed()
 
 	for i := range unit.OnRangedAttackSpeedChanged {
-		unit.OnRangedAttackSpeedChanged[i](oldRangedAttackSpeed, unit.RangedAttackSpeed)
+		unit.OnRangedAttackSpeedChanged[i](oldRangedAttackSpeed, unit.rangedAttackSpeed)
 	}
 }
 
 func (unit *Unit) MultiplyRangedSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
-	unit.updateRangedAttackSpeed(sim)
+	unit.updateRangedAttackSpeed()
+	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
-func (unit *Unit) updateAttackSpeed(sim *Simulation) {
-	oldMeleeAttackSpeed := unit.MeleeAttackSpeed
-	oldRangedAttackSpeed := unit.RangedAttackSpeed
+func (unit *Unit) updateAttackSpeed() {
+	oldMeleeAttackSpeed := unit.meleeAttackSpeed
+	oldRangedAttackSpeed := unit.rangedAttackSpeed
 
-	unit.MeleeAttackSpeed = unit.TotalMeleeHasteMultiplier()
-	unit.RangedAttackSpeed = unit.TotalRangedHasteMultiplier()
-
-	if sim != nil {
-		unit.AutoAttacks.UpdateSwingTimers(sim)
-	}
+	unit.meleeAttackSpeed = unit.SwingSpeed()
+	unit.rangedAttackSpeed = unit.RangedSwingSpeed()
 
 	for i := range unit.OnMeleeAttackSpeedChanged {
-		unit.OnMeleeAttackSpeedChanged[i](oldMeleeAttackSpeed, unit.MeleeAttackSpeed)
+		unit.OnMeleeAttackSpeedChanged[i](oldMeleeAttackSpeed, unit.meleeAttackSpeed)
 	}
 
 	for i := range unit.OnRangedAttackSpeedChanged {
-		unit.OnRangedAttackSpeedChanged[i](oldRangedAttackSpeed, unit.RangedAttackSpeed)
+		unit.OnRangedAttackSpeedChanged[i](oldRangedAttackSpeed, unit.rangedAttackSpeed)
 	}
 }
 
@@ -550,11 +543,12 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
 
+	unit.updateAttackSpeed()
+
 	for _, pet := range unit.DynamicMeleeSpeedPets {
 		pet.dynamicMeleeSpeedInheritance(amount)
 	}
-
-	unit.updateAttackSpeed(sim)
+	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
 // Helper for multiplying resource generation speed
@@ -618,15 +612,15 @@ func (unit *Unit) finalize() {
 	unit.defaultTarget = unit.CurrentTarget
 	unit.applyParryHaste()
 	unit.updateCastSpeed()
-	unit.updateAttackSpeed(nil)
+	unit.updateAttackSpeed()
 	unit.initMovement()
 
 	// All stats added up to this point are part of the 'initial' stats.
 	unit.initialStatsWithoutDeps = unit.stats
 	unit.initialPseudoStats = unit.PseudoStats
 	unit.initialCastSpeed = unit.CastSpeed
-	unit.initialMeleeSwingSpeed = unit.MeleeAttackSpeed
-	unit.initialRangedSwingSpeed = unit.RangedAttackSpeed
+	unit.initialMeleeSwingSpeed = unit.SwingSpeed()
+	unit.initialRangedSwingSpeed = unit.RangedSwingSpeed()
 
 	unit.StatDependencyManager.FinalizeStatDeps()
 	unit.initialStats = unit.ApplyStatDependencies(unit.initialStatsWithoutDeps)

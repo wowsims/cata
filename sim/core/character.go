@@ -624,8 +624,8 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
 		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
-		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.MeleeAttackSpeed - 1) * 100,
-		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.RangedAttackSpeed - 1) * 100,
+		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.SwingSpeed() - 1) * 100,
+		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.RangedSwingSpeed() - 1) * 100,
 		proto.PseudoStat_PseudoStatSpellHastePercent:     (character.TotalSpellHasteMultiplier() - 1) * 100,
 
 		// School-specific fully buffed Hit/Crit are represented as proper Stats in the back-end so

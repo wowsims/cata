@@ -34,7 +34,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 
 			CastTime: func(spell *core.Spell) time.Duration {
-				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedAttackSpeed)
+				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
 		},
 		BonusCritPercent:         0,
