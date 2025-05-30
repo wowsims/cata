@@ -449,6 +449,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 
 	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {
+		// MoP no longer has head enchants, so filter them.
+		if enchant.Type == proto.ItemType_ItemTypeHead {
+			return false
+		}
+
 		for _, pattern := range database.DenyListNameRegexes {
 			if pattern.MatchString(enchant.Name) {
 				return false
