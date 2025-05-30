@@ -28,7 +28,7 @@ type FrostMage struct {
 	*mage.Mage
 
 	waterElemental             *WaterElemental
-	frozenOrb                  *core.Spell
+	frozenOrb                  *FrozenOrb
 	frostfireFrozenCritBuffMod *core.SpellMod
 	iceLanceFrozenCritBuffMod  *core.SpellMod
 }

@@ -7,25 +7,6 @@ import (
 )
 
 func (mage *Mage) registerBlizzardSpell() {
-	var iceShardsProcApplication *core.Spell
-	if mage.Talents.IceShards > 0 {
-		auras := mage.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
-			return unit.GetOrRegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 12488},
-				Label:    "Ice Shards",
-				Duration: time.Millisecond * 1500,
-			})
-		})
-		iceShardsProcApplication = mage.RegisterSpell(core.SpellConfig{
-			ActionID:       core.ActionID{SpellID: 12488},
-			ProcMask:       core.ProcMaskSpellProc,
-			Flags:          core.SpellFlagNoLogs,
-			ClassSpellMask: MageSpellChill,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				auras.Get(target).Activate(sim)
-			},
-		})
-	}
 
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 42208},
@@ -42,9 +23,6 @@ func (mage *Mage) registerBlizzardSpell() {
 			damage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-				if iceShardsProcApplication != nil {
-					iceShardsProcApplication.Cast(sim, aoeTarget)
-				}
 			}
 		},
 	})

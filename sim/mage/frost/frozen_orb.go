@@ -10,7 +10,7 @@ import (
 
 func (frost *FrostMage) registerFrozenOrbSpell() {
 
-	frost.frozenOrb = frost.RegisterSpell(core.SpellConfig{
+	frozenOrb := frost.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 84714},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -36,7 +36,7 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 	})
 
 	frost.AddMajorCooldown(core.MajorCooldown{
-		Spell: frost.frozenOrb,
+		Spell: frozenOrb,
 		Type:  core.CooldownTypeDPS,
 	})
 }

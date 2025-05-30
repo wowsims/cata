@@ -48,30 +48,25 @@ func (mage *Mage) registerFrostBombSpell() {
 		},
 	})
 
-	// aura := mage.RegisterAura(core.Aura{
-	// 	Label:    "Frost Bomb",
-	// 	ActionID: core.ActionID{SpellID: 113092},
-	// 	Duration: time.Second * 4,
+	mage.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    "Frost Bomb",
+			ActionID: core.ActionID{SpellID: 113092},
+			Duration: time.Second * 4,
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				frostBombExplosionSpell.Cast(sim, aura.Unit)
+				mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
+			},
+		})
+	})
 
-	// 	ManaCost: core.ManaCostOptions{
-	// 		BaseCostPercent: 1.25,
-	// 	},
-
-	// 	OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-	// 		frostBombExplosionSpell.Cast(sim, aura.Unit)
-	// 	},
-	// })
-
-	mage.FrostBomb = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 44457},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
+	mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 113092},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellFrostBombDot,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 1.25,
-		},
+		ClassSpellMask: MageSpellFrostBomb,
+		ManaCost:       core.ManaCostOptions{BaseCostPercent: 1.25},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -82,22 +77,14 @@ func (mage *Mage) registerFrostBombSpell() {
 				Duration: time.Second * 10,
 			},
 		},
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "FrostBomb",
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					frostBombExplosionSpell.Cast(sim, aura.Unit)
-					mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
-				},
-			},
-			NumberOfTicks:       1,
-			TickLength:          time.Second * 4,
-			AffectedByCastSpeed: true,
-		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			if result.Landed() {
+				mage.FrostBombAuras.Get(target).Activate(sim)
+			}
+			spell.DealOutcome(sim, result)
 		},
+		RelatedAuraArrays: mage.FrostBombAuras.ToMap(),
 	})
+
 }

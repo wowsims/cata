@@ -48,6 +48,7 @@ type Mage struct {
 	FingersOfFrostAura     *core.Aura
 	IcyVeinsAura           *core.Aura
 	iceFloesfAura          *core.Aura
+	FrostBombAuras         *core.AuraArray
 
 	arcaneMissileCritSnapshot float64
 	brainFreezeProcChance     float64
@@ -124,6 +125,7 @@ func (mage *Mage) Initialize() {
 	// mage.registerCombustionSpell()
 	// mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
+	mage.registerFrostBombSpell()
 	// mage.registerSummonWaterElementalCD()
 
 	// mage.applyArcaneMissileProc()
