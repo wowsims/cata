@@ -4,18 +4,15 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func (druid *Druid) registerRakeSpell() {
 	// Raw parameters from spell database
-	coefficient := 0.05700000003
+	const coefficient = 0.09000000358
+	const bonusCoefficientFromAP = 0.30000001192
 
 	// Scaled parameters for spell code
-	flatBaseDamage := coefficient * druid.ClassSpellScaling // ~56
-
-	// Set bonuses can scale up the ticks relative to the initial hit
-	getTickDamageMultiplier := func() float64 { return core.TernaryFloat64(druid.T11Feral2pBonus.IsActive(), 1.1, 1) }
+	flatBaseDamage := coefficient * druid.ClassSpellScaling // ~98.5266
 
 	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1822},
@@ -34,7 +31,7 @@ func (druid *Druid) registerRakeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: druid.RazorClawsMultiplier(druid.GetStat(stats.MasteryRating)),
+		DamageMultiplier: 1,
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         core.MaxMeleeRange,
@@ -42,15 +39,13 @@ func (druid *Druid) registerRakeSpell() {
 		Dot: core.DotConfig{
 			Aura: druid.applyRendAndTear(core.Aura{
 				Label:    "Rake",
-				Duration: time.Second * 9,
+				Duration: time.Second * 15,
 			}),
-			NumberOfTicks: 3 + druid.Talents.EndlessCarnage,
+			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
+
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = (flatBaseDamage + 0.147*dot.Spell.MeleeAttackPower()) * getTickDamageMultiplier()
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
+				dot.SnapshotPhysical(target, flatBaseDamage + bonusCoefficientFromAP * dot.Spell.MeleeAttackPower())
 
 				// Store snapshot power parameters for later use.
 				druid.UpdateBleedPower(druid.Rake, sim, target, true, true)
@@ -61,11 +56,7 @@ func (druid *Druid) registerRakeSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + 0.147*spell.MeleeAttackPower()
-			if druid.BleedCategories.Get(target).AnyActive() {
-				baseDamage *= 1.3
-			}
-
+			baseDamage := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -77,7 +68,7 @@ func (druid *Druid) registerRakeSpell() {
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := flatBaseDamage + 0.147*spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -87,7 +78,7 @@ func (druid *Druid) registerRakeSpell() {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := (flatBaseDamage + 0.147*spell.MeleeAttackPower()) * getTickDamageMultiplier()
+			tickBase := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -97,10 +88,6 @@ func (druid *Druid) registerRakeSpell() {
 
 			return ticks
 		},
-	})
-
-	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		druid.Rake.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
 	})
 
 	druid.Rake.ShortName = "Rake"

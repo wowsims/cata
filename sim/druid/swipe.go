@@ -4,10 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (druid *Druid) registerSwipeBearSpell() {
-	flatBaseDamage := 0.94199997187 * druid.ClassSpellScaling // ~929
+	flatBaseDamage := 0.22499999404 * druid.ClassSpellScaling // ~246.3164
 
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 779},
@@ -16,7 +17,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost: 15,
+			Cost: core.TernaryInt32(druid.Spec == proto.Spec_SpecGuardianDruid, 0, 15),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -29,13 +30,13 @@ func (druid *Druid) registerSwipeBearSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: core.TernaryFloat64(druid.AssumeBleedActive, RendAndTearDamageMultiplier, 1),
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         8,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + 0.123*spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + 0.225 * spell.MeleeAttackPower()
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -45,8 +46,6 @@ func (druid *Druid) registerSwipeBearSpell() {
 }
 
 func (druid *Druid) registerSwipeCatSpell() {
-	weaponMulti := 5.25
-
 	druid.SwipeCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 62078},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -63,7 +62,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: weaponMulti,
+		DamageMultiplier: 4.0 * core.TernaryFloat64(druid.AssumeBleedActive, RendAndTearDamageMultiplier, 1),
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
