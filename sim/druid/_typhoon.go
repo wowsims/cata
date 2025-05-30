@@ -20,7 +20,7 @@ func (druid *Druid) registerTyphoonSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellTyphoon,
-		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 16,
@@ -44,7 +44,6 @@ func (druid *Druid) registerTyphoonSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				baseDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassDruid, 1.316)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}

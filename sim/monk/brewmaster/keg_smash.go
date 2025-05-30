@@ -10,12 +10,13 @@ import (
 func (bm *BrewmasterMonk) registerKegSmash() {
 	actionID := core.ActionID{SpellID: 121253}
 	chiMetrics := bm.NewChiMetrics(actionID)
+	results := make([]*core.SpellResult, bm.Env.GetNumTargets())
 
 	bm.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | monk.SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | monk.SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: monk.MonkSpellKegSmash,
 		MaxRange:       core.MaxMeleeRange,
 		MissileSpeed:   30,
@@ -45,13 +46,11 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var results []*core.SpellResult
 			missedTargets := 0
-			for _, enemyTarget := range sim.Encounter.TargetUnits {
+			for i, enemyTarget := range sim.Encounter.TargetUnits {
 				baseDamage := bm.CalculateMonkStrikeDamage(sim, spell)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				result := spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				results = append(results, result)
+				results[i] = result
 				if !result.Landed() {
 					missedTargets++
 				}

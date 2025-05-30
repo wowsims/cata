@@ -94,6 +94,7 @@ func (cat *FeralDruid) GetDruid() *druid.Druid {
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
 	cat.RegisterFeralCatSpells()
+	cat.ApplyPrimalFury()
 
 	snapshotHandler := func(aura *core.Aura, sim *core.Simulation) {
 		previousRipSnapshotPower := cat.Rip.NewSnapshotPower

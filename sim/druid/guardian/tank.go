@@ -137,6 +137,7 @@ func (bear *GuardianDruid) applyLeatherSpecialization() {
 func (bear *GuardianDruid) Initialize() {
 	bear.Druid.Initialize()
 	bear.RegisterFeralTankSpells()
+	bear.ApplyPrimalFury()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {

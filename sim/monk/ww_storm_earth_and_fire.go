@@ -197,7 +197,7 @@ func (controller *StormEarthAndFireController) Reset(sim *core.Simulation) {
 	controller.updateActiveClones()
 }
 
-func (monk *Monk) registerSEFPets() {
+func (monk *Monk) RegisterSEFPets() {
 	monk.SefController = &StormEarthAndFireController{
 		owner: monk,
 		pets:  make([]*StormEarthAndFirePet, 0, 3),

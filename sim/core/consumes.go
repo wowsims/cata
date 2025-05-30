@@ -329,6 +329,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 			ActionID:    BigDaddyActionID,
 			SpellSchool: SpellSchoolFire,
 			ProcMask:    ProcMaskEmpty,
+			Flags:       SpellFlagAoE,
 
 			Cast: CastConfig{
 				CD: Cooldown{
@@ -353,9 +354,8 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-				baseDamage := 5006 * sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, 5006, spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})

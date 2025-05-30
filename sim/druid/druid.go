@@ -50,9 +50,8 @@ type Druid struct {
 	MangleBear            *DruidSpell
 	MangleCat             *DruidSpell
 	Maul                  *DruidSpell
-	MaulQueueSpell        *DruidSpell
+	MightOfUrsoc          *DruidSpell
 	Moonfire              *DruidSpell
-	Pulverize             *DruidSpell
 	Rebirth               *DruidSpell
 	Rake                  *DruidSpell
 	Ravage                *DruidSpell
@@ -67,7 +66,8 @@ type Druid struct {
 	SwipeBear             *DruidSpell
 	SwipeCat              *DruidSpell
 	TigersFury            *DruidSpell
-	Thrash                *DruidSpell
+	ThrashBear            *DruidSpell
+	ThrashCat             *DruidSpell
 	Typhoon               *DruidSpell
 	Wrath                 *DruidSpell
 	WildMushrooms         *DruidSpell
@@ -79,30 +79,22 @@ type Druid struct {
 	BarkskinAura             *core.Aura
 	BlazeOfGloryAura         *core.Aura
 	BearFormAura             *core.Aura
-	BerserkAura              *core.Aura
-	BerserkProcAura          *core.Aura
+	BerserkBearAura          *core.Aura
+	BerserkCatAura           *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
-	DemoralizingRoarAuras    core.AuraArray
+	WeakenedBlowsAuras       core.AuraArray
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	LunarEclipseProcAura     *core.Aura
-	MaulQueueAura            *core.Aura
-	MoonkinT84PCAura         *core.Aura
+	MightOfUrsocAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	OwlkinFrenzyAura         *core.Aura
-	PrimalMadnessAura        *core.Aura
 	SavageDefenseAura        *core.DamageAbsorptionAura
 	SolarEclipseProcAura     *core.Aura
-	StampedeCatAura          *core.Aura
-	StampedeBearAura         *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 
-	BleedCategories core.ExclusiveCategoryArray
-
-	PrimalMadnessRageMetrics       *core.ResourceMetrics
-	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
-	SavageRoarDurationTable        [6]time.Duration
+	SavageRoarDurationTable [6]time.Duration
 
 	ProcOoc func(sim *core.Simulation)
 
@@ -119,8 +111,6 @@ type Druid struct {
 	GuardianLeatherSpecDep     *stats.StatDependency
 
 	// Item sets
-	T11Feral2pBonus *core.Aura
-	T11Feral4pBonus *core.Aura
 	T13Feral4pBonus *core.Aura
 }
 
@@ -273,6 +263,10 @@ func (druid *Druid) Initialize() {
 		}
 	})
 
+	druid.WeakenedBlowsAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return core.WeakenedBlowsAura(target)
+	})
+
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
@@ -298,20 +292,20 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	// druid.registerBerserkCD()
 	// druid.registerCatCharge()
 	druid.registerCatFormSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFerociousBiteSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerMangleBearSpell()
-	// druid.registerMangleCatSpell()
-	// druid.registerMaulSpell()
-	// druid.registerRakeSpell()
+	druid.registerFerociousBiteSpell()
+	druid.registerLacerateSpell()
+	druid.registerMangleBearSpell()
+	druid.registerMangleCatSpell()
+	druid.registerMaulSpell()
+	druid.registerRakeSpell()
 	// druid.registerRavageSpell()
-	// druid.registerRipSpell()
+	druid.registerRipSpell()
 	// druid.registerSavageRoarSpell()
 	// druid.registerShredSpell()
-	//druid.registerSwipeBearSpell()
-	//druid.registerSwipeCatSpell()
-	// druid.registerThrashBearSpell()
+	druid.registerSwipeBearSpell()
+	druid.registerSwipeCatSpell()
+	druid.registerThrashBearSpell()
+	druid.registerThrashCatSpell()
 	// druid.registerTigersFurySpell()
 }
 
@@ -321,17 +315,15 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBerserkCD()
 	//druid.registerDemoralizingRoarSpell()
 	// druid.registerEnrageSpell()
-	//druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerPulverizeSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
+	druid.registerFrenziedRegenerationSpell()
+	druid.registerMangleBearSpell()
+	druid.registerMaulSpell()
+	druid.registerMightOfUrsocCD()
+	druid.registerLacerateSpell()
 	//druid.registerSavageDefensePassive()
 	// druid.registerSurvivalInstinctsCD()
-	//druid.registerSwipeBearSpell()
-	// druid.registerThrashBearSpell()
+	druid.registerSwipeBearSpell()
+	druid.registerThrashBearSpell()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
@@ -402,11 +394,6 @@ func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
 
 func (druid *Druid) UpdateBleedPower(bleedSpell *DruidSpell, sim *core.Simulation, target *core.Unit, updateCurrent bool, updateNew bool) {
 	snapshotPower := bleedSpell.ExpectedTickDamage(sim, target)
-
-	// Assume that Mangle will be up soon if not currently active.
-	if !druid.BleedCategories.Get(target).AnyActive() {
-		snapshotPower *= 1.3
-	}
 
 	if updateCurrent {
 		bleedSpell.CurrentSnapshotPower = snapshotPower

@@ -576,10 +576,9 @@ export class Timeline extends ResultComponent {
 		const buffsAndDebuffsById = buffsById.concat(debuffsById);
 
 		auraAsResource.forEach(auraId => {
-			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs[0].actionId!.spellId === auraId);
+			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs?.[0].actionId!.spellId === auraId);
 			if (auraIndex !== -1) {
 				this.addAuraRow(buffsById[auraIndex], duration);
-				delete buffsById[auraIndex];
 			}
 		});
 
@@ -610,9 +609,11 @@ export class Timeline extends ResultComponent {
 			});
 		}
 
-		// Don't add a row for buffs that were already visualized in a cast row.
+		// Don't add a row for buffs that were already visualized in a cast row or are prioritized.
 		const buffsToShow = buffsById.filter(auraUptimeLogs =>
-			playerCastsByAbility.findIndex(casts => casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId!)),
+			playerCastsByAbility.findIndex(
+				casts => auraUptimeLogs[0].actionId && (casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
+			),
 		);
 		if (buffsToShow.length > 0) {
 			this.addSeparatorRow(duration);

@@ -210,6 +210,19 @@ func (raid *Raid) GetFirstEmptyRaidIndex() (*Party, int) {
 	panic("Raid is full")
 }
 
+func (raid *Raid) GetTargetDummies() []*TargetDummy {
+	var targetDummies = []*TargetDummy{}
+	for _, party := range raid.Parties {
+		for _, player := range party.Players {
+			dummy, ok := player.(*TargetDummy)
+			if ok {
+				targetDummies = append(targetDummies, dummy)
+			}
+		}
+	}
+	return targetDummies
+}
+
 func (raid *Raid) GetFirstTargetDummy() *TargetDummy {
 	for _, party := range raid.Parties {
 		for _, player := range party.Players {
