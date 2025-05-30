@@ -27,6 +27,7 @@ func (mage *Mage) ApplyMastery() {
 	waterElementalDamageMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: mage.GetFrostMasteryBonus(),
+		ClassMask:  MageWaterElementalSpellWaterBolt,
 	})
 
 	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating, newMasteryRating float64) {

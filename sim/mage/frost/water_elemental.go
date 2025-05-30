@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/mage"
 )
 
 func (Mage *FrostMage) registerSummonWaterElementalSpell() {
@@ -50,8 +51,6 @@ type WaterElemental struct {
 
 func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
 
-	hasGlyph := 
-
 	waterElemental := &WaterElemental{
 		Pet: core.NewPet(core.PetConfig{
 			Name:                           "Water Elemental",
@@ -65,6 +64,7 @@ func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
 		mageOwner: Mage,
 	}
 	waterElemental.EnableManaBar()
+	waterElemental.EnableDynamicStats(waterElementalStatInheritance)
 
 	Mage.AddPet(waterElemental)
 
@@ -94,12 +94,8 @@ var waterElementalBaseStats = stats.Stats{
 
 var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
 	// Water elemental usually has about half the HP of the caster, with glyph this is bumped by an additional 40%
-	waterElementalStaminaRatio = 0.5 
-	if Mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
-		waterElementalStaminaRatio *= 1.4
-	}
 	return stats.Stats{
-		stats.Stamina:          ownerStats[stats.Stamina] * waterElementalStaminaRatio,
+		stats.Stamina:          ownerStats[stats.Stamina] * 0.5,
 		stats.SpellPower:       ownerStats[stats.SpellPower],
 		stats.HasteRating:      ownerStats[stats.HasteRating],
 		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
@@ -113,10 +109,10 @@ var waterboltCoefficient = 0.5 // Per https://wago.tools/db2/SpellEffect?build=5
 
 func (we *WaterElemental) registerWaterboltSpell() {
 
-	if Mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
+	if we.mageOwner.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
 		we.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_AllowCastWhileMoving,
-			ClassMask: MageWaterElementalSpellWaterBolt,
+			ClassMask: mage.MageWaterElementalSpellWaterBolt,
 		})
 	}
 
@@ -124,7 +120,7 @@ func (we *WaterElemental) registerWaterboltSpell() {
 		ActionID:       core.ActionID{SpellID: 31707},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: MageWaterElementalSpellWaterBolt,
+		ClassSpellMask: mage.MageWaterElementalSpellWaterBolt,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1,
