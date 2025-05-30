@@ -14,7 +14,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		ActionID:    core.ActionID{SpellID: 77758},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -53,7 +53,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			baseDamage := (flatHitDamage + 0.191 * spell.MeleeAttackPower()) * sim.Encounter.AOECapMultiplier()
+			baseDamage := flatHitDamage + 0.191 * spell.MeleeAttackPower()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -81,7 +81,7 @@ func (druid *Druid) registerThrashCatSpell() {
 		ActionID:    core.ActionID{SpellID: 106830},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -120,7 +120,7 @@ func (druid *Druid) registerThrashCatSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			baseDamage := (flatHitDamage + 0.191 * spell.MeleeAttackPower()) * sim.Encounter.AOECapMultiplier()
+			baseDamage := flatHitDamage + 0.191 * spell.MeleeAttackPower()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
