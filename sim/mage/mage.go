@@ -340,6 +340,7 @@ const (
 	MageSpellScorch
 	MageSpellCombustion
 	MageSpellCombustionApplication
+	MageWaterElementalSpellWaterBolt
 	MageSpellLast
 	MageSpellsAll        = MageSpellLast<<1 - 1
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion

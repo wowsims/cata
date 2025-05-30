@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -48,18 +49,22 @@ type WaterElemental struct {
 }
 
 func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
+
+	hasGlyph := 
+
 	waterElemental := &WaterElemental{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Water Elemental",
-			Owner:           &Mage.Character,
-			BaseStats:       waterElementalBaseStats,
-			StatInheritance: waterElementalStatInheritance,
-			EnabledOnStart:  true,
-			IsGuardian:      true,
+			Name:                           "Water Elemental",
+			Owner:                          &Mage.Character,
+			BaseStats:                      waterElementalBaseStats,
+			StatInheritance:                waterElementalStatInheritance,
+			HasDynamicCastSpeedInheritance: true,
+			EnabledOnStart:                 true,
+			IsGuardian:                     true,
 		}),
 		mageOwner: Mage,
 	}
-	waterElemental.EnableManaBarWithModifier(0.333)
+	waterElemental.EnableManaBar()
 
 	Mage.AddPet(waterElemental)
 
@@ -88,12 +93,17 @@ var waterElementalBaseStats = stats.Stats{
 }
 
 var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
+	// Water elemental usually has about half the HP of the caster, with glyph this is bumped by an additional 40%
+	waterElementalStaminaRatio = 0.5 
+	if Mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
+		waterElementalStaminaRatio *= 1.4
+	}
 	return stats.Stats{
-		stats.Stamina:          ownerStats[stats.Stamina] * 0.7, // Correct me if this is wrong, but HP value for elemental is generally about 70% of the Mage Owner.
+		stats.Stamina:          ownerStats[stats.Stamina] * waterElementalStaminaRatio,
 		stats.SpellPower:       ownerStats[stats.SpellPower],
 		stats.HasteRating:      ownerStats[stats.HasteRating],
 		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-		// this needs to be tested more thoroughly when pet hit is not bugged
+		// this (crit) needs to be tested more thoroughly when pet hit is not bugged
 	}
 }
 
@@ -102,10 +112,19 @@ var waterboltScale = 0.5       // Per https://wago.tools/db2/SpellEffect?build=5
 var waterboltCoefficient = 0.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "BonusCoefficient"
 
 func (we *WaterElemental) registerWaterboltSpell() {
+
+	if Mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
+		we.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_AllowCastWhileMoving,
+			ClassMask: MageWaterElementalSpellWaterBolt,
+		})
+	}
+
 	we.Waterbolt = we.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31707},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ActionID:       core.ActionID{SpellID: 31707},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: MageWaterElementalSpellWaterBolt,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1,
