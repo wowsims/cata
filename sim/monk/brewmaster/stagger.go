@@ -80,6 +80,10 @@ func (bm *BrewmasterMonk) registerStagger() {
 			return
 		}
 
+		if !bm.StanceMatches(monk.SturdyOx) {
+			return
+		}
+
 		avertHarmIsActive := bm.AvertHarmAura.IsActive()
 		// By default Stagger only works with physical abilities
 		// unless Avert Harm is active, then Magic abilities will be staggered as well (without the 20% bonus)
