@@ -60,6 +60,7 @@ func (war *FuryWarrior) registerPassives() {
 	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86526)
 
 	war.registerCrazedBerserker()
+	war.registerFlurry()
 
 	// // Unshackled Fury
 	// // The actual effects of Unshackled Fury need to be handled by specific spells
