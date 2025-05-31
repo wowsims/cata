@@ -61,6 +61,7 @@ import {
 	APLValueMaxComboPoints,
 	APLValueMaxEnergy,
 	APLValueMaxFocus,
+	APLValueMaxHealth,
 	APLValueMaxRunicPower,
 	APLValueMin,
 	APLValueMonkCurrentChi,
@@ -88,6 +89,8 @@ import {
 	APLValueSpellIsChanneling,
 	APLValueSpellIsKnown,
 	APLValueSpellIsReady,
+	APLValueSpellNumCharges,
+	APLValueSpellTimeToCharge,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
@@ -96,8 +99,6 @@ import {
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
-	APLValueSpellNumCharges,
-	APLValueSpellTimeToCharge,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -671,6 +672,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Health, as a percentage.',
 		newValue: APLValueCurrentHealthPercent.create,
 		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
+	}),
+	maxHealth: inputBuilder({
+		label: 'Max Health',
+		submenu: ['Resources', 'Health'],
+		shortDescription: 'Amount of currently available maximum Health.',
+		newValue: APLValueMaxHealth.create,
+		fields: [],
 	}),
 	currentMana: inputBuilder({
 		label: 'Current Mana',
@@ -1379,6 +1387,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Returns the current estimated size of your Combustion Dot.',
 		newValue: APLValueMageCurrentCombustionDotEstimate.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFireMage,
+		fields: [],
+	}),
+	brewmasterMonkCurrentStaggerPercent: inputBuilder({
+		label: 'Current Stagger (%)',
+		submenu: ['Tank'],
+		shortDescription: 'Amount of current Stagger, as a percentage.',
+		newValue: APLValueMonkCurrentChi.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() === Spec.SpecBrewmasterMonk,
 		fields: [],
 	}),
 };

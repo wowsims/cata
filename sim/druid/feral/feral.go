@@ -52,7 +52,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		MaxEnergy:      100.0,
 		UnitClass:      proto.Class_ClassDruid,
 	})
-	cat.EnableRageBar(core.RageBarOptions{BaseHitFactor: 4.34})
+	cat.EnableRageBar(core.RageBarOptions{BaseRageMultiplier: 2.5})
 
 	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
 		// Base paw weapon.
@@ -94,6 +94,7 @@ func (cat *FeralDruid) GetDruid() *druid.Druid {
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
 	cat.RegisterFeralCatSpells()
+	cat.ApplyPrimalFury()
 
 	snapshotHandler := func(aura *core.Aura, sim *core.Simulation) {
 		previousRipSnapshotPower := cat.Rip.NewSnapshotPower

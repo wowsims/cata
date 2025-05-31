@@ -10,6 +10,7 @@ import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, Pseu
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { Sim } from '../../core/sim';
+import { TypedEvent } from '../../core/typed_event';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
@@ -24,17 +25,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		Stat.StatStrength,
 		Stat.StatAttackPower,
 		Stat.StatHitRating,
+		Stat.StatExpertiseRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
+		Stat.StatDodgeRating,
+		Stat.StatParryRating,
 		Stat.StatMasteryRating,
-		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -46,22 +44,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatDodgePercent,
+			PseudoStat.PseudoStatParryPercent,
 		],
 	),
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PREPATCH_GEAR_PRESET.gear,
+		gear: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 27],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
 				postCapEPs: [0, 0],
@@ -77,11 +77,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			legacyOfTheEmperor: true,
+			legacyOfTheWhiteTiger: true,
+			darkIntent: true,
+			trueshotAura: true,
+			unleashedRage: true,
+			moonkinAura: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			curseOfElements:true,
+			curseOfElements: true,
 			physicalVulnerability: true,
 			weakenedArmor: true,
 		}),
@@ -94,7 +105,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.InFrontOfTarget, OtherInputs.InputDelay],
+		inputs: [
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.HpPercentForDefensives,
+			OtherInputs.IncomingHps,
+			OtherInputs.HealingCadence,
+			OtherInputs.HealingCadenceVariation,
+			OtherInputs.AbsorbFrac,
+			OtherInputs.BurstWindow,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -106,13 +127,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [],
+		rotations: [Presets.ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREPATCH_GEAR_PRESET],
+		gear: [
+			Presets.P1_PREBIS_RICH_GEAR_PRESET,
+			Presets.P1_PREBIS_POOR_GEAR_PRESET,
+			Presets.P1_BIS_BALANCED_DW_GEAR_PRESET,
+			Presets.P1_BIS_BALANCED_2H_GEAR_PRESET,
+			Presets.P1_BIS_OFFENSIVE_DW_GEAR_PRESET,
+			Presets.P1_BIS_OFFENSIVE_2H_GEAR_PRESET,
+		],
 	},
 
 	autoRotation: (_: Player<Spec.SpecBrewmasterMonk>): APLRotation => {
-		return APLRotation.create();
+		return Presets.ROTATION_PRESET.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -129,16 +157,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -157,6 +185,17 @@ const getActiveEPWeight = (player: Player<Spec.SpecBrewmasterMonk>, sim: Sim): S
 export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBrewmasterMonk>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		const setTalentBasedSettings = () => {
+			const talents = player.getTalents();
+			// Zen sphere can be on 2 targets, so we set the target dummies to 1 if it is talented.
+			player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 2 : 0);
+		};
+
+		setTalentBasedSettings();
+		player.talentsChangeEmitter.on(() => {
+			setTalentBasedSettings();
+		});
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {

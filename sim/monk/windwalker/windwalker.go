@@ -7,13 +7,6 @@ import (
 	"github.com/wowsims/mop/sim/monk"
 )
 
-// Damage Done By Caster setup
-const (
-	DDBC_RisingSunKick int = iota
-
-	DDBC_Total
-)
-
 func RegisterWindwalkerMonk() {
 	core.RegisterAgentFactory(
 		proto.Player_WindwalkerMonk{},
@@ -38,6 +31,8 @@ func NewWindwalkerMonk(character *core.Character, options *proto.Player) *Windwa
 		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 	}
 
+	ww.RegisterSEFPets()
+
 	ww.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	ww.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 
@@ -49,11 +44,17 @@ type WindwalkerMonk struct {
 
 	TigereyeBrewStackAura *core.Aura
 
-	outstandingChi int32
+	outstandingChi           int32
+	tigereyeBrewT164PTracker int32
 }
 
 func (ww *WindwalkerMonk) GetMonk() *monk.Monk {
 	return ww.Monk
+}
+
+func (ww *WindwalkerMonk) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	ww.Monk.AddRaidBuffs(raidBuffs)
+	raidBuffs.LegacyOfTheWhiteTiger = true
 }
 
 func (ww *WindwalkerMonk) Initialize() {
@@ -67,16 +68,16 @@ func (ww *WindwalkerMonk) ApplyTalents() {
 }
 
 func (ww *WindwalkerMonk) Reset(sim *core.Simulation) {
+	ww.outstandingChi = 0
+	ww.tigereyeBrewT164PTracker = 0
 	ww.Monk.Reset(sim)
 }
 
 func (ww *WindwalkerMonk) RegisterSpecializationEffects() {
 	ww.registerEnergizingBrew()
-	ww.registerFistsOfFury()
-	ww.registerPassives()
-	ww.registerRisingSunKick()
 	ww.registerTigereyeBrew()
-	ww.registerSpinningFireBlossom()
+
+	ww.registerPassives()
 }
 
 func (ww *WindwalkerMonk) getMasteryPercent() float64 {

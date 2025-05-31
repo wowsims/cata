@@ -34,8 +34,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
-		StartingRage:  bear.Options.StartingRage,
-		BaseHitFactor: 4.34,
+		StartingRage:       bear.Options.StartingRage,
+		BaseRageMultiplier: 2.5,
 	})
 	bear.EnableAutoAttacks(bear, core.AutoAttackOptions{
 		// Base paw weapon.
@@ -137,6 +137,7 @@ func (bear *GuardianDruid) applyLeatherSpecialization() {
 func (bear *GuardianDruid) Initialize() {
 	bear.Druid.Initialize()
 	bear.RegisterFeralTankSpells()
+	bear.ApplyPrimalFury()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {

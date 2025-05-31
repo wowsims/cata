@@ -402,7 +402,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	canEnableTargetDummies(): boolean {
-		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman];
+		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman, Class.ClassMonk];
 		return healingSpellClasses.includes(this.getClass());
 	}
 
@@ -567,6 +567,7 @@ export class Player<SpecType extends Spec> {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
 		}
+
 		return defaultRatios;
 	}
 
@@ -1379,7 +1380,7 @@ export class Player<SpecType extends Spec> {
 				if (!filters.weaponTypes.includes(item.weaponType) && item.handType > HandType.HandTypeUnknown) {
 					return false;
 				}
-				
+
 				if (!filters.oneHandedWeapons && item.handType != HandType.HandTypeTwoHand) {
 					return false;
 				}

@@ -11,6 +11,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		ActionID:       core.ActionID{SpellID: 42231},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellProc,
+		Flags:          core.SpellFlagAoE | SpellFlagOmenTrigger,
 		ClassSpellMask: DruidSpellHurricane,
 
 		CritMultiplier:   druid.DefaultCritMultiplier(),
@@ -20,7 +21,6 @@ func (druid *Druid) registerHurricaneSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.327 * druid.ClassSpellScaling
-			damage *= sim.Encounter.AOECapMultiplier()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)

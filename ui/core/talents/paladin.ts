@@ -222,11 +222,6 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 			description: "Your Judgment spell depicts an axe or sword instead of a hammer, if you have an axe or sword equipped.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_axe_1h_cataclysm_c_01.jpg",
 		},
-		[PaladinMinorGlyph.GlyphOfRighteousRetreat]: {
-			name: "Glyph of Righteous Retreat",
-			description: "During Divine Shield, you can invoke your Hearthstone 50% faster.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/achievement_guildperk_hastyhearth.jpg",
-		},
 		[PaladinMinorGlyph.GlyphOfTheExorcist]: {
 			name: "Glyph of the Exorcist",
 			description: "Exorcism will now appear to remove the evil from its target.",

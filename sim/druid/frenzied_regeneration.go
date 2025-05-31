@@ -8,75 +8,61 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-func (druid *Druid) registerFrenziedRegenerationCD() {
+func (druid *Druid) registerFrenziedRegenerationSpell() {
 	actionID := core.ActionID{SpellID: 22842}
-	healthMetrics := druid.NewHealthMetrics(actionID)
-	rageMetrics := druid.NewRageMetrics(actionID)
-
-	cdTimer := druid.NewTimer()
-	cd := time.Minute * 3
 	isGlyphed := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFrenziedRegeneration)
-	healingMulti := core.TernaryFloat64(isGlyphed, 1.3, 1.0)
-
-	var bonusHealth float64
-	druid.FrenziedRegenerationAura = druid.RegisterAura(core.Aura{
+	buffConfig := core.Aura{
 		Label:    "Frenzied Regeneration",
 		ActionID: actionID,
-		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.HealingTakenMultiplier *= healingMulti
-			bonusHealth = druid.MaxHealth() * 0.3
-			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
+		Duration: time.Second * 6,
 
-			if druid.CurrentHealth() < bonusHealth {
-				druid.GainHealth(sim, bonusHealth-druid.CurrentHealth(), healthMetrics)
-			}
+		OnGain: func(aura *core.Aura, _ *core.Simulation) {
+			aura.Unit.PseudoStats.HealingTakenMultiplier *= 1.4
 		},
 
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.HealingTakenMultiplier /= healingMulti
-			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
-
-			if druid.CurrentHealth() > druid.MaxHealth() {
-				druid.RemoveHealth(sim, druid.CurrentHealth()-druid.MaxHealth())
-			}
+		OnExpire: func(aura *core.Aura, _ *core.Simulation) {
+			aura.Unit.PseudoStats.HealingTakenMultiplier /= 1.4
 		},
-	})
+	}
+
+	var rageMetrics *core.ResourceMetrics
+
+	if isGlyphed {
+		druid.FrenziedRegenerationAura = druid.RegisterAura(buffConfig)
+	} else {
+		rageMetrics = druid.NewRageMetrics(actionID)
+	}
 
 	druid.FrenziedRegeneration = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID: actionID,
+		ActionID:         actionID,
+		SpellSchool:      core.SpellSchoolPhysical,
+		ProcMask:         core.ProcMaskSpellHealing,
+		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Timer:    cdTimer,
-				Duration: cd,
+				Timer:    druid.NewTimer(),
+				Duration: time.Millisecond * 1500,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			druid.FrenziedRegenerationAura.Activate(sim)
 
-			if isGlyphed {
-				return
-			}
-
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				NumTicks: 20,
-				Period:   time.Second * 1,
-				Priority: core.ActionPriorityDOT,
-				OnAction: func(sim *core.Simulation) {
-					rageDumped := min(druid.CurrentRage(), 10.0)
-					healthGained := rageDumped * 0.3 / 100 * druid.MaxHealth() * druid.PseudoStats.HealingTakenMultiplier
-
-					if druid.FrenziedRegenerationAura.IsActive() {
-						druid.SpendRage(sim, rageDumped, rageMetrics)
-						druid.GainHealth(sim, healthGained, healthMetrics)
-					}
-				},
-			})
+		RageCost: core.RageCostOptions{
+			Cost: core.TernaryInt32(isGlyphed, 50, 0),
 		},
-	})
 
-	druid.AddMajorCooldown(core.MajorCooldown{
-		Spell: druid.FrenziedRegeneration.Spell,
-		Type:  core.CooldownTypeSurvival,
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			if isGlyphed {
+				druid.FrenziedRegenerationAura.Activate(sim)
+			} else {
+				const maxRageCost = 60.0
+				rageDumped := min(druid.CurrentRage(), maxRageCost)
+				healthGained := max((druid.GetStat(stats.AttackPower) - 2 * druid.GetStat(stats.Agility)) * 2.2, druid.GetStat(stats.Stamina) * 2.5) * rageDumped / maxRageCost
+				spell.CalcAndDealHealing(sim, spell.Unit, healthGained, spell.OutcomeHealing)
+				druid.SpendRage(sim, rageDumped, rageMetrics)
+			}
+		},
 	})
 }

@@ -189,6 +189,7 @@ var ItemOverrides = []*proto.UIItem{
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
 	2140: {},
+	2505: {},
 	//Shaman Dungeon Set 3 Tidefury
 	27510: {}, // Tidefury Gauntlets
 	27802: {}, // Tidefury Shoulderguards
@@ -911,4 +912,7 @@ var GemDenyList = map[int32]struct{}{
 	38550: {},
 	63696: {},
 	63697: {},
+	97306: {}, // Unused Revitalizing Primal Diamond
+	97534: {}, // Unused Burning Primal Diamond
+	97937: {}, // Unused Burning Primal Diamond
 }

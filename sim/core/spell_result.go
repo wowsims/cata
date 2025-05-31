@@ -164,6 +164,9 @@ func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *Spe
 	for i := range result.Target.DynamicDamageTakenModifiers {
 		result.Target.DynamicDamageTakenModifiers[i](sim, spell, result)
 	}
+	if spell.Flags.Matches(SpellFlagAoE) {
+		result.Damage *= sim.Encounter.AOECapMultiplier()
+	}
 	result.Damage = max(0, result.Damage)
 }
 
@@ -514,6 +517,10 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 
 	if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+	}
+
+	if spell.Flags.Matches(SpellFlagRanged) {
+		multiplier *= attackTable.RangedDamageTakenMulitplier
 	}
 
 	if attackTable.DamageDoneByCasterMultiplier != nil {

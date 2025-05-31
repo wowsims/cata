@@ -37,41 +37,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatExpertiseRating, Stat.StatMasteryRating],
 		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
 		],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecWindwalkerMonk>) => {
-		let stats = new Stats();
-
-		TypedEvent.freezeAllAndDo(() => {
-			if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item?.handType === HandType.HandTypeTwoHand) {
-				stats = stats.addPseudoStat(PseudoStat.PseudoStatMeleeHastePercent, 40);
-			}
-		});
-
-		return {
-			talents: stats,
-		};
-	},
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PREPATCH_DW_GEAR_PRESET.gear,
+		gear: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.PREPATCH_DW_EP_PRESET.epWeights,
+		epWeights: Presets.P1_PREBIS_DW_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 27],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
 				postCapEPs: [0, 0],
@@ -87,13 +74,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			legacyOfTheEmperor: true,
+			legacyOfTheWhiteTiger: true,
+			darkIntent: true,
+			trueshotAura: true,
+			unleashedRage: true,
+			moonkinAura: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			curseOfElements:true,
 			physicalVulnerability: true,
 			weakenedArmor: true,
+			masterPoisoner: true,
 		}),
 	},
 
@@ -112,17 +110,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 	},
 
 	presets: {
-		epWeights: [Presets.PREPATCH_DW_EP_PRESET, Presets.PREPATCH_2H_EP_PRESET],
+		epWeights: [Presets.P1_PREBIS_DW_EP_PRESET, Presets.P1_PREBIS_2H_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.PREPATCH_ROTATION_PRESET],
+		rotations: [Presets.ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREPATCH_DW_GEAR_PRESET, Presets.PREPATCH_2H_GEAR_PRESET],
+		gear: [Presets.P1_PREBIS_DW_GEAR_PRESET, Presets.P1_PREBIS_2H_GEAR_PRESET, Presets.P1_BIS_DW_GEAR_PRESET, Presets.P1_BIS_2H_GEAR_PRESET],
 	},
 
 	autoRotation: (_: Player<Spec.SpecWindwalkerMonk>): APLRotation => {
-		return Presets.PREPATCH_ROTATION_PRESET.rotation.rotation!;
+		return Presets.ROTATION_PRESET.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -139,16 +137,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PREPATCH_DW_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_DW_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_DW_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_DW_GEAR_PRESET.gear,
+					1: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
+					2: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
+					3: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
+					4: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PREPATCH_DW_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_DW_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_DW_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_DW_GEAR_PRESET.gear,
+					1: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
+					2: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
+					3: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
+					4: Presets.P1_PREBIS_DW_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -160,9 +158,9 @@ const getActiveEPWeight = (player: Player<Spec.SpecWindwalkerMonk>, sim: Sim): S
 	if (sim.getUseCustomEPValues()) {
 		return player.getEpWeights();
 	} else if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item?.handType === HandType.HandTypeTwoHand) {
-		return Presets.PREPATCH_2H_EP_PRESET.epWeights;
+		return Presets.P1_PREBIS_2H_EP_PRESET.epWeights;
 	} else {
-		return Presets.PREPATCH_DW_EP_PRESET.epWeights;
+		return Presets.P1_PREBIS_DW_EP_PRESET.epWeights;
 	}
 };
 
@@ -187,7 +185,6 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 							meleeSoftCap.postCapEPs = [initialEP / 5.5, 0];
 						}
 					}
-
 					return softCaps;
 				},
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {
