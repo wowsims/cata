@@ -9,7 +9,7 @@ import (
 func (dk *DeathKnight) registerDeathAndDecaySpell() {
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 43265},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty, // D&D doesn't seem to proc things in game.
 		ClassSpellMask: DeathKnightSpellDeathAndDecay,

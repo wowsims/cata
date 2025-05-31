@@ -586,42 +586,6 @@ func (druid *Druid) applyFurySwipes() {
 	})
 }
 
-func (druid *Druid) applyPrimalFury() {
-	if druid.Talents.PrimalFury == 0 {
-		return
-	}
-
-	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
-	actionID := core.ActionID{SpellID: 37117}
-	rageMetrics := druid.NewRageMetrics(actionID)
-	cpMetrics := druid.NewComboPointMetrics(actionID)
-
-	druid.RegisterAura(core.Aura{
-		Label:    "Primal Fury",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if druid.InForm(Bear) {
-				if result.Outcome.Matches(core.OutcomeCrit) {
-					if sim.Proc(procChance, "Primal Fury") {
-						druid.AddRage(sim, 5, rageMetrics)
-					}
-				}
-			} else if druid.InForm(Cat) {
-				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) || druid.Ravage.IsEqual(spell) {
-					if result.Outcome.Matches(core.OutcomeCrit) {
-						if sim.Proc(procChance, "Primal Fury") {
-							druid.AddComboPoints(sim, 1, cpMetrics)
-						}
-					}
-				}
-			}
-		},
-	})
-}
-
 func (druid *Druid) applyPrimalMadness() {
 	if (druid.Talents.PrimalMadness == 0) || !druid.InForm(Cat|Bear) {
 		return
@@ -688,30 +652,6 @@ func (druid *Druid) applyStampede() {
 			druid.Ravage.Cost.PercentModifier += ravageCostMod
 		},
 	})
-}
-
-// Modifies the Bleed aura to apply the bonus.
-func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
-	if druid.FerociousBite == nil || druid.Talents.RendAndTear == 0 || druid.AssumeBleedActive {
-		return aura
-	}
-
-	bonusCritPercent := []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear]
-
-	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritPercent += bonusCritPercent
-		}
-		druid.BleedsActive++
-	})
-	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		druid.BleedsActive--
-		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritPercent -= bonusCritPercent
-		}
-	})
-
-	return aura
 }
 
 // func (druid *Druid) applyEclipse() {

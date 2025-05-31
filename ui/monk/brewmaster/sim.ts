@@ -77,7 +77,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			legacyOfTheEmperor: true,
+			legacyOfTheWhiteTiger: true,
+			darkIntent: true,
+			trueshotAura: true,
+			unleashedRage: true,
+			moonkinAura: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
@@ -175,17 +186,18 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBrewmasterMonk>) {
 		super(parentElem, player, SPEC_CONFIG);
 
-		player.sim.waitForInit().then(() => {
-			const setTalentBasedSettings = () => {
-				const talents = player.getTalents();
-				// Zen sphere can be on 2 targets, so we set the target dummies to 1 if it is talented.
-				player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 1 : 0);
-			};
+		const setTalentBasedSettings = () => {
+			const talents = player.getTalents();
+			// Zen sphere can be on 2 targets, so we set the target dummies to 1 if it is talented.
+			player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), talents.zenSphere ? 2 : 0);
+		};
 
+		setTalentBasedSettings();
+		player.talentsChangeEmitter.on(() => {
 			setTalentBasedSettings();
-			player.talentsChangeEmitter.on(() => {
-				setTalentBasedSettings();
-			});
+		});
+
+		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					// Dynamic adjustments to the static Hit soft cap EP

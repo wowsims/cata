@@ -11,7 +11,7 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       BloodBoilActionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DeathKnightSpellBloodBoil,
@@ -34,7 +34,6 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := dk.ClassSpellScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
 				baseDamage *= core.TernaryFloat64(dk.DiseasesAreActive(aoeTarget), 1.5, 1.0)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 
 				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				anyHit = anyHit || results[idx].Landed()
@@ -56,13 +55,13 @@ func (dk *DeathKnight) registerDrwBloodBoilSpell() *core.Spell {
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    BloodBoilActionID,
 		SpellSchool: core.SpellSchoolShadow,
+		Flags:       core.SpellFlagAoE,
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := dk.ClassSpellScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
 				baseDamage *= core.TernaryFloat64(dk.RuneWeapon.DiseasesAreActive(aoeTarget), 1.5, 1.0)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 
 				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

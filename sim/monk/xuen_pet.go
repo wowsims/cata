@@ -45,7 +45,7 @@ func (monk *Monk) NewXuen() *Xuen {
 					stats.ParryRating:     ownerStats[stats.ParryRating],
 
 					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+					stats.SpellCritPercent:    ownerStats[stats.PhysicalCritPercent],
 				}
 			},
 			EnabledOnStart:                  false,
@@ -56,7 +56,6 @@ func (monk *Monk) NewXuen() *Xuen {
 	}
 
 	xuen.OnPetEnable = xuen.enable
-	xuen.DelayInitialInheritance(time.Millisecond * 500)
 
 	actionID := core.ActionID{SpellID: 123996}
 	xuen.CracklingTigerLightning = xuen.RegisterSpell(core.SpellConfig{

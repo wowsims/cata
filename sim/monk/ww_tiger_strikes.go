@@ -27,7 +27,7 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 			mhConfig.Flags |= core.SpellFlagPassiveSpell
 			mhConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				spell.CalcAndDealDamage(sim, target, baseDamage*unit.AutoAttacks.MHAuto().DamageMultiplier, spell.OutcomeMeleeWhiteNoGlance)
+				spell.CalcAndDealDamage(sim, target, baseDamage*unit.AutoAttacks.MHAuto().DamageMultiplier, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 			tigerStrikesMHSpell = unit.GetOrRegisterSpell(mhConfig)
 
@@ -38,7 +38,7 @@ func tigerStrikesBuffAura(unit *core.Unit) {
 				ohConfig.Flags |= core.SpellFlagPassiveSpell
 				ohConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage*unit.AutoAttacks.OHAuto().DamageMultiplier, spell.OutcomeMeleeWhiteNoGlance)
+					spell.CalcAndDealDamage(sim, target, baseDamage*unit.AutoAttacks.OHAuto().DamageMultiplier, spell.OutcomeMeleeSpecialHitAndCrit)
 				}
 				tigerStrikesOHSpell = unit.GetOrRegisterSpell(ohConfig)
 			}

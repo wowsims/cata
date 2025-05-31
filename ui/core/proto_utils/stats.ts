@@ -342,7 +342,6 @@ export const displayStatOrder: Array<UnitStat> = [
 	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent),
 	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellCritPercent),
 	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
-	UnitStat.fromStat(Stat.StatSpellPenetration),
 	UnitStat.fromStat(Stat.StatMP5),
 	UnitStat.fromStat(Stat.StatAttackPower),
 	UnitStat.fromStat(Stat.StatRangedAttackPower),
@@ -355,12 +354,6 @@ export const displayStatOrder: Array<UnitStat> = [
 	UnitStat.fromPseudoStat(PseudoStat.PseudoStatBlockPercent),
 	UnitStat.fromPseudoStat(PseudoStat.PseudoStatDodgePercent),
 	UnitStat.fromPseudoStat(PseudoStat.PseudoStatParryPercent),
-	UnitStat.fromStat(Stat.StatResilienceRating),
-	UnitStat.fromStat(Stat.StatArcaneResistance),
-	UnitStat.fromStat(Stat.StatFireResistance),
-	UnitStat.fromStat(Stat.StatFrostResistance),
-	UnitStat.fromStat(Stat.StatNatureResistance),
-	UnitStat.fromStat(Stat.StatShadowResistance),
 ];
 
 /**

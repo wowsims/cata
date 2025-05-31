@@ -21,12 +21,14 @@ func (monk *Monk) registerWayOfTheMonk() {
 	aura := core.MakePermanent(monk.RegisterAura(core.Aura{
 		Label:      "Way of the Monk" + monk.Label,
 		ActionID:   core.ActionID{SpellID: 120277},
-		BuildPhase: core.CharacterBuildPhaseTalents,
+		BuildPhase: core.CharacterBuildPhaseBase,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)
 			} else {
-				monk.MHAutoSpell.DamageMultiplier *= 1.4
+				if monk.MHAutoSpell != nil {
+					monk.MHAutoSpell.DamageMultiplier *= 1.4
+				}
 				if monk.OHAutoSpell != nil {
 					monk.OHAutoSpell.DamageMultiplier *= 1.4
 				}
@@ -36,7 +38,9 @@ func (monk *Monk) registerWayOfTheMonk() {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1/1.4)
 			} else {
-				monk.MHAutoSpell.DamageMultiplier /= 1.4
+				if monk.MHAutoSpell != nil {
+					monk.MHAutoSpell.DamageMultiplier /= 1.4
+				}
 				if monk.OHAutoSpell != nil {
 					monk.OHAutoSpell.DamageMultiplier /= 1.4
 				}
@@ -88,6 +92,6 @@ func (monk *Monk) registerSwiftReflexes() {
 			swiftReflexesAttack.Cast(sim, spell.Unit)
 		},
 	})
-	aura.BuildPhase = core.CharacterBuildPhaseTalents
+	aura.BuildPhase = core.CharacterBuildPhaseBase
 	aura.AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 0.05)
 }

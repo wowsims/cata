@@ -45,7 +45,7 @@ type APLValueMaxChi struct {
 
 func (monk *Monk) newValueMaxChi(_ *proto.APLValueMonkMaxChi, _ *proto.UUID) core.APLValue {
 	return &APLValueMaxChi{
-		maxChi: monk.MaxComboPoints(),
+		maxChi: monk.GetMaxChi(),
 	}
 }
 func (value *APLValueMaxChi) Type() proto.APLValueType {
