@@ -120,7 +120,9 @@ func (moonkin *BalanceDruid) registerKillerInstinct() {}
 
 func (moonkin *BalanceDruid) registerLeatherSpecialization() {}
 
-func (moonkin *BalanceDruid) registerNaturalInsight() {}
+func (moonkin *BalanceDruid) registerNaturalInsight() {
+	moonkin.MultiplyStat(stats.Mana, 5)
+}
 
 func (moonkin *BalanceDruid) registerTotalEclipse() {}
 
