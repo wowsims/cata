@@ -11,10 +11,10 @@ func (prot *ProtectionPaladin) registerRighteousFury() {
 		ActionID: core.ActionID{SpellID: 25780},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			prot.PseudoStats.ThreatMultiplier *= 7.0
+			// prot.PseudoStats.ThreatMultiplier *= 7.0
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			prot.PseudoStats.ThreatMultiplier /= 7.0
+			// prot.PseudoStats.ThreatMultiplier /= 7.0
 		},
 	}))
 }
