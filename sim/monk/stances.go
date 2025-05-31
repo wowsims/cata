@@ -49,6 +49,8 @@ func (monk *Monk) registerStanceOfTheSturdyOx(stanceCD *core.Timer) {
 		return
 	}
 
+	stamDep := monk.NewDynamicMultiplyStat(stats.Stamina, 1.2)
+
 	monk.StanceOfTheSturdyOxAura = monk.GetOrRegisterAura(core.Aura{
 		Label:    "Stance of the Sturdy Ox" + monk.Label,
 		ActionID: core.ActionID{SpellID: 115069},
@@ -59,12 +61,14 @@ func (monk *Monk) registerStanceOfTheSturdyOx(stanceCD *core.Timer) {
 			monk.PseudoStats.ReducedCritTakenChance += 0.06
 			monk.MultiplyEnergyRegenSpeed(sim, 1.1)
 			monk.SetCurrentPowerBar(core.EnergyBar)
+			monk.EnableBuildPhaseStatDep(sim, stamDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = StanceNone
 			monk.PseudoStats.DamageTakenMultiplier /= 0.75
 			monk.PseudoStats.ReducedCritTakenChance -= 0.06
 			monk.MultiplyEnergyRegenSpeed(sim, 1.0/1.1)
+			monk.DisableBuildPhaseStatDep(sim, stamDep)
 		},
 	})
 
