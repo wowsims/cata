@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *FuryWarrior) RegisterRagingBlow() {
+func (war *FuryWarrior) registerRagingBlow() {
 
 	ragingBlowActionID := core.ActionID{SpellID: 85288}
 

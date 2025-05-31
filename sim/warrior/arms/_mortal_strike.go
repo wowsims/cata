@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ArmsWarrior) RegisterMortalStrike() {
+func (war *ArmsWarrior) registerMortalStrike() {
 	weaponDamageConfig := warrior.SpellEffectWeaponDmgPctConfig{
 		BaseWeapon_Pct:    0.8,
 		Coefficient:       0.37599998713,

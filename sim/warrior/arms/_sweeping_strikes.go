@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ArmsWarrior) RegisterSweepingStrikes() {
+func (war *ArmsWarrior) registerSweepingStrikes() {
 	if !war.Talents.SweepingStrikes {
 		return
 	}

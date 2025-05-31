@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -81,10 +80,9 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	// Stance                 Stance
+	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
-	PrecisionKnown         bool
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -129,69 +127,56 @@ type Warrior struct {
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
 	ColossusSmashAuras     core.AuraArray
-
-	// Cached Gurthalak tentacles
-	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
-}
-
-func (warrior *Warrior) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
-	return warrior.gurthalakTentacles
-}
-
-func (warrior *Warrior) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
-	pet := cata.NewTentacleOfTheOldOnesPet(&warrior.Character)
-	warrior.AddPet(pet)
-	return pet
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {
 	return &warrior.Character
 }
 
-// func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	if warrior.Talents.Rampage {
-// 		raidBuffs.Rampage = true
-// 	}
-// }
+func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	// if warrior.Talents.Rampage {
+	// 	raidBuffs.Rampage = true
+	// }
+}
 
 func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	// warrior.registerStances()
+	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
 	warrior.shoutsCD = warrior.NewTimer()
 
-	// warrior.RegisterBerserkerRageSpell()
-	// warrior.RegisterColossusSmash()
-	// warrior.RegisterDemoralizingShoutSpell()
-	// warrior.RegisterExecuteSpell()
-	// warrior.RegisterHeroicStrikeSpell()
-	// warrior.RegisterCleaveSpell()
-	warrior.RegisterHeroicLeap()
-	// warrior.RegisterHeroicThrow()
-	warrior.RegisterInnerRage()
-	// warrior.RegisterOverpowerSpell()
-	warrior.RegisterRecklessnessCD()
-	// warrior.RegisterRendSpell()
-	// warrior.RegisterRevengeSpell()
-	// warrior.RegisterShatteringThrowCD()
-	// warrior.RegisterShieldBlockCD()
-	warrior.RegisterShieldWallCD()
-	// warrior.RegisterShouts()
-	// warrior.RegisterSlamSpell()
-	// warrior.RegisterSunderArmor()
-	// warrior.RegisterThunderClapSpell()
-	// warrior.RegisterWhirlwindSpell()
-	// warrior.RegisterCharge()
+	// warrior.registerBerserkerRageSpell()
+	// warrior.registerColossusSmash()
+	// warrior.registerDemoralizingShoutSpell()
+	// warrior.registerExecuteSpell()
+	// warrior.registerHeroicStrikeSpell()
+	// warrior.registerCleaveSpell()
+	// warrior.registerHeroicLeap()
+	// warrior.registerHeroicThrow()
+	// warrior.registerInnerRage()
+	// warrior.registerOverpowerSpell()
+	// warrior.registerRecklessnessCD()
+	// warrior.registerRendSpell()
+	// warrior.registerRevengeSpell()
+	// warrior.registerShatteringThrowCD()
+	// warrior.registerShieldBlockCD()
+	// warrior.registerShieldWallCD()
+	// warrior.registerShouts()
+	// warrior.registerSlamSpell()
+	// warrior.registerSunderArmor()
+	// warrior.registerThunderClapSpell()
+	// warrior.registerWhirlwindSpell()
+	// warrior.registerCharge()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
-	// warrior.Stance = StanceNone
+	warrior.Stance = StanceNone
 }
 
-func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {
+func NewWarrior(character *core.Character, options *proto.WarriorOptions, talents string, inputs WarriorInputs) *Warrior {
 	warrior := &Warrior{
 		Character:         *character,
 		Talents:           &proto.WarriorTalents{},
@@ -200,28 +185,32 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	}
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents)
 
+	warrior.EnableRageBar(core.RageBarOptions{
+		StartingRage:       options.StartingRage,
+		BaseRageMultiplier: 1,
+	})
+
+	warrior.EnableAutoAttacks(warrior, core.AutoAttackOptions{
+		MainHand:       warrior.WeaponFromMainHand(warrior.DefaultCritMultiplier()),
+		OffHand:        warrior.WeaponFromOffHand(warrior.DefaultCritMultiplier()),
+		AutoSwingMelee: true,
+	})
+
 	warrior.PseudoStats.CanParry = true
-	warrior.PrecisionKnown = false
 
 	warrior.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
-	// Dodge no longer granted from agility
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
-	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in mop (4.2 Changed from 25->27 percent)
+	strengthToParryRating := (1 / 951.158596) * core.ParryRatingPerParryPercent
+	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*strengthToParryRating) // Does not apply to base Strength
+	warrior.AddStatDependency(stats.Strength, stats.ParryRating, strengthToParryRating)
+	warrior.AddStatDependency(stats.Agility, stats.DodgeRating, 0.1/10000.0/100.0)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns
-	warrior.PseudoStats.BaseDodgeChance += 0.03664
-	warrior.PseudoStats.BaseParryChance += 0.05
+	warrior.PseudoStats.BaseDodgeChance += 0.03
+	warrior.PseudoStats.BaseParryChance += 0.03
+	warrior.PseudoStats.BaseBlockChance += 0.03
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
-
-	if mh, oh := warrior.MainHand(), warrior.OffHand(); mh.Name == "Gurthalak, Voice of the Deeps" || oh.Name == "Gurthalak, Voice of the Deeps" {
-		warrior.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
-
-		for i := 0; i < 10; i++ {
-			warrior.gurthalakTentacles[i] = warrior.NewTentacleOfTheOldOnesPet()
-		}
-	}
 
 	return warrior
 }
@@ -232,11 +221,6 @@ func (warrior *Warrior) HasMajorGlyph(glyph proto.WarriorMajorGlyph) bool {
 
 func (warrior *Warrior) HasMinorGlyph(glyph proto.WarriorMinorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
-}
-
-// Shared cooldown for Deadly Calm and Recklessness Activation
-func (warrior *Warrior) RecklessnessDeadlyCalmLock() *core.Timer {
-	return warrior.Character.GetOrInitTimer(&warrior.recklessnessDeadlyCalmCD)
 }
 
 func (warrior *Warrior) GetCriticalBlockChance() float64 {

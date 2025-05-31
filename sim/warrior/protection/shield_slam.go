@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ProtectionWarrior) RegisterShieldSlam() {
+func (war *ProtectionWarrior) registerShieldSlam() {
 	war.shieldSlam = war.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 23922},
 		SpellSchool:    core.SpellSchoolPhysical,

@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *FuryWarrior) RegisterDeathWish() {
+func (war *FuryWarrior) registerDeathWish() {
 	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfDeathWish)
 	var bonusSnapshot float64
 	dwAura := war.RegisterAura(core.Aura{

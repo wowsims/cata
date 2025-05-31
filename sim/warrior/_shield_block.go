@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-func (warrior *Warrior) RegisterShieldBlockCD() {
+func (warrior *Warrior) registerShieldBlockCD() {
 	actionID := core.ActionID{SpellID: 2565}
 
 	// extra avoidance to crit block effect seems to be based on basic level+3 target

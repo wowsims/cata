@@ -4,13 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/warrior"
 )
 
 func (war *ArmsWarrior) ApplyTalents() {
-	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86526)
 	war.Warrior.ApplyCommonTalents()
 
 	war.RegisterBladestorm()

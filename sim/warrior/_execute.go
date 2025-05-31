@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterExecuteSpell() {
+func (warrior *Warrior) registerExecuteSpell() {
 	minRageAfterExecute := 5.0 * float64(warrior.Talents.SuddenDeath)
 
 	var rageMetrics *core.ResourceMetrics

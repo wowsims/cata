@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *FuryWarrior) RegisterBloodthirst() {
+func (war *FuryWarrior) registerBloodthirst() {
 	war.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 23881},
 		SpellSchool:    core.SpellSchoolPhysical,

@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ProtectionWarrior) RegisterLastStand() {
+func (war *ProtectionWarrior) registerLastStand() {
 	if !war.Talents.LastStand {
 		return
 	}

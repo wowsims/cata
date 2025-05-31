@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterRevengeSpell() {
+func (warrior *Warrior) registerRevengeSpell() {
 	actionID := core.ActionID{SpellID: 6572}
 
 	revengeReadyAura := warrior.RegisterAura(core.Aura{

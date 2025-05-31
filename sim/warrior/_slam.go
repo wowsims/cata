@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterSlamSpell() {
+func (warrior *Warrior) registerSlamSpell() {
 
 	weaponDamageConfig := SpellEffectWeaponDmgPctConfig{
 		BaseWeapon_Pct:    1.1,

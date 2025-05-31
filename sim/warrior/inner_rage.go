@@ -8,7 +8,7 @@ import (
 
 const InnerRageExclusionTag = "InnerRageDeadlyCalm"
 
-func (warrior *Warrior) RegisterInnerRage() {
+func (warrior *Warrior) registerInnerRage() {
 	actionID := core.ActionID{SpellID: 1134}
 
 	costMod := warrior.AddDynamicMod(core.SpellModConfig{

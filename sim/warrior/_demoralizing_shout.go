@@ -5,7 +5,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterDemoralizingShoutSpell() {
+func (warrior *Warrior) registerDemoralizingShoutSpell() {
 	warrior.DemoralizingShoutAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.DemoralizingShoutAura(target, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfDemoralizingShout))
 	})

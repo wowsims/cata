@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterHeroicLeap() {
+func (warrior *Warrior) registerHeroicLeap() {
 
 	numHits := warrior.Env.GetNumTargets()
 	results := make([]*core.SpellResult, numHits)

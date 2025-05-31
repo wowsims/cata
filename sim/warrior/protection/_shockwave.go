@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ProtectionWarrior) RegisterShockwave() {
+func (war *ProtectionWarrior) registerShockwave() {
 	if !war.Talents.Shockwave {
 		return
 	}

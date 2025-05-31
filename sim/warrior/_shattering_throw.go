@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterShatteringThrowCD() {
+func (warrior *Warrior) registerShatteringThrowCD() {
 	shattDebuffs := warrior.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
 		return core.ShatteringThrowAura(unit, warrior.UnitIndex)
 	})

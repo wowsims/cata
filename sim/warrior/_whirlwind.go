@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterWhirlwindSpell() {
+func (warrior *Warrior) registerWhirlwindSpell() {
 	actionID := core.ActionID{SpellID: 1680}
 	numHits := warrior.Env.GetNumTargets() // Whirlwind is uncapped in Cata
 	results := make([]*core.SpellResult, numHits)

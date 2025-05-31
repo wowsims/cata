@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ArmsWarrior) RegisterBladestorm() {
+func (war *ArmsWarrior) registerBladestorm() {
 	if !war.Talents.Bladestorm {
 		return
 	}

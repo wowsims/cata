@@ -5,7 +5,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ProtectionWarrior) RegisterDevastate() {
+func (war *ProtectionWarrior) registerDevastate() {
 	if !war.Talents.Devastate {
 		return
 	}

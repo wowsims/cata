@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterColossusSmash() {
+func (warrior *Warrior) registerColossusSmash() {
 	actionID := core.ActionID{SpellID: 86346}
 
 	warrior.ColossusSmashAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {

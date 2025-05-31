@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterRendSpell() {
+func (warrior *Warrior) registerRendSpell() {
 	baseTickDamage := warrior.ClassSpellScaling * 0.0939999968
 
 	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{

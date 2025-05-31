@@ -7,9 +7,9 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-const cdDuration = time.Second * 3
+const cdDuration = time.Second * 1.5
 
-func (warrior *Warrior) RegisterHeroicStrikeSpell() {
+func (warrior *Warrior) registerHeroicStrikeSpell() {
 	warrior.HeroicStrike = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 78},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -52,7 +52,7 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 	})
 }
 
-func (warrior *Warrior) RegisterCleaveSpell() {
+func (warrior *Warrior) registerCleaveSpell() {
 	targets := core.TernaryInt32(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfCleaving), 3, 2)
 	numHits := min(targets, warrior.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)

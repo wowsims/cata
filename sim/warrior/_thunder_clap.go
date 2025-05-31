@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterThunderClapSpell() {
+func (warrior *Warrior) registerThunderClapSpell() {
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.ThunderClapAura(target)
 	})

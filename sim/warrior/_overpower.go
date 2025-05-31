@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterOverpowerSpell() {
+func (warrior *Warrior) registerOverpowerSpell() {
 	actionID := core.ActionID{SpellID: 7384}
 	opAura := warrior.RegisterAura(core.Aura{
 		ActionID: actionID,

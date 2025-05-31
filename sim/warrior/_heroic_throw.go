@@ -8,7 +8,7 @@ import (
 )
 
 // TODO: No patch notes for this ability, need to validate the damage and threat coefficients haven't changed
-func (warrior *Warrior) RegisterHeroicThrow() {
+func (warrior *Warrior) registerHeroicThrow() {
 	warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 57755},
 		SpellSchool:    core.SpellSchoolPhysical,

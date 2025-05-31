@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterRecklessnessCD() {
+func (warrior *Warrior) registerRecklessnessCD() {
 	actionID := core.ActionID{SpellID: 1719}
 
 	critMod := warrior.AddDynamicMod(core.SpellModConfig{
@@ -41,7 +41,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			},
 
 			SharedCD: core.Cooldown{
-				Timer:    warrior.RecklessnessDeadlyCalmLock(),
+				Timer:    warrior.NewTimer(),
 				Duration: 12 * time.Second,
 			},
 		},

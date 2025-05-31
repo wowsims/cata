@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ProtectionWarrior) RegisterConcussionBlow() {
+func (war *ProtectionWarrior) registerConcussionBlow() {
 	if !war.Talents.ConcussionBlow {
 		return
 	}

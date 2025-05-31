@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterCharge() {
+func (warrior *Warrior) registerCharge() {
 	actionID := core.ActionID{SpellID: 100}
 	metrics := warrior.NewRageMetrics(actionID)
 	rage := float64(15 + 5*warrior.Talents.Blitz)

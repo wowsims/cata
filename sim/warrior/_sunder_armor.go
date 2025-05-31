@@ -5,7 +5,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
+func (warrior *Warrior) registerSunderArmor() *core.Spell {
 	warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
 
 	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSunderArmor)

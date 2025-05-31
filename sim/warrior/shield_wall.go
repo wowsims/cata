@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterShieldWallCD() {
+func (warrior *Warrior) registerShieldWallCD() {
 	if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}

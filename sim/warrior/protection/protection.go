@@ -36,37 +36,46 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 	protOptions := options.GetProtectionWarrior().Options
 
 	war := &ProtectionWarrior{
-		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{}),
+		Warrior: warrior.NewWarrior(character, protOptions.ClassOptions, options.TalentsString, warrior.WarriorInputs{}),
 		Options: protOptions,
 	}
-
-	rbo := core.RageBarOptions{
-		StartingRage:       protOptions.ClassOptions.StartingRage,
-		BaseRageMultiplier: 1,
-	}
-
-	war.EnableRageBar(rbo)
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultCritMultiplier()),
-		AutoSwingMelee: true,
-	})
 
 	return war
 }
 
-func (war *ProtectionWarrior) RegisterSpecializationEffects() {
-	// Critical block
-	war.RegisterMastery()
+func (war *ProtectionWarrior) CalculateMasteryBlockChance() float64 {
+	return (8.0 + (0.5 * war.GetMasteryPoints())) / 100.0
+}
 
-	// Sentinel stat buffs
+func (war *ProtectionWarrior) CalculateMasteryCriticalBlockChance() float64 {
+	return (8.0 + (2.2 * war.GetMasteryPoints())) / 100.0
+}
+
+func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
+	return war.Warrior
+}
+
+func (war *ProtectionWarrior) Initialize() {
+	war.Warrior.Initialize()
+	war.registerPassives()
+}
+
+func (war *ProtectionWarrior) registerPassives() {
+	war.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate, 86526)
+
+	// Critical block
+	war.registerMastery()
+
+	// Unwavering Sentinel
 	war.MultiplyStat(stats.Stamina, 1.15)
-	war.AddStat(stats.BlockPercent, 15)
+	war.ApplyEquipScaling(stats.Armor, 0.25)
+	war.PseudoStats.ReducedCritTakenChance += 0.06
 
 	// Vengeance
 	war.RegisterVengeance(93098, war.DefensiveStanceAura)
 }
 
-func (war *ProtectionWarrior) RegisterMastery() {
+func (war *ProtectionWarrior) registerMastery() {
 
 	dummyCriticalBlockSpell := war.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 76857}, // Doesn't seem like there's an actual spell ID for the block itself, so use the mastery ID
@@ -90,37 +99,24 @@ func (war *ProtectionWarrior) RegisterMastery() {
 	}
 
 	// Crit block mastery also applies an equal amount to regular block
-	// set initial block % from stats
-	war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
-	war.AddStat(stats.BlockPercent, war.CriticalBlockChance[0]*100.0)
+	// set initial block % from both Masteries
+	war.CriticalBlockChance[0] = war.CalculateMasteryCriticalBlockChance()
+	war.CriticalBlockChance[1] = war.CalculateMasteryBlockChance()
+	war.AddStat(stats.BlockPercent, (war.CriticalBlockChance[0]+war.CriticalBlockChance[1])*100.0)
 
 	// and keep it updated when mastery changes
 	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
-		war.AddStatDynamic(sim, stats.BlockPercent, 1.5*core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating))
-		war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
+		war.CriticalBlockChance[0] = war.CalculateMasteryCriticalBlockChance()
+		war.CriticalBlockChance[1] = war.CalculateMasteryBlockChance()
+		masteryBlockStat := 0.5 * core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating)
+		masteryCriticalBlockStat := 2.2 * core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating)
+		war.AddStatDynamic(sim, stats.BlockPercent, masteryCriticalBlockStat+masteryBlockStat)
 	})
-
 }
 
-func CalcMasteryPercent(points float64) float64 {
-	return 12.0 + 1.5*points
+func (war *ProtectionWarrior) ApplyTalents() {
+	// war.registerShieldSlam()
 }
-
-func (war *ProtectionWarrior) CalculateCriticalBlockChance() float64 {
-	return CalcMasteryPercent(war.GetMasteryPoints()) / 100.0
-}
-
-func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
-	return war.Warrior
-}
-
-func (war *ProtectionWarrior) Initialize() {
-	war.Warrior.Initialize()
-	war.RegisterSpecializationEffects()
-	war.RegisterShieldSlam()
-}
-
-func (war *ProtectionWarrior) ApplyTalents() {}
 
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)

@@ -11,7 +11,7 @@ import (
 // to fetch its multiplier when needed
 type RageMultiplierCB func() float64
 
-func (warrior *Warrior) RegisterBerserkerRageSpell() {
+func (warrior *Warrior) registerBerserkerRageSpell() {
 
 	actionID := core.ActionID{SpellID: 18499}
 	rageBonus := float64(core.TernaryInt(warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfBerserkerRage), 5, 0))
