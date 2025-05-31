@@ -50,5 +50,19 @@ var ItemSetRegaliaOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T16 Balance
+var ItemSetRegaliaOfTheShatteredVale = core.NewItemSet(core.ItemSet{
+	ID:   1197,
+	Name: "Regalia of the Shattered Vale",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Arcane spells cast while in Lunar Eclipse will shoot a single Lunar Bolt at the target. Nature spells cast while in a Solar Eclipse will shoot a single Solar Bolt at the target.
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your chance to get Shooting Stars from a critical strike from Moonfire or Sunfire is increased by 8%.
+		},
+	},
+})
+
 func init() {
 }
