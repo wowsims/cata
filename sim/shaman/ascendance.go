@@ -9,11 +9,60 @@ import (
 
 func (shaman *Shaman) registerAscendanceSpell() {
 
+	var originalMHSpell *core.Spell
+	var originalOHSpell *core.Spell
+
+	windslashMH := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 114089, Tag: 1},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskMeleeMHAuto,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           shaman.DefaultCritMultiplier(),
+		ThreatMultiplier:         1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+		},
+
+		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			baseDamage := spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower())
+			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMeleeWeaponSpecialHitAndCrit)
+		},
+	})
+
+	windslashOH := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 114089, Tag: 2},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskMeleeOHAuto,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           shaman.DefaultCritMultiplier(),
+		ThreatMultiplier:         1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+		},
+	})
+
 	ascendanceAura := shaman.GetOrRegisterAura(core.Aura{
 		Label:    "Ascendance",
 		ActionID: core.ActionID{SpellID: 114049},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+				//TODO weapon swap during ascendance breaks this i think
+				originalMHSpell = shaman.AutoAttacks.MHAuto()
+				originalOHSpell = shaman.AutoAttacks.OHAuto()
+				shaman.AutoAttacks.SetMHSpell(windslashMH)
+				shaman.AutoAttacks.SetOHSpell(windslashOH)
+			}
 			pa := &core.PendingAction{
 				NextActionAt: aura.ExpiresAt(),
 				Priority:     core.ActionPriorityGCD,
@@ -28,6 +77,8 @@ func (shaman *Shaman) registerAscendanceSpell() {
 			}
 			if shaman.Spec == proto.Spec_SpecEnhancementShaman {
 				shaman.Stormstrike.CD.Set(shaman.Stormblast.CD.ReadyAt())
+				shaman.AutoAttacks.SetMHSpell(originalMHSpell)
+				shaman.AutoAttacks.SetOHSpell(originalOHSpell)
 			}
 		},
 	}).AttachSpellMod(core.SpellModConfig{

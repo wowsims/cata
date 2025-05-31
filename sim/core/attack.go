@@ -220,8 +220,16 @@ func (aa *AutoAttacks) MHAuto() *Spell {
 	return aa.mh.spell
 }
 
+func (aa *AutoAttacks) SetMHSpell(spell *Spell) {
+	aa.mh.spell = spell
+}
+
 func (aa *AutoAttacks) OHAuto() *Spell {
 	return aa.oh.spell
+}
+
+func (aa *AutoAttacks) SetOHSpell(spell *Spell) {
+	aa.oh.spell = spell
 }
 
 func (aa *AutoAttacks) RangedAuto() *Spell {

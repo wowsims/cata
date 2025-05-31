@@ -414,6 +414,7 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Wind Lash':
 			case 'Stormstrike':
 			case 'Stormblast' :
 				if (tag == 0) {

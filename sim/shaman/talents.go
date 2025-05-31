@@ -193,11 +193,12 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 	})
 
 	windfuryProcAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-		Name:     "Unleashed Fury WF Proc Aura",
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeWhiteHit,
-		Outcome:  core.OutcomeHit,
-		Duration: time.Second * 8,
+		Name:       "Unleashed Fury WF Proc Aura",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Outcome:    core.OutcomeLanded,
+		Duration:   time.Second * 8,
+		ProcChance: 0.45,
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
 			return shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield
 		},
