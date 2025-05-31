@@ -53,6 +53,23 @@ func (dot *Dot) OutcomeTickMagicCrit(sim *Simulation, result *SpellResult, attac
 	}
 }
 
+func (dot *Dot) OutcomeTickMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.MagicHitCheck(sim, attackTable) {
+		if dot.Spell.MagicCritCheck(sim, result.Target) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= dot.Spell.CritDamageMultiplier()
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
+
 func (dot *Dot) OutcomeTickHealingCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if dot.Spell.HealingCritCheck(sim) {
 		result.Outcome = OutcomeCrit
