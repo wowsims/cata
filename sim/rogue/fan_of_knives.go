@@ -33,7 +33,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 	rogue.FanOfKnives = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51723},
 		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagAoE,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 35,
