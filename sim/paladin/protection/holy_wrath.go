@@ -11,7 +11,7 @@ import (
 /*
 	Tooltip:
 
-Sends bolts of power in all directions, causing ${($m1+$M1)/2+$SPH*0.91} Holy damage
+Sends bolts of power in all directions, causing ((8127 + 9075) / 2) / 2 + <AP> * 0.91 Holy damage
 
 -- Glyph of Focused Wrath --
 divided among all enemies within 10 yards
@@ -67,9 +67,8 @@ func (prot *ProtectionPaladin) registerHolyWrath() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
 
-			// The scaling coef is divided by 2 in the game (and sort of matches the tooltip)
-			// The AP coef is only in the tooltip, where it says it's an SP coef but that's wrong
-			// variance := 0.11 // unused???
+			// Ingame tooltip is ((<MIN> + <MAX>) / 2) / 2
+			// This is the same as, <AVG> / 2 which is the same as just halving the coef
 			baseDamage := prot.CalcScalingSpellDmg(7.532/2) + 0.91*spell.MeleeAttackPower()
 
 			// Damage is split between all mobs, each hit rolls for hit/crit separately
