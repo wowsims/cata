@@ -164,7 +164,7 @@ func (ai *BethtilacAI) registerEmberFlameSpell() {
 		ActionID:         core.ActionID{SpellID: emberFlameSpellID},
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagIgnoreResists,
+		Flags:            core.SpellFlagIgnoreArmor,
 		DamageMultiplier: 1,
 
 		Cast: core.CastConfig{
