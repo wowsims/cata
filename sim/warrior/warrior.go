@@ -148,6 +148,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.hsCleaveCD = warrior.NewTimer()
 	warrior.shoutsCD = warrior.NewTimer()
 
+	warrior.registerShouts()
 	// warrior.registerBerserkerRageSpell()
 	// warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
@@ -164,7 +165,6 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerShatteringThrowCD()
 	// warrior.registerShieldBlockCD()
 	// warrior.registerShieldWallCD()
-	// warrior.registerShouts()
 	// warrior.registerSlamSpell()
 	// warrior.registerSunderArmor()
 	// warrior.registerThunderClapSpell()

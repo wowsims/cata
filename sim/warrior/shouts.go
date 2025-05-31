@@ -10,10 +10,10 @@ import (
 const ShoutExpirationThreshold = time.Second * 3
 
 func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask int64, allyAuras core.AuraArray) *core.Spell {
-
+	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHoarseVoice)
 	shoutMetrics := warrior.NewRageMetrics(actionID)
-	rageGen := 20.0 + 5.0*float64(warrior.Talents.BoomingVoice)
-	talentReduction := time.Duration(warrior.Talents.BoomingVoice*15) * time.Second
+	rageGen := core.TernaryFloat64(hasGlyph, 10, 20)
+	duration := core.TernaryDuration(hasGlyph, time.Second*30, time.Minute*1)
 
 	return warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -27,7 +27,7 @@ func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask i
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.shoutsCD,
-				Duration: time.Minute - talentReduction,
+				Duration: duration,
 			},
 		},
 
@@ -49,13 +49,13 @@ func (warrior *Warrior) registerShouts() {
 		if unit.Type == core.PetUnit {
 			return nil
 		}
-		return core.BattleShoutAura(unit, false, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfBattle))
+		return core.BattleShoutAura(unit, false)
 	}))
 
 	warrior.CommandingShout = warrior.MakeShoutSpellHelper(core.ActionID{SpellID: 469}, SpellMaskCommandingShout, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
 		if unit.Type == core.PetUnit {
 			return nil
 		}
-		return core.CommandingShoutAura(unit, false, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfCommand))
+		return core.CommandingShoutAura(unit, false)
 	}))
 }
