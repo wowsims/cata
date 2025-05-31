@@ -654,11 +654,6 @@ func (spell *Spell) ApplyAOEThreat(threatAmount float64) {
 }
 
 func (spell *Spell) finalizeExpectedDamage(result *SpellResult) {
-	if !spell.SpellSchool.Matches(SpellSchoolPhysical) {
-		result.Damage /= result.ResistanceMultiplier
-		result.Damage *= AverageMagicPartialResistMultiplier
-		result.ResistanceMultiplier = AverageMagicPartialResistMultiplier
-	}
 	result.inUse = false
 }
 func (spell *Spell) ExpectedInitialDamage(sim *Simulation, target *Unit) float64 {
