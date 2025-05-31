@@ -37,7 +37,7 @@ func (war *FuryWarrior) registerBloodthirst() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 
-			baseDamage := war.CalcScalingSpellDmg(spell.MeleeAttackPower())
+			baseDamage := war.CalcScalingSpellDmg(1) * spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
