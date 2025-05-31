@@ -15,7 +15,6 @@ func (war *FuryWarrior) ApplyTalents() {
 	war.RegisterRagingBlow()
 
 	war.applyFlurry()
-	war.applyEnrage()
 	war.applyRampage()
 	war.applyMeatCleaver()
 	war.applyBloodsurge()
@@ -61,45 +60,6 @@ func (war *FuryWarrior) applyFlurry() {
 			if flurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				flurryAura.RemoveStack(sim)
 			}
-		},
-	})
-}
-
-func (war *FuryWarrior) applyEnrage() {
-	if war.Talents.Enrage == 0 {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: 14202}
-	procChance := 0.03 * float64(war.Talents.Enrage)
-	baseDamageBonus := []float64{0.0, 0.03, 0.07, 0.1}[war.Talents.Enrage]
-	var bonusSnapshot float64
-	enrageAura := war.RegisterAura(core.Aura{
-		Label:    "Enrage",
-		Tag:      warrior.EnrageTag,
-		ActionID: actionID,
-		Duration: 9 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			bonusSnapshot = 1.0 + (baseDamageBonus * war.EnrageEffectMultiplier)
-			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
-			//core.RegisterPercentDamageModifierEffect(aura, bonusSnapshot)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
-		},
-	})
-
-	core.RegisterPercentDamageModifierEffect(enrageAura, 1+baseDamageBonus)
-
-	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:       "Enrage Trigger",
-		ActionID:   actionID,
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskMelee,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: procChance,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			enrageAura.Activate(sim)
 		},
 	})
 }

@@ -23,46 +23,46 @@ const (
 
 	// Abilities that don't cost rage and aren't attacks
 	SpellMaskBattleShout
-	SpellMaskBerserkerRage
 	SpellMaskCommandingShout
-	SpellMaskRecklessness
-	SpellMaskShieldWall
-	SpellMaskLastStand
-	SpellMaskDeadlyCalm
-	SpellMaskCharge
+	// SpellMaskBerserkerRage
+	// SpellMaskRecklessness
+	// SpellMaskShieldWall
+	// SpellMaskLastStand
+	// SpellMaskDeadlyCalm
+	// SpellMaskCharge
 
 	// Abilities that cost rage but aren't attacks
-	SpellMaskDemoShout
-	SpellMaskInnerRage
-	SpellMaskShieldBlock
-	SpellMaskDeathWish
-	SpellMaskSweepingStrikes
+	// SpellMaskDemoShout
+	// SpellMaskInnerRage
+	// SpellMaskShieldBlock
+	// SpellMaskDeathWish
+	// SpellMaskSweepingStrikes
 
 	// Special attacks
-	SpellMaskCleave
+	// SpellMaskCleave
 	SpellMaskColossusSmash
-	SpellMaskExecute
-	SpellMaskHeroicStrike
-	SpellMaskHeroicThrow
-	SpellMaskOverpower
-	SpellMaskRend
-	SpellMaskRevenge
-	SpellMaskShatteringThrow
-	SpellMaskSlam
-	SpellMaskSunderArmor
-	SpellMaskThunderClap
-	SpellMaskWhirlwind
-	SpellMaskWhirlwindOh
+	// SpellMaskExecute
+	// SpellMaskHeroicStrike
+	// SpellMaskHeroicThrow
+	// SpellMaskOverpower
+	// SpellMaskRend
+	// SpellMaskRevenge
+	// SpellMaskShatteringThrow
+	// SpellMaskSlam
+	// SpellMaskSunderArmor
+	// SpellMaskThunderClap
+	// SpellMaskWhirlwind
+	// SpellMaskWhirlwindOh
 	SpellMaskShieldSlam
-	SpellMaskConcussionBlow
+	// SpellMaskConcussionBlow
 	SpellMaskDevastate
-	SpellMaskShockwave
-	SpellMaskVictoryRush
+	// SpellMaskShockwave
+	// SpellMaskVictoryRush
 	SpellMaskBloodthirst
-	SpellMaskRagingBlow
+	// SpellMaskRagingBlow
 	SpellMaskMortalStrike
-	SpellMaskBladestorm
-	SpellMaskHeroicLeap
+	// SpellMaskBladestorm
+	// SpellMaskHeroicLeap
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
@@ -90,38 +90,38 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
-	BerserkerRage     *core.Spell
-	ColossusSmash     *core.Spell
-	DemoralizingShout *core.Spell
-	Execute           *core.Spell
-	Overpower         *core.Spell
-	Rend              *core.Spell
-	Revenge           *core.Spell
-	ShieldBlock       *core.Spell
-	Slam              *core.Spell
-	SunderArmor       *core.Spell
-	ThunderClap       *core.Spell
-	Whirlwind         *core.Spell
-	DeepWounds        *core.Spell
-	Charge            *core.Spell
-	ChargeAura        *core.Aura
+	// BerserkerRage     *core.Spell
+	// ColossusSmash     *core.Spell
+	// DemoralizingShout *core.Spell
+	// Execute           *core.Spell
+	// Overpower         *core.Spell
+	// Rend              *core.Spell
+	// Revenge           *core.Spell
+	// ShieldBlock       *core.Spell
+	// Slam              *core.Spell
+	// SunderArmor       *core.Spell
+	// ThunderClap       *core.Spell
+	// Whirlwind         *core.Spell
+	// DeepWounds        *core.Spell
+	// Charge            *core.Spell
+	// ChargeAura        *core.Aura
 
-	shoutsCD                 *core.Timer
-	recklessnessDeadlyCalmCD *core.Timer
-	hsCleaveCD               *core.Timer
-	HeroicStrike             *core.Spell
-	Cleave                   *core.Spell
+	shoutsCD   *core.Timer
+	hsCleaveCD *core.Timer
+	// HeroicStrike             *core.Spell
+	// Cleave                   *core.Spell
 
 	BattleStanceAura    *core.Aura
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
+	EnrageAura        *core.Aura
 	BerserkerRageAura *core.Aura
-	BloodsurgeAura    *core.Aura
-	SuddenDeathAura   *core.Aura
-	ShieldBlockAura   *core.Aura
-	ThunderstruckAura *core.Aura
-	InnerRageAura     *core.Aura
+	// BloodsurgeAura    *core.Aura
+	// SuddenDeathAura   *core.Aura
+	// ShieldBlockAura   *core.Aura
+	// ThunderstruckAura *core.Aura
+	// InnerRageAura     *core.Aura
 
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
@@ -143,12 +143,13 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
 	warrior.shoutsCD = warrior.NewTimer()
 
+	warrior.registerStances()
 	warrior.registerShouts()
+	warrior.registerPassives()
 	// warrior.registerBerserkerRageSpell()
 	// warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
@@ -170,6 +171,10 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerThunderClapSpell()
 	// warrior.registerWhirlwindSpell()
 	// warrior.registerCharge()
+}
+
+func (war *Warrior) registerPassives() {
+	war.registerEnrage()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
