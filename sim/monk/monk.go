@@ -45,6 +45,8 @@ type Monk struct {
 	MHAutoSpell *core.Spell
 	OHAutoSpell *core.Spell
 
+	AdditiveEnergyRegenBonus float64
+
 	StanceOfTheSturdyOx    *core.Spell
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
@@ -208,11 +210,19 @@ func (monk *Monk) registerSpells() {
 
 }
 
+func (monk *Monk) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
+	oldBonus := monk.AdditiveEnergyRegenBonus
+	newBonus := oldBonus + increment
+	monk.AdditiveEnergyRegenBonus = newBonus
+	monk.MultiplyEnergyRegenSpeed(sim, (1.0+newBonus)/(1.0+oldBonus))
+}
+
 func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
 	if monk.SefController != nil {
 		monk.SefController.Reset(sim)
 	}
+	monk.MultiplyEnergyRegenSpeed(sim, 1.0+monk.AdditiveEnergyRegenBonus)
 	monk.ElusiveBrewStacks = 0
 }
 

@@ -700,7 +700,7 @@ func (monk *Monk) registerAscension() {
 		Label:    "Ascension" + monk.Label,
 		ActionID: core.ActionID{SpellID: 115396},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			monk.MultiplyEnergyRegenSpeed(sim, 1.15)
+			monk.ApplyAdditiveEnergyRegenBonus(sim, 0.15)
 			monk.SetMaxComboPoints(5)
 
 			if monk.HasManaBar() {
@@ -708,7 +708,7 @@ func (monk *Monk) registerAscension() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			monk.MultiplyEnergyRegenSpeed(sim, 1.0/1.15)
+			monk.ApplyAdditiveEnergyRegenBonus(sim, -0.15)
 			monk.SetMaxComboPoints(4)
 
 			if monk.HasManaBar() {
