@@ -34,6 +34,7 @@ func (war *Warrior) registerEnrage() {
 		ClassSpellMask: SpellMaskColossusSmash | SpellMaskShieldSlam | SpellMaskDevastate | SpellMaskBloodthirst | SpellMaskMortalStrike,
 		Outcome:        core.OutcomeCrit,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			war.EnrageAura.Deactivate(sim)
 			war.EnrageAura.Activate(sim)
 		},
 	})
