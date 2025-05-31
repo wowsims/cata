@@ -7,7 +7,6 @@ import { PlayerClasses } from '../core/player_classes/index.js';
 import { PlayerSpecs } from '../core/player_specs/index.js';
 import { Class, RaidBuffs, Spec } from '../core/proto/common.js';
 import { HunterOptions_PetType as HunterPetType } from '../core/proto/hunter.js';
-import { PaladinAura } from '../core/proto/paladin.js';
 import { AirTotem, EarthTotem, FireTotem, WaterTotem } from '../core/proto/shaman.js';
 import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
@@ -552,6 +551,16 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						},
 					],
 				},
+				{
+					label: 'Devotion Aura',
+					effects: [
+						{
+							label: 'Devotion Aura',
+							actionId: ActionId.fromSpellId(31821),
+							playerData: playerClass(Class.ClassPaladin),
+						},
+					],
+				},
 				// {
 				// 	label: 'Unholy Frenzy',
 				// 	effects: [
@@ -569,16 +578,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				// 			label: 'Pain Suppression',
 				// 			actionId: ActionId.fromSpellId(33206),
 				// 			playerData: playerClassAndTalent(Class.ClassPriest, 'painSuppression'),
-				// 		},
-				// 	],
-				// },
-				// {
-				// 	label: 'Divine Guardian',
-				// 	effects: [
-				// 		{
-				// 			label: 'Divine Guardian',
-				// 			actionId: ActionId.fromSpellId(70940),
-				// 			playerData: playerClassAndTalent(Class.ClassPaladin, 'divineGuardian'),
 				// 		},
 				// 	],
 				// },

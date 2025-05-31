@@ -29,8 +29,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	selfBuffs := druid.SelfBuffs{}
 
 	bear := &GuardianDruid{
-		Druid:     druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
-		Options:   tankOptions.Options,
+		Druid:   druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
+		Options: tankOptions.Options,
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
@@ -80,10 +80,10 @@ func (bear *GuardianDruid) applyMastery() {
 	const baseMasteryMod = 1.16
 	const masteryModPerPoint = 0.02
 
-	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod + masteryModPerPoint * bear.GetMasteryPoints())
+	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod+masteryModPerPoint*bear.GetMasteryPoints())
 
 	bear.AddOnMasteryStatChanged(func(sim *core.Simulation, _ float64, newMasteryRating float64) {
-		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod + masteryModPerPoint * core.MasteryRatingToMasteryPoints(newMasteryRating))
+		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod+masteryModPerPoint*core.MasteryRatingToMasteryPoints(newMasteryRating))
 	})
 
 	bear.BearFormAura.AttachStatDependency(armorMultiplierDep)

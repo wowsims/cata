@@ -218,7 +218,7 @@ func (war *FuryWarrior) applyIntensityRage() {
 		return
 	}
 
-	cdr := -0.1 * float64(war.Talents.IntensifyRage)
+	cdr := 1.0 - 0.1*float64(war.Talents.IntensifyRage)
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskBerserkerRage | warrior.SpellMaskRecklessness | warrior.SpellMaskDeathWish,
 		Kind:       core.SpellMod_Cooldown_Multiplier,

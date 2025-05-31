@@ -44,7 +44,7 @@ func (mage *Mage) ApplyArcaneTalents() {
 	if mage.Talents.ArcaneFlows > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask:  MageSpellArcanePower | MageSpellPresenceOfMind,
-			FloatValue: -[]float64{0, 0.12, 0.25}[mage.Talents.ArcaneFlows],
+			FloatValue: []float64{0, 0.88, 0.75}[mage.Talents.ArcaneFlows],
 			Kind:       core.SpellMod_Cooldown_Multiplier,
 		})
 

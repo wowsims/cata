@@ -774,7 +774,7 @@ func (monk *Monk) registerDampenHarm() {
 
 	// Dampen Harms Damage Reduction for BRM is implemented in stagger.go
 	if monk.Spec != proto.Spec_SpecBrewmasterMonk {
-		monk.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		monk.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) {
 			if !monk.DampenHarmAura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
 				return
 			}

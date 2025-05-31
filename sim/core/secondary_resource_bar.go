@@ -6,14 +6,14 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-type OnGainCallback func(gain int32, realGain int32)
-type OnSpendCallback func(amount int32)
+type OnGainCallback func(sim *Simulation, gain int32, realGain int32, actionID ActionID)
+type OnSpendCallback func(sim *Simulation, amount int32, actionID ActionID)
 
 type SecondaryResourceBar interface {
 	CanSpend(limit int32) bool                                     // Check whether the current resource is available or not
-	Spend(amount int32, action ActionID, sim *Simulation)          // Spend the specified amount of resource
-	SpendUpTo(limit int32, action ActionID, sim *Simulation) int32 // Spends as much resource as possible up to the speciefied limit; Returns the amount of resource spent
-	Gain(amount int32, action ActionID, sim *Simulation)           // Gain the amount specified from the action
+	Spend(sim *Simulation, amount int32, action ActionID)          // Spend the specified amount of resource
+	SpendUpTo(sim *Simulation, limit int32, action ActionID) int32 // Spends as much resource as possible up to the speciefied limit; Returns the amount of resource spent
+	Gain(sim *Simulation, amount int32, action ActionID)           // Gain the amount specified from the action
 	Reset(sim *Simulation)                                         // Resets the current resource bar
 	Value() int32                                                  // Returns the current amount of resource
 	RegisterOnGain(callback OnGainCallback)                        // Registers a callback that will be called. Gain = amount gained, realGain = actual amount gained due to caps
@@ -43,7 +43,7 @@ func (bar *DefaultSecondaryResourceBarImpl) CanSpend(limit int32) bool {
 }
 
 // Gain implements SecondaryResourceBar.
-func (bar *DefaultSecondaryResourceBarImpl) Gain(amount int32, action ActionID, sim *Simulation) {
+func (bar *DefaultSecondaryResourceBarImpl) Gain(sim *Simulation, amount int32, action ActionID) {
 	if amount < 0 {
 		panic("Can not gain negative amount")
 	}
@@ -66,19 +66,19 @@ func (bar *DefaultSecondaryResourceBarImpl) Gain(amount int32, action ActionID, 
 		)
 	}
 
-	bar.invokeOnGain(amount, amountGained)
+	bar.invokeOnGain(sim, amount, amountGained, action)
 }
 
 // Reset implements SecondaryResourceBar.
 func (bar *DefaultSecondaryResourceBarImpl) Reset(sim *Simulation) {
 	bar.value = 0
 	if bar.config.Default > 0 {
-		bar.Gain(bar.config.Default, ActionID{SpellID: int32(bar.config.Type)}, sim)
+		bar.Gain(sim, bar.config.Default, ActionID{SpellID: int32(bar.config.Type)})
 	}
 }
 
 // Spend implements SecondaryResourceBar.
-func (bar *DefaultSecondaryResourceBarImpl) Spend(amount int32, action ActionID, sim *Simulation) {
+func (bar *DefaultSecondaryResourceBarImpl) Spend(sim *Simulation, amount int32, action ActionID) {
 	if amount > bar.value {
 		panic("Trying to spend more resource than is available.")
 	}
@@ -102,24 +102,29 @@ func (bar *DefaultSecondaryResourceBarImpl) Spend(amount int32, action ActionID,
 	}
 
 	metrics.AddEvent(float64(-amount), float64(-amount))
-	bar.invokeOnSpend(amount)
+	bar.invokeOnSpend(sim, amount, action)
 	bar.value -= amount
 }
 
 // SpendUpTo implements SecondaryResourceBar.
-func (bar *DefaultSecondaryResourceBarImpl) SpendUpTo(limit int32, action ActionID, sim *Simulation) int32 {
+func (bar *DefaultSecondaryResourceBarImpl) SpendUpTo(sim *Simulation, limit int32, action ActionID) int32 {
 	if bar.value > limit {
-		bar.Spend(limit, action, sim)
+		bar.Spend(sim, limit, action)
 		return limit
 	}
 
-	bar.Spend(bar.value, action, sim)
-	return bar.value
+	value := bar.value
+	bar.Spend(sim, value, action)
+	return value
 }
 
 // Value implements SecondaryResourceBar.
 func (bar *DefaultSecondaryResourceBarImpl) Value() int32 {
 	return bar.value
+}
+
+func (bar *DefaultSecondaryResourceBarImpl) Max() int32 {
+	return bar.config.Max
 }
 
 func (bar *DefaultSecondaryResourceBarImpl) GetMetric(action ActionID) *ResourceMetrics {
@@ -148,15 +153,15 @@ func (bar *DefaultSecondaryResourceBarImpl) RegisterOnSpend(callback OnSpendCall
 	bar.onSpend = append(bar.onSpend, callback)
 }
 
-func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(gain int32, realGain int32) {
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(sim *Simulation, gain int32, realGain int32, actionID ActionID) {
 	for _, callback := range bar.onGain {
-		callback(gain, realGain)
+		callback(sim, gain, realGain, actionID)
 	}
 }
 
-func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(amount int32) {
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(sim *Simulation, amount int32, actionID ActionID) {
 	for _, callback := range bar.onSpend {
-		callback(amount)
+		callback(sim, amount, actionID)
 	}
 }
 
