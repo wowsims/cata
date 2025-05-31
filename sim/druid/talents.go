@@ -45,7 +45,7 @@ func (druid *Druid) registerNaturesVigil() {
 		},
 	})
 
-	druid.NaturesVigil = druid.RegisterSpell(Humanoid|Moonkin|Cat|Bear, core.SpellConfig{
+	druid.RegisterSpell(Humanoid|Moonkin|Cat|Bear, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
