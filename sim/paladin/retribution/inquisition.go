@@ -68,7 +68,7 @@ func (ret *RetributionPaladin) registerInquisition() {
 			spell.RelatedSelfBuff.Activate(sim)
 			spell.RelatedSelfBuff.SetStacks(sim, ret.DynamicHolyPowerSpent)
 
-			ret.HolyPower.SpendUpTo(ret.DynamicHolyPowerSpent, actionID, sim)
+			ret.HolyPower.SpendUpTo(sim, ret.DynamicHolyPowerSpent, actionID)
 		},
 
 		RelatedSelfBuff: inquisitionAura,

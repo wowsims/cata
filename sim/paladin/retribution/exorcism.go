@@ -57,7 +57,7 @@ func (ret *RetributionPaladin) registerExorcism() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				ret.HolyPower.Gain(1, exoHpActionID, sim)
+				ret.HolyPower.Gain(sim, 1, exoHpActionID)
 			}
 
 			spell.DealDamage(sim, result)

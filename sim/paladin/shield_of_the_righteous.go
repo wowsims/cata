@@ -112,7 +112,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.HolyPower.Spend(3, actionID, sim)
+				paladin.HolyPower.Spend(sim, 3, actionID)
 			}
 
 			// Buff should apply even if the spell misses/dodges/parries

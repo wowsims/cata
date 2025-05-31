@@ -48,7 +48,7 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 			}
 
 			if !ret.DivineCrusaderAura.IsActive() {
-				ret.HolyPower.Spend(3, actionID, sim)
+				ret.HolyPower.Spend(sim, 3, actionID)
 			}
 
 			for idx := range numTargets {

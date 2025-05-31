@@ -29,7 +29,7 @@ func (prot *ProtectionPaladin) registerGrandCrusader() {
 		ClassSpellMask: paladin.SpellMaskAvengersShield,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			prot.HolyPower.Gain(1, hpActionID, sim)
+			prot.HolyPower.Gain(sim, 1, hpActionID)
 			grandCrusaderAura.Deactivate(sim)
 		},
 	})

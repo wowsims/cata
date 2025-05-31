@@ -27,7 +27,7 @@ var ItemSetMistsGladiatorsVindication = core.NewItemSet(core.ItemSet{
 				ICD:      time.Second * 8,
 
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					paladin.HolyPower.Gain(1, actionID, sim)
+					paladin.HolyPower.Gain(sim, 1, actionID)
 				},
 			})
 		},
@@ -158,7 +158,7 @@ func (paladin *Paladin) registerHolyDamageTemplarsVerdict() *core.Spell {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.HolyPower.Spend(3, actionID, sim)
+				paladin.HolyPower.Spend(sim, 3, actionID)
 				paladin.T15Ret4pc.Deactivate(sim)
 			}
 
@@ -270,7 +270,7 @@ var ItemSetPlateOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 					if paladin.DivineProtectionAura.IsActive() {
 						totalDamageTaken += result.Damage
 						if totalDamageTaken >= paladin.MaxHealth()*0.2 {
-							paladin.HolyPower.Gain(1, hpGainMetrics, sim)
+							paladin.HolyPower.Gain(sim, 1, hpGainMetrics)
 							totalDamageTaken = 0
 						}
 					}

@@ -49,7 +49,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.HolyPower.Gain(1, actionID, sim)
+				paladin.HolyPower.Gain(sim, 1, actionID)
 			}
 
 			spell.DealDamage(sim, result)

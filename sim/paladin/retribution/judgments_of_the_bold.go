@@ -24,7 +24,7 @@ func (ret *RetributionPaladin) registerJudgmentsOfTheBold() {
 		ClassSpellMask: paladin.SpellMaskJudgment,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ret.HolyPower.Gain(1, actionID, sim)
+			ret.HolyPower.Gain(sim, 1, actionID)
 
 			auraArray.Get(result.Target).Activate(sim)
 		},

@@ -18,7 +18,7 @@ func (prot *ProtectionPaladin) registerJudgmentsOfTheWise() {
 		ClassSpellMask: paladin.SpellMaskJudgment,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			prot.HolyPower.Gain(1, prot.JudgmentsOfTheWiseActionID, sim)
+			prot.HolyPower.Gain(sim, 1, prot.JudgmentsOfTheWiseActionID)
 		},
 	})
 }

@@ -142,11 +142,11 @@ func (paladin *Paladin) registerPursuitOfJustice() {
 		Priority: speedLevels[1],
 	})
 
-	paladin.HolyPower.RegisterOnGain(func(gain, realGain int32, actionID core.ActionID, sim *core.Simulation) {
+	paladin.HolyPower.RegisterOnGain(func(sim *core.Simulation, gain, realGain int32, actionID core.ActionID) {
 		pursuitOfJusticeAura.Activate(sim)
 		pursuitOfJusticeAura.SetStacks(sim, paladin.SpendableHolyPower()+1)
 	})
-	paladin.HolyPower.RegisterOnSpend(func(amount int32, actionID core.ActionID, sim *core.Simulation) {
+	paladin.HolyPower.RegisterOnSpend(func(sim *core.Simulation, amount int32, actionID core.ActionID) {
 		pursuitOfJusticeAura.Activate(sim)
 		pursuitOfJusticeAura.SetStacks(sim, paladin.SpendableHolyPower()+1)
 	})
@@ -232,7 +232,7 @@ func (paladin *Paladin) registerSelflessHealer() {
 			selflessHealerAura.AddStack(sim)
 
 			if paladin.Spec == proto.Spec_SpecHolyPaladin {
-				paladin.HolyPower.Gain(1, hpGainActionID, sim)
+				paladin.HolyPower.Gain(sim, 1, hpGainActionID)
 			}
 		},
 	})
@@ -451,7 +451,7 @@ func (paladin *Paladin) registerHolyAvenger() {
 		FloatValue: 0.3,
 	})
 
-	paladin.HolyPower.RegisterOnGain(func(gain int32, actualGain int32, triggeredActionID core.ActionID, sim *core.Simulation) {
+	paladin.HolyPower.RegisterOnGain(func(sim *core.Simulation, gain int32, actualGain int32, triggeredActionID core.ActionID) {
 		if !holyAvengerAura.IsActive() {
 			return
 		}
@@ -460,7 +460,7 @@ func (paladin *Paladin) registerHolyAvenger() {
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt: sim.CurrentTime + core.SpellBatchWindow,
 				OnAction: func(sim *core.Simulation) {
-					paladin.HolyPower.Gain(2, actionID, sim)
+					paladin.HolyPower.Gain(sim, 2, actionID)
 				},
 			})
 		}
@@ -520,9 +520,9 @@ func (paladin *Paladin) registerSanctifiedWrath() {
 		cdClassMask = SpellMaskJudgment
 		hpGainActionID := core.ActionID{SpellID: 53376}
 
-		paladin.HolyPower.RegisterOnGain(func(gain, realGain int32, actionID core.ActionID, sim *core.Simulation) {
+		paladin.HolyPower.RegisterOnGain(func(sim *core.Simulation, gain, realGain int32, actionID core.ActionID) {
 			if actionID.SameAction(paladin.JudgmentsOfTheWiseActionID) && paladin.AvengingWrathAura.IsActive() {
-				paladin.HolyPower.Gain(1, hpGainActionID, sim)
+				paladin.HolyPower.Gain(sim, 1, hpGainActionID)
 			}
 		})
 

@@ -94,7 +94,7 @@ func (paladin *Paladin) registerWordOfGlory() {
 			spell.DamageMultiplier = damageMultiplier
 
 			if !paladin.BastionOfPowerAura.IsActive() {
-				paladin.HolyPower.SpendUpTo(paladin.DynamicHolyPowerSpent, actionID, sim)
+				paladin.HolyPower.SpendUpTo(sim, paladin.DynamicHolyPowerSpent, actionID)
 			}
 
 			spell.DealHealing(sim, result)

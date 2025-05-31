@@ -438,7 +438,7 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 			spell.DamageMultiplier = damageMultiplier
 
 			if result.Landed() {
-				paladin.HolyPower.SpendUpTo(paladin.DynamicHolyPowerSpent, actionID, sim)
+				paladin.HolyPower.SpendUpTo(sim, paladin.DynamicHolyPowerSpent, actionID)
 			}
 
 			spell.DealDamage(sim, result)

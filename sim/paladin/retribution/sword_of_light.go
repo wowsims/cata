@@ -54,7 +54,7 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 		Outcome:        core.OutcomeLanded,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ret.HolyPower.Gain(1, swordOfLightHpActionID, sim)
+			ret.HolyPower.Gain(sim, 1, swordOfLightHpActionID)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
