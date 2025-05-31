@@ -57,6 +57,14 @@ func (warrior *Warrior) applyMajorGlyphs() {
 			TimeValue: -time.Second * 1,
 		})
 	}
+
+	if warrior.HasMajorGlyph(proto.WarriorMajorGlyph.GlyphOfDeathFromAbove) {
+		warrior.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskHeroicLeap,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: -time.Second * 15,
+		})
+	}
 }
 
 func (warrior *Warrior) applyMinorGlyphs() {
