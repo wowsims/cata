@@ -49,24 +49,28 @@ func (monk *Monk) registerStanceOfTheSturdyOx(stanceCD *core.Timer) {
 		return
 	}
 
+	stamDep := monk.NewDynamicMultiplyStat(stats.Stamina, 1.2)
+
 	monk.StanceOfTheSturdyOxAura = monk.GetOrRegisterAura(core.Aura{
 		Label:    "Stance of the Sturdy Ox" + monk.Label,
 		ActionID: core.ActionID{SpellID: 115069},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = SturdyOx
-			monk.PseudoStats.DamageTakenMultiplier *= 0.75
-			monk.PseudoStats.ReducedCritTakenChance += 0.06
 			monk.MultiplyEnergyRegenSpeed(sim, 1.1)
 			monk.SetCurrentPowerBar(core.EnergyBar)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = StanceNone
-			monk.PseudoStats.DamageTakenMultiplier /= 0.75
-			monk.PseudoStats.ReducedCritTakenChance -= 0.06
 			monk.MultiplyEnergyRegenSpeed(sim, 1.0/1.1)
 		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&monk.PseudoStats.DamageTakenMultiplier, 0.75,
+	).AttachAdditivePseudoStatBuff(
+		&monk.PseudoStats.ReducedCritTakenChance, 0.06,
+	).AttachStatDependency(
+		stamDep,
+	)
 
 	monk.StanceOfTheSturdyOxAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
 	monk.StanceOfTheSturdyOx = monk.makeStanceSpell(monk.StanceOfTheSturdyOxAura, stanceCD)
@@ -122,10 +126,6 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = WiseSerpent
-			monk.PseudoStats.HealingDealtMultiplier *= 1.2
-			monk.EnableDynamicStatDep(sim, hitDep)
-			monk.EnableDynamicStatDep(sim, expDep)
-			monk.EnableDynamicStatDep(sim, hasteDep)
 			// monk.EnableDynamicStatDep(sim, apDep)
 			monk.SetCurrentPowerBar(core.ManaBar)
 			eminenceAura.Activate(sim)
@@ -134,13 +134,17 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 			eminenceAura.Deactivate(sim)
 			monk.SetCurrentPowerBar(core.EnergyBar)
 			// monk.DisableDynamicStatDep(sim, apDep)
-			monk.DisableDynamicStatDep(sim, hasteDep)
-			monk.DisableDynamicStatDep(sim, expDep)
-			monk.DisableDynamicStatDep(sim, hitDep)
-			monk.PseudoStats.HealingDealtMultiplier /= 1.2
 			monk.Stance = StanceNone
 		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&monk.PseudoStats.HealingDealtMultiplier, 1.2,
+	).AttachStatDependency(
+		hitDep,
+	).AttachStatDependency(
+		expDep,
+	).AttachStatDependency(
+		hasteDep,
+	)
 
 	monk.StanceOfTheWiseSerpentAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
 	monk.StanceOfTheWiseSerpent = monk.makeStanceSpell(monk.StanceOfTheWiseSerpentAura, stanceCD)
@@ -156,17 +160,17 @@ func (monk *Monk) registerStanceOfTheFierceTiger(stanceCD *core.Timer) {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = FierceTiger
-			monk.PseudoStats.DamageDealtMultiplier *= 1.1
-			// This **does** stack with other movement speed buffs.
-			monk.PseudoStats.MovementSpeedMultiplier *= 1.1
 			monk.SetCurrentPowerBar(core.EnergyBar)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = StanceNone
-			monk.PseudoStats.DamageDealtMultiplier /= 1.1
-			monk.PseudoStats.MovementSpeedMultiplier /= 1.1
 		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&monk.PseudoStats.DamageDealtMultiplier, 1.1,
+	).AttachMultiplicativePseudoStatBuff(
+		// This **does** stack with other movement speed buffs.
+		&monk.PseudoStats.MovementSpeedMultiplier, 1.1,
+	)
 
 	monk.StanceOfTheFierceTigerAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})
 	monk.StanceOfTheFierceTiger = monk.makeStanceSpell(monk.StanceOfTheFierceTigerAura, stanceCD)
