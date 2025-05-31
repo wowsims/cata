@@ -8,15 +8,6 @@ import (
 
 func (warrior *Warrior) registerSlamSpell() {
 
-	weaponDamageConfig := SpellEffectWeaponDmgPctConfig{
-		BaseWeapon_Pct:    1.1,
-		Coefficient:       0.3829999864,
-		EffectPerLevel:    0.97299998999,
-		BaseSpellLevel:    44,
-		MaxSpellLevel:     80,
-		ClassSpellScaling: warrior.ClassSpellScaling,
-	}
-
 	slamActionID := core.ActionID{SpellID: 1464}
 
 	ohSlam := warrior.RegisterSpell(core.SpellConfig{
@@ -26,11 +17,11 @@ func (warrior *Warrior) registerSlamSpell() {
 		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
+		DamageMultiplier: 1.1,
 		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			ohBaseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			ohBaseDamage := war.CalcScalingSpellDmg(1) + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, ohBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
@@ -64,7 +55,7 @@ func (warrior *Warrior) registerSlamSpell() {
 			},
 		},
 
-		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
+		DamageMultiplier: 1.1,
 		CritMultiplier:   warrior.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
@@ -72,7 +63,7 @@ func (warrior *Warrior) registerSlamSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := war.CalcScalingSpellDmg(1) + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 

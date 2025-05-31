@@ -31,13 +31,13 @@ func (war *FuryWarrior) registerBloodthirst() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.9,
+		BonusCritPercent: 50,
 		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
-			baseDamage := war.CalcScalingSpellDmg(1) * spell.MeleeAttackPower()
+			baseDamage := war.CalcScalingSpellDmg(1) + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)

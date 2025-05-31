@@ -1,30 +1,25 @@
 package warrior
 
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+)
+
 func (warrior *Warrior) ApplyTalents() {
-	// warrior.applyArmsCommonTalents()
-	// warrior.applyFuryCommonTalents()
-	// warrior.applyProtectionCommonTalents()
+	warrior.registerJuggernaut()
 }
 
-func (warrior *Warrior) applyArmsCommonTalents() {
-	// warrior.applyWarAcademy()
-	// warrior.RegisterDeepWounds()
-}
+func (war *Warrior) registerJuggernaut() {
+	if !war.Talents.Juggernaut {
+		return
+	}
 
-func (warrior *Warrior) applyFuryCommonTalents() {
-	// warrior.applyBattleTrance()
-	// warrior.applyCruelty()
-	// warrior.applyExecutioner()
-}
-
-func (warrior *Warrior) applyProtectionCommonTalents() {
-	// warrior.applyIncite()
-	// warrior.applyToughness()
-	// warrior.applyBloodAndThunder()
-	// warrior.applyShieldSpecialization()
-	// warrior.applyShieldMastery()
-	// warrior.applyHoldTheLine()
-	// warrior.applyGagOrder()
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask: SpellMaskCharge,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -8 * time.Second,
+	})
 }
 
 // func (warrior *Warrior) applyWarAcademy() {

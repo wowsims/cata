@@ -28,8 +28,7 @@ const (
 	// SpellMaskRecklessness
 	// SpellMaskShieldWall
 	// SpellMaskLastStand
-	// SpellMaskDeadlyCalm
-	// SpellMaskCharge
+	SpellMaskCharge
 
 	// Abilities that cost rage but aren't attacks
 	// SpellMaskDemoShout
