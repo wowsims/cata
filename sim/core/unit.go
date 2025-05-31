@@ -424,12 +424,12 @@ func (unit *Unit) HasTemporarySpellCastSpeedIncrease() bool {
 
 // Returns if melee swings have any temporary increases active.
 func (unit *Unit) HasTemporaryMeleeSwingSpeedIncrease() bool {
-	return unit.meleeAttackSpeed != unit.initialMeleeSwingSpeed
+	return unit.SwingSpeed() != unit.initialMeleeSwingSpeed
 }
 
 // Returns if ranged swings have any temporary increases active.
 func (unit *Unit) HasTemporaryRangedSwingSpeedIncrease() bool {
-	return unit.rangedAttackSpeed != unit.initialRangedSwingSpeed
+	return unit.RangedSwingSpeed() != unit.initialRangedSwingSpeed
 }
 
 func (unit *Unit) InitialCastSpeed() float64 {
