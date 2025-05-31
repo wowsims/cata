@@ -1,14 +1,10 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior';
+import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
 import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
-import P1ArmsRealisticBisGear from './gear_sets/p1_arms_realistic_bis.gear.json';
-import P3ArmsBisGear from './gear_sets/p3_arms_bis.gear.json';
-import P4ArmsBisGear from './gear_sets/p4_arms_bis.gear.json';
-import ItemSwapP4Gear from './gear_sets/p4_arms_item_swap.gear.json';
 import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
 
 // Preset options for this spec.
@@ -17,16 +13,11 @@ import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
 
 export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid', PreraidArmsGear);
 export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArmsBisGear);
-export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 - Realistic', P1ArmsRealisticBisGear);
-export const P3_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3ArmsBisGear);
-export const P4_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P4', P4ArmsBisGear);
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4Gear);
 
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
 // Preset options for EP weights
-export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
@@ -52,9 +43,11 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const ArmsTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '213333',
 		glyphs: Glyphs.create({
-			major2: WarriorMajorGlyph.GlyphOfSweepingStrikes,
+			major1: WarriorMajorGlyph.GlyphOfBullRush,
+			major2: WarriorMajorGlyph.GlyphOfUnendingRage,
+			major3: WarriorMajorGlyph.GlyphOfDeathFromAbove,
 		}),
 	}),
 };

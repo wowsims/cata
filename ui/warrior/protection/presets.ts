@@ -3,7 +3,6 @@ import { ConsumesSpec, Glyphs, Profession, PseudoStat, Race, Stat } from '../../
 import { SavedTalents } from '../../core/proto/ui.js';
 import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
-import ItemSwapP4Gear from '../arms/gear_sets/p4_arms_item_swap.gear.json';
 import DefaultApl from './apls/default.apl.json';
 import P1BISGear from './gear_sets/p1_bis.gear.json';
 import P3BISGear from './gear_sets/p3_bis.gear.json';
@@ -20,8 +19,6 @@ export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGe
 export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
 export const P4_BALANCED_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4BISGear);
 export const P4_NELF_BALANCED_PRESET = PresetUtils.makePresetGear('P4 - BIS (Nelf)', P4NelfBISGear);
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4Gear);
 
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default APL', DefaultApl);
 

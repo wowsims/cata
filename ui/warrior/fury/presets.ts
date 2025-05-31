@@ -8,14 +8,6 @@ import SMFFuryApl from './apls/smf.apl.json';
 import TGFuryApl from './apls/tg.apl.json';
 import P1FurySMFGear from './gear_sets/p1_fury_smf.gear.json';
 import P1FuryTGGear from './gear_sets/p1_fury_tg.gear.json';
-import P3FurySMFGear from './gear_sets/p3_fury_smf.gear.json';
-import ItemSwapP3SMFGear from './gear_sets/p3_fury_smf_item_swap.gear.json';
-import P3FuryTGGear from './gear_sets/p3_fury_tg.gear.json';
-import ItemSwapP3TGGear from './gear_sets/p3_fury_tg_item_swap.gear.json';
-import P4FurySMFGear from './gear_sets/p4_fury_smf.gear.json';
-import ItemSwapP4SMFGear from './gear_sets/p4_fury_smf_item_swap.gear.json';
-import P4FuryTGGear from './gear_sets/p4_fury_tg.gear.json';
-import ItemSwapP4TGGear from './gear_sets/p4_fury_tg_item_swap.gear.json';
 import PreraidFurySMFGear from './gear_sets/preraid_fury_smf.gear.json';
 import PreraidFuryTGGear from './gear_sets/preraid_fury_tg.gear.json';
 
@@ -62,19 +54,10 @@ const FURY_TG_PRESET_OPTIONS = {
 	},
 };
 
-export const P3_PRERAID_FURY_SMF_PRESET = PresetUtils.makePresetGear('Preraid - SMF', PreraidFurySMFGear, FURY_SMF_PRESET_OPTIONS);
-export const P3_PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid - TG', PreraidFuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P1_PRERAID_FURY_SMF_PRESET = PresetUtils.makePresetGear('Preraid - SMF', PreraidFurySMFGear, FURY_SMF_PRESET_OPTIONS);
+export const P1_PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid - TG', PreraidFuryTGGear, FURY_TG_PRESET_OPTIONS);
 export const P1_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 - SMF', P1FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 - TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
-export const P3_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P3 - SMF', P3FurySMFGear, FURY_SMF_PRESET_OPTIONS);
-export const P3_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P3 - TG', P3FuryTGGear, FURY_TG_PRESET_OPTIONS);
-export const P4_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P4 - TG', P4FuryTGGear, FURY_TG_PRESET_OPTIONS);
-export const P4_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P4 - SMF', P4FurySMFGear, FURY_SMF_PRESET_OPTIONS);
-
-export const P3_ITEM_SWAP_TG = PresetUtils.makePresetItemSwapGear('P3 - TG', ItemSwapP3TGGear);
-export const P3_ITEM_SWAP_SMF = PresetUtils.makePresetItemSwapGear('P3 - SMF', ItemSwapP3SMFGear);
-export const P4_ITEM_SWAP_TG = PresetUtils.makePresetItemSwapGear('P4 - TG', ItemSwapP4TGGear);
-export const P4_ITEM_SWAP_SMF = PresetUtils.makePresetItemSwapGear('P4 - SMF', ItemSwapP4SMFGear);
 
 export const FURY_SMF_ROTATION = PresetUtils.makePresetAPLRotation('SMF', SMFFuryApl, FURY_SMF_PRESET_OPTIONS);
 export const FURY_TG_ROTATION = PresetUtils.makePresetAPLRotation('TG', TGFuryApl, FURY_TG_PRESET_OPTIONS);
@@ -113,48 +96,6 @@ export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatCritRating]: 1.59,
 			[Stat.StatHasteRating]: 1.15,
 			[Stat.StatMasteryRating]: 1.31,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.77,
-			[PseudoStat.PseudoStatOffHandDps]: 1.6,
-		},
-	),
-	FURY_TG_PRESET_OPTIONS,
-);
-
-export const P3_FURY_SMF_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P3 - SMF',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.2,
-			[Stat.StatAgility]: 1.07,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.57,
-			[Stat.StatHitRating]: 2.46,
-			[Stat.StatCritRating]: 1.39,
-			[Stat.StatHasteRating]: 1.19,
-			[Stat.StatMasteryRating]: 1.02,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.49,
-			[PseudoStat.PseudoStatOffHandDps]: 1.71,
-		},
-	),
-	FURY_SMF_PRESET_OPTIONS,
-);
-
-export const P3_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P3 - TG',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.21,
-			[Stat.StatAgility]: 1.14,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.71,
-			[Stat.StatHitRating]: 2.66,
-			[Stat.StatCritRating]: 1.48,
-			[Stat.StatHasteRating]: 1.19,
-			[Stat.StatMasteryRating]: 1.17,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.77,
@@ -222,32 +163,4 @@ export const P1_PRESET_BUILD_TG = PresetUtils.makePresetBuild('P1 - TG', {
 	talents: FuryTGTalents,
 	rotation: FURY_TG_ROTATION,
 	epWeights: P1_FURY_TG_EP_PRESET,
-});
-
-export const P3_PRESET_BUILD_SMF = PresetUtils.makePresetBuild('P3 - SMF', {
-	gear: P3_BIS_FURY_SMF_PRESET,
-	talents: FurySMFTalents,
-	rotation: FURY_SMF_ROTATION,
-	epWeights: P3_FURY_SMF_EP_PRESET,
-});
-
-export const P3_PRESET_BUILD_TG = PresetUtils.makePresetBuild('P3 - TG', {
-	gear: P3_BIS_FURY_TG_PRESET,
-	talents: FuryTGTalents,
-	rotation: FURY_TG_ROTATION,
-	epWeights: P3_FURY_TG_EP_PRESET,
-});
-
-export const P4_PRESET_BUILD_TG = PresetUtils.makePresetBuild('P4 - TG', {
-	gear: P4_BIS_FURY_TG_PRESET,
-	talents: FuryTGTalents,
-	rotation: FURY_TG_ROTATION,
-	epWeights: P3_FURY_TG_EP_PRESET,
-});
-
-export const P4_PRESET_BUILD_SMF = PresetUtils.makePresetBuild('P4 - SMF', {
-	gear: P4_BIS_FURY_SMF_PRESET,
-	talents: FurySMFTalents,
-	rotation: FURY_SMF_ROTATION,
-	epWeights: P3_FURY_SMF_EP_PRESET,
 });
