@@ -9,12 +9,5 @@ func (prot *ProtectionPaladin) registerRighteousFury() {
 	core.MakePermanent(prot.RegisterAura(core.Aura{
 		Label:    "Righteous Fury" + prot.Label,
 		ActionID: core.ActionID{SpellID: 25780},
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			// prot.PseudoStats.ThreatMultiplier *= 7.0
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			// prot.PseudoStats.ThreatMultiplier /= 7.0
-		},
-	}))
+	})).AttachMultiplicativePseudoStatBuff(&prot.PseudoStats.ThreatMultiplier, 7.0)
 }
