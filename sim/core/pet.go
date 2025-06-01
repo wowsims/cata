@@ -180,10 +180,8 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		pet.AddStatsDynamic(sim, pet.inheritedStats)
 	}
 
-	if !pet.isGuardian {
-		pet.Owner.DynamicStatsPets = append(pet.Owner.DynamicStatsPets, pet)
-		pet.dynamicStatInheritance = pet.statInheritance
-	}
+	pet.Owner.DynamicStatsPets = append(pet.Owner.DynamicStatsPets, pet)
+	pet.dynamicStatInheritance = pet.statInheritance
 
 	//reset current mana after applying stats
 	pet.manaBar.reset()

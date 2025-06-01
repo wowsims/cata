@@ -1,23 +1,18 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { PaladinSeal } from '../../core/proto/paladin.js';
-import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
-import { TypedEvent } from '../../core/typed_event.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, UnitStats } from '../../core/proto/common.js';
+import { StatCapType } from '../../core/proto/ui.js';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
-const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecProtectionPaladin>): boolean => {
-	// const currentSeal = player.getSpecOptions().classOptions?.seal;
-	// return (
-	// 	player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
-	// 	(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
-	// );
-	return false;
+const getEPDefaults = (_: Player<Spec.SpecProtectionPaladin>) => {
+	return Presets.P1_EP_PRESET.epWeights;
 };
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
@@ -25,6 +20,31 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Paladin),
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
+
+	overwriteDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
+		const playerStats = player.getCurrentStats();
+
+		const statMod = (current: UnitStats, previous?: UnitStats) => {
+			return new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(current).subtract(Stats.fromProto(previous)).getStat(Stat.StatAttackPower) * 0.5);
+		};
+
+		const base = statMod(playerStats.baseStats!);
+		const gear = statMod(playerStats.gearStats!, playerStats.baseStats);
+		const talents = statMod(playerStats.talentsStats!, playerStats.gearStats);
+		const buffs = statMod(playerStats.buffsStats!, playerStats.talentsStats);
+		const consumes = statMod(playerStats.consumesStats!, playerStats.buffsStats);
+		const final = new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(playerStats.finalStats).getStat(Stat.StatAttackPower) * 0.5);
+
+		return {
+			base: base,
+			gear: gear,
+			talents: talents,
+			buffs: buffs,
+			consumes: consumes,
+			final: final,
+			stats: [Stat.StatSpellPower],
+		};
+	},
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -40,9 +60,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatBonusArmor,
 		Stat.StatDodgeRating,
 		Stat.StatParryRating,
-		Stat.StatNatureResistance,
-		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
 		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
@@ -59,9 +76,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			Stat.StatAgility,
 			Stat.StatAttackPower,
 			Stat.StatExpertiseRating,
-			Stat.StatNatureResistance,
-			Stat.StatShadowResistance,
-			Stat.StatFrostResistance,
 			Stat.StatMasteryRating,
 		],
 		[
@@ -69,30 +83,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
 			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatBlockPercent,
 			PseudoStat.PseudoStatDodgePercent,
 			PseudoStat.PseudoStatParryPercent,
 		],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
-		let stats = new Stats();
 
-		TypedEvent.freezeAllAndDo(() => {
-			if (isGlyphOfSealOfTruthActive(player)) {
-				stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			}
-		});
-
-		return {
-			talents: stats,
-		};
-	},
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T12_PRESET.gear,
+		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		// Values for now are pre-Cata initial WAG
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			return new Stats();
+		})(),
+		softCapBreakpoints: (() => {
+			const expertiseSoftCapConfig = StatCap.fromStat(Stat.StatExpertiseRating, {
+				breakpoints: [7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [3.51, 0],
+			});
+
+			const hitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
+				breakpoints: [7.5],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0],
+			});
+
+			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
+				breakpoints: [15],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0],
+			});
+
+			return [expertiseSoftCapConfig, hitSoftCapConfig, spellHitSoftCapConfig];
+		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
@@ -101,25 +129,31 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			elementalOath: true,
+			powerWordFortitude: true,
+			serpentsSwiftness: true,
+			trueshotAura: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// ebonPlaguebringer: true,
-			// shadowAndFlame: true,
-			// bloodFrenzy: true,
-			// mangle: true,
-			// faerieFire: true,
-			// sunderArmor: true,
-			// vindication: true,
-			// thunderClap: true,
-			// criticalMass: true,
+			curseOfElements: true,
+			physicalVulnerability: true,
+			weakenedArmor: true,
+			weakenedBlows: true,
 		}),
 		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
+	playerIconInputs: [PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
@@ -147,13 +181,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_DEFAULT],
+		rotations: [Presets.APL_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.T11_PRESET, Presets.T11CTC_PRESET, Presets.T12_PRESET],
+		gear: [Presets.P1_GEAR_PRESET],
+		builds: [Presets.P1_BUILD_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
-		return Presets.ROTATION_DEFAULT.rotation.rotation!;
+		return Presets.APL_PRESET.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -170,16 +205,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.T11_PRESET.gear,
-					2: Presets.T11_PRESET.gear,
-					3: Presets.T12_PRESET.gear,
-					4: Presets.T12_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.T11_PRESET.gear,
-					2: Presets.T11_PRESET.gear,
-					3: Presets.T12_PRESET.gear,
-					4: Presets.T12_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
 				},
 			},
 		},
@@ -189,5 +218,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 export class ProtectionPaladinSimUI extends IndividualSimUI<Spec.SpecProtectionPaladin> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecProtectionPaladin>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this, {
+				getEPDefaults,
+				updateSoftCaps: softCaps => {
+					softCaps[0].postCapEPs[0] = player.getEpWeights().getStat(Stat.StatExpertiseRating) * 0.9;
+					return softCaps;
+				},
+			});
+		});
 	}
 }

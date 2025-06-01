@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // var ItemSetVestmentsOfAbsolution = core.NewItemSet(core.ItemSet{
@@ -252,30 +251,6 @@ var ItemSetCrimsonAcolytesRaiment = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.10,
 				ClassMask:  PriestSpellCircleOfHealing,
 			})
-		},
-	},
-})
-
-var ItemSetGladiatorsInvestiture = core.NewItemSet(core.ItemSet{
-	Name: "Gladiator's Investiture",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-			setBonusAura.AttachStatsBuff(stats.Stats{stats.ResilienceRating: 400, stats.Intellect: 70})
-		},
-		4: func(_ core.Agent, setBonusAura *core.Aura) {
-			setBonusAura.AttachStatBuff(stats.Intellect, 90)
-		},
-	},
-})
-
-var ItemSetGladiatorsRaiment = core.NewItemSet(core.ItemSet{
-	Name: "Gladiator's Raiment",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-			setBonusAura.AttachStatsBuff(stats.Stats{stats.ResilienceRating: 400, stats.Intellect: 70})
-		},
-		4: func(_ core.Agent, setBonusAura *core.Aura) {
-			setBonusAura.AttachStatBuff(stats.Intellect, 90)
 		},
 	},
 })
@@ -534,7 +509,7 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			var orbsSpend int32 = 0
-			priest.Unit.GetSecondaryResourceBar().RegisterOnSpend(func(amount int32) {
+			priest.Unit.GetSecondaryResourceBar().RegisterOnSpend(func(_ *core.Simulation, amount int32, _ core.ActionID) {
 				orbsSpend = amount
 			})
 

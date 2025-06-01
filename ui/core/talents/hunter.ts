@@ -42,7 +42,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfFreezingTrap]: {
 			name: "Glyph of Freezing Trap",
-			description: "When your Freezing Trap breaks, the victim\'s movement speed is reduced by 70% for 0ms.",
+			description: "When your Freezing Trap breaks, the victim\'s movement speed is reduced by 70% for 4s.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_chainsofice.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfIceTrap]: {
@@ -139,7 +139,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 	minorGlyphs: {
 		[HunterMinorGlyph.GlyphOfAspects]: {
 			name: "Glyph of Aspects",
-			description: "Each time you activate a new Aspect, an animal companion representing that Aspect will follow you for 0ms.",
+			description: "Each time you activate a new Aspect, an animal companion representing that Aspect will follow you for 15s.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aspectmastery.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfTameBeast]: {

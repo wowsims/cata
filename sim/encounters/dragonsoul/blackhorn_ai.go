@@ -261,7 +261,7 @@ func (ai *BlackhornAI) registerDisruptingRoar() {
 		ActionID:         core.ActionID{SpellID: 108044},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:            core.SpellFlagIgnoreArmor | core.SpellFlagAPL,
 		DamageMultiplier: 1,
 
 		Cast: core.CastConfig{

@@ -57,7 +57,6 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends IndividualE
 		[Stat.StatHitRating]: 'HitRating',
 		[Stat.StatCritRating]: 'CritRating',
 		[Stat.StatHasteRating]: 'HasteRating',
-		[Stat.StatSpellPenetration]: 'SpellPen',
 		[Stat.StatAttackPower]: 'Ap',
 		[Stat.StatMasteryRating]: 'MasteryRating',
 		[Stat.StatExpertiseRating]: 'ExpertiseRating',
@@ -66,13 +65,10 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends IndividualE
 		[Stat.StatRangedAttackPower]: 'Ap',
 		[Stat.StatDodgeRating]: 'DodgeRating',
 		[Stat.StatParryRating]: 'ParryRating',
-		[Stat.StatResilienceRating]: 'ResilienceRating',
+		// TODO: Change PVP Resilience and Power once Pawn exists for MoP
+		[Stat.StatPvpResilienceRating]: 'ResilienceRating',
+		[Stat.StatPvpPowerRating]: 'PVPPowerRating',
 		[Stat.StatHealth]: 'Health',
-		[Stat.StatArcaneResistance]: 'ArcaneResistance',
-		[Stat.StatFireResistance]: 'FireResistance',
-		[Stat.StatFrostResistance]: 'FrostResistance',
-		[Stat.StatNatureResistance]: 'NatureResistance',
-		[Stat.StatShadowResistance]: 'ShadowResistance',
 		[Stat.StatBonusArmor]: 'Armor2',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {

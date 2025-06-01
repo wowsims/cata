@@ -17,7 +17,7 @@ func (monk *Monk) registerTouchOfDeath() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagCannotBeDodged | core.SpellFlagIgnoreResists | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagIgnoreTargetModifiers | SpellFlagBuilder | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagCannotBeDodged | core.SpellFlagIgnoreArmor | core.SpellFlagIgnoreModifiers | SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: MonkSpellTouchOfDeath,
 		MaxRange:       core.MaxMeleeRange,
 

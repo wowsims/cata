@@ -259,7 +259,7 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
-	// Increases or decreases spell.CD.Multiplier by flat amount
+	// Will multiply the spell CD multiplier. -5% = 0.95
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
@@ -512,11 +512,11 @@ func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CdMultiplier += mod.floatValue
+	spell.CdMultiplier *= mod.floatValue
 }
 
 func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CdMultiplier -= mod.floatValue
+	spell.CdMultiplier /= mod.floatValue
 }
 
 func applyCritMultiplierFlat(mod *SpellMod, spell *Spell) {
