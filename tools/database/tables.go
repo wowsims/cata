@@ -821,6 +821,7 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 					WHERE ie2.ParentItemID = i.ID
 				) AS ItemEffects,
 				CASE
+					WHEN sp.Description_lang LIKE '%Counts as both a Battle%' THEN 0
 					WHEN sp.Description_lang LIKE '%Guardian Elixir%' THEN 1
 					WHEN sp.Description_lang LIKE '%Battle Elixir%' THEN 2
 					ELSE 0
@@ -1221,7 +1222,7 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		LEFT JOIN SpellTargetRestrictions str ON s.ID = str.SpellID
 		LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
 		LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
-		WHERE sco.SpellClassSet is not null
+		WHERE sm.ID IS NOT NULL
 		GROUP BY s.ID
 `
 

@@ -224,7 +224,7 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMinorGlyph.GlyphOfTheWeaponmaster]: {
 			name: "Glyph of the Weaponmaster",
-			description: "Your Shout abilities cause the appearance of your weapon to change to that of a random weapon from your primary bag for 0ms.",
+			description: "Your Shout abilities cause the appearance of your weapon to change to that of a random weapon from your primary bag for 10min.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_weaponmastery.jpg",
 		},
 	},
