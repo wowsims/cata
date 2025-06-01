@@ -51,7 +51,7 @@ type Monk struct {
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
 
-	HealingSphereSummon *core.Spell
+	SummonHealingSphere func(sim *core.Simulation)
 
 	// Brewmaster
 	ElusiveBrewAura   *core.Aura
