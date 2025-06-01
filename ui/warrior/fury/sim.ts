@@ -111,6 +111,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			FuryInputs.SyncTypeInput,
 			WarriorInputs.StartingRage(),
 			WarriorInputs.StanceSnapshot(),
+			OtherInputs.DistanceFromTarget,
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,

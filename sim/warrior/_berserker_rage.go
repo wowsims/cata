@@ -42,7 +42,7 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			// Fetch multiplier in here so we capture any mastery buffs that might affect it
-			warrior.AddRage(sim, rageBonus*warrior.EnrageEffectMultiplier, rageMetrics)
+			warrior.AddRage(sim, rageBonus*warrior.EnrageMasteryMultiplier, rageMetrics)
 			warrior.BerserkerRageAura.Activate(sim)
 		},
 	})

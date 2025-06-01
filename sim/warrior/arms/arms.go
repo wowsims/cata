@@ -29,7 +29,6 @@ type ArmsWarrior struct {
 
 	Options *proto.ArmsWarrior_Options
 
-	mortalStrike *core.Spell
 	slaughter    *core.Aura
 	wreckingCrew *core.Aura
 }
@@ -72,7 +71,7 @@ func (war *ArmsWarrior) registerPassives() {
 }
 
 func (war *ArmsWarrior) ApplyTalents() {
-	// war.registerMortalStrike()
+	war.registerMortalStrike()
 }
 
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {

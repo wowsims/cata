@@ -8,9 +8,11 @@ import (
 )
 
 func (war *ArmsWarrior) registerMortalStrike() {
+	actionID := core.ActionID{SpellID: 12294}
+	rageMetrics := war.NewRageMetrics(actionID)
 
-	war.mortalStrike = war.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 12294},
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
@@ -23,7 +25,7 @@ func (war *ArmsWarrior) registerMortalStrike() {
 			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: time.Millisecond * 4500,
+				Duration: time.Second * 6,
 			},
 			IgnoreHaste: true,
 		},
@@ -35,7 +37,7 @@ func (war *ArmsWarrior) registerMortalStrike() {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
-				war.AddRage(sim, 10, warrior.RageMetricsMortalStrike)
+				war.AddRage(sim, 10, rageMetrics)
 			}
 		},
 	})

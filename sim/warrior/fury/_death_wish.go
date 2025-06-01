@@ -18,7 +18,7 @@ func (war *FuryWarrior) registerDeathWish() {
 		Tag:      warrior.EnrageTag,
 		Duration: 30 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier)
+			bonusSnapshot = 1.0 + (0.2 * war.EnrageMasteryMultiplier)
 
 			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
 			if !hasGlyph {

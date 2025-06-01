@@ -66,9 +66,9 @@ func (war *FuryWarrior) registerPassives() {
 	// // The actual effects of Unshackled Fury need to be handled by specific spells
 	// // as it modifies the "benefit" of them (e.g. it both increases Raging Blow's damage
 	// // and Enrage's damage bonus)
-	// war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
+	// war.EnrageMasteryMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
 	// war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-	// 	war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
+	// 	war.EnrageMasteryMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
 	// })
 }
 

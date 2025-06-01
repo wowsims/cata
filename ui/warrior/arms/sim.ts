@@ -98,7 +98,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarriorInputs.StartingRage(), WarriorInputs.StanceSnapshot(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			WarriorInputs.StartingRage(),
+			WarriorInputs.StanceSnapshot(),
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotHead,
@@ -130,10 +137,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_ARMS_PRESET,
-			Presets.P1_ARMS_BIS_PRESET,
-		],
+		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_BIS_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {

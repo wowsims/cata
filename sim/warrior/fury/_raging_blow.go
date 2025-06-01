@@ -24,7 +24,7 @@ func (war *FuryWarrior) registerRagingBlow() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			ohBaseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			spell.CalcAndDealDamage(sim, target, ohBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialBlockAndCrit)
+			spell.CalcAndDealDamage(sim, target, ohBaseDamage*war.EnrageMasteryMultiplier, spell.OutcomeMeleeSpecialBlockAndCrit)
 		},
 	})
 
@@ -70,7 +70,7 @@ func (war *FuryWarrior) registerRagingBlow() {
 
 			// 1 hit roll then 2 damage events
 			mhBaseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, mhBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialBlockAndCrit)
+			spell.CalcAndDealDamage(sim, target, mhBaseDamage*war.EnrageMasteryMultiplier, spell.OutcomeMeleeSpecialBlockAndCrit)
 
 			ohRagingBlow.Cast(sim, result.Target)
 		},

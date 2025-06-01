@@ -79,9 +79,10 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance                 Stance
-	EnrageEffectMultiplier float64
-	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
+	Stance                  Stance
+	EnrageMultiplier        float64
+	EnrageMasteryMultiplier float64
+	CriticalBlockChance     []float64 // Can be gained as non-prot via certain talents and spells
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -101,7 +102,7 @@ type Warrior struct {
 	// SunderArmor       *core.Spell
 	// ThunderClap       *core.Spell
 	// Whirlwind         *core.Spell
-	// DeepWounds        *core.Spell
+	DeepWounds *core.Spell
 	// Charge            *core.Spell
 	// ChargeAura        *core.Aura
 
@@ -142,7 +143,7 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	warrior.EnrageEffectMultiplier = 1.0
+	warrior.EnrageMasteryMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
 	warrior.shoutsCD = warrior.NewTimer()
 
@@ -174,6 +175,7 @@ func (warrior *Warrior) Initialize() {
 
 func (war *Warrior) registerPassives() {
 	war.registerEnrage()
+	war.registerDeepWounds()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
