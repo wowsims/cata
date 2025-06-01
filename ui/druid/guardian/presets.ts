@@ -127,10 +127,10 @@ export const DefaultOptions = DruidOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58085, // Flask of Steelskin
-	foodId: 62669, // Skewered Eel
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId:  76087,
+	foodId:  105717,
+	potId: 76089,
+	prepotId: 76089,
 	conjuredId: 5512, // Conjured Healthstone
 	tinkerId: 82174, // Synapse Springs
 });
