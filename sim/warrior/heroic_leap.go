@@ -22,7 +22,7 @@ func (warrior *Warrior) registerHeroicLeap() {
 			DefaultCast: core.Cast{},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 1,
+				Duration: time.Second * 45,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if warrior.AutoAttacks.MH().SwingSpeed == warrior.AutoAttacks.OH().SwingSpeed {
