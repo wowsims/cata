@@ -495,6 +495,18 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 	return parentAura
 }
 
+func (parentAura *Aura) AttachMultiplyMeleeSpeed(multiplier float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyMeleeSpeed(sim, multiplier)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyMeleeSpeed(sim, 1/multiplier)
+	})
+
+	return parentAura
+}
+
 type ShieldStrengthCalculator func(unit *Unit) float64
 
 type DamageAbsorptionAura struct {
