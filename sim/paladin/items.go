@@ -183,7 +183,9 @@ var ItemSetBattlegearOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 					Label:    "Exorcism" + unit.Label,
 					ActionID: core.ActionID{SpellID: 138162},
 					Duration: time.Second * 6,
-				}).AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly], 1.06)
+				}).AttachMultiplicativePseudoStatBuff(
+					&unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly], 1.06,
+				)
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{

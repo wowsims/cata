@@ -41,11 +41,9 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 	})).AttachStatDependency(
 		prot.NewDynamicMultiplyStat(stats.Stamina, 1.25),
 	).AttachAdditivePseudoStatBuff(
-		&prot.PseudoStats.BaseBlockChance,
-		0.1,
+		&prot.PseudoStats.BaseBlockChance, 0.1,
 	).AttachAdditivePseudoStatBuff(
-		&prot.PseudoStats.ReducedCritTakenChance,
-		0.06,
+		&prot.PseudoStats.ReducedCritTakenChance, 0.06,
 	).AttachSpellMod(core.SpellModConfig{
 		// Not in tooltip: Crusader Strike costs 80% less mana
 		Kind:      core.SpellMod_PowerCost_Pct,

@@ -19,10 +19,8 @@ func (prot *ProtectionPaladin) registerSanctuary() {
 			prot.RemoveDynamicEquipScaling(sim, stats.Armor, 1.1)
 		},
 	})).AttachAdditivePseudoStatBuff(
-		&prot.PseudoStats.BaseDodgeChance,
-		0.02,
+		&prot.PseudoStats.BaseDodgeChance, 0.02,
 	).AttachMultiplicativePseudoStatBuff(
-		&prot.PseudoStats.DamageTakenMultiplier,
-		0.85,
+		&prot.PseudoStats.DamageTakenMultiplier, 0.85,
 	)
 }

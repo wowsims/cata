@@ -18,14 +18,7 @@ func (prot *ProtectionPaladin) registerArdentDefender() {
 		Label:    "Ardent Defender" + prot.Label,
 		ActionID: actionID,
 		Duration: time.Second * 10,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			prot.PseudoStats.DamageTakenMultiplier *= 0.8
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			prot.PseudoStats.DamageTakenMultiplier /= 0.8
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&prot.PseudoStats.DamageTakenMultiplier, 0.8)
 
 	ardentDefender := prot.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
