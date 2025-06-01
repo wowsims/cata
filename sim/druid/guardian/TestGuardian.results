@@ -18,11 +18,6 @@ character_stats_results: {
   final_stats: 179.575
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
   final_stats: 91128.57347
   final_stats: 0
   final_stats: 535821.876
@@ -1310,20 +1305,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-MirrorofBrokenImages-62466"
- value: {
-  dps: 22803.97969
-  tps: 157728.81832
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-MirrorofBrokenImages-62471"
- value: {
-  dps: 22803.97969
-  tps: 157728.81832
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-MithrilStopwatch-232013"
  value: {
   dps: 22955.83871
@@ -2238,8 +2219,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 23589.39822
-  tps: 163139.48205
+  dps: 23149.61788
+  tps: 160112.0812
  }
 }
 dps_results: {
