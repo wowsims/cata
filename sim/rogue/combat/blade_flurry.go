@@ -52,10 +52,12 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 
 			// Undo armor reduction to get the raw damage value.
 			curDmg = result.Damage / result.ArmorMultiplier
+			numHits := 0
 
-			for enemyIndex := 0; enemyIndex < 3; enemyIndex++ {
-				if comRogue.Env.GetNumTargets()-1 <= int32(enemyIndex) {
-					bfTarget := comRogue.Env.GetTargetUnit(int32(enemyIndex))
+			for enemyIndex := 0; enemyIndex < int(comRogue.Env.GetNumTargets()) && numHits < 4; enemyIndex++ {
+				bfTarget := comRogue.Env.GetTargetUnit(int32(enemyIndex))
+				if bfTarget != comRogue.CurrentTarget {
+					numHits++
 					bfHit.Cast(sim, bfTarget)
 				}
 			}
