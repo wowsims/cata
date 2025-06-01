@@ -16,7 +16,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 		ActionID:    BladeFlurryHitID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreArmor,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -50,8 +50,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 				return
 			}
 
-			// Undo armor reduction to get the raw damage value.
-			curDmg = result.Damage / result.ArmorMultiplier
+			curDmg = result.Damage * 0.4
 			numHits := 0
 
 			for enemyIndex := 0; enemyIndex < int(comRogue.Env.GetNumTargets()) && numHits < 4; enemyIndex++ {
