@@ -61,7 +61,7 @@ const (
 	// SpellMaskRagingBlow
 	SpellMaskMortalStrike
 	// SpellMaskBladestorm
-	// SpellMaskHeroicLeap
+	SpellMaskHeroicLeap
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
@@ -155,7 +155,7 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerExecuteSpell()
 	// warrior.registerHeroicStrikeSpell()
 	// warrior.registerCleaveSpell()
-	// warrior.registerHeroicLeap()
+	warrior.registerHeroicLeap()
 	// warrior.registerHeroicThrow()
 	// warrior.registerInnerRage()
 	// warrior.registerOverpowerSpell()
