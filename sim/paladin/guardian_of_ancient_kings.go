@@ -187,8 +187,8 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcAndRollDamageRange(sim, 0.2366, 0.3) +
-				0.107*spell.SpellPower()
+			baseDamage := paladin.CalcAndRollDamageRange(sim, 0.23659999669, 0.30000001192) +
+				0.10700000077*spell.SpellPower()
 
 			// Deals X Holy damage per application of Ancient Power,
 			// divided evenly among all targets within 10 yards.

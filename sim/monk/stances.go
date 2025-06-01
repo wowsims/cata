@@ -70,6 +70,8 @@ func (monk *Monk) registerStanceOfTheSturdyOx(stanceCD *core.Timer) {
 		&monk.PseudoStats.ReducedCritTakenChance, 0.06,
 	).AttachStatDependency(
 		stamDep,
+	).AttachMultiplicativePseudoStatBuff(
+		&monk.PseudoStats.ThreatMultiplier, 7.0,
 	)
 
 	monk.StanceOfTheSturdyOxAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})

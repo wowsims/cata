@@ -153,7 +153,7 @@ func (paladin *Paladin) registerHolyDamageTemplarsVerdict() *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + paladin.CalcScalingSpellDmg(0.55)
+			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + paladin.CalcScalingSpellDmg(0.55000001192)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -183,7 +183,9 @@ var ItemSetBattlegearOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 					Label:    "Exorcism" + unit.Label,
 					ActionID: core.ActionID{SpellID: 138162},
 					Duration: time.Second * 6,
-				}).AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly], 1.06)
+				}).AttachMultiplicativePseudoStatBuff(
+					&unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly], 1.06,
+				)
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
