@@ -1009,6 +1009,7 @@ func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
 }
 
 var RallyingCryAuraTag = "RallyingCry"
+var RallyingCryActionID = ActionID{SpellID: 97462}
 
 const RallyingCryDuration = time.Second * 10
 const RallyingCryCD = time.Minute * 3
@@ -1023,7 +1024,7 @@ func registerRallyingCryCD(agent Agent, numRallyingCries int32) {
 	registerExternalConsecutiveCDApproximation(
 		agent,
 		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 97462, Tag: -1},
+			ActionID:         RallyingCryActionID.WithTag(-1),
 			AuraTag:          RallyingCryAuraTag,
 			CooldownPriority: CooldownPriorityLow,
 			AuraDuration:     RallyingCryDuration,
@@ -1043,7 +1044,7 @@ func registerRallyingCryCD(agent Agent, numRallyingCries int32) {
 }
 
 func RallyingCryAura(character *Character, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 97462, Tag: actionTag}
+	actionID := RallyingCryActionID.WithTag(actionTag)
 	healthMetrics := character.NewHealthMetrics(actionID)
 
 	var bonusHealth float64

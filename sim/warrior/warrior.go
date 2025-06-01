@@ -22,6 +22,7 @@ const (
 	SpellMaskBattleShout
 	SpellMaskCommandingShout
 	SpellMaskBerserkerRage
+	SpellMaskRallyingCry
 	// SpellMaskRecklessness
 	// SpellMaskShieldWall
 	// SpellMaskLastStand
@@ -151,6 +152,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerBanners()
 
 	warrior.registerBerserkerRage()
+	warrior.registerRallyingCry()
 	// warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
 	// warrior.registerExecuteSpell()
