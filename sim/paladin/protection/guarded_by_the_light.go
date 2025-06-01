@@ -1,6 +1,7 @@
 package protection
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -24,7 +25,7 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 
 	oldGetSpellPowerValue := prot.GetSpellPowerValue
 	newGetSpellPowerValue := func(spell *core.Spell) float64 {
-		return spell.MeleeAttackPower() * 0.5
+		return math.Floor(spell.MeleeAttackPower() * 0.5)
 	}
 
 	core.MakePermanent(prot.RegisterAura(core.Aura{
