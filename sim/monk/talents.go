@@ -309,22 +309,19 @@ func (monk *Monk) registerZenSphere() {
 		ClassSpellMask: MonkSpellZenSphere,
 		MaxRange:       10,
 
-		DamageMultiplier: 1.0,
-		ThreatMultiplier: 1.0,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, target := range sim.Encounter.TargetUnits {
+				baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
+				result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				for _, target := range sim.Encounter.TargetUnits {
-					baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
-					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
-
-					if result.Landed() {
-						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
-					}
+				if result.Landed() {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 				}
-			})
+			}
 		},
 	})
 
@@ -346,8 +343,7 @@ func (monk *Monk) registerZenSphere() {
 		},
 	})
 
-	var currentTargetIndex int32
-	zenSphereDotSpell := monk.RegisterSpell(core.SpellConfig{
+	zenSphereDotTick := monk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 124081}.WithTag(3), // Real Spell ID: 124098
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -359,27 +355,10 @@ func (monk *Monk) registerZenSphere() {
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Zen Sphere (Damage)" + monk.Label,
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					detonateDamageSpell.Cast(sim, aura.Unit)
-				},
-			},
-			NumberOfTicks:       8,
-			TickLength:          time.Second * 2,
-			AffectedByCastSpeed: false,
-			OnTick: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot) {
-				healValue := avgTickScaling + dot.Spell.MeleeAttackPower()*avgTickBonusCoefficient
-				target := sim.GetTargetUnit(currentTargetIndex)
-				dot.Spell.CalcAndDealPeriodicDamage(sim, target, healValue, dot.OutcomeTickMagicCrit)
-				currentTargetIndex = sim.NextTargetUnit(target).UnitIndex
-			},
-		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			currentTargetIndex = target.UnitIndex
-			spell.Dot(target).Activate(sim)
+			healValue := avgTickScaling + spell.MeleeAttackPower()*avgTickBonusCoefficient
+			result := spell.CalcDamage(sim, target, healValue, spell.OutcomeTickMagicHitAndCrit)
+			spell.DealPeriodicDamage(sim, result)
 		},
 	})
 
@@ -413,11 +392,11 @@ func (monk *Monk) registerZenSphere() {
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if aura.Unit.CurrentHealthPercent() <= 0.35 {
 						aura.Deactivate(sim)
-						zenSphereDotSpell.Dot(aura.Unit.CurrentTarget).Deactivate(sim)
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					detonateHealingSpell.Cast(sim, aura.Unit)
+					detonateDamageSpell.Cast(sim, aura.Unit)
 					if zenSphereAura.IsActive() {
 						zenSphereAura.RemoveStack(sim)
 					}
@@ -427,8 +406,10 @@ func (monk *Monk) registerZenSphere() {
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				healValue := avgTickScaling + dot.Spell.MeleeAttackPower()*avgTickBonusCoefficient
-				dot.Spell.CalcAndDealPeriodicHealing(sim, target, healValue, dot.OutcomeTickHealingCrit)
+				dot.SnapshotBaseDamage = avgTickScaling + dot.Spell.MeleeAttackPower()*avgTickBonusCoefficient
+				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
+				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTickHealingCrit)
+				dot.Spell.RelatedDotSpell.Cast(sim, target.CurrentTarget)
 			},
 		},
 
@@ -437,13 +418,20 @@ func (monk *Monk) registerZenSphere() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			target := spell.Unit
+			var target *core.Unit
 
 			if len(targetDummies) > 1 {
-				target = &targetDummies[0].Unit
-				if targetDummies[1] != nil && zenSphereAura.IsActive() && zenSphereAura.GetStacks() > 0 {
-					target = &targetDummies[1].Unit
+				for _, dummy := range targetDummies {
+					unit := &dummy.Unit
+					if !spell.Hot(unit).IsActive() {
+						target = unit
+						break
+					}
 				}
+			}
+
+			if target == nil {
+				return
 			}
 
 			if target.CurrentHealthPercent() <= 0.35 {
@@ -455,8 +443,8 @@ func (monk *Monk) registerZenSphere() {
 			zenSphereAura.Activate(sim)
 			zenSphereAura.AddStack(sim)
 			spell.Hot(target).Activate(sim)
-			zenSphereDotSpell.Cast(sim, target.CurrentTarget)
 		},
+		RelatedDotSpell: zenSphereDotTick,
 	})
 }
 
