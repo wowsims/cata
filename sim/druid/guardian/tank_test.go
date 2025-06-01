@@ -18,10 +18,6 @@ func TestGuardian(t *testing.T) {
 		Race:  proto.Race_RaceWorgen,
 
 		GearSet: core.GetGearSet("../../../ui/druid/guardian/gear_sets", "preraid"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/druid/guardian/gear_sets", "p3"),
-			core.GetGearSet("../../../ui/druid/guardian/gear_sets", "p4"),
-		},
 
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
@@ -74,24 +70,21 @@ func TestGuardian(t *testing.T) {
 // 	core.RaidBenchmark(b, rsr)
 // }
 
-var StandardTalents = "-2300322312310001220311-020331"
+var StandardTalents = "000000"
 var StandardGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DruidMajorGlyph_GlyphOfFrenziedRegeneration),
-	Major2: int32(proto.DruidMajorGlyph_GlyphOfMaul),
-	Major3: int32(proto.DruidMajorGlyph_GlyphOfRebirth),
 }
 
 var PlayerOptionsDefault = &proto.Player_GuardianDruid{
 	GuardianDruid: &proto.GuardianDruid{
 		Options: &proto.GuardianDruid_Options{
-			StartingRage: 15,
+			StartingRage: 10,
 		},
 	},
 }
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:    58085, // Flask of Steelskin
-	FoodId:     62669, // Skewered Eel
-	PotId:      58145, // Potion of the Tol'vir
-	PrepotId:   58145, // Potion of the Tol'vir
+	FlaskId:    76087,
+	FoodId:     105717,
+	PotId:      76089,
+	PrepotId:   76089,
 	ConjuredId: 5512,  // Conjured Healthstone
 }
