@@ -10,7 +10,6 @@ import (
 func (warr *Warrior) registerCharge() {
 	actionID := core.ActionID{SpellID: 100}
 	metrics := warr.NewRageMetrics(actionID)
-	cooldownDuration := core.Ternary(warr.Talents.Juggernaut, 12*time.Second, 20*time.Second)
 	var chargeRageGenCD time.Duration
 
 	hasRageGlyph := warr.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfBullRush)
@@ -50,7 +49,7 @@ func (warr *Warrior) registerCharge() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warr.NewTimer(),
-				Duration: cooldownDuration,
+				Duration: 20 * time.Second,
 			},
 			IgnoreHaste: true,
 		},
