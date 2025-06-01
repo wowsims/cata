@@ -1,8 +1,6 @@
 package paladin
 
 import (
-	"math"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -40,8 +38,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Rounding here because for some reason we get MT-test failures on HP gained
-			heal := math.Round(0.15*spell.SpellPower() + 0.15*spell.MeleeAttackPower())
+			heal := 0.15*spell.SpellPower() + 0.15*spell.MeleeAttackPower()
 			spell.CalcAndDealHealing(sim, target, heal, spell.OutcomeHealing)
 		},
 	})

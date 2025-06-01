@@ -120,7 +120,7 @@ var SealOfTruth = &proto.Player_ProtectionPaladin{
 
 var FullConsumesSpec = &proto.ConsumesSpec{
 	FlaskId:  76087,  // Flask of the Earth
-	FoodId:   74656,  // Lavascale Minestrone
+	FoodId:   74656,  // Chun Tian Spring Rolls
 	PotId:    76095,  // Potion of Mogu Power
 	PrepotId: 76095,  // Potion of Mogu Power
 	TinkerId: 126734, // Synapse Springs Mark II
