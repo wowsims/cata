@@ -215,6 +215,23 @@ func (spell *Spell) OutcomeTickMagicHit(sim *Simulation, result *SpellResult, at
 	}
 }
 
+func (spell *Spell) OutcomeTickMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if spell.MagicHitCheck(sim, attackTable) {
+		if spell.MagicCritCheck(sim, result.Target) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= spell.CritDamageMultiplier()
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+		spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
+
 func (spell *Spell) OutcomeMagicHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMagicHit(sim, result, attackTable, true)
 }
