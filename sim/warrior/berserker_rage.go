@@ -1,0 +1,43 @@
+package warrior
+
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+)
+
+// Rather than update a variable somewhere for one effect (Fury's Unshackled Fury) just take a callback
+// to fetch its multiplier when needed
+type RageMultiplierCB func() float64
+
+func (war *Warrior) registerBerserkerRage() {
+
+	actionID := core.ActionID{SpellID: 18499}
+	rageMetrics := war.NewRageMetrics(actionID)
+
+	war.BerserkerRageAura = war.RegisterAura(core.Aura{
+		Label:    "Berserker Rage",
+		ActionID: actionID,
+		Duration: time.Second * 6,
+	})
+
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskBerserkerRage,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Second * 30,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			war.AddRage(sim, 10, rageMetrics)
+			war.EnrageAura.Deactivate(sim)
+			war.EnrageAura.Activate(sim)
+			war.BerserkerRageAura.Activate(sim)
+		},
+	})
+}

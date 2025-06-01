@@ -13,7 +13,7 @@ func (war *Warrior) registerEnrage() {
 	war.EnrageMultiplier = 1.0
 
 	var bonusSnapshot float64
-	war.EnrageAura = core.MakePermanent(war.RegisterAura(core.Aura{
+	war.EnrageAura = war.RegisterAura(core.Aura{
 		Label:    "Enrage",
 		Tag:      EnrageTag,
 		ActionID: actionID,
@@ -28,7 +28,7 @@ func (war *Warrior) registerEnrage() {
 			war.EnrageMultiplier -= 0.1
 			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
 		},
-	}))
+	})
 
 	core.RegisterPercentDamageModifierEffect(war.EnrageAura, 1+0.1)
 

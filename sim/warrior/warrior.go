@@ -24,7 +24,7 @@ const (
 	// Abilities that don't cost rage and aren't attacks
 	SpellMaskBattleShout
 	SpellMaskCommandingShout
-	// SpellMaskBerserkerRage
+	SpellMaskBerserkerRage
 	// SpellMaskRecklessness
 	// SpellMaskShieldWall
 	// SpellMaskLastStand
@@ -90,7 +90,6 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
-	// BerserkerRage     *core.Spell
 	// ColossusSmash     *core.Spell
 	// DemoralizingShout *core.Spell
 	// Execute           *core.Spell
@@ -150,7 +149,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.registerShouts()
 	warrior.registerPassives()
-	// warrior.registerBerserkerRageSpell()
+	warrior.registerBerserkerRage()
 	// warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
 	// warrior.registerExecuteSpell()
