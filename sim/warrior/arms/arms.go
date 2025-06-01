@@ -68,6 +68,7 @@ func (war *ArmsWarrior) registerPassives() {
 	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86526)
 
 	war.registerMastery()
+	war.registerSeasonedSoldier()
 }
 
 func (war *ArmsWarrior) ApplyTalents() {

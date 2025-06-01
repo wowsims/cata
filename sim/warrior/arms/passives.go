@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/warrior"
 )
 
 func (war *ArmsWarrior) registerMastery() {
@@ -42,5 +44,21 @@ func (war *ArmsWarrior) registerMastery() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAttack.Cast(sim, result.Target)
 		},
+	})
+}
+func (war *ArmsWarrior) registerSeasonedSoldier() {
+	actionID := core.ActionID{SpellID: 12712}
+	core.MakePermanent(war.RegisterAura(core.Aura{
+		Label:    "Seasoned Soldier",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+	}).AttachMultiplicativePseudoStatBuff(
+		&war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.25,
+	))
+
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask: warrior.SpellMaskThunderClap | warrior.SpellMaskWhirlwind,
+		Kind:      core.SpellMod_PowerCost_Flat,
+		TimeValue: -10,
 	})
 }
