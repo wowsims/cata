@@ -1094,6 +1094,8 @@ func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
 		numShatteringThrows)
 }
 
+var SkullBannerActionID = ActionID{SpellID: 114206}
+
 const SkullBannerAuraTag = "SkullBanner"
 const SkullBannerDuration = time.Second * 10
 const SkullBannerCD = time.Minute * 3
@@ -1108,7 +1110,7 @@ func registerSkullBannerCD(agent Agent, numSkullBanners int32) {
 	registerExternalConsecutiveCDApproximation(
 		agent,
 		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 114207, Tag: -1},
+			ActionID:         SkullBannerActionID.WithTag(-1),
 			AuraTag:          SkullBannerAuraTag,
 			CooldownPriority: CooldownPriorityDefault,
 			AuraDuration:     SkullBannerDuration,
@@ -1129,7 +1131,7 @@ func SkullBannerAura(character *Character, actionTag int32) *Aura {
 	return character.GetOrRegisterAura(Aura{
 		Label:    "Skull Banner",
 		Tag:      SkullBannerAuraTag,
-		ActionID: ActionID{SpellID: 114206, Tag: actionTag},
+		ActionID: SkullBannerActionID.WithTag(actionTag),
 		Duration: SkullBannerDuration,
 	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.CritDamageMultiplier, 1.2)
 }

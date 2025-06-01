@@ -12,9 +12,6 @@ type WarriorInputs struct {
 
 const (
 	SpellFlagBleed = core.SpellFlagAgentReserved1
-	ArmsTree       = 0
-	FuryTree       = 1
-	ProtTree       = 2
 )
 
 const SpellMaskNone int64 = 0
@@ -29,6 +26,8 @@ const (
 	// SpellMaskShieldWall
 	// SpellMaskLastStand
 	SpellMaskCharge
+	SpellMaskSkullBanner
+	SpellMaskDemoralizingBanner
 
 	// Abilities that cost rage but aren't attacks
 	// SpellMaskDemoShout
@@ -149,6 +148,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.registerShouts()
 	warrior.registerPassives()
+	warrior.registerBanners()
+
 	warrior.registerBerserkerRage()
 	// warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
