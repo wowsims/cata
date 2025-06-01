@@ -51,8 +51,8 @@ func (ret *RetributionPaladin) registerExorcism() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := ret.CalcAndRollDamageRange(sim, 6.095, 0.11) +
-				0.677*spell.MeleeAttackPower()
+			baseDamage := ret.CalcAndRollDamageRange(sim, 6.09499979019, 0.1099999994) +
+				0.67699998617*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 

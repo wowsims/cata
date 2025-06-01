@@ -334,7 +334,7 @@ func (paladin *Paladin) registerSacredShield() {
 		},
 	})
 
-	baseHealing := paladin.CalcScalingSpellDmg(core.TernaryFloat64(isHoly, 0.3, 0.21))
+	baseHealing := paladin.CalcScalingSpellDmg(core.TernaryFloat64(isHoly, 0.30000001192, 0.20999999344))
 	spCoef := core.TernaryFloat64(isHoly, 1.17, 0.819)
 	absorbAuras = paladin.NewAllyDamageAbsorptionAuraArray(func(unit *core.Unit) *core.DamageAbsorptionAura {
 		return unit.NewDamageAbsorptionAura(
@@ -624,13 +624,13 @@ func (paladin *Paladin) holyPrismFactory(spellID int32, targets []*core.Unit, ti
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 0.962,
+		BonusCoefficient: 0.9620000124,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
 
 			for idx, aoeTarget := range targets {
-				base := paladin.CalcAndRollDamageRange(sim, 9.529, 0.2)
+				base := paladin.CalcAndRollDamageRange(sim, 9.52900028229, 0.20000000298)
 				// isHealing = true means the direct spell is a heal and the aoe spell is damage
 				if !isHealing {
 					results[idx] = spell.CalcHealing(sim, aoeTarget, base, spell.OutcomeHealingCrit)
@@ -689,14 +689,14 @@ func (paladin *Paladin) holyPrismFactory(spellID int32, targets []*core.Unit, ti
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 1.428,
+		BonusCoefficient: 1.4279999733,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if isHealing && target.IsOpponent(&paladin.Unit) {
 				target = &paladin.Unit
 			}
 
-			base := paladin.CalcAndRollDamageRange(sim, 14.131, 0.2)
+			base := paladin.CalcAndRollDamageRange(sim, 14.13099956512, 0.20000000298)
 
 			var result *core.SpellResult
 			if isHealing {
@@ -791,8 +791,8 @@ func (paladin *Paladin) registerLightsHammer() {
 				results := make([]*core.SpellResult, len(enemyTargets))
 
 				for idx, currentTarget := range enemyTargets {
-					baseDamage := paladin.CalcAndRollDamageRange(sim, 3.179, 0.2) +
-						0.321*dot.Spell.SpellPower()
+					baseDamage := paladin.CalcAndRollDamageRange(sim, 3.17899990082, 0.20000000298) +
+						0.32100000978*dot.Spell.SpellPower()
 					results[idx] = dot.Spell.CalcPeriodicDamage(sim, &currentTarget.Unit, baseDamage, dot.OutcomeTickMagicHitAndCrit)
 				}
 
@@ -830,8 +830,8 @@ func (paladin *Paladin) registerLightsHammer() {
 				results := make([]*core.SpellResult, len(friendlyTargets))
 
 				for idx, aoeTarget := range friendlyTargets {
-					baseHealing := paladin.CalcAndRollDamageRange(sim, 3.179, 0.2) +
-						0.321*dot.Spell.SpellPower()
+					baseHealing := paladin.CalcAndRollDamageRange(sim, 3.17899990082, 0.20000000298) +
+						0.32100000978*dot.Spell.SpellPower()
 					results[idx] = dot.Spell.CalcHealing(sim, aoeTarget, baseHealing, dot.OutcomeTickHealingCrit)
 				}
 
@@ -935,7 +935,7 @@ func (paladin *Paladin) executionSentenceFactory(spellID int32, label string, cd
 			snapshotSpellPower := dot.SnapshotBaseDamage
 
 			tickMultiplier := tickMultipliers[dot.TickCount()]
-			dot.SnapshotBaseDamage = tickMultiplier*paladin.CalcScalingSpellDmg(0.426) +
+			dot.SnapshotBaseDamage = tickMultiplier*paladin.CalcScalingSpellDmg(0.42599999905) +
 				tickMultiplier*tickSpCoef*snapshotSpellPower
 
 			if isHealing {
