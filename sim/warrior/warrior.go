@@ -102,8 +102,6 @@ type Warrior struct {
 	// ThunderClap       *core.Spell
 	// Whirlwind         *core.Spell
 	DeepWounds *core.Spell
-	// Charge            *core.Spell
-	// ChargeAura        *core.Aura
 
 	shoutsCD   *core.Timer
 	hsCleaveCD *core.Timer
@@ -172,7 +170,7 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerSunderArmor()
 	// warrior.registerThunderClapSpell()
 	// warrior.registerWhirlwindSpell()
-	// warrior.registerCharge()
+	warrior.registerCharge()
 }
 
 func (war *Warrior) registerPassives() {
