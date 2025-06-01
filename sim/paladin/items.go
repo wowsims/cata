@@ -153,7 +153,7 @@ func (paladin *Paladin) registerHolyDamageTemplarsVerdict() *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + paladin.CalcScalingSpellDmg(0.55)
+			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + paladin.CalcScalingSpellDmg(0.55000001192)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

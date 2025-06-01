@@ -49,7 +49,7 @@ func (prot *ProtectionPaladin) registerConsecrationSpell() {
 				results := make([]*core.SpellResult, numTargets)
 
 				// Consecration recalculates everything on each tick
-				baseDamage := prot.CalcScalingSpellDmg(0.8) + 0.08*dot.Spell.MeleeAttackPower()
+				baseDamage := prot.CalcScalingSpellDmg(0.80000001192) + 0.07999999821*dot.Spell.MeleeAttackPower()
 
 				for idx := range numTargets {
 					currentTarget := sim.Environment.GetTargetUnit(idx)

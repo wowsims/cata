@@ -50,9 +50,9 @@ func (paladin *Paladin) registerJudgment() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcScalingSpellDmg(0.546) +
-				0.328*spell.MeleeAttackPower() +
-				0.546*spell.SpellPower()
+			baseDamage := paladin.CalcScalingSpellDmg(0.54600000381) +
+				0.32800000906*spell.MeleeAttackPower() +
+				0.54600000381*spell.SpellPower()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})

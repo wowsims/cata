@@ -69,7 +69,7 @@ func (prot *ProtectionPaladin) registerHolyWrath() {
 
 			// Ingame tooltip is ((<MIN> + <MAX>) / 2) / 2
 			// This is the same as, <AVG> / 2 which is the same as just halving the coef
-			baseDamage := prot.CalcScalingSpellDmg(7.532/2) + 0.91*spell.MeleeAttackPower()
+			baseDamage := prot.CalcScalingSpellDmg(7.53200006485/2) + 0.91*spell.MeleeAttackPower()
 
 			// Damage is split between all mobs, each hit rolls for hit/crit separately
 			baseDamage /= float64(numTargets)

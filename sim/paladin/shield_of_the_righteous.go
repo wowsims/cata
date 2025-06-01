@@ -107,7 +107,7 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcScalingSpellDmg(0.732) + 0.617*spell.MeleeAttackPower()
+			baseDamage := paladin.CalcScalingSpellDmg(0.73199999332) + 0.61699998379*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
