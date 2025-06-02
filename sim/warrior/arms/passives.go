@@ -15,12 +15,9 @@ func (war *ArmsWarrior) registerMastery() {
 		ProcMask:    core.ProcMaskMeleeSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           war.DefaultCritMultiplier(),
-		ThreatMultiplier:         1,
-
-		BonusCoefficient: 1,
+		DamageMultiplier: 0.55,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
