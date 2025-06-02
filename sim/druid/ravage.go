@@ -7,9 +7,9 @@ import (
 )
 
 func (druid *Druid) registerRavageSpell() {
-	weaponMultiplier := 9.5
-	flatDamageBonus := 532.0 / weaponMultiplier
-	highHpCritPercentBonus := 25.0 * float64(druid.Talents.PredatoryStrikes)
+	const weaponMultiplier = 9.5
+	const highHpCritPercentBonus = 50.0
+	flatDamageBonus := 0.07100000232 * druid.ClassSpellScaling
 
 	druid.Ravage = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 6785},
@@ -24,19 +24,20 @@ func (druid *Druid) registerRavageSpell() {
 		MaxRange:         core.MaxMeleeRange,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60,
+			Cost:   45,
 			Refund: 0.8,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},
+
 			IgnoreHaste: true,
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			// Pre-pull stealth is not supported currently (and is never a DPS
-			// gain anyway), so require a Stampede proc to cast in combat.
-			return druid.StampedeCatAura.IsActive()
+
+		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
+			return druid.ProwlAura.IsActive() && !druid.PseudoStats.InFrontOfTarget && !druid.CannotShredTarget
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -52,8 +53,6 @@ func (druid *Druid) registerRavageSpell() {
 			} else {
 				spell.IssueRefund(sim)
 			}
-
-			druid.StampedeCatAura.Deactivate(sim)
 
 			if sim.IsExecutePhase90() {
 				spell.BonusCritPercent -= highHpCritPercentBonus
