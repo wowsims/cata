@@ -44,6 +44,7 @@ type Paladin struct {
 	SealOfJusticeAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	SealOfTruthAura         *core.Aura
+	SelflessHealerAura      *core.Aura
 	TheArtOfWarAura         *core.Aura
 
 	// Item sets
@@ -109,10 +110,13 @@ func (paladin *Paladin) registerSpells() {
 	paladin.registerCrusaderStrike()
 	paladin.registerDevotionAura()
 	paladin.registerDivineProtection()
+	paladin.registerFlashOfLight()
+	paladin.registerForbearance()
 	paladin.registerGuardianOfAncientKings()
 	paladin.registerHammerOfTheRighteous()
 	paladin.registerHammerOfWrath()
 	paladin.registerJudgment()
+	paladin.registerLayOnHands()
 	paladin.registerSanctityOfBattle()
 	paladin.registerSealOfInsight()
 	paladin.registerSealOfRighteousness()
