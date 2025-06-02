@@ -8,6 +8,10 @@ import (
 )
 
 func (war *Warrior) registerColossusSmash() {
+	if war.Spec == proto.Spec_SpecProtectionWarrior {
+		return
+	}
+
 	actionID := core.ActionID{SpellID: 86346}
 	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfColossusSmash)
 
