@@ -2737,8 +2737,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 66552.47008
-  tps: 42999.23193
+  dps: 66007.95955
+  tps: 43026.13385
  }
 }
 dps_results: {
@@ -2758,8 +2758,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 50344.30249
-  tps: 36075.50645
+  dps: 50292.66732
+  tps: 36044.38969
  }
 }
 dps_results: {
@@ -2863,8 +2863,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 68578.25858
-  tps: 43653.28524
+  dps: 68164.42907
+  tps: 43601.10013
  }
 }
 dps_results: {
@@ -2884,8 +2884,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 52340.654
-  tps: 36473.29643
+  dps: 52352.44239
+  tps: 36556.40301
  }
 }
 dps_results: {
@@ -2989,8 +2989,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 67289.52738
-  tps: 43133.17174
+  dps: 66876.76509
+  tps: 43211.65247
  }
 }
 dps_results: {
@@ -3010,8 +3010,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 51142.43295
-  tps: 36115.78335
+  dps: 50567.01556
+  tps: 36029.05878
  }
 }
 dps_results: {

@@ -22,7 +22,7 @@ type ShamSpellConfig struct {
 	Coeff               float64
 	Variance            float64
 	SpellSchool         core.SpellSchool
-	Overloads           *[]*core.Spell
+	Overloads           *[2][]*core.Spell
 }
 
 // Shared precomputation logic for LB and CL.

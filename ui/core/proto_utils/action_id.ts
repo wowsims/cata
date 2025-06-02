@@ -450,8 +450,13 @@ export class ActionId {
 				}
 				break;
 			case 'Flame Shock':
+			case 'Earth Shock':
+			case 'Frost Shock' :
+			case 'Fire Nova':
 				if (tag == 1) {
 					name += ' (DoT)';
+				} else if (tag == 7) {
+					name += ' (Echo)'	
 				}
 				break;
 			case 'Fulmination':

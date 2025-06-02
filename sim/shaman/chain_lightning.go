@@ -10,9 +10,10 @@ import (
 func (shaman *Shaman) registerChainLightningSpell() {
 	numHits := min(core.TernaryInt32(shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning), 5, 3), shaman.Env.GetNumTargets())
 	shaman.ChainLightning = shaman.newChainLightningSpell(false)
-	shaman.ChainLightningOverloads = []*core.Spell{}
+	shaman.ChainLightningOverloads = [2][]*core.Spell{}
 	for i := int32(0); i < numHits; i++ {
-		shaman.ChainLightningOverloads = append(shaman.ChainLightningOverloads, shaman.newChainLightningSpell(true))
+		shaman.ChainLightningOverloads[0] = append(shaman.ChainLightningOverloads[0], shaman.newChainLightningSpell(true))
+		shaman.ChainLightningOverloads[1] = append(shaman.ChainLightningOverloads[1], shaman.newChainLightningSpell(true)) // overload echo
 	}
 }
 
@@ -48,13 +49,11 @@ func (shaman *Shaman) NewChainSpellConfig(config ShamSpellConfig) core.SpellConf
 			spell.DamageMultiplier *= config.BounceReduction
 		}
 
+		idx := core.TernaryInt32(spell.Flags.Matches(SpellFlagIsEcho), 1, 0)
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
-				if !config.IsElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
-					(*config.Overloads)[hitIndex].Cast(sim, results[hitIndex].Target)
-				}
+			if !config.IsElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
+				(*config.Overloads)[idx][hitIndex].Cast(sim, results[hitIndex].Target)
 			}
-
 			spell.DealDamage(sim, results[hitIndex])
 			spell.DamageMultiplier /= config.BounceReduction
 		}

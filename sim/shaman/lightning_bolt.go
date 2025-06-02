@@ -8,7 +8,8 @@ import (
 
 func (shaman *Shaman) registerLightningBoltSpell() {
 	shaman.LightningBolt = shaman.RegisterSpell(shaman.newLightningBoltSpellConfig(false))
-	shaman.LightningBoltOverload = shaman.RegisterSpell(shaman.newLightningBoltSpellConfig(true))
+	shaman.LightningBoltOverload[0] = shaman.RegisterSpell(shaman.newLightningBoltSpellConfig(true))
+	shaman.LightningBoltOverload[1] = shaman.RegisterSpell(shaman.newLightningBoltSpellConfig(true))
 }
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
@@ -30,11 +31,10 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.13999998569, 0.13300000131)
 		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 
+		idx := core.TernaryInt32(spell.Flags.Matches(SpellFlagIsEcho), 1, 0)
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
-				if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lightning Bolt Elemental Overload") {
-					shaman.LightningBoltOverload.Cast(sim, target)
-				}
+			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lightning Bolt Elemental Overload") {
+				shaman.LightningBoltOverload[idx].Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)

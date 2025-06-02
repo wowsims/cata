@@ -11,7 +11,8 @@ import (
 
 func (shaman *Shaman) registerElementalBlastSpell() {
 	shaman.ElementalBlast = shaman.RegisterSpell(shaman.newElementalBlastSpellConfig(false))
-	shaman.ElementalBlastOverload = shaman.RegisterSpell(shaman.newElementalBlastSpellConfig(true))
+	shaman.ElementalBlastOverload[0] = shaman.RegisterSpell(shaman.newElementalBlastSpellConfig(true))
+	shaman.ElementalBlastOverload[1] = shaman.RegisterSpell(shaman.newElementalBlastSpellConfig(true))
 }
 
 func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) core.SpellConfig {
@@ -93,11 +94,10 @@ func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) cor
 		baseDamage := shaman.CalcAndRollDamageRange(sim, 4.23999977112, 0.15000000596)
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
+		idx := core.TernaryInt32(spell.Flags.Matches(SpellFlagIsEcho), 1, 0)
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
-				if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Elemental Blast Elemental Overload") {
-					shaman.ElementalBlastOverload.Cast(sim, target)
-				}
+			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Elemental Blast Elemental Overload") {
+				shaman.ElementalBlastOverload[idx].Cast(sim, target)
 			}
 			spell.DealDamage(sim, result)
 		})

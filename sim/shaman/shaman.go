@@ -94,17 +94,18 @@ type Shaman struct {
 	TotemExpirations [4]time.Duration
 
 	LightningBolt         *core.Spell
-	LightningBoltOverload *core.Spell
+	LightningBoltOverload [2]*core.Spell
 
 	ChainLightning          *core.Spell
-	ChainLightningOverloads []*core.Spell
+	ChainLightningOverloads [2][]*core.Spell
 
 	LavaBeam          *core.Spell
-	LavaBeamOverloads []*core.Spell
+	LavaBeamOverloads [2][]*core.Spell
 
 	LavaBurst         *core.Spell
-	LavaBurstOverload *core.Spell
+	LavaBurstOverload [2]*core.Spell
 	FireNova          *core.Spell
+	FireNovas         []*core.Spell
 	LavaLash          *core.Spell
 	Stormstrike       *core.Spell
 	PrimalStrike      *core.Spell
@@ -116,7 +117,7 @@ type Shaman struct {
 	Fulmination           *core.Spell
 
 	ElementalBlast         *core.Spell
-	ElementalBlastOverload *core.Spell
+	ElementalBlastOverload [2]*core.Spell
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell

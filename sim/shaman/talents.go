@@ -130,12 +130,20 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 	}
 
 	var copySpells = map[*core.Spell]*core.Spell{}
+	var alreadyProcced = map[*core.Spell]bool{}
+	var lastTimestamp time.Duration
 
 	core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
 		Label: "Echo of The Elements Dummy",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Outcome.Matches(core.OutcomeLanded) || spell.Flags.Matches(SpellFlagIsEcho) || !spell.Flags.Matches(SpellFlagShamanSpell) {
 				return
+			}
+			if sim.CurrentTime == lastTimestamp && alreadyProcced[spell] {
+				return
+			} else if sim.CurrentTime != lastTimestamp {
+				lastTimestamp = sim.CurrentTime
+				alreadyProcced = map[*core.Spell]bool{}
 			}
 			procChance := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecElementalShaman, 0.06, 0.3)
 			if spell.Matches(SpellMaskElementalBlast | SpellMaskElementalBlastOverload) {
@@ -144,6 +152,7 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 			if !sim.Proc(procChance, "Echo of The Elements") {
 				return
 			}
+			alreadyProcced[spell] = true
 			if copySpells[spell] == nil {
 				copySpells[spell] = spell.Unit.RegisterSpell(core.SpellConfig{
 					ActionID:                 core.ActionID{SpellID: spell.SpellID, Tag: core.TernaryInt32(spell.Tag == CastTagLightningOverload, 8, 7)},

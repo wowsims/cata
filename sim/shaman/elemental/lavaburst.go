@@ -9,7 +9,8 @@ import (
 
 func (ele *ElementalShaman) registerLavaBurstSpell() {
 	ele.LavaBurst = ele.RegisterSpell(ele.newLavaBurstSpellConfig(false))
-	ele.LavaBurstOverload = ele.RegisterSpell(ele.newLavaBurstSpellConfig(true))
+	ele.LavaBurstOverload[0] = ele.RegisterSpell(ele.newLavaBurstSpellConfig(true))
+	ele.LavaBurstOverload[1] = ele.RegisterSpell(ele.newLavaBurstSpellConfig(true))
 }
 
 func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) core.SpellConfig {
@@ -72,11 +73,10 @@ func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) co
 		}
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
+		idx := core.TernaryInt32(spell.Flags.Matches(shaman.SpellFlagIsEcho), 1, 0)
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
-				if !isElementalOverload && result.Landed() && sim.Proc(ele.GetOverloadChance(), "Lava Burst Elemental Overload") {
-					ele.LavaBurstOverload.Cast(sim, target)
-				}
+			if !isElementalOverload && result.Landed() && sim.Proc(ele.GetOverloadChance(), "Lava Burst Elemental Overload") {
+				ele.LavaBurstOverload[idx].Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)
