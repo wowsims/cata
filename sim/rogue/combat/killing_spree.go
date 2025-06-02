@@ -54,13 +54,13 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 	comRogue.KillingSpreeAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Killing Spree",
 		ActionID: core.ActionID{SpellID: 51690},
-		Duration: time.Second*2 + 1,
+		Duration: time.Second*3 + 1, // +1 ensures the final hit is buffed
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			comRogue.SetGCDTimer(sim, sim.CurrentTime+aura.Duration)
 			comRogue.PseudoStats.DamageDealtMultiplier *= auraDamageMult
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:          time.Millisecond * 500,
-				NumTicks:        5,
+				NumTicks:        7,
 				TickImmediately: true,
 				OnAction: func(s *core.Simulation) {
 					targetCount := sim.GetNumTargets()
