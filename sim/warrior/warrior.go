@@ -27,6 +27,7 @@ const (
 	SpellMaskCharge
 	SpellMaskSkullBanner
 	SpellMaskDemoralizingBanner
+	SpellMaskAvatar
 
 	// Abilities that cost rage but aren't attacks
 	SpellMaskDemoralizingShout

@@ -25,6 +25,7 @@ func (warrior *Warrior) ApplyTalents() {
 	// Level 75
 
 	// Level 90
+	warrior.registerAvatar()
 	warrior.registerBloodbath()
 }
 
@@ -271,6 +272,47 @@ func (war *Warrior) registerShockwave() {
 				spell.CD.Reduce(time.Second * 20)
 			}
 		},
+	})
+}
+
+func (war *Warrior) registerAvatar() {
+	if !war.Talents.Avatar {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 107574}
+	avatarAura := war.RegisterAura(core.Aura{
+		Label:    "Avatar",
+		ActionID: actionId,
+		Duration: 24 * time.Second,
+	}).AttachMultiplicativePseudoStatBuff(&war.Unit.PseudoStats.DamageDealtMultiplier, 1.2)
+	core.RegisterPercentDamageModifierEffect(avatarAura, 1.2)
+
+	avatar := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
+		ClassSpellMask: SpellMaskAvatar,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: 3 * time.Minute,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			avatarAura.Activate(sim)
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: avatar,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 
