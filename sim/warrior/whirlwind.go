@@ -49,7 +49,7 @@ func (war *Warrior) registerWhirlwind() {
 		ClassSpellMask: SpellMaskWhirlwind | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
-			Cost: 30,
+			Cost: core.TernaryInt32(war.Spec == proto.Spec_SpecFuryWarrior, 30, 20),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

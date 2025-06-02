@@ -42,7 +42,7 @@ const (
 	SpellMaskColossusSmash
 	SpellMaskExecute
 	SpellMaskHeroicStrike
-	// SpellMaskHeroicThrow
+	SpellMaskHeroicThrow
 	SpellMaskOverpower
 	// SpellMaskRend
 	// SpellMaskRevenge
@@ -154,7 +154,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerHeroicStrikeSpell()
 	warrior.registerCleaveSpell()
 	warrior.registerHeroicLeap()
-	// warrior.registerHeroicThrow()
+	warrior.registerHeroicThrow()
 	// warrior.registerInnerRage()
 	// warrior.registerOverpowerSpell()
 	// warrior.registerRecklessnessCD()
