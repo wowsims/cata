@@ -38,6 +38,9 @@ func (mage *Mage) registerIceLanceSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if mage.FingersOfFrostAura.IsActive() {
+				mage.FingersOfFrostAura.RemoveStack(sim)
+			}
 
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
@@ -77,13 +80,13 @@ func (mage *Mage) registerIceLanceSpell() {
 
 			if mage.Spec == proto.Spec_SpecFrostMage {
 				//I've confirmed in game Icicles launch even if ice lance misses.
-				for _, icicle := range mage.icicles {
+				for _, icicle := range mage.Icicles {
 					if hasGlyphSplittingIce {
 						mage.castIcicleWithDamage(sim, randomTarget, icicle/2)
 					}
 					mage.castIcicleWithDamage(sim, target, icicle)
 				}
-				mage.icicles = make([]float64, 0)
+				mage.Icicles = make([]float64, 0)
 
 			}
 

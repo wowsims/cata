@@ -40,6 +40,7 @@ func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
 		Mage: mage.NewMage(character, options, frostOptions.ClassOptions),
 	}
 	frostMage.waterElemental = frostMage.NewWaterElemental()
+	frostMage.frozenOrb = frostMage.NewFrozenOrb()
 
 	return frostMage
 }
@@ -68,13 +69,13 @@ func (frostMage *FrostMage) ApplyTalents() {
 	frostMage.frostfireFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
 		FloatValue: frostMage.GetStat(stats.SpellCritPercent)*2 + 50,
 		ClassMask:  mage.MageSpellFrostfireBolt,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_CritMultiplier_Flat,
 	})
 
 	frostMage.iceLanceFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
 		FloatValue: frostMage.GetStat(stats.SpellCritPercent)*2 + 50,
 		ClassMask:  mage.MageSpellIceLance,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_CritMultiplier_Flat,
 	})
 
 	frostMage.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, statsChangeWithoutDeps stats.Stats) {

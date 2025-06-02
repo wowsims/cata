@@ -11,7 +11,7 @@ func (frost *FrostMage) registerBrainFreeze() {
 	/*
 		https://www.wowhead.com/mop-classic/spell=44549/brain-freeze and https://www.wowhead.com/mop-classic/spell=44614/frostfire-bolt for more information.
 	*/
-	buff := frost.RegisterAura(core.Aura{
+	frost.Mage.BrainFreezeAura = frost.RegisterAura(core.Aura{
 		Label:     "Brain Freeze",
 		ActionID:  core.ActionID{SpellID: 44549},
 		Duration:  time.Second * 15,
@@ -45,15 +45,15 @@ func (frost *FrostMage) registerBrainFreeze() {
 			// https://github.com/simulationcraft/simc/blob/e1190fed141feec2ec7a489e80caec5138c3a6ab/engine/class_modules/sc_mage.cpp#L4169
 			if spell.Matches(mage.MageSpellLivingBombDot | mage.MageSpellLivingBombExplosion) {
 				if sim.Proc(0.25, "BrainFreezeProc") {
-					buff.Activate(sim)
+					frost.Mage.BrainFreezeAura.Activate(sim)
 				}
 			} else if spell.Matches(mage.MageSpellFrostBomb) {
 				if sim.Proc(1.0, "BrainFreezeProc") {
-					buff.Activate(sim)
+					frost.Mage.BrainFreezeAura.Activate(sim)
 				}
 			} else {
 				if sim.Proc(0.09, "BrainFreezeProc") {
-					buff.Activate(sim)
+					frost.Mage.BrainFreezeAura.Activate(sim)
 				}
 			}
 		},

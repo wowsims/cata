@@ -43,8 +43,10 @@ type Mage struct {
 	runeOfPowerAura        *core.Aura
 	presenceOfMindAura     *core.Aura
 	FingersOfFrostAura     *core.Aura
+	BrainFreezeAura        *core.Aura
 	IcyVeinsAura           *core.Aura
 	iceFloesfAura          *core.Aura
+	IciclesAura            *core.Aura
 	FrostBombAuras         *core.AuraArray
 
 	arcaneMissileCritSnapshot float64
@@ -54,7 +56,7 @@ type Mage struct {
 	combustionDotEstimate int32
 
 	ClassSpellScaling float64
-	icicles           []float64
+	Icicles           []float64
 
 	// Item sets
 	T12_4pc *core.Aura
@@ -91,6 +93,7 @@ func (mage *Mage) GetFrostMasteryBonus() float64 {
 func (mage *Mage) Initialize() {
 	mage.applyArmorSpells()
 	mage.applyGlyphs()
+	mage.ApplyMastery()
 	// mage.registerArcaneBlastSpell()
 	// mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
@@ -170,6 +173,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	mage.EnableManaBar()
 
+	mage.Icicles = make([]float64, 0)
 	mage.mirrorImage = mage.NewMirrorImage()
 	// mage.flameOrb = mage.NewFlameOrb()
 	// mage.frostfireOrb = mage.NewFrostfireOrb()

@@ -40,6 +40,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if mage.BrainFreezeAura.IsActive() {
+				mage.BrainFreezeAura.Deactivate(sim)
+			}
 			if mage.IcyVeinsAura.IsActive() && hasGlyph {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance) * .4
 				for _ = range 3 {
@@ -56,11 +59,15 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
+					if mage.BrainFreezeAura.IsActive() {
+						mage.BrainFreezeAura.Deactivate(sim)
+					}
 				})
 				if result.Landed() {
 					mage.HandleIcicleGeneration(sim, target, baseDamage)
 				}
 			}
+
 		},
 	})
 }
