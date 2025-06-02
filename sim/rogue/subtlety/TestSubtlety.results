@@ -306,8 +306,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 76490.13319
-  tps: 53929.74741
+  dps: 75627.03942
+  tps: 53318.30242
  }
 }
 dps_results: {
@@ -1629,8 +1629,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 75627.03942
-  tps: 53318.30242
+  dps: 76490.13319
+  tps: 53929.74741
  }
 }
 dps_results: {

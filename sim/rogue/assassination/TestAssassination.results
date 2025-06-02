@@ -338,8 +338,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 77075.66519
-  tps: 54242.59836
+  dps: 76338.12433
+  tps: 53720.72527
  }
 }
 dps_results: {
@@ -1661,8 +1661,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 76338.12433
-  tps: 53720.72527
+  dps: 77075.66519
+  tps: 54242.59836
  }
 }
 dps_results: {
