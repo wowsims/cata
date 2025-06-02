@@ -10,7 +10,7 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		ActionID:       core.ActionID{SpellID: 1449},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneExplosion,
 
 		ManaCost: core.ManaCostOptions{
@@ -29,7 +29,6 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.368 * mage.ClassSpellScaling
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

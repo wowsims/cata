@@ -60,7 +60,7 @@ func (warlock *Warlock) registerMannarothsFury() {
 		Duration: time.Second * 10,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  WarlockSpellRainOfFire | WarlockSpellSeedOfCorruptionExposion | WarlockSpellSeedOfCorruption | WarlockSpellHellfire,
+		ClassMask:  WarlockSpellRainOfFire | WarlockSpellSeedOfCorruptionExposion | WarlockSpellSeedOfCorruption | WarlockSpellHellfire | WarlockSpellImmolationAura,
 		FloatValue: 1,
 	})
 

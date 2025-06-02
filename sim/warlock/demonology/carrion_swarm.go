@@ -14,7 +14,7 @@ const carrionSwarmCoeff = 0.5
 func (demonology *DemonologyWarlock) registerCarrionSwarm() {
 	demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 103967},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ProcMask:       core.ProcMaskSpellDamage,
 		SpellSchool:    core.SpellSchoolShadow,
 		ClassSpellMask: warlock.WarlockSpellCarrionSwarm,
@@ -22,6 +22,10 @@ func (demonology *DemonologyWarlock) registerCarrionSwarm() {
 			DefaultCast: core.Cast{
 				GCDMin: time.Millisecond * 500,
 				GCD:    time.Millisecond * 1000,
+			},
+			CD: core.Cooldown{
+				Timer:    demonology.NewTimer(),
+				Duration: time.Second * 12,
 			},
 		},
 

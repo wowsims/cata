@@ -25,7 +25,7 @@ func (affliction *AfflictionWarlock) registerSeed() {
 		ActionID:       actionID.WithTag(1), // actually 27285
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagPassiveSpell,
 		ClassSpellMask: warlock.WarlockSpellSeedOfCorruptionExposion,
 
 		DamageMultiplierAdditive: 1,
@@ -34,7 +34,7 @@ func (affliction *AfflictionWarlock) registerSeed() {
 		BonusCoefficient:         seedExploCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := affliction.CalcAndRollDamageRange(sim, seedExploScale, seedExploVariance) * sim.Encounter.AOECapMultiplier()
+			baseDmg := affliction.CalcAndRollDamageRange(sim, seedExploScale, seedExploVariance)
 			isSoulBurn := seedPropertyTracker[target.UnitIndex].isSoulBurn
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)

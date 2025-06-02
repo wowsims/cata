@@ -7,13 +7,18 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
+const immolationAuraScale = 0.17499999702
+const immolationAuraCoeff = 0.17499999702
+
 func (demonology *DemonologyWarlock) registerImmolationAura() {
-	demonology.RegisterSpell(core.SpellConfig{
+	var baseDamage = demonology.CalcScalingSpellDmg(immolationAuraScale)
+
+	immolationAura := demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 104025},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: warlock.WarlockSpellHellfire,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL | core.SpellFlagNoMetrics,
+		ClassSpellMask: warlock.WarlockSpellImmolationAura,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -24,16 +29,16 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 		CritMultiplier:           demonology.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
-		Hot: core.DotConfig{
+		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:    "Immolation Aura (DoT)",
-				ActionID: core.ActionID{SpellID: 104025}.WithTag(1),
+				Label: "Immolation Aura (DoT)",
 			},
 
 			TickLength:           time.Second,
 			NumberOfTicks:        8,
 			HasteReducesDuration: true,
-			SelfOnly:             true,
+			BonusCoefficient:     immolationAuraCoeff,
+			IsAOE:                true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if !demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25)) {
@@ -42,7 +47,10 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 				}
 
 				demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25), dot.Spell.ActionID, sim)
-				demonology.Hellfire.RelatedDotSpell.Cast(sim, target)
+
+				for _, unit := range sim.Encounter.TargetUnits {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, unit, baseDamage, dot.OutcomeTick)
+				}
 			},
 		},
 
@@ -50,7 +58,11 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 			return demonology.IsInMeta() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25))
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SelfHot().Apply(sim)
+			spell.AOEDot().Apply(sim)
 		},
+	})
+
+	demonology.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		immolationAura.AOEDot().Deactivate(sim)
 	})
 }

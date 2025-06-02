@@ -15,7 +15,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: HunterSpellExplosiveTrap,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
@@ -66,7 +66,6 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 					OnAction: func(sim *core.Simulation) {
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
 							baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower())
-							baseDamage *= sim.Encounter.AOECapMultiplier()
 							baseDamage *= core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 1.3, 1)
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 						}
@@ -76,7 +75,6 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			} else {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower())
-					baseDamage *= sim.Encounter.AOECapMultiplier()
 					baseDamage *= core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 1.3, 1)
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 				}

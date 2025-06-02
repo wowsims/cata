@@ -29,7 +29,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellLivingBombExplosion,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagAoE | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultCritMultiplier(),
@@ -38,7 +38,6 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.5 * mage.ClassSpellScaling
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

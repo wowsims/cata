@@ -120,8 +120,13 @@ func (monk *Monk) SpendChi(sim *core.Simulation, chiToSpend int32, metrics *core
 		monk.onChiSpent(sim, chiToSpend)
 	}
 }
+
 func (monk *Monk) GetChi() int32 {
 	return monk.ComboPoints()
+}
+
+func (monk *Monk) GetMaxChi() int32 {
+	return monk.MaxComboPoints()
 }
 
 func (monk *Monk) RegisterOnChiSpent(onChiSpent OnChiSpent) {
@@ -235,8 +240,6 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	monk.PseudoStats.BaseParryChance += 0.03
 	monk.PseudoStats.BaseDodgeChance += 0.03
 	monk.XuenPet = monk.NewXuen()
-
-	monk.registerSEFPets()
 
 	monk.EnableEnergyBar(core.EnergyBarOptions{
 		MaxComboPoints: 4,

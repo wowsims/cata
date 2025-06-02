@@ -1,6 +1,8 @@
 package demonology
 
-import "github.com/wowsims/mop/sim/core"
+import (
+	"github.com/wowsims/mop/sim/core"
+)
 
 func (demonology *DemonologyWarlock) registerHellfire() {
 	hellfire := demonology.RegisterHellfire(func(resultList []core.SpellResult, spell *core.Spell, sim *core.Simulation) {
@@ -21,4 +23,9 @@ func (demonology *DemonologyWarlock) registerHellfire() {
 
 		return !demonology.IsInMeta()
 	}
+
+	demonology.Metamorphosis.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		demonology.Hellfire.SelfHot().Deactivate(sim)
+	})
+
 }

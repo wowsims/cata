@@ -48,8 +48,8 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 		corruptionModCaster.Activate()
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getNormalMasteryBonus()
 		demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getMetaMasteryBonus()
-	})
-	demo.Metamorphosis.RelatedSelfBuff.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		demo.PseudoStats.DamageDealtMultiplier /= 1 + demo.getMetaMasteryBonus()
 		corruptionMod.Deactivate()
 		corruptionModCaster.Deactivate()
@@ -62,8 +62,8 @@ func (demo *DemonologyWarlock) registerMasterDemonologist() {
 			NextActionAt: sim.CurrentTime + core.GCDDefault,
 			Priority:     core.ActionPriorityAuto,
 			OnAction: func(sim *core.Simulation) {
-				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 				scaleAction = nil
+				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()
 			},
 			CleanUp: func(sim *core.Simulation) {
 				demo.PseudoStats.DamageDealtMultiplier *= 1 + demo.getNormalMasteryBonus()

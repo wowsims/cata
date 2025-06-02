@@ -601,6 +601,11 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Immolation Aura':
+				if (tag == 2) {
+					name += ' (Tick)';
+				}
+				break;
 			case 'Frozen Blows':
 			case 'Opportunity Strike':
 				break;
@@ -740,18 +745,18 @@ export class ActionId {
 				}
 				break;
 			case 'Zen Sphere':
+			case 'Zen Sphere: Detonate':
 				if (this.spellId === 124081) {
+					if ([4, 5].includes(this.tag)) {
+						name += ': Detonate';
+					}
 					if (this.tag === 1) {
 						name += ' (# of Spheres)';
-					} else {
+					} else if ([0, 2, 4].includes(this.tag)) {
 						name += ' (Heal)';
+					} else if ([3, 5].includes(this.tag)) {
+						name += ' (Damage)';
 					}
-				} else if (this.spellId === 124098) {
-					name += ' (Damage)';
-				} else if (this.spellId === 124101) {
-					name += ': Detonate (Heal)';
-				} else if (this.spellId === 125033) {
-					name += ': Detonate (Damage)';
 				}
 				break;
 			case 'Chi Burst':
@@ -1061,6 +1066,14 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
 	[JSON.stringify({ spellId: 1464, tag: 2 }), { spellId: 97992 }], // Warrior - Slam Off-Hand
 	[JSON.stringify({ spellId: 1680, tag: 2 }), { spellId: 44949 }], // Warrior - Whirlwind Off-Hand
+
+	// Monk - Zen Sphere
+	[JSON.stringify({ spellId: 124081, tag: 3 }), { spellId: 124098 }],
+	[JSON.stringify({ spellId: 124081, tag: 4 }), { spellId: 124101 }],
+	[JSON.stringify({ spellId: 124081, tag: 5 }), { spellId: 125033 }],
+
+	// Warlock - Immolation Aura
+	[JSON.stringify({ spellId: 104025, tag: 2 }), { spellId: 129476 }],
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

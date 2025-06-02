@@ -16,7 +16,7 @@ func (war *ProtectionWarrior) RegisterShockwave() {
 		ActionID:       core.ActionID{SpellID: 46968},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskShockwave | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
@@ -39,7 +39,6 @@ func (war *ProtectionWarrior) RegisterShockwave() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.75 * spell.MeleeAttackPower()
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}

@@ -22,7 +22,7 @@ func (destruction DestructionWarlock) registerRainOfFire() {
 		ActionID:       core.ActionID{SpellID: 104232},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellRainOfFire,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

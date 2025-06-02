@@ -14,7 +14,7 @@ func (demonology *DemonologyWarlock) registerVoidRay() {
 		ActionID:       core.ActionID{SpellID: 115422},
 		SpellSchool:    core.SpellSchoolShadowFlame,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellVoidray,
 		MissileSpeed:   38,
 		Cast: core.CastConfig{
@@ -34,7 +34,7 @@ func (demonology *DemonologyWarlock) registerVoidRay() {
 			demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 56, 80), spell.ActionID, sim)
 			for _, enemy := range sim.Encounter.TargetUnits {
 				baseDamage := demonology.CalcAndRollDamageRange(sim, voidRayScale, voidRayVariance)
-				spell.CalcDamage(sim, enemy, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, enemy, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
