@@ -12,6 +12,9 @@ type SpiritWolf struct {
 	core.Pet
 
 	shamanOwner *EnhancementShaman
+
+	SpiritBite *core.Spell
+	enabledAt  time.Duration
 }
 
 type SpiritWolves struct {
@@ -20,6 +23,8 @@ type SpiritWolves struct {
 }
 
 func (SpiritWolves *SpiritWolves) EnableWithTimeout(sim *core.Simulation) {
+	SpiritWolves.SpiritWolf1.enabledAt = sim.CurrentTime
+	SpiritWolves.SpiritWolf2.enabledAt = sim.CurrentTime
 	SpiritWolves.SpiritWolf1.EnableWithTimeout(sim, SpiritWolves.SpiritWolf1, time.Second*30)
 	SpiritWolves.SpiritWolf2.EnableWithTimeout(sim, SpiritWolves.SpiritWolf2, time.Second*30)
 }
@@ -90,10 +95,26 @@ func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 }
 
 func (spiritWolf *SpiritWolf) Initialize() {
-	// Nothing
+	spiritWolf.registerSpiritBite()
 }
 
-func (spiritWolf *SpiritWolf) ExecuteCustomRotation(_ *core.Simulation) {
+func (spiritWolf *SpiritWolf) ExecuteCustomRotation(sim *core.Simulation) {
+	/*
+		Spirit Bite on Cd starting 3.3s in
+	*/
+	target := spiritWolf.CurrentTarget
+
+	if sim.CurrentTime >= spiritWolf.enabledAt+time.Millisecond*3300 {
+		spiritWolf.SpiritBite.Cast(sim, target)
+	}
+
+	if !spiritWolf.GCD.IsReady(sim) {
+		return
+	}
+
+	minCd := spiritWolf.SpiritBite.CD.ReadyAt()
+	spiritWolf.ExtendGCDUntil(sim, max(minCd, sim.CurrentTime+time.Second))
+
 }
 
 func (spiritWolf *SpiritWolf) Reset(sim *core.Simulation) {
@@ -108,4 +129,30 @@ func (spiritWolf *SpiritWolf) Reset(sim *core.Simulation) {
 
 func (spiritWolf *SpiritWolf) GetPet() *core.Pet {
 	return &spiritWolf.Pet
+}
+
+func (spiritWolf *SpiritWolf) registerSpiritBite() {
+	spiritWolf.SpiritBite = spiritWolf.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 58859},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    spiritWolf.NewTimer(),
+				Duration: time.Millisecond * 7300,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   spiritWolf.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damageScaling := spiritWolf.shamanOwner.CalcAndRollDamageRange(sim, 1.05, 0.40000000596)
+			baseDamage := damageScaling + spell.MeleeAttackPower()*0.30000001192
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
 }
