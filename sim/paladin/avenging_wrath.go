@@ -24,7 +24,11 @@ func (paladin *Paladin) registerAvengingWrath() {
 		Label:    "Avenging Wrath" + paladin.Label,
 		ActionID: actionID,
 		Duration: core.DurationFromSeconds(core.TernaryFloat64(paladin.Talents.SanctifiedWrath, 30, 20)),
-	}).AttachMultiplicativePseudoStatBuff(&paladin.Unit.PseudoStats.DamageDealtMultiplier, 1.2)
+	}).AttachMultiplicativePseudoStatBuff(
+		&paladin.Unit.PseudoStats.DamageDealtMultiplier, 1.2,
+	).AttachMultiplicativePseudoStatBuff(
+		&paladin.Unit.PseudoStats.HealingDealtMultiplier, 1.2,
+	)
 	core.RegisterPercentDamageModifierEffect(paladin.AvengingWrathAura, 1.2)
 
 	avengingWrath := paladin.RegisterSpell(core.SpellConfig{
