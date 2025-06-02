@@ -18,6 +18,7 @@ func (warrior *Warrior) ApplyTalents() {
 
 	// Level 60
 	warrior.registerBladestorm()
+	warrior.registerDragonRoar()
 
 	// Level 75
 
@@ -81,6 +82,55 @@ func (war *Warrior) registerImpendingVictory() {
 	})
 }
 
+func (war *Warrior) registerDragonRoar() {
+	if !war.Talents.DragonRoar {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 118000}
+
+	damageMultipliers := []float64{1, 0.75, 0.65, 0.55, 0.50}
+
+	spell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskDragonRoar,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Minute * 1,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+		BonusCritPercent: 100,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damageMultiplier := damageMultipliers[min(war.Env.GetNumTargets()-1, 4)]
+			baseDamage := 126 + spell.MeleeAttackPower()*1.39999997616
+			spell.DamageMultiplier *= damageMultiplier
+			for _, enemyTarget := range sim.Encounter.ActiveTargets {
+				spell.CalcAndDealDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			}
+			spell.DamageMultiplier /= damageMultiplier
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
+
+}
+
 func (war *Warrior) registerBladestorm() {
 	if !war.Talents.Bladestorm {
 		return
@@ -90,9 +140,9 @@ func (war *Warrior) registerBladestorm() {
 
 	damageMultiplier := 1.2
 	if war.Spec == proto.Spec_SpecArmsWarrior {
-		damageMultiplier = 1.8
+		damageMultiplier += 0.6
 	} else if war.Spec == proto.Spec_SpecProtectionWarrior {
-		damageMultiplier = 1.6
+		damageMultiplier *= 1.33
 	}
 
 	mhSpell := war.RegisterSpell(core.SpellConfig{

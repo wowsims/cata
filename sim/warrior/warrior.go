@@ -55,14 +55,17 @@ const (
 	// SpellMaskConcussionBlow
 	SpellMaskDevastate
 	// SpellMaskShockwave
-	SpellMaskImpendingVictory
 	SpellMaskBloodthirst
 	// SpellMaskRagingBlow
 	SpellMaskMortalStrike
+	SpellMaskHeroicLeap
+
+	// Talents
+	SpellMaskImpendingVictory
 	SpellMaskBladestorm
 	SpellMaskBladestormMH
 	SpellMaskBladestormOH
-	SpellMaskHeroicLeap
+	SpellMaskDragonRoar
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
