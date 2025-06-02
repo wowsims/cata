@@ -36,7 +36,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		Stat.StatExpertiseRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
-		Stat.StatNatureResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -53,7 +52,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			Stat.StatStrength,
 			Stat.StatAttackPower,
 			Stat.StatExpertiseRating,
-			Stat.StatNatureResistance,
 		],
 		[
 			PseudoStat.PseudoStatDodgePercent,
@@ -72,28 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		epWeights: Presets.SURVIVAL_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats();
-		})(),
-		softCapBreakpoints: (() => {
-			const expertiseSoftCapConfig = StatCap.fromStat(Stat.StatExpertiseRating, {
-				breakpoints: [6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 14 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.185, 0],
-			});
-
-			const hitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
-			});
-
-			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [17],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
-			});
-
-			return [expertiseSoftCapConfig, hitSoftCapConfig, spellHitSoftCapConfig];
+			return new Stats().withStat(Stat.StatExpertiseRating, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION).withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5).withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -273,12 +250,7 @@ export class GuardianDruidSimUI extends IndividualSimUI<Spec.SpecGuardianDruid> 
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
-				updateSoftCaps: softCaps => {
-					softCaps[0].postCapEPs[0] = player.getEpWeights().getStat(Stat.StatExpertiseRating) / 2;
-					return softCaps;
-				},
-			});
+			new ReforgeOptimizer(this);
 		});
 	}
 }

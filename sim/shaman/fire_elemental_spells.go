@@ -37,10 +37,12 @@ func (fireElemental *FireElemental) registerFireBlast() {
 }
 
 func (fireElemental *FireElemental) registerFireNova() {
+	levelScalingMultiplier := 91.517600 / 12.102900
 	fireElemental.FireNova = fireElemental.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 117588},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAoE,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 30,
@@ -62,9 +64,8 @@ func (fireElemental *FireElemental) registerFireNova() {
 		BonusCoefficient: 1.00,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			levelScalingMultiplier := 91.517600 / 12.102900
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(49*levelScalingMultiplier, 58*levelScalingMultiplier) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing 49 58
+				baseDamage := sim.Roll(49*levelScalingMultiplier, 58*levelScalingMultiplier) //Estimated from beta testing 49 58
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

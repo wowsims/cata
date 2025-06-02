@@ -36,7 +36,7 @@ func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura)
 			}
 
 			// Vengeance uses pre-outcome, pre-mitigation damage.
-			rawDamage := result.PreOutcomeDamage / result.ResistanceMultiplier
+			rawDamage := result.PreOutcomeDamage / result.ArmorMultiplier
 
 			// The Weakened Blows debuff does not reduce Vengeance gains.
 			// TODO: The game similarly hardcodes a correction for Demoralizing Banner, add that in once we implement the debuff in the sim.
@@ -54,7 +54,7 @@ func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura)
 			rawVengeance := VengeanceScaling * rawDamage
 
 			// Spells that are not mitigated by armor generate 2.5x more Vengeance.
-			if (spell.SpellSchool != SpellSchoolPhysical) || spell.Flags.Matches(SpellFlagIgnoreResists) {
+			if (spell.SpellSchool != SpellSchoolPhysical) || spell.Flags.Matches(SpellFlagIgnoreArmor) {
 				rawVengeance *= 2.5
 			}
 
@@ -84,7 +84,7 @@ func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura)
 			// TODO: Does this also need the 2.5x multiplier for spells and the 0.5x AoE multiplier in it?
 			inferredEquilibriumVengeance := VengeanceScaling * rawDamage * buffAura.Duration.Seconds() / inferredAttackInterval.Seconds()
 
-			if newVengeance < 0.5 * inferredEquilibriumVengeance {
+			if newVengeance < 0.5*inferredEquilibriumVengeance {
 				if sim.Log != nil {
 					result.Target.Log(sim, "Triggered Vengeance ramp-up mechanism because newVengeance = %.1f and inferredEquilibriumVengeance = %.1f .", newVengeance, inferredEquilibriumVengeance)
 				}

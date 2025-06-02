@@ -31,6 +31,8 @@ func NewWindwalkerMonk(character *core.Character, options *proto.Player) *Windwa
 		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 	}
 
+	ww.RegisterSEFPets()
+
 	ww.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	ww.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 

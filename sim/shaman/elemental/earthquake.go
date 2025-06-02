@@ -11,7 +11,7 @@ func (elemental *ElementalShaman) registerEarthquakeSpell() {
 
 	earthquakePulse := elemental.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 77478},
-		Flags:            shaman.SpellFlagShamanSpell | shaman.SpellFlagFocusable | core.SpellFlagIgnoreResists,
+		Flags:            shaman.SpellFlagShamanSpell | core.SpellFlagAoE | shaman.SpellFlagFocusable | core.SpellFlagIgnoreArmor,
 		SpellSchool:      core.SpellSchoolPhysical,
 		ClassSpellMask:   shaman.SpellMaskEarthquake,
 		ProcMask:         core.ProcMaskSpellProc,

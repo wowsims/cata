@@ -45,11 +45,13 @@ type Monk struct {
 	MHAutoSpell *core.Spell
 	OHAutoSpell *core.Spell
 
+	AdditiveEnergyRegenBonus float64
+
 	StanceOfTheSturdyOx    *core.Spell
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
 
-	HealingSphereSummon *core.Spell
+	SummonHealingSphere func(sim *core.Simulation)
 
 	// Brewmaster
 	ElusiveBrewAura   *core.Aura
@@ -120,8 +122,13 @@ func (monk *Monk) SpendChi(sim *core.Simulation, chiToSpend int32, metrics *core
 		monk.onChiSpent(sim, chiToSpend)
 	}
 }
+
 func (monk *Monk) GetChi() int32 {
 	return monk.ComboPoints()
+}
+
+func (monk *Monk) GetMaxChi() int32 {
+	return monk.MaxComboPoints()
 }
 
 func (monk *Monk) RegisterOnChiSpent(onChiSpent OnChiSpent) {
@@ -159,9 +166,6 @@ func (monk *Monk) HasMinorGlyph(glyph proto.MonkMinorGlyph) bool {
 }
 
 func (monk *Monk) Initialize() {
-	monk.AutoAttacks.MHConfig().CritMultiplier = monk.DefaultCritMultiplier()
-	monk.AutoAttacks.OHConfig().CritMultiplier = monk.DefaultCritMultiplier()
-
 	monk.Env.RegisterPostFinalizeEffect(func() {
 		monk.MHAutoSpell = monk.AutoAttacks.MHAuto()
 		monk.OHAutoSpell = monk.AutoAttacks.OHAuto()
@@ -174,9 +178,6 @@ func (monk *Monk) Initialize() {
 }
 
 func (monk *Monk) registerPassives() {
-	monk.registerWayOfTheMonk()
-	monk.registerSwiftReflexes()
-
 	// Windwalker
 	// Required to be registered on monk so it can interact with SEF
 	monk.registerCombatConditioning()
@@ -203,11 +204,19 @@ func (monk *Monk) registerSpells() {
 
 }
 
+func (monk *Monk) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
+	oldBonus := monk.AdditiveEnergyRegenBonus
+	newBonus := oldBonus + increment
+	monk.AdditiveEnergyRegenBonus = newBonus
+	monk.MultiplyEnergyRegenSpeed(sim, (1.0+newBonus)/(1.0+oldBonus))
+}
+
 func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
 	if monk.SefController != nil {
 		monk.SefController.Reset(sim)
 	}
+	monk.MultiplyEnergyRegenSpeed(sim, 1.0+monk.AdditiveEnergyRegenBonus)
 	monk.ElusiveBrewStacks = 0
 }
 
@@ -236,8 +245,6 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	monk.PseudoStats.BaseDodgeChance += 0.03
 	monk.XuenPet = monk.NewXuen()
 
-	monk.registerSEFPets()
-
 	monk.EnableEnergyBar(core.EnergyBarOptions{
 		MaxComboPoints: 4,
 		MaxEnergy:      100.0,
@@ -257,6 +264,14 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		monk.HandType = monk.GetHandType()
 	})
+
+	monk.AutoAttacks.MHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+	monk.AutoAttacks.OHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+
+	// These need to be registered during Monk creation
+	// to count towards Base stats
+	monk.registerWayOfTheMonk()
+	monk.registerSwiftReflexes()
 
 	return monk
 }

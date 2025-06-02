@@ -1,10 +1,7 @@
 package core
 
 import (
-	"math/bits"
-
 	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type ProcMask uint32
@@ -113,20 +110,10 @@ const (
 	// These bits are set by the crit and damage rolls.
 	OutcomeCrit
 	OutcomeCrush
-
-	OutcomePartial1
-	OutcomePartial2
-	OutcomePartial4
-	OutcomePartial8
 )
 
 const (
-	OutcomePartial = OutcomePartial1 | OutcomePartial2 | OutcomePartial4 | OutcomePartial8
-	OutcomeLanded  = OutcomeHit | OutcomeCrit | OutcomeCrush | OutcomeGlance | OutcomeBlock
-)
-
-var (
-	OutcomePartialOffset = bits.TrailingZeros(uint(OutcomePartial1))
+	OutcomeLanded = OutcomeHit | OutcomeCrit | OutcomeCrush | OutcomeGlance | OutcomeBlock
 )
 
 func (ho HitOutcome) String() string {
@@ -147,25 +134,13 @@ func (ho HitOutcome) String() string {
 	} else if ho.Matches(OutcomeGlance) {
 		return "Glance"
 	} else if ho.Matches(OutcomeCrit) {
-		return "Crit" + ho.PartialResistString()
+		return "Crit"
 	} else if ho.Matches(OutcomeHit) {
-		return "Hit" + ho.PartialResistString()
+		return "Hit"
 	} else if ho.Matches(OutcomeCrush) {
 		return "Crush"
 	} else {
 		return "Empty"
-	}
-}
-
-func (ho HitOutcome) PartialResistString() string {
-	if ho.Matches(OutcomePartial1) {
-		return " (30% Resist)"
-	} else if ho.Matches(OutcomePartial2) {
-		return " (20% Resist)"
-	} else if ho.Matches(OutcomePartial4) {
-		return " (10% Resist)"
-	} else {
-		return ""
 	}
 }
 
@@ -179,7 +154,7 @@ func (se SpellFlag) Matches(other SpellFlag) bool {
 
 const (
 	SpellFlagNone                    SpellFlag = 0
-	SpellFlagIgnoreResists           SpellFlag = 1 << iota // skip spell resist/armor
+	SpellFlagIgnoreArmor             SpellFlag = 1 << iota // skip armor
 	SpellFlagIgnoreTargetModifiers                         // skip target damage modifiers
 	SpellFlagIgnoreAttackerModifiers                       // skip attacker damage modifiers
 	SpellFlagApplyArmorReduction                           // Forces damage reduction from armor to apply, even if it otherwise wouldn't.
@@ -206,6 +181,7 @@ const (
 	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
 	SpellFlagSupressDoTApply                               // If present this spell will not apply dots (Used for DTR dot supression)
 	SpellFlagSwapped                                       // Indicates that this spell is not useable because it is from a currently swapped item
+	SpellFlagAoE                                           // Indicates that this spell is an AoE spell. Spells flagged with this will use the AoE Cap multiplier when calculating damage.
 	SpellFlagRanged
 
 	// Used to let agents categorize their spells.
@@ -233,25 +209,6 @@ const (
 // Returns whether there is any overlap between the given masks.
 func (ss SpellSchool) Matches(other SpellSchool) bool {
 	return (ss & other) != 0
-}
-
-func (ss SpellSchool) ResistanceStat() stats.Stat {
-	switch ss {
-	case SpellSchoolArcane:
-		return stats.ArcaneResistance
-	case SpellSchoolFire:
-		return stats.FireResistance
-	case SpellSchoolFrost:
-		return stats.FrostResistance
-	case SpellSchoolHoly:
-		return 0 // Holy resistance doesn't exist.
-	case SpellSchoolNature:
-		return stats.NatureResistance
-	case SpellSchoolShadow:
-		return stats.ShadowResistance
-	default:
-		return 0 // This applies to spell school combinations, which supposedly use the "path of the least resistance", so 0 is a good fit.
-	}
 }
 
 func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {

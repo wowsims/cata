@@ -72,11 +72,12 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 }
 
 func (shaman *Shaman) registerMagmaTotemSpell() {
+	results := make([]*core.SpellResult, shaman.Env.GetNumTargets())
 	shaman.MagmaTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8190},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskMagmaTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 21.1,
@@ -101,17 +102,13 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			BonusCoefficient: 0.06700000167,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				results := make([]*core.SpellResult, shaman.Env.GetNumTargets())
 				baseDamage := shaman.CalcScalingSpellDmg(0.26699998975)
-				aoeMult := sim.Encounter.AOECapMultiplier()
-				dot.Spell.DamageMultiplier *= aoeMult
 				for i, aoeTarget := range sim.Encounter.TargetUnits {
 					results[i] = dot.Spell.CalcPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
 				for i := range sim.Encounter.TargetUnits {
 					dot.Spell.DealPeriodicDamage(sim, results[i])
 				}
-				dot.Spell.DamageMultiplier /= aoeMult
 			},
 		},
 

@@ -157,9 +157,6 @@ var ItemOverrides = []*proto.UIItem{
 	// Cata pre-patch event items
 	{Id: 53492, Phase: 5},
 
-	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
-	{Id: 44093, Stats: stats.Stats{stats.CritRating: 30, stats.ResilienceRating: 13, stats.AttackPower: 34}.ToProtoArray()},
-
 	// Dungeon items and quest rewards from patch 4.3
 	{Id: 72880, Phase: 4}, // Alurmi's Ring
 	{Id: 72852, Phase: 4}, // Archivist's Gloves
@@ -912,4 +909,7 @@ var GemDenyList = map[int32]struct{}{
 	38550: {},
 	63696: {},
 	63697: {},
+	97306: {}, // Unused Revitalizing Primal Diamond
+	97534: {}, // Unused Burning Primal Diamond
+	97937: {}, // Unused Burning Primal Diamond
 }

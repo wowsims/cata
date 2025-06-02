@@ -139,7 +139,7 @@ func (dot *Dot) TimeUntilNextTick(sim *Simulation) time.Duration {
 }
 
 func (dot *Dot) calculateHastedTickCount(baseDuration time.Duration, tickPeriod time.Duration) int32 {
-	return int32(math.Round(float64(baseDuration) / float64(tickPeriod)))
+	return int32(math.RoundToEven(float64(baseDuration) / float64(tickPeriod)))
 }
 
 // Returns the total amount of ticks with the snapshotted haste

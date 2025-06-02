@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 100
+// NextIndex: 101
 message APLValue {
 	UUID uuid = 85;
 
@@ -183,7 +183,7 @@ message APLValue {
         APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80; // TODO: Rename in MoP as it includes all item/effect procs
-        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 83; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 82; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueNumStatBuffCooldowns num_stat_buff_cooldowns = 84;
 
@@ -210,10 +210,11 @@ message APLValue {
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
-        APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 82;
+        APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
         APLValueMonkCurrentChi monk_current_chi = 94;
 		APLValueMonkMaxChi monk_max_chi = 95;
 		APLValueBrewmasterMonkCurrentStaggerPercent brewmaster_monk_current_stagger_percent = 99;
+		APLValueProtectionPaladinDamageTakenLastGlobal protection_paladin_damage_taken_last_global = 100;
     }
 }
 
@@ -698,3 +699,4 @@ message APLValueShamanFireElementalDuration {}
 message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
 message APLValueBrewmasterMonkCurrentStaggerPercent {}
+message APLValueProtectionPaladinDamageTakenLastGlobal {}
