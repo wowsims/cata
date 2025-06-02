@@ -7,7 +7,19 @@ import (
 )
 
 func (warrior *Warrior) ApplyTalents() {
+	// Level 15
 	warrior.registerJuggernaut()
+
+	// Level 30
+	warrior.registerImpendingVictory()
+
+	// Level 45
+
+	// Level 60
+
+	// Level 75
+
+	// Level 90
 }
 
 func (war *Warrior) registerJuggernaut() {
@@ -22,137 +34,50 @@ func (war *Warrior) registerJuggernaut() {
 	})
 }
 
-// func (warrior *Warrior) applyWarAcademy() {
-// 	if warrior.Talents.WarAcademy == 0 {
-// 		return
-// 	}
+func (war *Warrior) registerImpendingVictory() {
+	if !war.Talents.ImpendingVictory {
+		return
+	}
 
-// 	warrior.AddStaticMod(core.SpellModConfig{
-// 		ClassMask: SpellMaskMortalStrike |
-// 			SpellMaskRagingBlow |
-// 			SpellMaskDevastate |
-// 			SpellMaskVictoryRush |
-// 			SpellMaskSlam,
-// 		Kind:       core.SpellMod_DamageDone_Flat,
-// 		FloatValue: (0.05 * float64(warrior.Talents.WarAcademy)),
-// 	})
-// }
+	actionID := core.ActionID{SpellID: 103840}
+	healthMetrics := war.NewHealthMetrics(actionID)
 
-// const battleTranceAffectedSpellsMask = SpellMaskCleave |
-// 	SpellMaskColossusSmash |
-// 	SpellMaskExecute |
-// 	SpellMaskHeroicStrike |
-// 	SpellMaskRend |
-// 	SpellMaskShatteringThrow |
-// 	SpellMaskSlam |
-// 	SpellMaskSunderArmor |
-// 	SpellMaskThunderClap |
-// 	SpellMaskWhirlwind |
-// 	SpellMaskShieldSlam |
-// 	SpellMaskConcussionBlow |
-// 	SpellMaskDevastate |
-// 	SpellMaskShockwave |
-// 	SpellMaskBloodthirst |
-// 	SpellMaskRagingBlow |
-// 	SpellMaskMortalStrike |
-// 	SpellMaskBladestorm
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskImpendingVictory,
 
-// func (warrior *Warrior) applyBattleTrance() {
-// 	if warrior.Talents.BattleTrance == 0 {
-// 		return
-// 	}
+		RageCost: core.RageCostOptions{
+			Cost:   10,
+			Refund: 0.8,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Second * 30,
+			},
+		},
 
-// 	btMod := warrior.AddDynamicMod(core.SpellModConfig{
-// 		ClassMask: battleTranceAffectedSpellsMask,
-// 		Kind:      core.SpellMod_PowerCost_Pct,
-// 		IntValue:  -100,
-// 	})
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
-// 	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := 56 + spell.MeleeAttackPower()*0.56
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-// 	actionID := core.ActionID{SpellID: 12964}
-// 	btAura := warrior.RegisterAura(core.Aura{
-// 		Label:    "Battle Trance",
-// 		ActionID: actionID,
-// 		Duration: time.Second * 15,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			btMod.Activate()
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			// Battle Trance affects the spells that proc it, so make sure we don't eat the proc with the same attack
-// 			// that just proced it
-// 			if (spell.ClassSpellMask&triggerSpellMask) != 0 && aura.TimeActive(sim) == 0 {
-// 				return
-// 			}
-
-// 			if (spell.ClassSpellMask & battleTranceAffectedSpellsMask) != 0 {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			btMod.Deactivate()
-// 		},
-// 	})
-
-// 	procChance := 0.05 * float64(warrior.Talents.BattleTrance)
-
-// 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-// 		Name:           "Battle Trance Trigger",
-// 		ActionID:       actionID,
-// 		Callback:       core.CallbackOnSpellHitDealt,
-// 		Outcome:        core.OutcomeLanded,
-// 		ProcChance:     procChance,
-// 		ICD:            5 * time.Second,
-// 		ClassSpellMask: triggerSpellMask,
-// 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			btAura.Activate(sim)
-// 		},
-// 	})
-// }
-
-// func (warrior *Warrior) applyCruelty() {
-// 	if warrior.Talents.Cruelty == 0 {
-// 		return
-// 	}
-// 	warrior.AddStaticMod(core.SpellModConfig{
-// 		ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam,
-// 		Kind:       core.SpellMod_BonusCrit_Percent,
-// 		FloatValue: 5 * float64(warrior.Talents.Cruelty),
-// 	})
-// }
-
-// func (warrior *Warrior) applyExecutioner() {
-// 	if warrior.Talents.Executioner == 0 {
-// 		return
-// 	}
-
-// 	actionID := core.ActionID{SpellID: 90806}
-// 	executionerBuff := warrior.RegisterAura(core.Aura{
-// 		Label:     "Executioner",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 9,
-// 		MaxStacks: 5,
-// 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-// 			oldSpeed := 0.05 * float64(oldStacks)
-// 			newSpeed := 0.05 * float64(newStacks)
-// 			aura.Unit.MultiplyMeleeSpeed(sim, (1.0+newSpeed)/(1.0+oldSpeed))
-// 		},
-// 	})
-
-// 	procChance := 0.5 * float64(warrior.Talents.Executioner)
-// 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-// 		Name:           "Executioner Trigger",
-// 		ActionID:       actionID,
-// 		Callback:       core.CallbackOnSpellHitDealt,
-// 		Outcome:        core.OutcomeLanded,
-// 		ClassSpellMask: SpellMaskExecute,
-// 		ProcChance:     procChance,
-// 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			executionerBuff.Activate(sim)
-// 			executionerBuff.AddStack(sim)
-// 		},
-// 	})
-// }
+			if result.Landed() {
+				war.GainHealth(sim, war.MaxHealth()*0.2, healthMetrics)
+			} else {
+				spell.IssueRefund(sim)
+			}
+		},
+	})
+}
 
 // func (warrior *Warrior) applyIncite() {
 // 	if warrior.Talents.Incite == 0 {

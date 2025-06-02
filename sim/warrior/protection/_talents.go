@@ -24,7 +24,6 @@ func (war *ProtectionWarrior) ApplyTalents() {
 
 	war.applyBastionOfDefense()
 	war.applyHeavyRepercussions()
-	war.applyImpendingVictory()
 	war.applyImprovedRevenge()
 	war.applySwordAndBoard()
 	war.applyThunderstruck()
@@ -76,70 +75,6 @@ func (war *ProtectionWarrior) applyImprovedRevenge() {
 	})
 
 	// extra hit is implemented inside of revenge
-}
-
-func (war *ProtectionWarrior) applyImpendingVictory() {
-	if war.Talents.ImpendingVictory == 0 {
-		return
-	}
-
-	const vrReady = "Impending Victory"
-	actionID := core.ActionID{SpellID: 82368}
-	enableVRAura := war.RegisterAura(core.Aura{
-		Label:    "Victorious",
-		ActionID: actionID,
-		Tag:      vrReady,
-
-		Duration: 20 * time.Second,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell.ClassSpellMask & warrior.SpellMaskVictoryRush) != 0 {
-				aura.Deactivate(sim)
-			}
-		},
-	})
-
-	procChance := 0.25 * float64(war.Talents.ImpendingVictory)
-	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:           "Impending Victory Trigger",
-		ActionID:       actionID,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
-		ProcChance:     procChance,
-		ClassSpellMask: warrior.SpellMaskDevastate,
-		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-			return spell.Unit.CurrentHealthPercent() <= 0.2
-		},
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			enableVRAura.Activate(sim)
-		},
-	})
-
-	// We register Victory Rush in here as this talent is the only way it can be used rotationally
-	war.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 34428},
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
-		ClassSpellMask: warrior.SpellMaskVictoryRush,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
-
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return war.HasActiveAuraWithTag(vrReady)
-		},
-
-		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultCritMultiplier(),
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.MeleeAttackPower() * 0.56
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-		},
-	})
 }
 
 func (war *ProtectionWarrior) applyThunderstruck() {

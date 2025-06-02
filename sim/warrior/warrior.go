@@ -54,7 +54,7 @@ const (
 	// SpellMaskConcussionBlow
 	SpellMaskDevastate
 	// SpellMaskShockwave
-	// SpellMaskVictoryRush
+	SpellMaskImpendingVictory
 	SpellMaskBloodthirst
 	// SpellMaskRagingBlow
 	SpellMaskMortalStrike
