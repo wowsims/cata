@@ -53,10 +53,10 @@ func (paladin *Paladin) registerHammerOfWrath() {
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 1.61,
+		BonusCoefficient: 1.61000001431,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcAndRollDamageRange(sim, 1.61, 0.1)
+			baseDamage := paladin.CalcAndRollDamageRange(sim, 1.61000001431, 0.10000000149)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

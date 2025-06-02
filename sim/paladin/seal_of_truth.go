@@ -63,7 +63,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 			TickLength:          time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickValue := paladin.CalcScalingSpellDmg(0.094) + 0.094*dot.Spell.SpellPower()
+				tickValue := paladin.CalcScalingSpellDmg(0.09399999678) + 0.09399999678*dot.Spell.SpellPower()
 				tickValue *= float64(dot.GetStacks())
 				dot.SnapshotPhysical(target, tickValue)
 			},

@@ -21,9 +21,11 @@ func TestRetribution(t *testing.T) {
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumables: FullConsumesSpec,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
+		SpecOptions: core.SpecOptionsCombo{Label: "Seal of Truth", SpecOptions: SealOfTruth},
 		OtherSpecOptions: []core.SpecOptionsCombo{
-			{Label: "Aoe", SpecOptions: AoeOptions},
+			{Label: "Seal of Insight", SpecOptions: SealOfInsight},
+			{Label: "Seal of Justice", SpecOptions: SealOfJustice},
+			{Label: "Seal of Righteousness", SpecOptions: SealOfRighteousness},
 		},
 		Rotation: core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
 
@@ -51,7 +53,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Class:          proto.Class_ClassPaladin,
 				Equipment:      core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p1").GearSet,
 				Consumables:    FullConsumesSpec,
-				Spec:           DefaultOptions,
+				Spec:           SealOfTruth,
 				Glyphs:         StandardGlyphs,
 				TalentsString:  StandardTalents,
 				Buffs:          core.FullIndividualBuffs,
@@ -81,21 +83,41 @@ var StandardGlyphs = &proto.Glyphs{
 	Major3: int32(proto.PaladinMajorGlyph_GlyphOfMassExorcism),
 }
 
-var DefaultOptions = &proto.Player_RetributionPaladin{
+var SealOfInsight = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: &proto.RetributionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
-				Seal: proto.PaladinSeal_Truth,
+				Seal: proto.PaladinSeal_Insight,
 			},
 		},
 	},
 }
 
-var AoeOptions = &proto.Player_RetributionPaladin{
+var SealOfJustice = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: &proto.RetributionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal: proto.PaladinSeal_Justice,
+			},
+		},
+	},
+}
+
+var SealOfRighteousness = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: &proto.RetributionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
 				Seal: proto.PaladinSeal_Righteousness,
+			},
+		},
+	},
+}
+
+var SealOfTruth = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: &proto.RetributionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal: proto.PaladinSeal_Truth,
 			},
 		},
 	},

@@ -21,8 +21,12 @@ func TestProtection(t *testing.T) {
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumables: FullConsumesSpec,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
-		Rotation:    core.GetAplRotation("../../../ui/paladin/protection/apls", "default"),
+		SpecOptions: core.SpecOptionsCombo{Label: "Seal of Insight", SpecOptions: SealOfInsight},
+		OtherSpecOptions: []core.SpecOptionsCombo{
+			{Label: "Seal of Righteousness", SpecOptions: SealOfRighteousness},
+			{Label: "Seal of Truth", SpecOptions: SealOfTruth},
+		},
+		Rotation: core.GetAplRotation("../../../ui/paladin/protection/apls", "default"),
 
 		IsTank:          true,
 		InFrontOfTarget: true,
@@ -53,7 +57,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Class:          proto.Class_ClassPaladin,
 				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1").GearSet,
 				Consumables:    FullConsumesSpec,
-				Spec:           DefaultOptions,
+				Spec:           SealOfInsight,
 				Glyphs:         StandardGlyphs,
 				TalentsString:  StandardTalents,
 				Buffs:          core.FullIndividualBuffs,
@@ -84,7 +88,7 @@ var StandardGlyphs = &proto.Glyphs{
 	Minor1: int32(proto.PaladinMinorGlyph_GlyphOfFocusedWrath),
 }
 
-var DefaultOptions = &proto.Player_ProtectionPaladin{
+var SealOfInsight = &proto.Player_ProtectionPaladin{
 	ProtectionPaladin: &proto.ProtectionPaladin{
 		Options: &proto.ProtectionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
@@ -94,9 +98,29 @@ var DefaultOptions = &proto.Player_ProtectionPaladin{
 	},
 }
 
+var SealOfRighteousness = &proto.Player_ProtectionPaladin{
+	ProtectionPaladin: &proto.ProtectionPaladin{
+		Options: &proto.ProtectionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal: proto.PaladinSeal_Righteousness,
+			},
+		},
+	},
+}
+
+var SealOfTruth = &proto.Player_ProtectionPaladin{
+	ProtectionPaladin: &proto.ProtectionPaladin{
+		Options: &proto.ProtectionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal: proto.PaladinSeal_Truth,
+			},
+		},
+	},
+}
+
 var FullConsumesSpec = &proto.ConsumesSpec{
 	FlaskId:  76087,  // Flask of the Earth
-	FoodId:   74656,  // Lavascale Minestrone
+	FoodId:   74656,  // Chun Tian Spring Rolls
 	PotId:    76095,  // Potion of Mogu Power
 	PrepotId: 76095,  // Potion of Mogu Power
 	TinkerId: 126734, // Synapse Springs Mark II

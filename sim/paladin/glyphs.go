@@ -426,13 +426,13 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 0.377,
+		BonusCoefficient: 0.37700000405,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damageMultiplier := spell.DamageMultiplier
 			spell.DamageMultiplier *= float64(paladin.DynamicHolyPowerSpent)
 
-			baseDamage := paladin.CalcAndRollDamageRange(sim, 3.73, 0.108)
+			baseDamage := paladin.CalcAndRollDamageRange(sim, 3.73000001907, 0.1080000028)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			spell.DamageMultiplier = damageMultiplier
@@ -548,8 +548,8 @@ func (paladin *Paladin) registerGlyphOfMassExorcism() {
 
 			currentTarget := sim.Environment.NextTargetUnit(target)
 			for idx := range numTargets {
-				baseDamage := paladin.CalcAndRollDamageRange(sim, 6.095, 0.11) +
-					0.677*spell.MeleeAttackPower()
+				baseDamage := paladin.CalcAndRollDamageRange(sim, 6.09499979019, 0.1099999994) +
+					0.67699998617*spell.MeleeAttackPower()
 
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 

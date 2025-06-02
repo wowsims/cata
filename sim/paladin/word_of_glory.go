@@ -74,14 +74,14 @@ func (paladin *Paladin) registerWordOfGlory() {
 		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 0.49,
+		BonusCoefficient: 0.49000000954,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if target.IsOpponent(&paladin.Unit) {
 				target = &paladin.Unit
 			}
 
-			baseHealing := paladin.CalcAndRollDamageRange(sim, 4.85, 0.108)
+			baseHealing := paladin.CalcAndRollDamageRange(sim, 4.84999990463, 0.1080000028)
 
 			damageMultiplier := spell.DamageMultiplier
 			spell.DamageMultiplier *= float64(paladin.DynamicHolyPowerSpent)
@@ -123,10 +123,10 @@ func (paladin *Paladin) eternalFlameHotConfig() core.DotConfig {
 		NumberOfTicks:       10,
 		AffectedByCastSpeed: true,
 
-		BonusCoefficient: 0.0819,
+		BonusCoefficient: 0.08190000057,
 
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-			dot.SnapshotHeal(target, paladin.CalcScalingSpellDmg(0.623))
+			dot.SnapshotHeal(target, paladin.CalcScalingSpellDmg(0.62300002575))
 			dot.SnapshotAttackerMultiplier *= float64(paladin.DynamicHolyPowerSpent)
 			if target == &paladin.Unit {
 				dot.SnapshotAttackerMultiplier *= 1.0 + paladin.BastionOfGloryMultiplier

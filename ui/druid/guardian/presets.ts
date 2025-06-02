@@ -58,9 +58,9 @@ export const SURVIVAL_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 0.08,
 			[Stat.StatAttackPower]: 0.08,
 			[Stat.StatHitRating]: 0.22,
-			[Stat.StatExpertiseRating]: 0.37,
-			[Stat.StatCritRating]: 0.28,
-			[Stat.StatHasteRating]: 0.06,
+			[Stat.StatExpertiseRating]: 0.185,
+			[Stat.StatCritRating]: 0.42,
+			[Stat.StatHasteRating]: 0.09,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.0,
@@ -84,9 +84,9 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 0.16,
 			[Stat.StatAttackPower]: 0.15,
 			[Stat.StatHitRating]: 0.61,
-			[Stat.StatExpertiseRating]: 1.07,
-			[Stat.StatCritRating]: 0.36,
-			[Stat.StatHasteRating]: 0.1,
+			[Stat.StatExpertiseRating]: 0.535,
+			[Stat.StatCritRating]: 0.54,
+			[Stat.StatHasteRating]: 0.15,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.5,
@@ -127,10 +127,10 @@ export const DefaultOptions = DruidOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58085, // Flask of Steelskin
-	foodId: 62669, // Skewered Eel
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId:  76087,
+	foodId:  105717,
+	potId: 76089,
+	prepotId: 76089,
 	conjuredId: 5512, // Conjured Healthstone
 	tinkerId: 82174, // Synapse Springs
 });

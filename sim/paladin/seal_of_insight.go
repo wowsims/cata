@@ -38,8 +38,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			heal := 0.15*spell.SpellPower() +
-				0.15*spell.MeleeAttackPower()
+			heal := 0.15*spell.SpellPower() + 0.15*spell.MeleeAttackPower()
 			spell.CalcAndDealHealing(sim, target, heal, spell.OutcomeHealing)
 		},
 	})

@@ -1,6 +1,7 @@
 package retribution
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -25,7 +26,7 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 
 	oldGetSpellPowerValue := ret.GetSpellPowerValue
 	newGetSpellPowerValue := func(spell *core.Spell) float64 {
-		return spell.MeleeAttackPower() * 0.5
+		return math.Floor(spell.MeleeAttackPower() * 0.5)
 	}
 
 	core.MakePermanent(ret.RegisterAura(core.Aura{

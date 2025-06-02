@@ -55,10 +55,10 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			bonusDamage := 0.315*spell.SpellPower() + 0.8175*spell.MeleeAttackPower()
+			bonusDamage := 0.31499999762*spell.SpellPower() + 0.81749999523*spell.MeleeAttackPower()
 
 			for idx := range numTargets {
-				baseDamage := prot.CalcAndRollDamageRange(sim, 5.895, 0.2) + bonusDamage
+				baseDamage := prot.CalcAndRollDamageRange(sim, 5.89499998093, 0.20000000298) + bonusDamage
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
