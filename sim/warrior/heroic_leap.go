@@ -14,7 +14,7 @@ func (warrior *Warrior) registerHeroicLeap() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskHeroicLeap | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskHeroicLeap,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{},

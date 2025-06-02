@@ -10,7 +10,7 @@ func (war *Warrior) registerExecuteSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskExecute | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskExecute,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

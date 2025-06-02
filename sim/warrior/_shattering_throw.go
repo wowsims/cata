@@ -16,7 +16,7 @@ func (warrior *Warrior) registerShatteringThrowCD() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskShatteringThrow | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskShatteringThrow,
 		MaxRange:       30,
 		MissileSpeed:   50,
 

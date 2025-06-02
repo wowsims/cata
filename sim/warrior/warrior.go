@@ -14,16 +14,14 @@ const (
 	SpellFlagBleed = core.SpellFlagAgentReserved1
 )
 
-const SpellMaskNone int64 = 0
 const (
-	SpellMaskSpecialAttack int64 = 1 << iota
-
+	SpellMaskNone int64 = 0
 	// Abilities that don't cost rage and aren't attacks
-	SpellMaskBattleShout
+	SpellMaskBattleShout int64 = 1 << iota
 	SpellMaskCommandingShout
 	SpellMaskBerserkerRage
 	SpellMaskRallyingCry
-	// SpellMaskRecklessness
+	SpellMaskRecklessness
 	// SpellMaskShieldWall
 	// SpellMaskLastStand
 	SpellMaskCharge
@@ -157,7 +155,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerHeroicThrow()
 	// warrior.registerInnerRage()
 	// warrior.registerOverpowerSpell()
-	// warrior.registerRecklessnessCD()
+	warrior.registerRecklessness()
 	// warrior.registerRendSpell()
 	// warrior.registerRevengeSpell()
 	// warrior.registerShatteringThrowCD()

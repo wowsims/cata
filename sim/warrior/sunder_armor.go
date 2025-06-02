@@ -12,7 +12,7 @@ func (war *Warrior) registerSunderArmor() *core.Spell {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskSunderArmor | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskSunderArmor,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

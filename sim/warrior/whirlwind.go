@@ -46,7 +46,7 @@ func (war *Warrior) registerWhirlwind() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskWhirlwind | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskWhirlwind,
 
 		RageCost: core.RageCostOptions{
 			Cost: core.TernaryInt32(war.Spec == proto.Spec_SpecFuryWarrior, 30, 20),

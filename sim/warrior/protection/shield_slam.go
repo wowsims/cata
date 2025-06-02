@@ -13,7 +13,7 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO: Is this right?
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskShieldSlam | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskShieldSlam,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

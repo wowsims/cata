@@ -36,7 +36,7 @@ func (war *Warrior) registerColossusSmash() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
-		ClassSpellMask: SpellMaskColossusSmash | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskColossusSmash,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

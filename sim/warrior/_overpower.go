@@ -32,7 +32,7 @@ func (warrior *Warrior) registerOverpowerSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskOverpower | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskOverpower,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

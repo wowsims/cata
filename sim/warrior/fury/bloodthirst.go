@@ -13,7 +13,7 @@ func (war *FuryWarrior) registerBloodthirst() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskBloodthirst | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskBloodthirst,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

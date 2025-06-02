@@ -20,7 +20,7 @@ func (war *ArmsWarrior) registerBladestorm() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskBladestorm | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskBladestorm,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,

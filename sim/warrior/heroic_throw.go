@@ -13,7 +13,7 @@ func (war *Warrior) registerHeroicThrow() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskHeroicThrow | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskHeroicThrow,
 		MaxRange:       30,
 
 		Cast: core.CastConfig{

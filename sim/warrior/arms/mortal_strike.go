@@ -16,7 +16,7 @@ func (war *ArmsWarrior) registerMortalStrike() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
-		ClassSpellMask: warrior.SpellMaskMortalStrike | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskMortalStrike,
 		MaxRange:       core.MaxMeleeRange,
 
 		Cast: core.CastConfig{
