@@ -8,6 +8,10 @@ import (
 
 func (mage *Mage) registerBlizzardSpell() {
 
+	// https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=42208
+	var blizzardCoefficient = 0.367
+	var blizzardScaling = 0.323
+	var blizzardVariance = 0.0
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 42208},
 		SpellSchool:    core.SpellSchoolFrost,
@@ -16,13 +20,13 @@ func (mage *Mage) registerBlizzardSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),
-		BonusCoefficient: 0.162,
+		BonusCoefficient: blizzardCoefficient,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.542 * mage.ClassSpellScaling
-			damage *= sim.Encounter.AOECapMultiplier()
+			baseDamage := mage.CalcAndRollDamageRange(sim, blizzardScaling, blizzardVariance)
+			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
@@ -34,7 +38,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellBlizzard,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 74,
+			BaseCostPercent: 5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

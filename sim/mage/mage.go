@@ -19,9 +19,6 @@ type Mage struct {
 
 	mirrorImage *MirrorImage
 
-	t12MirrorImage *T12MirrorImage
-	t13ProcAura    *core.StatBuffAura
-
 	arcaneMissilesTickSpell *core.Spell
 	Combustion              *core.Spell
 	Ignite                  *core.Spell
@@ -93,6 +90,7 @@ func (mage *Mage) GetFrostMasteryBonus() float64 {
 
 func (mage *Mage) Initialize() {
 	mage.applyArmorSpells()
+	mage.applyGlyphs()
 	// mage.registerArcaneBlastSpell()
 	// mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
@@ -175,10 +173,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	mage.mirrorImage = mage.NewMirrorImage()
 	// mage.flameOrb = mage.NewFlameOrb()
 	// mage.frostfireOrb = mage.NewFrostfireOrb()
-
-	if mage.CouldHaveSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
-		mage.t12MirrorImage = mage.NewT12MirrorImage()
-	}
 
 	return mage
 }
