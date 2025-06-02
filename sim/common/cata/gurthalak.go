@@ -37,7 +37,7 @@ func init() {
 			}
 
 			character := agent.GetCharacter()
-			meleeWeaponSlots := core.MeleeWeaponSlots()
+			meleeWeaponSlots := core.AllWeaponSlots()
 			label := fmt.Sprintf("Gurthalak Trigger %s", labelSuffix)
 			summonSpell := character.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: summonSpellID},

@@ -1392,7 +1392,7 @@ func init() {
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
 	Name:  "Agony and Torment",
-	Slots: core.MeleeWeaponSlots(),
+	Slots: core.AllWeaponSlots(),
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.GetCharacter()

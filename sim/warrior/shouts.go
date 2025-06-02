@@ -26,7 +26,7 @@ func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask i
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    warrior.shoutsCD,
+				Timer:    warrior.sharedShoutsCD,
 				Duration: duration,
 			},
 		},

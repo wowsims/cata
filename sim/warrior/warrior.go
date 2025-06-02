@@ -38,10 +38,10 @@ const (
 	// SpellMaskSweepingStrikes
 
 	// Special attacks
-	// SpellMaskCleave
+	SpellMaskCleave
 	SpellMaskColossusSmash
 	// SpellMaskExecute
-	// SpellMaskHeroicStrike
+	SpellMaskHeroicStrike
 	// SpellMaskHeroicThrow
 	// SpellMaskOverpower
 	// SpellMaskRend
@@ -103,10 +103,8 @@ type Warrior struct {
 	// Whirlwind         *core.Spell
 	DeepWounds *core.Spell
 
-	shoutsCD   *core.Timer
-	hsCleaveCD *core.Timer
-	// HeroicStrike             *core.Spell
-	// Cleave                   *core.Spell
+	sharedShoutsCD   *core.Timer
+	sharedHSCleaveCD *core.Timer
 
 	BattleStanceAura    *core.Aura
 	DefensiveStanceAura *core.Aura
@@ -141,8 +139,8 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (warrior *Warrior) Initialize() {
 	warrior.EnrageMasteryMultiplier = 1.0
-	warrior.hsCleaveCD = warrior.NewTimer()
-	warrior.shoutsCD = warrior.NewTimer()
+	warrior.sharedHSCleaveCD = warrior.NewTimer()
+	warrior.sharedShoutsCD = warrior.NewTimer()
 
 	warrior.registerStances()
 	warrior.registerShouts()
@@ -154,8 +152,8 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
 	// warrior.registerExecuteSpell()
-	// warrior.registerHeroicStrikeSpell()
-	// warrior.registerCleaveSpell()
+	warrior.registerHeroicStrikeSpell()
+	warrior.registerCleaveSpell()
 	warrior.registerHeroicLeap()
 	// warrior.registerHeroicThrow()
 	// warrior.registerInnerRage()

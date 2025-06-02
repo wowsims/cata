@@ -1166,7 +1166,7 @@ func init() {
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			label := fmt.Sprintf("Drain Life Trigger %s", labelSuffix)
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			meleeWeaponSlots := core.MeleeWeaponSlots()
+			meleeWeaponSlots := core.AllWeaponSlots()
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
