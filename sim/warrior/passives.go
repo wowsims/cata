@@ -94,13 +94,38 @@ func (warrior *Warrior) registerDeepWounds() {
 	})
 
 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-		Name:           "Deep Wounds Talent",
+		Name:           "Deep Wounds - Trigger",
 		ActionID:       actionID,
 		ClassSpellMask: SpellMaskMortalStrike | SpellMaskBloodthirst | SpellMaskDevastate,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			warrior.DeepWounds.Cast(sim, result.Target)
+		},
+	})
+}
+
+func (war *Warrior) registerBloodAndThunder() {
+	if war.Spec == proto.Spec_SpecFuryWarrior {
+		return
+	}
+
+	war.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskThunderClap,
+		FloatValue: 0.5,
+	})
+
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Blood and Thunder",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskThunderClap,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			for _, target := range sim.Encounter.TargetUnits {
+				dot := war.DeepWounds.Dot(target)
+				dot.Apply(sim)
+			}
 		},
 	})
 }

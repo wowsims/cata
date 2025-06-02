@@ -96,7 +96,6 @@ type Warrior struct {
 	// ShieldBlock       *core.Spell
 	// Slam              *core.Spell
 	// SunderArmor       *core.Spell
-	// ThunderClap       *core.Spell
 	DeepWounds *core.Spell
 
 	sharedShoutsCD   *core.Timer
@@ -163,7 +162,7 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerShieldWallCD()
 	// warrior.registerSlamSpell()
 	warrior.registerSunderArmor()
-	// warrior.registerThunderClapSpell()
+	warrior.registerThunderClap()
 	warrior.registerWhirlwind()
 	warrior.registerCharge()
 }
@@ -171,6 +170,7 @@ func (warrior *Warrior) Initialize() {
 func (war *Warrior) registerPassives() {
 	war.registerEnrage()
 	war.registerDeepWounds()
+	war.registerBloodAndThunder()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {

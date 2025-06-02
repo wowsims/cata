@@ -215,36 +215,6 @@ func (war *Warrior) registerJuggernaut() {
 // 	warrior.ApplyEquipScaling(stats.Armor, []float64{1.0, 1.03, 1.06, 1.1}[warrior.Talents.Toughness])
 // }
 
-// func (warrior *Warrior) applyBloodAndThunder() {
-// 	if warrior.Talents.BloodAndThunder == 0 {
-// 		return
-// 	}
-// 	procChance := 0.5 * float64(warrior.Talents.BloodAndThunder)
-// 	var lastAppliedTime int64 = -1
-// 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-// 		Name:           "Blood and Thunder Trigger",
-// 		Callback:       core.CallbackOnSpellHitDealt,
-// 		Outcome:        core.OutcomeLanded,
-// 		ClassSpellMask: SpellMaskThunderClap,
-// 		ProcChance:     procChance,
-// 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-// 			// If the rend we're checking was applied this iteration, skip to avoid an explosion of B&T procs
-// 			// (8 targets, Rend T1, TClap hits T1 + B&T applies Rend to 7 other targets, TClap hits T2 + applies Rend to 7 other targets, etc...)
-// 			return result.Target.HasActiveAuraWithTag("Rend") && lastAppliedTime != int64(sim.CurrentTime)
-// 		},
-// 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			// B&T resnapshots all of the rends it applies and will overwrite "better" rends on any target the TC hits
-// 			for _, target := range sim.Encounter.TargetUnits {
-// 				rend := warrior.Rend.Dot(target)
-// 				lastAppliedTime = int64(sim.CurrentTime)
-
-// 				rend.Apply(sim)
-// 				rend.TickOnce(sim)
-// 			}
-// 		},
-// 	})
-// }
-
 // func (warrior *Warrior) applyShieldSpecialization() {
 // 	if warrior.Talents.ShieldSpecialization == 0 {
 // 		return
