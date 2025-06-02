@@ -31,6 +31,20 @@ func (war *Warrior) applyMajorGlyphs() {
 		})
 	}
 
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSweepingStrikes) {
+		actionID := core.ActionID{SpellID: 58384}
+		rageMetrics := war.NewRageMetrics(actionID)
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:           "Glyph of Sweeping Strikes",
+			ActionID:       actionID,
+			ClassSpellMask: SpellMaskSweepingStrikesHit,
+			Callback:       core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				war.AddRage(sim, 1, rageMetrics)
+			},
+		})
+	}
+
 	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfResonatingPower) {
 		war.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskThunderClap,
