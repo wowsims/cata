@@ -44,7 +44,7 @@ const (
 	SpellMaskOverpower
 	// SpellMaskRend
 	// SpellMaskRevenge
-	// SpellMaskShatteringThrow
+	SpellMaskShatteringThrow
 	// SpellMaskSlam
 	SpellMaskSunderArmor
 	SpellMaskThunderClap
@@ -157,7 +157,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerRecklessness()
 	// warrior.registerRendSpell()
 	// warrior.registerRevengeSpell()
-	// warrior.registerShatteringThrowCD()
+	warrior.registerShatteringThrow()
 	// warrior.registerShieldBlockCD()
 	warrior.registerShieldWall()
 	// warrior.registerSlamSpell()

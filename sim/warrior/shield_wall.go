@@ -7,21 +7,21 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) registerShieldWall() {
-	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfShieldWall)
+func (war *Warrior) registerShieldWall() {
+	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfShieldWall)
 	damageReductionMulti := 1 - core.TernaryFloat64(hasGlyph, 0.6, 0.4)
 	cooldownDuration := core.TernaryDuration(hasGlyph, time.Minute*5, time.Minute*3)
 
 	actionID := core.ActionID{SpellID: 871}
-	aura := warrior.RegisterAura(core.Aura{
+	aura := war.RegisterAura(core.Aura{
 		Label:    "Shield Wall",
 		ActionID: actionID,
 		Duration: time.Second * 12,
 	}).AttachMultiplicativePseudoStatBuff(
-		&warrior.PseudoStats.DamageTakenMultiplier, damageReductionMulti,
+		&war.PseudoStats.DamageTakenMultiplier, damageReductionMulti,
 	)
 
-	spell := warrior.RegisterSpell(core.SpellConfig{
+	spell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: SpellMaskShieldWall,
 
@@ -31,7 +31,7 @@ func (warrior *Warrior) registerShieldWall() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
+				Timer:    war.NewTimer(),
 				Duration: cooldownDuration,
 			},
 		},
@@ -42,7 +42,7 @@ func (warrior *Warrior) registerShieldWall() {
 		RelatedSelfBuff: aura,
 	})
 
-	warrior.AddMajorCooldown(core.MajorCooldown{
+	war.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeSurvival,
 	})
