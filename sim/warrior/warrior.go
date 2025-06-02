@@ -99,7 +99,6 @@ type Warrior struct {
 	// Slam              *core.Spell
 	// SunderArmor       *core.Spell
 	// ThunderClap       *core.Spell
-	// Whirlwind         *core.Spell
 	DeepWounds *core.Spell
 
 	sharedShoutsCD   *core.Timer
@@ -167,7 +166,7 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerSlamSpell()
 	warrior.registerSunderArmor()
 	// warrior.registerThunderClapSpell()
-	// warrior.registerWhirlwindSpell()
+	warrior.registerWhirlwind()
 	warrior.registerCharge()
 }
 
