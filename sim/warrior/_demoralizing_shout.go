@@ -15,7 +15,7 @@ func (warrior *Warrior) registerDemoralizingShoutSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskDemoShout,
+		ClassSpellMask: SpellMaskDemoralizingShout,
 
 		RageCost: core.RageCostOptions{
 			Cost: 10,

@@ -29,7 +29,7 @@ const (
 	SpellMaskDemoralizingBanner
 
 	// Abilities that cost rage but aren't attacks
-	// SpellMaskDemoShout
+	SpellMaskDemoralizingShout
 	// SpellMaskInnerRage
 	// SpellMaskShieldBlock
 	// SpellMaskDeathWish
@@ -89,7 +89,6 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	ColossusSmash *core.Spell
-	// DemoralizingShout *core.Spell
 	// Overpower         *core.Spell
 	// Rend              *core.Spell
 	// Revenge           *core.Spell
@@ -187,6 +186,7 @@ func NewWarrior(character *core.Character, options *proto.WarriorOptions, talent
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents)
 
 	warrior.EnableRageBar(core.RageBarOptions{
+		MaxRage:            core.TernaryFloat64(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfUnendingRage), 120, 100),
 		StartingRage:       options.StartingRage,
 		BaseRageMultiplier: 1,
 	})

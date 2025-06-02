@@ -1,6 +1,83 @@
 package warrior
 
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+)
+
 func (war *Warrior) applyMajorGlyphs() {
+
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfRecklessness) {
+		war.AddStaticMod(core.SpellModConfig{
+			ClassMask:  SpellMaskRecklessness,
+			Kind:       core.SpellMod_BonusCrit_Percent,
+			FloatValue: -12,
+		})
+
+		war.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskRecklessness,
+			Kind:      core.SpellMod_BuffDuration_Flat,
+			TimeValue: 6 * time.Second,
+		})
+	}
+
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfDeathFromAbove) {
+		war.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskHeroicLeap,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: -15 * time.Second,
+		})
+	}
+
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfResonatingPower) {
+		war.AddStaticMod(core.SpellModConfig{
+			ClassMask:  SpellMaskThunderClap,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.5,
+		})
+
+		war.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskThunderClap,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: 3 * time.Second,
+		})
+	}
+
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfIncite) {
+		actionID := core.ActionID{SpellID: 86627}
+
+		inciteAura := war.RegisterAura(core.Aura{
+			Label:     "Incite",
+			ActionID:  actionID,
+			Duration:  10 * time.Second,
+			MaxStacks: 3,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask: SpellMaskHeroicStrike | SpellMaskCleave,
+			Kind:      core.SpellMod_PowerCost_Pct,
+			IntValue:  -100,
+		})
+
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:           "Incite - Consume",
+			ClassSpellMask: SpellMaskHeroicStrike | SpellMaskCleave,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				inciteAura.RemoveStack(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:           "Incite - Trigger",
+			ClassSpellMask: SpellMaskDemoralizingShout,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				inciteAura.Activate(sim)
+			},
+		})
+	}
+
 }
 
 func (war *Warrior) applyMinorGlyphs() {

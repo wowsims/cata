@@ -6,10 +6,10 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) registerRecklessness() {
+func (war *Warrior) registerRecklessness() {
 	actionID := core.ActionID{SpellID: 1719}
 
-	reckAura := warrior.RegisterAura(core.Aura{
+	reckAura := war.RegisterAura(core.Aura{
 		Label:    "Recklessness",
 		ActionID: actionID,
 		Duration: time.Second * 12,
@@ -19,7 +19,7 @@ func (warrior *Warrior) registerRecklessness() {
 		FloatValue: 30,
 	})
 
-	spell := warrior.RegisterSpell(core.SpellConfig{
+	spell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskRecklessness,
@@ -29,12 +29,12 @@ func (warrior *Warrior) registerRecklessness() {
 				NonEmpty: true,
 			},
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
+				Timer:    war.NewTimer(),
 				Duration: time.Minute * 3,
 			},
 
 			SharedCD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
+				Timer:    war.NewTimer(),
 				Duration: 12 * time.Second,
 			},
 		},
@@ -44,7 +44,7 @@ func (warrior *Warrior) registerRecklessness() {
 		},
 	})
 
-	warrior.AddMajorCooldown(core.MajorCooldown{
+	war.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})

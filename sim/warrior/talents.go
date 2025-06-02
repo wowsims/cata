@@ -79,60 +79,6 @@ func (war *Warrior) registerImpendingVictory() {
 	})
 }
 
-// func (warrior *Warrior) applyIncite() {
-// 	if warrior.Talents.Incite == 0 {
-// 		return
-// 	}
-// 	warrior.AddStaticMod(core.SpellModConfig{
-// 		ClassMask:  SpellMaskHeroicStrike,
-// 		Kind:       core.SpellMod_BonusCrit_Percent,
-// 		FloatValue: 5 * float64(warrior.Talents.Incite),
-// 	})
-
-// 	inciteMod := warrior.AddDynamicMod(core.SpellModConfig{
-// 		ClassMask:  SpellMaskHeroicStrike,
-// 		Kind:       core.SpellMod_BonusCrit_Percent,
-// 		FloatValue: 200.0, // This is actually how Incite is implemented
-// 	})
-
-// 	actionID := core.ActionID{SpellID: 86627}
-// 	var lastTriggerTime int64 = 0
-// 	inciteAura := warrior.RegisterAura(core.Aura{
-// 		Label:    "Incite",
-// 		ActionID: actionID,
-// 		Duration: 10 * time.Second,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			inciteMod.Activate()
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if (spell.ClassSpellMask&SpellMaskHeroicStrike) != 0 && result.DidCrit() && lastTriggerTime != int64(sim.CurrentTime) {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			inciteMod.Deactivate()
-// 		},
-// 	})
-
-// 	procChance := []float64{0.0, 0.33, 0.66, 1.0}[warrior.Talents.Incite]
-// 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-// 		Name:           "Incite Trigger",
-// 		ActionID:       actionID,
-// 		Callback:       core.CallbackOnSpellHitDealt,
-// 		Outcome:        core.OutcomeCrit,
-// 		ClassSpellMask: SpellMaskHeroicStrike,
-// 		ProcChance:     procChance,
-// 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-// 			return !inciteAura.IsActive()
-// 		},
-// 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			lastTriggerTime = int64(sim.CurrentTime)
-// 			inciteAura.Activate(sim)
-// 		},
-// 	})
-
-// }
-
 // func (warrior *Warrior) applyToughness() {
 // 	if warrior.Talents.Toughness == 0 {
 // 		return
