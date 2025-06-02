@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (warrior *Warrior) ApplyTalents() {
@@ -16,6 +17,7 @@ func (warrior *Warrior) ApplyTalents() {
 	// Level 45
 
 	// Level 60
+	warrior.registerBladestorm()
 
 	// Level 75
 
@@ -76,6 +78,104 @@ func (war *Warrior) registerImpendingVictory() {
 				spell.IssueRefund(sim)
 			}
 		},
+	})
+}
+
+func (war *Warrior) registerBladestorm() {
+	if !war.Talents.Bladestorm {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 46924}
+
+	damageMultiplier := 1.2
+	if war.Spec == proto.Spec_SpecArmsWarrior {
+		damageMultiplier = 1.8
+	} else if war.Spec == proto.Spec_SpecProtectionWarrior {
+		damageMultiplier = 1.6
+	}
+
+	mhSpell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID.WithTag(1), // Real Spell ID: 50622
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskBladestormMH,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: damageMultiplier,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, enemyTarget := range sim.Encounter.ActiveTargets {
+				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			}
+		},
+	})
+
+	ohSpell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID.WithTag(2), // Real Spell ID: 95738,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskBladestormOH,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: damageMultiplier,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			for _, enemyTarget := range sim.Encounter.ActiveTargets {
+				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			}
+		},
+	})
+
+	spell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID.WithTag(0),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskBladestorm,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskEmpty,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Second * 60,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1.0,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		Dot: core.DotConfig{
+			IsAOE: true,
+			Aura: core.Aura{
+				Label: "Bladestorm",
+			},
+			NumberOfTicks: 6,
+			TickLength:    time.Second * 1,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				mhSpell.Cast(sim, target)
+				if war.OffHand() != nil && war.OffHand().WeaponType != proto.WeaponType_WeaponTypeUnknown {
+					ohSpell.Cast(sim, target)
+				}
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dot := spell.AOEDot()
+			dot.Apply(sim)
+			dot.TickOnce(sim)
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 

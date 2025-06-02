@@ -388,6 +388,7 @@ export class ActionId {
 					name += ' (Fan of Knives)';
 				}
 				break;
+			case 'Bladestorm':
 			case 'Fan of Knives':
 			case 'Killing Spree':
 				if (tag == 1) {

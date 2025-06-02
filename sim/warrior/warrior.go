@@ -59,7 +59,9 @@ const (
 	SpellMaskBloodthirst
 	// SpellMaskRagingBlow
 	SpellMaskMortalStrike
-	// SpellMaskBladestorm
+	SpellMaskBladestorm
+	SpellMaskBladestormMH
+	SpellMaskBladestormOH
 	SpellMaskHeroicLeap
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout

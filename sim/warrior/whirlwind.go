@@ -74,7 +74,7 @@ func (war *Warrior) registerWhirlwind() {
 				spell.DealDamage(sim, result)
 			}
 
-			if whirlwindOH != nil && war.OffHand() != nil {
+			if whirlwindOH != nil && war.OffHand() != nil && war.OffHand().WeaponType != proto.WeaponType_WeaponTypeUnknown {
 				whirlwindOH.Cast(sim, target)
 			}
 		},
