@@ -114,7 +114,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Flames of the Faithful" + paladin.Label,
 				IncludeAuraDelay:   true,
-				SetBonusAura:       setBonusAura,
+				ParentAura:         setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Flames of the Faithful" + paladin.Label,

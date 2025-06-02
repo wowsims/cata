@@ -3,6 +3,7 @@ package warrior
 import (
 	"time"
 
+	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -19,10 +20,12 @@ func (warrior *Warrior) ApplyTalents() {
 	// Level 60
 	warrior.registerBladestorm()
 	warrior.registerShockwave()
+	warrior.registerDragonRoar()
 
 	// Level 75
 
 	// Level 90
+	warrior.registerBloodbath()
 }
 
 func (war *Warrior) registerJuggernaut() {
@@ -82,6 +85,54 @@ func (war *Warrior) registerImpendingVictory() {
 	})
 }
 
+func (war *Warrior) registerDragonRoar() {
+	if !war.Talents.DragonRoar {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 118000}
+
+	damageMultipliers := []float64{1, 0.75, 0.65, 0.55, 0.50}
+
+	spell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskDragonRoar,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Minute * 1,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+		BonusCritPercent: 100,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damageMultiplier := damageMultipliers[min(war.Env.GetNumTargets()-1, 4)]
+			baseDamage := 126 + spell.MeleeAttackPower()*1.39999997616
+			spell.DamageMultiplier *= damageMultiplier
+			for _, enemyTarget := range sim.Encounter.ActiveTargets {
+				spell.CalcAndDealDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			}
+			spell.DamageMultiplier /= damageMultiplier
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
+}
+
 func (war *Warrior) registerBladestorm() {
 	if !war.Talents.Bladestorm {
 		return
@@ -91,9 +142,9 @@ func (war *Warrior) registerBladestorm() {
 
 	damageMultiplier := 1.2
 	if war.Spec == proto.Spec_SpecArmsWarrior {
-		damageMultiplier = 1.8
+		damageMultiplier += 0.6
 	} else if war.Spec == proto.Spec_SpecProtectionWarrior {
-		damageMultiplier = 1.6
+		damageMultiplier *= 1.33
 	}
 
 	mhSpell := war.RegisterSpell(core.SpellConfig{
@@ -145,9 +196,8 @@ func (war *Warrior) registerBladestorm() {
 			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: time.Second * 60,
+				Duration: time.Minute * 1,
 			},
-			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1.0,
@@ -221,6 +271,72 @@ func (war *Warrior) registerShockwave() {
 				spell.CD.Reduce(time.Second * 20)
 			}
 		},
+	})
+}
+
+func (war *Warrior) registerBloodbath() {
+	if !war.Talents.Bloodbath {
+		return
+	}
+
+	spellActionID := core.ActionID{SpellID: 12292}
+	dotActionID := core.ActionID{SpellID: 113344}
+
+	aura := war.RegisterAura(core.Aura{
+		Label:    "Bloodbath",
+		ActionID: spellActionID,
+		Duration: 12 * time.Second,
+	})
+
+	cata.RegisterIgniteEffect(&war.Unit, cata.IgniteConfig{
+		ActionID:       dotActionID,
+		ClassSpellMask: SpellMaskBloodbathDot,
+		DotAuraLabel:   "Bloodbath Dot",
+		DotAuraTag:     "BloodbathDot",
+		TickLength:     1 * time.Second,
+		NumberOfTicks:  6,
+		ParentAura:     aura,
+
+		ProcTrigger: core.ProcTrigger{
+			Name:     "Bloodbath Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskMeleeSpecial,
+			Outcome:  core.OutcomeLanded,
+		},
+
+		DamageCalculator: func(result *core.SpellResult) float64 {
+			return result.Damage * 0.3
+		},
+	})
+
+	spell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       spellActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskBloodbath,
+		Flags:          core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskEmpty,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Minute * 1,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			aura.Activate(sim)
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 

@@ -179,7 +179,7 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Combust",
 				IncludeAuraDelay:   true,
-				SetBonusAura:       setBonusAura,
+				ParentAura:         setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Combust",
