@@ -40,15 +40,15 @@ const (
 	// Special attacks
 	SpellMaskCleave
 	SpellMaskColossusSmash
-	// SpellMaskExecute
+	SpellMaskExecute
 	SpellMaskHeroicStrike
 	// SpellMaskHeroicThrow
-	// SpellMaskOverpower
+	SpellMaskOverpower
 	// SpellMaskRend
 	// SpellMaskRevenge
 	// SpellMaskShatteringThrow
 	// SpellMaskSlam
-	// SpellMaskSunderArmor
+	SpellMaskSunderArmor
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
 	SpellMaskWhirlwindOh
@@ -90,9 +90,8 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
-	// ColossusSmash     *core.Spell
+	ColossusSmash *core.Spell
 	// DemoralizingShout *core.Spell
-	// Execute           *core.Spell
 	// Overpower         *core.Spell
 	// Rend              *core.Spell
 	// Revenge           *core.Spell
@@ -122,6 +121,7 @@ type Warrior struct {
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
 	ColossusSmashAuras     core.AuraArray
+	WeakenedArmorAuras     core.AuraArray
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {
@@ -149,9 +149,9 @@ func (warrior *Warrior) Initialize() {
 
 	warrior.registerBerserkerRage()
 	warrior.registerRallyingCry()
-	// warrior.registerColossusSmash()
+	warrior.registerColossusSmash()
 	// warrior.registerDemoralizingShoutSpell()
-	// warrior.registerExecuteSpell()
+	warrior.registerExecuteSpell()
 	warrior.registerHeroicStrikeSpell()
 	warrior.registerCleaveSpell()
 	warrior.registerHeroicLeap()
@@ -165,7 +165,7 @@ func (warrior *Warrior) Initialize() {
 	// warrior.registerShieldBlockCD()
 	// warrior.registerShieldWallCD()
 	// warrior.registerSlamSpell()
-	// warrior.registerSunderArmor()
+	warrior.registerSunderArmor()
 	// warrior.registerThunderClapSpell()
 	// warrior.registerWhirlwindSpell()
 	warrior.registerCharge()

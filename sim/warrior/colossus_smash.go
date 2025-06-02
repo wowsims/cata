@@ -7,24 +7,27 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) registerColossusSmash() {
+func (war *Warrior) registerColossusSmash() {
 	actionID := core.ActionID{SpellID: 86346}
+	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfColossusSmash)
 
-	warrior.ColossusSmashAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	war.ColossusSmashAuras = war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Colossus Smash",
 			ActionID: actionID,
 			Duration: time.Second * 6,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.AttackTables[aura.Unit.UnitIndex].IgnoreArmor = true
+				war.AttackTables[aura.Unit.UnitIndex].IgnoreArmor = true
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.AttackTables[aura.Unit.UnitIndex].IgnoreArmor = false
+				war.AttackTables[aura.Unit.UnitIndex].IgnoreArmor = false
 			},
 		})
 	})
 
-	warrior.ColossusSmash = warrior.RegisterSpell(core.SpellConfig{
+	physVulnerabilityAuras := war.NewEnemyAuraArray(core.PhysVulnerabilityAura)
+
+	war.ColossusSmash = war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
@@ -42,29 +45,35 @@ func (warrior *Warrior) registerColossusSmash() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
+				Timer:    war.NewTimer(),
 				Duration: time.Second * 20,
 			},
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1.5,
-		CritMultiplier:   warrior.DefaultCritMultiplier(),
+		DamageMultiplier: 1.75,
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 120.0 + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.77999997139
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			} else {
-				aura := warrior.ColossusSmashAuras.Get(target)
-				aura.Activate(sim)
-				if warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfColossusSmash) {
-					warrior.TryApplySunderArmorEffect(sim, target)
+				csAura := war.ColossusSmashAuras.Get(target)
+				csAura.Activate(sim)
+
+				physVulnAura := physVulnerabilityAuras.Get(target)
+				physVulnAura.Activate(sim)
+
+				if hasGlyph {
+					war.TryApplySunderArmorEffect(sim, target)
 				}
 			}
 		},
+
+		RelatedAuraArrays: war.ColossusSmashAuras.ToMap(),
 	})
 }

@@ -29,8 +29,7 @@ type ArmsWarrior struct {
 
 	Options *proto.ArmsWarrior_Options
 
-	slaughter    *core.Aura
-	wreckingCrew *core.Aura
+	SuddenExecute *core.Aura
 }
 
 func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarrior {
@@ -68,6 +67,7 @@ func (war *ArmsWarrior) registerPassives() {
 
 	war.registerMastery()
 	war.registerSeasonedSoldier()
+	war.registerSuddenDeath()
 }
 
 func (war *ArmsWarrior) ApplyTalents() {

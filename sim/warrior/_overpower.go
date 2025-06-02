@@ -56,6 +56,10 @@ func (warrior *Warrior) registerOverpowerSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if war.SuddenExecute.IsActive() {
+				war.SuddenExecute.Deactivate(sim)
+			}
+
 			auras := warrior.GetAurasWithTag(EnableOverpowerTag)
 			for _, aura := range auras {
 				if aura.IsActive() {
