@@ -1,7 +1,6 @@
 package warrior
 
 func (war *Warrior) applyMajorGlyphs() {
-
 }
 
 func (war *Warrior) applyMinorGlyphs() {
