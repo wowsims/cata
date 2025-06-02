@@ -18,6 +18,7 @@ func (warrior *Warrior) ApplyTalents() {
 
 	// Level 60
 	warrior.registerBladestorm()
+	warrior.registerShockwave()
 
 	// Level 75
 
@@ -176,6 +177,50 @@ func (war *Warrior) registerBladestorm() {
 	war.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (war *Warrior) registerShockwave() {
+	if !war.Talents.Shockwave {
+		return
+	}
+
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 46968},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask: SpellMaskShockwave,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: 40 * time.Second,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			numLandedHits := 0
+			baseDamage := 0.75 * spell.MeleeAttackPower()
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+				if result.Landed() {
+					numLandedHits++
+				}
+			}
+			if numLandedHits >= 3 {
+				spell.CD.Reduce(time.Second * 20)
+			}
+		},
 	})
 }
 
