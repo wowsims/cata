@@ -12,7 +12,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfChainLightning]: {
 			name: "Glyph of Chain Lightning",
-			description: "",
+			description: "Your Chain Lightning spell now strikes 2 additional targets, but deals 10% less damage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_chainlightning.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfSpiritWalk]: {
@@ -52,7 +52,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfHealingStreamTotem]: {
 			name: "Glyph of Healing Stream Totem",
-			description: "When your Healing Stream Totem heals an ally, it also reduces their Fire, Frost, and Nature damage taken by 10% for 0ms.",
+			description: "When your Healing Stream Totem heals an ally, it also reduces their Fire, Frost, and Nature damage taken by 10% for 6s.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_spear_04.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfHealingWave]: {

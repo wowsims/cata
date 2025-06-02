@@ -413,7 +413,7 @@ func (ai *BalerocAI) registerBlades() {
 		ActionID:         decimatingStrikeActionID,
 		SpellSchool:      core.SpellSchoolShadow,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreResists,
+		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreArmor,
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, tankTarget *core.Unit, spell *core.Spell) {

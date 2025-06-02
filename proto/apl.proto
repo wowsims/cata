@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 101
+// NextIndex: 102
 message APLValue {
 	UUID uuid = 87;
 
@@ -215,6 +215,7 @@ message APLValue {
         APLValueMonkCurrentChi monk_current_chi = 95;
 		APLValueMonkMaxChi monk_max_chi = 96;
 		APLValueBrewmasterMonkCurrentStaggerPercent brewmaster_monk_current_stagger_percent = 100;
+		APLValueProtectionPaladinDamageTakenLastGlobal protection_paladin_damage_taken_last_global = 101;
     }
 }
 
@@ -700,3 +701,4 @@ message APLValueShamanFireElementalDuration {}
 message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
 message APLValueBrewmasterMonkCurrentStaggerPercent {}
+message APLValueProtectionPaladinDamageTakenLastGlobal {}

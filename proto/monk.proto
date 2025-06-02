@@ -3,7 +3,6 @@ package proto;
 
 option go_package = "./proto";
 
-import "common.proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // MonkTalents message.

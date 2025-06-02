@@ -769,49 +769,6 @@ func (druid *Druid) applyStampede() {
 // 	})
 // }
 
-func (druid *Druid) applyLotp() {
-	if !druid.Talents.LeaderOfThePack {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: 17007}
-	manaMetrics := druid.NewManaMetrics(actionID)
-	healthMetrics := druid.NewHealthMetrics(actionID)
-	manaRestore := 0.08
-	healthRestore := 0.04 // Tooltip says 5%, but only healing for 4% in-game
-
-	icd := core.Cooldown{
-		Timer:    druid.NewTimer(),
-		Duration: time.Second * 6,
-	}
-
-	druid.RegisterAura(core.Aura{
-		Icd:      &icd,
-		Label:    "Improved Leader of the Pack",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.Outcome.Matches(core.OutcomeCrit) {
-				return
-			}
-			if !icd.IsReady(sim) {
-				return
-			}
-			if !druid.InForm(Cat | Bear) {
-				return
-			}
-			icd.Use(sim)
-			druid.AddMana(sim, druid.MaxMana()*manaRestore, manaMetrics)
-			druid.GainHealth(sim, druid.MaxHealth()*healthRestore, healthMetrics)
-		},
-	})
-}
-
 // func (druid *Druid) applyPredatoryInstincts() {
 // 	if druid.Talents.PredatoryInstincts == 0 {
 // 		return

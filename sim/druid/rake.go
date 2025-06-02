@@ -18,7 +18,7 @@ func (druid *Druid) registerRakeSpell() {
 		ActionID:    core.ActionID{SpellID: 1822},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,
@@ -45,7 +45,7 @@ func (druid *Druid) registerRakeSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotPhysical(target, flatBaseDamage + bonusCoefficientFromAP * dot.Spell.MeleeAttackPower())
+				dot.SnapshotPhysical(target, flatBaseDamage+bonusCoefficientFromAP*dot.Spell.MeleeAttackPower())
 
 				// Store snapshot power parameters for later use.
 				druid.UpdateBleedPower(druid.Rake, sim, target, true, true)
@@ -56,7 +56,7 @@ func (druid *Druid) registerRakeSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + bonusCoefficientFromAP*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -68,7 +68,7 @@ func (druid *Druid) registerRakeSpell() {
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + bonusCoefficientFromAP*spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -78,7 +78,7 @@ func (druid *Druid) registerRakeSpell() {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := flatBaseDamage + bonusCoefficientFromAP * spell.MeleeAttackPower()
+			tickBase := flatBaseDamage + bonusCoefficientFromAP*spell.MeleeAttackPower()
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]

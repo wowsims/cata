@@ -32,7 +32,7 @@ func (monk *Monk) registerHealingSphere() {
 		})
 	}
 
-	addHealingSphere := func(sim *core.Simulation) {
+	monk.SummonHealingSphere = func(sim *core.Simulation) {
 		for _, healingSphere := range healingSpheres {
 			if !healingSphere.IsActive() {
 				stacksAura.Activate(sim)
@@ -43,7 +43,7 @@ func (monk *Monk) registerHealingSphere() {
 		}
 	}
 
-	removeHealingSphere := func(sim *core.Simulation) {
+	useHealingSphere := func(sim *core.Simulation) {
 		for _, healingSphere := range healingSpheres {
 			if healingSphere.IsActive() {
 				stacksAura.RemoveStack(sim)
@@ -76,12 +76,12 @@ func (monk *Monk) registerHealingSphere() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			heal := monk.CalcScalingSpellDmg(9.122) + spell.MeleeAttackPower()*0.75
 			spell.CalcAndDealHealing(sim, spell.Unit, heal, spell.OutcomeHealing)
-			removeHealingSphere(sim)
+			useHealingSphere(sim)
 		},
 	})
 
 	// Healing Sphere - Use
-	monk.HealingSphereSummon = monk.RegisterSpell(core.SpellConfig{
+	monk.RegisterSpell(core.SpellConfig{
 		ActionID:       healingSphereActionID,
 		ClassSpellMask: MonkSpellHealingSphere,
 		SpellSchool:    core.SpellSchoolNature,
@@ -114,7 +114,7 @@ func (monk *Monk) registerHealingSphere() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			addHealingSphere(sim)
+			monk.SummonHealingSphere(sim)
 		},
 	})
 }

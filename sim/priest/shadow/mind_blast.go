@@ -44,7 +44,7 @@ func (shadow *ShadowPriest) registerMindBlastSpell() {
 			baseDamage := shadow.CalcAndRollDamageRange(sim, mbScale, mbVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				shadow.ShadowOrbs.Gain(1, spell.ActionID, sim)
+				shadow.ShadowOrbs.Gain(sim, 1, spell.ActionID)
 			}
 
 			spell.DealDamage(sim, result)

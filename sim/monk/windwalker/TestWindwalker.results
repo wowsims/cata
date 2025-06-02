@@ -17,12 +17,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
+  final_stats: 755
   final_stats: 16832
   final_stats: 0
   final_stats: 382916.2
@@ -1540,22 +1535,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-MirrorofBrokenImages-62466"
- value: {
-  dps: 70989.78697
-  tps: 65476.97849
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-MirrorofBrokenImages-62471"
- value: {
-  dps: 70989.78697
-  tps: 65476.97849
-  hps: 4597.81049
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-MithrilStopwatch-232013"
  value: {
   dps: 71147.31322
@@ -2598,9 +2577,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 73060.72072
-  tps: 67183.02349
-  hps: 4901.49797
+  dps: 72258.35591
+  tps: 66484.02367
+  hps: 4801.9657
  }
 }
 dps_results: {

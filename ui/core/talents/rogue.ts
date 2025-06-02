@@ -184,7 +184,7 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMinorGlyph.GlyphOfDisguise]: {
 			name: "Glyph of Disguise",
-			description: "When you Pick Pocket a humanoid enemy, you also copy their appearance for 0ms. Your disguise will unravel upon entering combat.",
+			description: "When you Pick Pocket a humanoid enemy, you also copy their appearance for 5min. Your disguise will unravel upon entering combat.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_disguise.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfHeadhunting]: {

@@ -29,8 +29,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	selfBuffs := druid.SelfBuffs{}
 
 	bear := &GuardianDruid{
-		Druid:     druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
-		Options:   tankOptions.Options,
+		Druid:   druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
+		Options: tankOptions.Options,
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
@@ -54,10 +54,14 @@ type GuardianDruid struct {
 	Options *proto.GuardianDruid_Options
 
 	// Aura references
-	EnrageAura *core.Aura
+	EnrageAura          *core.Aura
+	SavageDefenseAura   *core.Aura
+	ToothAndClawBuff    *core.Aura
+	ToothAndClawDebuffs core.AuraArray
 
 	// Spell references
-	Enrage *druid.DruidSpell
+	Enrage        *druid.DruidSpell
+	SavageDefense *druid.DruidSpell
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {
@@ -80,10 +84,10 @@ func (bear *GuardianDruid) applyMastery() {
 	const baseMasteryMod = 1.16
 	const masteryModPerPoint = 0.02
 
-	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod + masteryModPerPoint * bear.GetMasteryPoints())
+	armorMultiplierDep := bear.NewDynamicMultiplyStat(stats.Armor, baseMasteryMod+masteryModPerPoint*bear.GetMasteryPoints())
 
 	bear.AddOnMasteryStatChanged(func(sim *core.Simulation, _ float64, newMasteryRating float64) {
-		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod + masteryModPerPoint * core.MasteryRatingToMasteryPoints(newMasteryRating))
+		bear.UpdateDynamicStatDep(sim, armorMultiplierDep, baseMasteryMod+masteryModPerPoint*core.MasteryRatingToMasteryPoints(newMasteryRating))
 	})
 
 	bear.BearFormAura.AttachStatDependency(armorMultiplierDep)
@@ -137,7 +141,11 @@ func (bear *GuardianDruid) applyLeatherSpecialization() {
 func (bear *GuardianDruid) Initialize() {
 	bear.Druid.Initialize()
 	bear.RegisterFeralTankSpells()
+	bear.registerEnrageSpell()
+	bear.registerSavageDefenseSpell()
+	bear.registerToothAndClawPassive()
 	bear.ApplyPrimalFury()
+	bear.ApplyLeaderOfThePack()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {
