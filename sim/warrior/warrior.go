@@ -33,7 +33,8 @@ const (
 	// SpellMaskInnerRage
 	// SpellMaskShieldBlock
 	// SpellMaskDeathWish
-	// SpellMaskSweepingStrikes
+	SpellMaskSweepingStrikes
+	SpellMaskSweepingStrikesHit
 
 	// Special attacks
 	SpellMaskCleave

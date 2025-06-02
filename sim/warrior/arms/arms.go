@@ -60,6 +60,9 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.registerPassives()
+
+	war.registerMortalStrike()
+	war.registerSweepingStrikes()
 }
 
 func (war *ArmsWarrior) registerPassives() {
@@ -68,10 +71,6 @@ func (war *ArmsWarrior) registerPassives() {
 	war.registerMastery()
 	war.registerSeasonedSoldier()
 	war.registerSuddenDeath()
-}
-
-func (war *ArmsWarrior) ApplyTalents() {
-	war.registerMortalStrike()
 }
 
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {
