@@ -3,6 +3,7 @@ package warrior
 import (
 	"time"
 
+	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -23,6 +24,7 @@ func (warrior *Warrior) ApplyTalents() {
 	// Level 75
 
 	// Level 90
+	warrior.registerBloodbath()
 }
 
 func (war *Warrior) registerJuggernaut() {
@@ -128,7 +130,6 @@ func (war *Warrior) registerDragonRoar() {
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})
-
 }
 
 func (war *Warrior) registerBladestorm() {
@@ -194,9 +195,8 @@ func (war *Warrior) registerBladestorm() {
 			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: time.Second * 60,
+				Duration: time.Minute * 1,
 			},
-			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1.0,
@@ -220,6 +220,72 @@ func (war *Warrior) registerBladestorm() {
 			dot := spell.AOEDot()
 			dot.Apply(sim)
 			dot.TickOnce(sim)
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (war *Warrior) registerBloodbath() {
+	if !war.Talents.Bloodbath {
+		return
+	}
+
+	spellActionID := core.ActionID{SpellID: 12292}
+	dotActionID := core.ActionID{SpellID: 113344}
+
+	aura := war.RegisterAura(core.Aura{
+		Label:    "Bloodbath",
+		ActionID: spellActionID,
+		Duration: 12 * time.Second,
+	})
+
+	cata.RegisterIgniteEffect(&war.Unit, cata.IgniteConfig{
+		ActionID:       dotActionID,
+		ClassSpellMask: SpellMaskBloodbathDot,
+		DotAuraLabel:   "Bloodbath Dot",
+		DotAuraTag:     "BloodbathDot",
+		TickLength:     1 * time.Second,
+		NumberOfTicks:  6,
+		ParentAura:     aura,
+
+		ProcTrigger: core.ProcTrigger{
+			Name:     "Bloodbath Trigger",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskMeleeSpecial,
+			Outcome:  core.OutcomeLanded,
+		},
+
+		DamageCalculator: func(result *core.SpellResult) float64 {
+			return result.Damage * 0.3
+		},
+	})
+
+	spell := war.RegisterSpell(core.SpellConfig{
+		ActionID:       spellActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskBloodbath,
+		Flags:          core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskEmpty,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Minute * 1,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			aura.Activate(sim)
 		},
 	})
 

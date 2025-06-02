@@ -66,6 +66,8 @@ const (
 	SpellMaskBladestormMH
 	SpellMaskBladestormOH
 	SpellMaskDragonRoar
+	SpellMaskBloodbath
+	SpellMaskBloodbathDot
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
