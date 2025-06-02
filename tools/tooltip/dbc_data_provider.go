@@ -52,7 +52,7 @@ func (d DBCTooltipDataProvider) GetSpellProcCooldown(spellId int64) time.Duratio
 		return 1
 	}
 
-	return time.Duration(spell.ProcCategoryRecovery)
+	return time.Duration(spell.ProcCategoryRecovery) * time.Millisecond
 }
 
 func (d DBCTooltipDataProvider) GetSpellMaxTargets(spellId int64) int64 {
