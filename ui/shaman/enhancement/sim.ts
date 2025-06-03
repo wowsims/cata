@@ -93,10 +93,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			const physHitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			const spellHitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
-			return hitCap.add(expCap);
+			return physHitCap.add(spellHitCap.add(expCap));
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
