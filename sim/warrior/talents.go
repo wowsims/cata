@@ -254,13 +254,13 @@ func (war *Warrior) registerShockwave() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.75,
 		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numLandedHits := 0
-			baseDamage := 0.75 * spell.MeleeAttackPower()
+			baseDamage := spell.MeleeAttackPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -286,18 +286,17 @@ func (war *Warrior) registerAvatar() {
 		ActionID: actionId,
 		Duration: 24 * time.Second,
 	}).AttachMultiplicativePseudoStatBuff(&war.Unit.PseudoStats.DamageDealtMultiplier, 1.2)
-	core.RegisterPercentDamageModifierEffect(avatarAura, 1.2)
 
 	avatar := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskAvatar,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 0,
+				NonEmpty: true,
 			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),

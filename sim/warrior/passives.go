@@ -22,15 +22,12 @@ func (war *Warrior) registerEnrage() {
 			war.EnrageMultiplier += 0.1
 			bonusSnapshot = war.EnrageMultiplier + (0.1 * war.EnrageMasteryMultiplier)
 			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
-			core.RegisterPercentDamageModifierEffect(aura, bonusSnapshot)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			war.EnrageMultiplier -= 0.1
 			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
 		},
 	})
-
-	core.RegisterPercentDamageModifierEffect(war.EnrageAura, 1+0.1)
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:           "Enrage Trigger",

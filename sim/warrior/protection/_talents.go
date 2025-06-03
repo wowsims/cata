@@ -20,7 +20,6 @@ func (war *ProtectionWarrior) ApplyTalents() {
 	war.RegisterConcussionBlow()
 	war.RegisterDevastate()
 	war.RegisterLastStand()
-	war.RegisterShockwave()
 
 	war.applyBastionOfDefense()
 	war.applyHeavyRepercussions()
@@ -75,53 +74,6 @@ func (war *ProtectionWarrior) applyImprovedRevenge() {
 	})
 
 	// extra hit is implemented inside of revenge
-}
-
-func (war *ProtectionWarrior) applyThunderstruck() {
-	if war.Talents.Thunderstruck == 0 {
-		return
-	}
-
-	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskRend | warrior.SpellMaskCleave | warrior.SpellMaskThunderClap,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.03 * float64(war.Talents.Thunderstruck),
-	})
-
-	shockwaveBuff := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShockwave,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
-	})
-
-	actionID := core.ActionID{SpellID: 87096}
-	shockwaveBonus := 0.05 * float64(war.Talents.Thunderstruck)
-	shockwaveAura := war.RegisterAura(core.Aura{
-		Label:     "Thunderstruck",
-		ActionID:  actionID,
-		Duration:  20 * time.Second,
-		MaxStacks: 3,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if newStacks != 0 {
-				bonus := shockwaveBonus * float64(newStacks)
-				shockwaveBuff.UpdateFloatValue(bonus)
-				shockwaveBuff.Activate()
-			} else {
-				shockwaveBuff.Deactivate()
-			}
-		},
-	})
-
-	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:           "Thunderstruck Trigger",
-		ActionID:       actionID,
-		Callback:       core.CallbackOnCastComplete,
-		ClassSpellMask: warrior.SpellMaskThunderClap,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			shockwaveAura.Activate(sim)
-			shockwaveAura.AddStack(sim)
-		},
-	})
 }
 
 func (war *ProtectionWarrior) applyHeavyRepercussions() {
