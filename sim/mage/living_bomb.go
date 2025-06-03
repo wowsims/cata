@@ -30,8 +30,10 @@ func (mage *Mage) registerLivingBombSpell() {
 	})
 
 	var livingBombExplosionCoefficient = 0.08 // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
-	var livingBombExplosionScaling = 0.1      // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
-	var livingBombExplosionVariance = 0.0     // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Variance"
+	// var livingBombExplosionScaling = 0.1      // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
+	var livingBombExplosionVariance = 0.0 // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Variance"
+	var livingBombDotCoefficient = 0.8    // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
+	var livingBombDotScaling = 1.03       // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44461},
@@ -46,7 +48,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := mage.CalcAndRollDamageRange(sim, livingBombExplosionScaling, livingBombExplosionVariance) * sim.Encounter.AOECapMultiplier()
+			baseDamage := mage.CalcAndRollDamageRange(sim, livingBombDotScaling, livingBombExplosionVariance) * sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -54,9 +56,6 @@ func (mage *Mage) registerLivingBombSpell() {
 	})
 
 	bombExplode := true
-
-	var livingBombDotCoefficient = 0.8 // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
-	var livingBombDotScaling = 1.03    // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
 
 	mage.LivingBomb = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44457},

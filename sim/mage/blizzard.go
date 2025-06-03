@@ -17,6 +17,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellBlizzard,
+		// Flags: core.SpellFlagAoE,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),
