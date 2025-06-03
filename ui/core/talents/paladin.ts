@@ -52,7 +52,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfBlindingLight]: {
 			name: "Glyph of Blinding Light",
-			description: "Your Blinding Light now knocks down targets for 0ms instead of Blinding them.",
+			description: "Your Blinding Light now knocks down targets for 3s instead of Blinding them.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_paladin_blindinglight.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfFinalWrath]: {
