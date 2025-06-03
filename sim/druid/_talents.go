@@ -690,30 +690,6 @@ func (druid *Druid) applyStampede() {
 	})
 }
 
-// Modifies the Bleed aura to apply the bonus.
-func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
-	if druid.FerociousBite == nil || druid.Talents.RendAndTear == 0 || druid.AssumeBleedActive {
-		return aura
-	}
-
-	bonusCritPercent := []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear]
-
-	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritPercent += bonusCritPercent
-		}
-		druid.BleedsActive++
-	})
-	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		druid.BleedsActive--
-		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritPercent -= bonusCritPercent
-		}
-	})
-
-	return aura
-}
-
 // func (druid *Druid) applyEclipse() {
 // 	druid.SolarICD = core.Cooldown{Timer: druid.NewTimer(), Duration: 0}
 // 	druid.LunarICD = core.Cooldown{Timer: druid.NewTimer(), Duration: 0}

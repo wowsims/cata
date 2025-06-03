@@ -6,19 +6,20 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+const RendAndTearBonusCritPercent = 35.0
+
 func (druid *Druid) registerFerociousBiteSpell() {
 	// Raw parameters from spell database
-	coefficient := 0.38299998641
-	variance := 0.74000000954
-	resourceCoefficient := 0.58399999142
+	const coefficient = 0.45699998736
+	const variance = 0.74000000954
+	const resourceCoefficient = 0.69599997997
+	const scalingPerComboPoint = 0.196
 
 	// Scaled parameters for spell code
 	avgBaseDamage := coefficient * druid.ClassSpellScaling
 	damageSpread := variance * avgBaseDamage
 	minBaseDamage := avgBaseDamage - damageSpread/2
 	dmgPerComboPoint := resourceCoefficient * druid.ClassSpellScaling
-	scalingPerComboPoint := 0.125
-	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
 
 	druid.FerociousBite = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 22568},
@@ -40,8 +41,8 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			return druid.ComboPoints() > 0
 		},
 
-		BonusCritPercent: core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear], 0),
-		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
+		BonusCritPercent: core.TernaryFloat64(druid.AssumeBleedActive, RendAndTearBonusCritPercent, 0),
+		DamageMultiplier: 1,
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         core.MaxMeleeRange,
@@ -61,15 +62,14 @@ func (druid *Druid) registerFerociousBiteSpell() {
 
 			if result.Landed() {
 				druid.SpendEnergy(sim, excessEnergy, spell.EnergyMetrics())
-				druid.ApplyFeral4pT12(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 
 				// Blood in the Water
 				ripDot := druid.Rip.Dot(target)
 
-				if sim.IsExecutePhase25() && ripDot.IsActive() && sim.Proc(ripRefreshChance, "Blood in the Water") {
+				if sim.IsExecutePhase25() && ripDot.IsActive() {
 					ripDot.BaseTickCount = RipBaseNumTicks
-					ripDot.Apply(sim)
+					ripDot.ApplyRollover(sim)
 				}
 			} else {
 				spell.IssueRefund(sim)
@@ -94,3 +94,26 @@ func (druid *Druid) registerFerociousBiteSpell() {
 func (druid *Druid) CurrentFerociousBiteCost() float64 {
 	return druid.FerociousBite.Cost.GetCurrentCost()
 }
+
+// Modifies the Bleed aura to apply the bonus.
+func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
+	if druid.FerociousBite == nil || druid.AssumeBleedActive {
+		return aura
+	}
+
+	aura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
+		if druid.BleedsActive == 0 {
+			druid.FerociousBite.BonusCritPercent += RendAndTearBonusCritPercent
+		}
+		druid.BleedsActive++
+	})
+	aura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+		druid.BleedsActive--
+		if druid.BleedsActive == 0 {
+			druid.FerociousBite.BonusCritPercent -= RendAndTearBonusCritPercent
+		}
+	})
+
+	return aura
+}
+

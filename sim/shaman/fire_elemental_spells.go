@@ -42,6 +42,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 		ActionID:    core.ActionID{SpellID: 424340},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAoE,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 207,
@@ -65,7 +66,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(453, 537) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
+				baseDamage := sim.Roll(453, 537)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
@@ -80,6 +81,7 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAoE,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
@@ -97,7 +99,6 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 				// TODO is this the right affect should it be Capped?
 				// TODO these are approximation, from base SP
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					//baseDamage *= sim.Encounter.AOECapMultiplier()
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, 102, dot.Spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
 				}
 			},

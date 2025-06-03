@@ -70,7 +70,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 		ActionID:       core.ActionID{SpellID: 50589},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellImmolationAura,
 
 		ManaCost: core.ManaCostOptions{
@@ -102,9 +102,8 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 			TickLength:          1 * time.Second,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDmg := demonology.CalcScalingSpellDmg(0.58899998665) * sim.Encounter.AOECapMultiplier()
-
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					baseDmg := demonology.CalcScalingSpellDmg(0.58899998665)
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)
 				}
 			},

@@ -4,20 +4,20 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const RipBaseNumTicks = int32(8)
+const RipBaseNumTicks int32 = 8
+const RipMaxNumTicks int32 = RipBaseNumTicks + 3
 
 func (druid *Druid) registerRipSpell() {
-	baseDamage := 56.0
-	comboPointCoeff := 161.0
-	attackPowerCoeff := 0.0207
-	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
+	// Raw parameters from DB
+	const coefficient = 0.10300000012
+	const resourceCoefficient = 0.29199999571
+	const attackPowerCoeff = 0.0484
 
-	// Blood in the Water refreshes use the CP value from the last "raw" Rip cast, so we need to store that here.
-	var comboPointSnapshot int32
+	// Scaled parameters for spell code
+	baseDamage := coefficient * druid.ClassSpellScaling // 112.7582
+	comboPointCoeff := resourceCoefficient * druid.ClassSpellScaling // 319.664
 
 	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1079},
@@ -39,8 +39,10 @@ func (druid *Druid) registerRipSpell() {
 			return druid.ComboPoints() > 0
 		},
 
+		// https://www.wowhead.com/mop-classic/spell=137009/hotfix-passive
+		DamageMultiplier: 1.2,
+
 		BonusCritPercent: 0,
-		DamageMultiplier: glyphMulti * druid.RazorClawsMultiplier(druid.GetStat(stats.MasteryRating)),
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         core.MaxMeleeRange,
@@ -54,15 +56,12 @@ func (druid *Druid) registerRipSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				if isRollover {
-					panic("Rip cannot roll-over snapshots!")
+					return
 				}
 
-				cp := float64(comboPointSnapshot)
+				cp := float64(druid.ComboPoints())
 				ap := dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage = baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
+				dot.SnapshotPhysical(target, baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap)
 
 				// Store snapshot power parameters for later use.
 				druid.UpdateBleedPower(druid.Rip, sim, target, true, true)
@@ -77,9 +76,7 @@ func (druid *Druid) registerRipSpell() {
 			if result.Landed() {
 				dot := spell.Dot(target)
 				dot.BaseTickCount = RipBaseNumTicks
-				comboPointSnapshot = druid.ComboPoints()
 				dot.Apply(sim)
-				druid.ApplyFeral4pT12(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
@@ -100,15 +97,7 @@ func (druid *Druid) registerRipSpell() {
 		},
 	})
 
-	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		druid.Rip.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
-	})
-
 	druid.Rip.ShortName = "Rip"
-}
-
-func (druid *Druid) MaxRipTicks() int32 {
-	return RipBaseNumTicks + core.TernaryInt32(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting), 3, 0)
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
@@ -118,8 +107,8 @@ func (druid *Druid) CurrentRipCost() float64 {
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	ripDot := druid.Rip.Dot(target)
 
-	if ripDot.IsActive() && (ripDot.BaseTickCount < RipBaseNumTicks+3) {
+	if ripDot.IsActive() && (ripDot.BaseTickCount < RipMaxNumTicks) {
 		ripDot.BaseTickCount += 1
-		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
+		ripDot.UpdateExpires(ripDot.ExpiresAt() + ripDot.BaseTickLength)
 	}
 }

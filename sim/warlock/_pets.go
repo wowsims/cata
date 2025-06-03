@@ -243,7 +243,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 		ActionID:       core.ActionID{SpellID: 89751},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellFelGuardFelstorm,
 
 		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
@@ -293,7 +293,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		ActionID:       core.ActionID{SpellID: 30213},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
 
 		ManaCost: core.ManaCostOptions{BaseCostPercent: 6},
@@ -315,7 +315,6 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			baseDmg += pet.Owner.CalcScalingSpellDmg(0.1439999938) + 0.264*spell.MeleeAttackPower()
-			baseDmg /= float64(numberOfTargets)
 
 			for _, target := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)

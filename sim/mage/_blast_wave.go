@@ -15,7 +15,7 @@ func (mage *Mage) registerBlastWaveSpell() {
 		ActionID:       core.ActionID{SpellID: 11113},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellBlastWave,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 7,
@@ -40,7 +40,6 @@ func (mage *Mage) registerBlastWaveSpell() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				targetCount++
 				baseDamage := sim.Roll(1047, 1233)
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

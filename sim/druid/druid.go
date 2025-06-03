@@ -50,9 +50,7 @@ type Druid struct {
 	MangleBear            *DruidSpell
 	MangleCat             *DruidSpell
 	Maul                  *DruidSpell
-	MaulQueueSpell        *DruidSpell
 	Moonfire              *DruidSpell
-	Pulverize             *DruidSpell
 	Rebirth               *DruidSpell
 	Rake                  *DruidSpell
 	Ravage                *DruidSpell
@@ -79,8 +77,8 @@ type Druid struct {
 	BarkskinAura             *core.Aura
 	BlazeOfGloryAura         *core.Aura
 	BearFormAura             *core.Aura
-	BerserkAura              *core.Aura
-	BerserkProcAura          *core.Aura
+	BerserkBearAura          *core.Aura
+	BerserkCatAura           *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
@@ -98,11 +96,7 @@ type Druid struct {
 	StampedeBearAura         *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 
-	BleedCategories core.ExclusiveCategoryArray
-
-	PrimalMadnessRageMetrics       *core.ResourceMetrics
-	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
-	SavageRoarDurationTable        [6]time.Duration
+	SavageRoarDurationTable [6]time.Duration
 
 	ProcOoc func(sim *core.Simulation)
 
@@ -119,8 +113,6 @@ type Druid struct {
 	GuardianLeatherSpecDep     *stats.StatDependency
 
 	// Item sets
-	T11Feral2pBonus *core.Aura
-	T11Feral4pBonus *core.Aura
 	T13Feral4pBonus *core.Aura
 }
 
@@ -298,15 +290,14 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	// druid.registerBerserkCD()
 	// druid.registerCatCharge()
 	druid.registerCatFormSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFerociousBiteSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerMangleBearSpell()
-	// druid.registerMangleCatSpell()
-	// druid.registerMaulSpell()
+	druid.registerFerociousBiteSpell()
+	druid.registerLacerateSpell()
+	druid.registerMangleBearSpell()
+	druid.registerMangleCatSpell()
+	druid.registerMaulSpell()
 	// druid.registerRakeSpell()
 	// druid.registerRavageSpell()
-	// druid.registerRipSpell()
+	druid.registerRipSpell()
 	// druid.registerSavageRoarSpell()
 	// druid.registerShredSpell()
 	//druid.registerSwipeBearSpell()
@@ -321,11 +312,10 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBerserkCD()
 	//druid.registerDemoralizingRoarSpell()
 	// druid.registerEnrageSpell()
-	//druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerPulverizeSpell()
+	druid.registerFrenziedRegenerationSpell()
+	druid.registerMangleBearSpell()
+	druid.registerMaulSpell()
+	druid.registerLacerateSpell()
 	// druid.registerRakeSpell()
 	// druid.registerRipSpell()
 	//druid.registerSavageDefensePassive()
@@ -361,7 +351,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[char.Class])
 
 	// Druids get roughly 1% Dodge per 951.16 Agi at level 90
-	druid.AddStatDependency(stats.Agility, stats.DodgeRating, 0.00105135 * core.DodgeRatingPerDodgePercent)
+	druid.AddStatDependency(stats.Agility, stats.DodgeRating, 0.00105135*core.DodgeRatingPerDodgePercent)
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodgeChance += 0.03
@@ -402,11 +392,6 @@ func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
 
 func (druid *Druid) UpdateBleedPower(bleedSpell *DruidSpell, sim *core.Simulation, target *core.Unit, updateCurrent bool, updateNew bool) {
 	snapshotPower := bleedSpell.ExpectedTickDamage(sim, target)
-
-	// Assume that Mangle will be up soon if not currently active.
-	if !druid.BleedCategories.Get(target).AnyActive() {
-		snapshotPower *= 1.3
-	}
 
 	if updateCurrent {
 		bleedSpell.CurrentSnapshotPower = snapshotPower
