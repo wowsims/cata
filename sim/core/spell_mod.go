@@ -112,6 +112,12 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		}
 	})
 
+	if mod.OnReset != nil {
+		unit.RegisterResetEffect(func(s *Simulation) {
+			mod.OnReset(mod)
+		})
+	}
+
 	if config.ShouldApplyToPets {
 		for _, pet := range unit.PetAgents {
 			pet.GetPet().OnSpellRegistered(func(spell *Spell) {
@@ -122,13 +128,12 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 					}
 				}
 			})
+			if mod.OnReset != nil {
+				pet.GetPet().RegisterResetEffect(func(s *Simulation) {
+					mod.OnReset(mod)
+				})
+			}
 		}
-	}
-
-	if mod.OnReset != nil {
-		unit.RegisterResetEffect(func(s *Simulation) {
-			mod.OnReset(mod)
-		})
 	}
 
 	return mod

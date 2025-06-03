@@ -90,6 +90,11 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 	return enh.Shaman
 }
 
+func (enh *EnhancementShaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.UnleashedRage = true
+	enh.Shaman.AddRaidBuffs(raidBuffs)
+}
+
 func (enh *EnhancementShaman) ApplyTalents() {
 	enh.ApplyEnhancementTalents()
 	enh.Shaman.ApplyTalents()

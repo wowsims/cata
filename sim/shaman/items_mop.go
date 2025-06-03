@@ -103,6 +103,7 @@ var ItemSetCelestialHarmonyRegalia = core.NewItemSet(core.ItemSet{
 						aura.Refresh(sim)
 						core.EnableDamageDoneByCaster(DDBC_2PT16, DDBC_Total, shaman.AttackTables[aura.Unit.UnitIndex], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
 							if spell.SpellSchool.Matches(core.SpellSchoolNature | core.SpellSchoolFire) {
+								//TODO Does the damage taken also increases with LS stacks ?
 								return 1.0 + float64(newStacks)*0.04
 							}
 							return 1.0
@@ -205,26 +206,10 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			wfActionId := core.ActionID{SpellID: 8232}
-			ftActionId := core.ActionID{SpellID: 8024}
-			fbActionId := core.ActionID{SpellID: 8033}
 			var imbueSpells []*core.Spell
 			shaman.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ActionID.WithTag(1) == wfActionId.WithTag(1) {
+				if spell.Matches(SpellMaskWindfuryWeapon | SpellMaskFrostbrandWeapon | SpellMaskFlametongueWeapon) {
 					imbueSpells = append(imbueSpells, spell)
-					return
-				}
-				if spell.ActionID.WithTag(2) == wfActionId.WithTag(2) {
-					imbueSpells = append(imbueSpells, spell)
-					return
-				}
-				if spell.ActionID == fbActionId {
-					imbueSpells = append(imbueSpells, spell)
-					return
-				}
-				if spell.ActionID == ftActionId {
-					imbueSpells = append(imbueSpells, spell)
-					return
 				}
 			})
 			procAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{

@@ -79,14 +79,14 @@ func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
-		hit_exp_rating := (ownerHitRating + ownerExpertiseRating) / 2
+		hitExpRating := (ownerHitRating + ownerExpertiseRating) / 2
 		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		return stats.Stats{
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,
 			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
-			stats.HitRating:           hit_exp_rating,
-			stats.ExpertiseRating:     hit_exp_rating,
+			stats.HitRating:           hitExpRating,
+			stats.ExpertiseRating:     hitExpRating,
 			stats.PhysicalCritPercent: critPercent,
 			stats.SpellCritPercent:    critPercent,
 			stats.HasteRating:         ownerHasteRating,

@@ -12,6 +12,8 @@ func (shaman *Shaman) registerAscendanceSpell() {
 	var originalMHSpell *core.Spell
 	var originalOHSpell *core.Spell
 
+	var isEnh = shaman.Spec == proto.Spec_SpecEnhancementShaman
+
 	windslashMH := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 114089, Tag: 1},
 		SpellSchool: core.SpellSchoolNature,
@@ -51,12 +53,12 @@ func (shaman *Shaman) registerAscendanceSpell() {
 		},
 	})
 
-	ascendanceAura := shaman.GetOrRegisterAura(core.Aura{
+	shaman.AscendanceAura = shaman.GetOrRegisterAura(core.Aura{
 		Label:    "Ascendance",
 		ActionID: core.ActionID{SpellID: 114049},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+			if isEnh {
 				//TODO weapon swap during ascendance breaks this i think
 				originalMHSpell = shaman.AutoAttacks.MHAuto()
 				originalOHSpell = shaman.AutoAttacks.OHAuto()
@@ -75,7 +77,7 @@ func (shaman *Shaman) registerAscendanceSpell() {
 			if (shaman.Hardcast.ActionID.SpellID == 114074) && shaman.Hardcast.Expires > sim.CurrentTime {
 				shaman.CancelHardcast(sim)
 			}
-			if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+			if isEnh {
 				shaman.Stormstrike.CD.Set(shaman.Stormblast.CD.ReadyAt())
 				shaman.AutoAttacks.SetMHSpell(originalMHSpell)
 				shaman.AutoAttacks.SetOHSpell(originalOHSpell)
@@ -103,7 +105,7 @@ func (shaman *Shaman) registerAscendanceSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			ascendanceAura.Activate(sim)
+			shaman.AscendanceAura.Activate(sim)
 		},
 	})
 

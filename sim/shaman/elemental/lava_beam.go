@@ -31,7 +31,7 @@ func (ele *ElementalShaman) newLavaBeamSpell(isElementalOverload bool) *core.Spe
 	spellConfig := ele.NewChainSpellConfig(shamConfig)
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, shaman.SpellMaskLavaBeamOverload, shaman.SpellMaskLavaBeam)
 	spellConfig.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return ele.GetAura("Ascendance").IsActive()
+		return ele.AscendanceAura.IsActive()
 	}
 	return ele.RegisterSpell(spellConfig)
 }

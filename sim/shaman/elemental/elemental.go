@@ -53,6 +53,11 @@ func (eleShaman *ElementalShaman) Initialize() {
 	eleShaman.registerLavaBeamSpell()
 }
 
+func (ele *ElementalShaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.ElementalOath = true
+	ele.Shaman.AddRaidBuffs(raidBuffs)
+}
+
 func (ele *ElementalShaman) ApplyTalents() {
 	ele.ApplyElementalTalents()
 	ele.Shaman.ApplyTalents()

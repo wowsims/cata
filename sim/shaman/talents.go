@@ -136,7 +136,7 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 	core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
 		Label: "Echo of The Elements Dummy",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Outcome.Matches(core.OutcomeLanded) || spell.Flags.Matches(SpellFlagIsEcho) || !spell.Flags.Matches(SpellFlagShamanSpell) {
+			if !result.Landed() || spell.Flags.Matches(SpellFlagIsEcho) || !spell.Flags.Matches(SpellFlagShamanSpell) {
 				return
 			}
 			if sim.CurrentTime == lastTimestamp && alreadyProcced[spell] {

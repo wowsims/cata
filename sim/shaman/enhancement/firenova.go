@@ -14,7 +14,7 @@ func (enh *EnhancementShaman) registerFireNovaSpell() {
 		results[i] = make([]*core.SpellResult, enh.Env.GetNumTargets())
 	}
 
-	for i := int32(0); i < enh.Env.GetNumTargets(); i++ {
+	for range enh.Env.GetNumTargets() {
 		nova := enh.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 1535},
 			SpellSchool:    core.SpellSchoolFire,

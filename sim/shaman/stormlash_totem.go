@@ -11,7 +11,7 @@ func (shaman *Shaman) StormlashActionID() core.ActionID {
 	}
 }
 
-func (shaman *Shaman) registerStormalshCD() {
+func (shaman *Shaman) registerStormlashCD() {
 	actionID := shaman.StormlashActionID()
 
 	slAuras := []*core.Aura{}

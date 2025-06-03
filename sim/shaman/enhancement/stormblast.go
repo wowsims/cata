@@ -18,7 +18,7 @@ func (enh *EnhancementShaman) registerStormblastSpell() {
 	config.SpellSchool = core.SpellSchoolNature
 	config.ManaCost.BaseCostPercent = 9.372
 	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return enh.GetAura("Ascendance").IsActive()
+		return enh.AscendanceAura.IsActive()
 	}
 
 	enh.Stormblast = enh.RegisterSpell(config)

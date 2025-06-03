@@ -147,7 +147,8 @@ type Shaman struct {
 
 	ElementalSharedCDTimer *core.Timer
 
-	Ascendance *core.Spell
+	Ascendance     *core.Spell
+	AscendanceAura *core.Aura
 
 	MagmaTotem         *core.Spell
 	HealingStreamTotem *core.Spell
@@ -211,12 +212,6 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.GraceOfAir = true
 	raidBuffs.BurningWrath = true
-	if shaman.Spec == proto.Spec_SpecElementalShaman {
-		raidBuffs.ElementalOath = true
-	}
-	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		raidBuffs.UnleashedRage = true
-	}
 }
 
 func (shaman *Shaman) Initialize() {
@@ -233,7 +228,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerAscendanceSpell()
 
 	shaman.registerBloodlustCD()
-	shaman.registerStormalshCD()
+	shaman.registerStormlashCD()
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
@@ -327,6 +322,7 @@ const (
 	SpellMaskEarthquake
 	SpellMaskFlametongueWeapon
 	SpellMaskWindfuryWeapon
+	SpellMaskFrostbrandWeapon
 	SpellMaskFeralSpirit
 	SpellMaskElementalMastery
 	SpellMaskAscendance

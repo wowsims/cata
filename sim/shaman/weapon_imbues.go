@@ -259,11 +259,11 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8033},
-		SpellSchool: core.SpellSchoolFrost,
-
-		ProcMask: core.ProcMaskEmpty,
-		Flags:    core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 8033},
+		SpellSchool:    core.SpellSchoolFrost,
+		ClassSpellMask: SpellMaskFrostbrandWeapon,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
