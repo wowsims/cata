@@ -148,9 +148,9 @@ func main() {
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
-
 	database.GenerateProtos(instance)
-	database.GenerateEffects(instance, iconsMap, db)
+	database.GenerateItemEffects(instance, iconsMap, db)
+
 	for _, gem := range instance.Gems {
 		parsed := gem.ToProto()
 		if parsed.Icon == "" {
@@ -191,6 +191,8 @@ func main() {
 	ApplyNonSimmableFilters(leftovers)
 	leftovers.WriteBinaryAndJson(fmt.Sprintf("%s/leftover_db.bin", dbDir), fmt.Sprintf("%s/leftover_db.json", dbDir))
 	ApplySimmableFilters(db)
+
+	database.GenerateEnchantEffects(instance, db)
 	for _, enchant := range db.Enchants {
 		if enchant.ItemId != 0 {
 			db.AddItemIcon(enchant.ItemId, enchant.Icon, enchant.Name)
@@ -447,6 +449,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 				return false
 			}
 		}
+
+		if _, ok := database.EnchantDenyList[enchant.EffectId]; ok {
+			return false
+		}
+
 		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 

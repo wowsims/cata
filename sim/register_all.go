@@ -95,4 +95,5 @@ func RegisterAll() {
 
 	mop.RegisterAllOnUseCds()
 	mop.RegisterAllOnUseProcs()
+	mop.RegisterAllEnchants()
 }

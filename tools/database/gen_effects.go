@@ -82,6 +82,34 @@ func RegisterAllOnUseProcs() {
 {{- end }}
 }`
 
+const TmplStrEnchant = `package mop
+
+import (
+	"github.com/wowsims/mop/sim/core"
+ 	"github.com/wowsims/mop/sim/common/shared"
+)
+
+func RegisterAllEnchants() {
+{{- range .Groups }}
+
+	// {{ .Name }}
+{{- range .Entries }}
+	{{if .ProcInfo.IsEmpty}}
+	// TODO: Overwrite me
+	{{- end}}
+	// {{.Tooltip}}
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "{{ .Name }}",
+		EnchantID:   {{ .ID }},
+		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
+		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
+		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+	})
+{{- end }}
+
+{{- end }}
+}`
+
 func GenerateEffectsFile(groups []Group, outFile string, templateString string) error {
 	// Check if file already exists
 	if _, err := os.Stat(outFile); err != nil && !os.IsNotExist(err) {
@@ -121,7 +149,25 @@ func GenerateEffectsFile(groups []Group, outFile string, templateString string) 
 	return nil
 }
 
-func GenerateEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowDatabase) {
+func GenerateEnchantEffects(instance *dbc.DBC, db *WowDatabase) {
+	groupMapProc := map[string]Group{}
+	for _, enchant := range instance.Enchants {
+		parsed := enchant.ToProto()
+		if _, ok := db.Enchants[EnchantToDBKey(parsed)]; !ok {
+			continue
+		}
+
+		TryParseEnchantEffect(parsed, groupMapProc, instance)
+	}
+
+	var procGroups []Group
+	for _, grp := range groupMapProc {
+		procGroups = append(procGroups, grp)
+	}
+	GenerateEffectsFile(procGroups, "sim/common/mop/enchants_auto_gen.go", TmplStrEnchant)
+}
+
+func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowDatabase) {
 	groupMap := map[string]Group{}
 	groupMapProc := map[string]Group{}
 
@@ -201,18 +247,31 @@ func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[strin
 	return false
 }
 
-var critMatcher = regexp.MustCompile(`critical [^\s]+ [^f]`)
+func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC) {
+	if enchant.EnchantEffect.GetProc() != nil && enchant.EffectId > 4267 {
+		tooltipString := instance.Spells[int(enchant.SpellId)].Description
+		tooltip, _ := tooltip.ParseTooltip(tooltipString, tooltip.DBCTooltipDataProvider{DBC: instance}, int64(enchant.SpellId))
+
+		grp, exists := groupMapProc["Procs"]
+		if !exists {
+			grp = Group{Name: "Procs"}
+		}
+
+		entry := Entry{Tooltip: tooltip.String(), ID: int(enchant.EffectId), Name: enchant.Name}
+		entry.ProcInfo = BuildEnchantProcInfo(enchant, instance, entry.Tooltip)
+		grp.Entries = append(grp.Entries, entry)
+		groupMapProc["Procs"] = grp
+	}
+}
+
+var critMatcher = regexp.MustCompile(`critical [^\s]+ [^fb]`)
 var pureHealMatcher = regexp.MustCompile(`healing spells`)
 
 func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) ProcInfo {
-	var info = ProcInfo{
-		IsEmpty: true,
-	}
-
 	itemEffectInfo, ok := instance.ItemEffectsByParentID[int(parsed.Id)]
 	if !ok || len(itemEffectInfo) > 1 {
 		fmt.Printf("WARN: Can not generate proc info for Item: %d, not supported.\n", parsed.Id)
-		return info
+		return ProcInfo{IsEmpty: true}
 	}
 
 	procId := itemEffectInfo[0].SpellID
@@ -221,28 +280,106 @@ func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) Proc
 		panic(fmt.Sprintf("Could not find proc aura %d spell for item effect %d.\n", procId, parsed.Id))
 	}
 
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_MELEE_SWING > 0 {
-		info.ProcMask |= core.ProcMaskMeleeWhiteHit
+	weaponType := 0
+	if itemEffectInfo[0].TriggerType == 2 {
+		weaponType = WeaponTypeWeapon
 	}
 
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_MELEE_ABILITY > 0 {
-		info.ProcMask |= core.ProcMaskMeleeSpecial
+	return BuildSpellProcInfo(procSpell, tooltip, weaponType)
+}
+
+const (
+	WeaponTypeNone   int = 0
+	WeaponTypeWeapon int = 1
+	WeaponTypeRanged int = 2
+)
+
+func BuildEnchantProcInfo(enchant *proto.UIEnchant, instance *dbc.DBC, tooltip string) ProcInfo {
+	procSpellID := enchant.SpellId
+	if procSpellID == 0 {
+		fmt.Printf("WARN: Enchant %d with no spell id", enchant.EffectId)
 	}
 
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_RANGED_ATTACK > 0 {
-		info.ProcMask |= core.ProcMaskRangedAuto
+	procSpell, ok := instance.Spells[int(procSpellID)]
+	if !ok {
+		panic(fmt.Sprintf("Could not find proc aura %d spell for item effect %d.\n", procSpellID, enchant.EffectId))
 	}
 
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_RANGED_ABILITY > 0 {
-		info.ProcMask |= core.ProcMaskRangedSpecial
+	weaponType := 0
+	if enchant.Type == proto.ItemType_ItemTypeWeapon {
+		weaponType = WeaponTypeWeapon
+	} else if enchant.Type == proto.ItemType_ItemTypeRanged {
+		weaponType = WeaponTypeRanged
 	}
 
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HARMFUL_PERIODIC > 0 {
-		info.ProcMask |= core.ProcMaskSpellDamage
+	return BuildSpellProcInfo(procSpell, tooltip, weaponType)
+}
+
+func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) ProcInfo {
+	var info = ProcInfo{
+		IsEmpty: true,
 	}
 
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HARMFUL_SPELL > 0 {
-		info.ProcMask |= core.ProcMaskSpellDamage
+	// On hit proc
+	if weaponType == WeaponTypeWeapon {
+		info.Callback |= core.CallbackOnSpellHitDealt
+		info.ProcMask |= core.ProcMaskMelee
+	}
+
+	if weaponType == WeaponTypeRanged {
+		info.Callback |= core.CallbackOnSpellHitDealt
+		info.ProcMask |= core.ProcMaskRanged
+	}
+
+	if len(procSpell.ProcTypeMask) > 0 {
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_MELEE_SWING > 0 {
+			info.ProcMask |= core.ProcMaskMeleeWhiteHit
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_MELEE_ABILITY > 0 {
+			info.ProcMask |= core.ProcMaskMeleeSpecial
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_RANGED_ATTACK > 0 {
+			info.ProcMask |= core.ProcMaskRangedAuto
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_RANGED_ABILITY > 0 {
+			info.ProcMask |= core.ProcMaskRangedSpecial
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HARMFUL_PERIODIC > 0 {
+			info.ProcMask |= core.ProcMaskSpellDamage
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HARMFUL_SPELL > 0 {
+			info.ProcMask |= core.ProcMaskSpellDamage
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_TAKEN > 0 {
+			info.Callback |= core.CallbackOnSpellHitTaken
+
+			// For now we do not support self damage procs as they usually have custom extra proc conditions
+			// like On dodge or on On parry or x amount of damage taken
+			return ProcInfo{IsEmpty: true}
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_DEALT > 0 {
+			info.Callback |= core.CallbackOnSpellHitDealt
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HARMFUL_PERIODIC > 0 {
+			info.Callback |= core.CallbackOnPeriodicDamageDealt
+		}
+
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_SPELL > 0 {
+			info.Callback |= core.CallbackOnHealDealt
+
+			// handle HoTs onyl with direct heals for now, there are some odd cases with HoT / DoT overlaps
+			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_PERIODIC > 0 {
+				info.Callback |= core.CallbackOnPeriodicHealDealt
+			}
+		}
 	}
 
 	if info.ProcMask.Matches(core.ProcMaskMelee) && procSpell.Attributes[3]&dbc.ATTR_EX_3_CAN_PROC_FROM_PROCS > 0 {
@@ -266,36 +403,6 @@ func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) Proc
 	}
 
 	info.Outcome = findOutcome()
-
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_TAKEN > 0 {
-		info.Callback |= core.CallbackOnSpellHitTaken
-
-		// For now we do not support self damage procs as they usually have custom extra proc conditions
-		// like On dodge or on On parry or x amount of damage taken
-		return ProcInfo{IsEmpty: true}
-	}
-
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_DEALT > 0 {
-		info.Callback |= core.CallbackOnSpellHitDealt
-	}
-
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HARMFUL_PERIODIC > 0 {
-		info.Callback |= core.CallbackOnPeriodicDamageDealt
-	}
-
-	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_SPELL > 0 {
-		info.Callback |= core.CallbackOnHealDealt
-
-		// handle HoTs onyl with direct heals for now, there are some odd cases with HoT / DoT overlaps
-		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_PERIODIC > 0 {
-			info.Callback |= core.CallbackOnPeriodicHealDealt
-		}
-	}
-
-	// On hit proc
-	if itemEffectInfo[0].TriggerType == 2 {
-		info.Callback |= core.CallbackOnSpellHitDealt
-	}
 
 	// check for pure healing spell
 	if pureHealMatcher.MatchString(tooltip) {

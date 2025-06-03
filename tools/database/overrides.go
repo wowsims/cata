@@ -913,3 +913,9 @@ var GemDenyList = map[int32]struct{}{
 	63696: {},
 	63697: {},
 }
+
+var EnchantDenyList = map[int32]struct{}{
+	4671: {}, // Kyle's Test Enchantment
+	4687: {}, // Enchant Weapon - Ninja (TEST VERSION)
+	4717: {}, // Enchant Weapon - Pandamonium (DNT)
+}
