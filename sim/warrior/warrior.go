@@ -73,7 +73,6 @@ const (
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
 
-const EnableOverpowerTag = "EnableOverpower"
 const EnrageTag = "EnrageEffect"
 
 type Warrior struct {
@@ -98,7 +97,7 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	ColossusSmash *core.Spell
-	// Overpower         *core.Spell
+	MortalStrike  *core.Spell
 	// Rend              *core.Spell
 	// Revenge           *core.Spell
 	// ShieldBlock       *core.Spell
@@ -115,6 +114,7 @@ type Warrior struct {
 
 	EnrageAura        *core.Aura
 	BerserkerRageAura *core.Aura
+	TasteForBloodAura *core.Aura
 	// BloodsurgeAura    *core.Aura
 	// SuddenDeathAura   *core.Aura
 	// ShieldBlockAura   *core.Aura
@@ -161,7 +161,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerHeroicLeap()
 	warrior.registerHeroicThrow()
 	// warrior.registerInnerRage()
-	// warrior.registerOverpowerSpell()
 	warrior.registerRecklessness()
 	// warrior.registerRendSpell()
 	// warrior.registerRevengeSpell()

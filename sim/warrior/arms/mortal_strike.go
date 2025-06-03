@@ -11,7 +11,7 @@ func (war *ArmsWarrior) registerMortalStrike() {
 	actionID := core.ActionID{SpellID: 12294}
 	rageMetrics := war.NewRageMetrics(actionID)
 
-	war.RegisterSpell(core.SpellConfig{
+	war.MortalStrike = war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,

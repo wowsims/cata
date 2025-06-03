@@ -98,3 +98,36 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		},
 	})
 }
+
+func (war *ArmsWarrior) registerTasteForBlood() {
+	actionID := core.ActionID{SpellID: 60503}
+
+	war.TasteForBloodAura = war.RegisterAura(core.Aura{
+		Label:     "Taste For Blood",
+		ActionID:  actionID,
+		Duration:  12 * time.Second,
+		MaxStacks: 5,
+	})
+
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Taste For Blood: Mortal Strike - Trigger",
+		ClassSpellMask: warrior.SpellMaskMortalStrike,
+		Outcome:        core.OutcomeLanded,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			war.TasteForBloodAura.Activate(sim)
+			war.TasteForBloodAura.SetStacks(sim, war.TasteForBloodAura.GetStacks()+2)
+		},
+	})
+
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:     "Taste For Blood: Dodge - Trigger",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeDodge,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			war.TasteForBloodAura.Activate(sim)
+			war.TasteForBloodAura.AddStack(sim)
+		},
+	})
+
+}

@@ -62,6 +62,7 @@ func (war *ArmsWarrior) Initialize() {
 	war.registerPassives()
 
 	war.registerMortalStrike()
+	war.registerOverpower()
 	war.registerSweepingStrikes()
 }
 
@@ -71,6 +72,7 @@ func (war *ArmsWarrior) registerPassives() {
 	war.registerMastery()
 	war.registerSeasonedSoldier()
 	war.registerSuddenDeath()
+	war.registerTasteForBlood()
 }
 
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {
