@@ -89,9 +89,18 @@ func GenerateEffectsFile(groups []Group, outFile string, templateString string) 
 	}
 
 	// Ensure groups and entries are sorted
-	sort.Slice(groups, func(i, j int) bool { return groups[i].Name < groups[j].Name })
+	sort.Slice(groups, func(i, j int) bool {
+		return groups[i].Name < groups[j].Name
+	})
+
 	for _, grp := range groups {
-		sort.Slice(grp.Entries, func(i, j int) bool { return grp.Entries[i].ID < grp.Entries[j].ID })
+		sort.Slice(grp.Entries, func(i, j int) bool {
+			if grp.Entries[i].ProcInfo.IsEmpty != grp.Entries[j].ProcInfo.IsEmpty {
+				return grp.Entries[i].ProcInfo.IsEmpty
+			}
+
+			return grp.Entries[i].ID < grp.Entries[j].ID
+		})
 	}
 
 	funcMap := map[string]any{
@@ -134,29 +143,16 @@ func GenerateEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowDatabase
 		TryParseProcEffect(parsed, item, instance, groupMapProc)
 	}
 
-	// Sort by Entry ID and Group Name
+	// Sorting done in GenerateEffectsFile
 	var groups []Group
 	for _, grp := range groupMap {
-		sort.Slice(grp.Entries, func(i, j int) bool { return grp.Entries[i].ID < grp.Entries[j].ID })
 		groups = append(groups, grp)
 	}
 
-	sort.Slice(groups, func(i, j int) bool {
-		return groups[i].Name < groups[j].Name
-	})
-
 	var procGroups []Group
 	for _, grp := range groupMapProc {
-		sort.Slice(grp.Entries, func(i, j int) bool {
-			return grp.Entries[i].ID < grp.Entries[j].ID
-		})
-
 		procGroups = append(procGroups, grp)
 	}
-
-	sort.Slice(procGroups, func(i, j int) bool {
-		return procGroups[i].Name < procGroups[j].Name
-	})
 
 	GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds.go", TmplStrOnUse)
 	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs.go", TmplStrProc)
@@ -206,6 +202,7 @@ func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[strin
 }
 
 var critMatcher = regexp.MustCompile(`critical [^\s]+ [^f]`)
+var pureHealMatcher = regexp.MustCompile(`healing spells`)
 
 func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) ProcInfo {
 	var info = ProcInfo{
@@ -272,6 +269,10 @@ func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) Proc
 
 	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_TAKEN > 0 {
 		info.Callback |= core.CallbackOnSpellHitTaken
+
+		// For now we do not support self damage procs as they usually have custom extra proc conditions
+		// like On dodge or on On parry or x amount of damage taken
+		return ProcInfo{IsEmpty: true}
 	}
 
 	if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_DEALT > 0 {
@@ -294,6 +295,12 @@ func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) Proc
 	// On hit proc
 	if itemEffectInfo[0].TriggerType == 2 {
 		info.Callback |= core.CallbackOnSpellHitDealt
+	}
+
+	// check for pure healing spell
+	if pureHealMatcher.MatchString(tooltip) {
+		info.Callback &= ^core.CallbackOnSpellHitDealt
+		info.Callback &= ^core.CallbackOnPeriodicDamageDealt
 	}
 
 	info.IsEmpty = info.Callback == core.CallbackEmpty &&

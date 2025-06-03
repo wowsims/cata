@@ -9,6 +9,786 @@ func RegisterAllOnUseProcs() {
 
 	// Procs
 	
+	// TODO: Overwrite me
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Delicate Vial of the Sanguinaire",
+		ItemID:   94518,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Delicate Vial of the Sanguinaire",
+		ItemID:   95779,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Delicate Vial of the Sanguinaire",
+		ItemID:   96151,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Delicate Vial of the Sanguinaire",
+		ItemID:   96523,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Delicate Vial of the Sanguinaire",
+		ItemID:   96895,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Assurance of Consequence",
+		ItemID:   102292,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Purified Bindings of Immerseus",
+		ItemID:   102293,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Nazgrim's Burnished Insignia",
+		ItemID:   102294,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Fusion-Fire Core",
+		ItemID:   102295,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Evil Eye of Galakras",
+		ItemID:   102298,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Prismatic Prison of Pride",
+		ItemID:   102299,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Kardris' Toxic Totem",
+		ItemID:   102300,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Haromm's Talisman",
+		ItemID:   102301,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Sigil of Rampage",
+		ItemID:   102302,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Frenzied Crystal of Rage",
+		ItemID:   102303,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Acid-Grooved Tooth",
+		ItemID:   102304,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Tail Tip",
+		ItemID:   102305,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Teleport yourself to the Timeless Isle.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Time-Lost Artifact",
+		ItemID:   103678,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Purified Bindings of Immerseus",
+		ItemID:   104426,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Fusion-Fire Core",
+		ItemID:   104463,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Assurance of Consequence",
+		ItemID:   104476,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Prismatic Prison of Pride",
+		ItemID:   104478,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Evil Eye of Galakras",
+		ItemID:   104495,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Haromm's Talisman",
+		ItemID:   104531,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Kardris' Toxic Totem",
+		ItemID:   104544,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Nazgrim's Burnished Insignia",
+		ItemID:   104553,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Frenzied Crystal of Rage",
+		ItemID:   104576,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Sigil of Rampage",
+		ItemID:   104584,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Acid-Grooved Tooth",
+		ItemID:   104611,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Tail Tip",
+		ItemID:   104613,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Purified Bindings of Immerseus",
+		ItemID:   104675,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Fusion-Fire Core",
+		ItemID:   104712,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Assurance of Consequence",
+		ItemID:   104725,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Prismatic Prison of Pride",
+		ItemID:   104727,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Evil Eye of Galakras",
+		ItemID:   104744,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Haromm's Talisman",
+		ItemID:   104780,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Kardris' Toxic Totem",
+		ItemID:   104793,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Nazgrim's Burnished Insignia",
+		ItemID:   104802,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Frenzied Crystal of Rage",
+		ItemID:   104825,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Sigil of Rampage",
+		ItemID:   104833,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Acid-Grooved Tooth",
+		ItemID:   104860,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Tail Tip",
+		ItemID:   104862,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Purified Bindings of Immerseus",
+		ItemID:   104924,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Fusion-Fire Core",
+		ItemID:   104961,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Assurance of Consequence",
+		ItemID:   104974,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Prismatic Prison of Pride",
+		ItemID:   104976,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Evil Eye of Galakras",
+		ItemID:   104993,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Haromm's Talisman",
+		ItemID:   105029,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Kardris' Toxic Totem",
+		ItemID:   105042,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Nazgrim's Burnished Insignia",
+		ItemID:   105051,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Frenzied Crystal of Rage",
+		ItemID:   105074,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Sigil of Rampage",
+		ItemID:   105082,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Acid-Grooved Tooth",
+		ItemID:   105109,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Tail Tip",
+		ItemID:   105111,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Purified Bindings of Immerseus",
+		ItemID:   105173,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Fusion-Fire Core",
+		ItemID:   105210,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Assurance of Consequence",
+		ItemID:   105223,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Prismatic Prison of Pride",
+		ItemID:   105225,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Evil Eye of Galakras",
+		ItemID:   105242,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Haromm's Talisman",
+		ItemID:   105278,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Kardris' Toxic Totem",
+		ItemID:   105291,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Nazgrim's Burnished Insignia",
+		ItemID:   105300,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Frenzied Crystal of Rage",
+		ItemID:   105323,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Sigil of Rampage",
+		ItemID:   105331,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Acid-Grooved Tooth",
+		ItemID:   105358,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Tail Tip",
+		ItemID:   105360,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Purified Bindings of Immerseus",
+		ItemID:   105422,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Fusion-Fire Core",
+		ItemID:   105459,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Assurance of Consequence",
+		ItemID:   105472,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Prismatic Prison of Pride",
+		ItemID:   105474,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Evil Eye of Galakras",
+		ItemID:   105491,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Haromm's Talisman",
+		ItemID:   105527,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Kardris' Toxic Totem",
+		ItemID:   105540,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Nazgrim's Burnished Insignia",
+		ItemID:   105549,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Frenzied Crystal of Rage",
+		ItemID:   105572,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Sigil of Rampage",
+		ItemID:   105580,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Acid-Grooved Tooth",
+		ItemID:   105607,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
+	// TODO: Overwrite me
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Thok's Tail Tip",
+		ItemID:   105609,
+		Callback: core.CallbackEmpty,
+		ProcMask: core.ProcMaskEmpty,
+		Outcome:  core.OutcomeEmpty,
+	})
+	
 	// Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027 for 15s. ( 20% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Xuen",
@@ -31,7 +811,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Chi-Ji",
 		ItemID:   79330,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -58,7 +838,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Empty Fruit Barrel",
 		ItemID:   81133,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -616,7 +1396,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Core of Decency",
 		ItemID:   87497,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -792,15 +1572,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Delicate Vial of the Sanguinaire",
-		ItemID:   94518,
-		Callback: core.CallbackOnSpellHitTaken,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeLanded,
-	})
-	
 	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Primordius' Talisman of Rage",
@@ -900,15 +1671,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Delicate Vial of the Sanguinaire",
-		ItemID:   95779,
-		Callback: core.CallbackOnSpellHitTaken,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeLanded,
-	})
-	
 	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
@@ -961,15 +1723,6 @@ func RegisterAllOnUseProcs() {
 		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeCrit,
-	})
-	
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Delicate Vial of the Sanguinaire",
-		ItemID:   96151,
-		Callback: core.CallbackOnSpellHitTaken,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeLanded,
 	})
 	
 	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
@@ -1026,15 +1779,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Delicate Vial of the Sanguinaire",
-		ItemID:   96523,
-		Callback: core.CallbackOnSpellHitTaken,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeLanded,
-	})
-	
 	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
@@ -1089,15 +1833,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Delicate Vial of the Sanguinaire",
-		ItemID:   96895,
-		Callback: core.CallbackOnSpellHitTaken,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeLanded,
-	})
-	
 	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
@@ -1111,7 +1846,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Empty Fruit Barrel",
 		ItemID:   97304,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1381,7 +2116,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Wisdom",
 		ItemID:   101041,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1444,7 +2179,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Stone of Wisdom",
 		ItemID:   101107,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1471,7 +2206,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Stone of Wisdom",
 		ItemID:   101138,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1534,7 +2269,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Stone of Wisdom",
 		ItemID:   101183,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1597,7 +2332,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Wisdom",
 		ItemID:   101250,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1654,126 +2389,6 @@ func RegisterAllOnUseProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Assurance of Consequence",
-		ItemID:   102292,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Purified Bindings of Immerseus",
-		ItemID:   102293,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Nazgrim's Burnished Insignia",
-		ItemID:   102294,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Fusion-Fire Core",
-		ItemID:   102295,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Evil Eye of Galakras",
-		ItemID:   102298,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Prismatic Prison of Pride",
-		ItemID:   102299,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Kardris' Toxic Totem",
-		ItemID:   102300,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Haromm's Talisman",
-		ItemID:   102301,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Sigil of Rampage",
-		ItemID:   102302,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Frenzied Crystal of Rage",
-		ItemID:   102303,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Acid-Grooved Tooth",
-		ItemID:   102304,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Tail Tip",
-		ItemID:   102305,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
 	})
 	
 	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
@@ -1929,16 +2544,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// TODO: Overwrite me
-	// Teleport yourself to the Timeless Isle.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Time-Lost Artifact",
-		ItemID:   103678,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Discipline of Xuen",
@@ -1993,126 +2598,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Purified Bindings of Immerseus",
-		ItemID:   104426,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Fusion-Fire Core",
-		ItemID:   104463,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Assurance of Consequence",
-		ItemID:   104476,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Prismatic Prison of Pride",
-		ItemID:   104478,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Evil Eye of Galakras",
-		ItemID:   104495,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Haromm's Talisman",
-		ItemID:   104531,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Kardris' Toxic Totem",
-		ItemID:   104544,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Nazgrim's Burnished Insignia",
-		ItemID:   104553,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Frenzied Crystal of Rage",
-		ItemID:   104576,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Sigil of Rampage",
-		ItemID:   104584,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Acid-Grooved Tooth",
-		ItemID:   104611,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Tail Tip",
-		ItemID:   104613,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
 	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
@@ -2129,126 +2614,6 @@ func RegisterAllOnUseProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Purified Bindings of Immerseus",
-		ItemID:   104675,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Fusion-Fire Core",
-		ItemID:   104712,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Assurance of Consequence",
-		ItemID:   104725,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Prismatic Prison of Pride",
-		ItemID:   104727,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Evil Eye of Galakras",
-		ItemID:   104744,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Haromm's Talisman",
-		ItemID:   104780,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Kardris' Toxic Totem",
-		ItemID:   104793,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Nazgrim's Burnished Insignia",
-		ItemID:   104802,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Frenzied Crystal of Rage",
-		ItemID:   104825,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Sigil of Rampage",
-		ItemID:   104833,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Acid-Grooved Tooth",
-		ItemID:   104860,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Tail Tip",
-		ItemID:   104862,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
@@ -2269,126 +2634,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Purified Bindings of Immerseus",
-		ItemID:   104924,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Fusion-Fire Core",
-		ItemID:   104961,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Assurance of Consequence",
-		ItemID:   104974,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Prismatic Prison of Pride",
-		ItemID:   104976,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Evil Eye of Galakras",
-		ItemID:   104993,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Haromm's Talisman",
-		ItemID:   105029,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Kardris' Toxic Totem",
-		ItemID:   105042,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Nazgrim's Burnished Insignia",
-		ItemID:   105051,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Frenzied Crystal of Rage",
-		ItemID:   105074,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Sigil of Rampage",
-		ItemID:   105082,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Acid-Grooved Tooth",
-		ItemID:   105109,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Tail Tip",
-		ItemID:   105111,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
 	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
@@ -2407,126 +2652,6 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Purified Bindings of Immerseus",
-		ItemID:   105173,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Fusion-Fire Core",
-		ItemID:   105210,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Assurance of Consequence",
-		ItemID:   105223,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Prismatic Prison of Pride",
-		ItemID:   105225,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Evil Eye of Galakras",
-		ItemID:   105242,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Haromm's Talisman",
-		ItemID:   105278,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Kardris' Toxic Totem",
-		ItemID:   105291,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Nazgrim's Burnished Insignia",
-		ItemID:   105300,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Frenzied Crystal of Rage",
-		ItemID:   105323,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Sigil of Rampage",
-		ItemID:   105331,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Acid-Grooved Tooth",
-		ItemID:   105358,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Tail Tip",
-		ItemID:   105360,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
 	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
@@ -2543,126 +2668,6 @@ func RegisterAllOnUseProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Purified Bindings of Immerseus",
-		ItemID:   105422,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Fusion-Fire Core",
-		ItemID:   105459,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Assurance of Consequence",
-		ItemID:   105472,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Prismatic Prison of Pride",
-		ItemID:   105474,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Evil Eye of Galakras",
-		ItemID:   105491,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Haromm's Talisman",
-		ItemID:   105527,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Kardris' Toxic Totem",
-		ItemID:   105540,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Nazgrim's Burnished Insignia",
-		ItemID:   105549,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Frenzied Crystal of Rage",
-		ItemID:   105572,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Sigil of Rampage",
-		ItemID:   105580,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Acid-Grooved Tooth",
-		ItemID:   105607,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
-	
-	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Thok's Tail Tip",
-		ItemID:   105609,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
