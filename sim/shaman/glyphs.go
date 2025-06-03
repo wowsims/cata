@@ -14,6 +14,16 @@ func (shaman *Shaman) ApplyGlyphs() {
 			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: time.Second * -150,
 		})
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellID == 2894 {
+				shaman.AddStaticMod(core.SpellModConfig{
+					Kind:      core.SpellMod_BuffDuration_Flat,
+					TimeValue: -time.Second * 30,
+					ClassMask: SpellMaskFireElementalTotem,
+				})
+			}
+		})
+
 	}
 
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {

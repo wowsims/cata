@@ -33,7 +33,7 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 
 	inRange := eleOptions.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
 	ele := &ElementalShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, inRange),
+		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, inRange, eleOptions.ClassOptions.FeleAutocast),
 	}
 
 	if mh := ele.GetMHWeapon(); mh != nil {

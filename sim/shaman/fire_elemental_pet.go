@@ -14,8 +14,14 @@ type FireElemental struct {
 	FireBlast *core.Spell
 	FireNova  *core.Spell
 	Immolate  *core.Spell
+	Empower   *core.Spell
 
 	shamanOwner *Shaman
+
+	fireBlastAutocast bool
+	fireNovaAutocast  bool
+	immolateAutocast  bool
+	empowerAutocast   bool
 }
 
 var FireElementalSpellPowerScaling = 0.36
@@ -32,7 +38,11 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 			HasDynamicCastSpeedInheritance:  true,
 			HasDynamicMeleeSpeedInheritance: true,
 		}),
-		shamanOwner: shaman,
+		shamanOwner:       shaman,
+		fireBlastAutocast: shaman.FeleAutocast.AutocastFireblast || isGuardian,
+		fireNovaAutocast:  shaman.FeleAutocast.AutocastFirenova || isGuardian,
+		immolateAutocast:  shaman.FeleAutocast.AutocastImmolate,
+		empowerAutocast:   shaman.FeleAutocast.AutocastEmpower,
 	}
 	scalingDamage := shaman.CalcScalingSpellDmg(1.0)
 	baseMeleeDamage := core.TernaryFloat64(isGuardian, scalingDamage, scalingDamage*1.8)
@@ -65,6 +75,7 @@ func (fireElemental *FireElemental) enable(isGuardian bool) func(*core.Simulatio
 }
 
 func (fireElemental *FireElemental) disable(sim *core.Simulation) {
+	fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).Deactivate(sim)
 }
 
 func (fireElemental *FireElemental) GetPet() *core.Pet {
@@ -76,6 +87,7 @@ func (fireElemental *FireElemental) Initialize() {
 	fireElemental.registerFireBlast()
 	fireElemental.registerFireNova()
 	fireElemental.registerImmolate()
+	fireElemental.registerEmpower()
 }
 
 func (fireElemental *FireElemental) Reset(_ *core.Simulation) {
@@ -88,18 +100,25 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 	*/
 	target := fireElemental.CurrentTarget
 
-	random := sim.RandomFloat("Fire Elemental Pet Spell")
-
-	for _, target := range sim.Encounter.TargetUnits {
-		if !fireElemental.Immolate.Dot(target).IsActive() && fireElemental.TryCast(sim, target, fireElemental.Immolate) {
-			break
+	if fireElemental.empowerAutocast {
+		if fireElemental.Empower.Cast(sim, &fireElemental.shamanOwner.Unit) {
+			fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt(), false)
+			return
 		}
 	}
 
-	if random >= .5 {
-		fireElemental.TryCast(sim, target, fireElemental.FireBlast)
-	} else if len(sim.Encounter.TargetUnits) >= 2 {
+	if fireElemental.immolateAutocast {
+		for _, target := range sim.Encounter.TargetUnits {
+			if !fireElemental.Immolate.Dot(target).IsActive() && fireElemental.TryCast(sim, target, fireElemental.Immolate) {
+				break
+			}
+		}
+	}
+	if fireElemental.fireNovaAutocast && len(sim.Encounter.TargetUnits) > 2 {
 		fireElemental.TryCast(sim, target, fireElemental.FireNova)
+	}
+	if fireElemental.fireBlastAutocast {
+		fireElemental.TryCast(sim, target, fireElemental.FireBlast)
 	}
 
 	if !fireElemental.GCD.IsReady(sim) {

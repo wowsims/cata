@@ -32,7 +32,7 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 	}
 
 	resto := &RestorationShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, false),
+		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, false, restoOptions.ClassOptions.FeleAutocast),
 	}
 
 	// if resto.HasMHWeapon() {

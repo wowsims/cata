@@ -75,7 +75,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		ItemSlot.ItemSlotTrinket2,
 		ItemSlot.ItemSlotMainHand,
 	],
-	customSections: [],
+	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

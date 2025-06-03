@@ -36,7 +36,7 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 	}
 
 	enh := &EnhancementShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, true),
+		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, true, enhOptions.ClassOptions.FeleAutocast),
 	}
 
 	// Enable Auto Attacks for this spec

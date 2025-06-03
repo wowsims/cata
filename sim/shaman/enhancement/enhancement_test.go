@@ -85,6 +85,12 @@ var PlayerOptionsStandard = &proto.Player_EnhancementShaman{
 			ClassOptions: &proto.ShamanOptions{
 				Shield:  proto.ShamanShield_LightningShield,
 				ImbueMh: proto.ShamanImbue_WindfuryWeapon,
+				FeleAutocast: &proto.FeleAutocastSettings{
+					AutocastFireblast: true,
+					AutocastFirenova:  true,
+					AutocastImmolate:  true,
+					AutocastEmpower:   false,
+				},
 			},
 			ImbueOh: proto.ShamanImbue_FlametongueWeapon,
 		},

@@ -3,6 +3,7 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
 	EnhancementShaman_Options as EnhancementShamanOptions,
+	FeleAutocastSettings,
 	ShamanImbue,
 	ShamanMajorGlyph,
 	ShamanShield,
@@ -66,6 +67,12 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
 		imbueMh: ShamanImbue.WindfuryWeapon,
+		feleAutocast: FeleAutocastSettings.create({
+			autocastFireblast: true,
+			autocastFirenova: true,
+			autocastImmolate: true,
+			autocastEmpower: false,
+		}),
 	},
 	imbueOh: ShamanImbue.FlametongueWeapon,
 	syncType: ShamanSyncType.Auto,

@@ -42,7 +42,7 @@ func (shaman *Shaman) registerFireElementalTotem(isGuardian bool) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
 			if shaman.Totems.Fire != proto.FireTotem_NoFireTotem {
-				shaman.TotemExpirations[FireTotem] = sim.CurrentTime + totalDuration
+				shaman.TotemExpirations[FireTotem] = sim.CurrentTime + fireElementalAura.Duration
 			}
 
 			shaman.MagmaTotem.AOEDot().Deactivate(sim)
@@ -52,11 +52,12 @@ func (shaman *Shaman) registerFireElementalTotem(isGuardian bool) {
 			}
 
 			shaman.FireElemental.Disable(sim)
-			shaman.FireElemental.EnableWithTimeout(sim, shaman.FireElemental, totalDuration)
+			shaman.FireElemental.EnableWithTimeout(sim, shaman.FireElemental, fireElementalAura.Duration)
 
 			// Add a dummy aura to show in metrics
 			fireElementalAura.Activate(sim)
 		},
+		RelatedSelfBuff: fireElementalAura,
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{

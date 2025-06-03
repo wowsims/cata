@@ -148,9 +148,18 @@ enum ShamanSyncType {
 	Auto = 3;
 }
 
+message FeleAutocastSettings {
+    bool autocast_fireblast = 1;
+    bool autocast_firenova = 2;
+    bool autocast_immolate = 3;
+    bool autocast_empower = 4;
+}
+
 message ShamanOptions {
 	ShamanShield shield = 1;
-	ShamanImbue imbue_mh = 4;
+	ShamanImbue imbue_mh = 2;
+
+    FeleAutocastSettings fele_autocast = 3;
 }
 
 message ElementalShaman {

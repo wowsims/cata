@@ -28,11 +28,12 @@ const (
 	SpellFlagFocusable   = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
+func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, thunderstormRange bool, feleAutocastOptions *proto.FeleAutocastSettings) *Shaman {
 	shaman := &Shaman{
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
 		Totems:              &proto.ShamanTotems{},
+		FeleAutocast:        feleAutocastOptions,
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
 		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
@@ -89,6 +90,8 @@ type Shaman struct {
 	SelfBuffs SelfBuffs
 
 	Totems *proto.ShamanTotems
+
+	FeleAutocast *proto.FeleAutocastSettings
 
 	// The expiration time of each totem (earth, air, fire, water).
 	TotemExpirations [4]time.Duration

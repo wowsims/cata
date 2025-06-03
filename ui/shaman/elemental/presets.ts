@@ -2,6 +2,7 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common.js';
 import {
 	ElementalShaman_Options as ElementalShamanOptions,
+	FeleAutocastSettings,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
 	ShamanShield,
@@ -90,6 +91,12 @@ export const TalentsAoE = {
 export const DefaultOptions = ElementalShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
+		feleAutocast: FeleAutocastSettings.create({
+					autocastFireblast: true,
+					autocastFirenova: true,
+					autocastImmolate: true,
+					autocastEmpower: false,
+				}),
 	},
 });
 

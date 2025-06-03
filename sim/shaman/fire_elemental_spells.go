@@ -122,3 +122,50 @@ func (fireElemental *FireElemental) registerImmolate() {
 		},
 	})
 }
+
+func (fireElemental *FireElemental) registerEmpower() {
+	actionID := core.ActionID{SpellID: 118350}
+	buffAura := fireElemental.shamanOwner.RegisterAura(core.Aura{
+		Label:    "Empower",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.05,
+	})
+
+	fireElemental.Empower = fireElemental.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolFire,
+		Flags:       core.SpellFlagChanneled,
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    fireElemental.NewTimer(),
+				Duration: time.Second * 10,
+			},
+		},
+		Hot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Empower",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					buffAura.Activate(sim)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					buffAura.Deactivate(sim)
+				},
+			},
+			NumberOfTicks:        1,
+			TickLength:           time.Second * 60,
+			AffectedByCastSpeed:  false,
+			HasteReducesDuration: false,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !fireElemental.IsGuardian()
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Hot(target).Apply(sim)
+		},
+	})
+}
