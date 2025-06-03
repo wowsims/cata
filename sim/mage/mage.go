@@ -47,7 +47,7 @@ type Mage struct {
 	IcyVeinsAura           *core.Aura
 	iceFloesfAura          *core.Aura
 	IciclesAura            *core.Aura
-	FrostBombAuras         *core.AuraArray
+	FrostBombAuras         core.AuraArray
 
 	arcaneMissileCritSnapshot float64
 	brainFreezeProcChance     float64
@@ -301,6 +301,7 @@ const (
 	MageSpellFrostArmor
 	MageSpellFrostbolt
 	MageSpellFrostBomb
+	MageSpellFrostBombExplosion
 	MageSpellFrostfireBolt
 	MageSpellFrostfireOrb
 	MageSpellFrostNova

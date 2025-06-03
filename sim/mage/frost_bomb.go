@@ -22,8 +22,7 @@ func (mage *Mage) registerFrostBombSpell() {
 		ActionID:       core.ActionID{SpellID: 113092},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: MageSpellFrostBomb,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		ClassSpellMask: MageSpellFrostBombExplosion,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultCritMultiplier(),
@@ -48,7 +47,7 @@ func (mage *Mage) registerFrostBombSpell() {
 		},
 	})
 
-	mage.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	mage.FrostBombAuras = mage.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Frost Bomb",
 			ActionID: core.ActionID{SpellID: 113092},
