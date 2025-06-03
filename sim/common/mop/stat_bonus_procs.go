@@ -1433,7 +1433,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "The Gloaming Blade",
 		ItemID:   88149,
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskEmpty,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial,
 		Outcome:  core.OutcomeLanded,
 	})
 	
