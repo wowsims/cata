@@ -138,7 +138,6 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 			return frozenOrb.TickCount < 10
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			damage := frozenOrb.mageOwner.CalcAndRollDamageRange(sim, frozenOrbScaling, frozenOrbVariance)
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			frozenOrb.TickCount += 1

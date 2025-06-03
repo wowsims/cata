@@ -73,7 +73,7 @@ func (mage *Mage) registerEvocation() {
 
 	mage.invocationAura = mage.RegisterAura(core.Aura{
 		Label:    "Invocation Aura",
-		ActionID: actionID,
+		ActionID: core.ActionID{SpellID: 116257},
 		Duration: time.Minute,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			invocationDamageMod.Activate()
