@@ -99,6 +99,9 @@ func (shaman *Shaman) registerAscendanceSpell() {
 			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
 				Duration: time.Minute * 3,
