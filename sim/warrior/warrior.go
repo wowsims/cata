@@ -27,6 +27,7 @@ const (
 	SpellMaskCharge
 	SpellMaskSkullBanner
 	SpellMaskDemoralizingBanner
+	SpellMaskAvatar
 
 	// Abilities that cost rage but aren't attacks
 	SpellMaskDemoralizingShout
@@ -54,7 +55,7 @@ const (
 	SpellMaskShieldSlam
 	// SpellMaskConcussionBlow
 	SpellMaskDevastate
-	// SpellMaskShockwave
+	SpellMaskShockwave
 	SpellMaskBloodthirst
 	// SpellMaskRagingBlow
 	SpellMaskMortalStrike

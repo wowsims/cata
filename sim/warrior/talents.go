@@ -19,11 +19,13 @@ func (warrior *Warrior) ApplyTalents() {
 
 	// Level 60
 	warrior.registerBladestorm()
+	warrior.registerShockwave()
 	warrior.registerDragonRoar()
 
 	// Level 75
 
 	// Level 90
+	warrior.registerAvatar()
 	warrior.registerBloodbath()
 }
 
@@ -225,6 +227,91 @@ func (war *Warrior) registerBladestorm() {
 
 	war.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (war *Warrior) registerShockwave() {
+	if !war.Talents.Shockwave {
+		return
+	}
+
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 46968},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask: SpellMaskShockwave,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: 40 * time.Second,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			numLandedHits := 0
+			baseDamage := 0.75 * spell.MeleeAttackPower()
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+				if result.Landed() {
+					numLandedHits++
+				}
+			}
+			if numLandedHits >= 3 {
+				spell.CD.Reduce(time.Second * 20)
+			}
+		},
+	})
+}
+
+func (war *Warrior) registerAvatar() {
+	if !war.Talents.Avatar {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 107574}
+	avatarAura := war.RegisterAura(core.Aura{
+		Label:    "Avatar",
+		ActionID: actionId,
+		Duration: 24 * time.Second,
+	}).AttachMultiplicativePseudoStatBuff(&war.Unit.PseudoStats.DamageDealtMultiplier, 1.2)
+	core.RegisterPercentDamageModifierEffect(avatarAura, 1.2)
+
+	avatar := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
+		ClassSpellMask: SpellMaskAvatar,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: 3 * time.Minute,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			avatarAura.Activate(sim)
+		},
+	})
+
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: avatar,
 		Type:  core.CooldownTypeDPS,
 	})
 }
