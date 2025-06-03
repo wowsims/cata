@@ -29,6 +29,14 @@ const (
 )
 
 func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, thunderstormRange bool, feleAutocastOptions *proto.FeleAutocastSettings) *Shaman {
+	if feleAutocastOptions == nil {
+		feleAutocastOptions = &proto.FeleAutocastSettings{
+			AutocastFireblast: true,
+			AutocastFirenova:  true,
+			AutocastImmolate:  true,
+			AutocastEmpower:   false,
+		}
+	}
 	shaman := &Shaman{
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
