@@ -1,4 +1,4 @@
-package cata
+package mop
 
 import (
 	"github.com/wowsims/mop/sim/core"

@@ -1,10 +1,11 @@
-package cata
+package mop
 
 import (
 	"github.com/wowsims/mop/sim/common/shared"
 )
 
 func RegisterAllOnUseCds() {
+
 	// StatAgility
 	shared.NewSimpleStatActive(81265) // Flashing Steel Talisman
 	shared.NewSimpleStatActive(84344) // Dreadful Gladiator's Badge of Conquest
@@ -23,6 +24,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(102856) // Grievous Gladiator's Badge of Conquest
 	shared.NewSimpleStatActive(103145) // Grievous Gladiator's Badge of Conquest
 	shared.NewSimpleStatActive(103342) // Prideful Gladiator's Badge of Conquest
+
 	// StatCritRating
 	shared.NewSimpleStatActive(86044) // Jade Magistrate Figurine
 	shared.NewSimpleStatActive(86773) // Jade Magistrate Figurine
@@ -38,6 +40,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(105147) // Curse of Hubris
 	shared.NewSimpleStatActive(105396) // Curse of Hubris
 	shared.NewSimpleStatActive(105645) // Curse of Hubris
+
 	// StatDodgeRating
 	shared.NewSimpleStatActive(79329) // Relic of Niuzao
 	shared.NewSimpleStatActive(81181) // Heart of Fire
@@ -46,6 +49,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(102316) // 5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Tank Trinket (5)
 	shared.NewSimpleStatActive(103690) // Resolve of Niuzao
 	shared.NewSimpleStatActive(103990) // Resolve of Niuzao
+
 	// StatHasteRating
 	shared.NewSimpleStatActive(86042) // Jade Charioteer Figurine
 	shared.NewSimpleStatActive(86043) // Jade Bandit Figurine
@@ -57,6 +61,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(89083) // Iron Belly Wok
 	shared.NewSimpleStatActive(93342) // Dominator's Arcane Badge
 	shared.NewSimpleStatActive(93347) // Arcane Badge of the Shieldwall
+
 	// StatHealth
 	shared.NewSimpleStatActive(84399) // Dreadful Gladiator's Emblem of Cruelty
 	shared.NewSimpleStatActive(84400) // Dreadful Gladiator's Emblem of Tenacity
@@ -109,6 +114,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(103407) // Prideful Gladiator's Emblem of Cruelty
 	shared.NewSimpleStatActive(103408) // Prideful Gladiator's Emblem of Tenacity
 	shared.NewSimpleStatActive(103409) // Prideful Gladiator's Emblem of Meditation
+
 	// StatIntellect
 	shared.NewSimpleStatActive(81263) // Flashfrozen Resin Globule
 	shared.NewSimpleStatActive(84488) // Dreadful Gladiator's Badge of Dominance
@@ -129,6 +135,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(102830) // Grievous Gladiator's Badge of Dominance
 	shared.NewSimpleStatActive(103308) // Grievous Gladiator's Badge of Dominance
 	shared.NewSimpleStatActive(103505) // Prideful Gladiator's Badge of Dominance
+
 	// StatMasteryRating
 	shared.NewSimpleStatActive(86046) // Jade Warlord Figurine
 	shared.NewSimpleStatActive(86775) // Jade Warlord Figurine
@@ -142,14 +149,17 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(93346) // Deadeye Badge of the Shieldwall
 	shared.NewSimpleStatActive(93349) // Knightly Badge of the Shieldwall
 	shared.NewSimpleStatActive(93350) // Durable Badge of the Shieldwall
+
 	// StatResilienceRating
 	shared.NewSimpleStatActive(92782) // Steadfast Footman's Medallion
 	shared.NewSimpleStatActive(92783) // Mark of the Hardened Grunt
 	shared.NewSimpleStatActive(103639) // Pouch of White Ash
+
 	// StatSpellPower
 	shared.NewSimpleStatActive(97531) // Malevolent Gladiator's Badge of Dominance
 	shared.NewSimpleStatActive(97532) // Malevolent Gladiator's Badge of Dominance
 	shared.NewSimpleStatActive(97936) // Malevolent Gladiator's Badge of Dominance
+
 	// StatSpirit
 	shared.NewSimpleStatActive(81136) // Cloak of Hidden Flasks
 	shared.NewSimpleStatActive(81264) // Vial of Ichorous Blood
@@ -166,6 +176,7 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(102314) // 5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Int Spirit Trinket (5)
 	shared.NewSimpleStatActive(103688) // Contemplation of Chi-Ji
 	shared.NewSimpleStatActive(103988) // Contemplation of Chi-Ji
+
 	// StatStrength
 	shared.NewSimpleStatActive(81268) // Lessons of the Darkmaster
 	shared.NewSimpleStatActive(84490) // Dreadful Gladiator's Badge of Victory

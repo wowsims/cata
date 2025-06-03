@@ -116,7 +116,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		proc := procEffect.GetProc()
 		procAction := core.ActionID{SpellID: procEffect.BuffId}
-		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats), time.Millisecond*time.Duration(procEffect.EffectDurationMs))
+		procAura := character.NewTemporaryStatsAura(
+			config.Name+" Proc",
+			procAction,
+			stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats),
+			time.Millisecond*time.Duration(procEffect.EffectDurationMs),
+		)
 		var dpm *core.DynamicProcManager
 		if (proc.Ppm != 0) && (config.ProcMask == core.ProcMaskUnknown) {
 			if isEnchant {
@@ -153,6 +158,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 				}
 			}
 		}
+
+		if config.ProcMask.Matches(core.ProcMaskEmpty) &&
+			(core.GetItemByID(config.ItemID).WeaponType > 0 || core.GetItemByID(config.ItemID).RangedWeaponType > 0) {
+			config.ProcMask = *character.GetDynamicProcMaskForWeaponEffect(config.ItemID)
+		}
+
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   triggerActionID,
 			Name:       config.Name,

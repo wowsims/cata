@@ -743,7 +743,7 @@ func LoadAndWriteRawRandomSuffixes(dbHelper *DBHelper, inputsDir string) ([]dbc.
 	LEFT JOIN SpellItemEnchantment sie1 ON irs.Enchantment_1 = sie1.ID
 	LEFT JOIN SpellItemEnchantment sie2 ON irs.Enchantment_2 = sie2.ID
 	LEFT JOIN SpellItemEnchantment sie3 ON irs.Enchantment_3 = sie3.ID
-	LEFT JOIN SpellItemEnchantment sie4 ON irs.Enchantment_4 = sie4.ID;
+	LEFT JOIN SpellItemEnchantment sie4 ON irs.Enchantment_4 = sie4.ID
 `
 	// Use your generic LoadRows function to scan each row into a RawRandomSuffix.
 	items, err := LoadRows(dbHelper.db, query, ScanRawRandomSuffix)
@@ -996,7 +996,7 @@ SELECT
 FROM Talent t
 JOIN SpellName sn ON sn.ID = t.SpellID
 WHERE sn.Name_lang IS NOT "Dummy 5.0 Talent"
-ORDER BY t.ClassID;
+ORDER BY t.ClassID
 `
 
 	talents, err := LoadRows(dbHelper.db, query, ScanTalent)
@@ -1048,7 +1048,7 @@ func LoadSpellIcons(dbHelper *DBHelper) (map[int]SpellIcon, error) {
   sn.Name_lang
 FROM SpellMisc sm
 LEFT JOIN Spell ss ON ss.ID = sm.SpellID
-LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
+LEFT JOIN SpellName sn ON sn.ID = sm.SpellID
 `
 
 	talents, err := LoadRows(dbHelper.db, query, ScanSpellIcon)
@@ -1164,84 +1164,137 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, error) {
 	query := `
 	SELECT DISTINCT
-		sn.Name_lang,
-		sn.ID,
-		COALESCE(sm.SchoolMask,0),
-		COALESCE(sm.Speed,0),
-		COALESCE(sm.LaunchDelay,0),
-		COALESCE(sm.MinDuration,0),
-		COALESCE(ss.MaxScalingLevel, 0),
-		COALESCE(ss.MinScalingLevel, 0),
-		COALESCE(ss.ScalesFromItemLevel, 0),
-		COALESCE(sl.SpellLevel, 0),
-		COALESCE(sl.BaseLevel, 0),
-		COALESCE(sl.MaxLevel, 0),
-		COALESCE(sl.MaxPassiveAuraLevel, 0),
-		COALESCE(sc.RecoveryTime, 0),
-		COALESCE(sc.StartRecoveryTime, 0),
-		COALESCE(sr.RangeMin_0, 0.0),
-		COALESCE(sr.RangeMax_0, 0.0),
-		COALESCE(sm."Attributes", ""),
-		COALESCE(ssc.Flags, 0),
-		COALESCE(ssc.MaxCharges, 0),
-		COALESCE(ssc.ChargeRecoveryTime, 0),
-		COALESCE(ssc.TypeMask, 0),
-		COALESCE(scs.Category,0),
-		COALESCE(sd.Duration,0),
-		COALESCE(sao.ProcChance,0),
-		COALESCE(sao.ProcCharges,0),
-		COALESCE(sao.ProcTypeMask, ""),
-		COALESCE(sao.ProcCategoryRecovery, 0),
-		COALESCE(spm.BaseProcRate, 0),
-		COALESCE(sei.EquippedItemClass, 0),
-		COALESCE(sei.EquippedItemInvTypes, 0),
-		COALESCE(sei.EquippedItemSubclass,0),
-		COALESCE(ss.CastTimeMin, 0),
-		COALESCE(sco.SpellClassMask, ""),
-		COALESCE(sco.SpellClassSet, 0),
-		COALESCE(si.AuraInterruptFlags, ""),
-		COALESCE(si.ChannelInterruptFlags, ""),
-		COALESCE(ssp.ShapeshiftMask, ""),
-		COALESCE(s.Description_lang, ""),
-		COALESCE(sdv.Variables, ""),
-		COALESCE(sao.CumulativeAura, 0),
-		COALESCE(str.MaxTargets, 0),
-		COALESCE(sm.SpellIconFileDataID, 0),
-		COALESCE(
-			json_group_array(
-			json_object(
-				'ModifierType', sppmm.Type,
-				'Coeff',        sppmm.Coeff,
-				'Param',        sppmm.Param
+	sn.Name_lang,
+	sn.ID,
+	COALESCE(sm.SchoolMask, 0),
+	COALESCE(sm.Speed, 0),
+	COALESCE(sm.LaunchDelay, 0),
+	COALESCE(sm.MinDuration, 0),
+	COALESCE(ss.MaxScalingLevel, 0),
+	COALESCE(ss.MinScalingLevel, 0),
+	COALESCE(ss.ScalesFromItemLevel, 0),
+	COALESCE(sl.SpellLevel, 0),
+	COALESCE(sl.BaseLevel, 0),
+	COALESCE(sl.MaxLevel, 0),
+	COALESCE(sl.MaxPassiveAuraLevel, 0),
+	COALESCE(sc.RecoveryTime, 0),
+	COALESCE(sc.StartRecoveryTime, 0),
+	COALESCE(sr.RangeMin_0, 0.0),
+	COALESCE(sr.RangeMax_0, 0.0),
+	COALESCE(sm."Attributes", ""),
+	COALESCE(ssc.Flags, 0),
+	COALESCE(ssc.MaxCharges, 0),
+	COALESCE(ssc.ChargeRecoveryTime, 0),
+	COALESCE(ssc.TypeMask, 0),
+	COALESCE(scs.Category, 0),
+	COALESCE(sd.Duration, 0),
+	COALESCE(sao.ProcChance, 0),
+	COALESCE(sao.ProcCharges, 0),
+	COALESCE(sao.ProcTypeMask, ""),
+	COALESCE(sao.ProcCategoryRecovery, 0),
+	COALESCE(spm.BaseProcRate, 0),
+	COALESCE(sei.EquippedItemClass, 0),
+	COALESCE(sei.EquippedItemInvTypes, 0),
+	COALESCE(sei.EquippedItemSubclass, 0),
+	COALESCE(ss.CastTimeMin, 0),
+	COALESCE(sco.SpellClassMask, ""),
+	COALESCE(sco.SpellClassSet, 0),
+	COALESCE(si.AuraInterruptFlags, ""),
+	COALESCE(si.ChannelInterruptFlags, ""),
+	COALESCE(ssp.ShapeshiftMask, ""),
+	COALESCE(s.Description_lang, ""),
+	COALESCE(sdv.Variables, ""),
+	COALESCE(sao.CumulativeAura, 0),
+	COALESCE(str.MaxTargets, 0),
+	COALESCE(sm.SpellIconFileDataID, 0),
+	COALESCE(
+		json_group_array (
+			json_object (
+				'ModifierType',
+				sppmm.Type,
+				'Coeff',
+				sppmm.Coeff,
+				'Param',
+				sppmm.Param
 			)
-			),
-			'[]'
-		) AS RppmModifiersJson
-		FROM Spell s
-		LEFT JOIN SpellName sn ON s.ID = sn.ID
-		LEFT JOIN SpellEffect se ON s.ID = se.SpellID
-		LEFT JOIN SpellMisc sm ON s.ID = sm.SpellID
-		LEFT JOIN SpellLevels sl ON s.ID = sl.SpellID
-		LEFT JOIN SpellCooldowns sc ON s.ID = sc.SpellID
-		LEFT JOIN SpellScaling ss ON s.ID = ss.SpellID
-		LEFT JOIN SpellLabel slb ON s.ID = slb.SpellID
-		LEFT JOIN SpellCategories scs ON s.ID = scs.SpellID
-		LEFT JOIN SpellCategory ssc ON ssc.ID = scs.Category
-		LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-		LEFT JOIN SpellPower sp ON sp.SpellID = s.ID
-		LEFT JOIN SpellInterrupts si ON si.SpellID = s.ID
-		LEFT JOIN SpellEquippedItems sei ON sei.SpellID = s.ID
-		LEFT JOIN SpellAuraOptions sao ON sao.SpellID = s.ID
-		LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
-		LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
-		LEFT JOIN SpellXDescriptionVariables sxd ON s.ID = sxd.SpellID
-		LEFT JOIN SpellDescriptionVariables sdv ON sdv.ID = sxd.SpellDescriptionVariablesID
-		LEFT JOIN SpellTargetRestrictions str ON s.ID = str.SpellID
-		LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
-		LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
-		LEFT JOIN SpellProcsPerMinuteMod sppmm ON sppmm.SpellProcsPerMinuteID = sao.SpellProcsPerMinuteID
-		WHERE sco.SpellClassSet is not null
-		GROUP BY s.ID
+		),
+		'[]'
+	) AS RppmModifiersJson
+FROM
+    Spell as s
+	LEFT JOIN SpellName sn ON s.ID = sn.ID
+	LEFT JOIN SpellEffect se ON s.ID = se.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellMisc
+		GROUP BY
+			SpellID
+	) sm ON s.ID = sm.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellLevels
+		GROUP BY
+			SpellID
+	) sl ON s.ID = sl.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellCooldowns
+		GROUP BY
+			SpellID
+	) sc ON s.ID = sc.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellScaling
+		GROUP BY
+			SpellID
+	) ss ON s.ID = ss.SpellID
+	LEFT JOIN SpellLabel slb ON s.ID = slb.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellCategories
+		GROUP BY
+			SpellID
+	) scs ON s.ID = scs.SpellID
+	LEFT JOIN SpellCategory ssc ON ssc.ID = scs.Category
+	LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
+	LEFT JOIN SpellPower sp ON sp.SpellID = s.ID
+	LEFT JOIN SpellInterrupts si ON si.SpellID = s.ID
+	LEFT JOIN SpellEquippedItems sei ON sei.SpellID = s.ID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellAuraOptions
+		GROUP BY
+			SpellID
+	) sao ON sao.SpellID = s.ID
+	LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
+	LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
+	LEFT JOIN SpellXDescriptionVariables sxd ON s.ID = sxd.SpellID
+	LEFT JOIN SpellDescriptionVariables sdv ON sdv.ID = sxd.SpellDescriptionVariablesID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellTargetRestrictions
+		GROUP BY
+			SpellID
+	) str ON s.ID = str.SpellID
+	LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
+	LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
+	LEFT JOIN SpellProcsPerMinuteMod sppmm ON sppmm.SpellProcsPerMinuteID = sao.SpellProcsPerMinuteID
+	GROUP BY s.ID
+	ORDER BY s.ID asc
 `
 
 	spells, err := LoadRows(dbHelper.db, query, ScanSpells)
