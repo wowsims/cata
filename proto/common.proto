@@ -134,6 +134,12 @@ enum Class {
 	ClassWarrior = 9;
 	ClassDeathKnight = 10;
 	ClassMonk = 11;
+	ClassExtra1 = 12;
+	ClassExtra2 = 13;
+	ClassExtra3 = 14;
+	ClassExtra4 = 15;
+	ClassExtra5 = 16;
+	ClassExtra6 = 17;
 }
 
 enum Profession {

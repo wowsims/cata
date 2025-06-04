@@ -4,6 +4,7 @@ import (
 	"math"
 	"slices"
 
+	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
@@ -53,8 +54,8 @@ func (se *SpellEffect) ToProto() *proto.SpellEffect {
 		SpellId:       int32(se.SpellID),
 		Index:         int32(se.EffectIndex),
 		Type:          proto.EffectType(se.EffectType),
-		EffectSpread:  se.Delta(BASE_LEVEL, BASE_LEVEL),
-		MinEffectSize: se.Min(BASE_LEVEL, BASE_LEVEL),
+		EffectSpread:  math.Round(se.Delta(BASE_LEVEL, BASE_LEVEL)),
+		MinEffectSize: math.Round(se.Min(BASE_LEVEL, BASE_LEVEL)),
 	}
 	if spellEffect.EffectSpread == 0 {
 		spellEffect.EffectSpread = float64(se.EffectDieSides)
@@ -101,6 +102,18 @@ func (s *SpellEffect) ScalingClass() proto.Class {
 		return proto.Class_ClassMonk
 	case 11:
 		return proto.Class_ClassDruid
+	case -1:
+		return proto.Class_ClassExtra1
+	case -2:
+		return proto.Class_ClassExtra2
+	case -3:
+		return proto.Class_ClassExtra3
+	case -4:
+		return proto.Class_ClassExtra4
+	case -5:
+		return proto.Class_ClassExtra5
+	case -6:
+		return proto.Class_ClassExtra6
 	default:
 		return proto.Class_ClassUnknown
 	}
@@ -132,7 +145,7 @@ func (s *SpellEffect) Average(pLevel int, level int) float64 {
 	}
 
 	scale := s.ScalingClass()
-	spell := dbcInstance.Spells[s.ID]
+	spell := dbcInstance.Spells[s.SpellID]
 
 	if s.Coefficient != 0 && scale != proto.Class_ClassUnknown {
 		if spell.MaxScalingLevel > 0 {
@@ -239,10 +252,11 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 		}
 		stats[proto.Stat_StatAttackPower] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
-		if effect.Coefficient != 0 && scalesWithIlvl {
-			stats[stat] = effect.CalcCoefficientStatValue(ilvl)
+		if effect.Coefficient != 0 && effect.ScalingType != 0 {
+			stats[stat] = effect.CalcCoefficientStatValue(core.TernaryInt(scalesWithIlvl, ilvl, 0))
 			break
 		}
+
 		// if Coefficient is not set, we fall back to EffectBasePoints
 		stats[stat] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_DAMAGE_DONE && effect.EffectType == E_APPLY_AURA:
