@@ -209,8 +209,14 @@ func (aura *Aura) SetStacks(sim *Simulation, newStacks int32) {
 func (aura *Aura) AddStack(sim *Simulation) {
 	aura.SetStacks(sim, aura.stacks+1)
 }
+func (aura *Aura) AddStacks(sim *Simulation, stacks int32) {
+	aura.SetStacks(sim, aura.stacks+stacks)
+}
 func (aura *Aura) RemoveStack(sim *Simulation) {
-	aura.SetStacks(sim, aura.stacks-1)
+	aura.SetStacks(sim, max(0, aura.stacks-1))
+}
+func (aura *Aura) RemoveStacks(sim *Simulation, stacks int32) {
+	aura.SetStacks(sim, max(0, aura.stacks-stacks))
 }
 
 func (aura *Aura) UpdateExpires(newExpires time.Duration) {

@@ -39,6 +39,7 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 				anyHit = anyHit || results[idx].Landed()
 			}
 
+			// TODO: Check if this still happens with Conversion talent active
 			if anyHit {
 				dk.AddRunicPower(sim, 10, rpMetric)
 			}
