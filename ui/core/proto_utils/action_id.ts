@@ -552,7 +552,6 @@ export class ActionId {
 				break;
 			case 'Raging Blow':
 			case 'Whirlwind':
-			case 'Slam':
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':
@@ -654,6 +653,11 @@ export class ActionId {
 			case 'Mortal Strike':
 				if (tag === 3) {
 					name = 'Fiery attack (T12 4P)';
+				}
+				break;
+			case 'Slam':
+				if (tag == 1) {
+					name += ' (Sweeping Strikes)';
 				}
 				break;
 			// Hunter - T12 2P proc
@@ -1146,7 +1150,6 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 1329, tag: 2 }), { spellId: 27576 }], // Rogue - Mutilate Off-Hand
 	[JSON.stringify({ spellId: 17364, tag: 2 }), { spellId: 32176 }], // Shaman - Stormstrike Off-Hand
 	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
-	[JSON.stringify({ spellId: 1464, tag: 2 }), { spellId: 97992 }], // Warrior - Slam Off-Hand
 	[JSON.stringify({ spellId: 1680, tag: 2 }), { spellId: 44949 }], // Warrior - Whirlwind Off-Hand
 
 	// Monk - Zen Sphere

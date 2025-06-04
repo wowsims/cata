@@ -63,6 +63,7 @@ func (war *ArmsWarrior) Initialize() {
 
 	war.registerMortalStrike()
 	war.registerOverpower()
+	war.registerSlam()
 	war.registerSweepingStrikes()
 }
 

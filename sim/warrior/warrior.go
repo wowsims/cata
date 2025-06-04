@@ -44,10 +44,9 @@ const (
 	SpellMaskHeroicStrike
 	SpellMaskHeroicThrow
 	SpellMaskOverpower
-	// SpellMaskRend
 	// SpellMaskRevenge
 	SpellMaskShatteringThrow
-	// SpellMaskSlam
+	SpellMaskSlam
 	SpellMaskSunderArmor
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
@@ -101,7 +100,6 @@ type Warrior struct {
 	// Rend              *core.Spell
 	// Revenge           *core.Spell
 	// ShieldBlock       *core.Spell
-	// Slam              *core.Spell
 	// SunderArmor       *core.Spell
 	DeepWounds *core.Spell
 
@@ -112,9 +110,10 @@ type Warrior struct {
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
-	EnrageAura        *core.Aura
-	BerserkerRageAura *core.Aura
-	TasteForBloodAura *core.Aura
+	EnrageAura          *core.Aura
+	BerserkerRageAura   *core.Aura
+	TasteForBloodAura   *core.Aura
+	SweepingStrikesAura *core.Aura
 	// BloodsurgeAura    *core.Aura
 	// SuddenDeathAura   *core.Aura
 	// ShieldBlockAura   *core.Aura
@@ -160,14 +159,11 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerCleaveSpell()
 	warrior.registerHeroicLeap()
 	warrior.registerHeroicThrow()
-	// warrior.registerInnerRage()
 	warrior.registerRecklessness()
-	// warrior.registerRendSpell()
 	// warrior.registerRevengeSpell()
 	warrior.registerShatteringThrow()
 	// warrior.registerShieldBlockCD()
 	warrior.registerShieldWall()
-	// warrior.registerSlamSpell()
 	warrior.registerSunderArmor()
 	warrior.registerThunderClap()
 	warrior.registerWhirlwind()

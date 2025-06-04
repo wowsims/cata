@@ -26,7 +26,7 @@ func (war *ArmsWarrior) registerSweepingStrikes() {
 		},
 	})
 
-	aura := core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+	war.SweepingStrikesAura = core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:     "Sweeping Strikes",
 		ActionID: actionID,
 		Duration: time.Second * 10,
@@ -60,7 +60,7 @@ func (war *ArmsWarrior) registerSweepingStrikes() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			aura.Activate(sim)
+			war.SweepingStrikesAura.Activate(sim)
 		},
 	})
 
