@@ -110,6 +110,7 @@ func (dk *DeathKnight) registerPlagueLeech() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dk.RegenRandomDepletedRune(sim, runeMetrics)
+			dk.RegenRandomDepletedRune(sim, runeMetrics)
 		},
 	})
 }
