@@ -13,7 +13,7 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 	frozenOrb := frost.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 84714},
 		SpellSchool:    core.SpellSchoolFrost,
-		ProcMask:       core.ProcMaskSpellDamage,
+		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellFrozenOrb,
 
@@ -59,7 +59,7 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 			BaseStats:       frozenOrbBaseStats,
 			StatInheritance: createFrozenOrbInheritance(),
 			EnabledOnStart:  false,
-			IsGuardian:      true,
+			IsGuardian:      false,
 		}),
 		mageOwner: frost,
 		TickCount: 0,
@@ -73,7 +73,7 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 }
 
 func (frozenOrb *FrozenOrb) enable(sim *core.Simulation) {
-
+	frozenOrb.TickCount = 0
 	frozenOrb.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
 			stats.SpellPower: ownerStats[stats.SpellPower],
@@ -94,9 +94,8 @@ func (frozenOrb *FrozenOrb) Reset(_ *core.Simulation) {
 }
 
 func (frozenOrb *FrozenOrb) ExecuteCustomRotation(sim *core.Simulation) {
-	spell := frozenOrb.FrozenOrbTick
-	if success := spell.Cast(sim, frozenOrb.CurrentTarget); !success {
-		frozenOrb.Disable(sim)
+	if frozenOrb.FrozenOrbTick.CanCast(sim, frozenOrb.CurrentTarget) {
+		frozenOrb.FrozenOrbTick.Cast(sim, frozenOrb.CurrentTarget)
 	}
 }
 
