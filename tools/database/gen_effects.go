@@ -67,7 +67,8 @@ func RegisterAllOnUseProcs() {
 	// {{ .Name }}
 {{- range .Entries }}
 	{{if .ProcInfo.IsEmpty}}
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	{{- end}}
 	// {{.Tooltip}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -95,7 +96,8 @@ func RegisterAllEnchants() {
 	// {{ .Name }}
 {{- range .Entries }}
 	{{if .ProcInfo.IsEmpty}}
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	//
 	{{- end}}
 	{{- range (.Tooltip | formatStrings 100) }}

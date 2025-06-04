@@ -9,7 +9,8 @@ func RegisterAllOnUseProcs() {
 
 	// Procs
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
@@ -19,7 +20,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
@@ -29,7 +31,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
@@ -39,7 +42,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
@@ -49,7 +53,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
@@ -59,7 +64,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
@@ -69,7 +75,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
@@ -79,7 +86,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
@@ -89,7 +97,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
@@ -99,7 +108,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
@@ -109,7 +119,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
@@ -119,7 +130,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
@@ -129,7 +141,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
@@ -139,7 +152,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
@@ -149,7 +163,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
@@ -159,7 +174,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
@@ -169,7 +185,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
@@ -179,7 +196,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Teleport yourself to the Timeless Isle.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Time-Lost Artifact",
@@ -189,7 +207,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
@@ -199,7 +218,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
@@ -209,7 +229,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
@@ -219,7 +240,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
@@ -229,7 +251,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
@@ -239,7 +262,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
@@ -249,7 +273,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
@@ -259,7 +284,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
@@ -269,7 +295,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
@@ -279,7 +306,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
@@ -289,7 +317,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
@@ -299,7 +328,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
@@ -309,7 +339,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
@@ -319,7 +350,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
@@ -329,7 +361,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
@@ -339,7 +372,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
@@ -349,7 +383,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
@@ -359,7 +394,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
@@ -369,7 +405,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
@@ -379,7 +416,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
@@ -389,7 +427,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
@@ -399,7 +438,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
@@ -409,7 +449,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
@@ -419,7 +460,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
@@ -429,7 +471,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
@@ -439,7 +482,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
@@ -449,7 +493,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
@@ -459,7 +504,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
@@ -469,7 +515,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
@@ -479,7 +526,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
@@ -489,7 +537,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
@@ -499,7 +548,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
@@ -509,7 +559,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
@@ -519,7 +570,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
@@ -529,7 +581,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
@@ -539,7 +592,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
@@ -549,7 +603,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
@@ -559,7 +614,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
@@ -569,7 +625,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
@@ -579,7 +636,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
@@ -589,7 +647,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
@@ -599,7 +658,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
@@ -609,7 +669,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
@@ -619,7 +680,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
@@ -629,7 +691,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
@@ -639,7 +702,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
@@ -649,7 +713,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
@@ -659,7 +724,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
@@ -669,7 +735,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
@@ -679,7 +746,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
@@ -689,7 +757,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
@@ -699,7 +768,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
@@ -709,7 +779,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
@@ -719,7 +790,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
@@ -729,7 +801,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
@@ -739,7 +812,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
@@ -749,7 +823,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
@@ -759,7 +834,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
@@ -769,7 +845,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
@@ -779,7 +856,8 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// TODO: Overwrite me
+	// NOTE: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
