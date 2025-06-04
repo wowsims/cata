@@ -407,7 +407,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	shouldEnableTargetDummies(): boolean {
-		if (this.getPlayerSpec().isHealingSpec) {
+		if (this.getPlayerSpec().isHealingSpec || this.getPlayerSpec().isTankSpec) {
 			return true;
 		}
 

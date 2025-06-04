@@ -70,7 +70,7 @@ func TestGuardian(t *testing.T) {
 // 	core.RaidBenchmark(b, rsr)
 // }
 
-var StandardTalents = "000000"
+var StandardTalents = "010000"
 var StandardGlyphs = &proto.Glyphs{
 }
 
