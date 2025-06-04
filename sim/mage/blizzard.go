@@ -13,9 +13,10 @@ func (mage *Mage) registerBlizzardSpell() {
 	var blizzardScaling = 0.323
 	var blizzardVariance = 0.0
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 42208},
-		SpellSchool:      core.SpellSchoolFrost,
-		ProcMask:         core.SpellFlagAoE | core.ProcMaskSpellDamage,
+		ActionID:    core.ActionID{SpellID: 42208},
+		SpellSchool: core.SpellSchoolFrost,
+		// ProcMask:       core.SpellFlagAoE | core.ProcMaskSpellDamage,
+		ProcMask:         core.ProcMaskSpellDamage,
 		ClassSpellMask:   MageSpellBlizzard,
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),

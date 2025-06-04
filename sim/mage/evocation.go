@@ -56,18 +56,6 @@ func (mage *Mage) registerEvocation() {
 		},
 	})
 
-	invocationCooldownMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellEvocation,
-		FloatValue: -1,
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-	})
-
-	invocationSpeedUp := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: MageSpellEvocation,
-		TimeValue: time.Second * -1.0,
-		Kind:      core.SpellMod_DotTickLength_Flat,
-	})
-
 	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
 		FloatValue: 0.15,
@@ -87,8 +75,17 @@ func (mage *Mage) registerEvocation() {
 	})
 
 	if mage.Talents.Invocation {
-		invocationCooldownMod.Activate()
-		invocationSpeedUp.Activate()
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask:  MageSpellEvocation,
+			FloatValue: -1,
+			Kind:       core.SpellMod_Cooldown_Multiplier,
+		})
+
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask: MageSpellEvocation,
+			TimeValue: time.Second * -1.0,
+			Kind:      core.SpellMod_DotTickLength_Flat,
+		})
 	}
 
 	mage.AddMajorCooldown(core.MajorCooldown{
