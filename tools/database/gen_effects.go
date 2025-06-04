@@ -200,8 +200,8 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 		procGroups = append(procGroups, grp)
 	}
 
-	GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds.go", TmplStrOnUse)
-	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs.go", TmplStrProc)
+	GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds_auto_gen.go", TmplStrOnUse)
+	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs_augo_gen.go", TmplStrProc)
 }
 
 func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, groupMapProc map[string]Group) {
