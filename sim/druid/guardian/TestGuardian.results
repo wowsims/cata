@@ -42,8 +42,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 83829.70235
-  tps: 580836.99211
+  dps: 82727.81467
+  tps: 573176.02674
   dtps: 57671.1799
   hps: 18535.67057
  }
@@ -204,10 +204,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 82359.41656
-  tps: 570691.28121
-  dtps: 56589.02164
-  hps: 18288.64324
+  dps: 82189.04516
+  tps: 569498.64309
+  dtps: 56784.52925
+  hps: 18235.62818
  }
 }
 dps_results: {
@@ -366,8 +366,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 83728.37422
-  tps: 580134.87967
+  dps: 82629.46186
+  tps: 572494.683
   dtps: 57708.75143
   hps: 18522.83239
  }
@@ -438,8 +438,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 83978.13371
-  tps: 581803.01051
+  dps: 82864.87628
+  tps: 574066.32719
   dtps: 57646.29834
   hps: 18658.27452
  }
@@ -558,7 +558,7 @@ dps_results: {
   dps: 81242.13333
   tps: 563095.425
   dtps: 56933.77093
-  hps: 18211.85252
+  hps: 18201.144
  }
 }
 dps_results: {
@@ -600,10 +600,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 81630.63092
-  tps: 565733.22218
-  dtps: 56189.39509
-  hps: 18014.44044
+  dps: 81631.02163
+  tps: 565735.87252
+  dtps: 56189.39459
+  hps: 18014.4448
  }
 }
 dps_results: {
@@ -618,10 +618,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 81240.91677
-  tps: 563086.93404
-  dtps: 57097.96561
-  hps: 18218.45208
+  dps: 81137.99488
+  tps: 562366.67557
+  dtps: 57060.40985
+  hps: 18112.42748
  }
 }
 dps_results: {
@@ -636,8 +636,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-DelivererStoneofWisdom-92115"
  value: {
-  dps: 81269.33296
-  tps: 563209.42816
+  dps: 81261.2506
+  tps: 563152.85163
   dtps: 57069.36038
   hps: 18175.14852
  }
@@ -780,10 +780,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 81145.14656
-  tps: 562416.53058
-  dtps: 56948.5794
-  hps: 18339.04757
+  dps: 81168.22932
+  tps: 562578.23865
+  dtps: 56892.70323
+  hps: 18301.83031
  }
 }
 dps_results: {
@@ -987,10 +987,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 81638.23952
-  tps: 565794.41039
-  dtps: 56394.12733
-  hps: 18029.06834
+  dps: 81638.63202
+  tps: 565797.08143
+  dtps: 56394.12633
+  hps: 18029.07222
  }
 }
 dps_results: {
@@ -1601,7 +1601,7 @@ dps_results: {
  value: {
   dps: 81242.13333
   tps: 563095.425
-  dtps: 56791.28918
+  dtps: 56767.10543
   hps: 18341.25816
  }
 }
@@ -1617,10 +1617,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 81691.99211
-  tps: 566029.1146
-  dtps: 57002.0582
-  hps: 18322.22053
+  dps: 81744.96486
+  tps: 566399.88477
+  dtps: 57001.23837
+  hps: 18329.50998
  }
 }
 dps_results: {
@@ -1698,19 +1698,19 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 81269.29676
-  tps: 563285.73748
-  dtps: 56776.35521
-  hps: 18209.75076
+  dps: 81057.90217
+  tps: 561805.8544
+  dtps: 56963.0671
+  hps: 18143.91399
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 81732.23236
-  tps: 566455.89151
-  dtps: 56522.76748
-  hps: 18254.10861
+  dps: 81732.62876
+  tps: 566458.59333
+  dtps: 56522.76681
+  hps: 18254.1131
  }
 }
 dps_results: {
@@ -1772,7 +1772,7 @@ dps_results: {
  value: {
   dps: 81242.13333
   tps: 563095.425
-  dtps: 56727.66154
+  dtps: 56674.67072
   hps: 18341.25816
  }
 }
@@ -1788,10 +1788,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 81697.24631
-  tps: 566056.87163
-  dtps: 57001.89503
-  hps: 18324.72202
+  dps: 81748.13442
+  tps: 566413.03997
+  dtps: 57001.23837
+  hps: 18330.73786
  }
 }
 dps_results: {
@@ -2013,8 +2013,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 83760.06691
-  tps: 580353.13
+  dps: 82660.74074
+  tps: 572710.06595
   dtps: 57708.46826
   hps: 18527.82822
  }
@@ -2031,8 +2031,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 83728.37422
-  tps: 580134.87967
+  dps: 82629.46186
+  tps: 572494.683
   dtps: 57708.75143
   hps: 18522.83239
  }
@@ -2249,7 +2249,7 @@ dps_results: {
  value: {
   dps: 81242.13333
   tps: 563095.41948
-  dtps: 56750.74451
+  dtps: 56702.72216
   hps: 18336.76657
  }
 }
@@ -2265,10 +2265,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 81699.06969
-  tps: 566071.70503
-  dtps: 57001.89503
-  hps: 18323.47219
+  dps: 81749.9168
+  tps: 566427.58845
+  dtps: 57001.23837
+  hps: 18327.60579
  }
 }
 dps_results: {
@@ -2418,10 +2418,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 81214.58185
-  tps: 562902.50806
-  dtps: 56949.85682
-  hps: 18288.88325
+  dps: 81292.15509
+  tps: 563445.60229
+  dtps: 56853.54085
+  hps: 18352.45996
  }
 }
 dps_results: {
@@ -2652,10 +2652,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-TheHungerer-69112"
  value: {
-  dps: 81903.63226
-  tps: 567955.44278
-  dtps: 56704.68782
-  hps: 18496.62103
+  dps: 82000.30778
+  tps: 568632.01821
+  dtps: 56585.06945
+  hps: 18444.80491
  }
 }
 dps_results: {
@@ -2697,19 +2697,19 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 81324.18518
-  tps: 563669.90844
-  dtps: 57281.47346
-  hps: 18237.77683
+  dps: 81309.19309
+  tps: 563565.00702
+  dtps: 57402.74282
+  hps: 18185.12941
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 81621.04492
-  tps: 565685.28277
-  dtps: 56336.44865
-  hps: 18007.06599
+  dps: 81621.42725
+  tps: 565687.89432
+  dtps: 56336.44798
+  hps: 18007.0704
  }
 }
 dps_results: {
@@ -2733,8 +2733,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
-  dps: 81261.12915
-  tps: 563152.00153
+  dps: 81253.04679
+  tps: 563095.425
   dtps: 57069.36038
   hps: 18175.14852
  }
@@ -3051,7 +3051,7 @@ dps_results: {
   dps: 81718.14897
   tps: 566290.26429
   dtps: 57406.82267
-  hps: 18558.1487
+  hps: 18546.59632
  }
 }
 dps_results: {
@@ -3060,7 +3060,7 @@ dps_results: {
   dps: 81219.89083
   tps: 562939.82818
   dtps: 57304.83047
-  hps: 18688.93555
+  hps: 18677.66128
  }
 }
 dps_results: {
@@ -3069,7 +3069,7 @@ dps_results: {
   dps: 81517.59282
   tps: 564845.9567
   dtps: 57034.1258
-  hps: 18310.35663
+  hps: 18310.29274
  }
 }
 dps_results: {
@@ -3078,7 +3078,7 @@ dps_results: {
   dps: 81718.14897
   tps: 566290.26429
   dtps: 57406.82267
-  hps: 18558.1487
+  hps: 18546.59632
  }
 }
 dps_results: {
@@ -3087,7 +3087,7 @@ dps_results: {
   dps: 81242.13333
   tps: 563095.425
   dtps: 56800.78221
-  hps: 18213.50064
+  hps: 18202.25097
  }
 }
 dps_results: {
@@ -3096,7 +3096,7 @@ dps_results: {
   dps: 81242.13333
   tps: 563095.425
   dtps: 56800.78221
-  hps: 18213.50064
+  hps: 18213.43671
  }
 }
 dps_results: {
@@ -3185,7 +3185,7 @@ dps_results: {
  value: {
   dps: 81242.13333
   tps: 563095.425
-  dtps: 56792.85665
+  dtps: 56716.02723
   hps: 18341.25816
  }
 }
@@ -3201,10 +3201,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 81647.26627
-  tps: 565851.79758
-  dtps: 56209.36533
-  hps: 18011.666
+  dps: 81647.66522
+  tps: 565854.50777
+  dtps: 56209.36466
+  hps: 18011.67019
  }
 }
 dps_results: {
