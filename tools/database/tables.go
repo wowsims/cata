@@ -431,6 +431,8 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		END AS name,
 		CASE
 			WHEN sie.Effect_0 IN (1, 3) THEN sie.EffectArg_0
+			WHEN sie.Effect_1 IN (1, 3) THEN sie.EffectArg_1
+			WHEN sie.Effect_2 IN (1, 3) THEN sie.EffectArg_2
 			ELSE se.SpellID
 		END AS spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,

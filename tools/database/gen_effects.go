@@ -25,7 +25,7 @@ type ProcInfo struct {
 type Entry struct {
 	ID       int
 	Name     string
-	Tooltip  string
+	Tooltip  []string
 	ProcInfo ProcInfo
 }
 
@@ -96,14 +96,17 @@ func RegisterAllEnchants() {
 {{- range .Entries }}
 	{{if .ProcInfo.IsEmpty}}
 	// TODO: Overwrite me
+	//
 	{{- end}}
-	// {{.Tooltip}}
+	{{- range (.Tooltip | formatStrings 100) }}
+	// {{.}}
+	{{- end}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "{{ .Name }}",
-		EnchantID:   {{ .ID }},
-		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
-		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
-		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+		EnchantID: {{ .ID }},
+		Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
+		ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
+		Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},
 	})
 {{- end }}
 
@@ -135,6 +138,7 @@ func GenerateEffectsFile(groups []Group, outFile string, templateString string) 
 		"asCoreCallback": asCoreCallback,
 		"asCoreProcMask": asCoreProcMask,
 		"asCoreOutcome":  asCoreOutcome,
+		"formatStrings":  formatStrings,
 	}
 	tmpl := template.Must(template.New("effects").Funcs(funcMap).Parse(templateString))
 	f, err := os.Create(outFile)
@@ -151,13 +155,21 @@ func GenerateEffectsFile(groups []Group, outFile string, templateString string) 
 
 func GenerateEnchantEffects(instance *dbc.DBC, db *WowDatabase) {
 	groupMapProc := map[string]Group{}
+	enchantSpellEffects := map[int]*dbc.SpellEffect{}
+
+	for _, effect := range instance.SpellEffectsById {
+		if effect.EffectType == dbc.E_ENCHANT_ITEM {
+			enchantSpellEffects[effect.EffectMiscValues[0]] = &effect
+		}
+	}
+
 	for _, enchant := range instance.Enchants {
 		parsed := enchant.ToProto()
 		if _, ok := db.Enchants[EnchantToDBKey(parsed)]; !ok {
 			continue
 		}
 
-		TryParseEnchantEffect(parsed, groupMapProc, instance)
+		TryParseEnchantEffect(parsed, groupMapProc, instance, enchantSpellEffects)
 	}
 
 	var procGroups []Group
@@ -214,8 +226,9 @@ func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, 
 			grp = Group{Name: "Procs"}
 		}
 
-		entry := Entry{Tooltip: tooltip.String(), ID: int(parsed.Id), Name: parsed.Name}
-		entry.ProcInfo = BuildProcInfo(parsed, instance, entry.Tooltip)
+		renderedTooltip := tooltip.String()
+		entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), ID: int(parsed.Id), Name: parsed.Name}
+		entry.ProcInfo = BuildProcInfo(parsed, instance, renderedTooltip)
 		grp.Entries = append(grp.Entries, entry)
 		groupMapProc["Procs"] = grp
 	}
@@ -247,20 +260,23 @@ func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[strin
 	return false
 }
 
-func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC) {
-	if enchant.EnchantEffect.GetProc() != nil && enchant.EffectId > 4267 {
-		tooltipString := instance.Spells[int(enchant.SpellId)].Description
-		tooltip, _ := tooltip.ParseTooltip(tooltipString, tooltip.DBCTooltipDataProvider{DBC: instance}, int64(enchant.SpellId))
+func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC, enchantSpellEffects map[int]*dbc.SpellEffect) {
+	if (enchant.EnchantEffect.GetProc() != nil || EnchantHasDummyEffect(enchant, instance)) && enchant.EffectId > 4267 {
+		if enchantingSpell, ok := enchantSpellEffects[int(enchant.EffectId)]; ok {
+			tooltipString := instance.Spells[enchantingSpell.SpellID].Description
+			tooltip, _ := tooltip.ParseTooltip(tooltipString, tooltip.DBCTooltipDataProvider{DBC: instance}, int64(enchantingSpell.SpellID))
 
-		grp, exists := groupMapProc["Procs"]
-		if !exists {
-			grp = Group{Name: "Procs"}
+			grp, exists := groupMapProc["Enchants"]
+			if !exists {
+				grp = Group{Name: "Enchants"}
+			}
+
+			renderedTooltip := tooltip.String()
+			entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), ID: int(enchant.EffectId), Name: enchant.Name}
+			entry.ProcInfo = BuildEnchantProcInfo(enchant, instance, renderedTooltip)
+			grp.Entries = append(grp.Entries, entry)
+			groupMapProc["Enchants"] = grp
 		}
-
-		entry := Entry{Tooltip: tooltip.String(), ID: int(enchant.EffectId), Name: enchant.Name}
-		entry.ProcInfo = BuildEnchantProcInfo(enchant, instance, entry.Tooltip)
-		grp.Entries = append(grp.Entries, entry)
-		groupMapProc["Procs"] = grp
 	}
 }
 
@@ -298,11 +314,16 @@ func BuildEnchantProcInfo(enchant *proto.UIEnchant, instance *dbc.DBC, tooltip s
 	procSpellID := enchant.SpellId
 	if procSpellID == 0 {
 		fmt.Printf("WARN: Enchant %d with no spell id", enchant.EffectId)
+		return ProcInfo{IsEmpty: true}
 	}
 
 	procSpell, ok := instance.Spells[int(procSpellID)]
 	if !ok {
 		panic(fmt.Sprintf("Could not find proc aura %d spell for item effect %d.\n", procSpellID, enchant.EffectId))
+	}
+
+	if SpellHasDummyEffect(int(procSpellID), instance) {
+		return ProcInfo{IsEmpty: true}
 	}
 
 	weaponType := 0
@@ -522,4 +543,57 @@ func asCoreOutcome(outcome core.HitOutcome) string {
 	}
 
 	return "core.OutcomeEmpty"
+}
+
+func EnchantHasDummyEffect(enchant *proto.UIEnchant, instance *dbc.DBC) bool {
+	if dbEnchant, ok := instance.Enchants[int(enchant.EffectId)]; ok {
+		for idx := range 3 {
+			if (dbEnchant.Effects[idx] == dbc.ITEM_ENCHANTMENT_COMBAT_SPELL ||
+				dbEnchant.Effects[idx] == dbc.ITEM_ENCHANTMENT_EQUIP_SPELL) &&
+				SpellHasDummyEffect(dbEnchant.EffectArgs[idx], instance) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
+	if effects, ok := instance.SpellEffects[spellId]; ok {
+		for _, effect := range effects {
+			if effect.EffectAura == dbc.A_DUMMY ||
+				effect.EffectAura == dbc.A_PERIODIC_DUMMY {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func formatStrings(maxLength int, input []string) []string {
+	result := []string{}
+	for _, line := range input {
+		words := strings.Split(strings.Trim(line, "\n\r "), " ")
+		currentLine := ""
+		for _, word := range words {
+			if len(currentLine) > maxLength {
+				result = append(result, currentLine)
+				currentLine = ""
+			}
+
+			if len(currentLine) > 0 {
+				currentLine += " "
+			}
+
+			currentLine += word
+		}
+
+		if len(result) > 0 || len(currentLine) > 0 {
+			result = append(result, currentLine)
+		}
+	}
+
+	return result
 }

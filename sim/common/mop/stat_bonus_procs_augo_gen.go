@@ -10,7 +10,7 @@ func RegisterAllOnUseProcs() {
 	// Procs
 	
 	// TODO: Overwrite me
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
 		ItemID:   94518,
@@ -20,7 +20,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
 		ItemID:   95779,
@@ -30,7 +30,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
 		ItemID:   96151,
@@ -40,7 +40,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
 		ItemID:   96523,
@@ -50,7 +50,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Delicate Vial of the Sanguinaire",
 		ItemID:   96895,
@@ -60,7 +60,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
 		ItemID:   102292,
@@ -70,7 +70,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
 		ItemID:   102293,
@@ -80,7 +80,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
 		ItemID:   102294,
@@ -90,7 +90,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
 		ItemID:   102295,
@@ -100,7 +100,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
 		ItemID:   102298,
@@ -110,7 +110,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
 		ItemID:   102299,
@@ -120,7 +120,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
 		ItemID:   102300,
@@ -130,7 +130,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
 		ItemID:   102301,
@@ -140,7 +140,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
 		ItemID:   102302,
@@ -150,7 +150,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
 		ItemID:   102303,
@@ -160,7 +160,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
 		ItemID:   102304,
@@ -170,7 +170,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
 		ItemID:   102305,
@@ -180,7 +180,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Teleport yourself to the Timeless Isle.
+	// [Teleport yourself to the Timeless Isle.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Time-Lost Artifact",
 		ItemID:   103678,
@@ -190,7 +190,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
 		ItemID:   104426,
@@ -200,7 +200,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
 		ItemID:   104463,
@@ -210,7 +210,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
 		ItemID:   104476,
@@ -220,7 +220,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
 		ItemID:   104478,
@@ -230,7 +230,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
 		ItemID:   104495,
@@ -240,7 +240,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
 		ItemID:   104531,
@@ -250,7 +250,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
 		ItemID:   104544,
@@ -260,7 +260,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
 		ItemID:   104553,
@@ -270,7 +270,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
 		ItemID:   104576,
@@ -280,7 +280,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
 		ItemID:   104584,
@@ -290,7 +290,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
 		ItemID:   104611,
@@ -300,7 +300,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
 		ItemID:   104613,
@@ -310,7 +310,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
 		ItemID:   104675,
@@ -320,7 +320,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
 		ItemID:   104712,
@@ -330,7 +330,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
 		ItemID:   104725,
@@ -340,7 +340,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
 		ItemID:   104727,
@@ -350,7 +350,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
 		ItemID:   104744,
@@ -360,7 +360,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
 		ItemID:   104780,
@@ -370,7 +370,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
 		ItemID:   104793,
@@ -380,7 +380,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
 		ItemID:   104802,
@@ -390,7 +390,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
 		ItemID:   104825,
@@ -400,7 +400,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
 		ItemID:   104833,
@@ -410,7 +410,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
 		ItemID:   104860,
@@ -420,7 +420,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
 		ItemID:   104862,
@@ -430,7 +430,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
 		ItemID:   104924,
@@ -440,7 +440,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
 		ItemID:   104961,
@@ -450,7 +450,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
 		ItemID:   104974,
@@ -460,7 +460,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
 		ItemID:   104976,
@@ -470,7 +470,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
 		ItemID:   104993,
@@ -480,7 +480,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
 		ItemID:   105029,
@@ -490,7 +490,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
 		ItemID:   105042,
@@ -500,7 +500,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
 		ItemID:   105051,
@@ -510,7 +510,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
 		ItemID:   105074,
@@ -520,7 +520,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
 		ItemID:   105082,
@@ -530,7 +530,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
 		ItemID:   105109,
@@ -540,7 +540,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
 		ItemID:   105111,
@@ -550,7 +550,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
 		ItemID:   105173,
@@ -560,7 +560,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
 		ItemID:   105210,
@@ -570,7 +570,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
 		ItemID:   105223,
@@ -580,7 +580,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
 		ItemID:   105225,
@@ -590,7 +590,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
 		ItemID:   105242,
@@ -600,7 +600,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
 		ItemID:   105278,
@@ -610,7 +610,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
 		ItemID:   105291,
@@ -620,7 +620,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
 		ItemID:   105300,
@@ -630,7 +630,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
 		ItemID:   105323,
@@ -640,7 +640,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
 		ItemID:   105331,
@@ -650,7 +650,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
 		ItemID:   105358,
@@ -660,7 +660,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
 		ItemID:   105360,
@@ -670,7 +670,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Purified Bindings of Immerseus",
 		ItemID:   105422,
@@ -680,7 +680,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fusion-Fire Core",
 		ItemID:   105459,
@@ -690,7 +690,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Assurance of Consequence",
 		ItemID:   105472,
@@ -700,7 +700,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prismatic Prison of Pride",
 		ItemID:   105474,
@@ -710,7 +710,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.
+	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Evil Eye of Galakras",
 		ItemID:   105491,
@@ -720,7 +720,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Haromm's Talisman",
 		ItemID:   105527,
@@ -730,7 +730,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.
+	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Kardris' Toxic Totem",
 		ItemID:   105540,
@@ -740,7 +740,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.
+	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Nazgrim's Burnished Insignia",
 		ItemID:   105549,
@@ -750,7 +750,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Frenzied Crystal of Rage",
 		ItemID:   105572,
@@ -760,7 +760,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
+	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Rampage",
 		ItemID:   105580,
@@ -770,7 +770,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
+	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Acid-Grooved Tooth",
 		ItemID:   105607,
@@ -780,7 +780,7 @@ func RegisterAllOnUseProcs() {
 	})
 	
 	// TODO: Overwrite me
-	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
+	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thok's Tail Tip",
 		ItemID:   105609,
@@ -789,7 +789,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeEmpty,
 	})
 	
-	// Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027 for 15s. ( 20% chance, 55 sec cooldown)
+	// [Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027 for 15s. ( 20% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Xuen",
 		ItemID:   79327,
@@ -798,7 +798,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deliver a melee or ranged critical strike, you have a chance to gain Blessing of the Celestials, increasing your Agility by 3027 for 15s.
+	// [When you deliver a melee or ranged critical strike, you have a chance to gain Blessing of the Celestials, increasing your Agility by 3027 for 15s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Xuen",
 		ItemID:   79328,
@@ -807,7 +807,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When you cast healing spells, you have a chance to gain Blessing of the Celestials, increasing your Spirit by 3027 for 20s. ( 20% chance, 55 sec cooldown)
+	// [When you cast healing spells, you have a chance to gain Blessing of the Celestials, increasing your Spirit by 3027 for 20s. ( 20% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Chi-Ji",
 		ItemID:   79330,
@@ -816,7 +816,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.
+	// [When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Yu'lon",
 		ItemID:   79331,
@@ -825,7 +825,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 haste for 20s.
+	// [When your attacks hit you have a chance to gain 2573 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Windswept Pages",
 		ItemID:   81125,
@@ -834,7 +834,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Empty Fruit Barrel",
 		ItemID:   81133,
@@ -843,7 +843,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)
+	// [When your attacks hit you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Carbonic Carbuncle",
 		ItemID:   81138,
@@ -852,7 +852,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal damage you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)
+	// [When your spells deal damage you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vision of the Predator",
 		ItemID:   81192,
@@ -861,7 +861,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Iron Protector Talisman",
 		ItemID:   81243,
@@ -870,7 +870,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks critical strike your target you have a chance to gain 2573 Agility for 25s. ( 45% chance, 85 sec cooldown)
+	// [When your attacks critical strike your target you have a chance to gain 2573 Agility for 25s. ( 45% chance, 85 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Searing Words",
 		ItemID:   81267,
@@ -879,7 +879,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// Your healing and damaging spells have a chance to grant 1851 mastery for 20s.
+	// [Your healing and damaging spells have a chance to grant 1851 mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mark of the Catacombs",
 		ItemID:   83731,
@@ -888,7 +888,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1851 haste for 20s.
+	// [When you deal damage you have a chance to gain 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of the Catacombs",
 		ItemID:   83732,
@@ -897,7 +897,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Emblem of the Catacombs",
 		ItemID:   83733,
@@ -906,7 +906,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee attacks have a chance to grant 1851 parry for 20s.
+	// [Your melee attacks have a chance to grant 1851 parry for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Medallion of the Catacombs",
 		ItemID:   83734,
@@ -915,7 +915,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Symbol of the Catacombs",
 		ItemID:   83735,
@@ -924,7 +924,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing and damaging spells have a chance to grant 1851 spirit for 20s.
+	// [Your healing and damaging spells have a chance to grant 1851 spirit for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Compassion",
 		ItemID:   83736,
@@ -933,7 +933,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1851 critical strike for 20s.
+	// [When you deal damage you have a chance to gain 1851 critical strike for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Fidelity",
 		ItemID:   83737,
@@ -942,7 +942,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Grace",
 		ItemID:   83738,
@@ -951,7 +951,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee attacks have a chance to grant 1851 mastery for 20s.
+	// [Your melee attacks have a chance to grant 1851 mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Patience",
 		ItemID:   83739,
@@ -960,7 +960,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Devotion",
 		ItemID:   83740,
@@ -969,7 +969,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing and damaging spells have a chance to grant 1851 haste for 20s.
+	// [Your healing and damaging spells have a chance to grant 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fearwurm Relic",
 		ItemID:   84070,
@@ -978,7 +978,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1851 haste for 20s.
+	// [When you deal damage you have a chance to gain 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Charm of Ten Songs",
 		ItemID:   84071,
@@ -987,7 +987,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Braid of Ten Songs",
 		ItemID:   84072,
@@ -996,7 +996,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee attacks have a chance to grant 1851 parry for 20s.
+	// [Your melee attacks have a chance to grant 1851 parry for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Knot of Ten Songs",
 		ItemID:   84073,
@@ -1005,7 +1005,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fearwurm Badge",
 		ItemID:   84074,
@@ -1014,7 +1014,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing and damaging spells have a chance to grant 1851 critical strike for 20s.
+	// [Your healing and damaging spells have a chance to grant 1851 critical strike for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Kypari Zar",
 		ItemID:   84075,
@@ -1023,7 +1023,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1851 mastery for 20s.
+	// [When you deal damage you have a chance to gain 1851 mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Kypari Zar",
 		ItemID:   84076,
@@ -1032,7 +1032,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Emblem of Kypari Zar",
 		ItemID:   84077,
@@ -1041,7 +1041,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee attacks have a chance to grant 1851 dodge for 20s.
+	// [Your melee attacks have a chance to grant 1851 dodge for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Insignia of Kypari Zar",
 		ItemID:   84078,
@@ -1050,7 +1050,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.
+	// [Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Badge of Kypari Zar",
 		ItemID:   84079,
@@ -1059,7 +1059,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Conquest",
 		ItemID:   84349,
@@ -1068,7 +1068,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Dominance",
 		ItemID:   84489,
@@ -1077,7 +1077,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Victory",
 		ItemID:   84495,
@@ -1086,7 +1086,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Malevolent Gladiator's Insignia of Conquest",
 		ItemID:   84935,
@@ -1095,7 +1095,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Malevolent Gladiator's Insignia of Victory",
 		ItemID:   84937,
@@ -1104,7 +1104,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Malevolent Gladiator's Insignia of Dominance",
 		ItemID:   84941,
@@ -1113,7 +1113,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Iron Protector Talisman",
 		ItemID:   85181,
@@ -1122,7 +1122,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vial of Dragon's Blood",
 		ItemID:   86131,
@@ -1131,7 +1131,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bottle of Infinite Stars",
 		ItemID:   86132,
@@ -1140,7 +1140,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Light of the Cosmos",
 		ItemID:   86133,
@@ -1149,7 +1149,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lei Shen's Final Orders",
 		ItemID:   86144,
@@ -1158,7 +1158,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Qin-xi's Polarizing Seal",
 		ItemID:   86147,
@@ -1167,7 +1167,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Stuff of Nightmares",
 		ItemID:   86323,
@@ -1176,7 +1176,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Spirits of the Sun",
 		ItemID:   86327,
@@ -1185,7 +1185,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Terror in the Mists",
 		ItemID:   86332,
@@ -1194,7 +1194,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Darkmist Vortex",
 		ItemID:   86336,
@@ -1203,7 +1203,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Essence of Terror",
 		ItemID:   86388,
@@ -1212,7 +1212,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vial of Dragon's Blood",
 		ItemID:   86790,
@@ -1221,7 +1221,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bottle of Infinite Stars",
 		ItemID:   86791,
@@ -1230,7 +1230,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Light of the Cosmos",
 		ItemID:   86792,
@@ -1239,7 +1239,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lei Shen's Final Orders",
 		ItemID:   86802,
@@ -1248,7 +1248,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Qin-xi's Polarizing Seal",
 		ItemID:   86805,
@@ -1257,7 +1257,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Stuff of Nightmares",
 		ItemID:   86881,
@@ -1266,7 +1266,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Spirits of the Sun",
 		ItemID:   86885,
@@ -1275,7 +1275,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Terror in the Mists",
 		ItemID:   86890,
@@ -1284,7 +1284,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Darkmist Vortex",
 		ItemID:   86894,
@@ -1293,7 +1293,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Essence of Terror",
 		ItemID:   86907,
@@ -1302,7 +1302,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bottle of Infinite Stars",
 		ItemID:   87057,
@@ -1311,7 +1311,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vial of Dragon's Blood",
 		ItemID:   87063,
@@ -1320,7 +1320,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Light of the Cosmos",
 		ItemID:   87065,
@@ -1329,7 +1329,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lei Shen's Final Orders",
 		ItemID:   87072,
@@ -1338,7 +1338,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Qin-xi's Polarizing Seal",
 		ItemID:   87075,
@@ -1347,7 +1347,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Stuff of Nightmares",
 		ItemID:   87160,
@@ -1356,7 +1356,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Spirits of the Sun",
 		ItemID:   87163,
@@ -1365,7 +1365,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Terror in the Mists",
 		ItemID:   87167,
@@ -1374,7 +1374,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Darkmist Vortex",
 		ItemID:   87172,
@@ -1383,7 +1383,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Essence of Terror",
 		ItemID:   87175,
@@ -1392,7 +1392,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 spellpower for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your healing spells have a chance to grant 1926 spellpower for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Core of Decency",
 		ItemID:   87497,
@@ -1401,7 +1401,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your harmful spells have a chance to increase your spell power by 2040 for 10s. ( 10% chance, 55 sec cooldown)
+	// [Your harmful spells have a chance to increase your spell power by 2040 for 10s. ( 10% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mithril Wristwatch",
 		ItemID:   87572,
@@ -1410,7 +1410,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your direct healing and heal over time spells have a chance to increase your haste by 2040 for 10s. ( 10% chance, 55 sec cooldown)
+	// [Your direct healing and heal over time spells have a chance to increase your haste by 2040 for 10s. ( 10% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thousand-Year Pickled Egg",
 		ItemID:   87573,
@@ -1419,7 +1419,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Chance on melee and ranged critical strike to increase your attack power by 4000 for 10s.
+	// [Chance on melee and ranged critical strike to increase your attack power by 4000 for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Coren's Cold Chromium Coaster",
 		ItemID:   87574,
@@ -1428,7 +1428,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.
+	// [You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "The Gloaming Blade",
 		ItemID:   88149,
@@ -1437,7 +1437,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Conquest",
 		ItemID:   91104,
@@ -1446,7 +1446,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Dominance",
 		ItemID:   91401,
@@ -1455,7 +1455,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Victory",
 		ItemID:   91415,
@@ -1464,7 +1464,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Malevolent Gladiator's Insignia of Conquest",
 		ItemID:   91457,
@@ -1473,7 +1473,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Malevolent Gladiator's Insignia of Dominance",
 		ItemID:   91754,
@@ -1482,7 +1482,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Malevolent Gladiator's Insignia of Victory",
 		ItemID:   91768,
@@ -1491,7 +1491,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Conquest",
 		ItemID:   93424,
@@ -1500,7 +1500,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Dominance",
 		ItemID:   93601,
@@ -1509,7 +1509,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Victory",
 		ItemID:   93611,
@@ -1518,7 +1518,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Conquest",
 		ItemID:   94356,
@@ -1527,7 +1527,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Victory",
 		ItemID:   94415,
@@ -1536,7 +1536,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Dominance",
 		ItemID:   94482,
@@ -1545,7 +1545,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 15s. ( 15% chance, 85 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 15s. ( 15% chance, 85 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Brutal Talisman of the Shado-Pan Assault",
 		ItemID:   94508,
@@ -1554,7 +1554,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 10s. ( 15% chance, 55 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 10s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Volatile Talisman of the Shado-Pan Assault",
 		ItemID:   94510,
@@ -1563,7 +1563,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 115 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vicious Talisman of the Shado-Pan Assault",
 		ItemID:   94511,
@@ -1572,7 +1572,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Primordius' Talisman of Rage",
 		ItemID:   94519,
@@ -1581,7 +1581,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)
+	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Breath of the Hydra",
 		ItemID:   94521,
@@ -1590,7 +1590,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Talisman of Bloodlust",
 		ItemID:   94522,
@@ -1599,7 +1599,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)
+	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bad Juju",
 		ItemID:   94523,
@@ -1608,7 +1608,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
+	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
 		ItemID:   94529,
@@ -1617,7 +1617,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)
+	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Cha-Ye's Essence of Brilliance",
 		ItemID:   94531,
@@ -1626,7 +1626,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)
+	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bad Juju",
 		ItemID:   95665,
@@ -1635,7 +1635,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)
+	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Breath of the Hydra",
 		ItemID:   95711,
@@ -1644,7 +1644,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Talisman of Bloodlust",
 		ItemID:   95748,
@@ -1653,7 +1653,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Primordius' Talisman of Rage",
 		ItemID:   95757,
@@ -1662,7 +1662,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)
+	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Cha-Ye's Essence of Brilliance",
 		ItemID:   95772,
@@ -1671,7 +1671,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
+	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
 		ItemID:   95799,
@@ -1680,7 +1680,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)
+	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bad Juju",
 		ItemID:   96037,
@@ -1689,7 +1689,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)
+	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Breath of the Hydra",
 		ItemID:   96083,
@@ -1698,7 +1698,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Talisman of Bloodlust",
 		ItemID:   96120,
@@ -1707,7 +1707,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Primordius' Talisman of Rage",
 		ItemID:   96129,
@@ -1716,7 +1716,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)
+	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Cha-Ye's Essence of Brilliance",
 		ItemID:   96144,
@@ -1725,7 +1725,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
+	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
 		ItemID:   96171,
@@ -1734,7 +1734,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)
+	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bad Juju",
 		ItemID:   96409,
@@ -1743,7 +1743,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)
+	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Breath of the Hydra",
 		ItemID:   96455,
@@ -1752,7 +1752,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Talisman of Bloodlust",
 		ItemID:   96492,
@@ -1761,7 +1761,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Primordius' Talisman of Rage",
 		ItemID:   96501,
@@ -1770,7 +1770,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)
+	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Cha-Ye's Essence of Brilliance",
 		ItemID:   96516,
@@ -1779,7 +1779,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
+	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
 		ItemID:   96543,
@@ -1788,7 +1788,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)
+	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Bad Juju",
 		ItemID:   96781,
@@ -1797,7 +1797,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)
+	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Breath of the Hydra",
 		ItemID:   96827,
@@ -1806,7 +1806,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Talisman of Bloodlust",
 		ItemID:   96864,
@@ -1815,7 +1815,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)
+	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Primordius' Talisman of Rage",
 		ItemID:   96873,
@@ -1824,7 +1824,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)
+	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Cha-Ye's Essence of Brilliance",
 		ItemID:   96888,
@@ -1833,7 +1833,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)
+	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Gaze of the Twins",
 		ItemID:   96915,
@@ -1842,7 +1842,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeCrit,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Empty Fruit Barrel",
 		ItemID:   97304,
@@ -1851,7 +1851,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Light of the Cosmos",
 		ItemID:   98019,
@@ -1860,7 +1860,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Essence of Terror",
 		ItemID:   98020,
@@ -1869,7 +1869,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.
+	// [When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Yu'lon",
 		ItemID:   98049,
@@ -1878,7 +1878,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
+	// [Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Light of the Cosmos",
 		ItemID:   98050,
@@ -1887,7 +1887,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.
+	// [When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Yu'lon",
 		ItemID:   98075,
@@ -1896,7 +1896,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Essence of Terror",
 		ItemID:   98076,
@@ -1905,7 +1905,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Conquest",
 		ItemID:   98760,
@@ -1914,7 +1914,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Dominance",
 		ItemID:   98911,
@@ -1923,7 +1923,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Victory",
 		ItemID:   98917,
@@ -1932,7 +1932,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Conquest",
 		ItemID:   99777,
@@ -1941,7 +1941,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Dominance",
 		ItemID:   99938,
@@ -1950,7 +1950,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Victory",
 		ItemID:   99948,
@@ -1959,7 +1959,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Conquest",
 		ItemID:   100026,
@@ -1968,7 +1968,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Victory",
 		ItemID:   100085,
@@ -1977,7 +1977,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Tyrannical Gladiator's Insignia of Dominance",
 		ItemID:   100152,
@@ -1986,7 +1986,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Conquest",
 		ItemID:   100200,
@@ -1995,7 +1995,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Dominance",
 		ItemID:   100491,
@@ -2004,7 +2004,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Victory",
 		ItemID:   100505,
@@ -2013,7 +2013,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Conquest",
 		ItemID:   100586,
@@ -2022,7 +2022,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Victory",
 		ItemID:   100645,
@@ -2031,7 +2031,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Dominance",
 		ItemID:   100712,
@@ -2040,7 +2040,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Stone of Battle",
 		ItemID:   100990,
@@ -2049,7 +2049,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Idol of Battle",
 		ItemID:   100991,
@@ -2058,7 +2058,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Defender Idol",
 		ItemID:   100999,
@@ -2067,7 +2067,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Defender Stone",
 		ItemID:   101002,
@@ -2076,7 +2076,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Idol of Rage",
 		ItemID:   101009,
@@ -2085,7 +2085,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Rage",
 		ItemID:   101012,
@@ -2094,7 +2094,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Idol of Destruction",
 		ItemID:   101023,
@@ -2103,7 +2103,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Destruction",
 		ItemID:   101026,
@@ -2112,7 +2112,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Wisdom",
 		ItemID:   101041,
@@ -2121,7 +2121,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Trailseeker Idol of Rage",
 		ItemID:   101054,
@@ -2130,7 +2130,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Trailseeker Stone of Rage",
 		ItemID:   101057,
@@ -2139,7 +2139,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mountainsage Idol of Destruction",
 		ItemID:   101069,
@@ -2148,7 +2148,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mountainsage Stone of Destruction",
 		ItemID:   101072,
@@ -2157,7 +2157,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Defender Stone",
 		ItemID:   101087,
@@ -2166,7 +2166,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Defender Idol",
 		ItemID:   101089,
@@ -2175,7 +2175,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Stone of Wisdom",
 		ItemID:   101107,
@@ -2184,7 +2184,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Idol of Rage",
 		ItemID:   101113,
@@ -2193,7 +2193,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Stone of Rage",
 		ItemID:   101117,
@@ -2202,7 +2202,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Stone of Wisdom",
 		ItemID:   101138,
@@ -2211,7 +2211,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Stone of Battle",
 		ItemID:   101151,
@@ -2220,7 +2220,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Idol of Battle",
 		ItemID:   101152,
@@ -2229,7 +2229,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Defender Idol",
 		ItemID:   101160,
@@ -2238,7 +2238,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Defender Stone",
 		ItemID:   101163,
@@ -2247,7 +2247,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Idol of Destruction",
 		ItemID:   101168,
@@ -2256,7 +2256,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Stone of Destruction",
 		ItemID:   101171,
@@ -2265,7 +2265,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Stone of Wisdom",
 		ItemID:   101183,
@@ -2274,7 +2274,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lightdrinker Idol of Rage",
 		ItemID:   101200,
@@ -2283,7 +2283,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lightdrinker Stone of Rage",
 		ItemID:   101203,
@@ -2292,7 +2292,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Idol of Rage",
 		ItemID:   101217,
@@ -2301,7 +2301,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Rage",
 		ItemID:   101220,
@@ -2310,7 +2310,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Idol of Destruction",
 		ItemID:   101222,
@@ -2319,7 +2319,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Destruction",
 		ItemID:   101225,
@@ -2328,7 +2328,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your healing spells have a chance to grant 1926 Intellect for 10s.
+	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Wisdom",
 		ItemID:   101250,
@@ -2337,7 +2337,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Felsoul Idol of Destruction",
 		ItemID:   101263,
@@ -2346,7 +2346,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Felsoul Stone of Destruction",
 		ItemID:   101266,
@@ -2355,7 +2355,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Stone of Battle",
 		ItemID:   101294,
@@ -2364,7 +2364,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Idol of Battle",
 		ItemID:   101295,
@@ -2373,7 +2373,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
+	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Defender Idol",
 		ItemID:   101303,
@@ -2382,7 +2382,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Defender Stone",
 		ItemID:   101306,
@@ -2391,7 +2391,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dysmorphic Samophlange of Discontinuity",
 		ItemID:   102309,
@@ -2400,7 +2400,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
 		ItemID:   102311,
@@ -2409,7 +2409,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Agi DPS Trinket (5)",
 		ItemID:   102312,
@@ -2418,7 +2418,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)
+	// [When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Int Hit Trinket (5)",
 		ItemID:   102313,
@@ -2427,7 +2427,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Str DPS Trinket (5)",
 		ItemID:   102315,
@@ -2436,7 +2436,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prideful Gladiator's Insignia of Conquest",
 		ItemID:   102643,
@@ -2445,7 +2445,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prideful Gladiator's Insignia of Victory",
 		ItemID:   102699,
@@ -2454,7 +2454,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prideful Gladiator's Insignia of Dominance",
 		ItemID:   102766,
@@ -2463,7 +2463,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Conquest",
 		ItemID:   102840,
@@ -2472,7 +2472,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Victory",
 		ItemID:   102896,
@@ -2481,7 +2481,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Dominance",
 		ItemID:   102963,
@@ -2490,7 +2490,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Conquest",
 		ItemID:   103150,
@@ -2499,7 +2499,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Dominance",
 		ItemID:   103309,
@@ -2508,7 +2508,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Grievous Gladiator's Insignia of Victory",
 		ItemID:   103319,
@@ -2517,7 +2517,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Agility for 20s.
+	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prideful Gladiator's Insignia of Conquest",
 		ItemID:   103347,
@@ -2526,7 +2526,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
+	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prideful Gladiator's Insignia of Dominance",
 		ItemID:   103506,
@@ -2535,7 +2535,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When you deal damage you have a chance to gain 1287 Strength for 20s.
+	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Prideful Gladiator's Insignia of Victory",
 		ItemID:   103516,
@@ -2544,7 +2544,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Discipline of Xuen",
 		ItemID:   103686,
@@ -2553,7 +2553,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)
+	// [When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Yu'lon's Bite",
 		ItemID:   103687,
@@ -2562,7 +2562,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Alacrity of Xuen",
 		ItemID:   103689,
@@ -2571,7 +2571,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
+	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Discipline of Xuen",
 		ItemID:   103986,
@@ -2580,7 +2580,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)
+	// [When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Yu'lon's Bite",
 		ItemID:   103987,
@@ -2589,7 +2589,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
+	// [Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Alacrity of Xuen",
 		ItemID:   103989,
@@ -2598,7 +2598,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
 		ItemID:   104616,
@@ -2607,7 +2607,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dysmorphic Samophlange of Discontinuity",
 		ItemID:   104619,
@@ -2616,7 +2616,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
 		ItemID:   104865,
@@ -2625,7 +2625,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dysmorphic Samophlange of Discontinuity",
 		ItemID:   104868,
@@ -2634,7 +2634,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
 		ItemID:   105114,
@@ -2643,7 +2643,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dysmorphic Samophlange of Discontinuity",
 		ItemID:   105117,
@@ -2652,7 +2652,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
 		ItemID:   105363,
@@ -2661,7 +2661,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dysmorphic Samophlange of Discontinuity",
 		ItemID:   105366,
@@ -2670,7 +2670,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Ticking Ebon Detonator",
 		ItemID:   105612,
@@ -2679,7 +2679,7 @@ func RegisterAllOnUseProcs() {
 		Outcome:  core.OutcomeLanded,
 	})
 	
-	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dysmorphic Samophlange of Discontinuity",
 		ItemID:   105615,
