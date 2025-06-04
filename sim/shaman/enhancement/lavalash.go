@@ -1,6 +1,7 @@
 package enhancement
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -19,7 +20,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 	}
 
 	enh.LavaLash = enh.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 78146},
+		ActionID:       core.ActionID{SpellID: 60103},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -57,17 +58,27 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 				if flameShockDot != nil && flameShockDot.IsActive() {
 					numberSpread := 0
 					maxTargets := min(4, len(sim.Encounter.TargetUnits))
-
-					validTargets := core.FilterSlice(sim.Encounter.TargetUnits, func(unit *core.Unit) bool {
-						dot := enh.FlameShock.Dot(unit)
-						return dot == nil || !dot.IsActive()
+					sortedTargets := make([]*core.Unit, len(sim.Encounter.TargetUnits))
+					copy(sortedTargets, sim.Encounter.TargetUnits)
+					slices.SortFunc(sortedTargets, func(a *core.Unit, b *core.Unit) int {
+						aDot := enh.FlameShock.Dot(a)
+						if aDot == nil || !aDot.IsActive() {
+							return -1
+						}
+						bDot := enh.FlameShock.Dot(b)
+						if bDot == nil || !bDot.IsActive() {
+							return 1
+						}
+						return int(aDot.RemainingDuration(sim) - bDot.RemainingDuration(sim))
 					})
 
-					for _, otherTarget := range validTargets {
-						if otherTarget != target {
-							enh.FlameShock.RelatedDotSpell.Dot(otherTarget).CopyDotAndApply(sim, flameShockDot)
-							numberSpread++
+					for _, otherTarget := range sortedTargets {
+						if otherTarget == target {
+							return
 						}
+
+						enh.FlameShock.RelatedDotSpell.Dot(otherTarget).CopyDotAndApply(sim, flameShockDot)
+						numberSpread++
 
 						if numberSpread >= maxTargets {
 							return
