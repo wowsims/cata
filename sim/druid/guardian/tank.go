@@ -73,7 +73,7 @@ func (bear *GuardianDruid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (bear *GuardianDruid) ApplyTalents() {
-	// bear.Druid.ApplyTalents()
+	bear.Druid.ApplyTalents()
 	bear.applyMastery()
 	bear.applyThickHide()
 	bear.applyLeatherSpecialization()
@@ -146,6 +146,7 @@ func (bear *GuardianDruid) Initialize() {
 	bear.registerToothAndClawPassive()
 	bear.ApplyPrimalFury()
 	bear.ApplyLeaderOfThePack()
+	bear.ApplyNurturingInstinct()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {

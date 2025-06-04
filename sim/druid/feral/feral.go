@@ -100,6 +100,7 @@ func (cat *FeralDruid) Initialize() {
 	cat.RegisterFeralCatSpells()
 	cat.ApplyPrimalFury()
 	cat.ApplyLeaderOfThePack()
+	cat.ApplyNurturingInstinct()
 
 	snapshotHandler := func(aura *core.Aura, sim *core.Simulation) {
 		previousRipSnapshotPower := cat.Rip.NewSnapshotPower
@@ -131,7 +132,7 @@ func (cat *FeralDruid) Initialize() {
 }
 
 func (cat *FeralDruid) ApplyTalents() {
-	// cat.Druid.ApplyTalents()
+	cat.Druid.ApplyTalents()
 	cat.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
 }
 
