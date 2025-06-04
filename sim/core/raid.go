@@ -150,6 +150,16 @@ func (raid *Raid) GetActiveAllyUnits() []*Unit {
 	return activeAllyUnits
 }
 
+func (raid *Raid) GetLowestHealthAllyUnit() *Unit {
+	var lowestHealthUnit *Unit
+	for _, unit := range raid.AllUnits {
+		if unit.IsActive() && unit.Type != EnemyUnit && unit.HasHealthBar() && (lowestHealthUnit == nil || unit.CurrentHealth() < lowestHealthUnit.CurrentHealth()) {
+			lowestHealthUnit = unit
+		}
+	}
+	return lowestHealthUnit
+}
+
 // Makes a new raid.
 func NewRaid(raidConfig *proto.Raid) *Raid {
 	numParties := int(raidConfig.NumActiveParties)
@@ -208,6 +218,19 @@ func (raid *Raid) GetFirstEmptyRaidIndex() (*Party, int) {
 	}
 
 	panic("Raid is full")
+}
+
+func (raid *Raid) GetTargetDummies() []*TargetDummy {
+	var targetDummies = []*TargetDummy{}
+	for _, party := range raid.Parties {
+		for _, player := range party.Players {
+			dummy, ok := player.(*TargetDummy)
+			if ok {
+				targetDummies = append(targetDummies, dummy)
+			}
+		}
+	}
+	return targetDummies
 }
 
 func (raid *Raid) GetFirstTargetDummy() *TargetDummy {
@@ -346,7 +369,22 @@ func (raid *Raid) GetPlayerFromUnit(unit *Unit) Agent {
 }
 
 func (raid *Raid) GetFirstNPlayersOrPets(n int32) []*Unit {
-	return raid.AllUnits[:min(n, int32(len(raid.AllUnits)))]
+	units := []*Unit{}
+
+	for _, party := range raid.Parties {
+		for _, player := range party.Players {
+			units = append(units, &player.GetCharacter().Unit)
+		}
+
+		for _, petAgent := range party.Pets {
+			pet := petAgent.GetPet()
+			if !pet.IsGuardian() {
+				units = append(units, &pet.Unit)
+			}
+		}
+	}
+
+	return units[:min(n, int32(len(units)))]
 }
 
 func (raid *Raid) GetPlayerFromUnitIndex(unitIndex int32) Agent {

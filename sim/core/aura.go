@@ -253,6 +253,22 @@ func (aura *Aura) ExpiresAt() time.Duration {
 	return aura.expires
 }
 
+// Adds a handler to be called OnInit, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnInit(newOnInit OnInit) *Aura {
+	oldOnInit := aura.OnInit
+	if oldOnInit == nil {
+		aura.OnInit = newOnInit
+	} else {
+		aura.OnInit = func(aura *Aura, sim *Simulation) {
+			oldOnInit(aura, sim)
+			newOnInit(aura, sim)
+		}
+	}
+
+	return aura
+}
+
 // Adds a handler to be called OnGain, in addition to any current handlers.
 func (aura *Aura) ApplyOnGain(newOnGain OnGain) *Aura {
 	oldOnGain := aura.OnGain
@@ -268,6 +284,20 @@ func (aura *Aura) ApplyOnGain(newOnGain OnGain) *Aura {
 	return aura
 }
 
+func (aura *Aura) AttachDependentAura(sibling *Aura) *Aura {
+	return aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		sibling.Activate(sim)
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		sibling.Deactivate(sim)
+	}).ApplyOnStacksChange(func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+		if sibling.MaxStacks == 0 {
+			return
+		}
+
+		sibling.SetStacks(sim, newStacks)
+	})
+}
+
 // Adds a handler to be called OnExpire, in addition to any current handlers.
 func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {
 	oldOnExpire := aura.OnExpire
@@ -277,6 +307,22 @@ func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {
 		aura.OnExpire = func(aura *Aura, sim *Simulation) {
 			oldOnExpire(aura, sim)
 			newOnExpire(aura, sim)
+		}
+	}
+
+	return aura
+}
+
+// Adds a handler to be called OnStacksChange, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnStacksChange(newOnStacksChange OnStacksChange) *Aura {
+	oldOnStacksChange := aura.OnStacksChange
+	if oldOnStacksChange == nil {
+		aura.OnStacksChange = newOnStacksChange
+	} else {
+		aura.OnStacksChange = func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			oldOnStacksChange(aura, sim, oldStacks, newStacks)
+			newOnStacksChange(aura, sim, oldStacks, newStacks)
 		}
 	}
 

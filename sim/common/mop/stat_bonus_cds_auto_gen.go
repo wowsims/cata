@@ -150,7 +150,11 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(93349) // Knightly Badge of the Shieldwall
 	shared.NewSimpleStatActive(93350) // Durable Badge of the Shieldwall
 
-	// StatResilienceRating
+	// StatPvpPowerRating
+	shared.NewSimpleStatActive(92784) // SI:7 Operative's Manual
+	shared.NewSimpleStatActive(92785) // Kor'kron Book of Hurting
+
+	// StatPvpResilienceRating
 	shared.NewSimpleStatActive(92782) // Steadfast Footman's Medallion
 	shared.NewSimpleStatActive(92783) // Mark of the Hardened Grunt
 	shared.NewSimpleStatActive(103639) // Pouch of White Ash

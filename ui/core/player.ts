@@ -407,13 +407,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	shouldEnableTargetDummies(): boolean {
-		if (this.getPlayerSpec().isHealingSpec) {
+		if (this.getPlayerSpec().isHealingSpec || this.getPlayerSpec().isTankSpec) {
 			return true;
-		}
-
-		// Monks use a target dummy for Zen Sphere (max targets of 2)
-		if (this.getClass() == Class.ClassMonk){
-			return true
 		}
 
 		if (!this.itemSwapSettings.getEnableItemSwap()) {

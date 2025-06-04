@@ -85,7 +85,7 @@ var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				ClassMask:  SpellMaskShieldWall,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
-				FloatValue: -0.5,
+				FloatValue: 0.5,
 			})
 		},
 	},

@@ -576,10 +576,9 @@ export class Timeline extends ResultComponent {
 		const buffsAndDebuffsById = buffsById.concat(debuffsById);
 
 		auraAsResource.forEach(auraId => {
-			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs[0].actionId!.spellId === auraId);
+			const auraIndex = buffsById.findIndex(auraUptimeLogs => auraUptimeLogs?.[0].actionId!.spellId === auraId);
 			if (auraIndex !== -1) {
 				this.addAuraRow(buffsById[auraIndex], duration);
-				delete buffsById[auraIndex];
 			}
 		});
 
@@ -610,9 +609,11 @@ export class Timeline extends ResultComponent {
 			});
 		}
 
-		// Don't add a row for buffs that were already visualized in a cast row.
+		// Don't add a row for buffs that were already visualized in a cast row or are prioritized.
 		const buffsToShow = buffsById.filter(auraUptimeLogs =>
-			playerCastsByAbility.findIndex(casts => casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId!)),
+			playerCastsByAbility.findIndex(
+				casts => auraUptimeLogs[0].actionId && (casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
+			),
 		);
 		if (buffsToShow.length > 0) {
 			this.addSeparatorRow(duration);
@@ -980,7 +981,7 @@ export class Timeline extends ResultComponent {
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
 			.filter(auraUptimeLogs => actionId.equals(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!))
-			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem));
+			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem, true));
 
 		this.rotationTimeline.appendChild(rowElem);
 	}
@@ -993,10 +994,10 @@ export class Timeline extends ResultComponent {
 		this.rotationHiddenIdsContainer.appendChild(this.makeLabelElem(actionId, true, true));
 		this.rotationTimeline.appendChild(rowElem);
 
-		this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem);
+		this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem, false);
 	}
 
-	private applyAuraUptimeLogsToRow(auraUptimeLogs: Array<AuraUptimeLog>, rowElem: JSX.Element) {
+	private applyAuraUptimeLogsToRow(auraUptimeLogs: Array<AuraUptimeLog>, rowElem: JSX.Element, hasCast: boolean) {
 		auraUptimeLogs.forEach(aul => {
 			const auraElem = (
 				<div
@@ -1034,6 +1035,7 @@ export class Timeline extends ResultComponent {
 						style={{
 							left: this.timeToPx(scl.timestamp - aul.timestamp),
 							width: this.timeToPx(aul.stacksChange[i + 1] ? aul.stacksChange[i + 1].timestamp - scl.timestamp : aul.fadedAt - scl.timestamp),
+							textIndent: hasCast ? '30px' : undefined,
 						}}>
 						{String(scl.newStacks)}
 					</div>
@@ -1305,38 +1307,43 @@ const idToCategoryMap: Record<number, number> = {
 	[77767]: MELEE_ACTION_CATEGORY + 0.34, // Cobra Shot
 
 	// Paladin
-	[76672]: MELEE_ACTION_CATEGORY + 0.1, // Hand of Light (mastery)
-	[35395]: MELEE_ACTION_CATEGORY + 0.2, // Crusader Strike
-	[99092]: MELEE_ACTION_CATEGORY + 0.21, // Flames of the Faithful (ret T12 2pc)
-	[53385]: MELEE_ACTION_CATEGORY + 0.3, // Divine Storm
-	[85256]: MELEE_ACTION_CATEGORY + 0.4, // Templar's Verdict
-	[20271]: MELEE_ACTION_CATEGORY + 0.5, // Judgement
-	[31804]: MELEE_ACTION_CATEGORY + 0.51, // Judgement of Truth
-	[20187]: MELEE_ACTION_CATEGORY + 0.52, // Judgement of Righteousness
-	[31930]: MELEE_ACTION_CATEGORY + 0.53, // Judgements of the Wise
-	[89906]: MELEE_ACTION_CATEGORY + 0.54, // Judgements of the Bold
-	[42463]: MELEE_ACTION_CATEGORY + 0.6, // Seal of Truth (on-hit)
-	[31803]: MELEE_ACTION_CATEGORY + 0.61, // Censure (Seal of Truth)
-	[25742]: MELEE_ACTION_CATEGORY + 0.63, // Seal of Righteousness
-	[20424]: MELEE_ACTION_CATEGORY + 0.64, // Seals of Command
-	[53600]: MELEE_ACTION_CATEGORY + 0.7, // Shield of the Righteous
-	[99075]: MELEE_ACTION_CATEGORY + 0.71, // Righteous Flames (prot T12 2pc)
-	[53595]: MELEE_ACTION_CATEGORY + 0.8, // Hammer of the Righteous
-	[84963]: MELEE_ACTION_CATEGORY + 0.9, // Inquisition
-	[879]: MELEE_ACTION_CATEGORY + 0.91, // Exorcism
-	[54934]: MELEE_ACTION_CATEGORY + 0.92, // Glyph of Exorcism
-	[48952]: MELEE_ACTION_CATEGORY + 0.93, // Holy Shield
-	[26573]: MELEE_ACTION_CATEGORY + 0.94, // Consecration
-	[2812]: MELEE_ACTION_CATEGORY + 0.95, // Holy Wrath
-	[24275]: MELEE_ACTION_CATEGORY + 0.96, // Hammer of Wrath
-	[54428]: MELEE_ACTION_CATEGORY + 0.97, // Divine Plea
-	[498]: MELEE_ACTION_CATEGORY + 0.98, // Divine Protection
-	[99090]: MELEE_ACTION_CATEGORY + 0.99, // Flaming Aegis (Prot T12 4pc)
-	[66233]: SPELL_ACTION_CATEGORY + 0.1, // Ardent Defender
-	[31884]: SPELL_ACTION_CATEGORY + 0.2, // Avenging Wrath
-	[85696]: SPELL_ACTION_CATEGORY + 0.3, // Zealotry,
-	[86150]: SPELL_ACTION_CATEGORY + 0.4, // Guardian of Ancient Kings
-	[86704]: SPELL_ACTION_CATEGORY + 0.5, // Ancient Fury
+	[76672]: MELEE_ACTION_CATEGORY + 0.01, // Hand of Light (mastery)
+	[35395]: MELEE_ACTION_CATEGORY + 0.02, // Crusader Strike
+	[99092]: MELEE_ACTION_CATEGORY + 0.03, // Flames of the Faithful (ret T12 2pc)
+	[53595]: MELEE_ACTION_CATEGORY + 0.04, // Hammer of the Righteous (Physical)
+	[88263]: MELEE_ACTION_CATEGORY + 0.05, // Hammer of the Righteous (Holy)
+	[53385]: MELEE_ACTION_CATEGORY + 0.06, // Divine Storm
+	[85256]: MELEE_ACTION_CATEGORY + 0.07, // Templar's Verdict
+	[20271]: MELEE_ACTION_CATEGORY + 0.08, // Judgment
+	[42463]: MELEE_ACTION_CATEGORY + 0.09, // Seal of Truth (on-hit)
+	[31803]: MELEE_ACTION_CATEGORY + 0.1, // Censure (Seal of Truth)
+	[101423]: MELEE_ACTION_CATEGORY + 0.11, // Seal of Righteousness
+	[53600]: MELEE_ACTION_CATEGORY + 0.12, // Shield of the Righteous
+	[99075]: MELEE_ACTION_CATEGORY + 0.13, // Righteous Flames (prot T12 2pc)
+	[879]: MELEE_ACTION_CATEGORY + 0.15, // Exorcism
+	[26573]: MELEE_ACTION_CATEGORY + 0.16, // Consecration
+	[119072]: MELEE_ACTION_CATEGORY + 0.17, // Holy Wrath
+	[24275]: MELEE_ACTION_CATEGORY + 0.18, // Hammer of Wrath
+	[114852]: MELEE_ACTION_CATEGORY + 0.19, // Holy Prism (Damage)
+	[114919]: MELEE_ACTION_CATEGORY + 0.19, // Arcing Light (Damage)
+	[114916]: MELEE_ACTION_CATEGORY + 0.19, // Execution Sentence
+	[114871]: MELEE_ACTION_CATEGORY + 0.2, // Holy Prism (Heal)
+	[119952]: MELEE_ACTION_CATEGORY + 0.2, // Arcing Light (Heal)
+	[146586]: MELEE_ACTION_CATEGORY + 0.2, // Stay of Execution
+	[84963]: SPELL_ACTION_CATEGORY + 0.01, // Inquisition
+	[54428]: SPELL_ACTION_CATEGORY + 0.02, // Divine Plea
+	[498]: SPELL_ACTION_CATEGORY + 0.03, // Divine Protection
+	[99090]: SPELL_ACTION_CATEGORY + 0.04, // Flaming Aegis (Prot T12 4pc)
+	[66233]: SPELL_ACTION_CATEGORY + 0.05, // Ardent Defender
+	[31884]: SPELL_ACTION_CATEGORY + 0.06, // Avenging Wrath
+	[114232]: SPELL_ACTION_CATEGORY + 0.07, // Sanctified Wrath
+	[105809]: SPELL_ACTION_CATEGORY + 0.08, // Holy Avenger,
+	[86698]: SPELL_ACTION_CATEGORY + 0.09, // Guardian of Ancient Kings
+	[86704]: SPELL_ACTION_CATEGORY + 0.1, // Ancient Fury
+	[20925]: SPELL_ACTION_CATEGORY + 0.11, // Sacred Shield (Ret / Prot)
+	[148039]: SPELL_ACTION_CATEGORY + 0.11, // Sacred Shield (Holy)
+	[65148]: SPELL_ACTION_CATEGORY + 0.12, // Sacred Shield (Absorb)
+	[114039]: SPELL_ACTION_CATEGORY + 0.13, // Hand of Purity
 
 	// Priest
 	[48300]: SPELL_ACTION_CATEGORY + 0.11, // Devouring Plague

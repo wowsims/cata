@@ -143,13 +143,12 @@ func main() {
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
-	db.GlyphIDs = getGlyphIDsFromJson(fmt.Sprintf("%s/glyph_id_map.json", inputsDir))
 	db.ReforgeStats = reforgeStats.ToProto()
 
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
-	database.GenerateProtos(instance)
+	database.GenerateProtos(instance, db)
 	database.GenerateItemEffects(instance, iconsMap, db)
 
 	for _, gem := range instance.Gems {
@@ -448,6 +447,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 
 	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {
+		// MoP no longer has head enchants, so filter them.
+		if enchant.Type == proto.ItemType_ItemTypeHead {
+			return false
+		}
+
 		for _, pattern := range database.DenyListNameRegexes {
 			if pattern.MatchString(enchant.Name) {
 				return false

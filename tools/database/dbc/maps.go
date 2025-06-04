@@ -6,16 +6,6 @@ func MapResistanceToStat(index int) (proto.Stat, bool) {
 	switch index {
 	case 0:
 		return proto.Stat_StatBonusArmor, true
-	case 2:
-		return proto.Stat_StatFireResistance, true
-	case 3:
-		return proto.Stat_StatNatureResistance, true
-	case 4:
-		return proto.Stat_StatFrostResistance, true
-	case 5:
-		return proto.Stat_StatShadowResistance, true
-	case 6:
-		return proto.Stat_StatArcaneResistance, true
 	}
 	return proto.Stat_StatBonusArmor, false
 }
@@ -81,20 +71,10 @@ func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 		return proto.Stat_StatRangedAttackPower, true
 	case 41, 42, 45: // SpellHealing, SpellDamage, or SpellPower
 		return proto.Stat_StatSpellPower, true
-	case 47: // SpellPenetration
-		return proto.Stat_StatSpellPenetration, true
+	case 57: // PvPPowerRating
+		return proto.Stat_StatPvpPowerRating, true
 	case 35: // ResilienceRating
-		return proto.Stat_StatResilienceRating, true
-	case 56: // ArcaneResistance
-		return proto.Stat_StatArcaneResistance, true
-	case 51: // FireResistance
-		return proto.Stat_StatFireResistance, true
-	case 52: // FrostResistance
-		return proto.Stat_StatFrostResistance, true
-	case 55: // NatureResistance
-		return proto.Stat_StatNatureResistance, true
-	case 54: // ShadowResistance
-		return proto.Stat_StatShadowResistance, true
+		return proto.Stat_StatPvpResilienceRating, true
 	case 50: // ExtraArmor maps to BonusArmor (green armor)
 		return proto.Stat_StatBonusArmor, true
 	case 43: // ManaRegeneration
@@ -239,11 +219,11 @@ type EnchantMetaType struct {
 }
 
 var SpellSchoolToStat = map[SpellSchool]proto.Stat{
-	FIRE:     proto.Stat_StatFireResistance,
-	ARCANE:   proto.Stat_StatArcaneResistance,
-	NATURE:   proto.Stat_StatNatureResistance,
-	FROST:    proto.Stat_StatFrostResistance,
-	SHADOW:   proto.Stat_StatShadowResistance,
+	FIRE:     -1,
+	ARCANE:   -1,
+	NATURE:   -1,
+	FROST:    -1,
+	SHADOW:   -1,
 	PHYSICAL: proto.Stat_StatArmor,
 }
 var MapInventoryTypeToEnchantMetaType = map[InventoryTypeFlag]EnchantMetaType{
@@ -369,7 +349,7 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_MULTISTRIKE:  -1,
 	RATING_MOD_READINESS:    -1,
 	RATING_MOD_SPEED:        -1,
-	RATING_MOD_RESILIENCE:   proto.Stat_StatResilienceRating,
+	RATING_MOD_RESILIENCE:   proto.Stat_StatPvpResilienceRating,
 	RATING_MOD_LEECH:        -1,
 	RATING_MOD_HASTE_MELEE:  proto.Stat_StatHasteRating,
 	RATING_MOD_HASTE_RANGED: proto.Stat_StatHasteRating,
@@ -377,7 +357,7 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_AVOIDANCE:    -1,
 	RATING_MOD_EXPERTISE:    proto.Stat_StatExpertiseRating,
 	RATING_MOD_MASTERY:      proto.Stat_StatMasteryRating,
-	RATING_MOD_PVP_POWER:    -1,
+	RATING_MOD_PVP_POWER:    proto.Stat_StatPvpPowerRating,
 
 	RATING_MOD_VERS_DAMAGE: -1,
 	RATING_MOD_VERS_HEAL:   -1,

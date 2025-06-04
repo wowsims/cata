@@ -258,13 +258,10 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 			stats[s] = float64(effect.EffectBasePoints)
 		}
 
-	case effect.EffectAura == A_MOD_TARGET_RESISTANCE && SpellSchool(effect.EffectMiscValues[0]) == SPELL_PENETRATION:
-		stats[proto.Stat_StatSpellPenetration] += math.Abs(float64(effect.EffectBasePoints))
-
 	case effect.EffectAura == A_MOD_RESISTANCE:
 		school := SpellSchool(effect.EffectMiscValues[0])
 		for schoolType, stat := range SpellSchoolToStat {
-			if school.Has(schoolType) {
+			if school.Has(schoolType) && stat > -1 {
 				stats[stat] += float64(effect.EffectBasePoints)
 			}
 		}
