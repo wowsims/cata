@@ -76,6 +76,11 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent core.Agent, _ proto.ItemLevelState) ExtraSpellInfo) {
 	isEnchant := config.EnchantID != 0
 
+	// Ignore empty dummy implementations
+	if config.Callback == core.CallbackEmpty {
+		return
+	}
+
 	var effectFn func(id int32, effect core.ApplyEffect)
 	var effectID int32
 	var triggerActionID core.ActionID
