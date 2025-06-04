@@ -14,25 +14,6 @@ func festeringExtendHandler(aura *core.Aura) {
 }
 
 func (dk *DeathKnight) registerFesteringStrikeSpell() {
-	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       FesteringStrikeActionID.WithTag(2),
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeOHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics,
-		ClassSpellMask: DeathKnightSpellFesteringStrike,
-
-		DamageMultiplier: 1.5,
-		CritMultiplier:   dk.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.24899999797 +
-				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-		},
-	})
-
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.GetOrRegisterSpell(core.SpellConfig{

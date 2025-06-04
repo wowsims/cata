@@ -32,12 +32,6 @@ type DeathKnightInputs struct {
 	UnholyFrenzyTarget *proto.UnitReference
 
 	StartingRunicPower float64
-	PetUptime          float64
-
-	// Rotation Vars
-	UseAMS            bool
-	AvgAMSSuccessRate float64
-	AvgAMSHit         float64
 
 	Spec proto.Spec
 }
@@ -46,16 +40,18 @@ type DeathKnight struct {
 	core.Character
 	Talents *proto.DeathKnightTalents
 
-	ClassSpellScaling float64
-
 	Inputs DeathKnightInputs
 
 	// Pets
-	// Ghoul      *GhoulPet
+	Ghoul *GhoulPet
 	// Gargoyle   *GargoylePet
-	// ArmyGhoul  []*GhoulPet
+	ArmyGhoul []*GhoulPet
 	// RuneWeapon *RuneWeaponPet
 	Bloodworm []*BloodwormPet
+
+	PestilenceSpell *core.Spell
+
+	ConversionAura *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -108,47 +104,38 @@ func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 // 	raidBuffs.HornOfWinter = true
 // }
 
-func (dk *DeathKnight) ApplyTalents() {
-	// dk.ApplyBloodTalents()
-	// dk.ApplyFrostTalents()
-	// dk.ApplyUnholyTalents()
-
-	// dk.ApplyGlyphs()
-}
-
 func (dk *DeathKnight) Initialize() {
-	// dk.registerPresences()
-	// dk.registerFrostFever()
-	// dk.registerBloodPlague()
-	// dk.registerOutbreak()
-	// dk.registerHornOfWinterSpell()
-	// dk.registerIcyTouchSpell()
-	// dk.registerPlagueStrikeSpell()
-	// dk.registerDeathCoilSpell()
-	// dk.registerDeathAndDecaySpell()
-	// dk.registerFesteringStrikeSpell()
-	// dk.registerEmpowerRuneWeaponSpell()
-	// dk.registerUnholyFrenzySpell()
-	// dk.registerSummonGargoyleSpell()
+	// dk.registerAntiMagicShellSpell()
 	// dk.registerArmyOfTheDeadSpell()
-	// dk.registerRaiseDeadSpell()
-	// dk.registerBloodTapSpell()
-	// dk.registerObliterateSpell()
-	// dk.registerHowlingBlastSpell()
-	// dk.registerPillarOfFrostSpell()
-	// dk.registerPestilenceSpell()
 	// dk.registerBloodBoilSpell()
-	// dk.registerRuneStrikeSpell()
-	// dk.registerDeathStrikeSpell()
-	// dk.registerRuneTapSpell()
-	// dk.registerVampiricBloodSpell()
-	// dk.registerIceboundFortitudeSpell()
+	// dk.registerBloodPlague()
+	// dk.registerBloodStrikeSpell()
 	// dk.registerBoneShieldSpell()
 	// dk.registerDancingRuneWeaponSpell()
+	dk.registerDeathAndDecaySpell()
+	// dk.registerDeathCoilSpell()
 	// dk.registerDeathPactSpell()
-	// dk.registerAntiMagicShellSpell()
+	// dk.registerDeathStrikeSpell()
+	dk.registerEmpowerRuneWeaponSpell()
+	// dk.registerFesteringStrikeSpell()
+	// dk.registerFrostFever()
+	dk.registerHornOfWinterSpell()
+	// dk.registerHowlingBlastSpell()
+	// dk.registerIceboundFortitudeSpell()
+	dk.registerIcyTouchSpell()
+	// dk.registerObliterateSpell()
+	// dk.registerOutbreak()
+	dk.registerPestilenceSpell()
+	// dk.registerPillarOfFrostSpell()
+	dk.registerPlagueStrikeSpell()
+	// dk.registerPresences()
+	// dk.registerRaiseDeadSpell()
+	// dk.registerRuneStrikeSpell()
+	// dk.registerRuneTapSpell()
 	// dk.registerRunicPowerDecay()
-	// dk.registerBloodStrikeSpell()
+	// dk.registerSummonGargoyleSpell()
+	// dk.registerUnholyFrenzySpell()
+	// dk.registerVampiricBloodSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -163,10 +150,9 @@ func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 
 func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string, deathRuneConvertSpellId int32) *DeathKnight {
 	dk := &DeathKnight{
-		Character:         *character,
-		Talents:           &proto.DeathKnightTalents{},
-		Inputs:            inputs,
-		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
+		Character: *character,
+		Talents:   &proto.DeathKnightTalents{},
+		Inputs:    inputs,
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents)
 
@@ -319,44 +305,48 @@ type DeathKnightAgent interface {
 }
 
 const (
-	DeathKnightSpellFlagNone int64 = 0
-	DeathKnightSpellIcyTouch int64 = 1 << iota
+	DeathKnightSpellFlagNone      int64 = 0
+	DeathKnightSpellArmyOfTheDead int64 = 1 << iota
+	DeathKnightSpellBloodBoil
+	DeathKnightSpellBloodPlague
+	DeathKnightSpellBloodStrike
+	DeathKnightSpellBloodTap
+	DeathKnightSpellBoneShield
+	DeathKnightSpellConversion
+	DeathKnightSpellDancingRuneWeapon
+	DeathKnightSpellDarkTransformation
+	DeathKnightSpellDeathAndDecay
 	DeathKnightSpellDeathCoil
 	DeathKnightSpellDeathCoilHeal
-	DeathKnightSpellDeathAndDecay
-	DeathKnightSpellOutbreak
-	DeathKnightSpellEmpowerRuneWeapon
-	DeathKnightSpellUnholyFrenzy
-	DeathKnightSpellDarkTransformation
-	DeathKnightSpellSummonGargoyle
-	DeathKnightSpellArmyOfTheDead
-	DeathKnightSpellRaiseDead
-	DeathKnightSpellBloodTap
-	DeathKnightSpellObliterate
-	DeathKnightSpellFrostStrike
-	DeathKnightSpellRuneStrike
-	DeathKnightSpellPlagueStrike
-	DeathKnightSpellFesteringStrike
-	DeathKnightSpellScourgeStrike
-	DeathKnightSpellScourgeStrikeShadow
-	DeathKnightSpellHeartStrike
+	DeathKnightSpellDeathPact
+	DeathKnightSpellDeathSiphon
 	DeathKnightSpellDeathStrike
 	DeathKnightSpellDeathStrikeHeal
+	DeathKnightSpellEmpowerRuneWeapon
+	DeathKnightSpellFesteringStrike
 	DeathKnightSpellFrostFever
-	DeathKnightSpellBloodPlague
-	DeathKnightSpellHowlingBlast
+	DeathKnightSpellFrostStrike
+	DeathKnightSpellHeartStrike
 	DeathKnightSpellHornOfWinter
-	DeathKnightSpellPillarOfFrost
-	DeathKnightSpellPestilence
-	DeathKnightSpellBloodBoil
-	DeathKnightSpellRuneTap
-	DeathKnightSpellVampiricBlood
+	DeathKnightSpellHowlingBlast
 	DeathKnightSpellIceboundFortitude
-	DeathKnightSpellBoneShield
-	DeathKnightSpellDancingRuneWeapon
-	DeathKnightSpellDeathPact
+	DeathKnightSpellIcyTouch
+	DeathKnightSpellLichborne
+	DeathKnightSpellObliterate
+	DeathKnightSpellOutbreak
+	DeathKnightSpellPestilence
+	DeathKnightSpellPillarOfFrost
+	DeathKnightSpellPlagueLeech
+	DeathKnightSpellPlagueStrike
+	DeathKnightSpellRaiseDead
+	DeathKnightSpellRuneStrike
+	DeathKnightSpellRuneTap
+	DeathKnightSpellScourgeStrike
+	DeathKnightSpellScourgeStrikeShadow
+	DeathKnightSpellSummonGargoyle
 	DeathKnightSpellUnholyBlight
-	DeathKnightSpellBloodStrike
+	DeathKnightSpellUnholyFrenzy
+	DeathKnightSpellVampiricBlood
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains

@@ -8,26 +8,6 @@ import (
 var frostStrikeActionID = core.ActionID{SpellID: 49143}
 
 func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
-	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       frostStrikeActionID.WithTag(2),
-		SpellSchool:    core.SpellSchoolFrost,
-		ProcMask:       core.ProcMaskMeleeOHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics,
-		ClassSpellMask: death_knight.DeathKnightSpellFrostStrike,
-
-		DamageMultiplier:         1.3,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultCritMultiplier(),
-		ThreatMultiplier:         1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.12399999797 +
-				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-		},
-	})
-
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       frostStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFrost,

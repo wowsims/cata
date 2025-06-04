@@ -16,12 +16,14 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 		spell.DamageMultiplier /= 0.5
 	}
 
-	dk.RegisterSpell(core.SpellConfig{
+	dk.PestilenceSpell = dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50842},
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DeathKnightSpellPestilence,
+
+		MaxRange: core.MaxMeleeRange,
 
 		RuneCost: core.RuneCostOptions{
 			BloodRuneCost:  1,

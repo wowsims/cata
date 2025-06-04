@@ -8,28 +8,6 @@ import (
 var obliterateActionID = core.ActionID{SpellID: 49020}
 
 func (dk *DeathKnight) registerObliterateSpell() {
-	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       obliterateActionID.WithTag(2),
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeOHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics,
-		ClassSpellMask: DeathKnightSpellObliterate,
-
-		DamageMultiplier:         1.5,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultCritMultiplier(),
-		ThreatMultiplier:         1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.28900000453 +
-				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			baseDamage *= dk.GetDiseaseMulti(target, 1.0, 0.125)
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-		},
-	})
-
 	hasBloodRites := dk.Inputs.Spec == proto.Spec_SpecBloodDeathKnight
 
 	dk.GetOrRegisterSpell(core.SpellConfig{

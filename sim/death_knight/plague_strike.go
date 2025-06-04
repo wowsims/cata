@@ -1,0 +1,70 @@
+package death_knight
+
+import (
+	"github.com/wowsims/mop/sim/core"
+)
+
+var PlagueStrikeActionID = core.ActionID{SpellID: 45462}
+
+func (dk *DeathKnight) registerPlagueStrikeSpell() {
+	dk.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:       PlagueStrikeActionID.WithTag(1),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellPlagueStrike,
+
+		MaxRange: core.MaxMeleeRange,
+
+		RuneCost: core.RuneCostOptions{
+			UnholyRuneCost: 1,
+			RunicPowerGain: 10,
+			Refundable:     true,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDMin,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   dk.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.CalcScalingSpellDmg(0.37400001287) +
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			spell.SpendRefundableCost(sim, result)
+			if result.Landed() {
+				dk.BloodPlagueSpell.Cast(sim, target)
+			}
+
+			spell.DealDamage(sim, result)
+		},
+	})
+}
+
+// func (dk *DeathKnight) registerDrwPlagueStrikeSpell() *core.Spell {
+// 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+// 		ActionID:    PlagueStrikeActionID.WithTag(1),
+// 		SpellSchool: core.SpellSchoolPhysical,
+// 		ProcMask:    core.ProcMaskMeleeMHSpecial,
+// 		Flags:       core.SpellFlagMeleeMetrics,
+
+// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+// 			baseDamage := dk.ClassSpellScaling*0.37400001287 +
+// 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+// 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+// 			if result.Landed() {
+// 				dk.RuneWeapon.BloodPlagueSpell.Cast(sim, target)
+// 			}
+
+// 			spell.DealDamage(sim, result)
+// 		},
+// 	})
+// }

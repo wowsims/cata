@@ -20,7 +20,7 @@ func (dk *DeathKnight) registerDeathAndDecaySpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),

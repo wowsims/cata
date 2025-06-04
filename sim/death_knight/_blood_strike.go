@@ -8,28 +8,6 @@ import (
 var BloodStrikeActionID = core.ActionID{SpellID: 45902}
 
 func (dk *DeathKnight) registerBloodStrikeSpell() {
-	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       BloodStrikeActionID.WithTag(2),
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeOHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics,
-		ClassSpellMask: DeathKnightSpellBloodStrike,
-
-		DamageMultiplier:         0.8,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultCritMultiplier(),
-		ThreatMultiplier:         1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.37799999118 +
-				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			baseDamage *= dk.GetDiseaseMulti(target, 1.0, 0.025)
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-		},
-	})
-
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.GetOrRegisterSpell(core.SpellConfig{

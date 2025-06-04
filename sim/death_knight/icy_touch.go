@@ -14,6 +14,8 @@ func (dk *DeathKnight) registerIcyTouchSpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DeathKnightSpellIcyTouch,
 
+		MaxRange: 30,
+
 		RuneCost: core.RuneCostOptions{
 			FrostRuneCost:  1,
 			RunicPowerGain: 10,
@@ -21,16 +23,16 @@ func (dk *DeathKnight) registerIcyTouchSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   dk.DefaultCritMultiplier(),
-		ThreatMultiplier: 1.0,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
+			baseDamage := dk.CalcAndRollDamageRange(sim, 0.46799999475, 0.08299999684) + spell.MeleeAttackPower()*0.319
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.SpendRefundableCost(sim, result)
@@ -44,22 +46,22 @@ func (dk *DeathKnight) registerIcyTouchSpell() {
 	})
 }
 
-func (dk *DeathKnight) registerDrwIcyTouchSpell() *core.Spell {
-	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-		ActionID:    IcyTouchActionID,
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
+// func (dk *DeathKnight) registerDrwIcyTouchSpell() *core.Spell {
+// 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+// 		ActionID:    IcyTouchActionID,
+// 		SpellSchool: core.SpellSchoolFrost,
+// 		ProcMask:    core.ProcMaskSpellDamage,
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
+// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+// 			baseDamage := dk.ClassSpellScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+// 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				dk.RuneWeapon.FrostFeverSpell.Cast(sim, target)
-			}
+// 			if result.Landed() {
+// 				dk.RuneWeapon.FrostFeverSpell.Cast(sim, target)
+// 			}
 
-			spell.DealDamage(sim, result)
-		},
-	})
-}
+// 			spell.DealDamage(sim, result)
+// 		},
+// 	})
+// }

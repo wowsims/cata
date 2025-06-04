@@ -256,12 +256,3 @@ func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
 		},
 	})
 }
-
-func (dk *DeathKnight) ThreatOfThassarianProc(sim *core.Simulation, result *core.SpellResult, ohSpell *core.Spell) {
-	if dk.Talents.ThreatOfThassarian == 0 || dk.GetOHWeapon() == nil {
-		return
-	}
-	if sim.Proc([]float64{0.0, 0.3, 0.6, 1.0}[dk.Talents.ThreatOfThassarian], "Threat of Thassarian") {
-		ohSpell.Cast(sim, result.Target)
-	}
-}

@@ -7,7 +7,6 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-// TODO: Cleanup death strike the same way we did for plague strike
 var DeathStrikeActionID = core.ActionID{SpellID: 49998}
 
 func (dk *DeathKnight) registerDeathStrikeSpell() {
@@ -65,26 +64,6 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		// Add back caster modifiers
 		healingSpell.Flags = flags
 	}
-
-	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       DeathStrikeActionID.WithTag(2),
-		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeOHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics,
-		ClassSpellMask: DeathKnightSpellDeathStrike,
-
-		DamageMultiplier: 1.5,
-		CritMultiplier:   dk.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.14699999988 +
-				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-			doHealing(sim, 0.05)
-		},
-	})
 
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       DeathStrikeActionID.WithTag(1),
