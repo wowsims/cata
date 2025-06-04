@@ -131,8 +131,4 @@ func init() {
 	// PARRY
 	shared.NewSimpleStatActive(55881) // Impetuous Query
 	shared.NewSimpleStatActive(56406) // Impetuous Query (Heroic)
-
-	// RESISTANCE
-	shared.NewSimpleStatActive(62466) // Mirror of Broken Images (Alliance)
-	shared.NewSimpleStatActive(62471) // Mirror of Broken Images (Horde)
 }
