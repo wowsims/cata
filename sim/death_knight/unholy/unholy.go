@@ -38,12 +38,7 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 			Spec: proto.Spec_SpecUnholyDeathKnight,
 
 			StartingRunicPower: unholyOptions.ClassOptions.StartingRunicPower,
-			PetUptime:          unholyOptions.ClassOptions.PetUptime,
 			IsDps:              true,
-
-			UseAMS:            unholyOptions.UseAms,
-			AvgAMSSuccessRate: unholyOptions.AvgAmsSuccessRate,
-			AvgAMSHit:         unholyOptions.AvgAmsHit,
 		}, player.TalentsString, 56835),
 	}
 

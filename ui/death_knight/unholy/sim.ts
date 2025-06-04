@@ -96,12 +96,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	otherInputs: {
 		inputs: [
 			DeathKnightInputs.StartingRunicPower(),
-			// DeathKnightInputs.PetUptime(),
-			// UnholyInputs.SelfUnholyFrenzy,
-			// UnholyInputs.UseAMSInput,
-			// UnholyInputs.AvgAMSSuccessRateInput,
-			// UnholyInputs.AvgAMSHitInput,
-			// OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
 		],

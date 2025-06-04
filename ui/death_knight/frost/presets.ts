@@ -218,7 +218,6 @@ export const MasterfrostTalents = {
 export const DefaultOptions = FrostDeathKnight_Options.create({
 	classOptions: {
 		startingRunicPower: 0,
-		petUptime: 1,
 	},
 });
 

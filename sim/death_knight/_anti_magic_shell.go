@@ -64,13 +64,4 @@ func (dk *DeathKnight) registerAntiMagicShellSpell() {
 			spell.SelfShield().Apply(sim, currentShield)
 		},
 	})
-
-	// TODO:
-	if dk.Inputs.UseAMS {
-		dk.AddMajorCooldown(core.MajorCooldown{
-			Spell:    shieldSpell,
-			Type:     core.CooldownTypeDPS,
-			Priority: core.CooldownPriorityLow,
-		})
-	}
 }

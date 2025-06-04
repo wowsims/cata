@@ -103,7 +103,6 @@ export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 export const DefaultOptions = UnholyDeathKnight_Options.create({
 	classOptions: {
 		startingRunicPower: 55,
-		petUptime: 1,
 	},
 	unholyFrenzyTarget: UnitReference.create(),
 });

@@ -76,7 +76,6 @@ enum DeathKnightMinorGlyph {
 // END GENERATED
 message DeathKnightOptions {
 	double starting_runic_power = 1;
-	double pet_uptime = 2;
 }
 
 message BloodDeathKnight {
@@ -130,9 +129,6 @@ message FrostDeathKnight {
 
 	message Options {
 		DeathKnightOptions class_options = 1;
-		bool use_ams = 2;
-		double avg_ams_success_rate = 3;
-		double avg_ams_hit = 4;
 	}
 	Options options = 3;
 }
@@ -144,9 +140,6 @@ message UnholyDeathKnight {
 	message Options {
 		DeathKnightOptions class_options = 1;
 		UnitReference unholy_frenzy_target = 2;
-		bool use_ams = 3;
-		double avg_ams_success_rate = 4;
-		double avg_ams_hit = 5;
 	}
 	Options options = 3;
 }
