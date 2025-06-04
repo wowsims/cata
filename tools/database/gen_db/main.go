@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"maps"
 	"os"
 	"slices"
 	"strings"
@@ -193,7 +194,10 @@ func main() {
 	ApplySimmableFilters(db)
 
 	database.GenerateEnchantEffects(instance, db)
-	for _, enchant := range db.Enchants {
+	for _, key := range slices.SortedFunc(maps.Keys(db.Enchants), func(l database.EnchantDBKey, r database.EnchantDBKey) int {
+		return int(l.EffectID) - int(r.EffectID)
+	}) {
+		enchant := db.Enchants[key]
 		if enchant.ItemId != 0 {
 			db.AddItemIcon(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
