@@ -546,17 +546,7 @@ func asCoreOutcome(outcome core.HitOutcome) string {
 }
 
 func EnchantHasDummyEffect(enchant *proto.UIEnchant, instance *dbc.DBC) bool {
-	if dbEnchant, ok := instance.Enchants[int(enchant.EffectId)]; ok {
-		for idx := range 3 {
-			if (dbEnchant.Effects[idx] == dbc.ITEM_ENCHANTMENT_COMBAT_SPELL ||
-				dbEnchant.Effects[idx] == dbc.ITEM_ENCHANTMENT_EQUIP_SPELL) &&
-				SpellHasDummyEffect(dbEnchant.EffectArgs[idx], instance) {
-				return true
-			}
-		}
-	}
-
-	return false
+	return SpellHasDummyEffect(int(enchant.SpellId), instance)
 }
 
 func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
