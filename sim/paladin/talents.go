@@ -191,10 +191,7 @@ func (paladin *Paladin) registerSelflessHealer() {
 		IntValue:  costPerStack[0],
 	})
 
-	// TODO: Handle effectiveness modifier in the respective spell files since they're target specific
-
-	var selflessHealerAura *core.Aura
-	selflessHealerAura = paladin.RegisterAura(core.Aura{
+	paladin.SelflessHealerAura = paladin.RegisterAura(core.Aura{
 		Label:     "Selfless Healer" + paladin.Label,
 		ActionID:  core.ActionID{SpellID: 114250},
 		Duration:  time.Second * 15,
@@ -216,7 +213,7 @@ func (paladin *Paladin) registerSelflessHealer() {
 		ClassSpellMask: classMask,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			selflessHealerAura.Deactivate(sim)
+			paladin.SelflessHealerAura.Deactivate(sim)
 		},
 	})
 
@@ -228,8 +225,8 @@ func (paladin *Paladin) registerSelflessHealer() {
 		ClassSpellMask: SpellMaskJudgment,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			selflessHealerAura.Activate(sim)
-			selflessHealerAura.AddStack(sim)
+			paladin.SelflessHealerAura.Activate(sim)
+			paladin.SelflessHealerAura.AddStack(sim)
 
 			if paladin.Spec == proto.Spec_SpecHolyPaladin {
 				paladin.HolyPower.Gain(sim, 1, hpGainActionID)
@@ -526,11 +523,7 @@ func (paladin *Paladin) registerSanctifiedWrath() {
 			}
 		})
 
-		sanctifiedWrathAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			paladin.PseudoStats.HealingTakenMultiplier *= 1.2
-		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			paladin.PseudoStats.HealingTakenMultiplier /= 1.2
-		})
+		sanctifiedWrathAura.AttachMultiplicativePseudoStatBuff(&paladin.PseudoStats.HealingTakenMultiplier, 1.2)
 	} else if paladin.Spec == proto.Spec_SpecRetributionPaladin {
 		// Reduces the cooldown of Hammer of Wrath by 50%.
 		cdClassMask = SpellMaskHammerOfWrath

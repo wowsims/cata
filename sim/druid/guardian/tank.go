@@ -54,10 +54,16 @@ type GuardianDruid struct {
 	Options *proto.GuardianDruid_Options
 
 	// Aura references
-	EnrageAura *core.Aura
+	EnrageAura          *core.Aura
+	SavageDefenseAura   *core.Aura
+	SonOfUrsocAura      *core.Aura
+	ToothAndClawBuff    *core.Aura
+	ToothAndClawDebuffs core.AuraArray
 
 	// Spell references
-	Enrage *druid.DruidSpell
+	Enrage        *druid.DruidSpell
+	SavageDefense *druid.DruidSpell
+	SonOfUrsoc    *druid.DruidSpell
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {
@@ -69,11 +75,12 @@ func (bear *GuardianDruid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (bear *GuardianDruid) ApplyTalents() {
-	// bear.Druid.ApplyTalents()
+	bear.Druid.ApplyTalents()
 	bear.applyMastery()
 	bear.applyThickHide()
 	bear.applyLeatherSpecialization()
 	bear.RegisterVengeance(84840, bear.BearFormAura)
+	bear.registerIncarnation()
 }
 
 func (bear *GuardianDruid) applyMastery() {
@@ -137,7 +144,12 @@ func (bear *GuardianDruid) applyLeatherSpecialization() {
 func (bear *GuardianDruid) Initialize() {
 	bear.Druid.Initialize()
 	bear.RegisterFeralTankSpells()
+	bear.registerEnrageSpell()
+	bear.registerSavageDefenseSpell()
+	bear.registerToothAndClawPassive()
 	bear.ApplyPrimalFury()
+	bear.ApplyLeaderOfThePack()
+	bear.ApplyNurturingInstinct()
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {

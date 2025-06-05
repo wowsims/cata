@@ -13,6 +13,7 @@ const (
 	SpellMaskHammerOfWrath
 	SpellMaskHammerOfTheRighteousMelee
 	SpellMaskHammerOfTheRighteousAoe
+	SpellMaskHandOfProtection
 	SpellMaskJudgment
 	SpellMaskLayOnHands
 	SpellMaskSealOfInsight
@@ -146,3 +147,7 @@ const SpellMaskModifiedBySealOfInsight = SpellMaskDivineLight |
 	SpellMaskLayOnHands |
 	SpellMaskLightOfDawn |
 	SpellMaskWordOfGlory
+
+const SpellMaskCausesForbearance = SpellMaskDivineShield |
+	SpellMaskHandOfProtection |
+	SpellMaskLayOnHands
