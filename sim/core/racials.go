@@ -362,7 +362,8 @@ func applyRaceEffects(agent Agent) {
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 				baseDamage := sim.Roll(CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassUnknown, 8, 0.15000000596))
 				result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-				character.GainHealth(sim, result.Damage, healthMetrics)
+
+				character.GainHealth(sim, result.Damage*spell.Unit.PseudoStats.HealingTakenMultiplier, healthMetrics)
 			},
 		})
 
