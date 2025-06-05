@@ -270,13 +270,13 @@ func RegisterAllOnUseProcs() {
 		Name:     "Relic of Chi-Ji",
 		EnchantID: 79330,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
 	// [When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -297,7 +297,7 @@ func RegisterAllOnUseProcs() {
 	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 81133, ItemName: "Empty Fruit Barrel (N)"},
@@ -317,7 +317,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vision of the Predator (N)",
 		EnchantID: 81192,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -345,8 +345,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mark of the Catacombs",
 		EnchantID: 83731,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -354,7 +354,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of the Catacombs",
 		EnchantID: 83732,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -390,8 +390,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Compassion",
 		EnchantID: 83736,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -399,7 +399,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Fidelity",
 		EnchantID: 83737,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -435,8 +435,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fearwurm Relic",
 		EnchantID: 84070,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -444,7 +444,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Charm of Ten Songs",
 		EnchantID: 84071,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -480,8 +480,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Kypari Zar",
 		EnchantID: 84075,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -489,7 +489,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Kypari Zar",
 		EnchantID: 84076,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -525,7 +525,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Conquest (Season 12)",
 		EnchantID: 84349,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -534,8 +534,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Dominance (Season 12)",
 		EnchantID: 84489,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -543,14 +543,14 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Victory (Season 12)",
 		EnchantID: 84495,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
 	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -560,7 +560,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -570,8 +570,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 84941, ItemName: "Malevolent Gladiator's Insignia of Dominance (Season 12)"},
@@ -626,8 +626,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 86147, ItemName: "Qin-xi's Polarizing Seal (N)"},
@@ -648,8 +648,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 86327, ItemName: "Spirits of the Sun (N)"},
@@ -697,7 +697,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "Core of Decency",
 		EnchantID: 87497,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -714,8 +714,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thousand-Year Pickled Egg",
 		EnchantID: 87573,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -739,7 +739,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -751,8 +751,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 91401, ItemName: "Tyrannical Gladiator's Insignia of Dominance (Season 13)"},
@@ -763,7 +763,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -777,7 +777,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Conquest",
 		EnchantID: 93424,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -786,8 +786,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Dominance",
 		EnchantID: 93601,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -795,7 +795,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Victory",
 		EnchantID: 93611,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -881,7 +881,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeCrit,
 	}, []shared.ItemVariant{
@@ -894,7 +894,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeCrit,
 	}, []shared.ItemVariant{
@@ -909,7 +909,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Conquest",
 		EnchantID: 98760,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -918,8 +918,8 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Dominance",
 		EnchantID: 98911,
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -927,14 +927,14 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Victory",
 		EnchantID: 98917,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
 	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -946,8 +946,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 100491, ItemName: "Grievous Gladiator's Insignia of Dominance (Season 14)"},
@@ -958,7 +958,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -1045,7 +1045,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "Springrain Stone of Wisdom",
 		EnchantID: 101041,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -1108,7 +1108,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "Mistdancer Stone of Wisdom",
 		EnchantID: 101107,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -1135,7 +1135,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "Sunsoul Stone of Wisdom",
 		EnchantID: 101138,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -1198,7 +1198,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "Communal Stone of Wisdom",
 		EnchantID: 101183,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -1261,7 +1261,7 @@ func RegisterAllOnUseProcs() {
 		Name:     "Streamtalker Stone of Wisdom",
 		EnchantID: 101250,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
 	
@@ -1321,8 +1321,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 102309, ItemName: "Dysmorphic Samophlange of Discontinuity (N)"},
@@ -1335,8 +1335,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 102311, ItemName: "Ticking Ebon Detonator (N)"},
@@ -1360,7 +1360,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Int Hit Trinket (5)",
 		EnchantID: 102313,
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	})
@@ -1376,7 +1376,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -1386,7 +1386,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
@@ -1396,8 +1396,8 @@ func RegisterAllOnUseProcs() {
 	
 	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{
 		{ItemID: 102766, ItemName: "Prideful Gladiator's Insignia of Dominance (Season 15)"},
@@ -1416,7 +1416,7 @@ func RegisterAllOnUseProcs() {
 	
 	// [When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 	}, []shared.ItemVariant{

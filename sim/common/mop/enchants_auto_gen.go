@@ -171,8 +171,8 @@ func RegisterAllEnchants() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lightweave Embroidery",
 		EnchantID: 4892,
-		Callback:  core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:   core.OutcomeLanded,
 	})
 	
@@ -184,8 +184,8 @@ func RegisterAllEnchants() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Darkglow Embroidery",
 		EnchantID: 4893,
-		Callback:  core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask:  core.ProcMaskSpellDamage,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 		Outcome:   core.OutcomeLanded,
 	})
 	
@@ -210,8 +210,8 @@ func RegisterAllEnchants() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lightweave Embroidery",
 		EnchantID: 5110,
-		Callback:  core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnSpellHitDealt,
-		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
+		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:   core.OutcomeLanded,
 	})
 }

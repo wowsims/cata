@@ -24,6 +24,8 @@ const (
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
 	CallbackOnApplyEffects
+
+	CalbackLast
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)

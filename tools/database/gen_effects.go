@@ -107,6 +107,14 @@ func GenerateMissingEffectsFile() error {
 	}
 	defer f.Close()
 
+	sort.Slice(missingEffectsMap["EnchantEffects"], func(i, j int) bool {
+		return missingEffectsMap["EnchantEffects"][i] < missingEffectsMap["EnchantEffects"][j]
+	})
+
+	sort.Slice(missingEffectsMap["ItemEffects"], func(i, j int) bool {
+		return missingEffectsMap["ItemEffects"][i] < missingEffectsMap["ItemEffects"][j]
+	})
+
 	if err := tmpl.Execute(f, missingEffectsMap); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
 	}
@@ -480,32 +488,15 @@ func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) Pro
 
 func asCoreCallback(callback core.AuraCallback) string {
 	callbacks := []string{}
-	if callback.Matches(core.CallbackOnApplyEffects) {
-		callbacks = append(callbacks, "core.CallabckOnApplyEffects")
-	}
+	for i := range 32 {
+		callbackFlag := core.AuraCallback(1 << i)
+		if callbackFlag >= core.CalbackLast {
+			break
+		}
 
-	if callback.Matches(core.CallbackOnCastComplete) {
-		callbacks = append(callbacks, "core.CallbackOnCastComplete")
-	}
-
-	if callback.Matches(core.CallbackOnHealDealt) {
-		callbacks = append(callbacks, "core.CallbackOnHealDealt")
-	}
-
-	if callback.Matches(core.CallbackOnPeriodicDamageDealt) {
-		callbacks = append(callbacks, "core.CallbackOnPeriodicDamageDealt")
-	}
-
-	if callback.Matches(core.CallbackOnPeriodicHealDealt) {
-		callbacks = append(callbacks, "core.CallbackOnPeriodicHealDealt")
-	}
-
-	if callback.Matches(core.CallbackOnSpellHitDealt) {
-		callbacks = append(callbacks, "core.CallbackOnSpellHitDealt")
-	}
-
-	if callback.Matches(core.CallbackOnSpellHitTaken) {
-		callbacks = append(callbacks, "core.CallbackOnSpellHitTaken")
+		if callback.Matches(callbackFlag) {
+			callbacks = append(callbacks, "core."+callbackFlag.String())
+		}
 	}
 
 	if len(callbacks) == 0 {
@@ -517,59 +508,20 @@ func asCoreCallback(callback core.AuraCallback) string {
 
 func asCoreProcMask(procMask core.ProcMask) string {
 	procs := []string{}
+	for i := range 32 {
+		procFlag := core.ProcMask(1 << i)
+		if procFlag >= core.ProcMaskLast {
+			break
+		}
 
-	if procMask.Matches(core.ProcMaskMeleeMHAuto) {
-		procs = append(procs, "core.ProcMaskMeleeMHAuto")
-	}
-
-	if procMask.Matches(core.ProcMaskMeleeOHAuto) {
-		procs = append(procs, "core.ProcMaskMeleeOHAuto")
-	}
-
-	if procMask.Matches(core.ProcMaskMeleeMHSpecial) {
-		procs = append(procs, "core.ProcMaskMeleeMHSpecial")
-	}
-
-	if procMask.Matches(core.ProcMaskMeleeOHSpecial) {
-		procs = append(procs, "core.ProcMaskMeleeOHSpecial")
-	}
-
-	if procMask.Matches(core.ProcMaskRangedAuto) {
-		procs = append(procs, "core.ProcMaskRangedAuto")
-	}
-
-	if procMask.Matches(core.ProcMaskRangedSpecial) {
-		procs = append(procs, "core.ProcMaskRangedSpecial")
-	}
-
-	if procMask.Matches(core.ProcMaskSpellDamage) {
-		procs = append(procs, "core.ProcMaskSpellDamage")
-	}
-
-	if procMask.Matches(core.ProcMaskSpellHealing) {
-		procs = append(procs, "core.ProcMaskSpellHealing")
-	}
-
-	if procMask.Matches(core.ProcMaskSpellProc) {
-		procs = append(procs, "core.ProcMaskSpellProc")
-	}
-
-	if procMask.Matches(core.ProcMaskMeleeProc) {
-		procs = append(procs, "core.ProcMaskMeleeProc")
-	}
-
-	if procMask.Matches(core.ProcMaskRangedProc) {
-		procs = append(procs, "core.ProcMaskRangedProc")
-	}
-
-	if procMask.Matches(core.ProcMaskSpellDamageProc) {
-		procs = append(procs, "core.ProcMaskSpellDamageProc")
+		if procMask.Matches(procFlag) {
+			procs = append(procs, "core."+procFlag.String())
+		}
 	}
 
 	if len(procs) == 0 {
 		return "core.ProcMaskEmpty"
 	}
-
 	return strings.Join(procs, " | ")
 }
 
