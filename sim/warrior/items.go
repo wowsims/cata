@@ -106,7 +106,7 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 
 // T15 - Tank
 var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
-	Name: "Place of the Last Mogu",
+	Name: "Plate of the Last Mogu",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// TODO: Your Shield Slam and Revenge have a 10% chance to activate Victory Rush or Impending Victory as if you had killed your target.
