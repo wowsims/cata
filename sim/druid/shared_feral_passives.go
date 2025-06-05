@@ -82,8 +82,7 @@ func (druid *Druid) ApplyPrimalFury() {
 }
 
 func (druid *Druid) ApplyLeaderOfThePack() {
-	actionID := core.ActionID{SpellID: 17007}
-	manaMetrics := druid.NewManaMetrics(actionID)
+	manaMetrics := druid.NewManaMetrics(core.ActionID{SpellID: 68285})
 	manaRestore := 0.08
 	healthRestore := 0.04
 
@@ -93,7 +92,7 @@ func (druid *Druid) ApplyLeaderOfThePack() {
 	}
 
 	healingSpell := druid.RegisterSpell(Cat | Bear, core.SpellConfig{
-		ActionID:         actionID,
+		ActionID:         core.ActionID{SpellID: 34299},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskEmpty,
 		Flags:            core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreModifiers,
