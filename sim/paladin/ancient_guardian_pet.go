@@ -15,33 +15,36 @@ type AncientGuardianPet struct {
 func (guardian *AncientGuardianPet) Initialize() {
 }
 
-const PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.PhysicalHitRatingPerHitPercent // 0.8125
-
 func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 	ancientGuardian := &AncientGuardianPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:  "Ancient Guardian",
-			Owner: &paladin.Character,
-			BaseStats: stats.Stats{
-				stats.Stamina: 100,
-
-				// Taken from combined logs with > 1600 hits, seems to
-				// be around 2% final Crit chance after the 4.8%
-				// suppression from boss level mobs.
-				stats.PhysicalCritPercent: 6.8,
-			},
+			Name:      "Ancient Guardian",
+			Owner:     &paladin.Character,
+			BaseStats: stats.Stats{},
 			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				// Draenei Heroic Presence is not included, so inherit HitRating
 				// rather than PhysicalHitPercent.
-				ownerHitRating := ownerStats[stats.HitRating]
+				hitRating := ownerStats[stats.HitRating]
+				expertiseRating := ownerStats[stats.ExpertiseRating]
+				combined := (hitRating + expertiseRating) * 0.5
 
 				return stats.Stats{
-					stats.HitRating:       ownerHitRating,
-					stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
+					stats.Armor:               ownerStats[stats.Armor],
+					stats.AttackPower:         ownerStats[stats.AttackPower] * 6.1,
+					stats.CritRating:          ownerStats[stats.CritRating],
+					stats.DodgeRating:         ownerStats[stats.DodgeRating],
+					stats.ExpertiseRating:     combined,
+					stats.HasteRating:         ownerStats[stats.HasteRating],
+					stats.Health:              ownerStats[stats.Health],
+					stats.HitRating:           combined,
+					stats.ParryRating:         ownerStats[stats.ParryRating],
+					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+					stats.Stamina:             ownerStats[stats.Stamina],
 				}
 			},
-			EnabledOnStart: false,
-			IsGuardian:     true,
+			EnabledOnStart:                  false,
+			IsGuardian:                      true,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		paladinOwner: paladin,
 	}
@@ -72,27 +75,25 @@ func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(sim *core.Simul
 
 func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 	ancientPowerID := core.ActionID{SpellID: 86700}
-	ancientPowerAura := ancientGuardian.RegisterAura(core.Aura{
-		Label:    "Ancient Power" + ancientGuardian.Label,
+	ancientPowerAura := core.MakeProcTriggerAura(&ancientGuardian.Unit, core.ProcTrigger{
+		Name:     "Ancient Power" + ancientGuardian.Label,
 		ActionID: ancientPowerID,
-		Duration: core.NeverExpires,
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		Harmful:  true,
 
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			ancientGuardian.paladinOwner.GetAuraByID(ancientPowerID).AddStack(sim)
 		},
 	})
 
+	baseDamage := ancientGuardian.paladinOwner.CalcScalingSpellDmg(6.1)
 	ancientGuardian.EnableAutoAttacks(ancientGuardian, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:     5576,
-			BaseDamageMax:     7265,
-			SwingSpeed:        2,
-			CritMultiplier:    2,
-			AttackPowerPerDPS: 0,
+			BaseDamageMin:  baseDamage,
+			BaseDamageMax:  baseDamage,
+			SwingSpeed:     2,
+			CritMultiplier: ancientGuardian.DefaultCritMultiplier(),
 		},
 		AutoSwingMelee: true,
 	})

@@ -13,14 +13,13 @@ const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
 const BossGCD = time.Millisecond * 1620
 const MaxSpellQueueWindow = time.Millisecond * 400
+const SpellBatchWindow = time.Millisecond * 10
 const MaxMeleeRange = 5.0 // in yards
 
 const DefaultAttackPowerPerDPS = 14.0
 
 // Updated based on formulas supplied by InDebt on WoWSims Discord
 const EnemyAutoAttackAPCoefficient = 1.0 / (14.0 * 177.0)
-
-const AverageMagicPartialResistMultiplier = 0.94
 
 // IDs for items used in core
 // const ()

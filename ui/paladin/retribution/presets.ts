@@ -1,92 +1,37 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
-import {
-	PaladinAura as PaladinAura,
-	PaladinMajorGlyph,
-	PaladinMinorGlyph,
-	PaladinSeal,
-	RetributionPaladin_Options as RetributionPaladinOptions,
-} from '../../core/proto/paladin.js';
+import { PaladinMajorGlyph, PaladinSeal, RetributionPaladin_Options as RetributionPaladinOptions } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import ItemSwap4PT11Gear from './gear_sets/item_swap_4p_t11.gear.json';
-import P2_BisRetGear from './gear_sets/p2_bis.gear.json';
-import P3_BisRetGear from './gear_sets/p3_bis.gear.json';
-import P4_BisRetGear from './gear_sets/p4_bis.gear.json';
-import PreraidRetGear from './gear_sets/preraid.gear.json';
+import P1_Gear from './gear_sets/p1.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so it's good to
 // keep them in a separate file.
 
-export const PRERAID_RET_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidRetGear);
-export const P2_BIS_RET_PRESET = PresetUtils.makePresetGear('P2', P2_BisRetGear);
-export const P3_BIS_RET_PRESET = PresetUtils.makePresetGear('P3', P3_BisRetGear);
-export const P4_BIS_RET_PRESET = PresetUtils.makePresetGear('P4', P4_BisRetGear);
+export const P1_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1_Gear);
 
-export const ITEM_SWAP_4P_T11 = PresetUtils.makePresetItemSwapGear('Item Swap - T11 4P ', ItemSwap4PT11Gear);
-
-export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const APL_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P2',
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatStrength]: 2.28,
-
-			[Stat.StatCritRating]: 1.1,
-			[Stat.StatHasteRating]: 1.0,
-			[Stat.StatMasteryRating]: 1.23,
-
-			[Stat.StatHitRating]: 2.33,
-			[Stat.StatExpertiseRating]: 1.88,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.14,
-		},
-	),
-);
-
-export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P3',
-	Stats.fromMap(
-		{
-			[Stat.StatAttackPower]: 1,
+			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatStrength]: 2.29,
 
-			[Stat.StatCritRating]: 1.28,
+			[Stat.StatCritRating]: 1.00,
 			[Stat.StatHasteRating]: 1.11,
-			[Stat.StatMasteryRating]: 1.35,
+			[Stat.StatMasteryRating]: 1.05,
 
-			[Stat.StatHitRating]: 2.64,
-			[Stat.StatExpertiseRating]: 2.21,
+			[Stat.StatHitRating]: 1.32,
+			[Stat.StatExpertiseRating]: 1.18,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.4,
-		},
-	),
-);
-
-export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P4',
-	Stats.fromMap(
-		{
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatStrength]: 2.29,
-
-			[Stat.StatCritRating]: 1.51,
-			[Stat.StatHasteRating]: 1.29,
-			[Stat.StatMasteryRating]: 1.66,
-
-			[Stat.StatHitRating]: 2.97,
-			[Stat.StatExpertiseRating]: 2.38,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 7.97,
+			[PseudoStat.PseudoStatMainHandDps]: 4.21,
 		},
 	),
 );
@@ -96,48 +41,34 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '221223',
 		glyphs: Glyphs.create({
-			major3: PaladinMajorGlyph.GlyphOfConsecration,
+			major1: PaladinMajorGlyph.GlyphOfTemplarsVerdict,
+			major2: PaladinMajorGlyph.GlyphOfDoubleJeopardy,
+			major3: PaladinMajorGlyph.GlyphOfMassExorcism,
 		}),
 	}),
 };
 
-export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
-	gear: P2_BIS_RET_PRESET,
-	epWeights: P2_EP_PRESET,
+export const P1_BUILD_PRESET = PresetUtils.makePresetBuild('P1', {
+	gear: P1_GEAR_PRESET,
+	epWeights: P1_EP_PRESET,
 	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAuto,
-});
-
-export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
-	gear: P3_BIS_RET_PRESET,
-	epWeights: P3_EP_PRESET,
-	talents: DefaultTalents,
-	rotationType: APLRotationType.TypeAuto,
-	itemSwap: ITEM_SWAP_4P_T11,
-});
-
-export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
-	gear: P4_BIS_RET_PRESET,
-	epWeights: P4_EP_PRESET,
-	talents: DefaultTalents,
-	rotationType: APLRotationType.TypeAuto,
-	itemSwap: ITEM_SWAP_4P_T11,
 });
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });
+
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58088, // Flask of Titanic Strength
-	foodId: 62670, // Beer-Basted Crocolisk
-	potId: 58146, // Golemblood Potion
-	prepotId: 58146, // Golemblood Potion
-	tinkerId: 82174, // Synapse Springs
+	flaskId: 76088, // Flask of Winter's Bite
+	foodId: 74646, // Black Pepper Ribs and Shrimp
+	potId: 76095, // Potion of Mogu Power
+	prepotId: 76095, // Potion of Mogu Power
+	tinkerId: 126734, // Synapse Springs Mark II
 });
 
 export const OtherDefaults = {

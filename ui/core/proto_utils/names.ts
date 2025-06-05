@@ -332,7 +332,7 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecUnholyDeathKnight, 'Dreadblade'],
 	[Spec.SpecBalanceDruid, 'Total Eclipse'],
 	[Spec.SpecFeralDruid, 'Razor Claws'],
-	[Spec.SpecGuardianDruid, 'Savage Defender'],
+	[Spec.SpecGuardianDruid, "Nature's Guardian"],
 	[Spec.SpecRestorationDruid, 'Harmony'],
 	[Spec.SpecHolyPaladin, 'Illuminated Healing'],
 	[Spec.SpecProtectionPaladin, 'Divine Bulwark'],

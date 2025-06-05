@@ -351,7 +351,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		shortDescription: 'Casts a friendly spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		newValue: APLActionCastFriendlySpell.create,
 		fields: [AplHelpers.actionIdFieldConfig('spellId', 'friendly_spells', ''), AplHelpers.unitFieldConfig('target', 'players')],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getRaid()!.size() > 1,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => (player.getRaid()!.size() > 1) || player.shouldEnableTargetDummies(),
 	}),
 	['multidot']: inputBuilder({
 		label: 'Multi Dot',

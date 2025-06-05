@@ -75,8 +75,12 @@ func (bm *BrewmasterMonk) registerStagger() {
 
 	}
 
-	bm.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	bm.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) {
 		if !result.Landed() {
+			return
+		}
+
+		if !bm.StanceMatches(monk.SturdyOx) {
 			return
 		}
 

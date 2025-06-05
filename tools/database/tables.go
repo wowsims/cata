@@ -32,7 +32,7 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	err := rows.Scan(&raw.Id, &raw.Name, &raw.InventoryType, &raw.ItemDelay, &raw.OverallQuality, &raw.DmgVariance,
 		&raw.ItemLevel,
 		&statValue, &bonusStatString,
-		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.Flags1, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
+		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.Flags1, &raw.Flags2, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
 	if err != nil {
 		panic(err)
 	}
@@ -85,10 +85,11 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 			s.SocketType as SocketTypes,
 			s.Field_1_15_7_59706_036 as SocketEnchantmentId,
 			s.Flags_0 as Flags_0,
+			s.Flags_1 as Flags_1,
+			s.Flags_2 as Flags_2,
 			i.IconFileDataId as FDID,
 			COALESCE(itemset.Name_lang, '') as ItemSetName,
 			COALESCE(itemset.ID, 0) as ItemSetID,
-			s.Flags_1 as Flags_1,
 			s.AllowableClass as ClassMask,
 			s.AllowableRace as RaceMask,
 			s.QualityModifier,
@@ -820,6 +821,7 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 					WHERE ie2.ParentItemID = i.ID
 				) AS ItemEffects,
 				CASE
+					WHEN sp.Description_lang LIKE '%Counts as both a Battle%' THEN 0
 					WHEN sp.Description_lang LIKE '%Guardian Elixir%' THEN 1
 					WHEN sp.Description_lang LIKE '%Battle Elixir%' THEN 2
 					ELSE 0
@@ -1220,7 +1222,7 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		LEFT JOIN SpellTargetRestrictions str ON s.ID = str.SpellID
 		LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
 		LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
-		WHERE sco.SpellClassSet is not null
+		WHERE sm.ID IS NOT NULL
 		GROUP BY s.ID
 `
 

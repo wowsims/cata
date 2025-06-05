@@ -211,6 +211,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		// Other individual CDs
 		registerUnholyFrenzyCD(agent, individual.UnholyFrenzyCount)
 		registerTricksOfTheTradeCD(agent, individual.TricksOfTheTrade)
+		registerDevotionAuraCD(agent, individual.DevotionAuraCount)
 		registerHandOfSacrificeCD(agent, individual.HandOfSacrificeCount)
 		registerPainSuppressionCD(agent, individual.PainSuppressionCount)
 		registerGuardianSpiritCD(agent, individual.GuardianSpiritCount)
@@ -809,6 +810,65 @@ func RegisterPercentDamageModifierEffect(aura *Aura, percentDamageModifier float
 	})
 }
 
+var DevotionAuraTag = "DevotionAura"
+
+var DevotionAuraActionID = ActionID{SpellID: 31821}
+
+const DevotionAuraDuration = time.Second * 6
+const DevotionAuraCD = time.Minute * 3
+
+func registerDevotionAuraCD(agent Agent, numDevotionAuras int32) {
+	if numDevotionAuras == 0 {
+		return
+	}
+
+	devAura := DevotionAuraAura(agent.GetCharacter(), -1)
+
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         DevotionAuraActionID.WithTag(-1),
+			AuraTag:          DevotionAuraTag,
+			CooldownPriority: CooldownPriorityLow,
+			AuraDuration:     DevotionAuraDuration,
+			AuraCD:           DevotionAuraCD,
+			Type:             CooldownTypeSurvival,
+
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return true
+			},
+			AddAura: func(sim *Simulation, character *Character) { devAura.Activate(sim) },
+		},
+		numDevotionAuras)
+}
+
+func DevotionAuraAura(character *Character, actionTag int32) *Aura {
+	actionID := DevotionAuraActionID.WithTag(actionTag)
+
+	return character.GetOrRegisterAura(Aura{
+		Label:    "DevotionAura-" + actionID.String(),
+		Tag:      DevotionAuraTag,
+		ActionID: actionID,
+		Duration: DevotionAuraDuration,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.8
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 0.8
+			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 0.8
+		},
+	})
+}
+
 var HandOfSacrificeAuraTag = "HandOfSacrifice"
 
 const HandOfSacrificeDuration = time.Millisecond * 10500 // subtract Divine Shield GCD
@@ -909,7 +969,7 @@ func registerGuardianSpiritCD(agent Agent, numGuardianSpirits int32) {
 	gsAura := GuardianSpiritAura(character, -1)
 	healthMetrics := character.NewHealthMetrics(ActionID{SpellID: 47788})
 
-	character.AddDynamicDamageTakenModifier(func(sim *Simulation, _ *Spell, result *SpellResult) {
+	character.AddDynamicDamageTakenModifier(func(sim *Simulation, _ *Spell, result *SpellResult, isPeriodic bool) {
 		if (result.Damage >= character.CurrentHealth()) && gsAura.IsActive() {
 			result.Damage = character.CurrentHealth()
 			character.GainHealth(sim, 0.5*character.MaxHealth(), healthMetrics)

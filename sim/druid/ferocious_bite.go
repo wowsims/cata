@@ -6,8 +6,6 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-const RendAndTearBonusCritPercent = 35.0
-
 func (druid *Druid) registerFerociousBiteSpell() {
 	// Raw parameters from spell database
 	const coefficient = 0.45699998736
@@ -94,26 +92,3 @@ func (druid *Druid) registerFerociousBiteSpell() {
 func (druid *Druid) CurrentFerociousBiteCost() float64 {
 	return druid.FerociousBite.Cost.GetCurrentCost()
 }
-
-// Modifies the Bleed aura to apply the bonus.
-func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
-	if druid.FerociousBite == nil || druid.AssumeBleedActive {
-		return aura
-	}
-
-	aura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
-		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritPercent += RendAndTearBonusCritPercent
-		}
-		druid.BleedsActive++
-	})
-	aura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
-		druid.BleedsActive--
-		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritPercent -= RendAndTearBonusCritPercent
-		}
-	})
-
-	return aura
-}
-
