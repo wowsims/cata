@@ -72,9 +72,9 @@ func (war *FuryWarrior) registerPassives() {
 	// })
 }
 
-func (war *FuryWarrior) ApplyTalents() {
-	// war.registerBloodthirst()
-}
+// func (war *FuryWarrior) ApplyTalents() {
+// 	// war.registerBloodthirst()
+// }
 
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)

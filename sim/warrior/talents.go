@@ -27,6 +27,7 @@ func (warrior *Warrior) ApplyTalents() {
 	// Level 90
 	warrior.registerAvatar()
 	warrior.registerBloodbath()
+	warrior.registerStormBolt()
 }
 
 func (war *Warrior) registerJuggernaut() {
@@ -378,6 +379,68 @@ func (war *Warrior) registerBloodbath() {
 	war.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (war *Warrior) registerStormBolt() {
+	if !war.Talents.StormBolt {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 107570}
+
+	stormBoltOH := war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID.WithTag(2),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		ClassSpellMask: SpellMaskStormBoltOH,
+		MaxRange:       30,
+
+		DamageMultiplier: 5,
+		ThreatMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+		},
+	})
+
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID.WithTag(1),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskStormBolt,
+		MaxRange:       30,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: 40 * time.Second,
+			},
+		},
+
+		DamageMultiplier: 5,
+		ThreatMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+
+			if result.Landed() && war.Spec == proto.Spec_SpecFuryWarrior && war.OffHand() != nil && war.OffHand().WeaponType != proto.WeaponType_WeaponTypeUnknown {
+				stormBoltOH.Cast(sim, target)
+			}
+		},
 	})
 }
 
