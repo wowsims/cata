@@ -56,12 +56,14 @@ type GuardianDruid struct {
 	// Aura references
 	EnrageAura          *core.Aura
 	SavageDefenseAura   *core.Aura
+	SonOfUrsocAura      *core.Aura
 	ToothAndClawBuff    *core.Aura
 	ToothAndClawDebuffs core.AuraArray
 
 	// Spell references
 	Enrage        *druid.DruidSpell
 	SavageDefense *druid.DruidSpell
+	SonOfUrsoc    *druid.DruidSpell
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {
@@ -78,6 +80,7 @@ func (bear *GuardianDruid) ApplyTalents() {
 	bear.applyThickHide()
 	bear.applyLeatherSpecialization()
 	bear.RegisterVengeance(84840, bear.BearFormAura)
+	bear.registerIncarnation()
 }
 
 func (bear *GuardianDruid) applyMastery() {
