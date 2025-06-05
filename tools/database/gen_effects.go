@@ -434,6 +434,7 @@ func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) Pro
 
 		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_SPELL > 0 {
 			info.Callback |= core.CallbackOnHealDealt
+			info.ProcMask |= core.ProcMaskSpellHealing
 
 			// handle HoTs onyl with direct heals for now, there are some odd cases with HoT / DoT overlaps
 			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_PERIODIC > 0 {
