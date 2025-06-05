@@ -1,7 +1,6 @@
 package guardian
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
