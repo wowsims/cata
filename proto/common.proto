@@ -719,14 +719,6 @@ enum EnchantType {
 	EnchantTypeOffHand = 5;
 }
 
-// Contains only the Gem info needed by the sim.
-message SimGem {
-	int32 id = 1;
-	string name = 2;
-	GemColor color = 3;
-	repeated double stats = 4;
-}
-
 message UnitReference {
 	enum Type {
 		Unknown = 0;
