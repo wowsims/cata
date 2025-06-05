@@ -18,6 +18,7 @@
         {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"currentHealthPercent":{}},"rhs":{"const":{"val":"40%"}}}},{"cmp":{"op":"OpEq","lhs":{"spellNumCharges":{"spellId":{"spellId":62606}}},"rhs":{"const":{"val":"0"}}}}]}},"castSpell":{"spellId":{"spellId":22842}}}},
         {"action":{"castSpell":{"spellId":{"spellId":33878}}}},
         {"action":{"castSpell":{"spellId":{"spellId":106952}}}},
+        {"action":{"condition":{"and":{"vals":[{"auraIsInactiveWithReactionTime":{"auraId":{"spellId":132402}}},{"cmp":{"op":"OpGe","lhs":{"spellNumCharges":{"spellId":{"spellId":62606}}},"rhs":{"const":{"val":"1"}}}}]}},"castSpell":{"spellId":{"spellId":102558}}}},
         {"action":{"castFriendlySpell":{"spellId":{"spellId":102351},"target":{"type":"Player"}}}},
         {"action":{"castSpell":{"spellId":{"spellId":33745}}}},
         {"action":{"castSpell":{"spellId":{"spellId":77758}}}},
