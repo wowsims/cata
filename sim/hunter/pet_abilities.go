@@ -207,7 +207,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 		CritMultiplier:           hp.CritMultiplier(1.0, 0.0),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(132, 188) + (spell.MeleeAttackPower() * 0.2)
+			baseDamage := hp.hunterOwner.CalcAndRollDamageRange(sim, 0.11400000006, 0.34999999404) + (spell.RangedAttackPower() * 0.168)
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},

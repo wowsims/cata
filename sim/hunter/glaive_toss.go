@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -27,9 +26,8 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 			BonusCoefficient:         1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				numHits := hunter.Env.GetNumTargets()
-				sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
-				sharedDmg += spell.RangedAttackPower() * 0.2
-				sharedDmg += (435.8 + sim.RandomFloat(fmt.Sprintf("Glaive Toss-%v", spellID))*872)
+				sharedDmg := spell.RangedAttackPower() * 0.2
+				sharedDmg += hunter.CalcAndRollDamageRange(sim, 0.69999998808, 1)
 				// Here we assume the Glaive Toss hits every single target in the encounter.
 				// This might be unrealistic, but until we have more spatial parameters, this is what we should do.
 				results := make([]*core.SpellResult, numHits)

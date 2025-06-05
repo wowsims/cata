@@ -51,7 +51,7 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
 			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
-			SwingSpeed:     2.0,
+			SwingSpeed:     1.8,
 		},
 		AutoSwingMelee: true,
 	})
@@ -80,7 +80,7 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
 			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
-			SwingSpeed:     2.0,
+			SwingSpeed:     1.8,
 		},
 		AutoSwingMelee: true,
 	})
@@ -120,7 +120,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	})
 
-	atkSpd := 2.0
+	atkSpd := 1.8
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  hp.hunterOwner.ClassSpellScaling * 0.25,
