@@ -8,6 +8,7 @@ import (
 	"strings"
 	"text/template"
 
+	_ "github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/tools/database/dbc"
@@ -35,88 +36,21 @@ type Group struct {
 	Entries []Entry
 }
 
+var missingEffectsMap = map[string][]int{
+	"EnchantEffects": {},
+	"ItemEffects":    {},
+}
+
+const (
+	EffectParseResultInvalid     int = 0 // Returned when the effect is invalid for the current parameters
+	EffectParseResultUnsupported int = 1 // Returned when the effect could be parsed but is not supported for effect generation
+	EffectParseResultSuccess     int = 2 // Returned when the effect was parsed successfuly
+)
+
 // Define your groups and effects here.
 // The map key is the group name, and the inner map is ID -> display name.
 
-const TmplStrOnUse = `package mop
-
-import (
-	"github.com/wowsims/mop/sim/common/shared"
-)
-
-func RegisterAllOnUseCds() {
-{{- range .Groups }}
-
-	// {{ .Name }}
-{{- range .Entries }}
-	shared.NewSimpleStatActive({{ .ID }}) // {{ .Name }}
-{{- end }}
-
-{{- end }}
-}`
-const TmplStrProc = `package mop
-
-import (
-	"github.com/wowsims/mop/sim/core"
- 	"github.com/wowsims/mop/sim/common/shared"
-)
-
-func RegisterAllOnUseProcs() {
-{{- range .Groups }}
-
-	// {{ .Name }}
-{{- range .Entries }}
-	{{if .ProcInfo.IsEmpty}}
-	// NOTE: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	{{- end}}
-	// {{.Tooltip}}
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "{{ .Name }}",
-		ItemID:   {{ .ID }},
-		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
-		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
-		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
-	})
-{{- end }}
-
-{{- end }}
-}`
-
-const TmplStrEnchant = `package mop
-
-import (
-	"github.com/wowsims/mop/sim/core"
- 	"github.com/wowsims/mop/sim/common/shared"
-)
-
-func RegisterAllEnchants() {
-{{- range .Groups }}
-
-	// {{ .Name }}
-{{- range .Entries }}
-	{{if .ProcInfo.IsEmpty}}
-	// NOTE: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//
-	{{- end}}
-	{{- range (.Tooltip | formatStrings 100) }}
-	// {{.}}
-	{{- end}}
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "{{ .Name }}",
-		EnchantID: {{ .ID }},
-		Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
-		ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
-		Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},
-	})
-{{- end }}
-
-{{- end }}
-}`
-
 func GenerateEffectsFile(groups []Group, outFile string, templateString string) error {
-	// Check if file already exists
 	if _, err := os.Stat(outFile); err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("unable to check file %s: %w", outFile, err)
 	}
@@ -155,6 +89,27 @@ func GenerateEffectsFile(groups []Group, outFile string, templateString string) 
 	return nil
 }
 
+const missingEffectsFileName = "ui/core/constants/missing_effects_auto_gen.ts"
+
+func GenerateMissingEffectsFile() error {
+	if _, err := os.Stat(missingEffectsFileName); err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("unable to check file %s: %w", missingEffectsFileName, err)
+	}
+
+	tmpl := template.Must(template.New("missingEffects").Parse(TmplStrMissingEffects))
+	f, err := os.Create(missingEffectsFileName)
+	if err != nil {
+		return fmt.Errorf("failed to create file %s: %w", missingEffectsFileName, err)
+	}
+	defer f.Close()
+
+	if err := tmpl.Execute(f, missingEffectsMap); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
+
+	return nil
+}
+
 func GenerateEnchantEffects(instance *dbc.DBC, db *WowDatabase) {
 	groupMapProc := map[string]Group{}
 	enchantSpellEffects := map[int]*dbc.SpellEffect{}
@@ -171,7 +126,9 @@ func GenerateEnchantEffects(instance *dbc.DBC, db *WowDatabase) {
 			continue
 		}
 
-		TryParseEnchantEffect(parsed, groupMapProc, instance, enchantSpellEffects)
+		if TryParseEnchantEffect(parsed, groupMapProc, instance, enchantSpellEffects) == EffectParseResultUnsupported {
+			missingEffectsMap["EnchantEffects"] = append(missingEffectsMap["EnchantEffects"], enchant.EffectId)
+		}
 	}
 
 	var procGroups []Group
@@ -196,11 +153,13 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 		parsed.ItemEffect = dbc.MergeItemEffectsForAllStates(parsed)
 		db.MergeItem(parsed)
 
-		if TryParseOnUseEffect(parsed, item, groupMap) {
+		if TryParseOnUseEffect(parsed, item, groupMap) > EffectParseResultInvalid {
 			continue
 		}
 
-		TryParseProcEffect(parsed, item, instance, groupMapProc)
+		if TryParseProcEffect(parsed, item, instance, groupMapProc) == EffectParseResultUnsupported {
+			missingEffectsMap["ItemEffects"] = append(missingEffectsMap["ItemEffects"], item.Id)
+		}
 	}
 
 	// Sorting done in GenerateEffectsFile
@@ -215,11 +174,16 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 	}
 
 	GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds_auto_gen.go", TmplStrOnUse)
-	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs_augo_gen.go", TmplStrProc)
+	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs_auto_gen.go", TmplStrProc)
 }
 
-func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, groupMapProc map[string]Group) {
+func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, groupMapProc map[string]Group) int {
 	if parsed.ItemEffect.GetProc() != nil && item.ItemLevel > 416 {
+		// Effect was already manually implemented
+		if core.HasItemEffect(parsed.Id) {
+			return EffectParseResultSuccess
+		}
+
 		tooltipString, id := dbc.GetItemEffectSpellTooltip(item.Id)
 		tooltip, _ := tooltip.ParseTooltip(tooltipString, tooltip.DBCTooltipDataProvider{DBC: instance}, int64(id))
 
@@ -233,11 +197,25 @@ func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, 
 		entry.ProcInfo = BuildProcInfo(parsed, instance, renderedTooltip)
 		grp.Entries = append(grp.Entries, entry)
 		groupMapProc["Procs"] = grp
+
+		if entry.ProcInfo.IsEmpty {
+			return EffectParseResultUnsupported
+		}
+
+		return EffectParseResultSuccess
 	}
+
+	return EffectParseResultInvalid
 }
 
-func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[string]Group) bool {
+func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[string]Group) int {
 	if parsed.ItemEffect.GetOnUse() != nil && item.ItemLevel > 416 { // MoP constraints
+
+		// Effect was already manually implemented
+		if core.HasItemEffect(parsed.Id) {
+			return EffectParseResultSuccess
+		}
+
 		stats := parsed.ItemEffect.ScalingOptions[int32(proto.ItemLevelState_Base)].Stats
 		var firstStat proto.Stat = proto.Stat_StatStrength
 		found := false
@@ -256,14 +234,20 @@ func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[strin
 		}
 		grp.Entries = append(grp.Entries, Entry{ID: int(parsed.Id), Name: parsed.Name})
 		groupMap[groupName] = grp
-		return true
+		return EffectParseResultSuccess
 	}
 
-	return false
+	return EffectParseResultInvalid
 }
 
-func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC, enchantSpellEffects map[int]*dbc.SpellEffect) {
+func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC, enchantSpellEffects map[int]*dbc.SpellEffect) int {
 	if (enchant.EnchantEffect.GetProc() != nil || EnchantHasDummyEffect(enchant, instance)) && enchant.EffectId > 4267 {
+
+		// Effect was already manually implemented
+		if core.HasEnchantEffect(enchant.EffectId) {
+			return EffectParseResultSuccess
+		}
+
 		if enchantingSpell, ok := enchantSpellEffects[int(enchant.EffectId)]; ok {
 			tooltipString := instance.Spells[enchantingSpell.SpellID].Description
 			tooltip, _ := tooltip.ParseTooltip(tooltipString, tooltip.DBCTooltipDataProvider{DBC: instance}, int64(enchantingSpell.SpellID))
@@ -278,8 +262,15 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 			entry.ProcInfo = BuildEnchantProcInfo(enchant, instance, renderedTooltip)
 			grp.Entries = append(grp.Entries, entry)
 			groupMapProc["Enchants"] = grp
+			if entry.ProcInfo.IsEmpty {
+				return EffectParseResultUnsupported
+			}
+
+			return EffectParseResultSuccess
 		}
 	}
+
+	return EffectParseResultInvalid
 }
 
 var critMatcher = regexp.MustCompile(`critical [^\s]+ [^fb]`)
@@ -562,30 +553,4 @@ func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
 	}
 
 	return false
-}
-
-func formatStrings(maxLength int, input []string) []string {
-	result := []string{}
-	for _, line := range input {
-		words := strings.Split(strings.Trim(line, "\n\r "), " ")
-		currentLine := ""
-		for _, word := range words {
-			if len(currentLine) > maxLength {
-				result = append(result, currentLine)
-				currentLine = ""
-			}
-
-			if len(currentLine) > 0 {
-				currentLine += " "
-			}
-
-			currentLine += word
-		}
-
-		if len(result) > 0 || len(currentLine) > 0 {
-			result = append(result, currentLine)
-		}
-	}
-
-	return result
 }

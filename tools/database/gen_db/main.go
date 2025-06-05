@@ -193,6 +193,8 @@ func main() {
 	ApplySimmableFilters(db)
 
 	database.GenerateEnchantEffects(instance, db)
+	database.GenerateMissingEffectsFile()
+
 	for _, key := range slices.SortedFunc(maps.Keys(db.Enchants), func(l database.EnchantDBKey, r database.EnchantDBKey) int {
 		return int(l.EffectID) - int(r.EffectID)
 	}) {

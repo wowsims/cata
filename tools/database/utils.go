@@ -62,3 +62,31 @@ func ParseRandomSuffixOptions(optionsString sql.NullString) ([]int32, error) {
 
 	return opts, nil
 }
+
+// Formats the input string so that it does not use more than maxLength characters
+// as soon a whole word exceeds the character limit a new line will be created
+func formatStrings(maxLength int, input []string) []string {
+	result := []string{}
+	for _, line := range input {
+		words := strings.Split(strings.Trim(line, "\n\r "), " ")
+		currentLine := ""
+		for _, word := range words {
+			if len(currentLine) > maxLength {
+				result = append(result, currentLine)
+				currentLine = ""
+			}
+
+			if len(currentLine) > 0 {
+				currentLine += " "
+			}
+
+			currentLine += word
+		}
+
+		if len(result) > 0 || len(currentLine) > 0 {
+			result = append(result, currentLine)
+		}
+	}
+
+	return result
+}

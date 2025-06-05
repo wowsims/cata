@@ -9,8 +9,9 @@ func RegisterAllEnchants() {
 
 	// Enchants
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your critical strike, haste, or mastery by 1500
 	// for 12s when dealing damage or healing with spells and melee attacks.
@@ -22,8 +23,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your Intellect by 0 when healing or dealing
 	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
@@ -36,8 +38,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
 	// damage. Your highest stat is always chosen.
@@ -49,8 +52,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to make your damaging melee strikes sometimes activate a Mogu protection
 	// spell, absorbing up to 0 damage.
@@ -62,8 +66,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your dodge by 1650 for 7s when dealing melee
 	// damage.
@@ -75,8 +80,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your Intellect by 165 when healing or dealing
 	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
@@ -89,8 +95,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your Intellect by 165 when healing or dealing
 	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
@@ -103,8 +110,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your Intellect by 0 when healing or dealing
 	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
@@ -117,8 +125,9 @@ func RegisterAllEnchants() {
 		Outcome:   core.OutcomeEmpty,
 	})
 	
-	// NOTE: Manual implementation required
+	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
 	//
 	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
 	// damage. Your highest stat is always chosen.
