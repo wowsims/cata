@@ -56,13 +56,13 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 											name: 'Hit',
 											value: metric.avgHealing - metric.avgCritHealing,
 											percentage: metric.healingPercent,
-											average: (metric.avgHealing - metric.avgCritHealing) / metric.hits,
+											average: (metric.avgHealing - metric.avgCritHealing) / (metric.hits || metric.ticks),
 										},
 										{
 											name: `Critical Hit`,
 											value: metric.avgCritHealing,
 											percentage: metric.healingCritPercent,
-											average: metric.avgCritHealing / metric.crits,
+											average: metric.avgCritHealing / (metric.crits || metric.critTicks),
 										},
 									],
 								},
@@ -247,8 +247,8 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 
 			{
 				name: 'Crit %',
-				getValue: (metric: ActionMetrics) => metric.healingCritPercent,
-				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.healingCritPercent, { fallbackString: '-' }),
+				getValue: (metric: ActionMetrics) => metric.critPercent || metric.critTickPercent,
+				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent || metric.critTickPercent, { fallbackString: '-' }),
 			},
 			{
 				name: 'HPET',
