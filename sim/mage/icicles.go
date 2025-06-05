@@ -43,6 +43,7 @@ func (mage *Mage) ApplyMastery() {
 		Name:           "Icicles - Trigger",
 		ClassSpellMask: MageSpellFrostbolt | MageSpellFrostfireBolt,
 		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			mage.IciclesAura.Activate(sim)
 			mage.IciclesAura.AddStack(sim)
