@@ -30,9 +30,6 @@ func (bear *GuardianDruid) registerIncarnation() {
 
 		OnGain: func(_ *core.Aura, _ *core.Simulation) {
 			for idx, spell := range affectedSpells {
-				if spell == nil {
-					panic(fmt.Sprintf("%d\n",idx))
-				}
 				cdReductions[idx] = spell.CD.Duration - core.GCDDefault
 				spell.CD.Duration -= cdReductions[idx]
 				spell.CD.Reset()
