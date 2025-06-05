@@ -11,7 +11,9 @@ func RegisterAllOnUseCds() {
 
 	// {{ .Name }}
 {{- range .Entries }}
+  	{{- with index .Variants 0}}
 	shared.NewSimpleStatActive({{ .ID }}) // {{ .Name }}
+	{{- end}}
 {{- end }}
 
 {{- end }}
@@ -35,13 +37,27 @@ func RegisterAllOnUseProcs() {
 	//
 	{{- end}}
 	// {{.Tooltip}}
+	{{- if len .Variants | eq 1}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		{{with index .Variants 0 -}}
 		Name:     "{{ .Name }}",
-		ItemID:   {{ .ID }},
+		EnchantID: {{ .ID }},
+		{{- end}}
 		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
 		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
 	})
+	{{- else }}
+	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
+		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
+		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+	}, []shared.ItemVariant{
+		{{- range .Variants }}
+		{ItemID: {{.ID}}, ItemName: "{{.Name}}"},
+		{{- end}}
+	})
+	{{- end}}
 {{- end }}
 
 {{- end }}
@@ -69,8 +85,10 @@ func RegisterAllEnchants() {
 	// {{.}}
 	{{- end}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		{{with index .Variants 0 -}}
 		Name:     "{{ .Name }}",
 		EnchantID: {{ .ID }},
+		{{- end}}
 		Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
 		Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},

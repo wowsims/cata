@@ -23,9 +23,13 @@ type ProcInfo struct {
 }
 
 // Entry represents a single effect with its ID and display name.
+type Variant struct {
+	ID   int
+	Name string
+}
+
 type Entry struct {
-	ID       int
-	Name     string
+	Variants []*Variant
 	Tooltip  []string
 	ProcInfo ProcInfo
 }
@@ -33,7 +37,7 @@ type Entry struct {
 // Group holds a category of effects.
 type Group struct {
 	Name    string
-	Entries []Entry
+	Entries []*Entry
 }
 
 var missingEffectsMap = map[string][]int{
@@ -50,7 +54,7 @@ const (
 // Define your groups and effects here.
 // The map key is the group name, and the inner map is ID -> display name.
 
-func GenerateEffectsFile(groups []Group, outFile string, templateString string) error {
+func GenerateEffectsFile(groups []*Group, outFile string, templateString string) error {
 	if _, err := os.Stat(outFile); err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("unable to check file %s: %w", outFile, err)
 	}
@@ -66,7 +70,7 @@ func GenerateEffectsFile(groups []Group, outFile string, templateString string) 
 				return grp.Entries[i].ProcInfo.IsEmpty
 			}
 
-			return grp.Entries[i].ID < grp.Entries[j].ID
+			return grp.Entries[i].Variants[0].ID < grp.Entries[j].Variants[0].ID
 		})
 	}
 
@@ -131,14 +135,14 @@ func GenerateEnchantEffects(instance *dbc.DBC, db *WowDatabase) {
 		}
 	}
 
-	var procGroups []Group
+	var procGroups []*Group
 	for _, grp := range groupMapProc {
-		procGroups = append(procGroups, grp)
+		procGroups = append(procGroups, &grp)
 	}
 	GenerateEffectsFile(procGroups, "sim/common/mop/enchants_auto_gen.go", TmplStrEnchant)
 }
 
-func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowDatabase) {
+func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowDatabase, itemSources map[int][]*proto.DropSource) {
 	groupMap := map[string]Group{}
 	groupMapProc := map[string]Group{}
 
@@ -163,14 +167,56 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 	}
 
 	// Sorting done in GenerateEffectsFile
-	var groups []Group
+	var groups []*Group
 	for _, grp := range groupMap {
-		groups = append(groups, grp)
+		groups = append(groups, &grp)
 	}
 
-	var procGroups []Group
+	// Merge variants
+	var procGroups []*Group
 	for _, grp := range groupMapProc {
-		procGroups = append(procGroups, grp)
+		newEntries := []*Entry{}
+		entryGroupings := map[string]*Entry{}
+
+		for _, entry := range grp.Entries {
+			if groupEntry, ok := entryGroupings[entry.Variants[0].Name]; ok {
+				groupEntry.AddVariant(entry.Variants[0])
+			} else {
+				newEntries = append(newEntries, entry)
+				entryGroupings[entry.Variants[0].Name] = entry
+			}
+		}
+
+		grp.Entries = newEntries
+		procGroups = append(procGroups, &grp)
+	}
+
+	updateNames := func(entires []*Entry) {
+		for _, entry := range entires {
+			for _, variant := range entry.Variants {
+				if sources, ok := itemSources[variant.ID]; ok {
+					name := difficultyToShortName(sources[0].Difficulty)
+					if len(name) > 0 {
+						variant.Name += " " + name
+					}
+				}
+
+				if item, ok := instance.Items[variant.ID]; ok {
+					if len(item.NameDescription) > 0 && item.NameDescription != "Heroic" {
+						variant.Name += " (" + item.NameDescription + ")"
+					}
+				}
+			}
+		}
+	}
+
+	// Update Item names
+	for _, grp := range groups {
+		updateNames(grp.Entries)
+	}
+
+	for _, grp := range procGroups {
+		updateNames(grp.Entries)
 	}
 
 	GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds_auto_gen.go", TmplStrOnUse)
@@ -193,9 +239,9 @@ func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, 
 		}
 
 		renderedTooltip := tooltip.String()
-		entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), ID: int(parsed.Id), Name: parsed.Name}
+		entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{&Variant{ID: int(parsed.Id), Name: parsed.Name}}}
 		entry.ProcInfo = BuildProcInfo(parsed, instance, renderedTooltip)
-		grp.Entries = append(grp.Entries, entry)
+		grp.Entries = append(grp.Entries, &entry)
 		groupMapProc["Procs"] = grp
 
 		if entry.ProcInfo.IsEmpty {
@@ -232,7 +278,7 @@ func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[strin
 		if !exists {
 			grp = Group{Name: groupName}
 		}
-		grp.Entries = append(grp.Entries, Entry{ID: int(parsed.Id), Name: parsed.Name})
+		grp.Entries = append(grp.Entries, &Entry{Variants: []*Variant{&Variant{ID: int(parsed.Id), Name: parsed.Name}}})
 		groupMap[groupName] = grp
 		return EffectParseResultSuccess
 	}
@@ -258,9 +304,9 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 			}
 
 			renderedTooltip := tooltip.String()
-			entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), ID: int(enchant.EffectId), Name: enchant.Name}
+			entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{&Variant{ID: int(enchant.EffectId), Name: enchant.Name}}}
 			entry.ProcInfo = BuildEnchantProcInfo(enchant, instance, renderedTooltip)
-			grp.Entries = append(grp.Entries, entry)
+			grp.Entries = append(grp.Entries, &entry)
 			groupMapProc["Enchants"] = grp
 			if entry.ProcInfo.IsEmpty {
 				return EffectParseResultUnsupported
@@ -553,4 +599,11 @@ func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
 	}
 
 	return false
+}
+
+func (entry *Entry) AddVariant(variant *Variant) {
+	entry.Variants = append(entry.Variants, variant)
+	sort.Slice(entry.Variants, func(i, j int) bool {
+		return entry.Variants[i].ID < entry.Variants[j].ID
+	})
 }

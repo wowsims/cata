@@ -130,7 +130,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-	_, _, err = database.LoadAndWriteDropSources(helper, inputsDir)
+	itemSources, _, err := database.LoadAndWriteDropSources(helper, inputsDir)
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
@@ -149,7 +149,7 @@ func main() {
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
 	database.GenerateProtos(instance, db)
-	database.GenerateItemEffects(instance, iconsMap, db)
+	database.GenerateItemEffects(instance, iconsMap, db, itemSources)
 
 	for _, gem := range instance.Gems {
 		parsed := gem.ToProto()

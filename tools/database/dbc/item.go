@@ -40,6 +40,7 @@ type Item struct {
 	BonusAmountCalculated  []float64
 	Sockets                []int
 	SocketModifier         []float64 // Todo: Figure out if this is socket modifier in disguise or something else - I call it that for now.
+	NameDescription        string    // Contains information for i.E. Thunderforging. Normal = Thunderforged, HC = Heroic Thunderforged
 }
 
 func (item *Item) ToUIItem() *proto.UIItem {

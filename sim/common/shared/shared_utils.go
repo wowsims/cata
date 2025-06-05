@@ -38,6 +38,11 @@ type ExtraSpellInfo struct {
 	Trigger func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
 }
 
+type ItemVariant struct {
+	ItemID   int32
+	ItemName string
+}
+
 type CustomProcHandler func(sim *core.Simulation, procAura *core.StatBuffAura)
 
 func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage DamageEffect) {
@@ -95,6 +100,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 	}
 
 	effectFn(effectID, func(agent core.Agent, itemLevelState proto.ItemLevelState) {
+
+		// Soft fail to allow for overrides for bad effects
+		if core.HasItemEffect(effectID) {
+			return
+		}
+
 		character := agent.GetCharacter()
 
 		var eligibleSlots []proto.ItemSlot
@@ -115,10 +126,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 				}
 			}
 		}
+
 		if procEffect == nil {
 			err, _ := fmt.Printf("Error getting proc effect for item/enchant %v", effectID)
 			panic(err)
 		}
+
 		proc := procEffect.GetProc()
 		procAction := core.ActionID{SpellID: procEffect.BuffId}
 		procAura := character.NewTemporaryStatsAura(
@@ -127,6 +140,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			stats.FromProtoMap(procEffect.ScalingOptions[int32(itemLevelState)].Stats),
 			time.Millisecond*time.Duration(procEffect.EffectDurationMs),
 		)
+
 		var dpm *core.DynamicProcManager
 		if (proc.Ppm != 0) && (config.ProcMask == core.ProcMaskUnknown) {
 			if isEnchant {
@@ -135,6 +149,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 				dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, proc.Ppm, 0)
 			}
 		}
+
 		procAura.CustomProcCondition = config.CustomProcCondition
 		var customHandler CustomProcHandler
 		if config.CustomProcCondition != nil {
@@ -153,6 +168,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		if extraSpell != nil {
 			procSpell = extraSpell(agent, itemLevelState)
 		}
+
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if customHandler != nil {
 				customHandler(sim, procAura)
@@ -193,6 +209,14 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		character.AddStatProcBuff(effectID, procAura, isEnchant, eligibleSlots)
 	})
+}
+
+func NewProcStatBonusEffectWithVariants(config ProcStatBonusEffect, variants []ItemVariant) {
+	for _, variant := range variants {
+		config.Name = variant.ItemName
+		config.ItemID = variant.ItemID
+		NewProcStatBonusEffect(config)
+	}
 }
 
 func NewProcStatBonusEffect(config ProcStatBonusEffect) {

@@ -29,10 +29,35 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	var statValue string
 	var socketTypes string
 	var statPercentEditor string
-	err := rows.Scan(&raw.Id, &raw.Name, &raw.InventoryType, &raw.ItemDelay, &raw.OverallQuality, &raw.DmgVariance,
+	err := rows.Scan(
+		&raw.Id,
+		&raw.Name,
+		&raw.InventoryType,
+		&raw.ItemDelay,
+		&raw.OverallQuality,
+		&raw.DmgVariance,
 		&raw.ItemLevel,
-		&statValue, &bonusStatString,
-		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.Flags1, &raw.Flags2, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
+		&statValue,
+		&bonusStatString,
+		&statPercentEditor,
+		&socketTypes,
+		&raw.SocketEnchantmentId,
+		&raw.Flags0,
+		&raw.Flags1,
+		&raw.Flags2,
+		&raw.FDID,
+		&raw.ItemSetName,
+		&raw.ItemSetId,
+		&raw.ClassMask,
+		&raw.RaceMask,
+		&raw.QualityModifier,
+		&randomSuffixOptions,
+		&statPercentageOfSocket,
+		&bonusAmountCalculated,
+		&raw.ItemClass,
+		&raw.ItemSubClass,
+		&raw.NameDescription,
+	)
 	if err != nil {
 		panic(err)
 	}
@@ -101,7 +126,8 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 			 s.StatPercentageOfSocket,
 			 s.StatModifier_bonusAmount,
 			 i.ClassID,
-			 i.SubClassID
+			 i.SubClassID,
+			 COALESCE(ind.Description_lang, '')
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
@@ -110,6 +136,7 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
 		LEFT JOIN ItemSet itemset ON s.ItemSet = itemset.ID
 		LEFT JOIN ItemArmorQuality iaq ON s.ItemLevel = iaq.ID
+		LEFT JOIN ItemNameDescription as ind ON i.ID = ind.Field_5_5_0_61000_002
 		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
 		`
 
@@ -1360,6 +1387,8 @@ func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName
 	if err != nil {
 		return 0, nil, "", fmt.Errorf("scanning drop row: %w", err)
 	}
+
+	dropSource.Difficulty = parseDungeonDifficultyMask(mask)
 	return itemID, &dropSource, jiName, nil
 }
 
