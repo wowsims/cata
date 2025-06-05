@@ -38,6 +38,7 @@ func (hunter *SurvivalHunter) Initialize() {
 		stats.SchoolIndexShadow,
 	}
 	baseMasteryRating := hunter.GetStat(stats.MasteryRating)
+
 	for _, school := range schoolsAffectedBySurvivalMastery {
 		hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(baseMasteryRating)
 	}
