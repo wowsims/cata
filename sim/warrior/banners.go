@@ -12,7 +12,7 @@ func (war *Warrior) registerBanners() {
 }
 
 func (war *Warrior) registerSkullBanner() {
-	skullBanner := core.SkullBannerAura(&war.Character, war.Index)
+	war.SkullBannerAura = core.SkullBannerAura(&war.Character, war.Index)
 
 	spell := war.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.SkullBannerActionID,
@@ -30,7 +30,7 @@ func (war *Warrior) registerSkullBanner() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			skullBanner.Activate(sim)
+			war.SkullBannerAura.Activate(sim)
 		},
 	})
 
@@ -43,7 +43,7 @@ func (war *Warrior) registerSkullBanner() {
 func (war *Warrior) registerDemoralizingBanner() {
 	actionID := core.ActionID{SpellID: 114030}
 
-	demoralizingBanner := war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	war.DemoralizingBannerAuras = war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return war.GetOrRegisterAura(core.Aura{
 			Label:    "Demoralizing Banner",
 			ActionID: actionID,
@@ -68,7 +68,7 @@ func (war *Warrior) registerDemoralizingBanner() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			for _, target := range sim.Encounter.TargetUnits {
-				demoralizingBanner.Get(target).Activate(sim)
+				war.DemoralizingBannerAuras.Get(target).Activate(sim)
 			}
 		},
 	})

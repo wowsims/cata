@@ -52,7 +52,7 @@ func (war *ArmsWarrior) registerSlam() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			csDamageMultiplier := core.TernaryFloat64(war.ColossusSmashAuras.Get(target).IsActive(), 1.1, 1.0)
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * csDamageMultiplier
+			baseDamage := war.CalcScalingSpellDmg(1) + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())*csDamageMultiplier
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if war.SweepingStrikesAura.IsActive() {

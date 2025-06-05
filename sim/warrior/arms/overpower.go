@@ -43,7 +43,7 @@ func (war *ArmsWarrior) registerOverpower() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			war.TasteForBloodAura.RemoveStack(sim)
 
-			if !result.Landed() {
+			if result.Landed() {
 				war.MortalStrike.CD.Reduce(500 * time.Millisecond)
 			} else {
 				spell.IssueRefund(sim)

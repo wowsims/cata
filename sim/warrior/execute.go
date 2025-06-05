@@ -28,7 +28,7 @@ func (war *Warrior) registerExecuteSpell() {
 		DamageMultiplier: 1.0,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.IsExecutePhase20()
+			return sim.IsExecutePhase20() || war.T16Dps4P.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -23,7 +23,7 @@ const (
 	SpellMaskRallyingCry
 	SpellMaskRecklessness
 	SpellMaskShieldWall
-	// SpellMaskLastStand
+	SpellMaskLastStand
 	SpellMaskCharge
 	SpellMaskSkullBanner
 	SpellMaskDemoralizingBanner
@@ -32,7 +32,7 @@ const (
 	// Abilities that cost rage but aren't attacks
 	SpellMaskDemoralizingShout
 	// SpellMaskInnerRage
-	// SpellMaskShieldBlock
+	SpellMaskShieldBlock
 	// SpellMaskDeathWish
 	SpellMaskSweepingStrikes
 	SpellMaskSweepingStrikesHit
@@ -122,11 +122,18 @@ type Warrior struct {
 	// ThunderstruckAura *core.Aura
 	// InnerRageAura     *core.Aura
 
+	SkullBannerAura         *core.Aura
+	DemoralizingBannerAuras core.AuraArray
+
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
 	ColossusSmashAuras     core.AuraArray
 	WeakenedArmorAuras     core.AuraArray
+
+	// Set Bonuses
+	T14Tank2P *core.Aura
+	T16Dps4P  *core.Aura
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {

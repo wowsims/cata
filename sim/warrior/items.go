@@ -1,0 +1,210 @@
+package warrior
+
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+)
+
+// T14 - DPS
+var ItemSetBattleplateOfResoundingRings = core.NewItemSet(core.ItemSet{
+	Name: "Battleplate of Resounding Rings",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				ClassMask:  SpellMaskMortalStrike | SpellMaskBloodthirst,
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.25,
+			})
+
+			setBonusAura.ExposeToAPL(123142)
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				ClassMask: SpellMaskRecklessness,
+				Kind:      core.SpellMod_Cooldown_Flat,
+				TimeValue: -90 * time.Second,
+			})
+
+			setBonusAura.ExposeToAPL(123144)
+		},
+	},
+})
+
+// T14 - Tank
+var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
+	Name: "Plate of Resounding Rings",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				ClassMask: SpellMaskLastStand,
+				Kind:      core.SpellMod_Cooldown_Flat,
+				TimeValue: -60 * time.Second,
+			})
+
+			setBonusAura.ExposeToAPL(123146)
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			war := agent.(WarriorAgent).GetWarrior()
+
+			// TODO: Increases the damage absorbed by your Shield Barrier by 5%.
+			war.T14Tank2P = setBonusAura
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				ClassMask: SpellMaskShieldBlock,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -5,
+			})
+
+			setBonusAura.ExposeToAPL(123147)
+		},
+	},
+})
+
+// T15 - DPS
+var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
+	Name: "Battleplate of the Last Mogu",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			war := agent.(WarriorAgent).GetWarrior()
+			rppm := core.TernaryFloat64(war.Spec == proto.Spec_SpecFuryWarrior, 1.1, 0.41)
+
+			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+				Name:     "Item - Warrior T15 DPS 2P Bonus",
+				ActionID: core.ActionID{SpellID: 138120},
+				ProcMask: core.ProcMaskMeleeWhiteHit,
+				ICD:      250 * time.Millisecond,
+				// TODO: Implement this as RPPM
+				PPM:      rppm,
+				Outcome:  core.OutcomeHit,
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					war.EnrageAura.Deactivate(sim)
+					war.EnrageAura.Activate(sim)
+				},
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			war := agent.(WarriorAgent).GetWarrior()
+
+			aura := war.RegisterAura(core.Aura{
+				Label:    "Skull Banner - T15 4P Bonus",
+				ActionID: core.ActionID{SpellID: 138127},
+				Duration: 10 * time.Second,
+			}).AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 35,
+			})
+
+			war.SkullBannerAura.AttachDependentAura(aura)
+
+			setBonusAura.ExposeToAPL(138126)
+		},
+	},
+})
+
+// T15 - Tank
+var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
+	Name: "Plate of the Last Mogu",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// TODO: Your Shield Slam and Revenge have a 10% chance to activate Victory Rush or Impending Victory as if you had killed your target.
+			// war := agent.(WarriorAgent).GetWarrior()
+			// SpellID: 138280
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// TODO: Your abilities generate 50% more Rage when used against targets afflicted by Demoralizing Shout.
+			// war := agent.(WarriorAgent).GetWarrior()
+			// SpellID: 138281
+		},
+	},
+})
+
+// T16 - DPS
+var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
+	Name: "Battleplate of the Prehistoric Marauder",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			war := agent.(WarriorAgent).GetWarrior()
+			actionID := core.ActionID{SpellID: 144438}
+			rageMetrics := war.NewRageMetrics(actionID)
+
+			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+				Name:     "Colossal Rage",
+				ActionID: actionID,
+				ProcMask: core.ProcMaskMeleeSpecial,
+				Outcome:  core.OutcomeHit,
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if war.ColossusSmashAuras.Get(result.Target).IsActive() {
+						war.AddRage(sim, 5, rageMetrics)
+					}
+				},
+			})
+
+			setBonusAura.ExposeToAPL(144436)
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			war := agent.(WarriorAgent).GetWarrior()
+
+			war.T16Dps4P = war.RegisterAura(core.Aura{
+				Label:    "Death Sentence",
+				ActionID: core.ActionID{SpellID: 144442},
+				Duration: 12 * time.Second,
+			})
+
+			costMod := war.AddDynamicMod(core.SpellModConfig{
+				ClassMask: SpellMaskExecute,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -30,
+			})
+
+			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+				Name:           "Death Sentence - Trigger",
+				ActionID:       core.ActionID{SpellID: 144442},
+				ClassSpellMask: SpellMaskMortalStrike | SpellMaskBloodthirst,
+				Outcome:        core.OutcomeHit,
+				// TODO: Implement this as RPPM
+				PPM:      1,
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					war.T16Dps4P.Activate(sim)
+				},
+			})
+
+			war.RegisterResetEffect(func(sim *core.Simulation) {
+				sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+					if setBonusAura.IsActive() {
+						if isExecute == 20 {
+							costMod.Activate()
+						}
+					}
+					costMod.Deactivate()
+				})
+			})
+
+			setBonusAura.ExposeToAPL(144441)
+		},
+	},
+})
+
+// T16 - Tank
+var ItemSetPlateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
+	Name: "Plate of the Prehistoric Marauder",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// TODO: You heal for 30% of all damage blocked with a shield and 30% of all damage absorbed by Shield Barrier.
+			// war := agent.(WarriorAgent).GetWarrior()
+			// SpellID: 144503
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// TODO: For 10 sec after Demoralizing Shout falls off your targets, you gain Rage from taking damage.
+			// war := agent.(WarriorAgent).GetWarrior()
+			// SpellID: 144502
+		},
+	},
+})
+
+func init() {
+}
