@@ -74,30 +74,47 @@ const SpellMaskBuilderHoly = SpellMaskBuilderBase |
 
 const SpellMaskSpender = SpellMaskTemplarsVerdict |
 	SpellMaskDivineStorm |
-	SpellMaskInquisition |
-	SpellMaskWordOfGlory |
 	SpellMaskHarshWords |
-	SpellMaskShieldOfTheRighteous
+	SpellMaskInquisition |
+	SpellMaskShieldOfTheRighteous |
+	SpellMaskWordOfGlory
 
 const SpellMaskSanctityOfBattleBase = SpellMaskCrusaderStrike |
 	SpellMaskJudgment |
-	SpellMaskHammerOfWrath
+	SpellMaskHammerOfWrath |
+	SpellMaskHarshWords |
+	SpellMaskWordOfGlory
+
+const SpellMaskSanctityOfBattleBaseGcd = SpellMaskCrusaderStrike |
+	SpellMaskHammerOfWrath |
+	SpellMaskJudgment |
+	SpellMaskHarshWords |
+	SpellMaskWordOfGlory
 
 const SpellMaskSanctityOfBattleRet = SpellMaskSanctityOfBattleBase |
 	// SpellMaskHammerOfTheRighteous | // Will be handled by Crusader Strike, since they share CD
 	SpellMaskExorcism
 
+const SpellMaskSanctityOfBattleRetGcd = SpellMaskSanctityOfBattleBaseGcd |
+	// SpellMaskHammerOfTheRighteous | // Will be handled by Crusader Strike, since they share CD
+	SpellMaskDivineStorm |
+	SpellMaskTemplarsVerdict
+
 const SpellMaskSanctityOfBattleProt = SpellMaskSanctityOfBattleBase |
 	// SpellMaskHammerOfTheRighteous | // Will be handled by Crusader Strike, since they share CD
+	SpellMaskAvengersShield |
 	SpellMaskConsecration |
 	SpellMaskHolyWrath |
-	SpellMaskAvengersShield |
 	SpellMaskShieldOfTheRighteous
 
-const SpellMaskHolyShock = SpellMaskHolyShockDamage | SpellMaskHolyShockHeal
+const SpellMaskSanctityOfBattleProtGcd = SpellMaskSanctityOfBattleBaseGcd
 
 const SpellMaskSanctityOfBattleHoly = SpellMaskSanctityOfBattleBase |
 	SpellMaskHolyShock
+
+const SpellMaskSanctityOfBattleHolyGcd = SpellMaskSanctityOfBattleBaseGcd
+
+const SpellMaskHolyShock = SpellMaskHolyShockDamage | SpellMaskHolyShockHeal
 
 const SpellMaskHammerOfTheRighteous = SpellMaskHammerOfTheRighteousMelee | SpellMaskHammerOfTheRighteousAoe
 
