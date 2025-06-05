@@ -57,7 +57,7 @@ func (war *ArmsWarrior) registerSeasonedSoldier() {
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask: warrior.SpellMaskThunderClap | warrior.SpellMaskWhirlwind,
 		Kind:      core.SpellMod_PowerCost_Flat,
-		TimeValue: -10,
+		IntValue:  -10,
 	})
 }
 
@@ -69,9 +69,10 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		Outcome:  core.OutcomeLanded,
 		Callback: core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) || spell.ActionID.SpellID != StrikesOfOpportunityHitID {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && spell.ActionID.SpellID != StrikesOfOpportunityHitID {
 				return
 			}
+
 			if sim.Proc(0.1, "Sudden Death") {
 				war.ColossusSmash.CD.Reset()
 			}
