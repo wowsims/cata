@@ -191,6 +191,7 @@ export class Timeline extends ResultComponent {
 			const { dpsResourcesPlotOptions, rotationLabels, rotationTimeline, rotationHiddenIdsContainer, rotationTimelineTimeRulerImage } = cachedData;
 			this.rotationLabels.replaceChildren(...rotationLabels.cloneNode(true).childNodes);
 			this.rotationTimeline.replaceChildren(...rotationTimeline.cloneNode(true).childNodes);
+
 			this.rotationHiddenIdsContainer.replaceChildren(...rotationHiddenIdsContainer.cloneNode(true).childNodes);
 			this.dpsResourcesPlot.updateOptions(dpsResourcesPlotOptions);
 
