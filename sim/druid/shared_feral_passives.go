@@ -93,7 +93,7 @@ func (druid *Druid) ApplyLeaderOfThePack() {
 		Duration: time.Second * 6,
 	}
 
-	healingSpell := druid.RegisterSpell(Cat | Bear, core.SpellConfig{
+	healingSpell := druid.RegisterSpell(Cat|Bear, core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 34299},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskEmpty,
@@ -102,7 +102,7 @@ func (druid *Druid) ApplyLeaderOfThePack() {
 		ThreatMultiplier: 0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealHealing(sim, target, healthRestore * spell.Unit.MaxHealth(), spell.OutcomeHealing)
+			spell.CalcAndDealHealing(sim, target, healthRestore*spell.Unit.MaxHealth(), spell.OutcomeHealing)
 		},
 	})
 

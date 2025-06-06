@@ -52,7 +52,7 @@ func (bear *GuardianDruid) newTreant() *GuardianTreant {
 	})
 
 	treant.OnPetEnable = func(sim *core.Simulation) {
-		treant.AutoAttacks.PauseMeleeBy(sim, 500 * time.Millisecond)
+		treant.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
 	}
 
 	bear.AddPet(treant)
@@ -60,7 +60,7 @@ func (bear *GuardianDruid) newTreant() *GuardianTreant {
 	return treant
 }
 
-func (treant *GuardianTreant) Initialize() {}
+func (treant *GuardianTreant) Initialize()                              {}
 func (treant *GuardianTreant) ExecuteCustomRotation(_ *core.Simulation) {}
 
 func (treant *GuardianTreant) Reset(sim *core.Simulation) {
@@ -81,7 +81,7 @@ func (bear *GuardianDruid) registerTreants() {
 
 func (treants *GuardianTreants) Enable(sim *core.Simulation) {
 	for _, treant := range treants {
-		treant.EnableWithTimeout(sim, treant, time.Second * 15)
-		treant.ExtendGCDUntil(sim, sim.CurrentTime + time.Second * 15)
+		treant.EnableWithTimeout(sim, treant, time.Second*15)
+		treant.ExtendGCDUntil(sim, sim.CurrentTime+time.Second*15)
 	}
 }

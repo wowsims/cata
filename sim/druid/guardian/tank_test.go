@@ -73,8 +73,7 @@ func TestGuardian(t *testing.T) {
 // }
 
 var StandardTalents = "010100"
-var StandardGlyphs = &proto.Glyphs{
-}
+var StandardGlyphs = &proto.Glyphs{}
 
 var PlayerOptionsDefault = &proto.Player_GuardianDruid{
 	GuardianDruid: &proto.GuardianDruid{
@@ -88,5 +87,5 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	FoodId:     105717,
 	PotId:      76089,
 	PrepotId:   76089,
-	ConjuredId: 5512,  // Conjured Healthstone
+	ConjuredId: 5512, // Conjured Healthstone
 }

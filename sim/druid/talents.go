@@ -27,7 +27,7 @@ func (druid *Druid) registerYserasGift() {
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealHealing(sim, target, 0.05 * spell.Unit.MaxHealth(), spell.OutcomeHealing) 
+			spell.CalcAndDealHealing(sim, target, 0.05*spell.Unit.MaxHealth(), spell.OutcomeHealing)
 		},
 	})
 
@@ -64,7 +64,7 @@ func (druid *Druid) registerRenewal() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealHealing(sim, spell.Unit, 0.3 * spell.Unit.MaxHealth(), spell.OutcomeHealing)
+			spell.CalcAndDealHealing(sim, spell.Unit, 0.3*spell.Unit.MaxHealth(), spell.OutcomeHealing)
 		},
 	})
 
@@ -103,7 +103,7 @@ func (druid *Druid) registerCenarionWard() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(_ *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = baseTickDamage + spSnapshot * 1.04
+				dot.SnapshotBaseDamage = baseTickDamage + spSnapshot*1.04
 				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
 				dot.SnapshotCritChance = dot.Spell.HealingCritChance()
 			},

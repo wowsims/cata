@@ -4,43 +4,45 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/warrior"
 )
 
 func (war *FuryWarrior) registerBloodthirst() {
+	actionID := core.ActionID{SpellID: 23881}
+	rageMetrics := war.NewRageMetrics(actionID)
 	war.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 23881},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskBloodthirst,
 		MaxRange:       core.MaxMeleeRange,
 
-		RageCost: core.RageCostOptions{
-			Cost:   20,
-			Refund: 0.8,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: time.Second * 3,
+				Duration: time.Millisecond * 4500,
 			},
+			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 0.9,
-		BonusCritPercent: 50,
 		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := war.CalcScalingSpellDmg(1) + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			bonusCritPercent := spell.Unit.GetStat(stats.PhysicalCritPercent)
+			spell.BonusCritPercent += bonusCritPercent
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			if !result.Landed() {
-				spell.IssueRefund(sim)
+			spell.BonusCritPercent -= bonusCritPercent
+
+			if result.Landed() {
+				war.AddRage(sim, 10, rageMetrics)
 			}
 		},
 	})
