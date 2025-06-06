@@ -329,7 +329,7 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 	return EffectParseResultInvalid
 }
 
-var critMatcher = regexp.MustCompile(`critical [^\s]+ [^fb]`)
+var critMatcher = regexp.MustCompile(`critical ([^\s,]+|damage,?) [^fb]`)
 var pureHealMatcher = regexp.MustCompile(`healing spells`)
 var hasHealMatcher = regexp.MustCompile(`heal(ing)?[^,]`)
 var hasGenericMatcher = regexp.MustCompile(`a spell`)

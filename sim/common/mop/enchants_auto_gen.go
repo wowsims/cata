@@ -20,7 +20,7 @@ func RegisterAllEnchants() {
 	//	EnchantID: 4441,
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:   core.OutcomeCrit,
+	//	Outcome:   core.OutcomeLanded,
 	// })
 	
 	// TODO: Manual implementation required
