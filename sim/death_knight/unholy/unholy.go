@@ -14,7 +14,7 @@ func RegisterUnholyDeathKnight() {
 		func(character *core.Character, options *proto.Player) core.Agent {
 			return NewUnholyDeathKnight(character, options)
 		},
-		func(player *proto.Player, spec interface{}) {
+		func(player *proto.Player, spec any) {
 			playerSpec, ok := spec.(*proto.Player_UnholyDeathKnight)
 			if !ok {
 				panic("Invalid spec value for Unholy Death Knight!")

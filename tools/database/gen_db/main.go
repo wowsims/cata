@@ -670,7 +670,7 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Class:         proto.Class_ClassDeathKnight,
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "000000",
-		}, &proto.Player_BloodDeathKnight{BloodDeathKnight: &proto.BloodDeathKnight{Options: &proto.BloodDeathKnight_Options{ClassOptions: &proto.DeathKnightOptions{}}, Rotation: &proto.BloodDeathKnight_Rotation{}}}), nil, nil, nil)},
+		}, &proto.Player_BloodDeathKnight{BloodDeathKnight: &proto.BloodDeathKnight{Options: &proto.BloodDeathKnight_Options{ClassOptions: &proto.DeathKnightOptions{}}}}), nil, nil, nil)},
 		{Name: "frostDeathKnight", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDeathKnight,
 			Equipment:     &proto.EquipmentSpec{},

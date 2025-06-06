@@ -10,12 +10,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const (
-	HitCapRatio             = 17.0 / 8.0 // 2.125
-	ExpertiseCapRatio       = 6.5 / 8.0  // 0.8125
-	PetExpertiseRatingScale = ExpertiseCapRatio * (4 * core.ExpertisePerQuarterPercentReduction)
-)
-
 // Damage Done By Caster setup
 const (
 	DDBC_MercilessCombat   int = 0

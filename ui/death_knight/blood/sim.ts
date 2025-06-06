@@ -9,7 +9,6 @@ import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DeathKnightInputs from '../inputs';
-import * as BloodInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
@@ -62,13 +61,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	),
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_BLOOD_BALANCED_PRESET.gear,
+		gear: Presets.P1_BLOOD_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_BLOOD_EP_PRESET.epWeights,
+		epWeights: Presets.P1_BLOOD_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return hitCap.add(expCap);
 		})(),
@@ -80,10 +79,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			elementalOath: true,
+			powerWordFortitude: true,
+			serpentsSwiftness: true,
+			trueshotAura: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({}),
+		debuffs: Debuffs.create({
+			curseOfElements: true,
+			physicalVulnerability: true,
+			weakenedArmor: true,
+			weakenedBlows: true,
+		}),
 	},
 
 	// modifyDisplayStats: (player: Player<Spec.SpecBloodDeathKnight>) => {
@@ -91,8 +106,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
-	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: BloodInputs.BloodDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.SpellHasteBuff],
@@ -135,7 +148,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_BLOOD_EP_PRESET, Presets.P3_BLOOD_EP_PRESET],
+		epWeights: [Presets.P1_BLOOD_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT, Presets.BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
@@ -144,11 +157,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		gear: [
 			Presets.PRERAID_BLOOD_PRESET,
 			Presets.P1_BLOOD_PRESET,
-			Presets.P3_BLOOD_BALANCED_PRESET,
-			Presets.P3_BLOOD_DEFENSIVE_PRESET,
-			Presets.P3_BLOOD_OFFENSIVE_PRESET,
 		],
-		builds: [Presets.P1_PRESET, Presets.P3_PRESET],
+		builds: [Presets.P1_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
@@ -170,15 +180,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_BLOOD_PRESET.gear,
-					2: Presets.P1_BLOOD_PRESET.gear,
-					3: Presets.P1_BLOOD_PRESET.gear,
-					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_BLOOD_PRESET.gear,
-					2: Presets.P1_BLOOD_PRESET.gear,
-					3: Presets.P1_BLOOD_PRESET.gear,
-					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -191,13 +195,8 @@ export class BloodDeathKnightSimUI extends IndividualSimUI<Spec.SpecBloodDeathKn
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
-					const hasP3Setup = player
-						.getGear()
-						.getEquippedItems()
-						.some(item => (item?.item.phase || 0) >= 3);
-
-					return hasP3Setup ? Presets.P3_BLOOD_EP_PRESET.epWeights : Presets.P1_BLOOD_EP_PRESET.epWeights;
+				getEPDefaults: (_: Player<Spec.SpecFuryWarrior>) => {
+					return Presets.P1_BLOOD_EP_PRESET.epWeights;
 				},
 			});
 		});

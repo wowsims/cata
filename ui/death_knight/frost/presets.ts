@@ -13,9 +13,6 @@ import MasterFrostAPL from '../../death_knight/frost/apls/masterfrost.apl.json';
 import P12HGear from '../../death_knight/frost/gear_sets/p1.2h.gear.json';
 import P1DWGear from '../../death_knight/frost/gear_sets/p1.dw.gear.json';
 import P1MasterfrostGear from '../../death_knight/frost/gear_sets/p1.masterfrost.gear.json';
-import P3DWGear from '../../death_knight/frost/gear_sets/p3.dw.gear.json';
-import P3MasterfrostGear from '../../death_knight/frost/gear_sets/p3.masterfrost.gear.json';
-import P4MasterfrostGear from '../../death_knight/frost/gear_sets/p4.masterfrost.gear.json';
 import PreBISGear from '../../death_knight/frost/gear_sets/prebis.gear.json';
 
 // Preset options for this spec.
@@ -32,10 +29,6 @@ const DW_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
 					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for dual wield.',
 				},
-				// {
-				// 	condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
-				// 	message: "Check your talents: You have selected a dual-wield spec but don't have [Threat Of Thassarian] talented.",
-				// },
 			],
 			player,
 		);
@@ -51,10 +44,6 @@ const TWOHAND_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
 					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for dual wield',
 				},
-				// {
-				// 	condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
-				// 	message: "Check your talents: You have selected a two-handed spec but don't have [Might of the Frozen Wastes] talented",
-				// },
 			],
 			player,
 		);
@@ -62,11 +51,8 @@ const TWOHAND_PRESET_OPTIONS = {
 };
 
 export const P1_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 DW Obliterate', P1DWGear, DW_PRESET_OPTIONS);
-export const P3_DW_GEAR_PRESET = PresetUtils.makePresetGear('P3 DW Obliterate', P3DWGear, DW_PRESET_OPTIONS);
 export const P1_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 Two Hand', P12HGear, TWOHAND_PRESET_OPTIONS);
 export const P1_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P1 Masterfrost', P1MasterfrostGear, DW_PRESET_OPTIONS);
-export const P3_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P3 Masterfrost', P3MasterfrostGear, DW_PRESET_OPTIONS);
-export const P4_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P4 Masterfrost', P4MasterfrostGear, DW_PRESET_OPTIONS);
 export const PREBIS_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis Masterfrost', PreBISGear, DW_PRESET_OPTIONS);
 
 export const DUAL_WIELD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('DW Obliterate', DualWieldAPL, DW_PRESET_OPTIONS);
@@ -91,29 +77,6 @@ export const P1_DUAL_WIELD_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[PseudoStat.PseudoStatMainHandDps]: 6.05,
 			[PseudoStat.PseudoStatOffHandDps]: 3.85,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 146.53,
-			[PseudoStat.PseudoStatSpellHitPercent]: 41.91,
-		},
-	),
-	DW_PRESET_OPTIONS,
-);
-
-export const P3_DUAL_WIELD_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P3 DW Obliterate',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.98,
-			[Stat.StatArmor]: 0.03,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 0.65,
-			[Stat.StatHasteRating]: 1.8,
-			[Stat.StatHitRating]: 1.29,
-			[Stat.StatCritRating]: 1.24,
-			[Stat.StatMasteryRating]: 1.23,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 6.23,
-			[PseudoStat.PseudoStatOffHandDps]: 3.93,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 154.42,
 			[PseudoStat.PseudoStatSpellHitPercent]: 41.91,
 		},
 	),
@@ -169,47 +132,17 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wotlk.wowhead.com/talent-calc and copy the numbers in the url.
 
-export const DualWieldTalents = {
-	name: 'DW Obliterate',
+export const DefaultTalents = {
+	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '221111',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
-			major2: DeathKnightMajorGlyph.GlyphOfDeathGrip,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
-			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
-			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
-			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-		}),
-	}),
-	...DW_PRESET_OPTIONS,
-};
-
-export const TwoHandTalents = {
-	name: 'Two Hand',
-	data: SavedTalents.create({
-		talentsString: '',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
-			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
-			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
-			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-		}),
-	}),
-	...TWOHAND_PRESET_OPTIONS,
-};
-
-export const MasterfrostTalents = {
-	name: 'Masterfrost',
-	data: SavedTalents.create({
-		talentsString: '',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
-			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
-			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
-			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			major2: DeathKnightMajorGlyph.GlyphOfPestilence,
+			major3: DeathKnightMajorGlyph.GlyphOfLoudHorn,
+			minor1: DeathKnightMinorGlyph.GlyphOfArmyOfTheDead,
+			minor2: DeathKnightMinorGlyph.GlyphOfTranquilGrip,
+			minor3: DeathKnightMinorGlyph.GlyphOfDeathGate,
 		}),
 	}),
 	...DW_PRESET_OPTIONS,
@@ -228,36 +161,41 @@ export const OtherDefaults = {
 };
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58088, // Flask of Titanic Strength
-	foodId: 62670, // Beer-Basted Crocolisk
-	potId: 58146, // Golemblood Potion
-	prepotId: 58146, // Golemblood Potion
-	tinkerId: 82174, // Synapse Springs
-});
-export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P3 - DW Obliterate', {
-	gear: P3_DW_GEAR_PRESET,
-	talents: DualWieldTalents,
-	rotationType: APLRotationType.TypeAuto,
-	epWeights: P3_DUAL_WIELD_EP_PRESET,
+	flaskId: 76088, // Flask of Winter's Bite
+	foodId: 74646, // Black Pepper Ribs and Shrimp
+	potId: 76095, // Potion of Mogu Power
+	prepotId: 76095, // Potion of Mogu Power
+	tinkerId: 126734, // Synapse Springs Mark II
 });
 
-export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('P3 - Two Hand', {
+export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P1 - DW Obliterate', {
+	gear: P1_DW_GEAR_PRESET,
+	talents: DefaultTalents,
+	rotationType: APLRotationType.TypeAPL,
+	rotation: DUAL_WIELD_ROTATION_PRESET_DEFAULT,
+	epWeights: P1_DUAL_WIELD_EP_PRESET,
+});
+
+export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('P1 - Two Hand', {
 	gear: P1_2H_GEAR_PRESET,
-	talents: TwoHandTalents,
-	rotationType: APLRotationType.TypeAuto,
+	talents: DefaultTalents,
+	rotationType: APLRotationType.TypeAPL,
+	rotation: TWO_HAND_ROTATION_PRESET_DEFAULT,
 	epWeights: P1_TWOHAND_EP_PRESET,
 });
 
-export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('P4 - Masterfrost', {
-	gear: P4_MASTERFROST_GEAR_PRESET,
-	talents: MasterfrostTalents,
-	rotationType: APLRotationType.TypeAuto,
+export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('P1 - Masterfrost', {
+	gear: P1_MASTERFROST_GEAR_PRESET,
+	talents: DefaultTalents,
+	rotationType: APLRotationType.TypeAPL,
+	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
 	epWeights: P1_MASTERFROST_EP_PRESET,
 });
 
-export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P4 - Pre-bis', {
+export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P1 - Pre-bis', {
 	gear: PREBIS_MASTERFROST_GEAR_PRESET,
-	talents: MasterfrostTalents,
-	rotationType: APLRotationType.TypeAuto,
+	talents: DefaultTalents,
+	rotationType: APLRotationType.TypeAPL,
+	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
 	epWeights: P1_MASTERFROST_EP_PRESET,
 });
