@@ -116,7 +116,6 @@ type Warrior struct {
 	BerserkerRageAura   *core.Aura
 	TasteForBloodAura   *core.Aura
 	SweepingStrikesAura *core.Aura
-	// BloodsurgeAura    *core.Aura
 	// SuddenDeathAura   *core.Aura
 	// ShieldBlockAura   *core.Aura
 	// ThunderstruckAura *core.Aura
@@ -162,7 +161,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerBerserkerRage()
 	warrior.registerRallyingCry()
 	warrior.registerColossusSmash()
-	// warrior.registerDemoralizingShoutSpell()
 	warrior.registerExecuteSpell()
 	warrior.registerHeroicStrikeSpell()
 	warrior.registerCleaveSpell()

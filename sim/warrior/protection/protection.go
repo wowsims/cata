@@ -58,6 +58,8 @@ func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
 func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.registerPassives()
+
+	war.registerDemoralizingShout()
 }
 
 func (war *ProtectionWarrior) registerPassives() {
@@ -112,10 +114,6 @@ func (war *ProtectionWarrior) registerMastery() {
 		masteryCriticalBlockStat := 2.2 * core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating)
 		war.AddStatDynamic(sim, stats.BlockPercent, masteryCriticalBlockStat+masteryBlockStat)
 	})
-}
-
-func (war *ProtectionWarrior) ApplyTalents() {
-	// war.registerShieldSlam()
 }
 
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {
