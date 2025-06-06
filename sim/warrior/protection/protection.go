@@ -62,6 +62,7 @@ func (war *ProtectionWarrior) Initialize() {
 	war.registerDemoralizingShout()
 	war.registerShieldSlam()
 	war.registerShieldBlock()
+	war.registerDevastate()
 }
 
 func (war *ProtectionWarrior) registerPassives() {

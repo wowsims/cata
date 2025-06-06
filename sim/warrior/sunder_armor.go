@@ -2,12 +2,15 @@ package warrior
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (war *Warrior) registerSunderArmor() *core.Spell {
-	war.WeakenedArmorAuras = war.NewEnemyAuraArray(core.WeakenedArmorAura)
+func (war *Warrior) registerSunderArmor() {
+	if war.Spec == proto.Spec_SpecProtectionWarrior {
+		return
+	}
 
-	return war.RegisterSpell(core.SpellConfig{
+	war.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7386},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,

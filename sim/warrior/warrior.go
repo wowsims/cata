@@ -151,6 +151,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.sharedHSCleaveCD = warrior.NewTimer()
 	warrior.sharedShoutsCD = warrior.NewTimer()
 
+	warrior.WeakenedArmorAuras = warrior.NewEnemyAuraArray(core.WeakenedArmorAura)
+
 	warrior.registerStances()
 	warrior.registerShouts()
 	warrior.registerPassives()
