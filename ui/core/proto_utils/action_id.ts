@@ -510,12 +510,10 @@ export class ActionId {
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
 			case 'Bloodlust':
 			case 'Ferocious Inspiration':
-			case 'Heroism':
 			case 'Innervate':
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
 			case 'Stormlash Totem':
-			case 'Time Warp':
 			case 'Unholy Frenzy':
 			case 'Power Infusion':
 				if (tag != -1) {
