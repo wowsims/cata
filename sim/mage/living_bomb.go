@@ -115,6 +115,9 @@ func (mage *Mage) registerLivingBombSpell() {
 					}
 					bombExplode = true
 				}
+				if spell.Dot(target).RemainingTicks() == 1 {
+					livingBombExplosionSpell.Cast(sim, target)
+				}
 				spell.Dot(target).Apply(sim)
 				activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(target))
 				sort.Slice(activeLivingBombs, func(i, j int) bool {
