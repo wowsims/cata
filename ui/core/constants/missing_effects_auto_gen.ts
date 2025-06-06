@@ -3,6 +3,7 @@
 // Changes will be overwritten on next database generation
 
 export const MISSING_ITEM_EFFECTS = [
+    88149,
     94518,
     95779,
     96151,

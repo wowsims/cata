@@ -25,18 +25,19 @@ import (
  	"github.com/wowsims/mop/sim/common/shared"
 )
 
-func RegisterAllOnUseProcs() {
+func RegisterAllProcs() {
 {{- range .Groups }}
 
 	// {{ .Name }}
 {{- range .Entries }}
-	{{if .ProcInfo.IsEmpty}}
+	{{if not .Supported}}
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	{{- end}}
 	// {{.Tooltip}}
+	{{- if .Supported}}
 	{{- if len .Variants | eq 1}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		{{with index .Variants 0 -}}
@@ -58,6 +59,29 @@ func RegisterAllOnUseProcs() {
 		{{- end}}
 	})
 	{{- end}}
+	{{- else}}
+	{{- if len .Variants | eq 1}}
+	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		{{with index .Variants 0 -}}
+	//	Name:     "{{ .Name }}",
+	//	ItemID: {{ .ID }},
+		{{- end}}
+	//	Callback: {{ .ProcInfo.Callback | asCoreCallback }},
+	//	ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
+	//	Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+	// })
+	{{- else }}
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: {{ .ProcInfo.Callback | asCoreCallback }},
+	//	ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
+	//	Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+	// }, []shared.ItemVariant{
+		{{- range .Variants }}
+	//	{ItemID: {{.ID}}, ItemName: "{{.Name}}"},
+		{{- end}}
+	// })
+	{{- end}}
+	{{- end}}
 {{- end }}
 
 {{- end }}
@@ -75,7 +99,7 @@ func RegisterAllEnchants() {
 
 	// {{ .Name }}
 {{- range .Entries }}
-	{{if .ProcInfo.IsEmpty}}
+	{{if not .Supported}}
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
@@ -84,15 +108,27 @@ func RegisterAllEnchants() {
 	{{- range (.Tooltip | formatStrings 100) }}
 	// {{.}}
 	{{- end}}
+	{{- if .Supported}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		{{with index .Variants 0 -}}
-		Name:     "{{ .Name }}",
+		Name:      "{{ .Name }}",
 		EnchantID: {{ .ID }},
 		{{- end}}
 		Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
 		Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},
 	})
+	{{- else}}
+	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		{{- with index .Variants 0 }}
+	//	Name:      "{{ .Name }}",
+	//	EnchantID: {{ .ID }},
+		{{- end}}
+	//	Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
+	//	ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
+	//	Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},
+	// })
+	{{- end}}
 {{- end }}
 
 {{- end }}

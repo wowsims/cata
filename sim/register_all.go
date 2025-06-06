@@ -94,6 +94,6 @@ func RegisterAll() {
 	windwalker.RegisterWindwalkerMonk()
 
 	mop.RegisterAllOnUseCds()
-	mop.RegisterAllOnUseProcs()
+	mop.RegisterAllProcs()
 	mop.RegisterAllEnchants()
 }

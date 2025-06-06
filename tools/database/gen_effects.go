@@ -21,7 +21,6 @@ type ProcInfo struct {
 	Outcome  core.HitOutcome
 	Callback core.AuraCallback
 	ProcMask core.ProcMask
-	IsEmpty  bool
 }
 
 // Entry represents a single effect with its ID and display name.
@@ -31,9 +30,10 @@ type Variant struct {
 }
 
 type Entry struct {
-	Variants []*Variant
-	Tooltip  []string
-	ProcInfo ProcInfo
+	Variants  []*Variant
+	Tooltip   []string
+	ProcInfo  ProcInfo
+	Supported bool
 }
 
 // Group holds a category of effects.
@@ -68,8 +68,8 @@ func GenerateEffectsFile(groups []*Group, outFile string, templateString string)
 
 	for _, grp := range groups {
 		sort.Slice(grp.Entries, func(i, j int) bool {
-			if grp.Entries[i].ProcInfo.IsEmpty != grp.Entries[j].ProcInfo.IsEmpty {
-				return grp.Entries[i].ProcInfo.IsEmpty
+			if grp.Entries[i].Supported != grp.Entries[j].Supported {
+				return !grp.Entries[i].Supported
 			}
 
 			return grp.Entries[i].Variants[0].ID < grp.Entries[j].Variants[0].ID
@@ -249,12 +249,12 @@ func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, 
 		}
 
 		renderedTooltip := tooltip.String()
-		entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{&Variant{ID: int(parsed.Id), Name: parsed.Name}}}
-		entry.ProcInfo = BuildProcInfo(parsed, instance, renderedTooltip)
+		entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{{ID: int(parsed.Id), Name: parsed.Name}}}
+		entry.ProcInfo, entry.Supported = BuildProcInfo(parsed, instance, renderedTooltip)
 		grp.Entries = append(grp.Entries, &entry)
 		groupMapProc["Procs"] = grp
 
-		if entry.ProcInfo.IsEmpty {
+		if !entry.Supported {
 			return EffectParseResultUnsupported
 		}
 
@@ -314,11 +314,11 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 			}
 
 			renderedTooltip := tooltip.String()
-			entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{&Variant{ID: int(enchant.EffectId), Name: enchant.Name}}}
-			entry.ProcInfo = BuildEnchantProcInfo(enchant, instance, renderedTooltip)
+			entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{{ID: int(enchant.EffectId), Name: enchant.Name}}}
+			entry.ProcInfo, entry.Supported = BuildEnchantProcInfo(enchant, instance, renderedTooltip)
 			grp.Entries = append(grp.Entries, &entry)
 			groupMapProc["Enchants"] = grp
-			if entry.ProcInfo.IsEmpty {
+			if !entry.Supported {
 				return EffectParseResultUnsupported
 			}
 
@@ -334,25 +334,44 @@ var pureHealMatcher = regexp.MustCompile(`healing spells`)
 var hasHealMatcher = regexp.MustCompile(`heal(ing)?[^,]`)
 var hasGenericMatcher = regexp.MustCompile(`a spell`)
 
-func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) ProcInfo {
+func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) (ProcInfo, bool) {
 	itemEffectInfo, ok := instance.ItemEffectsByParentID[int(parsed.Id)]
-	if !ok || len(itemEffectInfo) > 1 {
-		fmt.Printf("WARN: Can not generate proc info for Item: %d, not supported.\n", parsed.Id)
-		return ProcInfo{IsEmpty: true}
-	}
-
-	procId := itemEffectInfo[0].SpellID
-	procSpell, ok := instance.Spells[int(procId)]
 	if !ok {
-		panic(fmt.Sprintf("Could not find proc aura %d spell for item effect %d.\n", procId, parsed.Id))
+		fmt.Printf("WARN: Can not generate proc info for Item: %d, not found.\n", parsed.Id)
 	}
 
-	weaponType := 0
-	if itemEffectInfo[0].TriggerType == 2 {
-		weaponType = WeaponTypeWeapon
+	// if we have multiple spells find the first that has a proc aura assigned
+	for _, effectInfo := range itemEffectInfo {
+		procId := effectInfo.SpellID
+		procSpell, ok := instance.Spells[int(procId)]
+		if !ok {
+			panic(fmt.Sprintf("Could not find proc aura %d spell for item effect %d.\n", procId, parsed.Id))
+		}
+
+		if len(procSpell.ProcTypeMask) == 0 || procSpell.ProcTypeMask[0] == 0 {
+			continue
+		}
+
+		weaponType := 0
+		if itemEffectInfo[0].TriggerType == 2 {
+			weaponType = WeaponTypeWeapon
+		}
+
+		procInfo, supported := BuildSpellProcInfo(procSpell, tooltip, weaponType)
+
+		// we do not support generation of more than one proc effect right now
+		if len(itemEffectInfo) > 1 {
+			return procInfo, false
+		}
+
+		if SpellHasDummyEffect(int(procId), instance) {
+			return procInfo, false
+		}
+
+		return procInfo, supported
 	}
 
-	return BuildSpellProcInfo(procSpell, tooltip, weaponType)
+	return ProcInfo{}, false
 }
 
 const (
@@ -361,20 +380,16 @@ const (
 	WeaponTypeRanged int = 2
 )
 
-func BuildEnchantProcInfo(enchant *proto.UIEnchant, instance *dbc.DBC, tooltip string) ProcInfo {
+func BuildEnchantProcInfo(enchant *proto.UIEnchant, instance *dbc.DBC, tooltip string) (ProcInfo, bool) {
 	procSpellID := enchant.SpellId
 	if procSpellID == 0 {
 		fmt.Printf("WARN: Enchant %d with no spell id", enchant.EffectId)
-		return ProcInfo{IsEmpty: true}
+		return ProcInfo{}, false
 	}
 
 	procSpell, ok := instance.Spells[int(procSpellID)]
 	if !ok {
 		panic(fmt.Sprintf("Could not find proc aura %d spell for item effect %d.\n", procSpellID, enchant.EffectId))
-	}
-
-	if SpellHasDummyEffect(int(procSpellID), instance) {
-		return ProcInfo{IsEmpty: true}
 	}
 
 	weaponType := 0
@@ -384,13 +399,16 @@ func BuildEnchantProcInfo(enchant *proto.UIEnchant, instance *dbc.DBC, tooltip s
 		weaponType = WeaponTypeRanged
 	}
 
-	return BuildSpellProcInfo(procSpell, tooltip, weaponType)
+	procInfo, supported := BuildSpellProcInfo(procSpell, tooltip, weaponType)
+	if SpellHasDummyEffect(int(procSpellID), instance) {
+		return procInfo, false
+	}
+
+	return procInfo, supported
 }
 
-func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) ProcInfo {
-	var info = ProcInfo{
-		IsEmpty: true,
-	}
+func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) (ProcInfo, bool) {
+	var info = ProcInfo{}
 
 	// On hit proc
 	if weaponType == WeaponTypeWeapon {
@@ -430,10 +448,23 @@ func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) Pro
 
 		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_TAKEN > 0 {
 			info.Callback |= core.CallbackOnSpellHitTaken
+			info.Outcome = core.OutcomeLanded
+
+			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_TAKE_MELEE_SWING > 0 {
+				info.ProcMask |= core.ProcMaskMeleeWhiteHit
+			}
+
+			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_TAKE_MELEE_ABILITY > 0 {
+				info.ProcMask |= core.ProcMaskMeleeSpecial
+			}
+
+			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_TAKE_HARMFUL_SPELL > 0 {
+				info.ProcMask |= core.ProcMaskSpellDamage
+			}
 
 			// For now we do not support self damage procs as they usually have custom extra proc conditions
 			// like On dodge or on On parry or x amount of damage taken
-			return ProcInfo{IsEmpty: true}
+			return info, false
 		}
 
 		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_DEALT > 0 {
@@ -492,11 +523,11 @@ func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) Pro
 		info.Callback &= ^core.CallbackOnPeriodicDamageDealt
 	}
 
-	info.IsEmpty = info.Callback == core.CallbackEmpty &&
+	unsupported := info.Callback == core.CallbackEmpty &&
 		info.Outcome == core.OutcomeEmpty &&
 		info.ProcMask == core.ProcMaskEmpty
 
-	return info
+	return info, !unsupported
 }
 
 func asCoreCallback(callback core.AuraCallback) string {

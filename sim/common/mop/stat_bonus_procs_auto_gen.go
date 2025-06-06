@@ -5,7 +5,7 @@ import (
  	"github.com/wowsims/mop/sim/common/shared"
 )
 
-func RegisterAllOnUseProcs() {
+func RegisterAllProcs() {
 
 	// Procs
 	
@@ -13,247 +13,260 @@ func RegisterAllOnUseProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
+	// [You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.]
+	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		//	Name:     "The Gloaming Blade",
+	//	ItemID: 88149,
+	//	Callback: core.CallbackEmpty,
+	//	ProcMask: core.ProcMaskEmpty,
+	//	Outcome:  core.OutcomeEmpty,
+	// })
+	
+	// TODO: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
+	//
 	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 94518, ItemName: "Delicate Vial of the Sanguinaire (N)"},
-		{ItemID: 95779, ItemName: "Delicate Vial of the Sanguinaire (LFR) (Celestial)"},
-		{ItemID: 96151, ItemName: "Delicate Vial of the Sanguinaire (Thunderforged)"},
-		{ItemID: 96523, ItemName: "Delicate Vial of the Sanguinaire (H)"},
-		{ItemID: 96895, ItemName: "Delicate Vial of the Sanguinaire (Heroic Thunderforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitTaken,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 94518, ItemName: "Delicate Vial of the Sanguinaire (N)"},
+	//	{ItemID: 95779, ItemName: "Delicate Vial of the Sanguinaire (LFR) (Celestial)"},
+	//	{ItemID: 96151, ItemName: "Delicate Vial of the Sanguinaire (Thunderforged)"},
+	//	{ItemID: 96523, ItemName: "Delicate Vial of the Sanguinaire (H)"},
+	//	{ItemID: 96895, ItemName: "Delicate Vial of the Sanguinaire (Heroic Thunderforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102292, ItemName: "Assurance of Consequence (N)"},
-		{ItemID: 104476, ItemName: "Assurance of Consequence (H)"},
-		{ItemID: 104725, ItemName: "Assurance of Consequence (Flexible)"},
-		{ItemID: 104974, ItemName: "Assurance of Consequence (LFR) (Celestial)"},
-		{ItemID: 105223, ItemName: "Assurance of Consequence (Warforged)"},
-		{ItemID: 105472, ItemName: "Assurance of Consequence (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102292, ItemName: "Assurance of Consequence (N)"},
+	//	{ItemID: 104476, ItemName: "Assurance of Consequence (H)"},
+	//	{ItemID: 104725, ItemName: "Assurance of Consequence (Flexible)"},
+	//	{ItemID: 104974, ItemName: "Assurance of Consequence (LFR) (Celestial)"},
+	//	{ItemID: 105223, ItemName: "Assurance of Consequence (Warforged)"},
+	//	{ItemID: 105472, ItemName: "Assurance of Consequence (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102293, ItemName: "Purified Bindings of Immerseus (N)"},
-		{ItemID: 104426, ItemName: "Purified Bindings of Immerseus (H)"},
-		{ItemID: 104675, ItemName: "Purified Bindings of Immerseus (Flexible)"},
-		{ItemID: 104924, ItemName: "Purified Bindings of Immerseus (LFR) (Celestial)"},
-		{ItemID: 105173, ItemName: "Purified Bindings of Immerseus (Warforged)"},
-		{ItemID: 105422, ItemName: "Purified Bindings of Immerseus (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102293, ItemName: "Purified Bindings of Immerseus (N)"},
+	//	{ItemID: 104426, ItemName: "Purified Bindings of Immerseus (H)"},
+	//	{ItemID: 104675, ItemName: "Purified Bindings of Immerseus (Flexible)"},
+	//	{ItemID: 104924, ItemName: "Purified Bindings of Immerseus (LFR) (Celestial)"},
+	//	{ItemID: 105173, ItemName: "Purified Bindings of Immerseus (Warforged)"},
+	//	{ItemID: 105422, ItemName: "Purified Bindings of Immerseus (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102294, ItemName: "Nazgrim's Burnished Insignia (N)"},
-		{ItemID: 104553, ItemName: "Nazgrim's Burnished Insignia (H)"},
-		{ItemID: 104802, ItemName: "Nazgrim's Burnished Insignia (Flexible)"},
-		{ItemID: 105051, ItemName: "Nazgrim's Burnished Insignia (LFR) (Celestial)"},
-		{ItemID: 105300, ItemName: "Nazgrim's Burnished Insignia (Warforged)"},
-		{ItemID: 105549, ItemName: "Nazgrim's Burnished Insignia (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+	//	ProcMask: core.ProcMaskSpellHealing,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102294, ItemName: "Nazgrim's Burnished Insignia (N)"},
+	//	{ItemID: 104553, ItemName: "Nazgrim's Burnished Insignia (H)"},
+	//	{ItemID: 104802, ItemName: "Nazgrim's Burnished Insignia (Flexible)"},
+	//	{ItemID: 105051, ItemName: "Nazgrim's Burnished Insignia (LFR) (Celestial)"},
+	//	{ItemID: 105300, ItemName: "Nazgrim's Burnished Insignia (Warforged)"},
+	//	{ItemID: 105549, ItemName: "Nazgrim's Burnished Insignia (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102295, ItemName: "Fusion-Fire Core (N)"},
-		{ItemID: 104463, ItemName: "Fusion-Fire Core (H)"},
-		{ItemID: 104712, ItemName: "Fusion-Fire Core (Flexible)"},
-		{ItemID: 104961, ItemName: "Fusion-Fire Core (LFR) (Celestial)"},
-		{ItemID: 105210, ItemName: "Fusion-Fire Core (Warforged)"},
-		{ItemID: 105459, ItemName: "Fusion-Fire Core (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102295, ItemName: "Fusion-Fire Core (N)"},
+	//	{ItemID: 104463, ItemName: "Fusion-Fire Core (H)"},
+	//	{ItemID: 104712, ItemName: "Fusion-Fire Core (Flexible)"},
+	//	{ItemID: 104961, ItemName: "Fusion-Fire Core (LFR) (Celestial)"},
+	//	{ItemID: 105210, ItemName: "Fusion-Fire Core (Warforged)"},
+	//	{ItemID: 105459, ItemName: "Fusion-Fire Core (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102298, ItemName: "Evil Eye of Galakras (N)"},
-		{ItemID: 104495, ItemName: "Evil Eye of Galakras (H)"},
-		{ItemID: 104744, ItemName: "Evil Eye of Galakras (Flexible)"},
-		{ItemID: 104993, ItemName: "Evil Eye of Galakras (LFR) (Celestial)"},
-		{ItemID: 105242, ItemName: "Evil Eye of Galakras (Warforged)"},
-		{ItemID: 105491, ItemName: "Evil Eye of Galakras (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102298, ItemName: "Evil Eye of Galakras (N)"},
+	//	{ItemID: 104495, ItemName: "Evil Eye of Galakras (H)"},
+	//	{ItemID: 104744, ItemName: "Evil Eye of Galakras (Flexible)"},
+	//	{ItemID: 104993, ItemName: "Evil Eye of Galakras (LFR) (Celestial)"},
+	//	{ItemID: 105242, ItemName: "Evil Eye of Galakras (Warforged)"},
+	//	{ItemID: 105491, ItemName: "Evil Eye of Galakras (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102299, ItemName: "Prismatic Prison of Pride (N)"},
-		{ItemID: 104478, ItemName: "Prismatic Prison of Pride (H)"},
-		{ItemID: 104727, ItemName: "Prismatic Prison of Pride (Flexible)"},
-		{ItemID: 104976, ItemName: "Prismatic Prison of Pride (LFR) (Celestial)"},
-		{ItemID: 105225, ItemName: "Prismatic Prison of Pride (Warforged)"},
-		{ItemID: 105474, ItemName: "Prismatic Prison of Pride (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+	//	ProcMask: core.ProcMaskSpellHealing,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102299, ItemName: "Prismatic Prison of Pride (N)"},
+	//	{ItemID: 104478, ItemName: "Prismatic Prison of Pride (H)"},
+	//	{ItemID: 104727, ItemName: "Prismatic Prison of Pride (Flexible)"},
+	//	{ItemID: 104976, ItemName: "Prismatic Prison of Pride (LFR) (Celestial)"},
+	//	{ItemID: 105225, ItemName: "Prismatic Prison of Pride (Warforged)"},
+	//	{ItemID: 105474, ItemName: "Prismatic Prison of Pride (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102300, ItemName: "Kardris' Toxic Totem (N)"},
-		{ItemID: 104544, ItemName: "Kardris' Toxic Totem (H)"},
-		{ItemID: 104793, ItemName: "Kardris' Toxic Totem (Flexible)"},
-		{ItemID: 105042, ItemName: "Kardris' Toxic Totem (LFR) (Celestial)"},
-		{ItemID: 105291, ItemName: "Kardris' Toxic Totem (Warforged)"},
-		{ItemID: 105540, ItemName: "Kardris' Toxic Totem (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102300, ItemName: "Kardris' Toxic Totem (N)"},
+	//	{ItemID: 104544, ItemName: "Kardris' Toxic Totem (H)"},
+	//	{ItemID: 104793, ItemName: "Kardris' Toxic Totem (Flexible)"},
+	//	{ItemID: 105042, ItemName: "Kardris' Toxic Totem (LFR) (Celestial)"},
+	//	{ItemID: 105291, ItemName: "Kardris' Toxic Totem (Warforged)"},
+	//	{ItemID: 105540, ItemName: "Kardris' Toxic Totem (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102301, ItemName: "Haromm's Talisman (N)"},
-		{ItemID: 104531, ItemName: "Haromm's Talisman (H)"},
-		{ItemID: 104780, ItemName: "Haromm's Talisman (Flexible)"},
-		{ItemID: 105029, ItemName: "Haromm's Talisman (LFR) (Celestial)"},
-		{ItemID: 105278, ItemName: "Haromm's Talisman (Warforged)"},
-		{ItemID: 105527, ItemName: "Haromm's Talisman (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102301, ItemName: "Haromm's Talisman (N)"},
+	//	{ItemID: 104531, ItemName: "Haromm's Talisman (H)"},
+	//	{ItemID: 104780, ItemName: "Haromm's Talisman (Flexible)"},
+	//	{ItemID: 105029, ItemName: "Haromm's Talisman (LFR) (Celestial)"},
+	//	{ItemID: 105278, ItemName: "Haromm's Talisman (Warforged)"},
+	//	{ItemID: 105527, ItemName: "Haromm's Talisman (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102302, ItemName: "Sigil of Rampage (N)"},
-		{ItemID: 104584, ItemName: "Sigil of Rampage (H)"},
-		{ItemID: 104833, ItemName: "Sigil of Rampage (Flexible)"},
-		{ItemID: 105082, ItemName: "Sigil of Rampage (LFR) (Celestial)"},
-		{ItemID: 105331, ItemName: "Sigil of Rampage (Warforged)"},
-		{ItemID: 105580, ItemName: "Sigil of Rampage (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102302, ItemName: "Sigil of Rampage (N)"},
+	//	{ItemID: 104584, ItemName: "Sigil of Rampage (H)"},
+	//	{ItemID: 104833, ItemName: "Sigil of Rampage (Flexible)"},
+	//	{ItemID: 105082, ItemName: "Sigil of Rampage (LFR) (Celestial)"},
+	//	{ItemID: 105331, ItemName: "Sigil of Rampage (Warforged)"},
+	//	{ItemID: 105580, ItemName: "Sigil of Rampage (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102303, ItemName: "Frenzied Crystal of Rage (N)"},
-		{ItemID: 104576, ItemName: "Frenzied Crystal of Rage (H)"},
-		{ItemID: 104825, ItemName: "Frenzied Crystal of Rage (Flexible)"},
-		{ItemID: 105074, ItemName: "Frenzied Crystal of Rage (LFR) (Celestial)"},
-		{ItemID: 105323, ItemName: "Frenzied Crystal of Rage (Warforged)"},
-		{ItemID: 105572, ItemName: "Frenzied Crystal of Rage (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102303, ItemName: "Frenzied Crystal of Rage (N)"},
+	//	{ItemID: 104576, ItemName: "Frenzied Crystal of Rage (H)"},
+	//	{ItemID: 104825, ItemName: "Frenzied Crystal of Rage (Flexible)"},
+	//	{ItemID: 105074, ItemName: "Frenzied Crystal of Rage (LFR) (Celestial)"},
+	//	{ItemID: 105323, ItemName: "Frenzied Crystal of Rage (Warforged)"},
+	//	{ItemID: 105572, ItemName: "Frenzied Crystal of Rage (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102304, ItemName: "Thok's Acid-Grooved Tooth (N)"},
-		{ItemID: 104611, ItemName: "Thok's Acid-Grooved Tooth (H)"},
-		{ItemID: 104860, ItemName: "Thok's Acid-Grooved Tooth (Flexible)"},
-		{ItemID: 105109, ItemName: "Thok's Acid-Grooved Tooth (LFR) (Celestial)"},
-		{ItemID: 105358, ItemName: "Thok's Acid-Grooved Tooth (Warforged)"},
-		{ItemID: 105607, ItemName: "Thok's Acid-Grooved Tooth (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+	//	ProcMask: core.ProcMaskSpellHealing,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102304, ItemName: "Thok's Acid-Grooved Tooth (N)"},
+	//	{ItemID: 104611, ItemName: "Thok's Acid-Grooved Tooth (H)"},
+	//	{ItemID: 104860, ItemName: "Thok's Acid-Grooved Tooth (Flexible)"},
+	//	{ItemID: 105109, ItemName: "Thok's Acid-Grooved Tooth (LFR) (Celestial)"},
+	//	{ItemID: 105358, ItemName: "Thok's Acid-Grooved Tooth (Warforged)"},
+	//	{ItemID: 105607, ItemName: "Thok's Acid-Grooved Tooth (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	}, []shared.ItemVariant{
-		{ItemID: 102305, ItemName: "Thok's Tail Tip (N)"},
-		{ItemID: 104613, ItemName: "Thok's Tail Tip (H)"},
-		{ItemID: 104862, ItemName: "Thok's Tail Tip (Flexible)"},
-		{ItemID: 105111, ItemName: "Thok's Tail Tip (LFR) (Celestial)"},
-		{ItemID: 105360, ItemName: "Thok's Tail Tip (Warforged)"},
-		{ItemID: 105609, ItemName: "Thok's Tail Tip (Heroic Warforged)"},
-	})
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102305, ItemName: "Thok's Tail Tip (N)"},
+	//	{ItemID: 104613, ItemName: "Thok's Tail Tip (H)"},
+	//	{ItemID: 104862, ItemName: "Thok's Tail Tip (Flexible)"},
+	//	{ItemID: 105111, ItemName: "Thok's Tail Tip (LFR) (Celestial)"},
+	//	{ItemID: 105360, ItemName: "Thok's Tail Tip (Warforged)"},
+	//	{ItemID: 105609, ItemName: "Thok's Tail Tip (Heroic Warforged)"},
+	// })
 	
 	// TODO: Manual implementation required
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
 	// [Teleport yourself to the Timeless Isle.]
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "Time-Lost Artifact",
-		ItemID: 103678,
-		Callback: core.CallbackEmpty,
-		ProcMask: core.ProcMaskEmpty,
-		Outcome:  core.OutcomeEmpty,
-	})
+	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		//	Name:     "Time-Lost Artifact",
+	//	ItemID: 103678,
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
+	//	Outcome:  core.OutcomeLanded,
+	// })
 	
 	// [Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027 for 15s. ( 20% chance, 55 sec cooldown)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
@@ -726,15 +739,6 @@ func RegisterAllOnUseProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial,
 		Outcome:  core.OutcomeCrit,
-	})
-	
-	// [You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.]
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "The Gloaming Blade",
-		ItemID: 88149,
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial,
-		Outcome:  core.OutcomeLanded,
 	})
 	
 	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
