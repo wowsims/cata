@@ -41,7 +41,7 @@ func RegisterAllOnUseProcs() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		{{with index .Variants 0 -}}
 		Name:     "{{ .Name }}",
-		EnchantID: {{ .ID }},
+		ItemID: {{ .ID }},
 		{{- end}}
 		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},

@@ -186,6 +186,11 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 		newEntries := []*Entry{}
 		entryGroupings := map[string]*Entry{}
 
+		// sort entries first to make tooltip generation consistent for variants
+		sort.Slice(grp.Entries, func(i, j int) bool {
+			return grp.Entries[i].Variants[0].ID < grp.Entries[j].Variants[0].ID
+		})
+
 		for _, entry := range grp.Entries {
 			if groupEntry, ok := entryGroupings[entry.Variants[0].Name]; ok {
 				groupEntry.AddVariant(entry.Variants[0])
@@ -329,6 +334,8 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 
 var critMatcher = regexp.MustCompile(`critical [^\s]+ [^fb]`)
 var pureHealMatcher = regexp.MustCompile(`healing spells`)
+var hasHealMatcher = regexp.MustCompile(`heal(ing)?[^,]`)
+var hasGenericMatcher = regexp.MustCompile(`a spell`)
 
 func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) ProcInfo {
 	itemEffectInfo, ok := instance.ItemEffectsByParentID[int(parsed.Id)]
@@ -440,13 +447,22 @@ func BuildSpellProcInfo(procSpell dbc.Spell, tooltip string, weaponType int) Pro
 			info.Callback |= core.CallbackOnPeriodicDamageDealt
 		}
 
-		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_SPELL > 0 {
+		if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_SPELL > 0 &&
+			(hasHealMatcher.MatchString(tooltip) || hasGenericMatcher.MatchString(tooltip)) {
 			info.Callback |= core.CallbackOnHealDealt
 			info.ProcMask |= core.ProcMaskSpellHealing
 
 			// handle HoTs onyl with direct heals for now, there are some odd cases with HoT / DoT overlaps
 			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_DEAL_HELPFUL_PERIODIC > 0 {
 				info.Callback |= core.CallbackOnPeriodicHealDealt
+			}
+
+			// Check if we have periodic damage flag but only heal paired with it
+			// This usually indicates a pure heal proc mask
+			if procSpell.ProcTypeMask[0]&dbc.PROC_FLAG_ANY_DIRECT_DEALT == 0 {
+				info.Callback &= ^core.CallbackOnPeriodicDamageDealt
+				info.Callback &= ^core.CallbackOnSpellHitDealt
+				info.ProcMask &= ^core.ProcMaskSpellDamage
 			}
 		}
 	}
