@@ -477,13 +477,11 @@ message RaidBuffs {
 
 	// Major Haste
 	bool bloodlust                = 32;
-	bool heroism                  = 33;
-	bool time_warp                = 34;
 
 	// Raid Cooldowns
-	int32 mana_tide_totem_count   = 35;
-	int32 stormlash_totem_count = 36;
-	int32 skull_banner_count = 37;
+	int32 mana_tide_totem_count   = 33;
+	int32 stormlash_totem_count = 34;
+	int32 skull_banner_count = 35;
   }
 
 // Buffs that affect a single party.

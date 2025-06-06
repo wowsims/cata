@@ -40,6 +40,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: 6 * time.Second,

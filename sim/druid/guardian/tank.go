@@ -33,6 +33,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 		Options: tankOptions.Options,
 	}
 
+	bear.registerTreants()
+
 	bear.EnableRageBar(core.RageBarOptions{
 		StartingRage:       bear.Options.StartingRage,
 		BaseRageMultiplier: 2.5,
@@ -53,6 +55,8 @@ type GuardianDruid struct {
 
 	Options *proto.GuardianDruid_Options
 
+	Treants GuardianTreants
+
 	// Aura references
 	EnrageAura          *core.Aura
 	SavageDefenseAura   *core.Aura
@@ -62,6 +66,7 @@ type GuardianDruid struct {
 
 	// Spell references
 	Enrage        *druid.DruidSpell
+	ForceOfNature *druid.DruidSpell
 	SavageDefense *druid.DruidSpell
 	SonOfUrsoc    *druid.DruidSpell
 }
@@ -81,6 +86,7 @@ func (bear *GuardianDruid) ApplyTalents() {
 	bear.applyLeatherSpecialization()
 	bear.RegisterVengeance(84840, bear.BearFormAura)
 	bear.registerIncarnation()
+	bear.registerForceOfNature()
 }
 
 func (bear *GuardianDruid) applyMastery() {
