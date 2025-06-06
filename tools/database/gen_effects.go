@@ -8,6 +8,8 @@ import (
 	"strings"
 	"text/template"
 
+	"slices"
+
 	_ "github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
@@ -107,13 +109,8 @@ func GenerateMissingEffectsFile() error {
 	}
 	defer f.Close()
 
-	sort.Slice(missingEffectsMap["EnchantEffects"], func(i, j int) bool {
-		return missingEffectsMap["EnchantEffects"][i] < missingEffectsMap["EnchantEffects"][j]
-	})
-
-	sort.Slice(missingEffectsMap["ItemEffects"], func(i, j int) bool {
-		return missingEffectsMap["ItemEffects"][i] < missingEffectsMap["ItemEffects"][j]
-	})
+	slices.Sort(missingEffectsMap["EnchantEffects"])
+	slices.Sort(missingEffectsMap["ItemEffects"])
 
 	if err := tmpl.Execute(f, missingEffectsMap); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
