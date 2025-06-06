@@ -48,7 +48,7 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 						spell.DealDamage(sim, result)
 					})
 					if result.Landed() {
-						frostMage.Mage.HandleIcicleGeneration(sim, target, baseDamage)
+						frostMage.Mage.HandleIcicleGeneration(sim, target, result.Damage)
 					}
 				}
 			} else {
@@ -58,7 +58,7 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 					spell.DealDamage(sim, result)
 				})
 				if result.Landed() {
-					frostMage.HandleIcicleGeneration(sim, target, baseDamage)
+					frostMage.HandleIcicleGeneration(sim, target, result.Damage)
 				}
 			}
 		},
