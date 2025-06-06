@@ -54,6 +54,7 @@ func (war *FuryWarrior) GetWarrior() *warrior.Warrior {
 func (war *FuryWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.registerPassives()
+	war.registerBloodthirst()
 }
 
 func (war *FuryWarrior) registerPassives() {
@@ -71,10 +72,6 @@ func (war *FuryWarrior) registerPassives() {
 	// 	war.EnrageMasteryMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
 	// })
 }
-
-// func (war *FuryWarrior) ApplyTalents() {
-// 	// war.registerBloodthirst()
-// }
 
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
