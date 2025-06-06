@@ -232,7 +232,7 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 func BuildItemDifficultyPostfix(itemSources map[int][]*proto.DropSource, itemId int, instance *dbc.DBC) string {
 	difficultyPostfix := ""
 	if sources, ok := itemSources[itemId]; ok {
-		name := difficultyToShortName(sources[0].Difficulty)
+		name := DifficultyToShortName(sources[0].Difficulty)
 		if len(name) > 0 {
 			difficultyPostfix += " " + name
 		}
@@ -613,59 +613,6 @@ func asCoreOutcome(outcome core.HitOutcome) string {
 	}
 
 	return "core.OutcomeEmpty"
-}
-
-func EnchantHasDummyEffect(enchant *proto.UIEnchant, instance *dbc.DBC) bool {
-	return SpellHasDummyEffect(int(enchant.SpellId), instance)
-}
-
-func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
-	if effects, ok := instance.SpellEffects[spellId]; ok {
-		for _, effect := range effects {
-			if effect.EffectAura == dbc.A_DUMMY ||
-				effect.EffectAura == dbc.A_PERIODIC_DUMMY {
-				return true
-			}
-		}
-	}
-
-	return false
-}
-
-func SpellHasTriggerEffect(spellId int, instance *dbc.DBC) bool {
-	if effects, ok := instance.SpellEffects[spellId]; ok {
-		for _, effect := range effects {
-			if effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL ||
-				effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL_WITH_VALUE {
-				return true
-			}
-		}
-	}
-
-	return false
-}
-
-func SpellUsesStacks(spellId int, instance *dbc.DBC) bool {
-	if spell, ok := instance.Spells[spellId]; ok {
-		if spell.MaxCumulativeStacks > 1 {
-			return true
-		}
-	}
-
-	if effects, ok := instance.SpellEffects[spellId]; ok {
-		for _, effect := range effects {
-			if effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL ||
-				effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL_WITH_VALUE {
-				if spell, ok := instance.Spells[effect.EffectTriggerSpell]; ok {
-					if spell.MaxCumulativeStacks > 1 {
-						return true
-					}
-				}
-			}
-		}
-	}
-
-	return false
 }
 
 func (entry *Entry) AddVariant(variant *Variant) {

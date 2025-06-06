@@ -132,7 +132,7 @@ func parseDungeonDifficultyMask(mask int) proto.DungeonDifficulty {
 	return proto.DungeonDifficulty_DifficultyUnknown
 }
 
-func difficultyToShortName(difficulty proto.DungeonDifficulty) string {
+func DifficultyToShortName(difficulty proto.DungeonDifficulty) string {
 	switch difficulty {
 	case proto.DungeonDifficulty_DifficultyHeroic, proto.DungeonDifficulty_DifficultyRaid10H, proto.DungeonDifficulty_DifficultyRaid25H:
 		return "(H)"
@@ -143,4 +143,57 @@ func difficultyToShortName(difficulty proto.DungeonDifficulty) string {
 	default:
 		return ""
 	}
+}
+
+func EnchantHasDummyEffect(enchant *proto.UIEnchant, instance *dbc.DBC) bool {
+	return SpellHasDummyEffect(int(enchant.SpellId), instance)
+}
+
+func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
+	if effects, ok := instance.SpellEffects[spellId]; ok {
+		for _, effect := range effects {
+			if effect.EffectAura == dbc.A_DUMMY ||
+				effect.EffectAura == dbc.A_PERIODIC_DUMMY {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func SpellHasTriggerEffect(spellId int, instance *dbc.DBC) bool {
+	if effects, ok := instance.SpellEffects[spellId]; ok {
+		for _, effect := range effects {
+			if effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL ||
+				effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL_WITH_VALUE {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func SpellUsesStacks(spellId int, instance *dbc.DBC) bool {
+	if spell, ok := instance.Spells[spellId]; ok {
+		if spell.MaxCumulativeStacks > 1 {
+			return true
+		}
+	}
+
+	if effects, ok := instance.SpellEffects[spellId]; ok {
+		for _, effect := range effects {
+			if effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL ||
+				effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL_WITH_VALUE {
+				if spell, ok := instance.Spells[effect.EffectTriggerSpell]; ok {
+					if spell.MaxCumulativeStacks > 1 {
+						return true
+					}
+				}
+			}
+		}
+	}
+
+	return false
 }
