@@ -1,6 +1,8 @@
 package protection
 
 import (
+	"math"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -28,8 +30,6 @@ type ProtectionWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.ProtectionWarrior_Options
-
-	shieldSlam *core.Spell
 }
 
 func NewProtectionWarrior(character *core.Character, options *proto.Player) *ProtectionWarrior {
@@ -44,11 +44,11 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 }
 
 func (war *ProtectionWarrior) CalculateMasteryBlockChance() float64 {
-	return (8.0 + (0.5 * war.GetMasteryPoints())) / 100.0
+	return math.Floor(0.5*(8.0+war.GetMasteryPoints())) / 100.0
 }
 
 func (war *ProtectionWarrior) CalculateMasteryCriticalBlockChance() float64 {
-	return (8.0 + (2.2 * war.GetMasteryPoints())) / 100.0
+	return math.Floor(2.2*(8.0+war.GetMasteryPoints())) / 100.0
 }
 
 func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
@@ -60,6 +60,8 @@ func (war *ProtectionWarrior) Initialize() {
 	war.registerPassives()
 
 	war.registerDemoralizingShout()
+	war.registerShieldSlam()
+	war.registerShieldBlock()
 }
 
 func (war *ProtectionWarrior) registerPassives() {

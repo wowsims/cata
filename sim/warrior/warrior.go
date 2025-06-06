@@ -101,7 +101,6 @@ type Warrior struct {
 	MortalStrike  *core.Spell
 	// Rend              *core.Spell
 	// Revenge           *core.Spell
-	// ShieldBlock       *core.Spell
 	// SunderArmor       *core.Spell
 	DeepWounds *core.Spell
 
@@ -116,8 +115,7 @@ type Warrior struct {
 	BerserkerRageAura   *core.Aura
 	TasteForBloodAura   *core.Aura
 	SweepingStrikesAura *core.Aura
-	// SuddenDeathAura   *core.Aura
-	// ShieldBlockAura   *core.Aura
+	ShieldBlockAura     *core.Aura
 	// ThunderstruckAura *core.Aura
 	// InnerRageAura     *core.Aura
 
