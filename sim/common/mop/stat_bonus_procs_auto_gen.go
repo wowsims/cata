@@ -45,6 +45,60 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
+	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	//	Harmful:  false,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 94519, ItemName: "Primordius' Talisman of Rage (N)"},
+	//	{ItemID: 95757, ItemName: "Primordius' Talisman of Rage (LFR) (Celestial)"},
+	//	{ItemID: 96129, ItemName: "Primordius' Talisman of Rage (Thunderforged)"},
+	//	{ItemID: 96501, ItemName: "Primordius' Talisman of Rage (H)"},
+	//	{ItemID: 96873, ItemName: "Primordius' Talisman of Rage (Heroic Thunderforged)"},
+	// })
+	
+	// TODO: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
+	//
+	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeLanded,
+	//	Harmful:  false,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 94522, ItemName: "Talisman of Bloodlust (N)"},
+	//	{ItemID: 95748, ItemName: "Talisman of Bloodlust (LFR) (Celestial)"},
+	//	{ItemID: 96120, ItemName: "Talisman of Bloodlust (Thunderforged)"},
+	//	{ItemID: 96492, ItemName: "Talisman of Bloodlust (H)"},
+	//	{ItemID: 96864, ItemName: "Talisman of Bloodlust (Heroic Thunderforged)"},
+	// })
+	
+	// TODO: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
+	//
+	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
+	//	Outcome:  core.OutcomeCrit,
+	//	Harmful:  false,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 94529, ItemName: "Gaze of the Twins (N)"},
+	//	{ItemID: 95799, ItemName: "Gaze of the Twins (LFR) (Celestial)"},
+	//	{ItemID: 96171, ItemName: "Gaze of the Twins (Thunderforged)"},
+	//	{ItemID: 96543, ItemName: "Gaze of the Twins (H)"},
+	//	{ItemID: 96915, ItemName: "Gaze of the Twins (Heroic Thunderforged)"},
+	// })
+	
+	// TODO: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
+	//
 	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
@@ -267,6 +321,44 @@ func RegisterAllProcs() {
 	//	{ItemID: 105111, ItemName: "Thok's Tail Tip (LFR) (Celestial)"},
 	//	{ItemID: 105360, ItemName: "Thok's Tail Tip (Warforged)"},
 	//	{ItemID: 105609, ItemName: "Thok's Tail Tip (Heroic Warforged)"},
+	// })
+	
+	// TODO: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
+	//
+	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+	//	ProcMask: core.ProcMaskSpellHealing,
+	//	Outcome:  core.OutcomeLanded,
+	//	Harmful:  false,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102309, ItemName: "Dysmorphic Samophlange of Discontinuity (N)"},
+	//	{ItemID: 104619, ItemName: "Dysmorphic Samophlange of Discontinuity (H)"},
+	//	{ItemID: 104868, ItemName: "Dysmorphic Samophlange of Discontinuity (Flexible)"},
+	//	{ItemID: 105117, ItemName: "Dysmorphic Samophlange of Discontinuity (LFR) (Celestial)"},
+	//	{ItemID: 105366, ItemName: "Dysmorphic Samophlange of Discontinuity (Warforged)"},
+	//	{ItemID: 105615, ItemName: "Dysmorphic Samophlange of Discontinuity (Heroic Warforged)"},
+	// })
+	
+	// TODO: Manual implementation required
+	//       This can be ignored if the effect has already been implemented.
+	//       With next db run the item will be removed if implemented.
+	//
+	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
+	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	//	Callback: core.CallbackOnSpellHitDealt,
+	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage,
+	//	Outcome:  core.OutcomeLanded,
+	//	Harmful:  false,
+	// }, []shared.ItemVariant{
+	//	{ItemID: 102311, ItemName: "Ticking Ebon Detonator (N)"},
+	//	{ItemID: 104616, ItemName: "Ticking Ebon Detonator (H)"},
+	//	{ItemID: 104865, ItemName: "Ticking Ebon Detonator (Flexible)"},
+	//	{ItemID: 105114, ItemName: "Ticking Ebon Detonator (LFR) (Celestial)"},
+	//	{ItemID: 105363, ItemName: "Ticking Ebon Detonator (Warforged)"},
+	//	{ItemID: 105612, ItemName: "Ticking Ebon Detonator (Heroic Warforged)"},
 	// })
 	
 	// TODO: Manual implementation required
@@ -904,20 +996,6 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 94519, ItemName: "Primordius' Talisman of Rage (N)"},
-		{ItemID: 95757, ItemName: "Primordius' Talisman of Rage (LFR) (Celestial)"},
-		{ItemID: 96129, ItemName: "Primordius' Talisman of Rage (Thunderforged)"},
-		{ItemID: 96501, ItemName: "Primordius' Talisman of Rage (H)"},
-		{ItemID: 96873, ItemName: "Primordius' Talisman of Rage (Heroic Thunderforged)"},
-	})
-	
 	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnPeriodicDamageDealt,
@@ -932,20 +1010,6 @@ func RegisterAllProcs() {
 		{ItemID: 96827, ItemName: "Breath of the Hydra (Heroic Thunderforged)"},
 	})
 	
-	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 94522, ItemName: "Talisman of Bloodlust (N)"},
-		{ItemID: 95748, ItemName: "Talisman of Bloodlust (LFR) (Celestial)"},
-		{ItemID: 96120, ItemName: "Talisman of Bloodlust (Thunderforged)"},
-		{ItemID: 96492, ItemName: "Talisman of Bloodlust (H)"},
-		{ItemID: 96864, ItemName: "Talisman of Bloodlust (Heroic Thunderforged)"},
-	})
-	
 	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
@@ -958,20 +1022,6 @@ func RegisterAllProcs() {
 		{ItemID: 96037, ItemName: "Bad Juju (Thunderforged)"},
 		{ItemID: 96409, ItemName: "Bad Juju (H)"},
 		{ItemID: 96781, ItemName: "Bad Juju (Heroic Thunderforged)"},
-	})
-	
-	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeCrit,
-		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 94529, ItemName: "Gaze of the Twins (N)"},
-		{ItemID: 95799, ItemName: "Gaze of the Twins (LFR) (Celestial)"},
-		{ItemID: 96171, ItemName: "Gaze of the Twins (Thunderforged)"},
-		{ItemID: 96543, ItemName: "Gaze of the Twins (H)"},
-		{ItemID: 96915, ItemName: "Gaze of the Twins (Heroic Thunderforged)"},
 	})
 	
 	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
@@ -1445,36 +1495,6 @@ func RegisterAllProcs() {
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 		Harmful:  false,
-	})
-	
-	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask: core.ProcMaskSpellHealing,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 102309, ItemName: "Dysmorphic Samophlange of Discontinuity (N)"},
-		{ItemID: 104619, ItemName: "Dysmorphic Samophlange of Discontinuity (H)"},
-		{ItemID: 104868, ItemName: "Dysmorphic Samophlange of Discontinuity (Flexible)"},
-		{ItemID: 105117, ItemName: "Dysmorphic Samophlange of Discontinuity (LFR) (Celestial)"},
-		{ItemID: 105366, ItemName: "Dysmorphic Samophlange of Discontinuity (Warforged)"},
-		{ItemID: 105615, ItemName: "Dysmorphic Samophlange of Discontinuity (Heroic Warforged)"},
-	})
-	
-	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 102311, ItemName: "Ticking Ebon Detonator (N)"},
-		{ItemID: 104616, ItemName: "Ticking Ebon Detonator (H)"},
-		{ItemID: 104865, ItemName: "Ticking Ebon Detonator (Flexible)"},
-		{ItemID: 105114, ItemName: "Ticking Ebon Detonator (LFR) (Celestial)"},
-		{ItemID: 105363, ItemName: "Ticking Ebon Detonator (Warforged)"},
-		{ItemID: 105612, ItemName: "Ticking Ebon Detonator (Heroic Warforged)"},
 	})
 	
 	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)]

@@ -372,6 +372,10 @@ func BuildProcInfo(parsed *proto.UIItem, instance *dbc.DBC, tooltip string) (Pro
 			return procInfo, false
 		}
 
+		if SpellUsesStacks(int(procId), instance) {
+			return procInfo, false
+		}
+
 		return procInfo, supported
 	}
 
@@ -405,6 +409,10 @@ func BuildEnchantProcInfo(enchant *proto.UIEnchant, instance *dbc.DBC, tooltip s
 
 	procInfo, supported := BuildSpellProcInfo(procSpell, tooltip, weaponType)
 	if SpellHasDummyEffect(int(procSpellID), instance) {
+		return procInfo, false
+	}
+
+	if SpellUsesStacks(int(procSpellID), instance) {
 		return procInfo, false
 	}
 
@@ -595,6 +603,29 @@ func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
 			if effect.EffectAura == dbc.A_DUMMY ||
 				effect.EffectAura == dbc.A_PERIODIC_DUMMY {
 				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func SpellUsesStacks(spellId int, instance *dbc.DBC) bool {
+	if spell, ok := instance.Spells[spellId]; ok {
+		if spell.MaxCumulativeStacks > 1 {
+			return true
+		}
+	}
+
+	if effects, ok := instance.SpellEffects[spellId]; ok {
+		for _, effect := range effects {
+			if effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL ||
+				effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL_WITH_VALUE {
+				if spell, ok := instance.Spells[effect.EffectTriggerSpell]; ok {
+					if spell.MaxCumulativeStacks > 1 {
+						return true
+					}
+				}
 			}
 		}
 	}
