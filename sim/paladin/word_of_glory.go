@@ -55,7 +55,6 @@ func (paladin *Paladin) registerWordOfGlory() {
 				GCD:      core.TernaryDuration(isProt, 0, core.GCDDefault),
 				NonEmpty: isProt,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: time.Millisecond * 1500,

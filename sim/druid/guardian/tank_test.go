@@ -19,8 +19,10 @@ func TestGuardian(t *testing.T) {
 
 		GearSet: core.GetGearSet("../../../ui/druid/guardian/gear_sets", "preraid"),
 
-		Talents:     StandardTalents,
-		Glyphs:      StandardGlyphs,
+		Talents:         StandardTalents,
+		Glyphs:          StandardGlyphs,
+		OtherTalentSets: []core.TalentsCombo{{Label: "FoN", Talents: "010300", Glyphs: StandardGlyphs}},
+
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
 		Rotation:    core.GetAplRotation("../../../ui/druid/guardian/apls", "default"),
