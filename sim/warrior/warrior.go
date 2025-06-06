@@ -116,6 +116,8 @@ type Warrior struct {
 	TasteForBloodAura   *core.Aura
 	SweepingStrikesAura *core.Aura
 	ShieldBlockAura     *core.Aura
+	LastStandAura       *core.Aura
+	RallyingCryAura     *core.Aura
 	// ThunderstruckAura *core.Aura
 	// InnerRageAura     *core.Aura
 

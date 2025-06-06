@@ -19,7 +19,6 @@ func (war *ProtectionWarrior) ApplyTalents() {
 
 	war.RegisterConcussionBlow()
 	war.RegisterDevastate()
-	war.RegisterLastStand()
 
 	war.applyBastionOfDefense()
 	war.applyHeavyRepercussions()

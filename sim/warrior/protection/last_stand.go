@@ -9,15 +9,11 @@ import (
 )
 
 func (war *ProtectionWarrior) registerLastStand() {
-	if !war.Talents.LastStand {
-		return
-	}
-
 	actionID := core.ActionID{SpellID: 12975}
 	healthMetrics := war.NewHealthMetrics(actionID)
 
 	var bonusHealth float64
-	lastStandAura := war.RegisterAura(core.Aura{
+	war.LastStandAura = war.RegisterAura(core.Aura{
 		Label:    "Last Stand",
 		ActionID: actionID,
 		Duration: time.Second * 20,
@@ -31,7 +27,7 @@ func (war *ProtectionWarrior) registerLastStand() {
 		},
 	})
 
-	lastStandSpell := war.RegisterSpell(core.SpellConfig{
+	spell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: warrior.SpellMaskLastStand,
 
@@ -42,13 +38,17 @@ func (war *ProtectionWarrior) registerLastStand() {
 			},
 		},
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !war.RallyingCryAura.IsActive()
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			lastStandAura.Activate(sim)
+			war.LastStandAura.Activate(sim)
 		},
 	})
 
 	war.AddMajorCooldown(core.MajorCooldown{
-		Spell: lastStandSpell,
+		Spell: spell,
 		Type:  core.CooldownTypeSurvival,
 	})
 }
