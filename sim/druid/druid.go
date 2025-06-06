@@ -36,17 +36,13 @@ type Druid struct {
 	Barkskin              *DruidSpell
 	Berserk               *DruidSpell
 	CatCharge             *DruidSpell
-	DemoralizingRoar      *DruidSpell
 	FaerieFire            *DruidSpell
 	FerociousBite         *DruidSpell
-	ForceOfNature         *DruidSpell
 	FrenziedRegeneration  *DruidSpell
 	Hurricane             *DruidSpell
 	HurricaneTickSpell    *DruidSpell
 	InsectSwarm           *DruidSpell
-	GiftOfTheWild         *DruidSpell
 	Lacerate              *DruidSpell
-	Languish              *DruidSpell
 	MangleBear            *DruidSpell
 	MangleCat             *DruidSpell
 	Maul                  *DruidSpell
@@ -99,9 +95,6 @@ type Druid struct {
 	ProcOoc func(sim *core.Simulation)
 
 	ExtendingMoonfireStacks int
-
-	Treants       *Treants
-	BurningTreant *BurningTreant
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
