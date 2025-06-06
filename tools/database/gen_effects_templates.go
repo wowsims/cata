@@ -47,12 +47,14 @@ func RegisterAllProcs() {
 		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
 		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+		Harmful:  {{ .Harmful }},
 	})
 	{{- else }}
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
 		Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+		Harmful:  {{ .Harmful }},
 	}, []shared.ItemVariant{
 		{{- range .Variants }}
 		{ItemID: {{.ID}}, ItemName: "{{.Name}}"},
@@ -69,12 +71,14 @@ func RegisterAllProcs() {
 	//	Callback: {{ .ProcInfo.Callback | asCoreCallback }},
 	//	ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
 	//	Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+	//	Harmful:  {{ .Harmful }}
 	// })
 	{{- else }}
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: {{ .ProcInfo.Callback | asCoreCallback }},
 	//	ProcMask: {{ .ProcInfo.ProcMask | asCoreProcMask }},
 	//	Outcome:  {{ .ProcInfo.Outcome | asCoreOutcome }},
+	//	Harmful:  {{ .Harmful }},
 	// }, []shared.ItemVariant{
 		{{- range .Variants }}
 	//	{ItemID: {{.ID}}, ItemName: "{{.Name}}"},
@@ -117,6 +121,7 @@ func RegisterAllEnchants() {
 		Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
 		ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
 		Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},
+		Harmful:   {{ .Harmful }},
 	})
 	{{- else}}
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -127,6 +132,7 @@ func RegisterAllEnchants() {
 	//	Callback:  {{ .ProcInfo.Callback | asCoreCallback }},
 	//	ProcMask:  {{ .ProcInfo.ProcMask | asCoreProcMask }},
 	//	Outcome:   {{ .ProcInfo.Outcome | asCoreOutcome }},
+	//	Harmful:   {{ .Harmful }},
 	// })
 	{{- end}}
 {{- end }}

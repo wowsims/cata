@@ -34,6 +34,7 @@ type Entry struct {
 	Tooltip   []string
 	ProcInfo  ProcInfo
 	Supported bool
+	Harmful   bool
 }
 
 // Group holds a category of effects.
@@ -251,6 +252,7 @@ func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, 
 		renderedTooltip := tooltip.String()
 		entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{{ID: int(parsed.Id), Name: parsed.Name}}}
 		entry.ProcInfo, entry.Supported = BuildProcInfo(parsed, instance, renderedTooltip)
+		entry.Harmful = harmFulMatcher.MatchString(renderedTooltip)
 		grp.Entries = append(grp.Entries, &entry)
 		groupMapProc["Procs"] = grp
 
@@ -316,6 +318,7 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 			renderedTooltip := tooltip.String()
 			entry := Entry{Tooltip: strings.Split(renderedTooltip, "\n"), Variants: []*Variant{{ID: int(enchant.EffectId), Name: enchant.Name}}}
 			entry.ProcInfo, entry.Supported = BuildEnchantProcInfo(enchant, instance, renderedTooltip)
+			entry.Harmful = harmFulMatcher.MatchString(renderedTooltip)
 			grp.Entries = append(grp.Entries, &entry)
 			groupMapProc["Enchants"] = grp
 			if !entry.Supported {
@@ -329,6 +332,7 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 	return EffectParseResultInvalid
 }
 
+var harmFulMatcher = regexp.MustCompile(`harmful`)
 var critMatcher = regexp.MustCompile(`critical ([^\s,]+|damage,?) [^fb]`)
 var pureHealMatcher = regexp.MustCompile(`healing spells`)
 var hasHealMatcher = regexp.MustCompile(`heal(ing)?[^,]`)
