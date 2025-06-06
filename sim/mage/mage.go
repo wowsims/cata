@@ -106,6 +106,7 @@ func (mage *Mage) Initialize() {
 	mage.registerIceLanceSpell()
 	mage.registerScorchSpell()
 	mage.registerLivingBombSpell()
+	mage.registerNetherTempestSpell()
 	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
 	// mage.registerManaGemsCD()

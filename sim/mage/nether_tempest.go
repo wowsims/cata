@@ -13,6 +13,26 @@ func (mage *Mage) registerNetherTempestSpell() {
 	var netherTempestCoefficient = 0.24 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=114923 Field "EffetBonusCoefficient"
 	var netherTempestScaling = .31      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=114923 Field "Coefficient"
 
+	ntExtraHit := mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 114954},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: MageSpellNetherTempest,
+		MissileSpeed:   .85,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			nextTarget := mage.Env.NextTargetUnit(target)
+			result := spell.CalcDamage(sim, nextTarget, mage.NetherTempest.Dot(target).SnapshotBaseDamage, spell.OutcomeMagicHitAndCrit)
+			result.Damage = result.Damage / 2
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
+		},
+	})
+
 	mage.NetherTempest = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 114923},
 		SpellSchool:    core.SpellSchoolArcane,
@@ -46,6 +66,9 @@ func (mage *Mage) registerNetherTempestSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				if len(mage.Env.Encounter.TargetUnits) > 1 {
+					ntExtraHit.Cast(sim, target)
+				}
 			},
 		},
 
@@ -58,4 +81,5 @@ func (mage *Mage) registerNetherTempestSpell() {
 			spell.DealOutcome(sim, result)
 		},
 	})
+
 }
