@@ -22,7 +22,7 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				NonEmpty: true,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
