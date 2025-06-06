@@ -41,9 +41,10 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if frostMage.Mage.IcyVeinsAura.IsActive() && hasGlyph {
-				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance) * .4
 				for _ = range 3 {
+					baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+					result.Damage = result.Damage * .4
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
 					})
