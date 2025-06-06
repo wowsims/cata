@@ -8,8 +8,6 @@ import (
 	"strings"
 	"text/template"
 
-	"slices"
-
 	_ "github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
@@ -43,7 +41,7 @@ type Group struct {
 	Entries []*Entry
 }
 
-var missingEffectsMap = map[string][]int{
+var missingEffectsMap = map[string][]Variant{
 	"EnchantEffects": {},
 	"ItemEffects":    {},
 }
@@ -110,8 +108,12 @@ func GenerateMissingEffectsFile() error {
 	}
 	defer f.Close()
 
-	slices.Sort(missingEffectsMap["EnchantEffects"])
-	slices.Sort(missingEffectsMap["ItemEffects"])
+	sort.Slice(missingEffectsMap["EnchantEffects"], func(i, j int) bool {
+		return missingEffectsMap["EnchantEffects"][i].ID < missingEffectsMap["EnchantEffects"][j].ID
+	})
+	sort.Slice(missingEffectsMap["ItemEffects"], func(i, j int) bool {
+		return missingEffectsMap["ItemEffects"][i].ID < missingEffectsMap["ItemEffects"][j].ID
+	})
 
 	if err := tmpl.Execute(f, missingEffectsMap); err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
@@ -137,7 +139,7 @@ func GenerateEnchantEffects(instance *dbc.DBC, db *WowDatabase) {
 		}
 
 		if TryParseEnchantEffect(parsed, groupMapProc, instance, enchantSpellEffects) == EffectParseResultUnsupported {
-			missingEffectsMap["EnchantEffects"] = append(missingEffectsMap["EnchantEffects"], enchant.EffectId)
+			missingEffectsMap["EnchantEffects"] = append(missingEffectsMap["EnchantEffects"], Variant{ID: enchant.EffectId, Name: enchant.Name})
 		}
 	}
 
@@ -168,7 +170,11 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 		}
 
 		if TryParseProcEffect(parsed, item, instance, groupMapProc) == EffectParseResultUnsupported {
-			missingEffectsMap["ItemEffects"] = append(missingEffectsMap["ItemEffects"], item.Id)
+			missingEffectsMap["ItemEffects"] = append(missingEffectsMap["ItemEffects"],
+				Variant{
+					ID:   item.Id,
+					Name: item.Name + BuildItemDifficultyPostfix(itemSources, item.Id, instance),
+				})
 		}
 	}
 
@@ -205,18 +211,7 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 	updateNames := func(entires []*Entry) {
 		for _, entry := range entires {
 			for _, variant := range entry.Variants {
-				if sources, ok := itemSources[variant.ID]; ok {
-					name := difficultyToShortName(sources[0].Difficulty)
-					if len(name) > 0 {
-						variant.Name += " " + name
-					}
-				}
-
-				if item, ok := instance.Items[variant.ID]; ok {
-					if len(item.NameDescription) > 0 && item.NameDescription != "Heroic" {
-						variant.Name += " (" + item.NameDescription + ")"
-					}
-				}
+				variant.Name += BuildItemDifficultyPostfix(itemSources, variant.ID, instance)
 			}
 		}
 	}
@@ -232,6 +227,24 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 
 	GenerateEffectsFile(groups, "sim/common/mop/stat_bonus_cds_auto_gen.go", TmplStrOnUse)
 	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs_auto_gen.go", TmplStrProc)
+}
+
+func BuildItemDifficultyPostfix(itemSources map[int][]*proto.DropSource, itemId int, instance *dbc.DBC) string {
+	difficultyPostfix := ""
+	if sources, ok := itemSources[itemId]; ok {
+		name := difficultyToShortName(sources[0].Difficulty)
+		if len(name) > 0 {
+			difficultyPostfix += " " + name
+		}
+	}
+
+	if item, ok := instance.Items[itemId]; ok {
+		if len(item.NameDescription) > 0 && item.NameDescription != "Heroic" {
+			difficultyPostfix += " (" + item.NameDescription + ")"
+		}
+	}
+
+	return difficultyPostfix
 }
 
 func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, groupMapProc map[string]Group) int {
@@ -261,6 +274,15 @@ func TryParseProcEffect(parsed *proto.UIItem, item dbc.Item, instance *dbc.DBC, 
 		}
 
 		return EffectParseResultSuccess
+	}
+
+	// check if the item has any kind of proc as we only support stat proc parsing right now
+	if effects, ok := instance.ItemEffectsByParentID[item.Id]; ok && item.ItemLevel > 416 {
+		for _, effect := range effects {
+			if SpellHasTriggerEffect(effect.SpellID, instance) {
+				return EffectParseResultUnsupported
+			}
+		}
 	}
 
 	return EffectParseResultInvalid
@@ -602,6 +624,19 @@ func SpellHasDummyEffect(spellId int, instance *dbc.DBC) bool {
 		for _, effect := range effects {
 			if effect.EffectAura == dbc.A_DUMMY ||
 				effect.EffectAura == dbc.A_PERIODIC_DUMMY {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func SpellHasTriggerEffect(spellId int, instance *dbc.DBC) bool {
+	if effects, ok := instance.SpellEffects[spellId]; ok {
+		for _, effect := range effects {
+			if effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL ||
+				effect.EffectAura == dbc.A_PROC_TRIGGER_SPELL_WITH_VALUE {
 				return true
 			}
 		}

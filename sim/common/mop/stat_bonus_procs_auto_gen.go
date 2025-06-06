@@ -13,7 +13,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.]
+	// You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		//	Name:     "The Gloaming Blade",
 	//	ItemID: 88149,
@@ -27,7 +27,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.]
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitTaken,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial,
@@ -45,7 +45,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
+	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately
+	// 3.50 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -63,7 +64,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately 3.50 procs per minute)]
+	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately
+	// 3.50 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -81,7 +83,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up to 3 times. (Approximately 0.72 procs per minute)]
+	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up
+	// to 3 times. (Approximately 0.72 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -99,7 +102,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based damage roles only.]
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based
+	// damage roles only.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -118,7 +122,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)]
+	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -137,7 +141,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your target equal to 33% of the original healing done.]
+	// Your heals have a 0.1% chance to trigger Multistrike, which causes instant additional healing to your
+	// target equal to 33% of the original healing done.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
@@ -156,7 +161,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -175,7 +180,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based damage roles only.]
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based
+	// damage roles only.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -194,7 +200,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
@@ -213,7 +219,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your
+	// target equal to 33% of the original damage dealt.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -232,7 +239,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your target equal to 33% of the original damage dealt.]
+	// Your attacks have a 0.1% chance to trigger Multistrike, which deals instant additional damage to your
+	// target equal to 33% of the original damage dealt.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -251,7 +259,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -270,7 +278,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.]
+	// Your attacks have a 0.01% chance to Cleave, dealing the same damage to up to 5 other nearby targets.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -289,7 +297,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.]
+	// Your heals have a 0.01% chance to Cleave, dealing the same healing to up to 5 other nearby targets.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
@@ -308,7 +316,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.]
+	// Amplifies your Critical Strike damage and healing, Haste, Mastery, and Spirit by 1%.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -327,7 +335,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963 Spirit. (Approximately 0.92 procs per minute)]
+	// Your heals have a chance to grant you 19260 Spirit for 10s. Every 0.5 sec, this effect is reduced by 963
+	// Spirit. (Approximately 0.92 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
@@ -346,7 +355,8 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect decrements by 963 Agility. (Approximately 1.00 procs per minute)]
+	// Your melee and ranged attacks have a chance to grant you 19260 Agility for 10s. Every 0.5 sec this effect
+	// decrements by 963 Agility. (Approximately 1.00 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage,
@@ -365,7 +375,7 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// [Teleport yourself to the Timeless Isle.]
+	// Teleport yourself to the Timeless Isle.
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		//	Name:     "Time-Lost Artifact",
 	//	ItemID: 103678,
@@ -375,7 +385,8 @@ func RegisterAllProcs() {
 	//	Harmful:  false
 	// })
 	
-	// [Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027 for 15s. ( 20% chance, 55 sec cooldown)]
+	// Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027
+	// for 15s. ( 20% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
@@ -386,7 +397,8 @@ func RegisterAllProcs() {
 		{ItemID: 79328, ItemName: "Relic of Xuen"},
 	})
 	
-	// [When you cast healing spells, you have a chance to gain Blessing of the Celestials, increasing your Spirit by 3027 for 20s. ( 20% chance, 55 sec cooldown)]
+	// When you cast healing spells, you have a chance to gain Blessing of the Celestials, increasing your Spirit
+	// by 3027 for 20s. ( 20% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Chi-Ji",
 		ItemID: 79330,
@@ -396,7 +408,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect by 3027 for 15s.]
+	// When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect
+	// by 3027 for 15s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
@@ -408,7 +421,7 @@ func RegisterAllProcs() {
 		{ItemID: 98075, ItemName: "Relic of Yu'lon"},
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 haste for 20s.]
+	// When your attacks hit you have a chance to gain 2573 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Windswept Pages (N)",
 		ItemID: 81125,
@@ -418,7 +431,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
+	// Your healing spells have a chance to grant 1926 Intellect for 10s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
@@ -429,7 +442,7 @@ func RegisterAllProcs() {
 		{ItemID: 97304, ItemName: "Empty Fruit Barrel"},
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)]
+	// When your attacks hit you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Carbonic Carbuncle (N)",
 		ItemID: 81138,
@@ -439,7 +452,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your spells deal damage you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)]
+	// When your spells deal damage you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115
+	// sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vision of the Predator (N)",
 		ItemID: 81192,
@@ -449,7 +463,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -460,7 +474,8 @@ func RegisterAllProcs() {
 		{ItemID: 85181, ItemName: "Iron Protector Talisman (N)"},
 	})
 	
-	// [When your attacks critical strike your target you have a chance to gain 2573 Agility for 25s. ( 45% chance, 85 sec cooldown)]
+	// When your attacks critical strike your target you have a chance to gain 2573 Agility for 25s. ( 45% chance,
+	// 85 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Searing Words (N)",
 		ItemID: 81267,
@@ -470,7 +485,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing and damaging spells have a chance to grant 1851 mastery for 20s.]
+	// Your healing and damaging spells have a chance to grant 1851 mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mark of the Catacombs",
 		ItemID: 83731,
@@ -480,7 +495,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1851 haste for 20s.]
+	// When you deal damage you have a chance to gain 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of the Catacombs",
 		ItemID: 83732,
@@ -490,7 +505,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Emblem of the Catacombs",
 		ItemID: 83733,
@@ -500,7 +515,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee attacks have a chance to grant 1851 parry for 20s.]
+	// Your melee attacks have a chance to grant 1851 parry for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Medallion of the Catacombs",
 		ItemID: 83734,
@@ -510,7 +525,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Symbol of the Catacombs",
 		ItemID: 83735,
@@ -520,7 +535,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing and damaging spells have a chance to grant 1851 spirit for 20s.]
+	// Your healing and damaging spells have a chance to grant 1851 spirit for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Compassion",
 		ItemID: 83736,
@@ -530,7 +545,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1851 critical strike for 20s.]
+	// When you deal damage you have a chance to gain 1851 critical strike for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Fidelity",
 		ItemID: 83737,
@@ -540,7 +555,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Grace",
 		ItemID: 83738,
@@ -550,7 +565,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee attacks have a chance to grant 1851 mastery for 20s.]
+	// Your melee attacks have a chance to grant 1851 mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Patience",
 		ItemID: 83739,
@@ -560,7 +575,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Devotion",
 		ItemID: 83740,
@@ -570,7 +585,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing and damaging spells have a chance to grant 1851 haste for 20s.]
+	// Your healing and damaging spells have a chance to grant 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fearwurm Relic",
 		ItemID: 84070,
@@ -580,7 +595,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1851 haste for 20s.]
+	// When you deal damage you have a chance to gain 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Charm of Ten Songs",
 		ItemID: 84071,
@@ -590,7 +605,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Braid of Ten Songs",
 		ItemID: 84072,
@@ -600,7 +615,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee attacks have a chance to grant 1851 parry for 20s.]
+	// Your melee attacks have a chance to grant 1851 parry for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Knot of Ten Songs",
 		ItemID: 84073,
@@ -610,7 +625,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Fearwurm Badge",
 		ItemID: 84074,
@@ -620,7 +635,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing and damaging spells have a chance to grant 1851 critical strike for 20s.]
+	// Your healing and damaging spells have a chance to grant 1851 critical strike for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Relic of Kypari Zar",
 		ItemID: 84075,
@@ -630,7 +645,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1851 mastery for 20s.]
+	// When you deal damage you have a chance to gain 1851 mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sigil of Kypari Zar",
 		ItemID: 84076,
@@ -640,7 +655,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 haste for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Emblem of Kypari Zar",
 		ItemID: 84077,
@@ -650,7 +665,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee attacks have a chance to grant 1851 dodge for 20s.]
+	// Your melee attacks have a chance to grant 1851 dodge for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Insignia of Kypari Zar",
 		ItemID: 84078,
@@ -660,7 +675,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.]
+	// Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Badge of Kypari Zar",
 		ItemID: 84079,
@@ -670,7 +685,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Conquest (Season 12)",
 		ItemID: 84349,
@@ -680,7 +695,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Dominance (Season 12)",
 		ItemID: 84489,
@@ -690,7 +705,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Dreadful Gladiator's Insignia of Victory (Season 12)",
 		ItemID: 84495,
@@ -700,7 +715,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -711,7 +726,7 @@ func RegisterAllProcs() {
 		{ItemID: 91457, ItemName: "Malevolent Gladiator's Insignia of Conquest (Season 13)"},
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -722,7 +737,7 @@ func RegisterAllProcs() {
 		{ItemID: 91768, ItemName: "Malevolent Gladiator's Insignia of Victory (Season 13)"},
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -733,7 +748,7 @@ func RegisterAllProcs() {
 		{ItemID: 91754, ItemName: "Malevolent Gladiator's Insignia of Dominance (Season 13)"},
 	})
 	
-	// [Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 dodge for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -745,7 +760,7 @@ func RegisterAllProcs() {
 		{ItemID: 87063, ItemName: "Vial of Dragon's Blood (H)"},
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -757,7 +772,8 @@ func RegisterAllProcs() {
 		{ItemID: 87057, ItemName: "Bottle of Infinite Stars (H)"},
 	})
 	
-	// [Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
+	// Each time you deal periodic damage you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec
+	// cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
@@ -771,7 +787,7 @@ func RegisterAllProcs() {
 		{ItemID: 98050, ItemName: "Light of the Cosmos"},
 	})
 	
-	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -783,7 +799,7 @@ func RegisterAllProcs() {
 		{ItemID: 87072, ItemName: "Lei Shen's Final Orders (H)"},
 	})
 	
-	// [Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)]
+	// Each time your spells heal you have a chance to gain 963 Intellect for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
@@ -795,7 +811,7 @@ func RegisterAllProcs() {
 		{ItemID: 87075, ItemName: "Qin-xi's Polarizing Seal (H)"},
 	})
 	
-	// [Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your attacks hit, you have a chance to gain 963 dodge for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskSpellDamageProc,
@@ -807,7 +823,7 @@ func RegisterAllProcs() {
 		{ItemID: 87160, ItemName: "Stuff of Nightmares (H)"},
 	})
 	
-	// [Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your spells heal you have a chance to gain 963 Spirit for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
@@ -819,7 +835,8 @@ func RegisterAllProcs() {
 		{ItemID: 87163, ItemName: "Spirits of the Sun (H)"},
 	})
 	
-	// [Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your attacks hit, you have a chance to gain 963 critical strike for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -831,7 +848,7 @@ func RegisterAllProcs() {
 		{ItemID: 87167, ItemName: "Terror in the Mists (H)"},
 	})
 	
-	// [Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskSpellDamageProc,
@@ -843,7 +860,8 @@ func RegisterAllProcs() {
 		{ItemID: 87172, ItemName: "Darkmist Vortex (H)"},
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
@@ -857,7 +875,7 @@ func RegisterAllProcs() {
 		{ItemID: 98076, ItemName: "Essence of Terror"},
 	})
 	
-	// [Your healing spells have a chance to grant 1926 spellpower for 20s. ( 15% chance, 115 sec cooldown)]
+	// Your healing spells have a chance to grant 1926 spellpower for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Core of Decency",
 		ItemID: 87497,
@@ -867,7 +885,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your harmful spells have a chance to increase your spell power by 2040 for 10s. ( 10% chance, 55 sec cooldown)]
+	// Your harmful spells have a chance to increase your spell power by 2040 for 10s. ( 10% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mithril Wristwatch",
 		ItemID: 87572,
@@ -877,7 +895,8 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [Your direct healing and heal over time spells have a chance to increase your haste by 2040 for 10s. ( 10% chance, 55 sec cooldown)]
+	// Your direct healing and heal over time spells have a chance to increase your haste by 2040 for 10s. (
+	// 10% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Thousand-Year Pickled Egg",
 		ItemID: 87573,
@@ -887,7 +906,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Chance on melee and ranged critical strike to increase your attack power by 4000 for 10s.]
+	// Chance on melee and ranged critical strike to increase your attack power by 4000 for 10s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Coren's Cold Chromium Coaster",
 		ItemID: 87574,
@@ -897,7 +916,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -910,7 +929,7 @@ func RegisterAllProcs() {
 		{ItemID: 100026, ItemName: "Tyrannical Gladiator's Insignia of Conquest (Season 14)"},
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -923,7 +942,7 @@ func RegisterAllProcs() {
 		{ItemID: 100152, ItemName: "Tyrannical Gladiator's Insignia of Dominance (Season 14)"},
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -936,7 +955,7 @@ func RegisterAllProcs() {
 		{ItemID: 100085, ItemName: "Tyrannical Gladiator's Insignia of Victory (Season 14)"},
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Conquest",
 		ItemID: 93424,
@@ -946,7 +965,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Dominance",
 		ItemID: 93601,
@@ -956,7 +975,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Dreadful Gladiator's Insignia of Victory",
 		ItemID: 93611,
@@ -966,7 +985,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Strength for 15s. ( 15% chance, 85 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Strength for 15s. ( 15% chance, 85 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Brutal Talisman of the Shado-Pan Assault",
 		ItemID: 94508,
@@ -976,7 +995,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 10s. ( 15% chance, 55 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 10s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Volatile Talisman of the Shado-Pan Assault",
 		ItemID: 94510,
@@ -986,7 +1005,7 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 115 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Vicious Talisman of the Shado-Pan Assault",
 		ItemID: 94511,
@@ -996,7 +1015,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per minute)]
+	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per
+	// minute)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
@@ -1010,7 +1030,8 @@ func RegisterAllProcs() {
 		{ItemID: 96827, ItemName: "Breath of the Hydra (Heroic Thunderforged)"},
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately 1.10 procs per minute)]
+	// When your attacks hit you have a chance to gain 2573 Agility and summon 3 Voodoo Gnomes for 10s. (Approximately
+	// 1.10 procs per minute)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1024,7 +1045,8 @@ func RegisterAllProcs() {
 		{ItemID: 96781, ItemName: "Bad Juju (Heroic Thunderforged)"},
 	})
 	
-	// [When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately 0.85 procs per minute)]
+	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately
+	// 0.85 procs per minute)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
@@ -1038,7 +1060,7 @@ func RegisterAllProcs() {
 		{ItemID: 96888, ItemName: "Cha-Ye's Essence of Brilliance (Heroic Thunderforged)"},
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Conquest",
 		ItemID: 98760,
@@ -1048,7 +1070,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Dominance",
 		ItemID: 98911,
@@ -1058,7 +1080,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Crafted Malevolent Gladiator's Insignia of Victory",
 		ItemID: 98917,
@@ -1068,7 +1090,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1081,7 +1103,7 @@ func RegisterAllProcs() {
 		{ItemID: 103150, ItemName: "Grievous Gladiator's Insignia of Conquest (Season 15)"},
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1094,7 +1116,7 @@ func RegisterAllProcs() {
 		{ItemID: 103309, ItemName: "Grievous Gladiator's Insignia of Dominance (Season 15)"},
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1107,7 +1129,7 @@ func RegisterAllProcs() {
 		{ItemID: 103319, ItemName: "Grievous Gladiator's Insignia of Victory (Season 15)"},
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Stone of Battle",
 		ItemID: 100990,
@@ -1117,7 +1139,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Idol of Battle",
 		ItemID: 100991,
@@ -1127,7 +1149,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Defender Idol",
 		ItemID: 100999,
@@ -1137,7 +1159,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Heart-Lesion Defender Stone",
 		ItemID: 101002,
@@ -1147,7 +1169,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Idol of Rage",
 		ItemID: 101009,
@@ -1157,7 +1179,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Rage",
 		ItemID: 101012,
@@ -1167,7 +1189,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Idol of Destruction",
 		ItemID: 101023,
@@ -1177,7 +1200,7 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Destruction",
 		ItemID: 101026,
@@ -1187,7 +1210,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
+	// Your healing spells have a chance to grant 1926 Intellect for 10s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Springrain Stone of Wisdom",
 		ItemID: 101041,
@@ -1197,7 +1220,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Trailseeker Idol of Rage",
 		ItemID: 101054,
@@ -1207,7 +1230,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Trailseeker Stone of Rage",
 		ItemID: 101057,
@@ -1217,7 +1240,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mountainsage Idol of Destruction",
 		ItemID: 101069,
@@ -1227,7 +1251,7 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mountainsage Stone of Destruction",
 		ItemID: 101072,
@@ -1237,7 +1261,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Defender Stone",
 		ItemID: 101087,
@@ -1247,7 +1271,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Defender Idol",
 		ItemID: 101089,
@@ -1257,7 +1281,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
+	// Your healing spells have a chance to grant 1926 Intellect for 10s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Stone of Wisdom",
 		ItemID: 101107,
@@ -1267,7 +1291,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Idol of Rage",
 		ItemID: 101113,
@@ -1277,7 +1301,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Mistdancer Stone of Rage",
 		ItemID: 101117,
@@ -1287,7 +1311,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
+	// Your healing spells have a chance to grant 1926 Intellect for 10s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Stone of Wisdom",
 		ItemID: 101138,
@@ -1297,7 +1321,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Stone of Battle",
 		ItemID: 101151,
@@ -1307,7 +1331,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Idol of Battle",
 		ItemID: 101152,
@@ -1317,7 +1341,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Defender Idol",
 		ItemID: 101160,
@@ -1327,7 +1351,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Sunsoul Defender Stone",
 		ItemID: 101163,
@@ -1337,7 +1361,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Idol of Destruction",
 		ItemID: 101168,
@@ -1347,7 +1372,7 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Stone of Destruction",
 		ItemID: 101171,
@@ -1357,7 +1382,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
+	// Your healing spells have a chance to grant 1926 Intellect for 10s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Communal Stone of Wisdom",
 		ItemID: 101183,
@@ -1367,7 +1392,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lightdrinker Idol of Rage",
 		ItemID: 101200,
@@ -1377,7 +1402,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Lightdrinker Stone of Rage",
 		ItemID: 101203,
@@ -1387,7 +1412,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Idol of Rage",
 		ItemID: 101217,
@@ -1397,7 +1422,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Rage",
 		ItemID: 101220,
@@ -1407,7 +1432,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Idol of Destruction",
 		ItemID: 101222,
@@ -1417,7 +1443,7 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Destruction",
 		ItemID: 101225,
@@ -1427,7 +1453,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your healing spells have a chance to grant 1926 Intellect for 10s.]
+	// Your healing spells have a chance to grant 1926 Intellect for 10s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Streamtalker Stone of Wisdom",
 		ItemID: 101250,
@@ -1437,7 +1463,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
+	// cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Felsoul Idol of Destruction",
 		ItemID: 101263,
@@ -1447,7 +1474,7 @@ func RegisterAllProcs() {
 		Harmful:  true,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Felsoul Stone of Destruction",
 		ItemID: 101266,
@@ -1457,7 +1484,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Stone of Battle",
 		ItemID: 101294,
@@ -1467,7 +1494,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Idol of Battle",
 		ItemID: 101295,
@@ -1477,7 +1504,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)]
+	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Defender Idol",
 		ItemID: 101303,
@@ -1487,7 +1514,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s.]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "Oathsworn Defender Stone",
 		ItemID: 101306,
@@ -1497,7 +1524,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Agi DPS Trinket (5)",
 		ItemID: 102312,
@@ -1507,7 +1534,8 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
+	// When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115
+	// sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Int Hit Trinket (5)",
 		ItemID: 102313,
@@ -1517,7 +1545,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Str DPS Trinket (5)",
 		ItemID: 102315,
@@ -1527,7 +1555,7 @@ func RegisterAllProcs() {
 		Harmful:  false,
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Agility for 20s.]
+	// When you deal damage you have a chance to gain 1287 Agility for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1538,7 +1566,7 @@ func RegisterAllProcs() {
 		{ItemID: 103347, ItemName: "Prideful Gladiator's Insignia of Conquest (Season 15)"},
 	})
 	
-	// [When you deal damage you have a chance to gain 1287 Strength for 20s.]
+	// When you deal damage you have a chance to gain 1287 Strength for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1549,7 +1577,7 @@ func RegisterAllProcs() {
 		{ItemID: 103516, ItemName: "Prideful Gladiator's Insignia of Victory (Season 15)"},
 	})
 	
-	// [When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.]
+	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1560,7 +1588,7 @@ func RegisterAllProcs() {
 		{ItemID: 103506, ItemName: "Prideful Gladiator's Insignia of Dominance (Season 15)"},
 	})
 	
-	// [When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)]
+	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
@@ -1571,7 +1599,8 @@ func RegisterAllProcs() {
 		{ItemID: 103986, ItemName: "Discipline of Xuen (Timeless)"},
 	})
 	
-	// [When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115 sec cooldown)]
+	// When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115
+	// sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
@@ -1582,7 +1611,7 @@ func RegisterAllProcs() {
 		{ItemID: 103987, ItemName: "Yu'lon's Bite (Timeless)"},
 	})
 	
-	// [Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)]
+	// Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,

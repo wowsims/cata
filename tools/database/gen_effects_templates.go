@@ -36,7 +36,9 @@ func RegisterAllProcs() {
 	//       With next db run the item will be removed if implemented.
 	//
 	{{- end}}
-	// {{.Tooltip}}
+	{{- range (.Tooltip | formatStrings 100) }}
+	// {{.}}
+	{{- end}}
 	{{- if .Supported}}
 	{{- if len .Variants | eq 1}}
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -146,13 +148,13 @@ const TmplStrMissingEffects = `
 
 export const MISSING_ITEM_EFFECTS = [
 {{- range .ItemEffects }}
-    {{.}},
+    {{.ID}}, // {{.Name}}
 {{- end }}
 ]
 
 export const MISSING_ENCHANT_EFFECTS = [
 {{- range .EnchantEffects }}
-    {{.}},
+    {{.ID}}, // {{.Name}}
 {{- end }}
 ]
 `
