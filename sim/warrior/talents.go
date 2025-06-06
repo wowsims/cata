@@ -423,7 +423,7 @@ func (war *Warrior) registerStormBolt() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: 40 * time.Second,
+				Duration: 30 * time.Second,
 			},
 		},
 
