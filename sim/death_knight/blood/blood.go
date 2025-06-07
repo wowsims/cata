@@ -64,7 +64,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	// bdk.registerHeartStrikeSpell()
 	// bdk.registerRuneStrikeSpell()
 	// bdk.registerRuneTapSpell()
-	// bdk.registerVampiricBloodSpell()
+	bdk.registerVampiricBlood()
 
 	// TODO: Fix this to work with the new talent system.
 	// if bdk.Talents.DancingRuneWeapon {

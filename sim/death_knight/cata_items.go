@@ -290,6 +290,51 @@ var ItemSetNecroticBoneplateArmor = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Your Vampiric Blood ability also affects all party and raid members for 50% of the effect it has on you.
+			bdk := agent.(DeathKnightAgent).GetDeathKnight()
+			if bdk.Spec != proto.Spec_SpecBloodDeathKnight || len(bdk.Env.Raid.AllPlayerUnits) < 2 {
+				return
+			}
+
+			actionID := core.ActionID{SpellID: 105588}
+			healthMetrics := bdk.NewHealthMetrics(actionID)
+
+			hasGlyph := bdk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfVampiricBlood)
+			healBonus := core.TernaryFloat64(hasGlyph, 1.20, 1.125)
+
+			vampiricBroodAuras := bdk.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+				return unit.RegisterAura(core.Aura{
+					Label:    "Vampiric Brood" + unit.Label,
+					ActionID: actionID,
+					Duration: time.Second * 10,
+
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						if !hasGlyph {
+							bdk.UpdateMaxHealth(sim, bdk.VampiricBloodBonusHealth*0.5, healthMetrics)
+						}
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						if !hasGlyph {
+							bdk.UpdateMaxHealth(sim, -bdk.VampiricBloodBonusHealth*0.5, healthMetrics)
+						}
+					},
+				}).AttachMultiplicativePseudoStatBuff(&bdk.PseudoStats.HealingTakenMultiplier, healBonus)
+			})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Vampiric Brood Trigger",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellVampiricBlood,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					for _, unit := range sim.Raid.AllPlayerUnits {
+						if unit == &bdk.Unit {
+							return
+						}
+
+						vampiricBroodAuras.Get(unit).Activate(sim)
+					}
+				},
+			})
 		},
 	},
 })

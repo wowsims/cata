@@ -65,6 +65,9 @@ type DeathKnight struct {
 	T12Tank4pc *core.Aura
 	T13Dps2pc  *core.Aura
 	T13Dps4pc  *core.Aura
+
+	// Used for T13 Tank 4pc
+	VampiricBloodBonusHealth float64
 }
 
 func (deathKnight *DeathKnight) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
