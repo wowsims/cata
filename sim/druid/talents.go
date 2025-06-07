@@ -174,20 +174,13 @@ func (druid *Druid) registerForceOfNature() {
 	}
 
 	druid.ForceOfNature = druid.RegisterSpell(Any, core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 106737},
-		Flags:    core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 106737},
+		Flags:        core.SpellFlagAPL,
+		Charges:      3,
+		RechargeTime: time.Second * 20,
 
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    druid.NewTimer(),
-				Duration: time.Second * 20,
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			for _, treant := range druid.Treants {
-				treant.Enable(sim)
-			}
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			druid.Treants[spell.GetNumCharges()].Enable(sim)
 		},
 	})
 
