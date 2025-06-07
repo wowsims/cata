@@ -33,6 +33,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 		Options: tankOptions.Options,
 	}
 
+	bear.registerTreants()
+
 	bear.EnableRageBar(core.RageBarOptions{
 		StartingRage:       bear.Options.StartingRage,
 		BaseRageMultiplier: 2.5,
