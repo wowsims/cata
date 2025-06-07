@@ -17,7 +17,7 @@ func (war *ProtectionWarrior) registerShieldBarrier() {
 	staminaScaling := 2.50
 	newAbsorb := 0.0
 
-	aura := war.NewDamageAbsorptionAura(
+	war.ShieldBarrierAura = war.NewDamageAbsorptionAura(
 		"Shield Barrier",
 		actionID,
 		6*time.Second,
@@ -63,13 +63,13 @@ func (war *ProtectionWarrior) registerShieldBarrier() {
 				war.GetStat(stats.Stamina)*staminaScaling,
 			) * rageSpent / maxRageSpent) * absorbMultiplier
 
-			if !aura.Aura.IsActive() || (aura.Aura.IsActive() && newAbsorb < aura.ShieldStrength) {
-				aura.Deactivate(sim)
-				aura.Activate(sim)
+			if !war.ShieldBarrierAura.Aura.IsActive() || (war.ShieldBarrierAura.Aura.IsActive() && newAbsorb < war.ShieldBarrierAura.ShieldStrength) {
+				war.ShieldBarrierAura.Deactivate(sim)
+				war.ShieldBarrierAura.Activate(sim)
 			}
 		},
 
-		RelatedSelfBuff: aura.Aura,
+		RelatedSelfBuff: war.ShieldBarrierAura.Aura,
 	})
 
 }
