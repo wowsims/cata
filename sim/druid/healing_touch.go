@@ -4,6 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+)
+
+const (
+	HealingTouchBonusCoeff = 1.86
+	HealingTouchCoeff      = 18.388
+	HealingTouchVariance   = 0.166
 )
 
 func (druid *Druid) registerHealingTouchSpell() {
@@ -28,9 +35,10 @@ func (druid *Druid) registerHealingTouchSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// This is a dummy spell that doesn't actually heal
-			// It just triggers Dream of Cenarius if the talent is selected
-			spell.CalcAndDealHealing(sim, &druid.Unit, 0, spell.OutcomeHealing)
+			baseHealing := sim.Roll(core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, HealingTouchCoeff, HealingTouchVariance))
+			baseHealing += spell.HealingPower(target) * HealingTouchBonusCoeff
+
+			spell.CalcAndDealHealing(sim, &druid.Unit, baseHealing, spell.OutcomeHealing)
 		},
 	})
 }
