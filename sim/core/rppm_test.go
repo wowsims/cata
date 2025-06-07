@@ -17,7 +17,7 @@ func TestFirstCheckOnPull(t *testing.T) {
 	const expectedChance = 0.74
 
 	proc := NewRPPMProc(1.20)
-	procChance := proc.getProcChance(char, sim)
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("First proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -32,8 +32,8 @@ func TestTwoChecksInOneStep(t *testing.T) {
 	const expectedChance = 0.0
 
 	proc := NewRPPMProc(1.20)
-	proc.Proc(char, sim)
-	procChance := proc.getProcChance(char, sim)
+	proc.Proc(&char.Unit, sim, "UnitTest")
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Second proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -47,9 +47,9 @@ func TestResetSetsCorrectState(t *testing.T) {
 
 	const expectedChance = 0.74
 	proc := NewRPPMProc(1.20)
-	proc.Proc(char, sim)
+	proc.Proc(&char.Unit, sim, "UnitTest")
 	proc.Reset()
-	procChance := proc.getProcChance(char, sim)
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Second proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -63,15 +63,15 @@ func TestSpecModAppliesToCorrectSpec(t *testing.T) {
 	}
 
 	const expectedChance = 0.74
-	proc := NewRPPMProc(1.20).WithSpecMod(0.5, proto.Spec_SpecArmsWarrior)
-	procChance := proc.getProcChance(char, sim)
+	proc := NewRPPMProc(1.20).WithSpecMod(0.5, proto.Spec_SpecArmsWarrior).ForCharacter(char)
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	const expectedChanceWithMod = 0.37
 	proc.WithSpecMod(-0.5, proto.Spec_SpecAfflictionWarlock)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChanceWithMod) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChanceWithMod, procChance)
 	}
@@ -85,15 +85,15 @@ func TestClassModAppliesToCorrectClass(t *testing.T) {
 	}
 
 	const expectedChance = 0.74
-	proc := NewRPPMProc(1.20).WithClassMod(0.5, 1) // Class Mask Warrior
-	procChance := proc.getProcChance(char, sim)
+	proc := NewRPPMProc(1.20).WithClassMod(0.5, 1).ForCharacter(char) // Class Mask Warrior
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	const expectedChanceWithMod = 0.37
 	proc.WithClassMod(-0.5, 256) // Class Mask Warlock
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChanceWithMod) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChanceWithMod, procChance)
 	}
@@ -107,7 +107,6 @@ func TestHasteRatingMod(t *testing.T) {
 		Unit: Unit{
 			stats: stats,
 		},
-		Class: proto.Class_ClassWarlock,
 	}
 
 	char.PseudoStats.AttackSpeedMultiplier = 1
@@ -117,7 +116,7 @@ func TestHasteRatingMod(t *testing.T) {
 
 	expectedChance := 0.74 * 1.5
 	proc := NewRPPMProc(1.20).WithHasteMod(1, MeleeHaste)
-	procChance := proc.getProcChance(char, sim)
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -126,20 +125,20 @@ func TestHasteRatingMod(t *testing.T) {
 	char.PseudoStats.RangedSpeedMultiplier = 1.5
 	char.updateCastSpeed()
 
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	expectedChance = 0.74 * 1.5 * 1.5
 	proc = NewRPPMProc(1.2).WithHasteMod(1, RangedHaste)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	proc = NewRPPMProc(1.2).WithHasteMod(1, SpellHaste)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -147,14 +146,14 @@ func TestHasteRatingMod(t *testing.T) {
 	char.PseudoStats.AttackSpeedMultiplier = 1.5
 	char.updateCastSpeed()
 	expectedChance = 0.74 * 1.5 * 1.5 * 1.5
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	expectedChance = 0.74 * 1.5 * 1.5
 	proc = NewRPPMProc(1.2).WithHasteMod(1, HighestHaste)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -168,32 +167,61 @@ func TestCritRatingMod(t *testing.T) {
 		Unit: Unit{
 			stats: stats,
 		},
-		Class: proto.Class_ClassWarlock,
 	}
 
 	expectedChance := 0.74 * 1.5
 	proc := NewRPPMProc(1.20).WithCritMod(1, MeleeCrit)
-	procChance := proc.getProcChance(char, sim)
+	procChance := proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	proc = NewRPPMProc(1.20).WithCritMod(1, RangedCrit)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	proc = NewRPPMProc(1.20).WithCritMod(1, LowestCrit)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	expectedChance = 0.74 * 2
 	proc = NewRPPMProc(1.20).WithCritMod(1, SpellCrit)
-	procChance = proc.getProcChance(char, sim)
+	procChance = proc.getProcChance(&char.Unit, sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
+	}
+}
+
+func TestProcManagerShouldProc(t *testing.T) {
+	sim := SetupFakeSim()
+	char := &Character{
+		Unit: Unit{},
+	}
+
+	procManager := char.NewRPPMProcManager(2, ProcMaskDirect, nil)
+	if !procManager.Proc(&char.Unit, sim, ProcMaskMeleeMHAuto, "Melee Swing") {
+		t.Fatal("Did not proc for 100% proc chance")
+	}
+}
+
+func TestProcManagerShouldBeConfigurable(t *testing.T) {
+	sim := SetupFakeSim()
+	char := &Character{
+		Unit:  Unit{},
+		Class: proto.Class_ClassWarlock,
+	}
+
+	const expectedChanceWithMod = 0.37
+	procManager := char.NewRPPMProcManager(1.2, ProcMaskDirect, func(r *RPPMProc) {
+		r.WithClassMod(-0.5, 256)
+	})
+
+	procChance := procManager.Chance(ProcMaskMelee, &char.Unit, sim)
+	if math.Abs(procChance-expectedChanceWithMod) > 0.001 {
+		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChanceWithMod, procChance)
 	}
 }

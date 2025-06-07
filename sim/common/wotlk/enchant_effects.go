@@ -16,7 +16,7 @@ func init() {
 	core.NewEnchantEffect(3251, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3251, 4.0, 0)
+		dpm := character.NewDynamicProcForEnchant(3251, 4.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 44622},
@@ -43,7 +43,7 @@ func init() {
 					return
 				}
 
-				if dpm.Proc(sim, spell.ProcMask, "Giant Slayer") {
+				if dpm.Proc(&character.Unit, sim, spell.ProcMask, "Giant Slayer") {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
@@ -56,7 +56,7 @@ func init() {
 	core.NewEnchantEffect(3239, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3239, 4.0, 0)
+		dpm := character.NewDynamicProcForEnchant(3239, 4.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 44525},
@@ -83,7 +83,7 @@ func init() {
 					return
 				}
 
-				if dpm.Proc(sim, spell.ProcMask, "Icebreaker") {
+				if dpm.Proc(&character.Unit, sim, spell.ProcMask, "Icebreaker") {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
@@ -139,7 +139,7 @@ func init() {
 	core.NewEnchantEffect(3789, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3789, 1.0, 0)
+		dpm := character.NewDynamicProcForEnchant(3789, 1.0, 0)
 
 		// Modify only gear armor, including from agility
 		fivePercentOfArmor := (character.EquipStats()[stats.Armor] + 2.0*character.EquipStats()[stats.Agility]) * 0.05
@@ -157,7 +157,7 @@ func init() {
 					return
 				}
 
-				if dpm.Proc(sim, spell.ProcMask, "Berserking") {
+				if dpm.Proc(&character.Unit, sim, spell.ProcMask, "Berserking") {
 					if spell.IsMH() {
 						procAuraMH.Activate(sim)
 					} else {
@@ -174,7 +174,7 @@ func init() {
 	core.NewEnchantEffect(3241, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3241, 3.0, 0)
+		dpm := character.NewDynamicProcForEnchant(3241, 3.0, 0)
 
 		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: 44494})
 
@@ -189,7 +189,7 @@ func init() {
 					return
 				}
 
-				if dpm.Proc(sim, spell.ProcMask, "Lifeward") {
+				if dpm.Proc(&character.Unit, sim, spell.ProcMask, "Lifeward") {
 					character.GainHealth(sim, 300*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
 				}
 			},

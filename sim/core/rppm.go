@@ -11,13 +11,12 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-type DynamicProc interface {
-	Reset()
-	Proc(unit *Character, sim *Simulation) bool
+type rppmMod interface {
+	GetCoefficient(unit *Unit) float64
 }
 
-type rppmMod interface {
-	GetCoefficient(unit *Character) float64
+type rppmCharMod interface {
+	GetCoefficient(character *Character) float64
 }
 
 type rppmCritMod struct {
@@ -25,7 +24,7 @@ type rppmCritMod struct {
 	kind        CritRPPMModKind
 }
 
-func (r rppmCritMod) GetCoefficient(unit *Character) float64 {
+func (r rppmCritMod) GetCoefficient(unit *Unit) float64 {
 	switch r.kind {
 	case MeleeCrit:
 		// We do not separate those two crit values apparentls
@@ -49,7 +48,7 @@ type rppmHasteMod struct {
 }
 
 // GetCoefficient implements RPPMMod.
-func (r rppmHasteMod) GetCoefficient(unit *Character) float64 {
+func (r rppmHasteMod) GetCoefficient(unit *Unit) float64 {
 	switch r.kind {
 	case MeleeHaste:
 		return unit.SwingSpeed()
@@ -73,8 +72,8 @@ type rppmSpecMod struct {
 	coefficient float64
 }
 
-func (r rppmSpecMod) GetCoefficient(unit *Character) float64 {
-	if unit.Spec == r.spec {
+func (r rppmSpecMod) GetCoefficient(charater *Character) float64 {
+	if charater.Spec == r.spec {
 		return 1 + r.coefficient
 	}
 
@@ -130,7 +129,7 @@ type rppmApproxIlvlMod struct {
 	coefficient float64
 }
 
-func (r rppmApproxIlvlMod) GetCoefficient(character *Character) float64 {
+func (r rppmApproxIlvlMod) GetCoefficient(unit *Unit) float64 {
 
 	// We use an approximation here, or we'd need to load the complete random properties table into the sim
 	// Just to calculate the difference in random prop points as not all points are available on the item that scales
@@ -166,11 +165,14 @@ const (
 )
 
 type RPPMProc struct {
-	ppm         float64
-	coefficient float64
-	lastProc    time.Duration
-	lastCheck   time.Duration
-	mod         []rppmMod
+	ppm             float64
+	coefficient     float64
+	charCoefficient float64
+	char            *Character
+	lastProc        time.Duration
+	lastCheck       time.Duration
+	mod             []rppmMod
+	charMods        []rppmCharMod
 }
 
 // Attach a crit mot to the RPPM Proc
@@ -202,10 +204,16 @@ func (proc *RPPMProc) WithHasteMod(coeffienct float64, kind HasteRPPMModKind) *R
 // 64 - Shaman, 128 - Mage, 256 - Warlock, 512 - Monk, 1024 - Druid
 // It multiplies the actual proc chance by 1 + coefficient
 func (proc *RPPMProc) WithClassMod(coefficient float64, classMask int) *RPPMProc {
-	proc.mod = append(proc.mod, rppmClassMod{
+	mod := rppmClassMod{
 		classMask:   classMask,
 		coefficient: coefficient,
-	})
+	}
+
+	if proc.char != nil {
+		proc.charCoefficient *= mod.GetCoefficient(proc.char)
+	} else {
+		proc.charMods = append(proc.charMods, mod)
+	}
 
 	return proc
 }
@@ -213,10 +221,16 @@ func (proc *RPPMProc) WithClassMod(coefficient float64, classMask int) *RPPMProc
 // Attaches a spec mod to the RPPM
 // It multiplies the actual proc chance by 1 + coefficient
 func (proc *RPPMProc) WithSpecMod(coefficient float64, spec proto.Spec) *RPPMProc {
-	proc.mod = append(proc.mod, rppmSpecMod{
+	mod := rppmSpecMod{
 		spec:        spec,
 		coefficient: coefficient,
-	})
+	}
+
+	if proc.char != nil {
+		proc.charCoefficient *= mod.GetCoefficient(proc.char)
+	} else {
+		proc.charMods = append(proc.charMods, mod)
+	}
 
 	return proc
 }
@@ -240,14 +254,26 @@ func (proc *RPPMProc) WithApproximateIlvlMod(coefficient float64, baseIlvl int32
 	return proc
 }
 
+func (proc *RPPMProc) ForCharacter(character *Character) *RPPMProc {
+	proc.char = character
+
+	for _, mod := range proc.charMods {
+		proc.charCoefficient *= mod.GetCoefficient(character)
+	}
+
+	proc.charMods = []rppmCharMod{}
+	return proc
+}
+
 // Create a new RPPM Proc with the given ppm (usually from the ProcsPerMinute record)
 func NewRPPMProc(ppm float64) *RPPMProc {
 	proc := &RPPMProc{
-		ppm:         ppm,
-		coefficient: 1,
-		lastProc:    -time.Second * 120,
-		lastCheck:   -time.Second * 10,
-		mod:         []rppmMod{},
+		ppm:             ppm,
+		coefficient:     1,
+		charCoefficient: 1,
+		lastProc:        -time.Second * 120,
+		lastCheck:       -time.Second * 10,
+		mod:             []rppmMod{},
 	}
 
 	return proc
@@ -259,12 +285,12 @@ func NewRPPMProc(ppm float64) *RPPMProc {
 // To actually modify the state correctly call:
 //
 //	Proc(character, sim)
-func (proc *RPPMProc) getProcChance(character *Character, sim *Simulation) float64 {
+func (proc *RPPMProc) getProcChance(unit *Unit, sim *Simulation) float64 {
 	basePpm := proc.ppm
 
 	baseCoeff := proc.coefficient
 	for _, mod := range proc.mod {
-		baseCoeff *= mod.GetCoefficient(character)
+		baseCoeff *= mod.GetCoefficient(unit)
 	}
 
 	lastCheck := math.Min(10.0, float64((sim.CurrentTime-proc.lastCheck)/time.Second))
@@ -272,17 +298,21 @@ func (proc *RPPMProc) getProcChance(character *Character, sim *Simulation) float
 
 	procCoefficient := math.Max(1, 1+((lastProc/(60/proc.ppm))-1.5)*3) // Bad luck protection
 	baseProcChance := (basePpm * (lastCheck / 60.0)) * baseCoeff
-	return baseProcChance * procCoefficient
+	return baseProcChance * procCoefficient * proc.charCoefficient
 }
 
-func (proc *RPPMProc) Proc(character *Character, sim *Simulation) bool {
-	result := sim.Proc(proc.getProcChance(character, sim), "RPPM - Proc")
+func (proc *RPPMProc) Proc(unit *Unit, sim *Simulation, label string) bool {
+	result := sim.Proc(proc.getProcChance(unit, sim), label)
 	proc.lastCheck = sim.CurrentTime
 	if result {
 		proc.lastProc = sim.CurrentTime
 	}
 
 	return result
+}
+
+func (proc *RPPMProc) Chance(unit *Unit, sim *Simulation) float64 {
+	return proc.getProcChance(unit, sim)
 }
 
 func (proc *RPPMProc) Reset() {
