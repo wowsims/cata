@@ -10,6 +10,8 @@ func (druid *Druid) ApplyTalents() {
 	druid.registerYserasGift()
 	druid.registerRenewal()
 	druid.registerCenarionWard()
+
+	druid.registerForceOfNature()
 }
 
 func (druid *Druid) registerYserasGift() {
@@ -163,5 +165,34 @@ func (druid *Druid) registerCenarionWard() {
 			spSnapshot = cenarionWardHot.HealingPower(target)
 			cenarionWardBuffs.Get(target).Activate(sim)
 		},
+	})
+}
+
+func (druid *Druid) registerForceOfNature() {
+	if !druid.Talents.ForceOfNature {
+		return
+	}
+
+	druid.ForceOfNature = druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 106737},
+		Flags:    core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    druid.NewTimer(),
+				Duration: time.Second * 20,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			for _, treant := range druid.Treants {
+				treant.Enable(sim)
+			}
+		},
+	})
+
+	druid.AddMajorCooldown(core.MajorCooldown{
+		Spell: druid.ForceOfNature.Spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }
