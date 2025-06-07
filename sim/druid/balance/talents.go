@@ -10,6 +10,7 @@ import (
 func (moonkin *BalanceDruid) ApplyBalanceTalents() {
 	moonkin.registerIncarnation()
 	moonkin.registerDreamOfCenarius()
+	moonkin.registerSoulOfTheForest()
 }
 
 func (moonkin *BalanceDruid) registerIncarnation() {
@@ -86,5 +87,26 @@ func (moonkin *BalanceDruid) registerDreamOfCenarius() {
 			moonkin.DreamOfCenarius.Activate(sim)
 		},
 	})
+}
 
+func (moonkin *BalanceDruid) registerSoulOfTheForest() {
+	if !moonkin.Talents.SoulOfTheForest {
+		return
+	}
+
+	moonkin.AstralInsight = moonkin.RegisterAura(core.Aura{
+		Label:    "Astral Insight (SotF)",
+		ActionID: core.ActionID{SpellID: 145138},
+		Duration: time.Second * 30,
+	})
+
+	core.MakeProcTriggerAura(&moonkin.Unit, core.ProcTrigger{
+		Name:           "Astral Insight (SotF) Trigger",
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: druid.DruidSpellWrath | druid.DruidSpellStarfire | druid.DruidSpellStarsurge,
+		ProcChance:     0.08,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			moonkin.AstralInsight.Activate(sim)
+		},
+	})
 }

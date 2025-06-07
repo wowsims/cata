@@ -13,6 +13,7 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 	channelTickLength := time.Second * 1
 	numberOfTicks := 4
 	eclipseEnergyGain := 25.0
+	sotfEclipseEnergyGain := 100.0
 
 	solarMetric := moonkin.NewSolarEnergyMetrics(actionID)
 	lunarMetric := moonkin.NewLunarEnergyMetrics(actionID)
@@ -40,11 +41,22 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 				} else {
 					moonkin.AddEclipseEnergy(eclipseEnergyGain, SolarEnergy, sim, solarMetric, dot.Spell)
 				}
+
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SelfHot().Apply(sim)
+			if moonkin.AstralInsight.IsActive() {
+
+				if moonkin.CanGainEnergy(SolarAndLunarEnergy) {
+					moonkin.AddEclipseEnergy(sotfEclipseEnergyGain, LunarEnergy, sim, lunarMetric, spell)
+				} else {
+					moonkin.AddEclipseEnergy(sotfEclipseEnergyGain, SolarEnergy, sim, solarMetric, spell)
+				}
+
+			} else {
+				spell.SelfHot().Apply(sim)
+			}
 		},
 	})
 }

@@ -60,6 +60,9 @@ type BalanceDruid struct {
 	Starsurge *druid.DruidSpell
 	Sunfire   *druid.DruidSpell
 	Starfall  *druid.DruidSpell
+
+	AstralInsight   *core.Aura // Soul of the Forest
+	DreamOfCenarius *core.Aura
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {

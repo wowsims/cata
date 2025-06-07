@@ -87,8 +87,7 @@ type Druid struct {
 	SolarEclipseProcAura     *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 
-	DreamOfCenarius *core.Aura
-	NaturesGrace    *core.Aura
+	NaturesGrace *core.Aura
 
 	SavageRoarDurationTable [6]time.Duration
 
