@@ -59,7 +59,7 @@ func (bdk *BloodDeathKnight) registerVampiricBlood() {
 	bdk.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeSurvival,
-		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			return bdk.CurrentHealthPercent() < 0.4
 		},
 	})
