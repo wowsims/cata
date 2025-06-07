@@ -62,7 +62,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.registerBoneShield()
 	// bdk.registerDancingRuneWeaponSpell()
 	// bdk.registerHeartStrikeSpell()
-	// bdk.registerRuneStrikeSpell()
+	bdk.registerRuneStrike()
 	bdk.registerRuneTap()
 	bdk.registerVampiricBlood()
 
