@@ -282,7 +282,6 @@ func (druid *Druid) RegisterFeralTankSpells() {
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
-	// druid.eclipseEnergyBar.reset()
 	druid.BleedsActive = 0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
@@ -311,14 +310,6 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodgeChance += 0.03
-
-	// if druid.Talents.ForceOfNature {
-	// 	druid.Treants = &Treants{
-	// 		Treant1: druid.NewTreant(),
-	// 		Treant2: druid.NewTreant(),
-	// 		Treant3: druid.NewTreant(),
-	// 	}
-	// }
 
 	return druid
 }

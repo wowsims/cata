@@ -39,6 +39,8 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 		EclipseEnergyMap: make(EclipseEnergyMap),
 	}
 
+	moonkin.registerTreants()
+
 	moonkin.SelfBuffs.InnervateTarget = &proto.UnitReference{}
 	if balanceOptions.Options.ClassOptions.InnervateTarget != nil {
 		moonkin.SelfBuffs.InnervateTarget = balanceOptions.Options.ClassOptions.InnervateTarget
@@ -73,6 +75,11 @@ func (moonkin *BalanceDruid) Initialize() {
 
 	moonkin.RegisterBalancePassives()
 	moonkin.RegisterBalanceSpells()
+}
+
+func (moonkin *BalanceDruid) ApplyTalents() {
+	moonkin.Druid.ApplyTalents()
+
 	moonkin.ApplyBalanceTalents()
 }
 
@@ -91,10 +98,6 @@ func (moonkin *BalanceDruid) RegisterBalanceSpells() {
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
+	moonkin.eclipseEnergyBar.reset()
 	moonkin.Druid.Reset(sim)
-	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
-}
-
-type BalanceDruidAgent interface {
-	GetBalanceDruid() *BalanceDruid
 }
