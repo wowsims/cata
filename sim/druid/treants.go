@@ -71,7 +71,16 @@ func (druid *Druid) NewDefaultTreant(config TreantConfig) *DefaultTreantImpl {
 	})
 
 	treant.OnPetEnable = func(sim *core.Simulation) {
-		treant.AutoAttacks.PauseMeleeBy(sim, 500 * time.Millisecond)
+		// Treant spawns in front of boss but moves behind after first swing.
+		treant.PseudoStats.InFrontOfTarget = true
+
+		sim.AddPendingAction(&core.PendingAction{
+			NextActionAt: sim.CurrentTime + time.Millisecond * 500,
+
+			OnAction: func(_ *core.Simulation) {
+				treant.PseudoStats.InFrontOfTarget = false
+			},
+		})
 	}
 
 	return treant
