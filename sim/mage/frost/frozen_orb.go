@@ -122,6 +122,7 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellFrozenOrb,
+		Flags:          core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -138,7 +139,9 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := frozenOrb.mageOwner.CalcAndRollDamageRange(sim, frozenOrbScaling, frozenOrbVariance)
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+			}
 			frozenOrb.TickCount += 1
 		},
 	})

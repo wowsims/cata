@@ -43,35 +43,39 @@ func (mage *Mage) registerIceLanceSpell() {
 			}
 
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
-			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+			randomTarget := mage.Env.NextTargetUnit(target)
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
-			if hasGlyphSplittingIce {
-				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance) / 2
+			if hasGlyphSplittingIce && len(mage.Env.Encounter.TargetUnits) > 1 {
 				if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
-					baseDamage = baseDamage * .4
 					for _ = range 3 {
+						baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 						result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+						result.Damage = result.Damage * .4 / 2
 						spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 							spell.DealDamage(sim, result)
 						})
 					}
 				} else {
+					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 					result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+					result.Damage /= 2
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
 					})
 				}
 			}
-			baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
+
 			if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
-				baseDamage = baseDamage * .4
 				for _ = range 3 {
+					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+					result.Damage = result.Damage * .4
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
 					})
 				}
 			} else {
+				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
@@ -81,7 +85,7 @@ func (mage *Mage) registerIceLanceSpell() {
 			if mage.Spec == proto.Spec_SpecFrostMage {
 				//I've confirmed in game Icicles launch even if ice lance misses.
 				for _, icicle := range mage.Icicles {
-					if hasGlyphSplittingIce {
+					if hasGlyphSplittingIce && len(mage.Env.Encounter.TargetUnits) > 1 {
 						mage.castIcicleWithDamage(sim, randomTarget, icicle/2)
 					}
 					mage.castIcicleWithDamage(sim, target, icicle)
