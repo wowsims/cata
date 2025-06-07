@@ -10,12 +10,6 @@ var PestilenceActionID = core.ActionID{SpellID: 50842}
 func (dk *DeathKnight) registerPestilenceSpell() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
-	pestiHandler := func(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
-		spell.DamageMultiplier *= 0.5
-		spell.Cast(sim, target)
-		spell.DamageMultiplier /= 0.5
-	}
-
 	dk.PestilenceSpell = dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50842},
 		Flags:          core.SpellFlagAPL,
@@ -32,7 +26,7 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 		},
 
@@ -57,10 +51,10 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 				if result.Landed() {
 					if aoeTarget != target {
 						if frostFeverActive {
-							pestiHandler(sim, dk.FrostFeverSpell, aoeTarget)
+							dk.FrostFeverSpell.Cast(sim, aoeTarget)
 						}
 						if bloodPlagueActive {
-							pestiHandler(sim, dk.BloodPlagueSpell, aoeTarget)
+							dk.BloodPlagueSpell.Cast(sim, aoeTarget)
 						}
 					}
 				}

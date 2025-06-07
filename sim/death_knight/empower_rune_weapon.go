@@ -20,6 +20,9 @@ func (dk *DeathKnight) registerEmpowerRuneWeaponSpell() {
 		ActionID: actionId,
 		Flags:    core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
 				Duration: time.Minute * 5,

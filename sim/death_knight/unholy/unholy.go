@@ -42,6 +42,7 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 		}, player.TalentsString, 56835),
 	}
 
+	uhdk.Gargoyle = uhdk.NewGargoyle()
 	uhdk.Inputs.UnholyFrenzyTarget = unholyOptions.UnholyFrenzyTarget
 
 	return uhdk
@@ -58,7 +59,14 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
 
+	uhdk.registerDarkTransformation()
+	uhdk.registerEbonPlaguebringer()
+	// uhdk.registerFesteringStrikeSpell()
 	// uhdk.registerScourgeStrikeSpell()
+	uhdk.registerShadowInfusion()
+	uhdk.registerSuddenDoom()
+	uhdk.registerSummonGargoyleSpell()
+	// uhdk.registerUnholyFrenzySpell()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {

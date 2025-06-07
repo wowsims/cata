@@ -1,10 +1,7 @@
 package death_knight
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -14,30 +11,27 @@ type GhoulPet struct {
 	dkOwner *DeathKnight
 
 	DarkTransformationAura *core.Aura
+	ShadowInfusionAura     *core.Aura
 	Claw                   *core.Spell
 }
 
 func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
 	ghoulPet := &GhoulPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Army of the Dead",
-			Owner:           &dk.Character,
-			BaseStats:       dk.ghoulBaseStats(),
-			StatInheritance: dk.ghoulStatInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                            "Army of the Dead",
+			Owner:                           &dk.Character,
+			BaseStats:                       stats.Stats{stats.AttackPower: -20},
+			StatInheritance:                 dk.ghoulStatInheritance(0.5),
+			EnabledOnStart:                  false,
+			IsGuardian:                      true,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		dkOwner: dk,
 	}
 
 	ghoulPet.PseudoStats.DamageTakenMultiplier *= 0.1
 
-	dk.SetupGhoul(ghoulPet, 14/0.0055)
-
-	// command doesn't apply to army ghoul
-	if dk.Race == proto.Race_RaceOrc {
-		ghoulPet.PseudoStats.DamageDealtMultiplier /= 1.05
-	}
+	dk.SetupGhoul(ghoulPet, 0.5)
 
 	return ghoulPet
 }
@@ -47,37 +41,32 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 		Pet: core.NewPet(core.PetConfig{
 			Name:                            "Ghoul",
 			Owner:                           &dk.Character,
-			BaseStats:                       dk.ghoulBaseStats(),
-			StatInheritance:                 dk.ghoulStatInheritance(),
+			BaseStats:                       stats.Stats{stats.AttackPower: -20},
+			StatInheritance:                 dk.ghoulStatInheritance(0.8),
 			EnabledOnStart:                  permanent,
 			IsGuardian:                      !permanent,
-			HasDynamicMeleeSpeedInheritance: !permanent,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		dkOwner: dk,
 	}
 
-	dk.SetupGhoul(ghoulPet, 14)
+	dk.SetupGhoul(ghoulPet, 0.8)
 
 	return ghoulPet
 }
 
-func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet, apScaling float64) {
-
+func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet, scalingCoef float64) {
+	baseDamage := dk.CalcScalingSpellDmg(scalingCoef)
 	ghoulPet.EnableAutoAttacks(ghoulPet, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			// Base 240 DPS with observed around 300 range
-			BaseDamageMin:     (240 - 75) * 2,
-			BaseDamageMax:     (240 + 75) * 2,
+			BaseDamageMin:     baseDamage,
+			BaseDamageMax:     baseDamage,
 			SwingSpeed:        2,
-			CritMultiplier:    2,
-			AttackPowerPerDPS: apScaling,
+			CritMultiplier:    dk.DefaultCritMultiplier(),
+			AttackPowerPerDPS: core.DefaultAttackPowerPerDPS,
 		},
 		AutoSwingMelee: true,
 	})
-
-	ghoulPet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-
-	ghoulPet.Pet.OnPetEnable = ghoulPet.enable
 
 	ghoulPet.Unit.EnableFocusBar(100, 10.0, false, nil)
 
@@ -110,25 +99,7 @@ func (ghoulPet *GhoulPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 }
 
-func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
-	if ghoulPet.IsGuardian() {
-		ghoulPet.PseudoStats.MeleeSpeedMultiplier = 1 // guardians are not affected by raid buffs
-		ghoulPet.MultiplyMeleeSpeed(sim, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
-		return
-	}
-}
-
-func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
-	return stats.Stats{
-		stats.Stamina:             388,
-		stats.Agility:             3343 - 10, // We remove 10 to not mess with crit conversion
-		stats.Strength:            476,
-		stats.AttackPower:         -20,
-		stats.PhysicalCritPercent: 5,
-	}
-}
-
-func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
+func (dk *DeathKnight) ghoulStatInheritance(apCoef float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		hitRating := ownerStats[stats.HitRating]
 		expertiseRating := ownerStats[stats.ExpertiseRating]
@@ -136,14 +107,12 @@ func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
 
 		return stats.Stats{
 			stats.Armor:               ownerStats[stats.Armor],
-			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.5,
+			stats.AttackPower:         ownerStats[stats.AttackPower] * apCoef,
 			stats.CritRating:          ownerStats[stats.CritRating],
-			stats.DodgeRating:         ownerStats[stats.DodgeRating],
 			stats.ExpertiseRating:     combined,
 			stats.HasteRating:         ownerStats[stats.HasteRating],
 			stats.Health:              ownerStats[stats.Health],
 			stats.HitRating:           combined,
-			stats.ParryRating:         ownerStats[stats.ParryRating],
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 			stats.Stamina:             ownerStats[stats.Stamina],
 		}
@@ -152,7 +121,7 @@ func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
 
 func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 	return ghoulPet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 47468},
+		ActionID:       core.ActionID{SpellID: 91776},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics,
@@ -165,19 +134,19 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD: core.GCDMin,
 			},
 			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1.25,
-		CritMultiplier:   2,
+		CritMultiplier:   ghoulPet.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, min(int32(2), min(ghoulPet.Env.GetNumTargets(), core.TernaryInt32(ghoulPet.DarkTransformationAura.IsActive(), 2, 1))))
+			results := make([]*core.SpellResult, min(int32(3), min(ghoulPet.Env.GetNumTargets(), core.TernaryInt32(ghoulPet.DarkTransformationAura.IsActive(), 3, 1))))
 
 			for idx := range results {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())

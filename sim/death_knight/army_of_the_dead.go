@@ -7,12 +7,17 @@ import (
 )
 
 func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
-	var ghoulIndex = 0
+	ghoulIndex := 0
+	dmgReduction := 0.0
 	aotdAura := dk.RegisterAura(core.Aura{
 		Label:    "Army of the Dead",
 		ActionID: core.ActionID{SpellID: 42650},
 		Duration: time.Millisecond * 500 * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			attackTable := dk.AttackTables[dk.CurrentTarget.UnitIndex]
+			dmgReduction = 1.0 - (dk.GetTotalParryChanceAsDefender(attackTable) + dk.GetTotalDodgeChanceAsDefender(attackTable))
+			dk.PseudoStats.DamageTakenMultiplier *= dmgReduction
+
 			if sim.CurrentTime >= 0 {
 				dk.AutoAttacks.CancelAutoSwing(sim)
 			}
@@ -32,6 +37,7 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			dk.PseudoStats.DamageTakenMultiplier /= dmgReduction
 			if sim.CurrentTime >= 0 {
 				dk.AutoAttacks.EnableAutoSwing(sim)
 			}
@@ -52,7 +58,7 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),

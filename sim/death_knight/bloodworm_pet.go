@@ -2,6 +2,7 @@ package death_knight
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -15,33 +16,34 @@ type BloodwormPet struct {
 func (dk *DeathKnight) NewBloodwormPet(_ int) *BloodwormPet {
 	bloodworm := &BloodwormPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Bloodworm",
-			Owner:           &dk.Character,
-			BaseStats:       bloodwormPetBaseStats,
-			StatInheritance: dk.bloodwormStatInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                            "Bloodworm",
+			Owner:                           &dk.Character,
+			BaseStats:                       stats.Stats{},
+			StatInheritance:                 dk.bloodwormStatInheritance(),
+			EnabledOnStart:                  false,
+			IsGuardian:                      true,
+			HasDynamicMeleeSpeedInheritance: true,
 		}),
 		dkOwner: dk,
 	}
 
-	weapon := dk.WeaponFromMainHand(2)
-
+	baseDamage := dk.CalcScalingSpellDmg(0.55)
 	bloodworm.EnableAutoAttacks(bloodworm, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  weapon.BaseDamageMin,
-			BaseDamageMax:  weapon.BaseDamageMax,
+			BaseDamageMin:  baseDamage,
+			BaseDamageMax:  baseDamage,
 			SwingSpeed:     2,
-			CritMultiplier: 2,
+			CritMultiplier: dk.DefaultCritMultiplier(),
 		},
 		AutoSwingMelee: true,
 	})
 
-	bloodworm.AddStatDependency(stats.Strength, stats.AttackPower, 1.0+1)
-	bloodworm.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/core.CritRatingPerCritPercent+1/83.3) // TODO: Was this implemented correctly to begin with?
-
-	bloodworm.OnPetEnable = bloodworm.enable
 	bloodworm.OnPetDisable = bloodworm.disable
+
+	// command doesn't apply to Bloodworms
+	if dk.Race == proto.Race_RaceOrc {
+		bloodworm.PseudoStats.DamageDealtMultiplier /= 1.02
+	}
 
 	dk.AddPet(bloodworm)
 
@@ -122,28 +124,26 @@ func (bloodworm *BloodwormPet) Reset(_ *core.Simulation) {
 func (bloodworm *BloodwormPet) ExecuteCustomRotation(_ *core.Simulation) {
 }
 
-func (bloodworm *BloodwormPet) enable(sim *core.Simulation) {
-	// Snapshot extra % speed modifiers from dk owner
-	bloodworm.PseudoStats.MeleeSpeedMultiplier = 1
-	bloodworm.MultiplyMeleeSpeed(sim, bloodworm.dkOwner.PseudoStats.MeleeSpeedMultiplier)
-}
-
 func (bloodworm *BloodwormPet) disable(sim *core.Simulation) {
-	// Clear snapshot speed
-	bloodworm.PseudoStats.MeleeSpeedMultiplier = 1
-	bloodworm.MultiplyMeleeSpeed(sim, 1)
 	bloodworm.stackAura.Deactivate(sim)
-}
-
-var bloodwormPetBaseStats = stats.Stats{
-	stats.PhysicalCritPercent: 8,
 }
 
 func (dk *DeathKnight) bloodwormStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combined := (hitRating + expertiseRating) * 0.5
+
 		return stats.Stats{
-			stats.AttackPower: ownerStats[stats.AttackPower] * 0.112,
-			stats.HasteRating: ownerStats[stats.HasteRating],
+			stats.Armor:               ownerStats[stats.Armor],
+			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.55,
+			stats.CritRating:          ownerStats[stats.CritRating],
+			stats.ExpertiseRating:     combined,
+			stats.HasteRating:         ownerStats[stats.HasteRating],
+			stats.Health:              ownerStats[stats.Health],
+			stats.HitRating:           combined,
+			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+			stats.Stamina:             ownerStats[stats.Stamina],
 		}
 	}
 }

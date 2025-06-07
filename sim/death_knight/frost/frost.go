@@ -53,6 +53,9 @@ func (fdk *FrostDeathKnight) Initialize() {
 	fdk.DeathKnight.Initialize()
 
 	// fdk.registerFrostStrikeSpell()
+	// fdk.registerHowlingBlastSpell()
+	// fdk.registerObliterateSpell()
+	// fdk.registerPillarOfFrostSpell()
 }
 
 func (fdk *FrostDeathKnight) ApplyTalents() {

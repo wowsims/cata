@@ -66,7 +66,9 @@ func (dk *DeathKnight) registerRoilingBlood() {
 		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			dk.PestilenceSpell.Cost.PercentModifier -= 100
 			dk.PestilenceSpell.Cast(sim, result.Target)
+			dk.PestilenceSpell.Cost.PercentModifier += 100
 		},
 	})
 }
@@ -631,16 +633,13 @@ func (dk *DeathKnight) registerBloodTap() {
 		dk.NewFrostRuneMetrics(actionID),
 		dk.NewUnholyRuneMetrics(actionID),
 		dk.NewDeathRuneMetrics(actionID),
+		dk.NewRunicPowerMetrics(actionID),
 	}
 
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellBloodTap,
-
-		RuneCost: core.RuneCostOptions{
-			RunicPowerGain: 10,
-		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return bloodChargeAura.GetStacks() >= 5 && dk.AnyDepletedRunes()
@@ -650,6 +649,7 @@ func (dk *DeathKnight) registerBloodTap() {
 			if ok, slot := dk.RegenRandomDepletedRune(sim, runeMetrics); ok {
 				dk.ConvertToDeath(sim, slot, core.NeverExpires)
 				bloodChargeAura.RemoveStacks(sim, 5)
+				dk.AddRunicPower(sim, 10, runeMetrics[4])
 			}
 		},
 	})
@@ -755,8 +755,8 @@ func (dk *DeathKnight) registerRunicCorruption() {
 				regenAura.Activate(sim)
 			}
 
-			// T13 4pc: Runic Empowerment has a 25% chance to also grant 710 mastery rating for 12 sec when activated.
-			if dk.T13Dps4pc.IsActive() && sim.Proc(0.25, "T13 4pc") {
+			// T13 4pc: Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
+			if dk.T13Dps4pc.IsActive() && sim.Proc(0.4, "T13 4pc") {
 				runicMasteryAura.Activate(sim)
 			}
 		},

@@ -227,7 +227,7 @@ var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Necrotic Boneplate Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Sudden Doom has a 30% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
+			// Sudden Doom has a 20% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
 			// Handled in talents_frost.go:applyRime() and talents_unholy.go:applySuddenDoom()
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 			dk.T13Dps2pc = setBonusAura
@@ -289,15 +289,7 @@ var ItemSetNecroticBoneplateArmor = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Runic Empowerment has a 25% chance and Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
-			// Spell: Runic Mastery (id: 105647)
-			// Handled in talents_unholy.go:applyRunicEmpowerementCorruption()
-			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			if dk.Talents.BloodTap {
-				return
-			}
-
-			dk.T13Dps4pc = setBonusAura
+			// Your Vampiric Blood ability also affects all party and raid members for 50% of the effect it has on you.
 		},
 	},
 })

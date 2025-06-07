@@ -37,8 +37,8 @@ type DeathKnight struct {
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul *GhoulPet
-	// Gargoyle   *GargoylePet
+	Ghoul     *GhoulPet
+	Gargoyle  *GargoylePet
 	ArmyGhoul []*GhoulPet
 	// RuneWeapon *RuneWeaponPet
 	Bloodworm []*BloodwormPet
@@ -50,7 +50,6 @@ type DeathKnight struct {
 	// Diseases
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
-	EbonPlagueAura   core.AuraArray
 	ScarletFeverAura core.AuraArray
 
 	// T12 spell
@@ -100,36 +99,30 @@ func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 
 func (dk *DeathKnight) Initialize() {
 	// dk.registerAntiMagicShellSpell()
-	// dk.registerArmyOfTheDeadSpell()
+	dk.registerArmyOfTheDeadSpell()
 	// dk.registerBloodBoilSpell()
 	// dk.registerBloodPlague()
-	// dk.registerBloodStrikeSpell()
-	// dk.registerBoneShieldSpell()
-	// dk.registerDancingRuneWeaponSpell()
+	// // Overriden by Heart Strike for Blood
+	// if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+	// 	dk.registerBloodStrikeSpell()
+	// }
 	dk.registerDeathAndDecaySpell()
 	// dk.registerDeathCoilSpell()
-	// dk.registerDeathPactSpell()
 	// dk.registerDeathStrikeSpell()
 	dk.registerEmpowerRuneWeaponSpell()
-	// dk.registerFesteringStrikeSpell()
 	// dk.registerFrostFever()
 	dk.registerHornOfWinterSpell()
-	// dk.registerHowlingBlastSpell()
 	// dk.registerIceboundFortitudeSpell()
 	dk.registerIcyTouchSpell()
-	// dk.registerObliterateSpell()
 	// dk.registerOutbreak()
 	dk.registerPestilenceSpell()
-	// dk.registerPillarOfFrostSpell()
 	dk.registerPlagueStrikeSpell()
 	// dk.registerPresences()
-	// dk.registerRaiseDeadSpell()
-	// dk.registerRuneStrikeSpell()
-	// dk.registerRuneTapSpell()
-	// dk.registerRunicPowerDecay()
-	// dk.registerSummonGargoyleSpell()
-	// dk.registerUnholyFrenzySpell()
-	// dk.registerVampiricBloodSpell()
+	// If talented as permanent pet skip this spell
+	if dk.Inputs.Spec != proto.Spec_SpecUnholyDeathKnight {
+		dk.registerRaiseDeadSpell()
+	}
+	dk.registerRunicPowerDecay()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -181,44 +174,27 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		},
 	)
 
-	// Runic Focus
-	dk.AddStat(stats.SpellHitPercent, 9)
-
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	dk.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[dk.Class])
 
-	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*0.27)
-	dk.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)
+	strengthToParryRating := (1 / 951.158596) * core.ParryRatingPerParryPercent
+	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*strengthToParryRating) // Does not apply to base Strength
+	dk.AddStatDependency(stats.Strength, stats.ParryRating, strengthToParryRating)
 
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	dk.PseudoStats.CanParry = true
 
 	// 	// Base dodge unaffected by Diminishing Returns
-	dk.PseudoStats.BaseDodgeChance += 0.05
-	dk.PseudoStats.BaseParryChance += 0.05
+	dk.PseudoStats.BaseDodgeChance += 0.03
+	dk.PseudoStats.BaseParryChance += 0.03
 
-	// if dk.Talents.SummonGargoyle {
-	// 	dk.Gargoyle = dk.NewGargoyle()
-	// }
+	dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
 
-	// dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
-
-	// dk.ArmyGhoul = make([]*GhoulPet, 8)
-	// for i := 0; i < 8; i++ {
-	// 	dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
-	// }
-
-	// if dk.Talents.BloodParasite > 0 {
-	// 	dk.Bloodworm = make([]*BloodwormPet, 5)
-	// 	for i := 0; i < 5; i++ {
-	// 		dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-	// 	}
-	// }
-
-	// if dk.Talents.DancingRuneWeapon {
-	// 	dk.RuneWeapon = dk.NewRuneWeapon()
-	// }
+	dk.ArmyGhoul = make([]*GhoulPet, 8)
+	for i := range 8 {
+		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
+	}
 
 	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
 		MainHand:       dk.WeaponFromMainHand(dk.DefaultCritMultiplier()),
@@ -229,65 +205,12 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	if mh := dk.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
 		dk.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
 
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			dk.gurthalakTentacles[i] = dk.NewTentacleOfTheOldOnesPet()
 		}
 	}
 
 	return dk
-}
-
-func (dk *DeathKnight) registerRunicPowerDecay() {
-	decayMetrics := dk.NewRunicPowerMetrics(core.ActionID{OtherID: proto.OtherAction_OtherActionPrepull})
-
-	// TODO: Fix this to work with the new talent system.
-	// Base decay rate is about 1.25/s
-	// For some reason Butchery works out of combat which reduces this by 1/5 or 2/5 respectively
-	// decayRate := []float64{1.25, 1.05, 0.85}[dk.Talents.Butchery]
-	decayRate := 1.25
-
-	var decay *core.PendingAction
-	dk.RunicPowerDecayAura = dk.GetOrRegisterAura(core.Aura{
-		Label:    "Runic Power Decay",
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if sim.CurrentTime >= 0 || dk.CurrentRunicPower() <= 0 {
-				dk.RunicPowerDecayAura.Deactivate(sim)
-				return
-			}
-
-			dk.SpendRunicPower(sim, decayRate, decayMetrics)
-
-			decay = &core.PendingAction{
-				Priority:     core.ActionPriorityPrePull,
-				NextActionAt: sim.CurrentTime + time.Second,
-				OnAction: func(sim *core.Simulation) {
-					if dk.CurrentRunicPower() <= 0 {
-						aura.Deactivate(sim)
-						return
-					}
-
-					dk.SpendRunicPower(sim, decayRate, decayMetrics)
-
-					nextTick := sim.CurrentTime + time.Second
-					if nextTick >= 0 {
-						aura.Deactivate(sim)
-						return
-					}
-
-					decay.NextActionAt = nextTick
-					sim.AddPendingAction(decay)
-				},
-			}
-
-			sim.AddPendingAction(decay)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if decay != nil {
-				decay.Cancel(sim)
-			}
-		},
-	})
 }
 
 func (dk *DeathKnight) GetDeathKnight() *DeathKnight {
