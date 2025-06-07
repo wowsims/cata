@@ -56,6 +56,7 @@ func (treant *BalanceTreant) registerWrathSpell() {
 	treant.Wrath = treant.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 113769},
 		SpellSchool:  core.SpellSchoolNature,
+		ProcMask:     core.ProcMaskSpellDamage,
 		MissileSpeed: 20,
 
 		Cast: core.CastConfig{
