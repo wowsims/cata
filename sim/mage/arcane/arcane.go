@@ -27,6 +27,15 @@ type ArcaneMage struct {
 	*mage.Mage
 
 	Options *proto.ArcaneMage_Options
+
+	arcaneChargesAura      *core.Aura
+	arcaneMissilesProcAura *core.Aura
+	arcanePowerAura        *core.Aura
+
+	arcaneMissilesTickSpell *core.Spell
+	arcanePower             *core.Spell
+
+	arcaneMissileCritSnapshot float64
 }
 
 func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage {
@@ -52,52 +61,23 @@ func (arcaneMage *ArcaneMage) Initialize() {
 	arcaneMage.Mage.Initialize()
 
 	arcaneMage.registerArcaneBarrageSpell()
+	arcaneMage.registerArcaneBlastSpell()
+	arcaneMage.registerArcaneCharges()
+	arcaneMage.registerArcaneMissilesSpell()
+	arcaneMage.registerArcanePowerCD()
+
+	arcaneMage.registerArcanePowerCD()
 }
 
-func (arcaneMage *ArcaneMage) ApplyTalents() {
+func (arcane *ArcaneMage) ApplyTalents() {
 
-	arcaneMage.Mage.ApplyTalents()
-	// Arcane Specialization Bonus
-	arcaneMage.AddStaticMod(core.SpellModConfig{
-		School:     core.SpellSchoolArcane,
-		FloatValue: 0.25,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	// Arcane Mastery
-	arcaneMastery := arcaneMage.AddDynamicMod(core.SpellModConfig{
-		School: core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow,
-		Kind:   core.SpellMod_DamageDone_Pct,
-	})
-
-	arcaneMage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
-	})
-
-	core.MakePermanent(arcaneMage.GetOrRegisterAura(core.Aura{
-		Label: "Mana Adept",
-		//ActionID: core.ActionID{SpellID: 76547},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
-			arcaneMastery.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.Deactivate()
-		},
-	}))
-
-	core.MakeProcTriggerAura(&arcaneMage.Unit, core.ProcTrigger{
-		Name:     "Arcane Mastery Mana Updater",
-		Callback: core.CallbackOnCastComplete,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
-		},
-	})
+	arcane.Mage.ApplyTalents()
+	arcane.ApplyMastery()
 
 }
 
 func (arcaneMage *ArcaneMage) GetArcaneMasteryBonus() float64 {
-	return (0.12 + 0.015*arcaneMage.GetMasteryPoints())
+	return (0.16 + 0.02*arcaneMage.GetMasteryPoints())
 }
 
 func (arcaneMage *ArcaneMage) ArcaneMasteryValue() float64 {
