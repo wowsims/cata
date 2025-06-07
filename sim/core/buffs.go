@@ -353,10 +353,12 @@ func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 func registerExclusiveMeleeHaste(aura *Aura, value float64) {
 	aura.NewExclusiveEffect("AttackSpeed%", false, ExclusiveEffect{
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.MultiplyAttackSpeed(s, value)
+			ee.Aura.Unit.MultiplyMeleeSpeed(s, value)
+			ee.Aura.Unit.MultiplyRangedSpeed(s, value)
 		},
 		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.MultiplyAttackSpeed(s, 1/value)
+			ee.Aura.Unit.MultiplyMeleeSpeed(s, 1/value)
+			ee.Aura.Unit.MultiplyRangedSpeed(s, 1/value)
 		},
 	})
 }
@@ -669,30 +671,22 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		Tag:      BloodlustAuraTag,
 		ActionID: actionID,
 		Duration: BloodlustDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
+	})
+
+	aura.NewExclusiveEffect("MultiplyAttackSpeed", false, ExclusiveEffect{
+		Priority: 1.3,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1.3)
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.3)
 			sated.Activate(sim)
 		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.3)
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.3)
 		},
 	})
-	multiplyCastSpeedEffect(aura, 1.3)
-	return aura
-}
 
-func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
-		Priority: multiplier,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
-		},
-	})
+	return aura
 }
 
 var TricksOfTheTradeAuraTag = "TricksOfTheTrade"
@@ -785,11 +779,13 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: UnholyFrenzyDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1.2)
+			aura.Unit.MultiplyMeleeSpeed(sim, 1.2)
+			aura.Unit.MultiplyRangedSpeed(sim, 1.2)
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.2)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.2)
+			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.2)
+			aura.Unit.MultiplyRangedSpeed(sim, 1.2)
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.2)
 		},
 	})

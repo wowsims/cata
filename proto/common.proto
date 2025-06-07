@@ -252,7 +252,7 @@ enum Stat {
 // between the UI and backend. It's also OK to include things here which aren't
 // in the PseudoStats struct.
 //
-// NextIndex: 16;
+// NextIndex: 17;
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
@@ -267,6 +267,10 @@ enum PseudoStat {
 	PseudoStatMeleeSpeedMultiplier = 6;
 	PseudoStatRangedSpeedMultiplier = 7;
 	PseudoStatCastSpeedMultiplier = 8;
+
+	// 'True Haste Buffs' as blizzard calls them. They affect resource regen, all attack speeds
+	// And most importantly proc rates of RPPM procs that scale with haste
+	PseudoStatAttackSpeedMultiplier = 16;
 
 	// Final buffed Haste values after combining the above multipliers with
 	// Haste Rating from gear. Expressed in percentage units (0-100).

@@ -441,7 +441,7 @@ func (unit *Unit) SpellGCD() time.Duration {
 }
 
 func (unit *Unit) TotalSpellHasteMultiplier() float64 {
-	return unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating]/(HasteRatingPerHastePercent*100))
+	return unit.PseudoStats.AttackSpeedMultiplier * unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating]/(HasteRatingPerHastePercent*100))
 }
 
 func (unit *Unit) updateCastSpeed() {
@@ -471,7 +471,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.AttackSpeedMultiplier * unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
 func (unit *Unit) Armor() float64 {
@@ -483,7 +483,7 @@ func (unit *Unit) BlockDamageReduction() float64 {
 }
 
 func (unit *Unit) RangedSwingSpeed() float64 {
-	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.AttackSpeedMultiplier * unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
 func (unit *Unit) updateMeleeAttackSpeed() {
@@ -538,16 +538,21 @@ func (unit *Unit) updateAttackSpeed() {
 	}
 }
 
-// Helper for when both MultiplyMeleeSpeed and MultiplyRangedSpeed are needed.
+// Helper for when all Attack Speeds are multiplied for i.E. Bloodlust
 func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
-	unit.PseudoStats.MeleeSpeedMultiplier *= amount
-	unit.PseudoStats.RangedSpeedMultiplier *= amount
+	unit.PseudoStats.AttackSpeedMultiplier *= amount
 
 	unit.updateAttackSpeed()
+	unit.updateCastSpeed()
 
 	for _, pet := range unit.DynamicMeleeSpeedPets {
 		pet.dynamicMeleeSpeedInheritance(amount)
 	}
+
+	for _, pet := range unit.DynamicCastSpeedPets {
+		pet.dynamicCastSpeedInheritance(amount)
+	}
+
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 

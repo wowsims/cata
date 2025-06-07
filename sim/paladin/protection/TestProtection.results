@@ -546,8 +546,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-CrecheoftheFinalDragon-77972"
  value: {
-  dps: 127171.01163
-  tps: 880632.67334
+  dps: 127173.49676
+  tps: 880650.06924
   dtps: 82860.09462
   hps: 70037.71808
  }
@@ -2742,10 +2742,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-TheHungerer-69112"
  value: {
-  dps: 126421.68398
-  tps: 876462.64796
+  dps: 126421.75163
+  tps: 876463.12154
   dtps: 83132.81364
-  hps: 69971.82779
+  hps: 69971.76336
  }
 }
 dps_results: {
@@ -3309,10 +3309,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-WhiteTigerBattlegear"
  value: {
-  dps: 131051.03814
-  tps: 907785.68227
+  dps: 131051.07662
+  tps: 907785.95165
   dtps: 86011.9535
-  hps: 69019.63032
+  hps: 69019.59367
  }
 }
 dps_results: {
@@ -3435,10 +3435,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Average-Default"
  value: {
-  dps: 128139.00589
-  tps: 886573.49939
+  dps: 128139.00598
+  tps: 886573.50002
   dtps: 81603.24388
-  hps: 70384.5894
+  hps: 70384.58933
  }
 }
 dps_results: {

@@ -624,6 +624,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
 		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
+		proto.PseudoStat_PseudoStatAttackSpeedMultiplier: character.PseudoStats.AttackSpeedMultiplier,
 		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.SwingSpeed() - 1) * 100,
 		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.RangedSwingSpeed() - 1) * 100,
 		proto.PseudoStat_PseudoStatSpellHastePercent:     (character.TotalSpellHasteMultiplier() - 1) * 100,
