@@ -35,13 +35,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FROST_P3_PRESET_HORDE.gear,
+		gear: Presets.FROST_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
-		talents: Presets.FrostTalents.data,
+		talents: Presets.FrostDefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultFrostOptions,
 		other: Presets.OtherDefaults,
@@ -87,9 +87,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.FrostTalents],
+		talents: [Presets.FrostDefaultTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FROST_P1_PRESET, Presets.FROST_P2_PRESET, Presets.FROST_P3_PRESET_ALLIANCE, Presets.FROST_P3_PRESET_HORDE],
+		gear: [Presets.FROST_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostMage>): APLRotation => {
@@ -158,7 +158,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostMage,
-			talents: Presets.FrostTalents.data,
+			talents: Presets.FrostDefaultTalents.data,
 			specOptions: Presets.DefaultFrostOptions,
 			consumables: Presets.DefaultConsumables,
 			otherDefaults: Presets.OtherDefaults,
@@ -171,13 +171,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.FROST_P1_PRESET.gear,
-					2: Presets.FROST_P2_PRESET.gear,
-					3: Presets.FROST_P3_PRESET_ALLIANCE.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.FROST_P1_PRESET.gear,
-					2: Presets.FROST_P2_PRESET.gear,
-					3: Presets.FROST_P3_PRESET_HORDE.gear,
 				},
 			},
 		},
