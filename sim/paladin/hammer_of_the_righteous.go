@@ -72,7 +72,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: paladin.Spec == proto.Spec_SpecHolyPaladin,
+			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.BuilderCooldown(),
 				Duration: time.Millisecond * 4500,

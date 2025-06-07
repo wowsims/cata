@@ -29,6 +29,7 @@ func (ret *RetributionPaladin) registerDivineStorm() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return ret.DivineCrusaderAura.IsActive() || ret.HolyPower.CanSpend(3)
