@@ -12,6 +12,8 @@ func (druid *Druid) ApplyTalents() {
 	druid.registerRenewal()
 	druid.registerCenarionWard()
 
+	druid.registerForceOfNature()
+
 	druid.registerHeartOfTheWild()
 	druid.registerNaturesVigil()
 }
@@ -140,6 +142,7 @@ func (druid *Druid) registerCenarionWard() {
 	// First register the HoT spell that gets triggered when the target takes damage.
 	baseTickDamage := 11.27999973297 * druid.ClassSpellScaling // ~12349
 
+	// SP is snapshot at the time of the original buff cast according to simc
 	var spSnapshot float64
 
 	cenarionWardHot := druid.RegisterSpell(Any, core.SpellConfig{
@@ -162,10 +165,11 @@ func (druid *Druid) registerCenarionWard() {
 			OnSnapshot: func(_ *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseTickDamage + spSnapshot*1.04
 				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
+				dot.SnapshotCritChance = dot.Spell.HealingCritChance()
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -219,5 +223,27 @@ func (druid *Druid) registerCenarionWard() {
 			spSnapshot = cenarionWardHot.HealingPower(target)
 			cenarionWardBuffs.Get(target).Activate(sim)
 		},
+	})
+}
+
+func (druid *Druid) registerForceOfNature() {
+	if !druid.Talents.ForceOfNature {
+		return
+	}
+
+	druid.ForceOfNature = druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID:     core.ActionID{SpellID: 106737},
+		Flags:        core.SpellFlagAPL,
+		Charges:      3,
+		RechargeTime: time.Second * 20,
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			druid.Treants[spell.GetNumCharges()].Enable(sim)
+		},
+	})
+
+	druid.AddMajorCooldown(core.MajorCooldown{
+		Spell: druid.ForceOfNature.Spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }

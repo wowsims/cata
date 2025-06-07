@@ -15,11 +15,14 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
+
 	Talents *proto.DruidTalents
 
 	ClassSpellScaling float64
 
 	StartingForm DruidForm
+
+	Treants TreantAgents
 
 	RebirthUsed       bool
 	RebirthTiming     float64
@@ -32,7 +35,6 @@ type Druid struct {
 	Barkskin              *DruidSpell
 	Berserk               *DruidSpell
 	CatCharge             *DruidSpell
-	DemoralizingRoar      *DruidSpell
 	FaerieFire            *DruidSpell
 	FerociousBite         *DruidSpell
 	ForceOfNature         *DruidSpell
@@ -91,8 +93,6 @@ type Druid struct {
 	SavageRoarDurationTable [6]time.Duration
 
 	ProcOoc func(sim *core.Simulation)
-
-	Treants *Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
