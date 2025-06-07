@@ -50,6 +50,22 @@ type WaterElemental struct {
 
 func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
 
+	waterElementalStatInheritance := func(ownerStats stats.Stats) stats.Stats {
+		// Water elemental usually has about half the HP of the caster, with glyph this is bumped by an additional 40%
+		return stats.Stats{
+			stats.Stamina:          ownerStats[stats.Stamina] * 0.5,
+			stats.SpellPower:       ownerStats[stats.SpellPower],
+			stats.HasteRating:      ownerStats[stats.HasteRating],
+			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+			// this (crit) needs to be tested more thoroughly when pet hit is not bugged
+		}
+	}
+
+	waterElementalBaseStats := stats.Stats{
+		// Mana seems to always be at 300k on beta
+		stats.Mana: 300000,
+	}
+
 	waterElemental := &WaterElemental{
 		Pet: core.NewPet(core.PetConfig{
 			Name:                           "Water Elemental",
@@ -86,28 +102,10 @@ func (we *WaterElemental) ExecuteCustomRotation(sim *core.Simulation) {
 	spell.Cast(sim, we.CurrentTarget)
 }
 
-var waterElementalBaseStats = stats.Stats{
-	// Mana seems to always be at 300k on beta
-	stats.Mana: 300000,
-}
-
-var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
-	// Water elemental usually has about half the HP of the caster, with glyph this is bumped by an additional 40%
-	return stats.Stats{
-		stats.Stamina:          ownerStats[stats.Stamina] * 0.5,
-		stats.SpellPower:       ownerStats[stats.SpellPower],
-		stats.HasteRating:      ownerStats[stats.HasteRating],
-		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-		// this (crit) needs to be tested more thoroughly when pet hit is not bugged
-	}
-}
-
-var waterboltVariance = 0.25   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Variance"
-var waterboltScale = 0.5       // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Coefficient"
-var waterboltCoefficient = 0.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "BonusCoefficient"
-
 func (we *WaterElemental) registerWaterboltSpell() {
-
+	waterboltVariance := 0.25   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Variance"
+	waterboltScale := 0.5       // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Coefficient"
+	waterboltCoefficient := 0.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "BonusCoefficient"
 	if we.mageOwner.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
 		we.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_AllowCastWhileMoving,

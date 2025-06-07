@@ -52,6 +52,18 @@ type FrozenOrb struct {
 }
 
 func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
+
+	createFrozenOrbInheritance := func() func(stats.Stats) stats.Stats {
+		return func(ownerStats stats.Stats) stats.Stats {
+			return stats.Stats{
+				stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
+				stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+				stats.SpellPower:       ownerStats[stats.SpellPower],
+			}
+		}
+	}
+
+	frozenOrbBaseStats := stats.Stats{}
 	frozenOrb := &FrozenOrb{
 		Pet: core.NewPet(core.PetConfig{
 			Name:            "Frozen Orb",
@@ -99,24 +111,11 @@ func (frozenOrb *FrozenOrb) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 }
 
-var frozenOrbBaseStats = stats.Stats{}
-
-var createFrozenOrbInheritance = func() func(stats.Stats) stats.Stats {
-	return func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
-			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-			stats.SpellPower:       ownerStats[stats.SpellPower],
-		}
-	}
-}
-
-// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=84721
-var frozenOrbCoefficient = 0.65
-var frozenOrbScaling = 0.51
-var frozenOrbVariance = 0.25
-
 func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
+	// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=84721
+	frozenOrbCoefficient := 0.65
+	frozenOrbScaling := 0.51
+	frozenOrbVariance := 0.25
 	frozenOrb.FrozenOrbTick = frozenOrb.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 84721},
 		SpellSchool:    core.SpellSchoolFrost,

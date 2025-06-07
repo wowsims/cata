@@ -9,9 +9,9 @@ import (
 func (mage *Mage) registerBlizzardSpell() {
 
 	// https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=42208
-	var blizzardCoefficient = 0.367
-	var blizzardScaling = 0.323
-	var blizzardVariance = 0.0
+	blizzardCoefficient := 0.367
+	blizzardScaling := 0.323
+	blizzardVariance := 0.0
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 42208},
 		SpellSchool:      core.SpellSchoolFrost,

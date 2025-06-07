@@ -26,7 +26,26 @@ func (mage *Mage) applyPresenceOfMindCD() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	var pomSpell *core.Spell
+	pomSpell := mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 12043},
+		Flags:          core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: MageSpellPresenceOfMind,
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			CD: core.Cooldown{
+				Timer:    mage.NewTimer(),
+				Duration: time.Second * 90,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return mage.GCD.IsReady(sim)
+		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			mage.presenceOfMindAura.Activate(sim)
+		},
+	})
 
 	mage.presenceOfMindAura = mage.RegisterAura(core.Aura{
 		Label:    "Presence of Mind",
@@ -50,27 +69,6 @@ func (mage *Mage) applyPresenceOfMindCD() {
 		},
 	})
 
-	pomSpell = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 12043},
-		Flags:          core.SpellFlagNoOnCastComplete,
-		ClassSpellMask: MageSpellPresenceOfMind,
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-			CD: core.Cooldown{
-				Timer:    mage.NewTimer(),
-				Duration: time.Second * 90,
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return mage.GCD.IsReady(sim)
-		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.presenceOfMindAura.Activate(sim)
-		},
-	})
-
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: pomSpell,
 		Type:  core.CooldownTypeDPS,
@@ -87,7 +85,24 @@ func (mage *Mage) applyIceFloesCD() {
 		Kind:      core.SpellMod_AllowCastWhileMoving,
 	})
 
-	var iceFloesSpell *core.Spell
+	iceFloesSpell := mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 108839},
+		Flags:          core.SpellFlagNoOnCastComplete, //Need to investigate this
+		ClassSpellMask: MageSpellIceFloes,
+		Charges:        3,
+		RechargeTime:   time.Second * 20,
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return mage.GCD.IsReady(sim)
+		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			mage.presenceOfMindAura.Activate(sim)
+		},
+	})
 
 	mage.iceFloesfAura = mage.RegisterAura(core.Aura{
 		Label:    "Ice Floes",
@@ -108,25 +123,6 @@ func (mage *Mage) applyIceFloesCD() {
 				return
 			}
 			aura.Deactivate(sim)
-		},
-	})
-
-	iceFloesSpell = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 108839},
-		Flags:          core.SpellFlagNoOnCastComplete, //Need to investigate this
-		ClassSpellMask: MageSpellIceFloes,
-		Charges:        3,
-		RechargeTime:   time.Second * 20,
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return mage.GCD.IsReady(sim)
-		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.presenceOfMindAura.Activate(sim)
 		},
 	})
 

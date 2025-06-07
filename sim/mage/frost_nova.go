@@ -6,17 +6,17 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-var frostNovaCoefficient = 0.19 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A122 Field "EffetBonusCoefficient"
-var frostNovaScaling = 0.53     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A122 Field "Coefficient"
-var frostNovaVariance = 0.15    // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A122 Field "Variance"
-
 func (mage *Mage) registerfrostNovaSpell() {
+
+	frostNovaCoefficient := 0.19 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A122 Field "EffetBonusCoefficient"
+	frostNovaScaling := 0.53     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A122 Field "Coefficient"
+	frostNovaVariance := 0.15    // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A122 Field "Variance"
 
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 122},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagAoE,
 		ClassSpellMask: MageSpellFrostNova,
 
 		ManaCost: core.ManaCostOptions{

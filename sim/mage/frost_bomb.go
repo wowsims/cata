@@ -13,16 +13,17 @@ func (mage *Mage) registerFrostBombSpell() {
 	}
 
 	// Since Frost Bomb does double damage to all targets, these are the AOE values and the main target just gets double.
-	var frostBombExplosionCoefficient = 1.725 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "EffetBonusCoefficient"
-	var frostBombExplosionScaling = 2.21      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "Coefficient"
-	var frostBombVariance = 0.0
-	var numTargets = mage.Env.GetNumTargets()
+	frostBombExplosionCoefficient := 1.725 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "EffetBonusCoefficient"
+	frostBombExplosionScaling := 2.21      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "Coefficient"
+	frostBombVariance := 0.0
+	numTargets := mage.Env.GetNumTargets()
 
 	frostBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 113092},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellFrostBombExplosion,
+		Flags:          core.SpellFlagAoE,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultCritMultiplier(),

@@ -10,10 +10,10 @@ func (mage *Mage) registerNetherTempestSpell() {
 	if !mage.Talents.NetherTempest {
 		return
 	}
-	var netherTempestCoefficient = 0.24 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=114923 Field "EffetBonusCoefficient"
-	var netherTempestScaling = .31      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=114923 Field "Coefficient"
+	netherTempestCoefficient := 0.24 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=114923 Field "EffetBonusCoefficient"
+	netherTempestScaling := .31      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=114923 Field "Coefficient"
 
-	ntExtraHit := mage.RegisterSpell(core.SpellConfig{
+	ntCleaveSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 114954},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -66,8 +66,8 @@ func (mage *Mage) registerNetherTempestSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				if len(mage.Env.Encounter.TargetUnits) > 1 {
-					ntExtraHit.Cast(sim, target)
+				if mage.Env.GetNumTargets() > 1 {
+					ntCleaveSpell.Cast(sim, target)
 				}
 			},
 		},

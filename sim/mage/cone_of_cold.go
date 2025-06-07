@@ -6,11 +6,11 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-var coneOfColdCoefficient = 0.32 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A120 Field "EffetBonusCoefficient"
-var coneOfColdScaling = 0.38     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A120 Field "Coefficient"
-var coneOfColdVariance = 0.0     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A120 Field "Variance"
-
 func (mage *Mage) registerConeOfColdSpell() {
+
+	coneOfColdCoefficient := 0.32 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A120 Field "EffetBonusCoefficient"
+	coneOfColdScaling := 0.38     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A120 Field "Coefficient"
+	coneOfColdVariance := 0.0     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A120 Field "Variance"
 
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 120},

@@ -5,13 +5,12 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=30455
-var iceLanceScaling = 0.34
-var iceLanceCoefficient = 0.34
-var iceLanceVariance = 0.25
-
 func (mage *Mage) registerIceLanceSpell() {
 
+	// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=30455
+	iceLanceScaling := 0.34
+	iceLanceCoefficient := 0.34
+	iceLanceVariance := 0.25
 	hasGlyphIcyVeins := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins)
 	hasGlyphSplittingIce := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce)
 
@@ -45,7 +44,7 @@ func (mage *Mage) registerIceLanceSpell() {
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
 			randomTarget := mage.Env.NextTargetUnit(target)
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
-			if hasGlyphSplittingIce && len(mage.Env.Encounter.TargetUnits) > 1 {
+			if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
 				if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
 					for _ = range 3 {
 						baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
@@ -85,7 +84,7 @@ func (mage *Mage) registerIceLanceSpell() {
 			if mage.Spec == proto.Spec_SpecFrostMage {
 				//I've confirmed in game Icicles launch even if ice lance misses.
 				for _, icicle := range mage.Icicles {
-					if hasGlyphSplittingIce && len(mage.Env.Encounter.TargetUnits) > 1 {
+					if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
 						mage.castIcicleWithDamage(sim, randomTarget, icicle/2)
 					}
 					mage.castIcicleWithDamage(sim, target, icicle)
