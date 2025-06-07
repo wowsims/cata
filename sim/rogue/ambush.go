@@ -16,7 +16,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		ActionID:       core.ActionID{SpellID: 8676},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: RogueSpellAmbush,
 
 		EnergyCost: core.EnergyCostOptions{

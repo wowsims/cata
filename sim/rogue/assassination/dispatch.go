@@ -15,7 +15,7 @@ func (sinRogue *AssassinationRogue) registerDispatch() {
 		ActionID:       core.ActionID{SpellID: 111240},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellDispatch,
 
 		EnergyCost: core.EnergyCostOptions{

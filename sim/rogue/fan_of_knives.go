@@ -20,7 +20,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		ActionID:       core.ActionID{SpellID: 51723},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagColdBlooded,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: RogueSpellFanOfKnives,
 
 		DamageMultiplier: 1,

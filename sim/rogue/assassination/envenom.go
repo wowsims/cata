@@ -30,7 +30,7 @@ func (asnRogue *AssassinationRogue) registerEnvenom() {
 		ActionID:       core.ActionID{SpellID: 32645},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
-		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagFinisher | rogue.SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagFinisher | core.SpellFlagAPL,
 		MetricSplits:   6,
 		ClassSpellMask: rogue.RogueSpellEnvenom,
 
@@ -61,10 +61,13 @@ func (asnRogue *AssassinationRogue) registerEnvenom() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			asnRogue.BreakStealth(sim)
 			comboPoints := asnRogue.ComboPoints()
-			// - the aura is active even if the attack fails to land
-			// - the aura is applied before the hit effect
-			// See: https://github.com/where-fore/rogue-wotlk/issues/32
-			asnRogue.EnvenomAura.Duration = time.Second*time.Duration(1+comboPoints) + asnRogue.EnvenomAura.RemainingDuration(sim)%clipInterval
+
+			bonusDuration := time.Duration(0)
+			if asnRogue.EnvenomAura.IsActive() {
+				bonusDuration = asnRogue.EnvenomAura.RemainingDuration(sim) % clipInterval
+				bonusDuration = core.TernaryDuration(bonusDuration == 0, clipInterval, bonusDuration)
+			}
+			asnRogue.EnvenomAura.Duration = time.Second*time.Duration(1+comboPoints) + bonusDuration
 			if asnRogue.Has2PT15 {
 				asnRogue.EnvenomAura.Duration += time.Second * 1
 			}

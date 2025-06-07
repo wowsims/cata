@@ -8,7 +8,6 @@ import (
 )
 
 func (sinRogue *AssassinationRogue) applySealFate() {
-	procChance := 1.0
 	cpMetrics := sinRogue.NewComboPointMetrics(core.ActionID{SpellID: 14190})
 
 	icd := core.Cooldown{
@@ -19,7 +18,7 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 	core.MakePermanent(sinRogue.RegisterAura(core.Aura{
 		Label: "Seal Fate",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(rogue.SpellFlagBuilder) {
+			if !spell.Flags.Matches(rogue.SpellFlagBuilder | rogue.SpellFlagSealFate) {
 				return
 			}
 
@@ -27,8 +26,8 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 				return
 			}
 
-			if icd.IsReady(sim) && (procChance == 1 || sim.Proc(procChance, "Seal Fate")) {
-				sinRogue.AddComboPoints(sim, 1, cpMetrics)
+			if icd.IsReady(sim) {
+				sinRogue.AddComboPointsOrAnticipation(sim, 1, cpMetrics)
 				icd.Use(sim)
 
 				if sinRogue.T16EnergyAura != nil {
