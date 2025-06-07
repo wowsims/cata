@@ -59,7 +59,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.DeathKnight.Initialize()
 
 	bdk.registerBloodParasite()
-	// bdk.registerBoneShieldSpell()
+	bdk.registerBoneShield()
 	// bdk.registerDancingRuneWeaponSpell()
 	// bdk.registerHeartStrikeSpell()
 	// bdk.registerRuneStrikeSpell()
