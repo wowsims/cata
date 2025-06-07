@@ -82,8 +82,8 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 }
 
 func (moonkin *BalanceDruid) registerBalanceOfPower() {
-	moonkin.AddStat(stats.SpellHitPercent, -moonkin.GetBaseStats()[stats.Spirit])
-	moonkin.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 1)
+	moonkin.AddStat(stats.HitRating, -moonkin.GetBaseStats()[stats.Spirit])
+	moonkin.AddStatDependency(stats.Spirit, stats.HitRating, 1)
 }
 
 func (moonkin *BalanceDruid) registerNaturesGrace() {
