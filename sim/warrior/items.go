@@ -48,7 +48,6 @@ var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
 
-			// TODO: Increases the damage absorbed by your Shield Barrier by 5%.
 			war.T14Tank2P = setBonusAura
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -109,14 +108,27 @@ var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
 	Name: "Plate of the Last Mogu",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			// TODO: Your Shield Slam and Revenge have a 10% chance to activate Victory Rush or Impending Victory as if you had killed your target.
-			// war := agent.(WarriorAgent).GetWarrior()
-			// SpellID: 138280
+			war := agent.(WarriorAgent).GetWarrior()
+			war.T15Tank2P = core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+				Name:           "Victorious -  T15 Protection 2P Bonus",
+				ActionID:       core.ActionID{SpellID: 138279},
+				ClassSpellMask: SpellMaskRevenge | SpellMaskShieldSlam,
+				ProcChance:     0.1,
+				Outcome:        core.OutcomeHit,
+				Callback:       core.CallbackOnSpellHitDealt,
+				Duration:       15 * time.Second,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					war.VictoryRushAura.Activate(sim)
+				},
+			})
+
+			setBonusAura.ExposeToAPL(138280)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// TODO: Your abilities generate 50% more Rage when used against targets afflicted by Demoralizing Shout.
-			// war := agent.(WarriorAgent).GetWarrior()
-			// SpellID: 138281
+			war := agent.(WarriorAgent).GetWarrior()
+			war.T15Tank4P = setBonusAura
+
+			setBonusAura.ExposeToAPL(138281)
 		},
 	},
 })

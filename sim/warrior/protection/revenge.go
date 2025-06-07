@@ -55,7 +55,7 @@ func (war *ProtectionWarrior) registerRevenge() {
 
 			if hitLanded {
 				if war.StanceMatches(warrior.DefensiveStance) {
-					war.AddRage(sim, 20, rageMetrics)
+					war.AddRage(sim, 20*war.GetRageMultiplier(target), rageMetrics)
 				}
 			}
 		},

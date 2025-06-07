@@ -47,7 +47,7 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				war.AddRage(sim, 20, rageMetrics)
+				war.AddRage(sim, 20*war.GetRageMultiplier(target), rageMetrics)
 			}
 		},
 	})

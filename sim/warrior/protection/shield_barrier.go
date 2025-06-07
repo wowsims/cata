@@ -56,10 +56,12 @@ func (war *ProtectionWarrior) registerShieldBarrier() {
 			additionalRage := min(40, war.CurrentRage())
 			war.SpendRage(sim, additionalRage, rageMetrics)
 			rageSpent = float64(spell.Cost.BaseCost) + additionalRage
-			newAbsorb = max(
+
+			absorbMultiplier := core.TernaryFloat64(war.T14Tank2P != nil && war.T14Tank2P.IsActive(), 1.05, 1)
+			newAbsorb = (max(
 				apScaling*(war.GetStat(stats.AttackPower)-war.GetStat(stats.Strength)*2),
 				war.GetStat(stats.Stamina)*staminaScaling,
-			) * rageSpent / maxRageSpent
+			) * rageSpent / maxRageSpent) * absorbMultiplier
 
 			if !aura.Aura.IsActive() || (aura.Aura.IsActive() && newAbsorb < aura.ShieldStrength) {
 				aura.Deactivate(sim)

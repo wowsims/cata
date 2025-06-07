@@ -116,6 +116,7 @@ type Warrior struct {
 	ShieldBlockAura     *core.Aura
 	LastStandAura       *core.Aura
 	RallyingCryAura     *core.Aura
+	VictoryRushAura     *core.Aura
 
 	SkullBannerAura         *core.Aura
 	DemoralizingBannerAuras core.AuraArray
@@ -128,6 +129,8 @@ type Warrior struct {
 
 	// Set Bonuses
 	T14Tank2P *core.Aura
+	T15Tank2P *core.Aura
+	T15Tank4P *core.Aura
 	T16Dps4P  *core.Aura
 }
 
@@ -165,9 +168,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerHeroicLeap()
 	warrior.registerHeroicThrow()
 	warrior.registerRecklessness()
-	// warrior.registerRevengeSpell()
+	warrior.registerVictoryRush()
 	warrior.registerShatteringThrow()
-	// warrior.registerShieldBlockCD()
 	warrior.registerShieldWall()
 	warrior.registerSunderArmor()
 	warrior.registerThunderClap()
@@ -175,10 +177,10 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerCharge()
 }
 
-func (war *Warrior) registerPassives() {
-	war.registerEnrage()
-	war.registerDeepWounds()
-	war.registerBloodAndThunder()
+func (warrior *Warrior) registerPassives() {
+	warrior.registerEnrage()
+	warrior.registerDeepWounds()
+	warrior.registerBloodAndThunder()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
@@ -235,6 +237,20 @@ func (warrior *Warrior) HasMinorGlyph(glyph proto.WarriorMinorGlyph) bool {
 
 func (warrior *Warrior) GetCriticalBlockChance() float64 {
 	return warrior.CriticalBlockChance[0] + warrior.CriticalBlockChance[1]
+}
+
+// Used for T15 Protection 4P bonus.
+func (warrior *Warrior) GetRageMultiplier(target *core.Unit) float64 {
+	// At the moment only protection warriors use this bonus.
+	if warrior.Spec != proto.Spec_SpecProtectionWarrior {
+		return 1.0
+	}
+
+	if warrior.T15Tank4P != nil && warrior.T15Tank4P.IsActive() && warrior.DemoralizingShoutAuras.Get(target).IsActive() {
+		return 1.5
+	}
+
+	return 1.0
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.
