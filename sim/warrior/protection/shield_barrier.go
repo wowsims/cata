@@ -1,0 +1,73 @@
+package protection
+
+import (
+	"time"
+
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/warrior"
+)
+
+func (war *ProtectionWarrior) registerShieldBarrier() {
+	actionID := core.ActionID{SpellID: 112048}
+	rageMetrics := war.NewRageMetrics(actionID)
+	maxRageSpent := 60.0
+	rageSpent := 20.0
+	apScaling := 1.8
+	staminaScaling := 2.50
+	newAbsorb := 0.0
+
+	aura := war.NewDamageAbsorptionAura(
+		"Shield Barrier",
+		actionID,
+		6*time.Second,
+		func(_ *core.Unit) float64 {
+			return newAbsorb
+		},
+	)
+
+	war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		ClassSpellMask: warrior.SpellMaskShieldBarrier,
+
+		RageCost: core.RageCostOptions{
+			Cost: 20,
+		},
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    war.NewTimer(),
+				Duration: time.Millisecond * 1500,
+			},
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		CritMultiplier:   war.DefaultCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			additionalRage := min(40, war.CurrentRage())
+			war.SpendRage(sim, additionalRage, rageMetrics)
+			rageSpent = float64(spell.Cost.BaseCost) + additionalRage
+			newAbsorb = max(
+				apScaling*(war.GetStat(stats.AttackPower)-war.GetStat(stats.Strength)*2),
+				war.GetStat(stats.Stamina)*staminaScaling,
+			) * rageSpent / maxRageSpent
+
+			if !aura.Aura.IsActive() || (aura.Aura.IsActive() && newAbsorb < aura.ShieldStrength) {
+				aura.Deactivate(sim)
+				aura.Activate(sim)
+			}
+		},
+
+		RelatedSelfBuff: aura.Aura,
+	})
+
+}

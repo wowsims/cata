@@ -57,9 +57,6 @@ func (war *ProtectionWarrior) registerRevenge() {
 				if war.StanceMatches(warrior.DefensiveStance) {
 					war.AddRage(sim, 20, rageMetrics)
 				}
-			} else {
-				spell.IssueRefund(sim)
-
 			}
 		},
 	})

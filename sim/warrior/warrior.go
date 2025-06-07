@@ -51,6 +51,7 @@ const (
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
 	SpellMaskWhirlwindOh
+	SpellMaskShieldBarrier
 	SpellMaskShieldSlam
 	// SpellMaskConcussionBlow
 	SpellMaskDevastate
