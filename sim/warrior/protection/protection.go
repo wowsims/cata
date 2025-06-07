@@ -59,11 +59,12 @@ func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.registerPassives()
 
-	war.registerDemoralizingShout()
-	war.registerShieldSlam()
-	war.registerShieldBlock()
 	war.registerDevastate()
+	war.registerRevenge()
+	war.registerShieldSlam()
+	war.registerDemoralizingShout()
 	war.registerLastStand()
+	war.registerShieldBlock()
 }
 
 func (war *ProtectionWarrior) registerPassives() {

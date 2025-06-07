@@ -44,7 +44,7 @@ const (
 	SpellMaskHeroicStrike
 	SpellMaskHeroicThrow
 	SpellMaskOverpower
-	// SpellMaskRevenge
+	SpellMaskRevenge
 	SpellMaskShatteringThrow
 	SpellMaskSlam
 	SpellMaskSunderArmor
@@ -99,10 +99,7 @@ type Warrior struct {
 
 	ColossusSmash *core.Spell
 	MortalStrike  *core.Spell
-	// Rend              *core.Spell
-	// Revenge           *core.Spell
-	// SunderArmor       *core.Spell
-	DeepWounds *core.Spell
+	DeepWounds    *core.Spell
 
 	sharedShoutsCD   *core.Timer
 	sharedHSCleaveCD *core.Timer
@@ -118,8 +115,6 @@ type Warrior struct {
 	ShieldBlockAura     *core.Aura
 	LastStandAura       *core.Aura
 	RallyingCryAura     *core.Aura
-	// ThunderstruckAura *core.Aura
-	// InnerRageAura     *core.Aura
 
 	SkullBannerAura         *core.Aura
 	DemoralizingBannerAuras core.AuraArray
