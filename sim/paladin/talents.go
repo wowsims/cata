@@ -260,7 +260,6 @@ func (paladin *Paladin) registerSacredShield() {
 		DefaultCast: core.Cast{
 			GCD: core.GCDDefault,
 		},
-		IgnoreHaste: true,
 	}
 
 	if !isHoly {
@@ -671,7 +670,6 @@ func (paladin *Paladin) holyPrismFactory(spellID int32, targets []*core.Unit, ti
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    timer,
 				Duration: time.Second * 20,
@@ -853,7 +851,6 @@ func (paladin *Paladin) registerLightsHammer() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: time.Minute,
@@ -887,7 +884,6 @@ func (paladin *Paladin) executionSentenceFactory(spellID int32, label string, cd
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    cd,
 				Duration: time.Minute,
