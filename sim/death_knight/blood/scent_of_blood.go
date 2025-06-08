@@ -68,7 +68,7 @@ func (bdk *BloodDeathKnight) registerScentOfBlood() {
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{
 		Name:     "Scent Of Blood Auto Trigger" + bdk.Label,
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeWhiteHit,
+		ProcMask: core.ProcMaskMeleeMHAuto,
 		Outcome:  core.OutcomeLanded,
 
 		Handler: scentOfBloodHandler,
