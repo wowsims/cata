@@ -57,6 +57,7 @@ func getFrostFeverConfig(character *core.Character) core.SpellConfig {
 	}
 }
 
+// A disease dealing (166 + 0.158 * <AP>) Frost damage every 3 sec for 30 sec.
 func (dk *DeathKnight) registerFrostFever() {
 	config := getFrostFeverConfig(dk.GetCharacter())
 	dk.FrostFeverSpell = dk.RegisterSpell(config)
@@ -82,7 +83,7 @@ func getBloodPlagueConfig(character *core.Character) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseTickDamage := character.CalcScalingSpellDmg(0.3939999938) + dot.Spell.MeleeAttackPower()*0.15800000727
+				baseTickDamage := character.CalcScalingSpellDmg(0.15800000727) + dot.Spell.MeleeAttackPower()*0.15800000727
 				dot.Snapshot(target, baseTickDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -96,6 +97,7 @@ func getBloodPlagueConfig(character *core.Character) core.SpellConfig {
 	}
 }
 
+// A disease dealing (197 + 0.158 * <AP>) Shadow damage every 3 sec for 30 sec.
 func (dk *DeathKnight) registerBloodPlague() {
 	dk.BloodPlagueSpell = dk.RegisterSpell(getBloodPlagueConfig(dk.GetCharacter()))
 }
