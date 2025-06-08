@@ -23,19 +23,16 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Sub',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 3.5,
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 0.95,
-			[Stat.StatHitRating]: 1.6,
-			[Stat.StatHasteRating]: 1.25,
-			[Stat.StatMasteryRating]: 0.85,
-			[Stat.StatExpertiseRating]: 1.5,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatCritRating]: 0.31,
+			[Stat.StatHitRating]: 0.54,
+			[Stat.StatHasteRating]: 0.32,
+			[Stat.StatMasteryRating]: 0.26,
+			[Stat.StatExpertiseRating]: 0.35,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 5.2,
-			[PseudoStat.PseudoStatOffHandDps]: 0.95,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 540,
+			[PseudoStat.PseudoStatMainHandDps]: 1.43,
+			[PseudoStat.PseudoStatOffHandDps]: 0.26,
 		},
 	),
 );

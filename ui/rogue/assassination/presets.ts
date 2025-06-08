@@ -23,19 +23,16 @@ export const ASN_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Asn',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.64,
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 0.7,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatCritRating]: 0.45,
 			[Stat.StatHitRating]: 1.2,
-			[Stat.StatHasteRating]: 0.75,
-			[Stat.StatMasteryRating]: 0.8,
-			[Stat.StatExpertiseRating]: 1.2,
+			[Stat.StatHasteRating]: 0.28,
+			[Stat.StatMasteryRating]: 0.33,
+			[Stat.StatExpertiseRating]: 0.34,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.6,
-			[PseudoStat.PseudoStatOffHandDps]: 0.97,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 400.0,
+			[PseudoStat.PseudoStatMainHandDps]: 1.37,
+			[PseudoStat.PseudoStatOffHandDps]: 0.30,
 		},
 	),
 );

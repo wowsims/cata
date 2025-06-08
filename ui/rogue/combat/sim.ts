@@ -23,8 +23,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatAgility,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
 		Stat.StatHitRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
@@ -34,10 +32,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
 		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
 	],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
@@ -63,7 +60,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [210.5, 0],
+				postCapEPs: [0.3 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
 			});
 
 			return [meleeHitSoftCapConfig];
