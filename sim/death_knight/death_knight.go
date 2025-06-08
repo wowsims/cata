@@ -232,6 +232,7 @@ const (
 	DeathKnightSpellBoneShield
 	DeathKnightSpellConversion
 	DeathKnightSpellDancingRuneWeapon
+	DeathKnightSpellDarkCommand
 	DeathKnightSpellDarkTransformation
 	DeathKnightSpellDeathAndDecay
 	DeathKnightSpellDeathCoil

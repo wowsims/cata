@@ -68,9 +68,19 @@ func (result *SpellResult) HealingString() string {
 	return fmt.Sprintf("%s for %0.3f healing", result.Outcome.String(), result.Damage)
 }
 
-func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64 {
+func (spell *Spell) ThreatFromDamage(sim *Simulation, outcome HitOutcome, damage float64, attackTable *AttackTable) float64 {
 	if outcome.Matches(OutcomeLanded) {
-		return (damage*spell.ThreatMultiplier + spell.FlatThreatBonus) * spell.Unit.PseudoStats.ThreatMultiplier
+		threat := (damage*spell.ThreatMultiplier + spell.FlatThreatBonus) * spell.Unit.PseudoStats.ThreatMultiplier
+
+		if attackTable.ThreatDoneByCasterExtraMultiplier != nil {
+			for i := range attackTable.ThreatDoneByCasterExtraMultiplier {
+				if attackTable.ThreatDoneByCasterExtraMultiplier[i] != nil {
+					threat *= attackTable.ThreatDoneByCasterExtraMultiplier[i](sim, spell, attackTable)
+				}
+			}
+		}
+
+		return threat
 	} else {
 		return 0
 	}
@@ -183,7 +193,7 @@ func (spell *Spell) CalcOutcome(sim *Simulation, target *Unit, outcomeApplier Ou
 	result := spell.NewResult(target)
 
 	outcomeApplier(sim, result, attackTable)
-	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+	result.Threat = spell.ThreatFromDamage(sim, result.Outcome, result.Damage, attackTable)
 	return result
 }
 
@@ -221,7 +231,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.SpellPower(), baseDamage, afterAttackMods, afterArmor, afterTargetMods, afterOutcome, afterPostOutcome)
 	}
 
-	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+	result.Threat = spell.ThreatFromDamage(sim, result.Outcome, result.Damage, attackTable)
 
 	return result
 }
@@ -383,7 +393,7 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 			target.LogLabel(), spell.ActionID, spell.HealingPower(target), baseHealing, afterCasterMods, afterTargetMods, afterOutcome, afterPostOutcome)
 	}
 
-	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+	result.Threat = spell.ThreatFromDamage(sim, result.Outcome, result.Damage, attackTable)
 
 	return result
 }

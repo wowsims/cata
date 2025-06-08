@@ -26,6 +26,13 @@ func RegisterBloodDeathKnight() {
 	)
 }
 
+// Threat Done By Caster setup
+const (
+	TDBC_DarkCommand int = iota
+
+	TDBC_Total
+)
+
 type BloodDeathKnight struct {
 	*death_knight.DeathKnight
 }
@@ -61,6 +68,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.registerBloodParasite()
 	bdk.registerBoneShield()
 	bdk.registerDancingRuneWeapon()
+	bdk.registerDarkCommand()
 	bdk.registerHeartStrike()
 	bdk.registerRuneStrike()
 	bdk.registerRuneTap()
