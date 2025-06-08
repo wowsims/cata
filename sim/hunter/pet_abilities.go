@@ -203,7 +203,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 			IgnoreHaste: true,
 		},
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
+		DamageMultiplier:         core.TernaryFloat64(hp.hunterOwner.Talents.BlinkStrikes, 1.5, 1),
 		CritMultiplier:           hp.CritMultiplier(1.0, 0.0),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

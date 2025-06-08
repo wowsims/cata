@@ -23,6 +23,7 @@ type HunterPet struct {
 	KillCommand    *core.Spell
 	focusDump      *core.Spell
 	exoticAbility  *core.Spell
+	lynxRushSpell  *core.Spell
 
 	uptimePercent    float64
 	wolverineBite    *core.Spell
@@ -75,6 +76,8 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 
 		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
 	}
+	dbActionID := core.ActionID{SpellID: 120679}
+	focusMetrics := hunter.NewFocusMetrics(dbActionID)
 	direBeastPet.EnableAutoAttacks(direBeastPet, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
@@ -85,6 +88,17 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 		AutoSwingMelee: true,
 	})
 	hunter.AddPet(direBeastPet)
+	core.MakeProcTriggerAura(&direBeastPet.Unit, core.ProcTrigger{
+		Name:       "Dire Beast",
+		ActionID:   core.ActionID{ItemID: 120679},
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcChance: 1,
+		ProcMask:   core.ProcMaskMelee,
+		Outcome:    core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			hunter.AddFocus(sim, 5, focusMetrics)
+		},
+	})
 	return direBeastPet
 }
 

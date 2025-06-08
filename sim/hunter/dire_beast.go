@@ -10,7 +10,7 @@ func (hunter *Hunter) RegisterDireBeastSpell() {
 	if !hunter.Talents.DireBeast {
 		return
 	}
-	actionID := core.ActionID{SpellID: 121818}
+	actionID := core.ActionID{SpellID: 120679}
 	direBeastSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		FocusCost: core.FocusCostOptions{
@@ -22,7 +22,7 @@ func (hunter *Hunter) RegisterDireBeastSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute * 30,
+				Duration: time.Second * 30,
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {

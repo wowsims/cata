@@ -160,7 +160,6 @@ func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
 
 func (hunter *Hunter) ApplyTalents() {
 	hunter.applyThrillOfTheHunt()
-	hunter.applyBlinkStrike()
 	hunter.ApplyHotfixes()
 
 	if hunter.Pet != nil {
@@ -174,6 +173,7 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
 	hunter.registerHawkSpell()
+	hunter.RegisterLynxRushSpell()
 	hunter.registerSerpentStingSpell()
 	hunter.registerMultiShotSpell()
 	hunter.registerKillCommandSpell()
