@@ -37,7 +37,7 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecSurvivalHunter, 1.0],
 	[Spec.SpecArmsWarrior, 2.2],
 	[Spec.SpecFuryWarrior, 5.6],
-	[Spec.SpecProtectionWarrior, 1.5],
+	[Spec.SpecProtectionWarrior, 2.2],
 	[Spec.SpecArcaneMage, 1.5],
 	[Spec.SpecFireMage, 2.8],
 	[Spec.SpecFrostMage, 2.5],

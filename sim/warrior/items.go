@@ -48,7 +48,6 @@ var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
 
-			// TODO: Increases the damage absorbed by your Shield Barrier by 5%.
 			war.T14Tank2P = setBonusAura
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -109,14 +108,27 @@ var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
 	Name: "Plate of the Last Mogu",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			// TODO: Your Shield Slam and Revenge have a 10% chance to activate Victory Rush or Impending Victory as if you had killed your target.
-			// war := agent.(WarriorAgent).GetWarrior()
-			// SpellID: 138280
+			war := agent.(WarriorAgent).GetWarrior()
+			war.T15Tank2P = core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+				Name:           "Victorious -  T15 Protection 2P Bonus",
+				ActionID:       core.ActionID{SpellID: 138279},
+				ClassSpellMask: SpellMaskRevenge | SpellMaskShieldSlam,
+				ProcChance:     0.1,
+				Outcome:        core.OutcomeHit,
+				Callback:       core.CallbackOnSpellHitDealt,
+				Duration:       15 * time.Second,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					war.VictoryRushAura.Activate(sim)
+				},
+			})
+
+			setBonusAura.ExposeToAPL(138280)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// TODO: Your abilities generate 50% more Rage when used against targets afflicted by Demoralizing Shout.
-			// war := agent.(WarriorAgent).GetWarrior()
-			// SpellID: 138281
+			war := agent.(WarriorAgent).GetWarrior()
+			war.T15Tank4P = setBonusAura
+
+			setBonusAura.ExposeToAPL(138281)
 		},
 	},
 })
@@ -194,14 +206,57 @@ var ItemSetPlateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 	Name: "Plate of the Prehistoric Marauder",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			// TODO: You heal for 30% of all damage blocked with a shield and 30% of all damage absorbed by Shield Barrier.
-			// war := agent.(WarriorAgent).GetWarrior()
-			// SpellID: 144503
+			// TODO: You heal for 30% of all damage blocked with a shield
+			war := agent.(WarriorAgent).GetWarrior()
+			healthMetrics := war.NewHealthMetrics(core.ActionID{SpellID: 144503})
+
+			war.ShieldBarrierAura.Aura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+				if setBonusAura.IsActive() {
+					absorbLoss := float64(oldStacks - newStacks)
+					war.GainHealth(sim, absorbLoss*0.3, healthMetrics)
+				}
+			})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:     "Item - Warrior T16 Tank 2P Bonus",
+				Callback: core.CallbackOnSpellHitTaken,
+				Outcome:  core.OutcomeBlock,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					blockDamageReduction := result.Target.BlockDamageReduction()
+					preBlockDamage := result.Damage / (1 - blockDamageReduction) * blockDamageReduction
+					blockedDamage := result.Damage - preBlockDamage
+					war.GainHealth(sim, blockedDamage*0.3, healthMetrics)
+				},
+			})
+
+			setBonusAura.ExposeToAPL(144503)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// TODO: For 10 sec after Demoralizing Shout falls off your targets, you gain Rage from taking damage.
-			// war := agent.(WarriorAgent).GetWarrior()
-			// SpellID: 144502
+			war := agent.(WarriorAgent).GetWarrior()
+			actionID := core.ActionID{SpellID: 144500}
+			rageMetrics := war.NewRageMetrics(actionID)
+
+			aura := war.RegisterAura(core.Aura{
+				Label:    "Reckless Defense",
+				ActionID: actionID,
+				Duration: 10 * time.Second,
+			})
+
+			for _, aura := range war.DemoralizingShoutAuras {
+				aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+					if setBonusAura.IsActive() {
+						aura.Activate(sim)
+					}
+				})
+			}
+
+			war.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) {
+				if aura.IsActive() {
+					war.AddRage(sim, result.Damage/war.MaxHealth()*100, rageMetrics)
+				}
+			})
+
+			setBonusAura.ExposeToAPL(144502)
 		},
 	},
 })

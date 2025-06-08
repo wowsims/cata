@@ -1,6 +1,8 @@
 package protection
 
 import (
+	"math"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -28,8 +30,6 @@ type ProtectionWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.ProtectionWarrior_Options
-
-	shieldSlam *core.Spell
 }
 
 func NewProtectionWarrior(character *core.Character, options *proto.Player) *ProtectionWarrior {
@@ -44,11 +44,11 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 }
 
 func (war *ProtectionWarrior) CalculateMasteryBlockChance() float64 {
-	return (8.0 + (0.5 * war.GetMasteryPoints())) / 100.0
+	return math.Floor(0.5*(8.0+war.GetMasteryPoints())) / 100.0
 }
 
 func (war *ProtectionWarrior) CalculateMasteryCriticalBlockChance() float64 {
-	return (8.0 + (2.2 * war.GetMasteryPoints())) / 100.0
+	return math.Floor(2.2*(8.0+war.GetMasteryPoints())) / 100.0
 }
 
 func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
@@ -58,6 +58,14 @@ func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
 func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.registerPassives()
+
+	war.registerDevastate()
+	war.registerRevenge()
+	war.registerShieldSlam()
+	war.registerShieldBlock()
+	war.registerShieldBarrier()
+	war.registerDemoralizingShout()
+	war.registerLastStand()
 }
 
 func (war *ProtectionWarrior) registerPassives() {
@@ -112,10 +120,6 @@ func (war *ProtectionWarrior) registerMastery() {
 		masteryCriticalBlockStat := 2.2 * core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating)
 		war.AddStatDynamic(sim, stats.BlockPercent, masteryCriticalBlockStat+masteryBlockStat)
 	})
-}
-
-func (war *ProtectionWarrior) ApplyTalents() {
-	// war.registerShieldSlam()
 }
 
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {

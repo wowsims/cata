@@ -5,7 +5,7 @@ import (
 )
 
 func (war *Warrior) registerRallyingCry() {
-	rallyingCry := core.RallyingCryAura(&war.Character, war.Index)
+	war.RallyingCryAura = core.RallyingCryAura(&war.Character, war.Index)
 
 	spell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       core.RallyingCryActionID,
@@ -22,8 +22,12 @@ func (war *Warrior) registerRallyingCry() {
 			},
 		},
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return (war.LastStandAura != nil && !war.LastStandAura.IsActive()) || war.LastStandAura == nil
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			rallyingCry.Activate(sim)
+			war.RallyingCryAura.Activate(sim)
 		},
 	})
 

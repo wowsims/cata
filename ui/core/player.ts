@@ -1606,12 +1606,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getBaseMastery(): number {
-		switch (this.playerSpec.specID) {
-			case Spec.SpecFrostMage:
-				return 2;
-			default:
-				return 8;
-		}
+		return 8;
 	}
 
 	getMasteryPerPointModifier(): number {

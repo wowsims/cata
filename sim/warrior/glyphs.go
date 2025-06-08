@@ -121,6 +121,39 @@ func (war *Warrior) applyMajorGlyphs() {
 			},
 		})
 	}
+
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHoldTheLine) {
+		actionID := core.ActionID{SpellID: 84619}
+
+		holdTheLine := war.RegisterAura(core.Aura{
+			Label:    "Hold the Line",
+			ActionID: actionID,
+			Duration: 5 * time.Second,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  SpellMaskRevenge,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.5,
+		})
+
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:           "Hold the Line - Consume",
+			ClassSpellMask: SpellMaskRevenge,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				holdTheLine.Deactivate(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:     "Hold the Line - Trigger",
+			Callback: core.CallbackOnSpellHitTaken,
+			Outcome:  core.OutcomeParry,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				holdTheLine.Activate(sim)
+			},
+		})
+	}
+
 }
 
 func (war *Warrior) applyMinorGlyphs() {

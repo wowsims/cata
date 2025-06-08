@@ -75,11 +75,15 @@ func (war *Warrior) registerImpendingVictory() {
 		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			war.VictoryRushAura.Deactivate(sim)
+
 			baseDamage := 56 + spell.MeleeAttackPower()*0.56
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
+			healthMultiplier := core.TernaryFloat64(war.T15Tank2P != nil && war.T15Tank2P.IsActive(), 0.4, 0.2)
+
 			if result.Landed() {
-				war.GainHealth(sim, war.MaxHealth()*0.2, healthMetrics)
+				war.GainHealth(sim, war.MaxHealth()*healthMultiplier, healthMetrics)
 			} else {
 				spell.IssueRefund(sim)
 			}
