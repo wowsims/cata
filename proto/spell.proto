@@ -1,0 +1,81 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+
+import "common.proto";
+
+
+message ScalingItemEffectProperties {
+	// keys are the numeric values of proto.common.Stat
+	map<int32, double> stats = 1;
+	double rppm_ilvl_modifier = 2;
+}
+  message ItemEffect {
+	int32            buff_id         = 1;
+	string buff_name = 6;
+	int32            effect_duration_ms = 2;  // milliseconds
+	// Keyed to itemlevelstate
+	map<int32, ScalingItemEffectProperties> scaling_options        = 3;
+
+	oneof effect {
+	  ProcEffect  proc   = 4;
+	  OnUseEffect on_use = 5;
+	}
+  }
+
+  message ProcEffect {
+	double      proc_chance = 1;  // e.g. 0.20 = 20%
+	double 		ppm = 3;
+	double rppm_haste_modifier = 4; // The SpellProcsPerMinuteMod Coeff of the haste modifier
+	double rppm_crit_modifier = 6; // The SpellProcsPerMinuteMod Coeff of the crit modifier
+	// The key represents a Spec
+	map<int32, double> spec_modifiers = 5;
+	int32       icd_ms         = 2;  // internal cooldown in milliseconds
+  }
+
+  message OnUseEffect {
+	int32 cooldown_ms = 1;  // milliseconds between uses
+
+	int32 category_id = 11;
+
+	int32 category_cooldown_ms = 8;  // category cooldown in milliseconds
+  }
+
+message SpellEffect {
+    int32 id = 1;
+    int32 spell_id = 2;
+    int32 index = 3;
+    EffectType type = 4;
+    double min_effect_size = 5;
+	double effect_spread = 6;
+	oneof misc_value0 {
+		ResourceType resource_type = 7;
+		SpellSchool school = 8;
+		Stat stat = 9;
+	}
+}
+
+enum EffectType {
+	EffectTypeUnknown = 0;
+	EffectTypeHeal = 10;
+	EffectTypeResourceGain = 30;
+}
+
+enum ResourceType {
+	ResourceTypeNone = 0;
+	ResourceTypeMana = 1;
+	ResourceTypeEnergy = 2;
+	ResourceTypeRage = 3;
+	ResourceTypeComboPoints = 4;
+	ResourceTypeFocus = 5;
+	ResourceTypeHealth = 6;
+	ResourceTypeRunicPower = 7;
+	ResourceTypeBloodRune = 8;
+	ResourceTypeFrostRune = 9;
+	ResourceTypeUnholyRune = 10;
+	ResourceTypeDeathRune = 11;
+	ResourceTypeSolarEnergy = 12;
+	ResourceTypeLunarEnergy = 13;
+	ResourceTypeHolyPower = 14;
+}

@@ -107,7 +107,7 @@ func (mage *Mage) applyGlyphs() {
 		})
 	}
 
-	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfDragonSBreath) {
+	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfDragonsBreath) {
 		mage.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_Cooldown_Flat,
 			ClassMask: MageSpellDragonsBreath,

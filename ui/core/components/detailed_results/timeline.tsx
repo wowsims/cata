@@ -3,8 +3,8 @@ import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { CacheHandler } from '../../cache_handler';
-import { ResourceType } from '../../proto/api';
 import { OtherAction } from '../../proto/common';
+import { ResourceType } from '../../proto/spell';
 import { ActionId, buffAuraToSpellIdMap, resourceTypeToIcon } from '../../proto_utils/action_id';
 import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser';
 import { resourceNames } from '../../proto_utils/names';

@@ -12,7 +12,7 @@ import (
 	"github.com/wowsims/cata/tools"
 )
 
-func ReadAtlasLootData() *WowDatabase {
+func ReadAtlasLootData(dbHelper *DBHelper) *WowDatabase {
 	db := NewWowDatabase()
 
 	// Read these in reverse order, because some items are listed in multiple expansions
@@ -30,7 +30,7 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
 	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Factions/data-cata.lua")
 
-	readZoneData(db)
+	readZoneData(db, dbHelper)
 
 	return db
 }
@@ -133,6 +133,15 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 				if expansion == proto.Expansion_ExpansionCata && contentType == "RAID_CONTENT" {
 					diffString = AtlasLootDungeonToRaidDifficulty[diffString]
 				}
+
+				if diffString == "INFERNO_DIFF" ||
+					diffString == "TWILIGHT_DIFF" ||
+					diffString == "VENDOR_DIFF" ||
+					diffString == "RAIDFINDER_DIFF" {
+					log.Printf("WARN: NPC %s with difficulty: %s not added - skipping.\n", npcName, diffString)
+					continue
+				}
+
 				difficulty, ok := AtlasLootDifficulties[diffString]
 				if !ok {
 					log.Fatalf("Invalid difficulty for NPC %s: %s", npcName, diffString)
@@ -312,30 +321,44 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 // 	}
 // }
 
-func readZoneData(db *WowDatabase) {
+func readZoneData(db *WowDatabase, dbHelper *DBHelper) {
 	zoneIDs := make([]int32, 0, len(db.Zones))
 	for zoneID := range db.Zones {
 		zoneIDs = append(zoneIDs, zoneID)
 	}
-	zoneIDStrs := core.MapSlice(zoneIDs, func(zoneID int32) string { return strconv.Itoa(int(zoneID)) })
 
-	zoneTM := &WowheadTooltipManager{
-		TooltipManager{
-			FilePath:   "",
-			UrlPattern: "https://nether.wowhead.com/cata/tooltip/zone/%s",
-		},
+	zoneNames, error := loadZones(dbHelper)
+	if error != nil {
+		panic(error)
 	}
-	zoneTooltips := zoneTM.FetchFromWeb(zoneIDStrs)
 
-	tooltipPattern := regexp.MustCompile(`{"name":"(.*?)",`)
-	for i, zoneID := range zoneIDs {
-		tooltip := zoneTooltips[zoneIDStrs[i]]
-		match := tooltipPattern.FindStringSubmatch(tooltip)
-		if match == nil {
-			log.Fatalf("Error parsing zone tooltip %s", tooltip)
+	for _, zoneID := range zoneIDs {
+		db.Zones[zoneID].Name = zoneNames[zoneID]
+	}
+}
+
+func loadZones(dbHelper *DBHelper) (map[int32]string, error) {
+	const query = `SELECT ID, AreaName_lang FROM AreaTable`
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("querying drop sources: %w", err)
+	}
+	defer rows.Close()
+
+	var zoneId int32
+	var zoneName string
+	namesByZone := make(map[int32]string)
+	for rows.Next() {
+		e := rows.Scan(&zoneId, &zoneName)
+		if e != nil {
+			return nil, e
 		}
-		db.Zones[zoneID].Name = match[1]
+
+		namesByZone[zoneId] = zoneName
 	}
+
+	return namesByZone, nil
 }
 
 var AtlasLootProfessionIDs = map[int]proto.Profession{

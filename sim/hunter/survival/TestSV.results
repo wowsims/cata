@@ -179,8 +179,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 48227.95385
-  tps: 43799.13268
+  dps: 47937.96989
+  tps: 43511.32761
  }
 }
 dps_results: {
@@ -354,8 +354,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 47565.52706
-  tps: 43187.97959
+  dps: 47652.12897
+  tps: 43264.89022
  }
 }
 dps_results: {
@@ -426,6 +426,20 @@ dps_results: {
  value: {
   dps: 46806.14622
   tps: 42548.22141
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-DarkglowEmbroidery-3728"
+ value: {
+  dps: 50642.48144
+  tps: 46200.15176
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-DarkglowEmbroidery-4116"
+ value: {
+  dps: 50642.48144
+  tps: 46200.15176
  }
 }
 dps_results: {
@@ -513,6 +527,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Diamond-cutRefractorScope-3843"
+ value: {
+  dps: 50381.56201
+  tps: 45951.1519
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-DislodgedForeignObject-50348"
  value: {
   dps: 46669.74825
@@ -548,10 +569,157 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-ElementiumShieldSpike-4215"
+ value: {
+  dps: 50752.18438
+  tps: 46298.17692
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 49322.28709
   tps: 44894.04247
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Enchant2HWeapon-Scourgebane-3247"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantBoots-EarthenVitality-4062"
+ value: {
+  dps: 50640.98776
+  tps: 46200.2243
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantBoots-Lavawalker-4104"
+ value: {
+  dps: 50702.12829
+  tps: 46261.2914
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantBoots-Tuskarr'sVitality-3232"
+ value: {
+  dps: 50640.98776
+  tps: 46200.2243
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantCloak-Wisdom-3296"
+ value: {
+  dps: 50642.48144
+  tps: 45276.14873
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantGloves-Armsman-3253"
+ value: {
+  dps: 50638.38676
+  tps: 47108.20627
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Avalanche-4067"
+ value: {
+  dps: 50204.94055
+  tps: 45812.20401
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Berserking-3789"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-BlackMagic-3790"
+ value: {
+  dps: 50109.32256
+  tps: 45698.13597
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-BloodDraining-3870"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-ElementalSlayer-4074"
+ value: {
+  dps: 50152.30451
+  tps: 45759.34837
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-GiantSlayer-3251"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Heartsong-4084"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Hurricane-4083"
+ value: {
+  dps: 50392.361
+  tps: 45985.00988
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Icebreaker-3239"
+ value: {
+  dps: 50156.92743
+  tps: 45764.0641
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Landslide-4099"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Lifeward-3241"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Mending-4066"
+ value: {
+  dps: 50153.71612
+  tps: 45760.83577
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-PowerTorrent-4097"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-EnchantWeapon-Windwalk-4098"
+ value: {
+  dps: 50155.49483
+  tps: 45762.67573
  }
 }
 dps_results: {
@@ -767,8 +935,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Gladiator'sPursuit"
  value: {
-  dps: 36291.73887
-  tps: 32998.23327
+  dps: 40833.38297
+  tps: 37108.11473
  }
 }
 dps_results: {
@@ -776,6 +944,13 @@ dps_results: {
  value: {
   dps: 46277.81061
   tps: 42019.82912
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-GnomishX-RayScope-4175"
+ value: {
+  dps: 50560.62303
+  tps: 46108.54368
  }
 }
 dps_results: {
@@ -895,6 +1070,13 @@ dps_results: {
  value: {
   dps: 50961.19722
   tps: 46483.95776
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-HeartseekerScope-3608"
+ value: {
+  dps: 50482.19669
+  tps: 46045.22653
  }
 }
 dps_results: {
@@ -1126,6 +1308,20 @@ dps_results: {
  value: {
   dps: 39543.48479
   tps: 36095.81821
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-LightweaveEmbroidery-3722"
+ value: {
+  dps: 50642.48144
+  tps: 46200.15176
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-LightweaveEmbroidery-4115"
+ value: {
+  dps: 50642.48144
+  tps: 46200.15176
  }
 }
 dps_results: {
@@ -1430,6 +1626,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-PyriumShieldSpike-4216"
+ value: {
+  dps: 50752.18438
+  tps: 46298.17692
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-R19Threatfinder-4176"
+ value: {
+  dps: 50354.79713
+  tps: 45924.38702
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Rainsong-55854"
  value: {
   dps: 46277.81061
@@ -1630,6 +1840,13 @@ dps_results: {
  value: {
   dps: 46277.81061
   tps: 42019.82912
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-SafetyCatchRemovalKit-4177"
+ value: {
+  dps: 50467.15519
+  tps: 46050.98434
  }
 }
 dps_results: {
@@ -1910,6 +2127,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-SunScope-3607"
+ value: {
+  dps: 50385.24047
+  tps: 45953.5514
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-SwordguardEmbroidery-3730"
+ value: {
+  dps: 50803.81862
+  tps: 46345.58524
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-SwordguardEmbroidery-4118"
+ value: {
+  dps: 51036.23164
+  tps: 46553.58789
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-SymbioticWorm-59332"
  value: {
   dps: 46277.81061
@@ -1975,8 +2213,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-TheHungerer-69112"
  value: {
-  dps: 48835.23851
-  tps: 44286.09316
+  dps: 48973.64085
+  tps: 44444.51677
  }
 }
 dps_results: {
@@ -2082,6 +2320,13 @@ dps_results: {
  value: {
   dps: 46277.81061
   tps: 42019.82912
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-TitaniumShieldSpike-3748"
+ value: {
+  dps: 50752.18438
+  tps: 46298.17692
  }
 }
 dps_results: {

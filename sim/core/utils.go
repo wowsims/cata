@@ -32,7 +32,24 @@ func StringFromActionIDs(actionIDs []ActionID) string {
 
 	return strings.Join(names, ", ")
 }
-
+func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, metrics *ResourceMetrics) {
+	switch {
+	case resource == proto.ResourceType_ResourceTypeMana && amount > 0:
+		unit.AddMana(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeMana && amount < 0:
+		unit.SpendMana(sim, -amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount > 0:
+		unit.GainHealth(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount < 0:
+		unit.RemoveHealth(sim, -amount)
+	case resource == proto.ResourceType_ResourceTypeRage && amount < 0:
+		unit.SpendRage(sim, -amount/10, metrics)
+	case resource == proto.ResourceType_ResourceTypeRage && amount > 0:
+		unit.AddRage(sim, amount/10, metrics)
+	default:
+		panic("Unsupported Resource Type in ExecuteResourceGain")
+	}
+}
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {
 	if effect == proto.TristateEffect_TristateEffectRegular {
 		return regularValue

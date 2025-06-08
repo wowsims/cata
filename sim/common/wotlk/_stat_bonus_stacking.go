@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -23,7 +24,7 @@ type StackingStatBonusEffect struct {
 }
 
 func newStackingStatBonusEffect(config StackingStatBonusEffect) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	core.NewItemEffect(config.ID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		auraID := core.ActionID{SpellID: config.AuraID}
@@ -75,7 +76,7 @@ type StackingStatBonusCD struct {
 }
 
 func newStackingStatBonusCD(config StackingStatBonusCD) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	core.NewItemEffect(config.ID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		auraID := core.ActionID{SpellID: config.AuraID}
@@ -140,7 +141,7 @@ func newStackingStatBonusCD(config StackingStatBonusCD) {
 }
 
 func init() {
-	core.NewItemEffect(38212, func(agent core.Agent) {
+	core.NewItemEffect(38212, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		procAura := core.MakeStackingAura(character, core.StackingStatAura{

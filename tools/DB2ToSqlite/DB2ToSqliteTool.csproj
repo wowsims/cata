@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="DBCD.IO">
+			<HintPath>.\references\DBDC.IO.dll</HintPath>
+		</Reference>
+		<Reference Include="DBCD">
+			<HintPath>\references\DBCD.dll</HintPath>
+		</Reference>
+		<Reference Include="TACTSharp">
+			<HintPath>\references\TACTSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="DBDefsLib">
+			<HintPath>\references\DBDefsLib.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.3"/>
+	</ItemGroup>
+
+</Project>

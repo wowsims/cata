@@ -57,10 +57,13 @@ export class RaidSimUI extends SimUI {
 		this.sim.setModifyRaidProto(raidProto => this.modifyRaidProto(raidProto));
 		this.sim.waitForInit().then(() => this.loadSettings());
 
+		// Assure that the database is loaded before loading the following components
 		this.addSidebarComponents();
 		this.addTopbarComponents();
 		this.addRaidTab();
+
 		this.addSettingsTab();
+
 		this.addDetailedResultsTab();
 	}
 

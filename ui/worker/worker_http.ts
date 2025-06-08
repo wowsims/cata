@@ -1,4 +1,4 @@
-import { noop, sleep } from '../core/utils';
+import { noop, sleep } from './utils';
 import { HandlerFunction, WorkerInterface } from './worker_interface';
 
 const defaultRequestOptions = {

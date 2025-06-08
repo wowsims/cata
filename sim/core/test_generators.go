@@ -95,12 +95,12 @@ type RotationCombo struct {
 	Rotation *proto.APLRotation
 }
 type BuffsCombo struct {
-	Label    string
-	Raid     *proto.RaidBuffs
-	Party    *proto.PartyBuffs
-	Debuffs  *proto.Debuffs
-	Player   *proto.IndividualBuffs
-	Consumes *proto.Consumes
+	Label       string
+	Raid        *proto.RaidBuffs
+	Party       *proto.PartyBuffs
+	Debuffs     *proto.Debuffs
+	Player      *proto.IndividualBuffs
+	Consumables *proto.ConsumesSpec
 }
 type EncounterCombo struct {
 	Label     string
@@ -194,7 +194,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Equipment:          gearSetCombo.GearSet,
 				TalentsString:      talentSetCombo.Talents,
 				Glyphs:             talentSetCombo.Glyphs,
-				Consumes:           buffsCombo.Consumes,
+				Consumables:        buffsCombo.Consumables,
 				Buffs:              buffsCombo.Player,
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
@@ -232,6 +232,9 @@ type ItemFilter struct {
 
 	// Item IDs to ignore.
 	IDBlacklist []int32
+
+	// Effect IDs to ignore.
+	EnchantBlacklist []int32
 }
 
 // Returns whether the given item matches the conditions of this filter.
@@ -314,6 +317,22 @@ func (filter *ItemFilter) FindAllMetaGems() []Gem {
 	return filteredGems
 }
 
+func (filter *ItemFilter) FindAllEnchants() []Enchant {
+	filteredEnchantIDs := FilterSlice(enchantEffectsForTest, func(id int32) bool {
+		return !slices.Contains(filter.EnchantBlacklist, id)
+	})
+
+	return MapSlice(filteredEnchantIDs, func(id int32) Enchant {
+		enchant, ok := EnchantsByEffectID[id]
+
+		if !ok {
+			panic(fmt.Sprintf("No DB data for enchant with id: %d", id))
+		}
+
+		return enchant
+	})
+}
+
 type ItemsTestGenerator struct {
 	// Fields describing the base API request.
 	Player     *proto.Player
@@ -333,6 +352,7 @@ type ItemsTestGenerator struct {
 	sets  []*ItemSet
 
 	metagems []Gem
+	enchants []Enchant
 
 	metaSocketIdx int
 }
@@ -349,10 +369,15 @@ func (generator *ItemsTestGenerator) init() {
 	}
 	for _, itemSpec := range generator.Player.Equipment.Items {
 		generator.ItemFilter.IDBlacklist = append(generator.ItemFilter.IDBlacklist, itemSpec.Id)
+
+		if itemSpec.Enchant != 0 {
+			generator.ItemFilter.EnchantBlacklist = append(generator.ItemFilter.EnchantBlacklist, itemSpec.Enchant)
+		}
 	}
 
 	generator.items = generator.ItemFilter.FindAllItems()
 	generator.sets = generator.ItemFilter.FindAllSets()
+	generator.enchants = generator.ItemFilter.FindAllEnchants()
 
 	baseEquipment := ProtoToEquipment(generator.Player.Equipment)
 	generator.metaSocketIdx = -1
@@ -370,7 +395,7 @@ func (generator *ItemsTestGenerator) init() {
 
 func (generator *ItemsTestGenerator) NumTests() int {
 	generator.init()
-	return len(generator.items) + len(generator.sets) + len(generator.metagems)
+	return len(generator.items) + len(generator.sets) + len(generator.metagems) + len(generator.enchants)
 }
 
 func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -389,7 +414,7 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 			equipment.EquipItem(setItem)
 		}
 		label = strings.ReplaceAll(testSet.Name, " ", "")
-	} else {
+	} else if testIdx < len(generator.items)+len(generator.sets)+len(generator.metagems) {
 		testMetaGem := generator.metagems[testIdx-len(generator.items)-len(generator.sets)]
 		headItem := &equipment[proto.ItemSlot_ItemSlotHead]
 		for len(headItem.Gems) <= generator.metaSocketIdx {
@@ -397,6 +422,10 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 		}
 		headItem.Gems[generator.metaSocketIdx] = testMetaGem
 		label = strings.ReplaceAll(testMetaGem.Name, " ", "")
+	} else {
+		testEnchant := generator.enchants[testIdx-len(generator.items)-len(generator.sets)-len(generator.metagems)]
+		equipment.EquipEnchant(testEnchant)
+		label = fmt.Sprintf("%s-%d", strings.ReplaceAll(testEnchant.Name, " ", ""), testEnchant.EffectID)
 	}
 	playerCopy.Equipment = equipment.ToEquipmentSpecProto()
 
@@ -459,7 +488,7 @@ type CharacterSuiteConfig struct {
 	ItemSwapSet      ItemSwapSetCombo
 	StartingDistance float64
 
-	Consumes *proto.Consumes
+	Consumables *proto.ConsumesSpec
 
 	IsHealer        bool
 	IsTank          bool
@@ -500,7 +529,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Class:         config.Class,
 			Race:          config.Race,
 			Equipment:     config.GearSet.GearSet,
-			Consumes:      config.Consumes,
+			Consumables:   config.Consumables,
 			Buffs:         FullIndividualBuffs,
 			TalentsString: config.Talents,
 			Glyphs:        config.Glyphs,
@@ -550,12 +579,12 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 							Label: "NoBuffs",
 						},
 						{
-							Label:    "FullBuffs",
-							Raid:     FullRaidBuffs,
-							Party:    FullPartyBuffs,
-							Debuffs:  FullDebuffs,
-							Player:   FullIndividualBuffs,
-							Consumes: config.Consumes,
+							Label:       "FullBuffs",
+							Raid:        FullRaidBuffs,
+							Party:       FullPartyBuffs,
+							Debuffs:     FullDebuffs,
+							Player:      FullIndividualBuffs,
+							Consumables: config.Consumables,
 						},
 					},
 					IsHealer:          config.IsHealer,

@@ -2,7 +2,6 @@ package database
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"os"
 	"slices"
@@ -43,6 +42,9 @@ type WowDatabase struct {
 
 	Encounters []*proto.PresetEncounter
 	GlyphIDs   []*proto.GlyphID
+
+	Consumables map[int32]*proto.Consumable
+	Effects     map[int32]*proto.SpellEffect
 }
 
 func NewWowDatabase() *WowDatabase {
@@ -57,6 +59,9 @@ func NewWowDatabase() *WowDatabase {
 		ItemIcons:    make(map[int32]*proto.IconData),
 		SpellIcons:   make(map[int32]*proto.IconData),
 		ReforgeStats: make(map[int32]*proto.ReforgeStat),
+
+		Consumables: make(map[int32]*proto.Consumable),
+		Effects:     make(map[int32]*proto.SpellEffect),
 	}
 }
 
@@ -72,6 +77,9 @@ func (db *WowDatabase) Clone() *WowDatabase {
 		ItemIcons:    maps.Clone(db.ItemIcons),
 		SpellIcons:   maps.Clone(db.SpellIcons),
 		ReforgeStats: maps.Clone(db.ReforgeStats),
+
+		Consumables: maps.Clone(db.Consumables),
+		Effects:     maps.Clone(db.Effects),
 	}
 }
 
@@ -102,6 +110,7 @@ func (db *WowDatabase) MergeEnchants(arr []*proto.UIEnchant) {
 		db.MergeEnchant(enchant)
 	}
 }
+
 func (db *WowDatabase) MergeEnchant(src *proto.UIEnchant) {
 	key := EnchantToDBKey(src)
 	if dst, ok := db.Enchants[key]; ok {
@@ -152,6 +161,7 @@ func (db *WowDatabase) MergeNpcs(arr []*proto.UINPC) {
 		db.MergeNpc(npc)
 	}
 }
+
 func (db *WowDatabase) MergeNpc(src *proto.UINPC) {
 	if dst, ok := db.Npcs[src.Id]; ok {
 		googleProto.Merge(dst, src)
@@ -160,26 +170,40 @@ func (db *WowDatabase) MergeNpc(src *proto.UINPC) {
 	}
 }
 
-func (db *WowDatabase) AddItemIcon(id int32, tooltips map[int32]WowheadItemResponse) {
-	if tooltip, ok := tooltips[id]; ok {
-		if tooltip.GetName() == "" || tooltip.GetIcon() == "" {
-			return
+func (db *WowDatabase) MergeConsumable(src *proto.Consumable) {
+	if dst, ok := db.Consumables[src.Id]; ok {
+		if src.Stats != nil {
+			dst.Stats = src.Stats
+			src.Stats = nil
 		}
-		db.ItemIcons[id] = &proto.IconData{Id: id, Name: tooltip.GetName(), Icon: tooltip.GetIcon()}
+		googleProto.Merge(dst, src)
 	} else {
-		panic(fmt.Sprintf("No item tooltip with id %d", id))
+		db.Consumables[src.Id] = src
 	}
 }
 
-func (db *WowDatabase) AddSpellIcon(id int32, tooltips map[int32]WowheadItemResponse) {
-	if tooltip, ok := tooltips[id]; ok {
-		if tooltip.GetName() == "" || tooltip.GetIcon() == "" {
-			return
-		}
-		db.SpellIcons[id] = &proto.IconData{Id: id, Name: tooltip.GetName(), Icon: tooltip.GetIcon(), HasBuff: tooltip.HasBuff()}
+func (db *WowDatabase) MergeEffect(src *proto.SpellEffect) {
+	if dst, ok := db.Effects[src.Id]; ok {
+		googleProto.Merge(dst, src)
 	} else {
-		panic(fmt.Sprintf("No spell tooltip with id %d", id))
+		db.Effects[src.Id] = src
 	}
+}
+
+func (db *WowDatabase) AddItemIcon(id int32, icon string, name string) {
+	if id == 0 {
+		return
+	}
+	db.ItemIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
+
+}
+
+func (db *WowDatabase) AddSpellIcon(id int32, icon string, name string) {
+	if id == 0 {
+		return
+	}
+	db.SpellIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
+
 }
 
 type idKeyed interface {
@@ -221,6 +245,8 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		SpellIcons:     mapToSlice(db.SpellIcons),
 		GlyphIds:       db.GlyphIDs,
 		ReforgeStats:   mapToSlice(db.ReforgeStats),
+		Consumables:    mapToSlice(db.Consumables),
+		SpellEffects:   mapToSlice(db.Effects),
 	}
 }
 
@@ -231,7 +257,6 @@ func sliceToMap[T idKeyed](vs []T) map[int32]T {
 	}
 	return m
 }
-
 func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 	dbProto := &proto.UIDatabase{}
 	if err := protojson.Unmarshal([]byte(jsonStr), dbProto); err != nil {
@@ -253,6 +278,8 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		ItemIcons:      sliceToMap(dbProto.ItemIcons),
 		SpellIcons:     sliceToMap(dbProto.SpellIcons),
 		ReforgeStats:   sliceToMap(dbProto.ReforgeStats),
+		Consumables:    sliceToMap(dbProto.Consumables),
+		Effects:        sliceToMap(dbProto.SpellEffects),
 	}
 }
 
@@ -278,7 +305,6 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	uidb := db.ToUIProto()
 
 	buffer := new(bytes.Buffer)
-
 	buffer.WriteString("{\n")
 
 	tools.WriteProtoArrayToBuffer(uidb.Items, buffer, "items")
@@ -302,8 +328,11 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	tools.WriteProtoArrayToBuffer(uidb.Encounters, buffer, "encounters")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.GlyphIds, buffer, "glyphIds")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.Consumables, buffer, "consumables")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.SpellEffects, buffer, "spellEffects")
 	buffer.WriteString("\n")
-
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)
 }

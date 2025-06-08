@@ -336,12 +336,12 @@ func TestDestruction(t *testing.T) {
 		},
 	}
 
-	var fullConsumes = &proto.Consumes{
-		Flask:             proto.Flask_FlaskOfTheDraconicMind,
-		Food:              proto.Food_FoodSeveredSagefish,
-		DefaultPotion:     proto.Potions_VolcanicPotion,
-		ExplosiveBigDaddy: true,
-		TinkerHands:       proto.TinkerHands_TinkerHandsSynapseSprings,
+	var fullConsumesSpec = &proto.ConsumesSpec{
+		FlaskId:     58086, // Flask of the Draconic Mind
+		FoodId:      62671, // Severed Sagefish Head
+		PotId:       58091, // Volcanic Potion
+		ExplosiveId: 89637, // Big Daddy Explosive
+		TinkerId:    82174, // Synapse Springs
 	}
 
 	var destructionTalents = "003-03202-3320202312201312211"
@@ -361,7 +361,7 @@ func TestDestruction(t *testing.T) {
 		GearSet:          core.GetGearSet("../../../ui/warlock/destruction/gear_sets", "p4"),
 		Talents:          destructionTalents,
 		Glyphs:           destructionGlyphs,
-		Consumes:         fullConsumes,
+		Consumables:      fullConsumesSpec,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: defaultDestructionWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
 		Rotation:         core.GetAplRotation("../../../ui/warlock/destruction/apls", "default"),

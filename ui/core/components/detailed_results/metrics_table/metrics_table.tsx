@@ -7,8 +7,7 @@ import { ActionId } from '../../../proto_utils/action_id';
 import { ActionMetrics, AuraMetrics, ResourceMetrics, UnitMetrics } from '../../../proto_utils/sim_result';
 import { TypedEvent } from '../../../typed_event';
 import { ResultComponent, ResultComponentConfig, SimResultData } from '../result_component';
-
-declare let $: any;
+import { TableSorter } from './table_sorter';
 
 export enum ColumnSortType {
 	None,
@@ -36,7 +35,8 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 	private readonly columnConfigs: Array<MetricsColumnConfig<T>>;
 
 	protected readonly tableElem: HTMLElement;
-	protected readonly bodyElem: HTMLElement;
+	protected readonly bodyElem: HTMLTableSectionElement;
+	private readonly sorter: TableSorter;
 
 	readonly onUpdate = new TypedEvent<void>('MetricsTableUpdate');
 
@@ -53,7 +53,7 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 			</table>,
 		);
 
-		this.tableElem = this.rootElem.querySelector<HTMLTableSectionElement>('.metrics-table')!;
+		this.tableElem = this.rootElem.querySelector<HTMLTableElement>('.metrics-table')!;
 		this.bodyElem = this.rootElem.querySelector<HTMLTableSectionElement>('.metrics-table-body')!;
 
 		const headerRowElem = this.rootElem.querySelector<HTMLTableRowElement>('.metrics-table-header-row')!;
@@ -78,13 +78,15 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 			headerRowElem.appendChild(headerCell);
 		});
 
-		const sortList = this.columnConfigs
-			.map((config, i) => [i, config.sort == ColumnSortType.Ascending ? 0 : 1])
-			.filter(sortData => this.columnConfigs[sortData[0]].sort);
+		const sortCol = this.columnConfigs.findIndex(v => !!v.sort);
 
-		$(this.tableElem).tablesorter({
-			sortList: sortList,
-			cssChildRow: 'child-metric',
+		this.sorter = new TableSorter({
+			tableHead: headerRowElem,
+			tableBody: this.bodyElem,
+			dataSetKey: 'text',
+			childRowClass: 'child-metric',
+			defaultSortCol: sortCol !== -1 ? sortCol : 0,
+			defaultSortDesc: sortCol !== -1 && this.columnConfigs[sortCol].sort == ColumnSortType.Descending,
 		});
 	}
 
@@ -173,7 +175,7 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 		}
 
 		groupedMetrics.forEach(group => this.addGroup(group));
-		$(this.tableElem).trigger('update');
+		this.sorter.update();
 		this.onUpdate.emit(resultData.eventID);
 	}
 

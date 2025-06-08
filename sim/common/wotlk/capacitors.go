@@ -2,6 +2,7 @@ package wotlk
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 type CapacitorHandler func(*core.Simulation)
@@ -35,7 +36,7 @@ type CapacitorDamageEffect struct {
 }
 
 func newCapacitorDamageEffect(config CapacitorDamageEffect) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	core.NewItemEffect(config.ID, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		minDmg := config.MinDmg
@@ -170,7 +171,7 @@ func init() {
 			maxStacks = 7
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			if !character.AutoAttacks.AutoSwingMelee {
 				return

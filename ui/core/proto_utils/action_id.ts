@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang';
 import { CHARACTER_LEVEL } from '../constants/mechanics';
-import { ResourceType } from '../proto/api';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common';
+import { ResourceType } from '../proto/spell';
 import { IconData, UIItem as Item } from '../proto/ui';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';
@@ -245,7 +245,7 @@ export class ActionId {
 
 	// Returns an ActionId with the name and iconUrl fields filled.
 	// playerIndex is the optional index of the player to whom this ID corresponds.
-	async fill(playerIndex?: number): Promise<ActionId> {
+	async fill(playerIndex?: number, options: { signal?: AbortSignal } = {}): Promise<ActionId> {
 		if (this.name || this.iconUrl) {
 			return this;
 		}
@@ -253,8 +253,7 @@ export class ActionId {
 		if (this.otherId) {
 			return this;
 		}
-
-		const tooltipData = await ActionId.getTooltipData(this);
+		const tooltipData = await ActionId.getTooltipData(this, { signal: options?.signal });
 
 		const baseName = tooltipData['name'];
 		let name = baseName;
@@ -699,7 +698,7 @@ export class ActionId {
 		const iconOverrideId = this.spellTooltipOverride || this.spellIconOverride;
 		let iconUrl = ActionId.makeIconUrl(tooltipData['icon']);
 		if (iconOverrideId) {
-			const overrideTooltipData = await ActionId.getTooltipData(iconOverrideId);
+			const overrideTooltipData = await ActionId.getTooltipData(iconOverrideId, { signal: options?.signal });
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
@@ -856,11 +855,11 @@ export class ActionId {
 		}
 	}
 
-	static async getTooltipData(actionId: ActionId): Promise<IconData> {
+	static async getTooltipData(actionId: ActionId, options: { signal?: AbortSignal } = {}): Promise<IconData> {
 		if (actionId.itemId) {
-			return await Database.getItemIconData(actionId.itemId);
+			return await Database.getItemIconData(actionId.itemId, { signal: options?.signal });
 		} else {
-			return await Database.getSpellIconData(actionId.spellId);
+			return await Database.getSpellIconData(actionId.spellId, { signal: options?.signal });
 		}
 	}
 

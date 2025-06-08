@@ -83,7 +83,7 @@ func init() {
 			procChance = 0.05
 		}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			if agent.GetCharacter().Class != proto.Class_ClassHunter {
 				return
 			}

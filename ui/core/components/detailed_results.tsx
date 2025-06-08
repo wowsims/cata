@@ -185,7 +185,7 @@ export abstract class DetailedResults extends Component {
 		this.simUI?.sim.settingsChangeEmitter.on(async () => await this.updateSettings());
 
 		// Allow styling the sticky toolbar
-		const toolbar = document.querySelector('.dr-toolbar') as HTMLElement;
+		const toolbar = document.querySelector<HTMLElement>('.dr-toolbar')!;
 		new IntersectionObserver(
 			([e]) => {
 				e.target.classList.toggle('stuck', e.intersectionRatio < 1);

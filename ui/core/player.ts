@@ -1,6 +1,7 @@
 import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
+import { CURRENT_API_VERSION } from './constants/other';
 import { SimSettingCategories } from './constants/sim_settings';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
@@ -19,6 +20,7 @@ import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from
 import {
 	Class,
 	Consumes,
+	ConsumesSpec,
 	Cooldowns,
 	Faction,
 	GemColor,
@@ -32,12 +34,12 @@ import {
 	PseudoStat,
 	Race,
 	ReforgeStat,
-	SimDatabase,
 	Spec,
 	Stat,
 	UnitReference,
 	UnitStats,
 } from './proto/common';
+import { SimDatabase } from './proto/db';
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
@@ -48,6 +50,7 @@ import {
 	UIItem_FactionRestriction,
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
+import { convertConsumesToSpec } from './proto_utils/consumes';
 import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
@@ -65,7 +68,9 @@ import {
 	getTalentTree,
 	getTalentTreePoints,
 	isPVPItem,
+	migrateOldProto,
 	newUnitReference,
+	ProtoConversionMap,
 	raceToFaction,
 	SpecClasses,
 	SpecOptions,
@@ -79,7 +84,7 @@ import { Raid } from './raid';
 import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { omitDeep, stringComparator, sum } from './utils';
+import { findInputItemForEnum, omitDeep, stringComparator, sum } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
@@ -235,6 +240,7 @@ export class Player<SpecType extends Spec> {
 	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
 	private consumes: Consumes = Consumes.create();
+	private consumables: ConsumesSpec = ConsumesSpec.create();
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
 	//private bulkEquipmentSpec: BulkEquipmentSpec = BulkEquipmentSpec.create();
@@ -693,16 +699,21 @@ export class Player<SpecType extends Spec> {
 		this.buffsChangeEmitter.emit(eventID);
 	}
 
-	getConsumes(): Consumes {
+	getConsumes(): ConsumesSpec {
+		// Make a defensive copy
+		return ConsumesSpec.clone(this.consumables);
+	}
+
+	getOldConsumes(): Consumes {
 		// Make a defensive copy
 		return Consumes.clone(this.consumes);
 	}
 
-	setConsumes(eventID: EventID, newConsumes: Consumes) {
-		if (Consumes.equals(this.consumes, newConsumes)) return;
+	setConsumes(eventID: EventID, newConsumes: ConsumesSpec) {
+		if (ConsumesSpec.equals(this.consumables, newConsumes)) return;
 
 		// Make a defensive copy
-		this.consumes = Consumes.clone(newConsumes);
+		this.consumables = ConsumesSpec.clone(newConsumes);
 		this.consumesChangeEmitter.emit(eventID);
 	}
 
@@ -1148,7 +1159,6 @@ export class Player<SpecType extends Spec> {
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
-
 		if (item.randomSuffixOptions.length > 0) {
 			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
 			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
@@ -1479,7 +1489,7 @@ export class Player<SpecType extends Spec> {
 		}
 		if (exportCategory(SimSettingCategories.Consumes)) {
 			PlayerProto.mergePartial(player, {
-				consumes: this.getConsumes(),
+				consumables: this.getConsumes(),
 			});
 		}
 		if (exportCategory(SimSettingCategories.Miscellaneous)) {
@@ -1506,9 +1516,11 @@ export class Player<SpecType extends Spec> {
 	}
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
-		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
-
+		// Fix potential out-of-date protos before importing
 		TypedEvent.freezeAllAndDo(() => {
+			Player.updateProtoVersion(proto);
+			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
+			eventID = TypedEvent.nextEventID();
 			if (loadCategory(SimSettingCategories.Gear)) {
 				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
 				this.itemSwapSettings.setItemSwapSettings(
@@ -1534,7 +1546,7 @@ export class Player<SpecType extends Spec> {
 				this.setAplRotation(eventID, proto.rotation || APLRotation.create());
 			}
 			if (loadCategory(SimSettingCategories.Consumes)) {
-				this.setConsumes(eventID, proto.consumes || Consumes.create());
+				this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
 			}
 			if (loadCategory(SimSettingCategories.Miscellaneous)) {
 				this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
@@ -1593,5 +1605,31 @@ export class Player<SpecType extends Spec> {
 
 	getMasteryPerPointModifier(): number {
 		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
+	}
+	static updateProtoVersion(proto: PlayerProto) {
+		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
+			return;
+		}
+
+		const conversionMap: ProtoConversionMap<PlayerProto> = new Map([
+			[
+				4,
+				(oldProto: PlayerProto) => {
+					const db = Database.getSync();
+					// Ensure consumables object exists
+					if (!oldProto.consumables) {
+						oldProto.consumables = ConsumesSpec.create();
+					}
+					oldProto.consumables = convertConsumesToSpec(oldProto.consumes, db, oldProto.consumables);
+					oldProto.apiVersion = 4;
+					return oldProto;
+				},
+			],
+		]);
+
+		migrateOldProto<PlayerProto>(proto, proto.apiVersion, conversionMap);
+
+		// Mark as fully up-to-date
+		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }
