@@ -7,6 +7,11 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Reduces the cost of Death Coil by 20%.
+
+While in Unholy Presence, grants your main-hand autoattacks a chance to make your next Death Coil cost no Runic Power.
+*/
 func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 	var suddenDoomAura *core.Aura
 	suddenDoomAura = uhdk.GetOrRegisterAura(core.Aura{
@@ -36,14 +41,24 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 		IntValue:  -100,
 	})
 
+	dpm := uhdk.AutoAttacks.NewPPMManager(3.0, core.ProcMaskMeleeMHAuto)
+
 	core.MakeProcTriggerAura(&uhdk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom Trigger" + uhdk.Label,
+		ActionID: core.ActionID{SpellID: 49530},
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto,
 		Outcome:  core.OutcomeLanded,
-		PPM:      3.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !uhdk.UnholyPresenceAura.IsActive() {
+				return
+			}
+
+			if !dpm.Proc(sim, spell.ProcMask, "Sudden Doom"+uhdk.Label) {
+				return
+			}
+
 			suddenDoomAura.Activate(sim)
 
 			// T13 2pc: Sudden Doom has a 20% chance to grant 2 charges when triggered instead of 1.
@@ -53,5 +68,9 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 				suddenDoomAura.SetStacks(sim, stacks)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
+		IntValue:  -20,
 	})
 }
