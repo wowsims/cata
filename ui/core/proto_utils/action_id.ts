@@ -1134,7 +1134,7 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 
 	// Off-Hand attacks
 	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand
-	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 49998 }], // Death Knight - Death Strike Off-Hand
+	[JSON.stringify({ spellId: 49998, tag: 2 }), { spellId: 66188 }], // Death Knight - Death Strike Off-Hand
 	[JSON.stringify({ spellId: 85948, tag: 2 }), { spellId: 86061 }], // Death Knight - Festering Strike Off-Hand
 	[JSON.stringify({ spellId: 49143, tag: 2 }), { spellId: 66196 }], // Death Knight - Frost Strike Off-Hand
 	[JSON.stringify({ spellId: 49020, tag: 2 }), { spellId: 66198 }], // Death Knight - Obliterate Off-Hand

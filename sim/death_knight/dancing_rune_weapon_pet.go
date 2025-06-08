@@ -40,13 +40,13 @@ type RuneWeaponPet struct {
 func (runeWeapon *RuneWeaponPet) Initialize() {
 	runeWeapon.dkOwner.registerDrwFrostFever()
 	runeWeapon.dkOwner.registerDrwBloodPlague()
-	runeWeapon.AddCopySpell(OutbreakActionID, runeWeapon.dkOwner.registerDrwOutbreak())
-	runeWeapon.AddCopySpell(IcyTouchActionID, runeWeapon.dkOwner.registerDrwIcyTouch())
 	// runeWeapon.AddCopySpell(BloodBoilActionID, runeWeapon.dkOwner.registerDrwBloodBoilSpell())
 	// runeWeapon.AddCopySpell(DeathCoilActionID, runeWeapon.dkOwner.registerDrwDeathCoilSpell())
+	runeWeapon.AddCopySpell(DeathStrikeActionID, runeWeapon.dkOwner.registerDrwDeathStrike())
+	runeWeapon.AddCopySpell(IcyTouchActionID, runeWeapon.dkOwner.registerDrwIcyTouch())
+	runeWeapon.AddCopySpell(OutbreakActionID, runeWeapon.dkOwner.registerDrwOutbreak())
 	runeWeapon.AddCopySpell(PestilenceActionID, runeWeapon.dkOwner.registerDrwPestilence())
 	runeWeapon.AddCopySpell(PlagueStrikeActionID, runeWeapon.dkOwner.registerDrwPlagueStrike())
-	// runeWeapon.AddCopySpell(DeathStrikeActionID, runeWeapon.dkOwner.registerDrwDeathStrikeSpell())
 }
 
 func (runeWeapon *RuneWeaponPet) DiseasesAreActive(target *core.Unit) bool {

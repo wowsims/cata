@@ -8,8 +8,6 @@ import (
 var obliterateActionID = core.ActionID{SpellID: 49020}
 
 func (dk *DeathKnight) registerObliterateSpell() {
-	hasBloodRites := dk.Inputs.Spec == proto.Spec_SpecBloodDeathKnight
-
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       obliterateActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -42,11 +40,7 @@ func (dk *DeathKnight) registerObliterateSpell() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			if hasBloodRites {
-				spell.SpendRefundableCostAndConvertFrostOrUnholyRune(sim, result, 1)
-			} else {
-				spell.SpendRefundableCost(sim, result)
-			}
+			spell.SpendRefundableCost(sim, result)
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)

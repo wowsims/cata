@@ -66,12 +66,14 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.DeathKnight.Initialize()
 
 	bdk.registerBloodParasite()
+	bdk.registerBloodRites()
 	bdk.registerBoneShield()
 	bdk.registerDancingRuneWeapon()
 	bdk.registerDarkCommand()
 	bdk.registerHeartStrike()
 	bdk.registerRuneStrike()
 	bdk.registerRuneTap()
+	bdk.registerScentOfBlood()
 	bdk.registerVampiricBlood()
 
 	bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrike())

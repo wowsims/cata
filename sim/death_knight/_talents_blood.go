@@ -34,9 +34,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 		dk.AddStatDependency(stats.Armor, stats.AttackPower, coeff/180.0)
 	}
 
-	// Scent of Blood
-	dk.applyScentOfBlood()
-
 	// Scarlet Fever
 	dk.applyScarletFever()
 
@@ -64,27 +61,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 
 	// Will of the Necropolis
 	dk.applyWillOfTheNecropolis()
-
-	// Improved Death Strike
-	if dk.Talents.ImprovedDeathStrike > 0 {
-		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathStrike,
-			FloatValue: 0.4 * float64(dk.Talents.ImprovedDeathStrike),
-		})
-
-		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathStrikeHeal,
-			FloatValue: 0.15 * float64(dk.Talents.ImprovedDeathStrike),
-		})
-
-		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Percent,
-			ClassMask:  DeathKnightSpellDeathStrike,
-			FloatValue: 10 * float64(dk.Talents.ImprovedDeathStrike),
-		})
-	}
 
 	// Crimson Scourge
 	dk.applyCrimsonScourge()
@@ -277,43 +253,6 @@ func (dk *DeathKnight) applyWillOfTheNecropolis() {
 			}
 
 			runeTapMod.Deactivate()
-		},
-	}))
-}
-
-func (dk *DeathKnight) applyScentOfBlood() {
-	if dk.Talents.ScentOfBlood == 0 {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: 50421}
-	procChance := 0.15
-
-	rpMetrics := dk.NewRunicPowerMetrics(actionID)
-
-	procAura := dk.RegisterAura(core.Aura{
-		Label:     "Scent of Blood Proc",
-		ActionID:  actionID,
-		Duration:  core.NeverExpires,
-		MaxStacks: dk.Talents.ScentOfBlood,
-
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			dk.AddRunicPower(sim, 10.0, rpMetrics)
-			aura.RemoveStack(sim)
-		},
-	})
-
-	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
-		Label: "Scent of Blood",
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if sim.Proc(procChance, "Scent Of Blood Proc Chance") {
-				procAura.Activate(sim)
-				procAura.SetStacks(sim, procAura.MaxStacks)
-			}
 		},
 	}))
 }

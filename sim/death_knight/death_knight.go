@@ -68,6 +68,9 @@ type DeathKnight struct {
 
 	// Used for T13 Tank 4pc
 	VampiricBloodBonusHealth float64
+
+	// Modified by T14 Tank 4pc
+	deathStrikeHealingMultiplier float64
 }
 
 func (deathKnight *DeathKnight) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
@@ -210,6 +213,8 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 			dk.gurthalakTentacles[i] = dk.NewTentacleOfTheOldOnesPet()
 		}
 	}
+
+	dk.deathStrikeHealingMultiplier = 0.2
 
 	return dk
 }

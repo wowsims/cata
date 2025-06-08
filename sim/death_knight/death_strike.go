@@ -9,7 +9,7 @@ import (
 
 var DeathStrikeActionID = core.ActionID{SpellID: 49998}
 
-func (dk *DeathKnight) registerDeathStrikeSpell() {
+func (dk *DeathKnight) registerDeathStrike() {
 	damageTakenInFive := 0.0
 
 	hasBloodRites := dk.Inputs.Spec == proto.Spec_SpecBloodDeathKnight
@@ -34,38 +34,42 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		},
 	}))
 
-	healingSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       DeathStrikeActionID.WithTag(3),
+	healingSpell := dk.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 45470},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskSpellHealing,
+		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: DeathKnightSpellDeathStrikeHeal,
-		Flags:          core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 0,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			healValue := damageTakenInFive * dk.deathStrikeHealingMultiplier
+			healValueModed := spell.CalcHealing(sim, target, healValue, spell.OutcomeHealingNoHitCounter).Damage
+
+			minHeal := spell.Unit.MaxHealth() * 0.07
+
+			flags := spell.Flags
+			healing := healValue
+			if healValueModed < minHeal {
+				// Remove caster modifiers for spell when doing min heal
+				spell.Flags |= core.SpellFlagIgnoreAttackerModifiers
+				healing = minHeal
+
+				// Scent of Blood healing modifier is applied to the min heal
+				// This **should** also be the only thing modifying the DamageMultiplier of this spell
+				healing *= spell.DamageMultiplier
+			}
+
+			spell.CalcAndDealHealing(sim, target, healing, spell.OutcomeHealing)
+
+			// Add back caster modifiers
+			spell.Flags = flags
+		},
 	})
 
-	doHealing := func(sim *core.Simulation, value float64) {
-		healValue := damageTakenInFive * value
-		healValueModed := healingSpell.CalcHealing(sim, healingSpell.Unit, healValue, healingSpell.OutcomeHealingNoHitCounter).Damage
-
-		minHeal := healingSpell.Unit.MaxHealth() * 0.07
-
-		flags := healingSpell.Flags
-		healing := healValue
-		if healValueModed < minHeal {
-			// Remove caster modifiers for spell when doing min heal
-			healingSpell.Flags |= core.SpellFlagIgnoreAttackerModifiers
-			healing = minHeal
-		}
-		healingSpell.Cast(sim, healingSpell.Unit)
-		healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, healing, healingSpell.OutcomeHealing)
-
-		// Add back caster modifiers
-		healingSpell.Flags = flags
-	}
-
-	dk.GetOrRegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       DeathStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
@@ -83,33 +87,32 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
-			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1.5,
+		DamageMultiplier: 1.85,
 		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.29399999976 +
+			baseDamage := dk.CalcScalingSpellDmg(0.40000000596) +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialNoParry)
 
 			if hasBloodRites {
 				spell.SpendCostAndConvertFrostOrUnholyRune(sim, result, 1)
 			}
-			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)
-			doHealing(sim, 0.2)
+
+			healingSpell.Cast(sim, &dk.Unit)
 		},
 	})
 }
 
-func (dk *DeathKnight) registerDrwDeathStrikeSpell() *core.Spell {
+func (dk *DeathKnight) registerDrwDeathStrike() *core.Spell {
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    DeathStrikeActionID.WithTag(1),
 		SpellSchool: core.SpellSchoolPhysical,
@@ -117,10 +120,10 @@ func (dk *DeathKnight) registerDrwDeathStrikeSpell() *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.29399999976 +
+			baseDamage := dk.CalcScalingSpellDmg(0.40000000596) +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialNoParry)
 		},
 	})
 }
