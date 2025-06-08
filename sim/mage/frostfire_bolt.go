@@ -44,10 +44,10 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 				mage.BrainFreezeAura.Deactivate(sim)
 			}
 			if mage.IcyVeinsAura.IsActive() && hasGlyph {
+				spell.DamageMultiplier /= .4
 				for _ = range 3 {
 					baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-					result.Damage = result.Damage * .4
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
 					})
@@ -55,6 +55,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 						mage.HandleIcicleGeneration(sim, target, result.Damage)
 					}
 				}
+				spell.DamageMultiplier /= .4
 			} else {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

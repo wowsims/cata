@@ -45,26 +45,29 @@ func (mage *Mage) registerIceLanceSpell() {
 			randomTarget := mage.Env.NextTargetUnit(target)
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
 			if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
+				spell.DamageMultiplier /= 2
 				if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
+					spell.DamageMultiplier *= .4
 					for _ = range 3 {
 						baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 						result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-						result.Damage = result.Damage * .4 / 2
 						spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 							spell.DealDamage(sim, result)
 						})
 					}
+					spell.DamageMultiplier /= .4
 				} else {
 					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 					result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-					result.Damage /= 2
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
 					})
 				}
+				spell.DamageMultiplier *= 2
 			}
 
 			if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
+				spell.DamageMultiplier *= .4
 				for _ = range 3 {
 					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -73,6 +76,7 @@ func (mage *Mage) registerIceLanceSpell() {
 						spell.DealDamage(sim, result)
 					})
 				}
+				spell.DamageMultiplier /= .4
 			} else {
 				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
