@@ -83,17 +83,25 @@ func (frostMage *FrostMage) ApplyTalents() {
 		frostMage.iceLanceFrozenCritBuffMod.UpdateFloatValue(frostMage.GetStat(stats.SpellCritPercent)*2 + 50)
 	})
 
-	frostMasteryMod := frostMage.Mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellIceLance,
-		FloatValue: frostMage.GetMasteryBonus(),
+	frostMasteryMod := frostMage.waterElemental.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  mage.MageWaterElementalSpellWaterBolt,
+		FloatValue: frostMage.GetFrostMasteryBonus(),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
 	frostMage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		frostMasteryMod.UpdateFloatValue(frostMage.GetMasteryBonus())
+		masteryBonus := frostMage.GetFrostMasteryBonus()
+		frostMasteryMod.UpdateFloatValue(masteryBonus)
 	})
-}
 
-func (frostMage *FrostMage) GetMasteryBonus() float64 {
-	return (.16 + 0.02*frostMage.Mage.GetMasteryPoints())
+	core.MakePermanent(frostMage.RegisterAura(core.Aura{
+		Label: "Mastery: Icicles - Water Elemental",
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frostMasteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			frostMasteryMod.Deactivate()
+		},
+	}))
+
 }

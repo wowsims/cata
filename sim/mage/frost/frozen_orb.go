@@ -18,7 +18,7 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 		ClassSpellMask: mage.MageSpellFrozenOrb,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 6,
+			BaseCostPercent: 10,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

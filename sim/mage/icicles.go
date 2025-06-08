@@ -49,27 +49,6 @@ func (mage *Mage) ApplyMastery() {
 			mage.IciclesAura.AddStack(sim)
 		},
 	})
-
-	// leaving this as a stub as I still have to redo the water elemental code.
-	waterElementalDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: mage.GetFrostMasteryBonus(),
-		ClassMask:  MageWaterElementalSpellWaterBolt,
-	})
-
-	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating, newMasteryRating float64) {
-		waterElementalDamageMod.UpdateFloatValue(mage.GetFrostMasteryBonus())
-	})
-
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Mastery: Icicles - Water Elemental",
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			waterElementalDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			waterElementalDamageMod.Deactivate()
-		},
-	}))
 }
 
 func (mage *Mage) castIcicleWithDamage(sim *core.Simulation, target *core.Unit, damage float64) {

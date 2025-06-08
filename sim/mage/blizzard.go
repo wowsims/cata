@@ -24,7 +24,6 @@ func (mage *Mage) registerBlizzardSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := mage.CalcAndRollDamageRange(sim, blizzardScaling, blizzardVariance)
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
