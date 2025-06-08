@@ -12,6 +12,7 @@ func (survHunter *SurvivalHunter) ApplyTalents() {
 	survHunter.ApplyMods()
 	survHunter.Hunter.ApplyTalents()
 }
+
 func (survHunter *SurvivalHunter) ApplyMods() {
 	survHunter.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
