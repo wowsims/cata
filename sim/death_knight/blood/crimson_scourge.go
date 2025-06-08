@@ -48,5 +48,9 @@ func (bdk *BloodDeathKnight) registerCrimsonScourge() {
 
 			crimsonScourgeAura.Activate(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  death_knight.DeathKnightSpellBloodBoil,
+		FloatValue: 0.1,
 	})
 }
