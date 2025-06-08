@@ -2,6 +2,7 @@ package druid
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -43,6 +44,11 @@ var ItemSetRegaliaOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Nature's Grace now also grants 1000 critical strike and 1000 mastery for its duration.
 			druid := agent.(DruidAgent).GetDruid()
+
+			if druid.Spec != proto.Spec_SpecBalanceDruid {
+				return
+			}
+
 			druid.NaturesGrace.AttachStatBuff(stats.MasteryRating, 1000)
 			druid.NaturesGrace.AttachStatBuff(stats.CritRating, 1000)
 		},

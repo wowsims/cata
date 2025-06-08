@@ -75,7 +75,7 @@ func (moonkin *BalanceDruid) registerDreamOfCenarius() {
 
 	moonkin.DreamOfCenarius = moonkin.RegisterAura(core.Aura{
 		Label:    "Dream of Cenarius",
-		ActionID: core.ActionID{SpellID: 108381},
+		ActionID: core.ActionID{SpellID: 145151},
 		Duration: time.Second * 30,
 	})
 

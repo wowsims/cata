@@ -224,13 +224,11 @@ func (druid *Druid) Initialize() {
 		}
 	})
 
-	druid.RegisterBaselineSpells()
-	druid.ApplyTalents()
-
 	druid.WeakenedBlowsAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.WeakenedBlowsAura(target)
 	})
 
+	druid.RegisterBaselineSpells()
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
