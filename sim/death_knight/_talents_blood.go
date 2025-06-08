@@ -61,63 +61,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 
 	// Will of the Necropolis
 	dk.applyWillOfTheNecropolis()
-
-	// Crimson Scourge
-	dk.applyCrimsonScourge()
-}
-
-func (dk *DeathKnight) applyCrimsonScourge() {
-	if dk.Talents.CrimsonScourge == 0 {
-		return
-	}
-
-	dk.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  DeathKnightSpellBloodBoil,
-		FloatValue: 0.2 * float64(dk.Talents.CrimsonScourge),
-	})
-
-	costMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: DeathKnightSpellBloodBoil,
-		IntValue:  -100,
-	})
-
-	procAura := dk.GetOrRegisterAura(core.Aura{
-		Label:    "Crimson Scourge Proc",
-		ActionID: core.ActionID{SpellID: 81141},
-		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Deactivate()
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != DeathKnightSpellBloodBoil {
-				return
-			}
-
-			if spell.CurCast.Cost > 0 {
-				return
-			}
-
-			aura.Deactivate(sim)
-		},
-	})
-
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:       "Crimson Scourge",
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskMelee,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.1,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if dk.BloodPlagueSpell.Dot(result.Target).IsActive() {
-				procAura.Activate(sim)
-			}
-		},
-	})
 }
 
 func (dk *DeathKnight) applyScarletFever() {

@@ -7,18 +7,18 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
-func (dk *BloodDeathKnight) registerScentOfBlood() {
+func (bdk *BloodDeathKnight) registerScentOfBlood() {
 	actionID := core.ActionID{SpellID: 50421}
-	rpMetrics := dk.NewRunicPowerMetrics(actionID)
+	rpMetrics := bdk.NewRunicPowerMetrics(actionID)
 
-	dsMod := dk.AddDynamicMod(core.SpellModConfig{
+	dsMod := bdk.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: death_knight.DeathKnightSpellDeathStrikeHeal,
 	})
 
 	var scentOfBloodAura *core.Aura
-	scentOfBloodAura = dk.RegisterAura(core.Aura{
-		Label:     "Scent of Blood" + dk.Label,
+	scentOfBloodAura = bdk.RegisterAura(core.Aura{
+		Label:     "Scent of Blood" + bdk.Label,
 		ActionID:  actionID,
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
@@ -42,7 +42,7 @@ func (dk *BloodDeathKnight) registerScentOfBlood() {
 	})
 
 	icd := core.Cooldown{
-		Timer:    dk.NewTimer(),
+		Timer:    bdk.NewTimer(),
 		Duration: time.Second * 1,
 	}
 
@@ -51,22 +51,22 @@ func (dk *BloodDeathKnight) registerScentOfBlood() {
 			return
 		}
 
-		if !sim.Proc(dk.AutoAttacks.MH().SwingSpeed/3.6, "Scent of Blood Proc") {
+		if !sim.Proc(bdk.AutoAttacks.MH().SwingSpeed/3.6, "Scent of Blood Proc") {
 			return
 		}
 
 		icd.Use(sim)
 
-		if !dk.Talents.Conversion || !dk.ConversionAura.IsActive() {
-			dk.AddRunicPower(sim, 10.0, rpMetrics)
+		if !bdk.Talents.Conversion || !bdk.ConversionAura.IsActive() {
+			bdk.AddRunicPower(sim, 10.0, rpMetrics)
 		}
 
 		scentOfBloodAura.Activate(sim)
 		scentOfBloodAura.AddStack(sim)
 	}
 
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:     "Scent Of Blood Auto Trigger" + dk.Label,
+	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{
+		Name:     "Scent Of Blood Auto Trigger" + bdk.Label,
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeWhiteHit,
 		Outcome:  core.OutcomeLanded,
@@ -74,8 +74,8 @@ func (dk *BloodDeathKnight) registerScentOfBlood() {
 		Handler: scentOfBloodHandler,
 	})
 
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:     "Scent Of Blood Avoidance Trigger" + dk.Label,
+	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{
+		Name:     "Scent Of Blood Avoidance Trigger" + bdk.Label,
 		Callback: core.CallbackOnSpellHitTaken,
 		Outcome:  core.OutcomeDodge | core.OutcomeParry,
 
