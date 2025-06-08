@@ -8,6 +8,7 @@ import (
 
 var OutbreakActionID = core.ActionID{SpellID: 77575}
 
+// Instantly applies Blood Plague and Frost Fever to the target enemy.
 func (dk *DeathKnight) registerOutbreak() {
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       OutbreakActionID,
@@ -18,7 +19,7 @@ func (dk *DeathKnight) registerOutbreak() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
