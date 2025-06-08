@@ -4,10 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerKillCommandSpell() {
-	if hunter.Pet == nil {
+	if hunter.Pet == nil || hunter.Spec != proto.Spec_SpecBeastMasteryHunter {
 		return
 	}
 
