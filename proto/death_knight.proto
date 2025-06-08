@@ -79,6 +79,8 @@ message DeathKnightOptions {
 }
 
 message BloodDeathKnight {
+	message Rotation {}
+
 	message Options {
 		DeathKnightOptions class_options = 1;
 	}
@@ -86,6 +88,8 @@ message BloodDeathKnight {
 }
 
 message FrostDeathKnight {
+	message Rotation {}
+
 	message Options {
 		DeathKnightOptions class_options = 1;
 	}
@@ -93,6 +97,8 @@ message FrostDeathKnight {
 }
 
 message UnholyDeathKnight {
+	message Rotation {}
+
 	message Options {
 		DeathKnightOptions class_options = 1;
 		UnitReference unholy_frenzy_target = 2;
