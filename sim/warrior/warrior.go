@@ -56,9 +56,12 @@ const (
 	SpellMaskDevastate
 	SpellMaskShockwave
 	SpellMaskBloodthirst
-	// SpellMaskRagingBlow
+	SpellMaskRagingBlow
+	SpellMaskRagingBlowMH
+	SpellMaskRagingBlowOH
 	SpellMaskMortalStrike
 	SpellMaskHeroicLeap
+	SpellMaskWildstrike
 
 	// Talents
 	SpellMaskImpendingVictory
@@ -116,7 +119,7 @@ type Warrior struct {
 	BerserkerRageAura   *core.Aura
 	TasteForBloodAura   *core.Aura
 	SweepingStrikesAura *core.Aura
-	// BloodsurgeAura    *core.Aura
+	// BloodsurgeAura      *core.Aura
 	// SuddenDeathAura   *core.Aura
 	// ShieldBlockAura   *core.Aura
 	// ThunderstruckAura *core.Aura
@@ -158,6 +161,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerShouts()
 	warrior.registerPassives()
 	warrior.registerBanners()
+	warrior.ApplyGlyphs()
 
 	warrior.registerBerserkerRage()
 	warrior.registerRallyingCry()
