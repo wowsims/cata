@@ -7,12 +7,12 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (monk *BrewmasterMonk) NewAPLValue(_ *core.APLRotation, config *proto.APLValue) core.APLValue {
+func (monk *BrewmasterMonk) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_BrewmasterMonkCurrentStaggerPercent:
 		return monk.newValueCurrentStaggerPercent(config.GetBrewmasterMonkCurrentStaggerPercent(), config.Uuid)
 	default:
-		return nil
+		return monk.Monk.NewAPLValue(rot, config)
 	}
 }
 
@@ -22,7 +22,7 @@ type APLValueBrewmasterMonkCurrentStaggerPercent struct {
 	aura *core.Aura
 }
 
-func (monk *BrewmasterMonk) newValueCurrentStaggerPercent(config *proto.APLValueBrewmasterMonkCurrentStaggerPercent, uuid *proto.UUID) core.APLValue {
+func (monk *BrewmasterMonk) newValueCurrentStaggerPercent(_ *proto.APLValueBrewmasterMonkCurrentStaggerPercent, _ *proto.UUID) core.APLValue {
 	return &APLValueBrewmasterMonkCurrentStaggerPercent{
 		monk: monk,
 		aura: monk.Stagger.SelfHot().Aura,

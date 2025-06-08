@@ -5,18 +5,16 @@ import (
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/druid"
 )
 
 type GuardianTreant struct {
-	core.Pet
+	*druid.DefaultTreantImpl
 }
 
 func (bear *GuardianDruid) newTreant() *GuardianTreant {
 	treant := &GuardianTreant{
-		Pet: core.NewPet(core.PetConfig{
-			Name:  "Treant",
-			Owner: &bear.Character,
-
+		DefaultTreantImpl: bear.NewDefaultTreant(druid.TreantConfig{
 			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				combinedHitExp := 0.5 * (ownerStats[stats.HitRating] + ownerStats[stats.ExpertiseRating])
 
@@ -30,48 +28,16 @@ func (bear *GuardianDruid) newTreant() *GuardianTreant {
 				}
 			},
 
-			HasDynamicMeleeSpeedInheritance: true,
+			EnableAutos:             true,
+			WeaponDamageCoefficient: 3.20000004768,
 		}),
 	}
 
-	// Auto-attack configuration
 	treant.PseudoStats.DamageDealtMultiplier *= 0.2
-	baseWeaponDamage := 3.20000004768 * bear.ClassSpellScaling
-
-	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
-		MainHand: core.Weapon{
-			BaseDamageMin:        baseWeaponDamage,
-			BaseDamageMax:        baseWeaponDamage,
-			SwingSpeed:           2,
-			NormalizedSwingSpeed: 2,
-			CritMultiplier:       bear.DefaultCritMultiplier(),
-			SpellSchool:          core.SpellSchoolPhysical,
-		},
-
-		AutoSwingMelee: true,
-	})
-
-	treant.OnPetEnable = func(sim *core.Simulation) {
-		treant.AutoAttacks.PauseMeleeBy(sim, 500 * time.Millisecond)
-	}
-
 	bear.AddPet(treant)
 
 	return treant
 }
-
-func (treant *GuardianTreant) Initialize() {}
-func (treant *GuardianTreant) ExecuteCustomRotation(_ *core.Simulation) {}
-
-func (treant *GuardianTreant) Reset(sim *core.Simulation) {
-	treant.Disable(sim)
-}
-
-func (treant *GuardianTreant) GetPet() *core.Pet {
-	return &treant.Pet
-}
-
-type GuardianTreants [3]*GuardianTreant
 
 func (bear *GuardianDruid) registerTreants() {
 	for idx := range bear.Treants {
@@ -79,9 +45,7 @@ func (bear *GuardianDruid) registerTreants() {
 	}
 }
 
-func (treants *GuardianTreants) Enable(sim *core.Simulation) {
-	for _, treant := range treants {
-		treant.EnableWithTimeout(sim, treant, time.Second * 15)
-		treant.ExtendGCDUntil(sim, sim.CurrentTime + time.Second * 15)
-	}
+func (treant *GuardianTreant) Enable(sim *core.Simulation) {
+	treant.DefaultTreantImpl.Enable(sim)
+	treant.ExtendGCDUntil(sim, sim.CurrentTime + time.Second * 15)
 }
