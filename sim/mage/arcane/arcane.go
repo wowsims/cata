@@ -64,7 +64,6 @@ func (arcaneMage *ArcaneMage) Initialize() {
 	arcaneMage.registerArcaneBlastSpell()
 	arcaneMage.registerArcaneCharges()
 	arcaneMage.registerArcaneMissilesSpell()
-	arcaneMage.registerArcanePowerCD()
 
 	arcaneMage.registerArcanePowerCD()
 }

@@ -37,7 +37,7 @@ func (arcane *ArcaneMage) registerArcaneCharges() {
 			abCostMod.UpdateIntValue(150 * newStacks)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(mage.MageSpellArcaneBlast | mage.MageSpellEvocation) {
+			if spell.Matches(mage.MageSpellArcaneBarrage | mage.MageSpellEvocation) {
 				aura.Deactivate(sim)
 			}
 		},

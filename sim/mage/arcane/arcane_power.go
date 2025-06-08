@@ -9,12 +9,11 @@ import (
 )
 
 func (arcane *ArcaneMage) registerArcanePowerCD() {
-
-	hasGlyph := !arcane.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfArcanePower)
+	hasGlyph := arcane.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfArcanePower)
 
 	arcanePowerDamageMod := arcane.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellsAllDamaging,
-		FloatValue: 0.15,
+		FloatValue: 0.20,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
@@ -24,40 +23,32 @@ func (arcane *ArcaneMage) registerArcanePowerCD() {
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
-	arcanePowerDurationMod := arcane.AddDynamicMod(core.SpellModConfig{
-		ClassMask: mage.MageSpellsAllDamaging,
-		IntValue:  10,
-		Kind:      core.SpellMod_BuffDuration_Flat,
-	})
-
-	arcanePowerCooldownMod := arcane.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellArcanePower,
-		FloatValue: 1.0,
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-	})
-
-	actionID := core.ActionID{SpellID: 12472}
+	actionID := core.ActionID{SpellID: 12042}
 	arcane.arcanePowerAura = arcane.RegisterAura(core.Aura{
-		Label:    "Icy Veins",
+		Label:    "Arcane Power",
 		ActionID: actionID,
-		Duration: time.Second * 20,
+		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if hasGlyph {
-				arcanePowerCooldownMod.Activate()
-				arcanePowerDurationMod.Activate()
-			}
 			arcanePowerDamageMod.Activate()
 			arcanePowerCostMod.Activate()
 		},
 		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-			if hasGlyph {
-				arcanePowerCooldownMod.Deactivate()
-				arcanePowerDurationMod.Deactivate()
-			}
 			arcanePowerDamageMod.Deactivate()
 			arcanePowerCostMod.Deactivate()
 		},
 	})
+
+	if hasGlyph {
+		arcane.arcanePowerAura.AttachSpellMod(core.SpellModConfig{
+			ClassMask: mage.MageSpellArcanePower,
+			TimeValue: time.Second * 15,
+			Kind:      core.SpellMod_BuffDuration_Flat,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  mage.MageSpellArcanePower,
+			FloatValue: 1.0,
+			Kind:       core.SpellMod_Cooldown_Multiplier,
+		})
+	}
 
 	arcane.arcanePower = arcane.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -67,7 +58,7 @@ func (arcane *ArcaneMage) registerArcanePowerCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    arcane.NewTimer(),
-				Duration: time.Millisecond * 1500,
+				Duration: time.Second * 90,
 			},
 			DefaultCast: core.Cast{
 				NonEmpty: true,

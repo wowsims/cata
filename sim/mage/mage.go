@@ -94,9 +94,7 @@ func (mage *Mage) Initialize() {
 	mage.applyArmorSpells()
 	mage.applyGlyphs()
 	mage.ApplyMastery()
-	// mage.registerArcaneBlastSpell()
 	// mage.registerArcaneExplosionSpell()
-	mage.registerArcaneMissilesSpell()
 	mage.registerBlizzardSpell()
 	mage.registerConeOfColdSpell()
 	mage.registerDeepFreezeSpell()
@@ -118,45 +116,7 @@ func (mage *Mage) Initialize() {
 	mage.registerfrostNovaSpell()
 	mage.registerIceLanceSpell()
 	mage.registerIcyVeinsCD()
-	// mage.applyArcaneMissileProc()
 }
-
-// TODO: Fix this to work with the new talent system.
-// func (mage *Mage) applyArcaneMissileProc() {
-// 	if mage.Talents.HotStreak || mage.Talents.BrainFreeze > 0 {
-// 		return
-// 	}
-
-// 	// Aura for when proc is successful
-// 	mage.arcaneMissilesProcAura = mage.RegisterAura(core.Aura{
-// 		Label:    "Arcane Missiles Proc",
-// 		ActionID: core.ActionID{SpellID: 79683},
-// 		Duration: time.Second * 20,
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if spell.ClassSpellMask == MageSpellArcaneMissilesCast {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 	})
-
-// 	procChance := 0.4
-
-// 	const MageSpellsArcaneMissilesNow = MageSpellArcaneBarrage | MageSpellArcaneBlast |
-// 		MageSpellFireball | MageSpellFrostbolt | MageSpellFrostfireBolt | MageSpellFrostfireOrb
-
-// 	// Listener for procs
-// 	core.MakePermanent(mage.RegisterAura(core.Aura{
-// 		Label: "Arcane Missiles Activation",
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if spell.ClassSpellMask&MageSpellsArcaneMissilesNow == 0 {
-// 				return
-// 			}
-// 			if sim.Proc(procChance, "Arcane Missiles") {
-// 				mage.arcaneMissilesProcAura.Activate(sim)
-// 			}
-// 		},
-// 	}))
-// }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 	mage.arcaneMissileCritSnapshot = 0.0
