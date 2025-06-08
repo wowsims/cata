@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -475,6 +476,8 @@ func (dk *DeathKnight) registerDeathPact() {
 	}
 }
 
+var DeathSiphonActionID = core.ActionID{SpellID: 108196}
+
 // Deal 6926 Shadowfrost damage to an enemy, healing the Death Knight for 150% of damage dealt.
 func (dk *DeathKnight) registerDeathSiphon() {
 	if !dk.Talents.DeathSiphon {
@@ -497,7 +500,7 @@ func (dk *DeathKnight) registerDeathSiphon() {
 	})
 
 	dk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 108196},
+		ActionID:       DeathSiphonActionID,
 		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -529,6 +532,26 @@ func (dk *DeathKnight) registerDeathSiphon() {
 			}
 
 			spell.DealDamage(sim, result)
+		},
+	})
+
+	if dk.Spec == proto.Spec_SpecBloodDeathKnight {
+		dk.RuneWeapon.AddCopySpell(DeathSiphonActionID, dk.registerDrwDeathSiphon())
+	}
+}
+
+func (dk *DeathKnight) registerDrwDeathSiphon() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    DeathSiphonActionID,
+		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL,
+
+		MaxRange: 40,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.CalcAndRollDamageRange(sim, 6.59999990463, 0.15000000596) + 0.37400001287*spell.MeleeAttackPower()
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

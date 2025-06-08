@@ -46,22 +46,22 @@ func (dk *DeathKnight) registerIcyTouchSpell() {
 	})
 }
 
-// func (dk *DeathKnight) registerDrwIcyTouchSpell() *core.Spell {
-// 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-// 		ActionID:    IcyTouchActionID,
-// 		SpellSchool: core.SpellSchoolFrost,
-// 		ProcMask:    core.ProcMaskSpellDamage,
+func (dk *DeathKnight) registerDrwIcyTouch() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    IcyTouchActionID,
+		SpellSchool: core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage,
 
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := dk.ClassSpellScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.CalcAndRollDamageRange(sim, 0.46799999475, 0.08299999684) + spell.MeleeAttackPower()*0.319
 
-// 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-// 			if result.Landed() {
-// 				dk.RuneWeapon.FrostFeverSpell.Cast(sim, target)
-// 			}
+			if result.Landed() {
+				dk.RuneWeapon.FrostFeverSpell.Cast(sim, target)
+			}
 
-// 			spell.DealDamage(sim, result)
-// 		},
-// 	})
-// }
+			spell.DealDamage(sim, result)
+		},
+	})
+}

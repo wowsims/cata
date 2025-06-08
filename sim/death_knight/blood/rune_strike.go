@@ -5,9 +5,11 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+var RuneStrikeActionID = core.ActionID{SpellID: 56815}
+
 func (bdk *BloodDeathKnight) registerRuneStrike() {
 	bdk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 56815},
+		ActionID:       RuneStrikeActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMH, // Rune Strike triggers white hit procs as well so we give it both masks.
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -42,23 +44,19 @@ func (bdk *BloodDeathKnight) registerRuneStrike() {
 	})
 }
 
-// func (bdk *BloodDeathKnight) registerDrwRuneStrikeSpell() *core.Spell {
-// 	return bdk.RuneWeapon.RegisterSpell(core.SpellConfig{
-// 		ActionID:    core.ActionID{SpellID: 62036},
-// 		SpellSchool: core.SpellSchoolPhysical,
-// 		ProcMask:    core.ProcMaskMeleeMH,
-// 		Flags:       core.SpellFlagMeleeMetrics,
+func (bdk *BloodDeathKnight) registerDrwRuneStrike() *core.Spell {
+	return bdk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 62036},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMH,
+		Flags:       core.SpellFlagMeleeMetrics,
 
-// 		MaxRange: core.MaxMeleeRange,
+		MaxRange: core.MaxMeleeRange,
 
-// 		DamageMultiplier: 2,
-// 		CritMultiplier:   bdk.DefaultCritMultiplier(),
-// 		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.MeleeAttackPower()*0.1
 
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.MeleeAttackPower()*0.1
-
-// 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
-// 		},
-// 	})
-// }
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+		},
+	})
+}

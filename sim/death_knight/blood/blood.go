@@ -41,7 +41,7 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		}, options.TalentsString, 50034),
 	}
 
-	// bdk.RuneWeapon = bdk.NewRuneWeapon()
+	bdk.RuneWeapon = bdk.NewRuneWeapon()
 
 	bdk.Bloodworm = make([]*death_knight.BloodwormPet, 5)
 	for i := range 5 {
@@ -60,16 +60,14 @@ func (bdk *BloodDeathKnight) Initialize() {
 
 	bdk.registerBloodParasite()
 	bdk.registerBoneShield()
-	// bdk.registerDancingRuneWeaponSpell()
-	// bdk.registerHeartStrikeSpell()
+	bdk.registerDancingRuneWeapon()
+	bdk.registerHeartStrike()
 	bdk.registerRuneStrike()
 	bdk.registerRuneTap()
 	bdk.registerVampiricBlood()
 
-	// TODO: Fix this to work with the new talent system.
-	// if bdk.Talents.DancingRuneWeapon {
-	// 	bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrikeSpell())
-	// }
+	bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrike())
+	bdk.RuneWeapon.AddCopySpell(RuneStrikeActionID, bdk.registerDrwRuneStrike())
 }
 
 func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {

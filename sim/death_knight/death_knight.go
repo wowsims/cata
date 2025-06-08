@@ -37,11 +37,11 @@ type DeathKnight struct {
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul     *GhoulPet
-	Gargoyle  *GargoylePet
-	ArmyGhoul []*GhoulPet
-	// RuneWeapon *RuneWeaponPet
-	Bloodworm []*BloodwormPet
+	Ghoul      *GhoulPet
+	Gargoyle   *GargoylePet
+	ArmyGhoul  []*GhoulPet
+	RuneWeapon *RuneWeaponPet
+	Bloodworm  []*BloodwormPet
 
 	PestilenceSpell *core.Spell
 
@@ -104,7 +104,7 @@ func (dk *DeathKnight) Initialize() {
 	// dk.registerAntiMagicShellSpell()
 	dk.registerArmyOfTheDeadSpell()
 	// dk.registerBloodBoilSpell()
-	// dk.registerBloodPlague()
+	dk.registerBloodPlague()
 	// // Overriden by Heart Strike for Blood
 	// if dk.Spec != proto.Spec_SpecBloodDeathKnight {
 	// 	dk.registerBloodStrikeSpell()
@@ -113,11 +113,11 @@ func (dk *DeathKnight) Initialize() {
 	// dk.registerDeathCoilSpell()
 	// dk.registerDeathStrikeSpell()
 	dk.registerEmpowerRuneWeaponSpell()
-	// dk.registerFrostFever()
+	dk.registerFrostFever()
 	dk.registerHornOfWinterSpell()
 	// dk.registerIceboundFortitudeSpell()
 	dk.registerIcyTouchSpell()
-	// dk.registerOutbreak()
+	dk.registerOutbreak()
 	dk.registerPestilenceSpell()
 	dk.registerPlagueStrikeSpell()
 	// dk.registerPresences()
@@ -146,8 +146,6 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents)
 
-	// TODO: Fix this to work with the new talent system.
-	// maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
 	maxRunicPower := 100.0
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 

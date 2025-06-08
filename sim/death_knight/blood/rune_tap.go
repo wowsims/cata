@@ -7,11 +7,9 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
-var RuneTapActionID = core.ActionID{SpellID: 48982}
-
 func (bdk *BloodDeathKnight) registerRuneTap() {
 	spell := bdk.RegisterSpell(core.SpellConfig{
-		ActionID:       RuneTapActionID,
+		ActionID:       core.ActionID{SpellID: 48982},
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
 		ProcMask:       core.ProcMaskSpellHealing,

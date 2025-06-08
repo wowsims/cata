@@ -11,7 +11,7 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.PestilenceSpell = dk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 50842},
+		ActionID:       PestilenceActionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -55,6 +55,37 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 						}
 						if bloodPlagueActive {
 							dk.BloodPlagueSpell.Cast(sim, aoeTarget)
+						}
+					}
+				}
+			}
+		},
+	})
+}
+
+func (dk *DeathKnight) registerDrwPestilence() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 50842},
+		Flags:       core.SpellFlagAPL,
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+
+		MaxRange: core.MaxMeleeRange,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			frostFeverActive := dk.RuneWeapon.FrostFeverSpell.Dot(target).IsActive()
+			bloodPlagueActive := dk.RuneWeapon.BloodPlagueSpell.Dot(target).IsActive()
+
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				result := spell.CalcAndDealOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
+
+				if result.Landed() {
+					if aoeTarget != target {
+						if frostFeverActive {
+							dk.RuneWeapon.FrostFeverSpell.Cast(sim, aoeTarget)
+						}
+						if bloodPlagueActive {
+							dk.RuneWeapon.BloodPlagueSpell.Cast(sim, aoeTarget)
 						}
 					}
 				}

@@ -29,24 +29,6 @@ package frost
 // 	})
 
 // ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-// 		ActionID:       RuneStrikeActionID.WithTag(2),
-// 		SpellSchool:    core.SpellSchoolPhysical,
-// 		ProcMask:       core.ProcMaskMeleeOH, // Rune Strike triggers white hit procs as well so we give it both masks.
-// 		Flags:          core.SpellFlagMeleeMetrics,
-// 		ClassSpellMask: DeathKnightSpellRuneStrike,
-
-// 		DamageMultiplier: 1.8,
-// 		CritMultiplier:   dk.DefaultCritMultiplier(),
-// 		ThreatMultiplier: 1.75,
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.MeleeAttackPower()*0.05
-
-// 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-// 		},
-// 	})
-
-// ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
 // 		ActionID:       BloodStrikeActionID.WithTag(2),
 // 		SpellSchool:    core.SpellSchoolPhysical,
 // 		ProcMask:       core.ProcMaskMeleeOHSpecial,
@@ -87,25 +69,6 @@ package frost
 // 		doHealing(sim, 0.05)
 // 	},
 // })
-
-// ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-// 		ActionID:       FesteringStrikeActionID.WithTag(2),
-// 		SpellSchool:    core.SpellSchoolPhysical,
-// 		ProcMask:       core.ProcMaskMeleeOHSpecial,
-// 		Flags:          core.SpellFlagMeleeMetrics,
-// 		ClassSpellMask: DeathKnightSpellFesteringStrike,
-
-// 		DamageMultiplier: 1.5,
-// 		CritMultiplier:   dk.DefaultCritMultiplier(),
-// 		ThreatMultiplier: 1,
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := dk.ClassSpellScaling*0.24899999797 +
-// 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-// 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-// 		},
-// 	})
 
 // ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
 // 		ActionID:       obliterateActionID.WithTag(2),
