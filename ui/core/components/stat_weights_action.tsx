@@ -22,7 +22,8 @@ export class StatWeightActionSettings {
 	private readonly storageKey: string;
 	readonly changeEmitter = new TypedEvent<void>();
 
-	excludedFromCalc = UnitStats.create();
+	excludedStats: Stat[] = [];
+	excludedPseudoStats: PseudoStat[] = [];
 
 	constructor(simUI: SimUI) {
 		this.storageKey = simUI.getStorageKey('__statweight_settings__');
@@ -33,22 +34,25 @@ export class StatWeightActionSettings {
 	}
 
 	applyDefaults(eventID: EventID) {
-		this.excludedFromCalc = UnitStats.create();
+		this.excludedStats = [];
+		this.excludedPseudoStats = [];
 		this.changeEmitter.emit(eventID);
 	}
 
 	load(eventID: EventID) {
 		const storageValue = window.localStorage.getItem(this.storageKey);
 		if (storageValue) {
-			const loaded = SavedStatWeightSettings.fromJsonString(storageValue);
-			if (loaded.excludedFromCalc) this.excludedFromCalc = loaded.excludedFromCalc;
+			const { excludedStats, excludedPseudoStats } = SavedStatWeightSettings.fromJsonString(storageValue);
+			if (excludedStats?.length) this.excludedStats = excludedStats;
+			if (excludedPseudoStats?.length) this.excludedPseudoStats = excludedPseudoStats;
 			this.changeEmitter.emit(eventID);
 		}
 	}
 
 	toProto(): SavedStatWeightSettings {
 		const proto = SavedStatWeightSettings.create();
-		proto.excludedFromCalc = this.excludedFromCalc;
+		proto.excludedStats = this.excludedStats;
+		proto.excludedPseudoStats = this.excludedPseudoStats;
 		return proto;
 	}
 
@@ -58,7 +62,7 @@ export class StatWeightActionSettings {
 	 * @returns true if stat should be excluded.
 	 */
 	isStatExcludedFromCalc(stat: Stat): boolean {
-		return !!this.excludedFromCalc?.stats.includes(stat);
+		return !!this.excludedStats.includes(stat);
 	}
 
 	/**
@@ -66,8 +70,8 @@ export class StatWeightActionSettings {
 	 * @param pseudoStat
 	 * @returns true if pseudostat should be excluded.
 	 */
-	isPseudostatExcludedFromCalc(pseudoStat: PseudoStat): boolean {
-		return !!this.excludedFromCalc?.pseudoStats.includes(pseudoStat);
+	isPseudoStatExcludedFromCalc(pseudoStat: PseudoStat): boolean {
+		return !!this.excludedPseudoStats.includes(pseudoStat);
 	}
 
 	/**
@@ -76,7 +80,7 @@ export class StatWeightActionSettings {
 	 * @returns true if unitstat should be excluded.
 	 */
 	isUnitStatExcludedFromCalc(unitstat: UnitStat): boolean {
-		return unitstat.isStat() ? this.isStatExcludedFromCalc(unitstat.getStat()) : this.isPseudostatExcludedFromCalc(unitstat.getPseudoStat());
+		return unitstat.isStat() ? this.isStatExcludedFromCalc(unitstat.getStat()) : this.isPseudoStatExcludedFromCalc(unitstat.getPseudoStat());
 	}
 
 	/**
@@ -94,9 +98,9 @@ export class StatWeightActionSettings {
 			}
 		};
 		if (stat.isStat()) {
-			updateStatEntry(stat.getStat(), this.excludedFromCalc.stats);
+			updateStatEntry(stat.getStat(), this.excludedStats);
 		} else {
-			updateStatEntry(stat.getPseudoStat(), this.excludedFromCalc.pseudoStats);
+			updateStatEntry(stat.getPseudoStat(), this.excludedPseudoStats);
 		}
 		this.changeEmitter.emit(eventID);
 	}
@@ -367,7 +371,7 @@ export class EpWeightsMenu extends BaseModal {
 			});
 
 			const epStatsToCalc = this.epStats.filter(s => !this.settings.isStatExcludedFromCalc(s));
-			const epPseudoStatsToCalc = this.epPseudoStats.filter(ps => !this.settings.isPseudostatExcludedFromCalc(ps));
+			const epPseudoStatsToCalc = this.epPseudoStats.filter(ps => !this.settings.isPseudoStatExcludedFromCalc(ps));
 
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
@@ -503,12 +507,12 @@ export class EpWeightsMenu extends BaseModal {
 	 * @param newWeights
 	 */
 	private setEpWeightsWithoutExcluded(newWeights: Stats) {
-		const excludedStats = this.settings.excludedFromCalc;
+		const { excludedStats, excludedPseudoStats } = this.settings;
 		const oldWeights = this.simUI.player.getEpWeights();
-		for (const stat of excludedStats.stats) {
+		for (const stat of excludedStats) {
 			newWeights = newWeights.withStat(stat, oldWeights.getStat(stat));
 		}
-		for (const pseudoStat of excludedStats.pseudoStats) {
+		for (const pseudoStat of excludedPseudoStats) {
 			newWeights = newWeights.withPseudoStat(pseudoStat, oldWeights.getPseudoStat(pseudoStat));
 		}
 		this.simUI.player.setEpWeights(TypedEvent.nextEventID(), newWeights);

@@ -398,6 +398,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				const jsonStr = IndividualSimSettings.toJsonString(this.toProto());
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
+
+			this.statWeightActionSettings.load(initEventID);
 		});
 	}
 
