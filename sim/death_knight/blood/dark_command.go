@@ -9,6 +9,7 @@ import (
 
 var DarkCommandActionID = core.ActionID{SpellID: 56222}
 
+// Commands the target to attack you, and increases threat that you generate against the target by 200% for 3 sec.
 func (bdk *BloodDeathKnight) registerDarkCommand() {
 	tdbcHandler := func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
 		return 2.0

@@ -6,7 +6,11 @@ import (
 
 var BloodBoilActionID = core.ActionID{SpellID: 48721}
 
-func (dk *DeathKnight) registerBloodBoilSpell() {
+/*
+Boils the blood of all enemies within 10 yards, dealing (<3472-4245> + <AP> * 0.11) Shadow damage.
+Deals 50% additional damage to targets infected with Blood Plague or Frost Fever.
+*/
+func (dk *DeathKnight) registerBloodBoil() {
 	rpMetric := dk.NewRunicPowerMetrics(BloodBoilActionID)
 	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
 	dk.RegisterSpell(core.SpellConfig{
@@ -51,7 +55,7 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 	})
 }
 
-func (dk *DeathKnight) registerDrwBloodBoilSpell() *core.Spell {
+func (dk *DeathKnight) registerDrwBloodBoil() *core.Spell {
 	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    BloodBoilActionID,

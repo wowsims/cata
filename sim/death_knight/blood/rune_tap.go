@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+// Converts 1 Blood Rune into 10% of your maximum health.
 func (bdk *BloodDeathKnight) registerRuneTap() {
 	spell := bdk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 48982},

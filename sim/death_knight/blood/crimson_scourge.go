@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Increases the damage dealt by your Blood Boil by 10%, and when you land a melee attack on a target that is infected with your Blood Plague, there is a 10% chance that your next Blood Boil or Death and Decay will consume no runes.
+(Proc chance: 10%)
+*/
 func (bdk *BloodDeathKnight) registerCrimsonScourge() {
 	var crimsonScourgeAura *core.Aura
 	crimsonScourgeAura = bdk.RegisterAura(core.Aura{

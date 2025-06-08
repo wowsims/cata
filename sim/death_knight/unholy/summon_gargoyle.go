@@ -7,9 +7,14 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
-func (uhdk *UnholyDeathKnight) registerSummonGargoyleSpell() {
+/*
+A Gargoyle flies into the area and bombards the target with Plague damage modified by the Death Knight's attack power.
+Persists for 30 sec.
+*/
+func (uhdk *UnholyDeathKnight) registerSummonGargoyle() {
+	actionID := core.ActionID{SpellID: 49206}
 	spell := uhdk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 49206},
+		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: death_knight.DeathKnightSpellSummonGargoyle,
 
@@ -33,8 +38,8 @@ func (uhdk *UnholyDeathKnight) registerSummonGargoyleSpell() {
 		},
 
 		RelatedSelfBuff: uhdk.RegisterAura(core.Aura{
-			Label:    "Summon Gargoyle",
-			ActionID: core.ActionID{SpellID: 49206},
+			Label:    "Summon Gargoyle" + uhdk.Label,
+			ActionID: actionID,
 			Duration: time.Second * 30,
 		}),
 	})

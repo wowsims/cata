@@ -7,7 +7,11 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (dk *DeathKnight) registerHornOfWinterSpell() {
+/*
+The Death Knight blows the Horn of Winter, which generates 10 Runic Power and increases attack power of all party and raid members within 100 yards by 10%.
+Lasts 5 min.
+*/
+func (dk *DeathKnight) registerHornOfWinter() {
 	actionID := core.ActionID{SpellID: 57330}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 

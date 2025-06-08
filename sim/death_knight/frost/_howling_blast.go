@@ -6,6 +6,7 @@ import (
 
 var HowlingBlastActionID = core.ActionID{SpellID: 49184}
 
+// Blast the target with a frigid wind, dealing (<mastery> * (573 + 0.848 * <AP>)) Frost damage to that foe, and (0.5 * <mastery> * (573 + 0.848 * <AP>)) Frost damage to all other enemies within 10 yards, infecting all targets with Frost Fever.
 func (dk *DeathKnight) registerHowlingBlastSpell() {
 	if !dk.Talents.HowlingBlast {
 		return

@@ -5,6 +5,12 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Increases the damage your diseases deal by 60%, causes your Plague Strike to also apply Frost Fever, and causes your Blood Plague to also apply the Physical Vulnerability effect.
+
+Physical Vulnerability
+Weakens the constitution of an enemy target, increasing their physical damage taken by 4% for 30 sec.
+*/
 func (uhdk *UnholyDeathKnight) registerEbonPlaguebringer() {
 	auraArray := uhdk.NewEnemyAuraArray(core.PhysVulnerabilityAura)
 

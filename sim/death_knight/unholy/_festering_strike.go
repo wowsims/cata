@@ -13,7 +13,8 @@ func festeringExtendHandler(aura *core.Aura) {
 	aura.UpdateExpires(aura.ExpiresAt() + time.Second*6)
 }
 
-func (dk *DeathKnight) registerFesteringStrikeSpell() {
+// An instant attack that deals 200% weapon damage plus 540 and increases the duration of your Blood Plague, Frost Fever, and Chains of Ice effects on the target by up to 6 sec.
+func (dk *DeathKnight) registerFesteringStrike() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.GetOrRegisterSpell(core.SpellConfig{
@@ -62,33 +63,6 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 				}
 				if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
 					festeringExtendHandler(dk.EbonPlagueAura.Get(target))
-				}
-			}
-
-			spell.DealDamage(sim, result)
-		},
-	})
-}
-
-func (dk *DeathKnight) registerDrwFesteringStrikeSpell() *core.Spell {
-	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-		ActionID:    FesteringStrikeActionID.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.49799999595 +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
-			if result.Landed() {
-				if dk.RuneWeapon.FrostFeverSpell.Dot(target).IsActive() {
-					festeringExtendHandler(dk.RuneWeapon.FrostFeverSpell.Dot(target).Aura)
-				}
-				if dk.RuneWeapon.BloodPlagueSpell.Dot(target).IsActive() {
-					festeringExtendHandler(dk.RuneWeapon.BloodPlagueSpell.Dot(target).Aura)
 				}
 			}
 

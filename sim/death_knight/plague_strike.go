@@ -6,7 +6,18 @@ import (
 
 var PlagueStrikeActionID = core.ActionID{SpellID: 45462}
 
-func (dk *DeathKnight) registerPlagueStrikeSpell() {
+/*
+A vicious strike that deals 100% weapon damage plus 466 and infects the target with Blood Plague, a disease dealing Shadow damage over time
+
+-- Ebon Plaguebringer --
+
+and Frost Fever, a disease dealing Frost damage over time
+
+-- /Ebon Plaguebringer --
+
+.
+*/
+func (dk *DeathKnight) registerPlagueStrike() {
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       PlagueStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,

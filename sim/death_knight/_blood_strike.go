@@ -7,7 +7,11 @@ import (
 
 var BloodStrikeActionID = core.ActionID{SpellID: 45902}
 
-func (dk *DeathKnight) registerBloodStrikeSpell() {
+/*
+Instantly strike the enemy, causing 40% weapon damage plus 942.
+Damage is increased by 12.5% for each of your diseases on the target.
+*/
+func (dk *DeathKnight) registerBloodStrike() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.GetOrRegisterSpell(core.SpellConfig{
@@ -49,22 +53,6 @@ func (dk *DeathKnight) registerBloodStrikeSpell() {
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)
-		},
-	})
-}
-
-func (dk *DeathKnight) registerDrwBloodStrikeSpell() *core.Spell {
-	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-		ActionID:    BloodStrikeActionID.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassSpellScaling*0.75599998236 +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
 }

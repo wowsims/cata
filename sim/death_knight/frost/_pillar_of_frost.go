@@ -7,6 +7,23 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
+/*
+Calls upon the power of Frost to increase the Death Knight's Strength by 20%.
+Icy crystals hang heavy upon the Death Knight's body, providing immunity against external movement
+
+-- Glyph of Pillar of Frost --
+
+and all effects that cause loss of control, but also reducing movement speed by 70% while active
+
+-- else --
+
+such as knockbacks
+
+----------
+
+.
+Lasts 20 sec.
+*/
 func (dk *DeathKnight) registerPillarOfFrostSpell() {
 	if !dk.Talents.PillarOfFrost {
 		return

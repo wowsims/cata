@@ -7,6 +7,10 @@ import (
 
 var HeartStrikeActionID = core.ActionID{SpellID: 55050}
 
+/*
+Instantly strike the target and up to two additional nearby enemies, causing 105% weapon damage plus 545 on the primary target, with each additional enemy struck taking 50% less damage than the previous target.
+Damage dealt to each target is increased by an additional 15% for each of your diseases present.
+*/
 func (bdk *BloodDeathKnight) registerHeartStrike() {
 	numHits := min(3, bdk.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)

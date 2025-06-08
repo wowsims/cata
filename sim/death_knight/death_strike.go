@@ -9,6 +9,10 @@ import (
 
 var DeathStrikeActionID = core.ActionID{SpellID: 49998}
 
+/*
+Focuses dark power into a strike that deals 185% weapon damage plus 499 to an enemy and heals you for 20% of the damage you have sustained from non-player sources during the preceding 5 sec (minimum of at least 7% of your maximum health).
+This attack cannot be parried.
+*/
 func (dk *DeathKnight) registerDeathStrike() {
 	damageTakenInFive := 0.0
 

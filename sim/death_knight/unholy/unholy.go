@@ -61,12 +61,12 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 
 	uhdk.registerDarkTransformation()
 	uhdk.registerEbonPlaguebringer()
-	// uhdk.registerFesteringStrikeSpell()
-	// uhdk.registerScourgeStrikeSpell()
+	// uhdk.registerFesteringStrike()
+	// uhdk.registerScourgeStrike()
 	uhdk.registerShadowInfusion()
 	uhdk.registerSuddenDoom()
-	uhdk.registerSummonGargoyleSpell()
-	// uhdk.registerUnholyFrenzySpell()
+	uhdk.registerSummonGargoyle()
+	// uhdk.registerUnholyFrenzy()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {

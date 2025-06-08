@@ -6,7 +6,12 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerRaiseDeadSpell() {
+/*
+Raises a ghoul to fight by your side.
+You can have a maximum of one ghoul at a time.
+Lasts 1 min.
+*/
+func (dk *DeathKnight) registerRaiseDead() {
 	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 46584},
 		Flags:          core.SpellFlagAPL,

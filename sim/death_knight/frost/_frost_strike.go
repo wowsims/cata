@@ -7,6 +7,7 @@ import (
 
 var frostStrikeActionID = core.ActionID{SpellID: 49143}
 
+// Instantly strike the enemy, causing 115% weapon damage as Frost damage.
 func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       frostStrikeActionID.WithTag(1),

@@ -6,7 +6,8 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerIceboundFortitudeSpell() {
+// The Death Knight freezes his blood to become immune to Stun effects and reduce all damage taken by 20% for 12 sec.
+func (dk *DeathKnight) registerIceboundFortitude() {
 	actionID := core.ActionID{SpellID: 48792}
 
 	dmgTakenMult := 0.8 - 0.15*float64(dk.Talents.SanguineFortitude)

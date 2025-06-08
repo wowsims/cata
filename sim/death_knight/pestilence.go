@@ -7,7 +7,8 @@ import (
 
 var PestilenceActionID = core.ActionID{SpellID: 50842}
 
-func (dk *DeathKnight) registerPestilenceSpell() {
+// Spreads existing Blood Plague and Frost Fever infections from your target to all other enemies within 10 yards.
+func (dk *DeathKnight) registerPestilence() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.PestilenceSpell = dk.RegisterSpell(core.SpellConfig{

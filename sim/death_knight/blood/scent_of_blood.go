@@ -7,6 +7,11 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Your successful main-hand autoattacks, dodges and parries have a chance to increase the healing and minimum healing done by your next Death Strike within 20 sec by 20%, and to generate 10 Runic Power.
+This effect stacks up to 5 times.
+(1s cooldown)
+*/
 func (bdk *BloodDeathKnight) registerScentOfBlood() {
 	actionID := core.ActionID{SpellID: 50421}
 	rpMetrics := bdk.NewRunicPowerMetrics(actionID)
@@ -67,6 +72,7 @@ func (bdk *BloodDeathKnight) registerScentOfBlood() {
 
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{
 		Name:     "Scent Of Blood Auto Trigger" + bdk.Label,
+		ActionID: core.ActionID{SpellID: 148211},
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto,
 		Outcome:  core.OutcomeLanded,

@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Consume 5 charges of Shadow Infusion on your Ghoul to transform it into a powerful undead monstrosity for 30 sec.
+The Ghoul's abilities are empowered and take on new functions while the transformation is active.
+*/
 func (uhdk *UnholyDeathKnight) registerDarkTransformation() {
 	actionID := core.ActionID{SpellID: 63560}
 

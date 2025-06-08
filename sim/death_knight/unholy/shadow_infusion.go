@@ -7,15 +7,20 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Your successful Death Coils empower your active Ghoul, increasing its damage dealt by 10% for 30 sec.
+Stacks up to 5 times.
+*/
 func (uhdk *UnholyDeathKnight) registerShadowInfusion() {
 	damageMod := uhdk.Ghoul.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.1,
 	})
 
+	actionID := core.ActionID{SpellID: 91342}
 	uhdk.Ghoul.ShadowInfusionAura = uhdk.Ghoul.GetOrRegisterAura(core.Aura{
 		Label:     "Shadow Infusion" + uhdk.Ghoul.Label,
-		ActionID:  core.ActionID{SpellID: 91342},
+		ActionID:  actionID,
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
 
@@ -30,13 +35,14 @@ func (uhdk *UnholyDeathKnight) registerShadowInfusion() {
 		},
 	}).AttachDependentAura(uhdk.GetOrRegisterAura(core.Aura{
 		Label:     "Shadow Infusion" + uhdk.Label,
-		ActionID:  core.ActionID{SpellID: 91342},
+		ActionID:  actionID,
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
 	}))
 
 	core.MakeProcTriggerAura(&uhdk.Unit, core.ProcTrigger{
 		Name:           "Shadow Infusion Trigger" + uhdk.Label,
+		ActionID:       core.ActionID{SpellID: 49572},
 		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
 		ClassSpellMask: death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
 		Outcome:        core.OutcomeLanded,

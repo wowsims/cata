@@ -7,7 +7,28 @@ import (
 
 var DeathCoilActionID = core.ActionID{SpellID: 47541}
 
-func (dk *DeathKnight) registerDeathCoilSpell() {
+/*
+Fire a blast of unholy energy, causing
+
+-- Unholy --
+
+(1133 + <AP> * 0.514) * 1.2
+
+-- else --
+
+(1133 + <AP> * 0.514)
+
+--
+
+Shadow damage to an enemy target or healing ((1133 + <AP> * 0.514) * 3.5) damage on a friendly Undead target.
+
+-- Glyph of Death's Embrace --
+
+# Refunds 20 Runic Power when used to heal
+
+-- /Glyph of Death's Embrace --
+*/
+func (dk *DeathKnight) registerDeathCoil() {
 	rpMetrics := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 58679})
 	hasGlyphOfDeathsEmbrace := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfDeathsEmbrace)
 
@@ -73,7 +94,7 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 	})
 }
 
-func (dk *DeathKnight) registerDrwDeathCoilSpell() *core.Spell {
+func (dk *DeathKnight) registerDrwDeathCoil() *core.Spell {
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    DeathCoilActionID,
 		SpellSchool: core.SpellSchoolShadow,

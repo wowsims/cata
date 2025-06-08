@@ -7,6 +7,10 @@ import (
 
 var RuneStrikeActionID = core.ActionID{SpellID: 56815}
 
+/*
+Strike the target for 200% weapon damage plus (<AP> * 0.2).
+This attack cannot be dodged, blocked, or parried.
+*/
 func (bdk *BloodDeathKnight) registerRuneStrike() {
 	bdk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       RuneStrikeActionID,

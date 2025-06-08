@@ -7,6 +7,13 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Surrounds you with a barrier of whirling bones.
+The shield begins with 6 charges, and each damaging attack consumes a charge.
+While at least 1 charge remains, you take 20% less damage from all sources.
+Lasts 5 min.
+(2s cooldown)
+*/
 func (bdk *BloodDeathKnight) registerBoneShield() {
 	actionID := core.ActionID{SpellID: 49222}
 

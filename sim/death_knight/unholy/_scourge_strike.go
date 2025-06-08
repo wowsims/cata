@@ -7,9 +7,13 @@ import (
 
 var scourgeStrikeActionID = core.ActionID{SpellID: 55090}
 
-func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spell {
+/*
+An unholy strike that deals 135% of weapon damage as Physical damage plus 597.
+In addition, for each of your diseases on your target, you deal an additional 25% of the Physical damage done as Shadow damage.
+*/
+func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamage() *core.Spell {
 	return dk.Unit.RegisterSpell(core.SpellConfig{
-		ActionID:       scourgeStrikeActionID.WithTag(2),
+		ActionID:       scourgeStrikeActionID.WithTag(2), // actually 70890
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers,
@@ -29,11 +33,11 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spel
 	})
 }
 
-func (dk *UnholyDeathKnight) registerScourgeStrikeSpell() {
+func (dk *UnholyDeathKnight) registerScourgeStrike() {
 	shadowDamageSpell := dk.registerScourgeStrikeShadowDamageSpell()
 
 	dk.RegisterSpell(core.SpellConfig{
-		ActionID:       scourgeStrikeActionID.WithTag(1), // actually 70890
+		ActionID:       scourgeStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,

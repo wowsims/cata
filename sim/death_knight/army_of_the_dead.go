@@ -6,12 +6,19 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
+/*
+Summons an entire legion of Ghouls to fight for the Death Knight for 40 sec.
+The Ghouls will swarm the area, taunting and fighting anything they can.
+While channeling Army of the Dead, the Death Knight takes less damage equal to his Dodge plus Parry chance.
+*/
+func (dk *DeathKnight) registerArmyOfTheDead() {
+	actionID := core.ActionID{SpellID: 42650}
 	ghoulIndex := 0
 	dmgReduction := 0.0
+
 	aotdAura := dk.RegisterAura(core.Aura{
 		Label:    "Army of the Dead",
-		ActionID: core.ActionID{SpellID: 42650},
+		ActionID: actionID,
 		Duration: time.Millisecond * 500 * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			attackTable := dk.AttackTables[dk.CurrentTarget.UnitIndex]
@@ -46,7 +53,7 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 	})
 
 	spell := dk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 42650},
+		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellArmyOfTheDead,
 
@@ -67,8 +74,10 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			aotdAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+
+		RelatedSelfBuff: aotdAura,
 	})
 
 	dk.AddMajorCooldown(core.MajorCooldown{

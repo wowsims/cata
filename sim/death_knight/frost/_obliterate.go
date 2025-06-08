@@ -7,6 +7,10 @@ import (
 
 var obliterateActionID = core.ActionID{SpellID: 49020}
 
+/*
+A brutal instant attack that deals 250% weapon damage.
+Total damage is increased by 12.5% for each of your diseases on the target.
+*/
 func (dk *DeathKnight) registerObliterateSpell() {
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       obliterateActionID.WithTag(1),

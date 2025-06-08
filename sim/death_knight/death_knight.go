@@ -45,21 +45,22 @@ type DeathKnight struct {
 
 	PestilenceSpell *core.Spell
 
-	ConversionAura *core.Aura
+	ConversionAura     *core.Aura
+	UnholyPresenceAura *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
 	ScarletFeverAura core.AuraArray
 
-	// T12 spell
-	BurningBloodSpell *core.Spell
-
 	// Runic power decay, used during pre pull
 	RunicPowerDecayAura *core.Aura
 
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+
+	// T12 spell
+	BurningBloodSpell *core.Spell
 
 	// Item sets
 	T12Tank4pc *core.Aura
@@ -104,29 +105,29 @@ func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 // }
 
 func (dk *DeathKnight) Initialize() {
-	// dk.registerAntiMagicShellSpell()
-	dk.registerArmyOfTheDeadSpell()
-	// dk.registerBloodBoilSpell()
+	// dk.registerAntiMagicShell()
+	dk.registerArmyOfTheDead()
+	// dk.registerBloodBoil()
 	dk.registerBloodPlague()
 	// // Overriden by Heart Strike for Blood
 	// if dk.Spec != proto.Spec_SpecBloodDeathKnight {
-	// 	dk.registerBloodStrikeSpell()
+	// 	dk.registerBloodStrike()
 	// }
-	dk.registerDeathAndDecaySpell()
-	// dk.registerDeathCoilSpell()
-	// dk.registerDeathStrikeSpell()
-	dk.registerEmpowerRuneWeaponSpell()
+	dk.registerDeathAndDecay()
+	// dk.registerDeathCoil()
+	dk.registerDeathStrike()
+	dk.registerEmpowerRuneWeapon()
 	dk.registerFrostFever()
-	dk.registerHornOfWinterSpell()
-	// dk.registerIceboundFortitudeSpell()
-	dk.registerIcyTouchSpell()
+	dk.registerHornOfWinter()
+	// dk.registerIceboundFortitude()
+	dk.registerIcyTouch()
 	dk.registerOutbreak()
-	dk.registerPestilenceSpell()
-	dk.registerPlagueStrikeSpell()
+	dk.registerPestilence()
+	dk.registerPlagueStrike()
 	// dk.registerPresences()
 	// If talented as permanent pet skip this spell
 	if dk.Inputs.Spec != proto.Spec_SpecUnholyDeathKnight {
-		dk.registerRaiseDeadSpell()
+		dk.registerRaiseDead()
 	}
 	dk.registerRunicPowerDecay()
 }

@@ -6,6 +6,12 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+/*
+Your melee attacks have a 10% chance to spawn a Bloodworm.
+The Bloodworm attacks your enemies, gorging itself with blood until it bursts to heal nearby allies.
+Lasts up to 20 sec.
+(Proc chance: 10%, 5s cooldown)
+*/
 func (bdk *BloodDeathKnight) registerBloodParasite() {
 	bloodParasiteSpell := bdk.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 50452},

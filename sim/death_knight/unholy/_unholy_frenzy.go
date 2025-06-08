@@ -6,7 +6,8 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerUnholyFrenzySpell() {
+// Incites a friendly party or raid member into a killing frenzy for 30 sec, increasing the target's melee and ranged haste by 20%, but causing them to lose health equal to 2% of their maximum health every 3 sec.
+func (dk *DeathKnight) registerUnholyFrenzy() {
 	if !dk.Talents.UnholyFrenzy {
 		return
 	}

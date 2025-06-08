@@ -8,7 +8,12 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerAntiMagicShellSpell() {
+/*
+Surrounds the Death Knight in an Anti-Magic Shell, absorbing 75% of damage dealt by harmful spells (up to a maximum of 50% of the Death Knight's health) and preventing application of harmful magical effects.
+Damage absorbed generates Runic Power.
+Lasts 5 sec.
+*/
+func (dk *DeathKnight) registerAntiMagicShell() {
 	actionID := core.ActionID{SpellID: 48707}
 
 	dmgReductionModifier := 0.75 + []float64{0, 0.08, 0.16, 0.25}[dk.Talents.MagicSuppression]

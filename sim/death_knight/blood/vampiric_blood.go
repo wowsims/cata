@@ -8,6 +8,18 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+-- Glyph of Vampiric Blood --
+
+Increases the amount of health the Death Knight receives from healing spells and effects by 40% for 10 sec
+
+-- else --
+
+Temporarily grants the Death Knight 15% of maximum health and increases the amount of health received from healing spells and effects by 25% for 10 sec.
+After the effect expires, the health is lost.
+
+----------
+*/
 func (bdk *BloodDeathKnight) registerVampiricBlood() {
 	actionID := core.ActionID{SpellID: 55233}
 	healthMetrics := bdk.NewHealthMetrics(actionID)

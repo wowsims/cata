@@ -8,6 +8,18 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Summons a second rune weapon that fights on its own for 12 sec, mirroring the Death Knight's attacks.
+The rune weapon also assists in defense of its master, granting an additional 20% parry chance
+
+-- Glyph of Dancing Rune Weapon --
+
+and increasing threat generation by 100%
+
+-- /Glyph of Dancing Rune Weapon --
+
+while active.
+*/
 func (dk *BloodDeathKnight) registerDancingRuneWeapon() {
 	duration := time.Second * 12
 
@@ -16,7 +28,7 @@ func (dk *BloodDeathKnight) registerDancingRuneWeapon() {
 	t124PAura := dk.RegisterAura(core.Aura{
 		Label:    "Flaming Rune Weapon" + dk.Label,
 		ActionID: core.ActionID{SpellID: 101162},
-		Duration: time.Second * 12,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dk.PseudoStats.BaseParryChance += 0.15
 		},

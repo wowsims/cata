@@ -6,7 +6,18 @@ import (
 
 var IcyTouchActionID = core.ActionID{SpellID: 45477}
 
-func (dk *DeathKnight) registerIcyTouchSpell() {
+/*
+Chills the target for (<560-607> + 0.319 * <AP>) Frost damage
+
+-- Glyph of Icy Touch --
+
+, dispels 1 beneficial Magic effect
+
+-- /Glyph of Icy Touch --
+
+and infects them with Frost Fever, a disease that deals periodic frost damage for 30 sec.
+*/
+func (dk *DeathKnight) registerIcyTouch() {
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       IcyTouchActionID,
 		Flags:          core.SpellFlagAPL,

@@ -6,7 +6,8 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerEmpowerRuneWeaponSpell() {
+// Empower your rune weapon, immediately activating all your runes and generating 25 Runic Power.
+func (dk *DeathKnight) registerEmpowerRuneWeapon() {
 	actionId := core.ActionID{SpellID: 47568}
 	metrics := []*core.ResourceMetrics{
 		dk.NewBloodRuneMetrics(actionId),
