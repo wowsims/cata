@@ -372,7 +372,7 @@ type PseudoStats struct {
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64
 	RangedSpeedMultiplier float64
-	AttackSpeedMultiplier float64
+	AttackSpeedMultiplier float64 // Used for real haste effects like Bloodlust that modify resoruce regen and are used for RPPM effects
 
 	SpiritRegenRateCombat float64 // percentage of spirit regen allowed during combat
 
