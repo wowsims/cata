@@ -34,9 +34,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 		dk.AddStatDependency(stats.Armor, stats.AttackPower, coeff/180.0)
 	}
 
-	// Scarlet Fever
-	dk.applyScarletFever()
-
 	// Blood-Caked Blade
 	dk.applyBloodCakedBlade()
 
@@ -61,28 +58,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 
 	// Will of the Necropolis
 	dk.applyWillOfTheNecropolis()
-}
-
-func (dk *DeathKnight) applyScarletFever() {
-	if dk.Talents.ScarletFever == 0 {
-		return
-	}
-
-	dk.ScarletFeverAura = dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.ScarletFeverAura(target, dk.Talents.ScarletFever, dk.Talents.Epidemic)
-	})
-	dk.Env.RegisterPreFinalizeEffect(func() {
-		dk.BloodPlagueSpell.RelatedAuraArrays = dk.BloodPlagueSpell.RelatedAuraArrays.Append(dk.ScarletFeverAura)
-	})
-
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:           "Scarlet Fever Activate",
-		Callback:       core.CallbackOnApplyEffects,
-		ClassSpellMask: DeathKnightSpellBloodPlague,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.ScarletFeverAura.Get(result.Target).Activate(sim)
-		},
-	})
 }
 
 func (dk *DeathKnight) applyBloodCakedBlade() {

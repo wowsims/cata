@@ -12,10 +12,10 @@ Physical Vulnerability
 Weakens the constitution of an enemy target, increasing their physical damage taken by 4% for 30 sec.
 */
 func (uhdk *UnholyDeathKnight) registerEbonPlaguebringer() {
-	auraArray := uhdk.NewEnemyAuraArray(core.PhysVulnerabilityAura)
+	physVulnAuras := uhdk.NewEnemyAuraArray(core.PhysVulnerabilityAura)
 
 	uhdk.Env.RegisterPreFinalizeEffect(func() {
-		uhdk.BloodPlagueSpell.RelatedAuraArrays = uhdk.BloodPlagueSpell.RelatedAuraArrays.Append(auraArray)
+		uhdk.BloodPlagueSpell.RelatedAuraArrays = uhdk.BloodPlagueSpell.RelatedAuraArrays.Append(physVulnAuras)
 	})
 
 	var lastDiseaseTarget *core.Unit
@@ -36,14 +36,14 @@ func (uhdk *UnholyDeathKnight) registerEbonPlaguebringer() {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			lastDiseaseTarget = result.Target
-			auraArray.Get(result.Target).Activate(sim)
+			physVulnAuras.Get(result.Target).Activate(sim)
 		},
 	}).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: death_knight.DeathKnightSpellBloodPlague,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			auraArray.Get(lastDiseaseTarget).UpdateExpires(spell.Dot(lastDiseaseTarget).ExpiresAt())
+			physVulnAuras.Get(lastDiseaseTarget).UpdateExpires(spell.Dot(lastDiseaseTarget).ExpiresAt())
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
