@@ -118,6 +118,8 @@ enum Faction {
 	Horde = 2;
 }
 
+// Should aways be in order of dbc class file to properly match class masks
+// Found at https://wago.tools/db2/ChrClasses?build=5.5.0.61217&sort%5BID%5D=asc
 enum Class {
 	ClassUnknown = 0;
 	ClassWarrior = 1;

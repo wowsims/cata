@@ -89,8 +89,8 @@ type rppmApproxIlvlMod struct {
 func (r rppmApproxIlvlMod) GetCoefficient(proc *RPPMProc) float64 {
 	// We use an approximation here, or we'd need to load the complete random properties table into the sim
 	// Just to calculate the difference in random prop points as not all points are available on the item that scales
-	// The maximal relativ error I observed when comparing real values and approximation was 0.07%
-	// which was an increase of 0,0008% in proc chance. So for now I think we can neglect that
+	// The maximal relative error I observed when comparing real values and approximation was 0.07%
+	// which was an increase of 0.0008% in proc chance. So for now I think we can neglect that
 
 	if r.baseIlvl == proc.ilvl {
 		return 1
@@ -122,7 +122,7 @@ type RPPMProc struct {
 	mods        []rppmMod
 }
 
-// Attach a crit mot to the RPPM Proc
+// Attach a crit mod to the RPPM Proc
 // The most common value used is LowestCrit
 func (config RPPMConfig) WithCritMod(coefficient float64) RPPMConfig {
 	config.Mods = append(config.Mods, rppmCritMod{
