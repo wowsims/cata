@@ -28,16 +28,11 @@ const (
 	SpellMaskSkullBanner
 	SpellMaskDemoralizingBanner
 	SpellMaskAvatar
-
-	// Abilities that cost rage but aren't attacks
 	SpellMaskDemoralizingShout
-	// SpellMaskInnerRage
-	SpellMaskShieldBlock
-	// SpellMaskDeathWish
-	SpellMaskSweepingStrikes
-	SpellMaskSweepingStrikesHit
 
 	// Special attacks
+	SpellMaskSweepingStrikes
+	SpellMaskSweepingStrikesHit
 	SpellMaskCleave
 	SpellMaskColossusSmash
 	SpellMaskExecute
@@ -53,16 +48,15 @@ const (
 	SpellMaskWhirlwindOh
 	SpellMaskShieldBarrier
 	SpellMaskShieldSlam
-	// SpellMaskConcussionBlow
 	SpellMaskDevastate
-	SpellMaskShockwave
 	SpellMaskBloodthirst
 	SpellMaskRagingBlow
 	SpellMaskRagingBlowMH
 	SpellMaskRagingBlowOH
 	SpellMaskMortalStrike
 	SpellMaskHeroicLeap
-	SpellMaskWildstrike
+	SpellMaskWildStrike
+	SpellMaskShieldBlock
 
 	// Talents
 	SpellMaskImpendingVictory
@@ -74,6 +68,7 @@ const (
 	SpellMaskBloodbathDot
 	SpellMaskStormBolt
 	SpellMaskStormBoltOH
+	SpellMaskShockwave
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
@@ -143,9 +138,7 @@ func (warrior *Warrior) GetCharacter() *core.Character {
 }
 
 func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// if warrior.Talents.Rampage {
-	// 	raidBuffs.Rampage = true
-	// }
+
 }
 
 func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {

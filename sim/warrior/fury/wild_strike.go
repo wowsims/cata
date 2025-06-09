@@ -5,14 +5,14 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *FuryWarrior) registerWildstrike() {
+func (war *FuryWarrior) registerWildStrike() {
 	actionID := core.ActionID{SpellID: 100130}
 	war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskWildstrike,
+		ClassSpellMask: warrior.SpellMaskWildStrike,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{

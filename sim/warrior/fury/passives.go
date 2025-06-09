@@ -56,11 +56,11 @@ func (war *FuryWarrior) registerBloodsurge() {
 		Duration:  15 * time.Second,
 		MaxStacks: 3,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: warrior.SpellMaskWildstrike,
+		ClassMask: warrior.SpellMaskWildStrike,
 		Kind:      core.SpellMod_PowerCost_Flat,
 		IntValue:  -30,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: warrior.SpellMaskWildstrike,
+		ClassMask: warrior.SpellMaskWildStrike,
 		Kind:      core.SpellMod_GlobalCooldown_Flat,
 		TimeValue: time.Millisecond * -500,
 	})

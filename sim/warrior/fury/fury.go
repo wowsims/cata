@@ -59,7 +59,7 @@ func (war *FuryWarrior) Initialize() {
 	war.registerPassives()
 	war.registerBloodthirst()
 	war.registerRagingBlow()
-	war.registerWildstrike()
+	war.registerWildStrike()
 }
 
 func (war *FuryWarrior) registerPassives() {
