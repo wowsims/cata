@@ -76,7 +76,7 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 		Outcome:        core.OutcomeCrit,
 		ClassSpellMask: druid.DruidSpellSunfireDoT | druid.DruidSpellMoonfireDoT,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			activeTargetCount := int32(0)
+			activeTargetCount := 0
 			baseProcChance := 0.3
 
 			for _, target := range sim.Encounter.TargetUnits {
