@@ -200,13 +200,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		if raidBuffs.Bloodlust {
 			registerBloodlustCD(agent, 2825)
 		}
-		if raidBuffs.Heroism {
-			registerBloodlustCD(agent, 32182)
-		}
-
-		if raidBuffs.TimeWarp {
-			registerBloodlustCD(agent, 80353)
-		}
 
 		// Other individual CDs
 		registerUnholyFrenzyCD(agent, individual.UnholyFrenzyCount)

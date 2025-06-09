@@ -16,12 +16,14 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
-	// eclipseEnergyBar
+
 	Talents *proto.DruidTalents
 
 	ClassSpellScaling float64
 
 	StartingForm DruidForm
+
+	Treants TreantAgents
 
 	EclipseEnergyMap EclipseEnergyMap
 
@@ -38,6 +40,7 @@ type Druid struct {
 	CatCharge             *DruidSpell
 	FaerieFire            *DruidSpell
 	FerociousBite         *DruidSpell
+	ForceOfNature         *DruidSpell
 	FrenziedRegeneration  *DruidSpell
 	Hurricane             *DruidSpell
 	HurricaneTickSpell    *DruidSpell
@@ -203,10 +206,6 @@ func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
 func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
-
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
