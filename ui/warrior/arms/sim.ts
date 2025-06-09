@@ -137,7 +137,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_BIS_PRESET],
+		gear: [Presets.P1_PREBIS_ARMS_RICH_PRESET,Presets.P1_PREBIS_ARMS_POOR_PRESET, Presets.P1_ARMS_BIS_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {

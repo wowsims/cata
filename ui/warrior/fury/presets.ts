@@ -138,10 +138,10 @@ export const DefaultOptions = WarriorOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58088, // Flask of Titanic Strength
-	foodId: 62670, // Beer-Basted Crocolisk
-	potId: 58146, // Golemblood Potion
-	prepotId: 58146, // Golemblood Potion
+	flaskId: 76088, // Flask of Winter's Bite
+	foodId: 74646, // Black Pepper Ribs and Shrimp
+	potId: 76095, // Potion of Mogu Power
+	prepotId: 76095, // Potion of Mogu Power
 	tinkerId: 82174, // Synapse Springs
 });
 

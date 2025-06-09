@@ -96,7 +96,13 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 				FloatValue: 35,
 			})
 
-			war.SkullBannerAura.AttachDependentAura(aura)
+			war.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(SpellMaskSkullBanner) {
+					return
+				}
+
+				war.SkullBannerAura.AttachDependentAura(aura)
+			})
 
 			setBonusAura.ExposeToAPL(138126)
 		},
@@ -210,11 +216,17 @@ var ItemSetPlateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 			war := agent.(WarriorAgent).GetWarrior()
 			healthMetrics := war.NewHealthMetrics(core.ActionID{SpellID: 144503})
 
-			war.ShieldBarrierAura.Aura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				if setBonusAura.IsActive() {
-					absorbLoss := float64(oldStacks - newStacks)
-					war.GainHealth(sim, absorbLoss*0.3, healthMetrics)
+			war.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(SpellMaskShieldBarrier) {
+					return
 				}
+
+				war.ShieldBarrierAura.Aura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					if setBonusAura.IsActive() {
+						absorbLoss := float64(oldStacks - newStacks)
+						war.GainHealth(sim, absorbLoss*0.3, healthMetrics)
+					}
+				})
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{

@@ -84,6 +84,7 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.GetAura("RageBar").Deactivate(sim)
 			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period: time.Second * 3,
 				OnAction: func(sim *core.Simulation) {
@@ -94,6 +95,7 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.GetAura("RageBar").Activate(sim)
 			if pa != nil {
 				pa.Cancel(sim)
 				pa = nil
@@ -115,12 +117,6 @@ func (warrior *Warrior) registerBerserkerStanceAura() {
 		Label:    "Berserker Stance",
 		ActionID: actionId,
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyAutoAttackRageGen(1.5)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyAutoAttackRageGen(1.0 / 1.5)
-		},
 	}).AttachProcTrigger(core.ProcTrigger{
 		Name:     "Berserker Stance - Rage Gain",
 		ActionID: actionId,

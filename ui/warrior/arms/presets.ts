@@ -5,13 +5,15 @@ import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph } from '../../
 import { Stats } from '../../core/proto_utils/stats';
 import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
-import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
+import P1PreBisGearPoor from './gear_sets/p1_prebis_poor.gear.json';
+import P1PreBisGearRich from './gear_sets/p1_prebis_rich.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid', PreraidArmsGear);
+export const P1_PREBIS_ARMS_RICH_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 💰', P1PreBisGearRich);
+export const P1_PREBIS_ARMS_POOR_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 📉', P1PreBisGearPoor);
 export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArmsBisGear);
 
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
@@ -22,16 +24,16 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.21,
-			[Stat.StatAgility]: 1.12,
+			[Stat.StatAgility]: 0.06,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.75,
-			[Stat.StatHitRating]: 2.77,
-			[Stat.StatCritRating]: 1.45,
-			[Stat.StatHasteRating]: 0.68,
-			[Stat.StatMasteryRating]: 0.89,
+			[Stat.StatExpertiseRating]: 1.93,
+			[Stat.StatHitRating]: 2.24,
+			[Stat.StatCritRating]: 1.0,
+			[Stat.StatHasteRating]: 0.95,
+			[Stat.StatMasteryRating]: 0.64,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 9.22,
+			[PseudoStat.PseudoStatMainHandDps]: 7.26,
 			[PseudoStat.PseudoStatOffHandDps]: 0,
 		},
 	),
@@ -43,7 +45,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const ArmsTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '213333',
+		talentsString: '213332',
 		glyphs: Glyphs.create({
 			major1: WarriorMajorGlyph.GlyphOfBullRush,
 			major2: WarriorMajorGlyph.GlyphOfUnendingRage,
@@ -59,10 +61,10 @@ export const DefaultOptions = WarriorOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58088, // Flask of Titanic Strength
-	foodId: 62670, // Beer-Basted Crocolisk
-	potId: 58146, // Golemblood Potion
-	prepotId: 58146, // Golemblood Potion
+	flaskId: 76088, // Flask of Winter's Bite
+	foodId: 74646, // Black Pepper Ribs and Shrimp
+	potId: 76095, // Potion of Mogu Power
+	prepotId: 76095, // Potion of Mogu Power
 	tinkerId: 82174, // Synapse Springs
 });
 

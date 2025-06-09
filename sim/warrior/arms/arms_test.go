@@ -18,9 +18,10 @@ func TestArms(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet: core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p4_arms_bis"),
+		GearSet: core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p1_arms_bis"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p3_arms_bis"),
+			core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p1_prebis_rich"),
+			core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p1_prebis_poor"),
 		},
 		Talents:     ArmsTalents,
 		Glyphs:      ArmsDefaultGlyphs,
@@ -32,12 +33,11 @@ func TestArms(t *testing.T) {
 	}))
 }
 
-var ArmsTalents = "32120303120212312201-0322-3"
+var ArmsTalents = "213331"
 var ArmsDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.WarriorMajorGlyph_GlyphOfColossusSmash),
-	Major2: int32(proto.WarriorMajorGlyph_GlyphOfShieldWall),
-	Major3: int32(proto.WarriorMajorGlyph_GlyphOfRapidCharge),
-	Minor1: int32(proto.WarriorMinorGlyph_GlyphOfBerserkerRage),
+	Major1: int32(proto.WarriorMajorGlyph_GlyphOfBullRush),
+	Major2: int32(proto.WarriorMajorGlyph_GlyphOfUnendingRage),
+	Major3: int32(proto.WarriorMajorGlyph_GlyphOfDeathFromAbove),
 }
 
 var PlayerOptionsArms = &proto.Player_ArmsWarrior{
@@ -51,10 +51,10 @@ var PlayerOptionsArms = &proto.Player_ArmsWarrior{
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  58088, // Flask of Titanic Strength
-	FoodId:   62670, // Beer‑Basted Crocolisk
-	PotId:    58146, // Golemblood Potion
-	PrepotId: 58146, // Golemblood Potion
+	FlaskId:  76088, // Flask of Winter's Bite
+	FoodId:   74646, // Black Pepper Ribs and Shrimp
+	PotId:    76095, // Potion of Mogu Power
+	PrepotId: 76095, // Potion of Mogu Power
 	TinkerId: 82174, // Synapse Springs
 }
 
