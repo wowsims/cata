@@ -61,6 +61,7 @@ func (frostMage *FrostMage) Initialize() {
 	frostMage.registerBrainFreeze()
 	frostMage.registerFrostboltSpell()
 	frostMage.registerFrozenOrbSpell()
+	frostMage.registerGlyphs()
 }
 
 func (frostMage *FrostMage) ApplyTalents() {
