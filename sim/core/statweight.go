@@ -170,6 +170,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	for _, s := range statsToWeigh {
 		stat := stats.UnitStatFromStat(s)
 		statMod := defaultStatMod
+
 		if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) {
 			statMod = defaultStatMod * 10
 		}
