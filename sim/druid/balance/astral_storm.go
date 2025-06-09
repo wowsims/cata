@@ -1,31 +1,32 @@
-package druid
+package balance
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/druid"
 )
 
 const (
-	HurricaneBonusCoeff = 0.31
-	HurricaneCoeff      = 0.31
+	AstralStormBonusCoeff = 0.236
+	AstralStormCoeff      = 0.199
 )
 
-func (druid *Druid) registerHurricaneSpell() {
-	druid.HurricaneTickSpell = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 42231},
-		SpellSchool:    core.SpellSchoolNature,
+func (moonkin *BalanceDruid) registerAstralStormSpell() {
+	moonkin.AstralStormTickSpell = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 106998},
+		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellProc,
 		Flags:          core.SpellFlagAoE,
-		ClassSpellMask: DruidSpellHurricane,
+		ClassSpellMask: druid.DruidSpellAstralStorm,
 
-		CritMultiplier:   druid.DefaultCritMultiplier(),
+		CritMultiplier:   moonkin.DefaultCritMultiplier(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: HurricaneBonusCoeff,
+		BonusCoefficient: AstralStormBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := druid.CalcScalingSpellDmg(HurricaneCoeff)
+			damage := moonkin.CalcScalingSpellDmg(AstralStormCoeff)
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
@@ -33,12 +34,12 @@ func (druid *Druid) registerHurricaneSpell() {
 		},
 	})
 
-	druid.Hurricane = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 16914},
-		SpellSchool:    core.SpellSchoolNature,
+	moonkin.AstralStorm = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 106996},
+		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
-		ClassSpellMask: DruidSpellHurricane,
+		ClassSpellMask: druid.DruidSpellAstralStorm,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 50.3,
@@ -52,13 +53,13 @@ func (druid *Druid) registerHurricaneSpell() {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "Hurricane (Aura)",
+				Label: "Astral Storm (Aura)",
 			},
 			NumberOfTicks:       10,
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				druid.HurricaneTickSpell.Cast(sim, target)
+				moonkin.AstralStormTickSpell.Cast(sim, target)
 			},
 		},
 

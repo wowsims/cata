@@ -56,10 +56,12 @@ type BalanceDruid struct {
 
 	EclipseEnergyMap EclipseEnergyMap
 
-	Starfire  *druid.DruidSpell
-	Starsurge *druid.DruidSpell
-	Sunfire   *druid.DruidSpell
-	Starfall  *druid.DruidSpell
+	AstralStorm          *druid.DruidSpell
+	AstralStormTickSpell *druid.DruidSpell
+	Starfire             *druid.DruidSpell
+	Starsurge            *druid.DruidSpell
+	Sunfire              *druid.DruidSpell
+	Starfall             *druid.DruidSpell
 
 	AstralInsight   *core.Aura // Soul of the Forest
 	DreamOfCenarius *core.Aura
@@ -87,17 +89,14 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 }
 
 func (moonkin *BalanceDruid) RegisterBalanceSpells() {
-	//druid.registerHurricaneSpell()
-	//druid.registerMoonfireSpell()
-	//druid.registerForceOfNature()
-	//druid.registerWildMushrooms()
-
 	moonkin.registerSunfireSpell()
 	moonkin.registerStarfireSpell()
 	moonkin.registerStarsurgeSpell()
 	moonkin.registerStarfallSpell()
 	moonkin.registerAstralCommunionSpell()
 	moonkin.registerCelestialAlignmentSpell()
+	moonkin.registerAstralStormSpell()
+	moonkin.registerWildMushrooms()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {

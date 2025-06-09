@@ -239,6 +239,7 @@ func (druid *Druid) RegisterBaselineSpells() {
 	druid.registerMoonfireSpell()
 	druid.registerWrathSpell()
 	druid.registerHealingTouchSpell()
+	druid.registerHurricaneSpell()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
