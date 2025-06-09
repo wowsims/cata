@@ -25,11 +25,12 @@ func (mage *Mage) registerNetherTempestSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			nextTarget := mage.Env.NextTargetUnit(target)
+			spell.DamageMultiplier /= 2
 			result := spell.CalcDamage(sim, nextTarget, mage.NetherTempest.Dot(target).SnapshotBaseDamage, spell.OutcomeMagicHitAndCrit)
-			result.Damage = result.Damage / 2
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
+			spell.DamageMultiplier *= 2
 		},
 	})
 
@@ -73,12 +74,10 @@ func (mage *Mage) registerNetherTempestSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			}
-
-			spell.DealOutcome(sim, result)
 		},
 	})
 

@@ -58,6 +58,9 @@ var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeCloth,
 
 	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeDagger,
+		proto.WeaponType_WeaponTypeSword,
+		proto.WeaponType_WeaponTypeOffHand,
 		proto.WeaponType_WeaponTypeStaff,
 	},
 }

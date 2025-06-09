@@ -14,7 +14,7 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		https://www.wowhead.com/mop-classic/spell=30455/ice-lance and https://www.wowhead.com/mop-classic/spell=112965/fingers-of-frost for more information.
 	*/
 
-	frost.Mage.FingersOfFrostAura = frost.RegisterAura(core.Aura{
+	frost.FingersOfFrostAura = frost.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost",
 		ActionID:  core.ActionID{SpellID: 112965},
 		Duration:  time.Second * 15,
@@ -35,23 +35,17 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		ClassMask:  mage.MageSpellIceLance,
 	})
 
-	frost.Mage.FingersOfFrostAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-		if newStacks == 0 {
-			frost.Mage.FingersOfFrostAura.Deactivate(sim)
-		}
-	}
-
 	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
 		Name:           "Fingers of Frost - Trigger",
 		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellBlizzard,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(mage.MageSpellFrostbolt|mage.MageSpellFrostfireBolt) && sim.Proc(0.15, "FingersOfFrostProc") {
-				frost.Mage.FingersOfFrostAura.Activate(sim)
-				frost.Mage.FingersOfFrostAura.AddStack(sim)
+				frost.FingersOfFrostAura.Activate(sim)
+				frost.FingersOfFrostAura.AddStack(sim)
 			} else if sim.Proc(0.05, "FingersOfFrostBlizzardProc") {
-				frost.Mage.FingersOfFrostAura.Activate(sim)
-				frost.Mage.FingersOfFrostAura.AddStack(sim)
+				frost.FingersOfFrostAura.Activate(sim)
+				frost.FingersOfFrostAura.AddStack(sim)
 			}
 		},
 	})

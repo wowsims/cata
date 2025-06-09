@@ -33,12 +33,6 @@ func (mage *Mage) ApplyMastery() {
 		MaxStacks: 5,
 	})
 
-	mage.IciclesAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-		if newStacks == 0 {
-			mage.IciclesAura.Deactivate(sim)
-		}
-	}
-
 	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
 		Name:           "Icicles - Trigger",
 		ClassSpellMask: MageSpellFrostbolt | MageSpellFrostfireBolt,

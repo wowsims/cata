@@ -99,7 +99,7 @@ func (mage *Mage) applyPresenceOfMindCD() {
 			pomSpell.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Matches(MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation) {
+			if !spell.Matches(MageSpellsAll ^ (MageSpellInstantCast | MageSpellEvocation)) {
 				return
 			}
 			if spell.DefaultCast.CastTime == 0 {
@@ -121,7 +121,7 @@ func (mage *Mage) applyIceFloesCD() {
 	}
 
 	iceFloesMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation,
+		ClassMask: MageSpellsAll ^ (MageSpellInstantCast | MageSpellEvocation),
 		Kind:      core.SpellMod_AllowCastWhileMoving,
 	})
 
@@ -156,7 +156,7 @@ func (mage *Mage) applyIceFloesCD() {
 			iceFloesMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Matches(MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation) {
+			if !spell.Matches(MageSpellsAll ^ (MageSpellInstantCast | MageSpellEvocation)) {
 				return
 			}
 			if spell.DefaultCast.CastTime == 0 {

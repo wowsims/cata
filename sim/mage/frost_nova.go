@@ -41,11 +41,7 @@ func (mage *Mage) registerfrostNovaSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostNovaScaling, frostNovaVariance)
-				result := spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-				if result.Landed() {
-					spell.DealDamage(sim, result)
-				}
-
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})

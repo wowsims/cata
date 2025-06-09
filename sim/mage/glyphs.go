@@ -28,4 +28,11 @@ func (mage *Mage) applyGlyphs() {
 		})
 	}
 
+	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_AllowCastWhileMoving,
+			ClassMask: MageWaterElementalSpellWaterBolt,
+		})
+	}
+
 }

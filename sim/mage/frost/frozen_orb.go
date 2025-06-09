@@ -31,9 +31,9 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			// Frozen Orb gives a staack of FoF upon reaching an enemy. It does it a good bit before actually hitting testing on beta, so instant I think is fine.
-			frost.Mage.FingersOfFrostAura.Activate(sim)
-			frost.Mage.FingersOfFrostAura.AddStack(sim)
+			// Frozen Orb gives a stack of FoF upon reaching an enemy. It does it a good bit before actually hitting testing on beta, so instant I think is fine.
+			frost.FingersOfFrostAura.Activate(sim)
+			frost.FingersOfFrostAura.AddStack(sim)
 			frost.frozenOrb.EnableWithTimeout(sim, frost.frozenOrb, time.Second*10)
 		},
 	})
@@ -58,8 +58,14 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 
 	createFrozenOrbInheritance := func() func(stats.Stats) stats.Stats {
 		return func(ownerStats stats.Stats) stats.Stats {
+
+			hitRating := ownerStats[stats.HitRating]
+			expertiseRating := ownerStats[stats.ExpertiseRating]
+			combinedHitExp := (hitRating + expertiseRating) * 0.5
+
 			return stats.Stats{
-				stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
+				stats.HitRating:        combinedHitExp,
+				stats.ExpertiseRating:  combinedHitExp,
 				stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
 				stats.SpellPower:       ownerStats[stats.SpellPower],
 			}
@@ -143,7 +149,10 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 			damage := frozenOrb.mageOwner.CalcAndRollDamageRange(sim, frozenOrbScaling, frozenOrbVariance)
 			anyLanded := false
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				anyLanded = spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit).Landed()
+				result := spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				if !anyLanded && result.Landed() {
+					anyLanded = true
+				}
 			}
 			if anyLanded && sim.Proc(0.15, "FingersOfFrostProc") {
 				frozenOrb.mageOwner.Mage.FingersOfFrostAura.Activate(sim)

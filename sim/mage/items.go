@@ -30,11 +30,11 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 			mage.T14_4pc = setBonusAura
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				FloatValue: -0.5,
+				FloatValue: 0.5,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellIcyVeins,
 			}).AttachSpellMod(core.SpellModConfig{
-				FloatValue: -0.2,
+				FloatValue: 0.2,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellCombustion,
 			})
