@@ -470,8 +470,6 @@ export class Stats {
 			statDelta /= this.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier);
 		} else if (unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent)) {
 			statDelta /= this.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
-		} else if (unitStat.equalsPseudoStat(PseudoStat.PseudoStatAttackSpeedMultiplier)) {
-			statDelta /= this.getPseudoStat(PseudoStat.PseudoStatAttackSpeedMultiplier);
 		}
 
 		return statDelta;
