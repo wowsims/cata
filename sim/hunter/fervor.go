@@ -20,7 +20,7 @@ func (hunter *Hunter) registerFervorSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 0,
+				NonEmpty: true,
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
