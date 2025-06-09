@@ -109,10 +109,6 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerArmyOfTheDead()
 	// dk.registerBloodBoil()
 	dk.registerBloodPlague()
-	// // Overriden by Heart Strike for Blood
-	// if dk.Spec != proto.Spec_SpecBloodDeathKnight {
-	// 	dk.registerBloodStrike()
-	// }
 	dk.registerDeathAndDecay()
 	// dk.registerDeathCoil()
 	dk.registerDeathStrike()

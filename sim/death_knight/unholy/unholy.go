@@ -59,6 +59,7 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
 
+	// uhdk.registerBloodStrike()
 	uhdk.registerDarkTransformation()
 	uhdk.registerEbonPlaguebringer()
 	// uhdk.registerFesteringStrike()
