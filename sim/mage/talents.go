@@ -14,7 +14,47 @@ func (mage *Mage) ApplyTalents() {
 	mage.applyPresenceOfMindCD()
 	mage.applyIceFloesCD()
 	mage.applyRuneOfPower()
+	mage.applyInvocation()
+
 }
+
+func (mage *Mage) applyInvocation() {
+	if !mage.Talents.Invocation {
+		return
+	}
+
+	mage.AddStaticMod(core.SpellModConfig{
+		ClassMask:  MageSpellEvocation,
+		FloatValue: -1,
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+	})
+
+	mage.AddStaticMod(core.SpellModConfig{
+		ClassMask: MageSpellEvocation,
+		TimeValue: time.Second * -1.0,
+		Kind:      core.SpellMod_DotTickLength_Flat,
+	})
+
+	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAllDamaging,
+		FloatValue: 0.15,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	mage.invocationAura = mage.RegisterAura(core.Aura{
+		Label:    "Invocation Aura",
+		ActionID: core.ActionID{SpellID: 116257},
+		Duration: time.Minute,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			invocationDamageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			invocationDamageMod.Deactivate()
+		},
+	})
+
+}
+
 func (mage *Mage) applyPresenceOfMindCD() {
 	if !mage.Talents.PresenceOfMind {
 		return

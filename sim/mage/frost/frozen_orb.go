@@ -31,6 +31,9 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			// Frozen Orb gives a staack of FoF upon reaching an enemy. It does it a good bit before actually hitting testing on beta, so instant I think is fine.
+			frost.Mage.FingersOfFrostAura.Activate(sim)
+			frost.Mage.FingersOfFrostAura.AddStack(sim)
 			frost.frozenOrb.EnableWithTimeout(sim, frost.frozenOrb, time.Second*10)
 		},
 	})
@@ -120,7 +123,7 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 84721},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: mage.MageSpellFrozenOrb,
+		ClassSpellMask: mage.MageSpellFrozenOrbTick,
 		Flags:          core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
@@ -138,8 +141,13 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := frozenOrb.mageOwner.CalcAndRollDamageRange(sim, frozenOrbScaling, frozenOrbVariance)
+			anyLanded := false
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				anyLanded = spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit).Landed()
+			}
+			if anyLanded && sim.Proc(0.15, "FingersOfFrostProc") {
+				frozenOrb.mageOwner.Mage.FingersOfFrostAura.Activate(sim)
+				frozenOrb.mageOwner.Mage.FingersOfFrostAura.AddStack(sim)
 			}
 			frozenOrb.TickCount += 1
 		},

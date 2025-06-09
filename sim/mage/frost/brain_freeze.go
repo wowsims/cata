@@ -32,14 +32,9 @@ func (frost *FrostMage) registerBrainFreeze() {
 		ClassMask:  mage.MageSpellFrostfireBolt,
 	})
 
-	/*
-		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
-		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
-	*/
-
 	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
 		Name:           "Brain Freeze - Trigger",
-		ClassSpellMask: mage.MageSpellLivingBombDot | mage.MageSpellLivingBombExplosion | mage.MageSpellFrostBombExplosion,
+		ClassSpellMask: mage.MageSpellLivingBombDot | mage.MageSpellLivingBombExplosion | mage.MageSpellFrostBombExplosion | mage.MageSpellNetherTempest,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// https://github.com/simulationcraft/simc/blob/e1190fed141feec2ec7a489e80caec5138c3a6ab/engine/class_modules/sc_mage.cpp#L4169

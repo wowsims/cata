@@ -307,6 +307,7 @@ const (
 	MageSpellFrostfireOrb
 	MageSpellFrostNova
 	MageSpellFrozenOrb
+	MageSpellFrozenOrbTick
 	MageSpellIcicle
 	MageSpellIceFloes
 	MageSpellIceLance

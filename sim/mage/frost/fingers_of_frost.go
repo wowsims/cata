@@ -43,11 +43,13 @@ func (frost *FrostMage) registerFingersOfFrost() {
 
 	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
 		Name:           "Fingers of Frost - Trigger",
-		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellFrozenOrb | mage.MageSpellBlizzard,
-		Callback:       core.CallbackOnSpellHitDealt, //TODO: Does this count ticks of blizzard/frozen orb?
+		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellBlizzard,
+		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			fofProcChance := 0.15
-			if sim.Proc(fofProcChance, "FingersOfFrostProc") {
+			if spell.Matches(mage.MageSpellFrostbolt|mage.MageSpellFrostfireBolt) && sim.Proc(0.15, "FingersOfFrostProc") {
+				frost.Mage.FingersOfFrostAura.Activate(sim)
+				frost.Mage.FingersOfFrostAura.AddStack(sim)
+			} else if sim.Proc(0.05, "FingersOfFrostBlizzardProc") {
 				frost.Mage.FingersOfFrostAura.Activate(sim)
 				frost.Mage.FingersOfFrostAura.AddStack(sim)
 			}

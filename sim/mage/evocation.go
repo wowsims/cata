@@ -56,38 +56,6 @@ func (mage *Mage) registerEvocation() {
 		},
 	})
 
-	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: 0.15,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	mage.invocationAura = mage.RegisterAura(core.Aura{
-		Label:    "Invocation Aura",
-		ActionID: core.ActionID{SpellID: 116257},
-		Duration: time.Minute,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			invocationDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			invocationDamageMod.Deactivate()
-		},
-	})
-
-	if mage.Talents.Invocation {
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellEvocation,
-			FloatValue: -1,
-			Kind:       core.SpellMod_Cooldown_Multiplier,
-		})
-
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask: MageSpellEvocation,
-			TimeValue: time.Second * -1.0,
-			Kind:      core.SpellMod_DotTickLength_Flat,
-		})
-	}
-
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: evocation,
 		Type:  core.CooldownTypeDPS,

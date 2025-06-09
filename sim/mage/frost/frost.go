@@ -66,6 +66,11 @@ func (frostMage *FrostMage) Initialize() {
 func (frostMage *FrostMage) ApplyTalents() {
 	frostMage.Mage.ApplyTalents()
 
+	/*
+		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
+		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
+	*/
+
 	frostMage.frostfireFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
 		FloatValue: frostMage.GetStat(stats.SpellCritPercent)*2 + 50,
 		ClassMask:  mage.MageSpellFrostfireBolt,
