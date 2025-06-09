@@ -37,10 +37,6 @@ func (mage *Mage) registerIceLanceSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if mage.FingersOfFrostAura.IsActive() {
-				mage.FingersOfFrostAura.RemoveStack(sim)
-			}
-
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
 			randomTarget := mage.Env.NextTargetUnit(target)
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
@@ -83,6 +79,10 @@ func (mage *Mage) registerIceLanceSpell() {
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})
+			}
+
+			if mage.FingersOfFrostAura.IsActive() {
+				mage.FingersOfFrostAura.RemoveStack(sim)
 			}
 
 			if mage.Spec == proto.Spec_SpecFrostMage {

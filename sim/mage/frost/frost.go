@@ -75,13 +75,13 @@ func (frostMage *FrostMage) ApplyTalents() {
 	frostMage.frostfireFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
 		FloatValue: frostMage.GetStat(stats.SpellCritPercent)*2 + 50,
 		ClassMask:  mage.MageSpellFrostfireBolt,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
+		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	frostMage.iceLanceFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
 		FloatValue: frostMage.GetStat(stats.SpellCritPercent)*2 + 50,
 		ClassMask:  mage.MageSpellIceLance,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
+		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	frostMage.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, statsChangeWithoutDeps stats.Stats) {
