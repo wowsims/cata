@@ -61,7 +61,7 @@ func (value *APLValueCurrentLunarEnergy) GetInt(sim *core.Simulation) int32 {
 }
 
 func (value *APLValueCurrentLunarEnergy) String() string {
-	return "Current Solar Energy"
+	return "Current Lunar Energy"
 }
 
 type APLValueCurrentEclipsePhase struct {

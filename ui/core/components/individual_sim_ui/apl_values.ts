@@ -851,7 +851,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
 		fields: [],
 	}),
-	currentLunarEnergy: inputBuilder({
+	currentSolarEnergy: inputBuilder({
 		label: 'Solar Energy',
 		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'Amount of currently available Solar Energy.',
@@ -859,7 +859,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
 		fields: [],
 	}),
-	currentSolarEnergy: inputBuilder({
+	currentLunarEnergy: inputBuilder({
 		label: 'Lunar Energy',
 		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'Amount of currently available Lunar Energy',
