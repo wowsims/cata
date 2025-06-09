@@ -170,7 +170,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	for _, s := range statsToWeigh {
 		stat := stats.UnitStatFromStat(s)
 		statMod := defaultStatMod
-		fmt.Println("Stat to weigh:", s.StatName())
+
 		if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) {
 			statMod = defaultStatMod * 10
 		}
@@ -180,7 +180,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	for _, s := range swr.PseudoStatsToWeigh {
 		stat := stats.UnitStatFromPseudoStat(s)
 		statName := proto.PseudoStat_name[int32(s)]
-		fmt.Println("PseudoStat to weigh:", statName)
+
 		// Scale down the stat increment depending on the type of PseudoStat
 		statMod := defaultStatMod
 
