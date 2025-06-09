@@ -119,11 +119,12 @@ export class StatWeightActionSettings {
 			} else if (currentIdx !== -1) {
 				target.splice(currentIdx, 1);
 			}
+			return target;
 		};
 		if (stat.isStat()) {
-			updateStatEntry(stat.getStat(), this.excludedStats);
+			this.excludedStats = updateStatEntry(stat.getStat(), this.excludedStats);
 		} else {
-			updateStatEntry(stat.getPseudoStat(), this.excludedPseudoStats);
+			this.excludedPseudoStats = updateStatEntry(stat.getPseudoStat(), this.excludedPseudoStats);
 		}
 		this.changeEmitter.emit(eventID);
 	}
