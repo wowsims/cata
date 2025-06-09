@@ -159,10 +159,14 @@ const (
 //
 // # Example
 //
-//	character.NewRPPMProcManager(1.2, core.ProcMaskMelee | core.ProcMaskSpellDamage, func(r *core.RPPMProc) {
-//		return r.WithSpecMod(-0.4, proto.Spec_SpecAfflictionWarlock).
-//		WithHasteMod(1, core.HighestHaste)
-//	})
+//	char.NewRPPMProcManager(
+//			1234,
+//			ItemEffect,
+//			ProcMaskDirect,
+//			RPPMConfig{PPM: 2}.
+//				WithClassMod(-0.5, 255).
+//				WithHasteMod(1),
+//		)
 func (character *Character) NewRPPMProcManager(effectID int32, effectType EffectType, procMask ProcMask, rppmConfig RPPMConfig) *DynamicProcManager {
 	var slotList []proto.ItemSlot
 	builder := func() DynamicProcManager {
@@ -231,7 +235,7 @@ func selectEffectId(item Item, effectType EffectType) int32 {
 	case ItemEffect:
 		return item.ID
 
-		// EnchantEffect and WeaponEffect sore some reason both use the enchant ID
+		// EnchantEffect and WeaponEffect for both use the enchant ID
 	case EnchantEffect, WeaponEffect:
 		return item.Enchant.EffectID
 	default:
