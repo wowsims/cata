@@ -14,9 +14,10 @@ func init() {
 
 func TestArms(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassWarrior,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
+		Class:            proto.Class_ClassWarrior,
+		Race:             proto.Race_RaceOrc,
+		OtherRaces:       []proto.Race{proto.Race_RaceWorgen},
+		StartingDistance: 9,
 
 		GearSet: core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p1_arms_bis"),
 		OtherGearSets: []core.GearSetCombo{

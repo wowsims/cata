@@ -36,6 +36,10 @@ func (war *Warrior) registerCharge() {
 		}
 	})
 
+	war.RegisterResetEffect(func(sim *core.Simulation) {
+		chargeRageGenCD = 0
+	})
+
 	war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -56,7 +60,7 @@ func (war *Warrior) registerCharge() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			aura.Activate(sim)
-			if chargeRageGenCD == 0 || sim.CurrentTime-chargeRageGenCD >= 12*time.Second {
+			if !war.Talents.DoubleTime || chargeRageGenCD == 0 || sim.CurrentTime-chargeRageGenCD >= 12*time.Second {
 				chargeRageGenCD = sim.CurrentTime
 				war.AddRage(sim, chargeRageGain*war.GetRageMultiplier(target), metrics)
 			}
