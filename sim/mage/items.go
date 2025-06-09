@@ -23,6 +23,7 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 				ClassMask:  MageSpellPyroblast | MageSpellPyroblastDot,
 				FloatValue: 0.08,
 			})
+			setBonusAura.ExposeToAPL(123097)
 		},
 		// Increases the damage bonus of Arcane Power by an additional 10%, reduces the cooldown of Icy Veins by 50%, and reduces the cooldown of Combustion by 20%.
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -38,6 +39,7 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellCombustion,
 			})
+			setBonusAura.ExposeToAPL(123101)
 		},
 	},
 })

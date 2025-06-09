@@ -48,9 +48,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			for _ = range numberOfBolts {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				mage.BrainFreezeAura.Deactivate(sim)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
-					mage.BrainFreezeAura.Deactivate(sim)
 					if result.Landed() {
 						mage.HandleIcicleGeneration(sim, target, result.Damage)
 					}

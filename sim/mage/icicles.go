@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (mage *Mage) ApplyMastery() {
@@ -56,7 +57,11 @@ func (mage *Mage) castIcicleWithDamage(sim *core.Simulation, target *core.Unit, 
 
 func (mage *Mage) HandleIcicleGeneration(sim *core.Simulation, target *core.Unit, baseDamage float64) {
 	numIcicles := len(mage.Icicles)
+	hasGlyphSplittingIce := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce)
 	if numIcicles == 5 {
+		if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
+			mage.castIcicleWithDamage(sim, mage.Env.NextTargetUnit(target), mage.Icicles[0]/2)
+		}
 		mage.castIcicleWithDamage(sim, target, mage.Icicles[0])
 		mage.Icicles = mage.Icicles[1:]
 	}

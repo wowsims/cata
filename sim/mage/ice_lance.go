@@ -39,20 +39,17 @@ func (mage *Mage) registerIceLanceSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
 			randomTarget := mage.Env.NextTargetUnit(target)
+			hasSplittingIce := hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1
+			hasSplitBolts := mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins
+			numberOfBolts := core.TernaryInt32(hasSplitBolts, 3, 1)
+			icyVeinsDamageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)
 			// Testing it does not appear to be exactly half, so I believe that this does its own damage calc with variance, it can also crit.
-			if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
+
+			// Secondary Target hit
+			spell.DamageMultiplier *= icyVeinsDamageMultiplier
+			if hasSplittingIce {
 				spell.DamageMultiplier /= 2
-				if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
-					spell.DamageMultiplier *= .4
-					for _ = range 3 {
-						baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
-						result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-						spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-							spell.DealDamage(sim, result)
-						})
-					}
-					spell.DamageMultiplier /= .4
-				} else {
+				for _ = range numberOfBolts {
 					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 					result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
@@ -62,39 +59,32 @@ func (mage *Mage) registerIceLanceSpell() {
 				spell.DamageMultiplier *= 2
 			}
 
-			if mage.IcyVeinsAura.IsActive() && hasGlyphIcyVeins {
-				spell.DamageMultiplier *= .4
-				for _ = range 3 {
-					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
-					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-					result.Damage = result.Damage * .4
-					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-						spell.DealDamage(sim, result)
-					})
-				}
-				spell.DamageMultiplier /= .4
-			} else {
+			// Main Target hit
+			results := make([]*core.SpellResult, 0)
+			for _ = range numberOfBolts {
 				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				results = append(results, result)
+			}
+			if mage.FingersOfFrostAura.IsActive() {
+				mage.FingersOfFrostAura.RemoveStack(sim)
+			}
+			for _, result := range results {
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})
 			}
-
-			if mage.FingersOfFrostAura.IsActive() {
-				mage.FingersOfFrostAura.RemoveStack(sim)
-			}
+			spell.DamageMultiplier /= icyVeinsDamageMultiplier
 
 			if mage.Spec == proto.Spec_SpecFrostMage {
 				//I've confirmed in game Icicles launch even if ice lance misses.
 				for _, icicle := range mage.Icicles {
-					if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
+					if hasSplittingIce {
 						mage.castIcicleWithDamage(sim, randomTarget, icicle/2)
 					}
 					mage.castIcicleWithDamage(sim, target, icicle)
 				}
 				mage.Icicles = make([]float64, 0)
-
 			}
 
 		},

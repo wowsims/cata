@@ -38,18 +38,16 @@ func (frost *FrostMage) registerBrainFreeze() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// https://github.com/simulationcraft/simc/blob/e1190fed141feec2ec7a489e80caec5138c3a6ab/engine/class_modules/sc_mage.cpp#L4169
+			var procChance float64
 			if spell.Matches(mage.MageSpellLivingBombDot | mage.MageSpellLivingBombExplosion) {
-				if sim.Proc(0.25, "BrainFreezeProc") {
-					frost.BrainFreezeAura.Activate(sim)
-				}
+				procChance = 0.25
 			} else if spell.Matches(mage.MageSpellFrostBombExplosion) {
-				if sim.Proc(1.0, "BrainFreezeProc") {
-					frost.BrainFreezeAura.Activate(sim)
-				}
+				procChance = 1.0
 			} else {
-				if sim.Proc(0.09, "BrainFreezeProc") {
-					frost.BrainFreezeAura.Activate(sim)
-				}
+				procChance = 0.09
+			}
+			if sim.Proc(procChance, "BrainFreezeProc") {
+				frost.BrainFreezeAura.Activate(sim)
 			}
 		},
 	})

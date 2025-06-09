@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"sort"
 	"time"
 
@@ -22,18 +23,17 @@ func (mage *Mage) registerLivingBombSpell() {
 		return
 	}
 
-	var activeLivingBombs []*core.Dot
+	activeLivingBombs := make([]*core.Dot, 0)
 	const maxLivingBombs int = 3
 
 	mage.RegisterResetEffect(func(s *core.Simulation) {
 		activeLivingBombs = make([]*core.Dot, 0)
 	})
 
-	var livingBombExplosionCoefficient = 0.08 // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
-	// var livingBombExplosionScaling = 0.1      // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
-	var livingBombExplosionVariance = 0.0 // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Variance"
-	var livingBombDotCoefficient = 0.8    // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
-	var livingBombDotScaling = 1.03       // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
+	livingBombExplosionCoefficient := 0.08 // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
+	livingBombExplosionScaling := 0.103    // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
+	livingBombDotCoefficient := 0.8        // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "EffetBonusCoefficient"
+	livingBombDotScaling := 1.03           // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44461},
@@ -48,7 +48,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := mage.CalcAndRollDamageRange(sim, livingBombDotScaling, livingBombExplosionVariance) * sim.Encounter.AOECapMultiplier()
+			baseDamage := mage.CalcAndRollDamageRange(sim, livingBombExplosionScaling, 0)
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -104,27 +104,32 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
-
+			fmt.Println(len(activeLivingBombs))
 			if result.Landed() {
-				activeLbs := len(activeLivingBombs)
-				if activeLbs >= maxLivingBombs {
-					bombExplode = false
-					activeLivingBombs[activeLbs-1].Deactivate(sim)
-					if activeLbs != 0 {
-						activeLivingBombs = activeLivingBombs[:1]
+				// If there is already an active dot on the target, just reapply
+				if spell.Dot(target).IsActive() {
+					if spell.Dot(target).RemainingTicks() == 1 {
+						livingBombExplosionSpell.Cast(sim, target)
 					}
-					bombExplode = true
-				}
-				if spell.Dot(target).RemainingTicks() == 1 {
-					livingBombExplosionSpell.Cast(sim, target)
-				}
-				spell.Dot(target).Apply(sim)
-				activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(target))
-				sort.Slice(activeLivingBombs, func(i, j int) bool {
-					return activeLivingBombs[i].Duration < activeLivingBombs[j].Duration
-				})
-			}
+					spell.Dot(target).Apply(sim)
+				} else {
+					activeLbs := len(activeLivingBombs)
 
+					if activeLbs >= maxLivingBombs {
+						bombExplode = false
+						activeLivingBombs[activeLbs-1].Deactivate(sim)
+						if activeLbs != 0 {
+							activeLivingBombs = activeLivingBombs[:1]
+						}
+						bombExplode = true
+					}
+					spell.Dot(target).Apply(sim)
+					activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(target))
+					sort.Slice(activeLivingBombs, func(i, j int) bool {
+						return activeLivingBombs[i].Duration < activeLivingBombs[j].Duration
+					})
+				}
+			}
 			spell.DealOutcome(sim, result)
 		},
 	})
