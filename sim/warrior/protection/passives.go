@@ -54,7 +54,7 @@ func (war *ProtectionWarrior) registerSwordAndBoard() {
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:           "Sword and Board Trigger",
+		Name:           "Sword and Board - Trigger",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: warrior.SpellMaskDevastate,
 		Outcome:        core.OutcomeLanded,
@@ -68,10 +68,11 @@ func (war *ProtectionWarrior) registerSwordAndBoard() {
 
 func (war *ProtectionWarrior) registerRiposte() {
 	var critRating float64
+
 	aura := war.GetOrRegisterAura(core.Aura{
-		Label:    "Riposte",
-		ActionID: core.ActionID{SpellID: 145674},
-		Duration: 20 * time.Second,
+		Label:    "Ultimatum",
+		ActionID: core.ActionID{SpellID: 122510},
+		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			critRating := (war.GetStat(stats.DodgeRating) + war.GetStat(stats.ParryRating)) * 0.75
 			war.AddStatDynamic(sim, stats.CritRating, critRating)
@@ -79,16 +80,32 @@ func (war *ProtectionWarrior) registerRiposte() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			war.AddStatDynamic(sim, stats.CritRating, -critRating)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
+	})
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:           "Ultimatum - Consume",
+		ClassSpellMask: warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			aura.Deactivate(sim)
+		},
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:     "Riposte Trigger",
-		ActionID: core.ActionID{SpellID: 145672},
-		ICD:      time.Second,
-		Callback: core.CallbackOnSpellHitTaken,
-		Outcome:  core.OutcomeParry | core.OutcomeDodge,
+		Name:           "Ultimatum - Trigger",
+		ActionID:       core.ActionID{SpellID: 122509},
+		ClassSpellMask: warrior.SpellMaskShieldSlam,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			aura.Deactivate(sim)
 			aura.Activate(sim)
 		},
 	})

@@ -28,8 +28,6 @@ type ArmsWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.ArmsWarrior_Options
-
-	SuddenExecute *core.Aura
 }
 
 func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarrior {

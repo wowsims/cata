@@ -40,6 +40,7 @@ func (war *ProtectionWarrior) registerShieldBlock() {
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: warrior.SpellMaskShieldBlock,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 
 		Charges:      2,
 		RechargeTime: 9 * time.Second,

@@ -79,7 +79,7 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		},
 	})
 
-	war.SuddenExecute = war.RegisterAura(core.Aura{
+	aura := war.RegisterAura(core.Aura{
 		Label:    "Sudden Execute",
 		ActionID: core.ActionID{SpellID: 139958},
 		Duration: 10 * time.Second,
@@ -89,13 +89,22 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		IntValue:  -100,
 	})
 
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:           "Sudden Execute - Consume",
+		ClassSpellMask: warrior.SpellMaskOverpower,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			aura.Deactivate(sim)
+		},
+	})
+
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:           "Sudden Execute - Trigger",
 		ClassSpellMask: warrior.SpellMaskExecute,
 		Outcome:        core.OutcomeLanded,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			war.SuddenExecute.Activate(sim)
+			aura.Activate(sim)
 		},
 	})
 }

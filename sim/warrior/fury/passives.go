@@ -29,7 +29,7 @@ func (war *FuryWarrior) registerFlurry() {
 	}).AttachMultiplyMeleeSpeed(1.25)
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:     "Flurry Trigger",
+		Name:     "Flurry - Trigger",
 		ActionID: core.ActionID{SpellID: 12972},
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeOrMeleeProc,

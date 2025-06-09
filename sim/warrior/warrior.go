@@ -217,6 +217,7 @@ func NewWarrior(character *core.Character, options *proto.WarriorOptions, talent
 	warrior.AddStatDependency(stats.Strength, stats.ParryRating, strengthToParryRating)
 	warrior.AddStatDependency(stats.Agility, stats.DodgeRating, 0.1/10000.0/100.0)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+	warrior.MultiplyStat(stats.HasteRating, 1.5)
 
 	// Base dodge unaffected by Diminishing Returns
 	warrior.PseudoStats.BaseDodgeChance += 0.03

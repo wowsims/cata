@@ -154,6 +154,21 @@ func (war *Warrior) applyMajorGlyphs() {
 		})
 	}
 
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHeavyRepercussions) {
+		war.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskShieldBlock,
+			Kind:      core.SpellMod_Custom,
+			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+				war.ShieldBlockAura.AttachSpellMod(core.SpellModConfig{
+					ClassMask:  SpellMaskShieldSlam,
+					Kind:       core.SpellMod_DamageDone_Pct,
+					FloatValue: 0.5,
+				})
+			},
+			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {},
+		})
+	}
+
 }
 
 func (war *Warrior) applyMinorGlyphs() {

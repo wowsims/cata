@@ -30,7 +30,7 @@ func (war *Warrior) registerEnrage() {
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:           "Enrage Trigger",
+		Name:           "Enrage - Trigger",
 		ActionID:       actionID,
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: SpellMaskColossusSmash | SpellMaskShieldSlam | SpellMaskDevastate | SpellMaskBloodthirst | SpellMaskMortalStrike,

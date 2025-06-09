@@ -4,15 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/warrior"
 )
 
 func (war *ProtectionWarrior) registerShieldSlam() {
 	actionID := core.ActionID{SpellID: 23922}
 	rageMetrics := war.NewRageMetrics(actionID)
-
-	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHeavyRepercussions)
 
 	war.ShieldSlam = war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -43,9 +40,9 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := war.CalcAndRollDamageRange(sim, 11.25, 0.05000000075) + spell.MeleeAttackPower()*1.5
-			baseDamage *= core.TernaryFloat64(hasGlyph && war.ShieldBlockAura.IsActive(), 1.5, 1)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			additionalRage := core.TernaryFloat64(war.SwordAndBoardAura.IsActive(), 5, 0)
+
 			if result.Landed() {
 				war.AddRage(sim, (20+additionalRage)*war.GetRageMultiplier(target), rageMetrics)
 			}
