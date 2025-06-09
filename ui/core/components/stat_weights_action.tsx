@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { CURRENT_API_VERSION } from '../constants/other';
 import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api';
@@ -22,8 +23,8 @@ export class StatWeightActionSettings {
 	private readonly storageKey: string;
 	readonly changeEmitter = new TypedEvent<void>();
 
-	excludedStats: Stat[] = [];
-	excludedPseudoStats: PseudoStat[] = [];
+	_excludedStats: Stat[] = [];
+	_excludedPseudoStats: PseudoStat[] = [];
 
 	constructor(simUI: SimUI) {
 		this.storageKey = simUI.getStorageKey('__statweight_settings__');
@@ -31,6 +32,24 @@ export class StatWeightActionSettings {
 			const json = SavedStatWeightSettings.toJsonString(this.toProto());
 			window.localStorage.setItem(this.storageKey, json);
 		});
+	}
+
+	set excludedStats(value: Stat[]) {
+		this._excludedStats = value;
+	}
+	get excludedStats(): Stat[] {
+		return this._excludedStats.slice();
+	}
+
+	set excludedPseudoStats(value: PseudoStat[]) {
+		this._excludedPseudoStats = value;
+	}
+	get excludedPseudoStats(): PseudoStat[] {
+		return this._excludedPseudoStats.slice();
+	}
+
+	static updateProtoVersion(_: SavedStatWeightSettings) {
+		// No-op, as there are no proto version migrations currently
 	}
 
 	applyDefaults(eventID: EventID) {
@@ -42,18 +61,22 @@ export class StatWeightActionSettings {
 	load(eventID: EventID) {
 		const storageValue = window.localStorage.getItem(this.storageKey);
 		if (storageValue) {
-			const { excludedStats, excludedPseudoStats } = SavedStatWeightSettings.fromJsonString(storageValue);
-			if (excludedStats?.length) this.excludedStats = excludedStats;
-			if (excludedPseudoStats?.length) this.excludedPseudoStats = excludedPseudoStats;
+			const settingsProto = SavedStatWeightSettings.fromJsonString(storageValue, { ignoreUnknownFields: true });
+			StatWeightActionSettings.updateProtoVersion(settingsProto);
+
+			const { excludedStats, excludedPseudoStats } = settingsProto;
+			this.excludedStats = excludedStats || [];
+			this.excludedPseudoStats = excludedPseudoStats || [];
 			this.changeEmitter.emit(eventID);
 		}
 	}
 
 	toProto(): SavedStatWeightSettings {
-		const proto = SavedStatWeightSettings.create();
-		proto.excludedStats = this.excludedStats;
-		proto.excludedPseudoStats = this.excludedPseudoStats;
-		return proto;
+		return SavedStatWeightSettings.create({
+			apiVersion: CURRENT_API_VERSION,
+			excludedStats: this.excludedStats,
+			excludedPseudoStats: this.excludedPseudoStats,
+		});
 	}
 
 	/**
