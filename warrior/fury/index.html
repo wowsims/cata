@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Cataclysm fury warrior simulator</title>
+		<meta charset="utf-8" />
+
+		<link rel="icon" type="image/x-icon" href="/cata/assets/favicon_io/favicon.ico" />
+
+		<meta name="description" content="fury warrior simulations for World of Warcraft® Cataclysm Classic." />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="preload" href="/cata/assets/database/db.json" as="fetch" crossorigin="anonymous" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+			integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer" />
+
+		<!-- Load the top-level ui/index.ts -->
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-T3HBB0LXNX"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-YEJ8MEHGV2');
+		</script>
+		<script type="module" crossorigin src="/cata/bundle/ui/warrior/fury/index.html-BFdQN_lb.entry.js"></script>
+		<link rel="modulepreload" crossorigin href="/cata/bundle/index-BgswASio.chunk.js">
+		<link rel="modulepreload" crossorigin href="/cata/bundle/detailed_results-DLxs8mbv.chunk.js">
+		<link rel="modulepreload" crossorigin href="/cata/bundle/preset_utils-pCalmhXL.chunk.js">
+		<link rel="modulepreload" crossorigin href="/cata/bundle/suggest_reforges_action-COs6tVdS.chunk.js">
+		<link rel="modulepreload" crossorigin href="/cata/bundle/inputs-Cj_iVoel.chunk.js">
+		<link rel="modulepreload" crossorigin href="/cata/bundle/sim-CwOfRzP5.chunk.js">
+		<link rel="stylesheet" crossorigin href="/cata/bundle/detailed_results-DMRhXV3R.style.css">
+		<link rel="stylesheet" crossorigin href="/cata/bundle/index-ECPxTgLB.style.css">
+	</head>
+
+	<body id="bootstrap-overrides">
+		<!-- Load wowhead scripts after done loading everything else -->
+		<script>
+			const whTooltips = { colorLinks: true };
+		</script>
+		<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+	</body>
+</html>
