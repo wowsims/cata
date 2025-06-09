@@ -166,16 +166,31 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
 
-			war.T16Dps4P = war.RegisterAura(core.Aura{
-				Label:    "Death Sentence",
-				ActionID: core.ActionID{SpellID: 144442},
-				Duration: 12 * time.Second,
-			})
-
 			costMod := war.AddDynamicMod(core.SpellModConfig{
 				ClassMask: SpellMaskExecute,
 				Kind:      core.SpellMod_PowerCost_Flat,
 				IntValue:  -30,
+			})
+
+			war.T16Dps4P = war.RegisterAura(core.Aura{
+				Label:    "Death Sentence",
+				ActionID: core.ActionID{SpellID: 144442},
+				Duration: 12 * time.Second,
+			}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				if sim.IsExecutePhase20() {
+					costMod.Activate()
+				}
+			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				costMod.Deactivate()
+			})
+
+			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+				Name:           "Death Sentence - Consume",
+				ClassSpellMask: SpellMaskExecute,
+				Callback:       core.CallbackOnCastComplete,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					war.T16Dps4P.Deactivate(sim)
+				},
 			})
 
 			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
@@ -189,17 +204,6 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					war.T16Dps4P.Activate(sim)
 				},
-			})
-
-			war.RegisterResetEffect(func(sim *core.Simulation) {
-				sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
-					if setBonusAura.IsActive() {
-						if isExecute == 20 {
-							costMod.Activate()
-						}
-					}
-					costMod.Deactivate()
-				})
 			})
 
 			setBonusAura.ExposeToAPL(144441)
