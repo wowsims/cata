@@ -64,5 +64,32 @@ func (war *ProtectionWarrior) registerSwordAndBoard() {
 			war.ShieldSlam.CD.Reset()
 		},
 	})
+}
 
+func (war *ProtectionWarrior) registerRiposte() {
+	var critRating float64
+	aura := war.GetOrRegisterAura(core.Aura{
+		Label:    "Riposte",
+		ActionID: core.ActionID{SpellID: 145674},
+		Duration: 20 * time.Second,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			critRating := (war.GetStat(stats.DodgeRating) + war.GetStat(stats.ParryRating)) * 0.75
+			war.AddStatDynamic(sim, stats.CritRating, critRating)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			war.AddStatDynamic(sim, stats.CritRating, -critRating)
+		},
+	})
+
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:     "Riposte Trigger",
+		ActionID: core.ActionID{SpellID: 145672},
+		ICD:      time.Second,
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeParry | core.OutcomeDodge,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			aura.Deactivate(sim)
+			aura.Activate(sim)
+		},
+	})
 }
