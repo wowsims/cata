@@ -8,7 +8,6 @@ import (
 )
 
 func (war *Warrior) applyMajorGlyphs() {
-
 	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfRecklessness) {
 		war.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskRecklessness,
@@ -88,6 +87,37 @@ func (war *Warrior) applyMajorGlyphs() {
 			Callback:       core.CallbackOnCastComplete,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				inciteAura.Activate(sim)
+			},
+		})
+	}
+
+	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfRagingWind) {
+		actionID := core.ActionID{SpellID: 115317}
+		ragingWindAura := war.RegisterAura(core.Aura{
+			Label:    "Raging Wind",
+			ActionID: actionID,
+			Duration: 6 * time.Second,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  SpellMaskWhirlwind | SpellMaskWhirlwindOh,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.1,
+		})
+
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:           "Raging Wind - Consume",
+			ClassSpellMask: SpellMaskWhirlwind,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				ragingWindAura.Deactivate(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			Name:           "Raging Wind - Trigger",
+			ClassSpellMask: SpellMaskRagingBlowMH,
+			Callback:       core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				ragingWindAura.Activate(sim)
 			},
 		})
 	}

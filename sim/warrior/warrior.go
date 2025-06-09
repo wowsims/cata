@@ -57,9 +57,12 @@ const (
 	SpellMaskDevastate
 	SpellMaskShockwave
 	SpellMaskBloodthirst
-	// SpellMaskRagingBlow
+	SpellMaskRagingBlow
+	SpellMaskRagingBlowMH
+	SpellMaskRagingBlowOH
 	SpellMaskMortalStrike
 	SpellMaskHeroicLeap
+	SpellMaskWildstrike
 
 	// Talents
 	SpellMaskImpendingVictory
@@ -159,6 +162,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerShouts()
 	warrior.registerPassives()
 	warrior.registerBanners()
+	warrior.ApplyGlyphs()
 
 	warrior.registerBerserkerRage()
 	warrior.registerRallyingCry()
