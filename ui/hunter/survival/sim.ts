@@ -1,7 +1,7 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
-import * as Mechanics from '../../core/constants/mechanics';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -60,7 +60,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		epWeights: Presets.P4_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5).withStat(Stat.StatExpertiseRating, 2550);
+			return new Stats()
+				.withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5)
+				.withStat(Stat.StatExpertiseRating, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 		})(),
 
 		other: Presets.OtherDefaults,

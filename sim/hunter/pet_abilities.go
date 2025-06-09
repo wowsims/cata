@@ -203,11 +203,11 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 			IgnoreHaste: true,
 		},
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
+		DamageMultiplier:         core.TernaryFloat64(hp.hunterOwner.Talents.BlinkStrikes, 1.5, 1),
 		CritMultiplier:           hp.CritMultiplier(1.0, 0.0),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(132, 188) + (spell.MeleeAttackPower() * 0.2)
+			baseDamage := hp.hunterOwner.CalcAndRollDamageRange(sim, 0.11400000006, 0.34999999404) + (spell.RangedAttackPower() * 0.168)
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
@@ -385,6 +385,9 @@ func (hp *HunterPet) registerRabidCD() {
 		ActionID: actionID,
 
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 90,

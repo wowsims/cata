@@ -31,8 +31,6 @@ type Hunter struct {
 	AspectOfTheHawk *core.Spell
 	AspectOfTheFox  *core.Spell
 
-	FireTrapTimer *core.Timer
-
 	// Hunter spells
 	KillCommand   *core.Spell
 	ArcaneShot    *core.Spell
@@ -142,8 +140,6 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 
 func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.DefaultCritMultiplier()
-
-	hunter.FireTrapTimer = hunter.NewTimer()
 	// hunter.addBloodthirstyGloves()
 	// Add Stampede pets
 
@@ -160,7 +156,6 @@ func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
 
 func (hunter *Hunter) ApplyTalents() {
 	hunter.applyThrillOfTheHunt()
-	hunter.applyBlinkStrike()
 	hunter.ApplyHotfixes()
 
 	if hunter.Pet != nil {
@@ -174,10 +169,11 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
 	hunter.registerHawkSpell()
+	hunter.RegisterLynxRushSpell()
 	hunter.registerSerpentStingSpell()
 	hunter.registerMultiShotSpell()
 	hunter.registerKillCommandSpell()
-	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
+	hunter.registerExplosiveTrapSpell()
 	hunter.registerCobraShotSpell()
 	hunter.registerRapidFireCD()
 	hunter.registerSilencingShotSpell()
