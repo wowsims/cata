@@ -36,7 +36,6 @@ type rppmHasteMod struct {
 	coefficient float64
 }
 
-// GetCoefficient implements RPPMMod.
 func (r rppmHasteMod) GetCoefficient(proc *RPPMProc) float64 {
 	// as of 5.2 this should no longer include non 'True haste mods' so only i.E. Lust
 	return max(proc.character.TotalRealHasteMultiplier(), proc.character.TotalSpellHasteMultiplier())
@@ -122,8 +121,7 @@ type RPPMProc struct {
 	mods        []rppmMod
 }
 
-// Attach a crit mod to the RPPM Proc
-// The most common value used is LowestCrit
+// Attach a crit mod to the RPPM config
 func (config RPPMConfig) WithCritMod(coefficient float64) RPPMConfig {
 	config.Mods = append(config.Mods, rppmCritMod{
 		coefficient: coefficient,
@@ -132,8 +130,7 @@ func (config RPPMConfig) WithCritMod(coefficient float64) RPPMConfig {
 	return config
 }
 
-// Attach a haste mod to the RPPM Proc
-// The most common used kind is HighestHaste
+// Attach a haste mod to the RPPM config
 // It uses the highest haste value that does not include effects like Slice and Dice
 // It multiplies the actual proc chance by 1 + haste%
 func (config RPPMConfig) WithHasteMod(coeffienct float64) RPPMConfig {
@@ -144,7 +141,7 @@ func (config RPPMConfig) WithHasteMod(coeffienct float64) RPPMConfig {
 	return config
 }
 
-// Attach a class specific modifier to the RPPM
+// Attach a class specific modifier to the RPPM config
 // 1 - Warrior, 2 - Paladin, 4 - Hunter, 8 - Rogue, 16 - Priest, 32 - DK
 // 64 - Shaman, 128 - Mage, 256 - Warlock, 512 - Monk, 1024 - Druid
 // It multiplies the actual proc chance by 1 + coefficient
@@ -157,7 +154,7 @@ func (config RPPMConfig) WithClassMod(coefficient float64, classMask int) RPPMCo
 	return config
 }
 
-// Attaches a spec mod to the RPPM
+// Attaches a spec mod to the RPPM config
 // It multiplies the actual proc chance by 1 + coefficient
 func (config RPPMConfig) WithSpecMod(coefficient float64, spec proto.Spec) RPPMConfig {
 	config.Mods = append(config.Mods, rppmSpecMod{
@@ -168,7 +165,7 @@ func (config RPPMConfig) WithSpecMod(coefficient float64, spec proto.Spec) RPPMC
 	return config
 }
 
-// Attach an approximate Ilvl scaling to the Mod
+// Attach an approximate Ilvl scaling to the RPPM config
 // The proc chance will be multiplied by 1.00936^(ilvlDiff)
 func (proc *RPPMProc) WithApproximateIlvlMod(coefficient float64, baseIlvl int32) *RPPMProc {
 	proc.mods = append(proc.mods, rppmApproxIlvlMod{
@@ -180,8 +177,6 @@ func (proc *RPPMProc) WithApproximateIlvlMod(coefficient float64, baseIlvl int32
 }
 
 // Create a new RPPM Proc with the given ppm (usually from the ProcsPerMinute record)
-// ppm is the ppm entry within the dbc and ilvl is the item level of the item this effect is attached to.
-// 0 if not an item effect
 func NewRPPMProc(character *Character, config RPPMConfig) DynamicProc {
 	proc := &RPPMProc{
 		character:   character,
@@ -211,7 +206,7 @@ func NewRPPMProc(character *Character, config RPPMConfig) DynamicProc {
 //
 // To actually modify the state correctly call:
 //
-//	Proc(character, sim)
+//	Proc(sim, string)
 func (proc *RPPMProc) getProcChance(sim *Simulation) float64 {
 	basePpm := proc.ppm
 
