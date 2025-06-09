@@ -75,7 +75,7 @@ func (character *Character) NewDynamicLegacyProcForEnchant(effectID int32, ppm f
 }
 
 // Dynamic Proc Manager for dynamic ProcMasks on weapon effects
-func (character *Character) NewDynamicProcForWeapon(itemID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
+func (character *Character) NewDynamicLegacyProcForWeapon(itemID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
 	return character.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {
 		return character.getCurrentProcMaskForWeaponEffect(itemID)
 	})
