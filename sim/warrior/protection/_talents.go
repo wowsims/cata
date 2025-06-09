@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/warrior"
 )
 
@@ -27,38 +26,6 @@ func (war *ProtectionWarrior) ApplyTalents() {
 	war.applyThunderstruck()
 
 	war.ApplyGlyphs()
-}
-
-func (war *ProtectionWarrior) applyBastionOfDefense() {
-	if war.Talents.BastionOfDefense == 0 {
-		return
-	}
-
-	damageDealtMultiplier := 1.0 + 0.05*float64(war.Talents.BastionOfDefense)
-	enrageChance := 0.1 * float64(war.Talents.BastionOfDefense)
-	actionID := core.ActionID{SpellID: 57516}
-	enrageAura := war.GetOrRegisterAura(core.Aura{
-		Label:    "Enrage",
-		ActionID: actionID,
-		Duration: 12 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= damageDealtMultiplier
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= damageDealtMultiplier
-		},
-	})
-
-	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:       "Enrage Trigger",
-		ActionID:   actionID,
-		Callback:   core.CallbackOnSpellHitTaken,
-		Outcome:    core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry,
-		ProcChance: enrageChance,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			enrageAura.Activate(sim)
-		},
-	})
 }
 
 func (war *ProtectionWarrior) applyImprovedRevenge() {

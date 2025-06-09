@@ -14,7 +14,7 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 
 	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHeavyRepercussions)
 
-	war.RegisterSpell(core.SpellConfig{
+	war.ShieldSlam = war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
@@ -45,9 +45,9 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 			baseDamage := war.CalcAndRollDamageRange(sim, 11.25, 0.05000000075) + spell.MeleeAttackPower()*1.5
 			baseDamage *= core.TernaryFloat64(hasGlyph && war.ShieldBlockAura.IsActive(), 1.5, 1)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-
+			additionalRage := core.TernaryFloat64(war.SwordAndBoardAura.IsActive(), 5, 0)
 			if result.Landed() {
-				war.AddRage(sim, 20*war.GetRageMultiplier(target), rageMetrics)
+				war.AddRage(sim, (20+additionalRage)*war.GetRageMultiplier(target), rageMetrics)
 			}
 		},
 	})

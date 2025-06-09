@@ -99,6 +99,7 @@ type Warrior struct {
 	ColossusSmash *core.Spell
 	MortalStrike  *core.Spell
 	DeepWounds    *core.Spell
+	ShieldSlam    *core.Spell
 
 	sharedShoutsCD   *core.Timer
 	sharedHSCleaveCD *core.Timer
@@ -115,6 +116,7 @@ type Warrior struct {
 	LastStandAura       *core.Aura
 	RallyingCryAura     *core.Aura
 	VictoryRushAura     *core.Aura
+	SwordAndBoardAura   *core.Aura
 	ShieldBarrierAura   *core.DamageAbsorptionAura
 
 	SkullBannerAura         *core.Aura

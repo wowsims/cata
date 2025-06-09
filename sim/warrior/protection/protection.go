@@ -74,10 +74,9 @@ func (war *ProtectionWarrior) registerPassives() {
 	// Critical block
 	war.registerMastery()
 
-	// Unwavering Sentinel
-	war.MultiplyStat(stats.Stamina, 1.15)
-	war.ApplyEquipScaling(stats.Armor, 0.25)
-	war.PseudoStats.ReducedCritTakenChance += 0.06
+	war.registerUnwaveringSentinel()
+	war.registerBastionOfDefense()
+	war.registerSwordAndBoard()
 
 	// Vengeance
 	war.RegisterVengeance(93098, war.DefensiveStanceAura)
