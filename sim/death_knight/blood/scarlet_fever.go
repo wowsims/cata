@@ -5,15 +5,15 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
-func (dk *BloodDeathKnight) registerScarletFever() {
-	weakenedBlowsAuras := dk.NewEnemyAuraArray(core.WeakenedBlowsAura)
-	dk.Env.RegisterPreFinalizeEffect(func() {
-		dk.BloodPlagueSpell.RelatedAuraArrays = dk.BloodPlagueSpell.RelatedAuraArrays.Append(weakenedBlowsAuras)
+func (bdk *BloodDeathKnight) registerScarletFever() {
+	weakenedBlowsAuras := bdk.NewEnemyAuraArray(core.WeakenedBlowsAura)
+	bdk.Env.RegisterPreFinalizeEffect(func() {
+		bdk.BloodPlagueSpell.RelatedAuraArrays = bdk.BloodPlagueSpell.RelatedAuraArrays.Append(weakenedBlowsAuras)
 	})
 
 	var lastDiseaseTarget *core.Unit
-	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
-		Label:    "Scarlet Fever" + dk.Label,
+	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
+		Label:    "Scarlet Fever" + bdk.Label,
 		ActionID: core.ActionID{SpellID: 51160},
 	})).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnSpellHitDealt,
@@ -21,8 +21,8 @@ func (dk *BloodDeathKnight) registerScarletFever() {
 		Outcome:        core.OutcomeLanded,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			frostFever := dk.FrostFeverSpell.Dot(result.Target)
-			bloodPlague := dk.BloodPlagueSpell.Dot(result.Target)
+			frostFever := bdk.FrostFeverSpell.Dot(result.Target)
+			bloodPlague := bdk.BloodPlagueSpell.Dot(result.Target)
 
 			if frostFever.IsActive() {
 				frostFever.Refresh(sim)

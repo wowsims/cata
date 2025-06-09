@@ -1,8 +1,6 @@
 package blood
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -80,6 +78,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.registerScarletFever()
 	bdk.registerScentOfBlood()
 	bdk.registerVampiricBlood()
+	bdk.registerVeteranOfTheThirdWar()
 
 	bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrike())
 	bdk.RuneWeapon.AddCopySpell(RuneStrikeActionID, bdk.registerDrwRuneStrike())
@@ -88,19 +87,6 @@ func (bdk *BloodDeathKnight) Initialize() {
 func (bdk *BloodDeathKnight) ApplyTalents() {
 	bdk.DeathKnight.ApplyTalents()
 	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate, 86524)
-
-	// Veteran of the Third War
-	bdk.AddStaticMod(core.SpellModConfig{
-		Kind:      core.SpellMod_Cooldown_Flat,
-		ClassMask: death_knight.DeathKnightSpellOutbreak,
-		TimeValue: time.Second * -30,
-	})
-	bdk.MultiplyStat(stats.Stamina, 1.09)
-	bdk.AddStat(stats.ExpertiseRating, 6*core.ExpertisePerQuarterPercentReduction)
-	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
-		Label:    "Veteran of the Third War",
-		ActionID: core.ActionID{SpellID: 50029},
-	}))
 
 	// Vengeance
 	bdk.RegisterVengeance(93099, nil)
