@@ -35,7 +35,7 @@ func (moonkin *BalanceDruid) registerMoonkinForm() {
 	core.MakePermanent(moonkin.RegisterAura(core.Aura{
 		Label: "Moonkin Form",
 		ActionID: core.ActionID{
-			SpellID: 4858,
+			SpellID: 24858,
 		},
 	}))
 
