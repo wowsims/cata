@@ -120,17 +120,17 @@ enum Faction {
 
 enum Class {
 	ClassUnknown = 0;
-	ClassDruid = 1;
-	ClassHunter = 2;
-	ClassMage = 3;
-	ClassPaladin = 4;
+	ClassWarrior = 1;
+	ClassPaladin = 2;
+	ClassHunter = 3;
+	ClassRogue = 4;
 	ClassPriest = 5;
-	ClassRogue = 6;
+	ClassDeathKnight = 6;
 	ClassShaman = 7;
-	ClassWarlock = 8;
-	ClassWarrior = 9;
-	ClassDeathKnight = 10;
-	ClassMonk = 11;
+	ClassMage = 8;
+	ClassWarlock = 9;
+	ClassMonk = 10;
+	ClassDruid = 11;
 }
 
 enum Profession {
@@ -267,10 +267,6 @@ enum PseudoStat {
 	PseudoStatMeleeSpeedMultiplier = 6;
 	PseudoStatRangedSpeedMultiplier = 7;
 	PseudoStatCastSpeedMultiplier = 8;
-
-	// 'True Haste Buffs' as blizzard calls them. They affect resource regen, all attack speeds
-	// And most importantly proc rates of RPPM procs that scale with haste
-	PseudoStatAttackSpeedMultiplier = 16;
 
 	// Final buffed Haste values after combining the above multipliers with
 	// Haste Rating from gear. Expressed in percentage units (0-100).

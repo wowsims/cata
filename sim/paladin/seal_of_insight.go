@@ -43,7 +43,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		},
 	})
 
-	dpm := paladin.NewPPMManager(15, core.ProcMaskMeleeMH)
+	dpm := paladin.NewLegacyPPMManager(15, core.ProcMaskMeleeMH)
 	paladin.SealOfInsightAura = paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Insight" + paladin.Label,
 		Tag:      "Seal",
@@ -60,7 +60,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 			// SoI only procs on white hits, CS, HoW, ShotR and TV
 			if (spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
 				!spell.Matches(SpellMaskCanTriggerSealOfInsight)) ||
-				!dpm.Proc(&paladin.Unit, sim, spell.ProcMask, "Seal of Insight"+paladin.Label) {
+				!dpm.Proc(sim, spell.ProcMask, "Seal of Insight"+paladin.Label) {
 				return
 			}
 

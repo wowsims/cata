@@ -11,8 +11,8 @@ type DynamicProcManager struct {
 
 type DynamicProc interface {
 	Reset()
-	Chance(unit *Unit, sim *Simulation) float64
-	Proc(unit *Unit, sim *Simulation, label string) bool
+	Chance(sim *Simulation) float64
+	Proc(sim *Simulation, label string) bool
 }
 
 func (dpm *DynamicProcManager) Reset() {
@@ -22,20 +22,20 @@ func (dpm *DynamicProcManager) Reset() {
 }
 
 // Returns whether the effect procced.
-func (dpm *DynamicProcManager) Proc(unit *Unit, sim *Simulation, procMask ProcMask, label string) bool {
+func (dpm *DynamicProcManager) Proc(sim *Simulation, procMask ProcMask, label string) bool {
 	for i, m := range dpm.procMasks {
 		if m.Matches(procMask) {
-			return dpm.procChances[i].Proc(unit, sim, label)
+			return dpm.procChances[i].Proc(sim, label)
 		}
 	}
 
 	return false
 }
 
-func (dpm *DynamicProcManager) Chance(procMask ProcMask, unit *Unit, sim *Simulation) float64 {
+func (dpm *DynamicProcManager) Chance(procMask ProcMask, sim *Simulation) float64 {
 	for i, m := range dpm.procMasks {
 		if m.Matches(procMask) {
-			return dpm.procChances[i].Chance(unit, sim)
+			return dpm.procChances[i].Chance(sim)
 		}
 	}
 
@@ -43,7 +43,7 @@ func (dpm *DynamicProcManager) Chance(procMask ProcMask, unit *Unit, sim *Simula
 }
 
 // PPMManager for static ProcMasks
-func (character *Character) NewPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
+func (character *Character) NewLegacyPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
 	dpm := character.newDynamicWeaponProcManager(ppm, 0, procMask)
 
 	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
@@ -54,21 +54,21 @@ func (character *Character) NewPPMManager(ppm float64, procMask ProcMask) *Dynam
 }
 
 // PPMManager for static ProcMasks and no item swap callback
-func (character *Character) NewStaticPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
+func (character *Character) NewStaticLegacyPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
 	dpm := character.newDynamicWeaponProcManager(ppm, 0, procMask)
 
 	return &dpm
 }
 
 // Dynamic Proc Manager for static ProcMasks and no item swap callback
-func (character *Character) NewStaticDynamicProcManager(fixedProcChance float64, procMask ProcMask) *DynamicProcManager {
+func (character *Character) NewFixedProcChanceManager(fixedProcChance float64, procMask ProcMask) *DynamicProcManager {
 	dpm := character.newDynamicWeaponProcManager(0, fixedProcChance, procMask)
 
 	return &dpm
 }
 
 // Dynamic Proc Manager for dynamic ProcMasks on weapon enchants
-func (character *Character) NewDynamicProcForEnchant(effectID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
+func (character *Character) NewDynamicLegacyProcForEnchant(effectID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
 	return character.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {
 		return character.getCurrentProcMaskForWeaponEnchant(effectID)
 	})
@@ -140,57 +140,101 @@ type staticProc struct {
 	chance float64
 }
 
-func (sp staticProc) Reset()                                {}
-func (sp staticProc) Chance(_ *Unit, _ *Simulation) float64 { return sp.chance }
-func (sp staticProc) Proc(_ *Unit, sim *Simulation, label string) bool {
+func (sp staticProc) Reset()                       {}
+func (sp staticProc) Chance(_ *Simulation) float64 { return sp.chance }
+func (sp staticProc) Proc(sim *Simulation, label string) bool {
 	return sim.Proc(sp.chance, label)
 }
 
-func (character *Character) NewRPPMProcManagerForEnchant(ppm float64, procMask ProcMask, enchantId int32, configure func(*RPPMProc)) *DynamicProcManager {
-	builder := func() DynamicProcManager {
-		mh := character.MainHand()
-		oh := character.OffHand()
+type EffectType byte
 
-		realPPM := ppm
-		if mh != nil && oh != nil && mh.Enchant.EffectID == enchantId && oh.Enchant.EffectID == enchantId {
-			realPPM *= 2
+const (
+	ItemEffect EffectType = iota
+	EnchantEffect
+	WeaponEffect // Procs directly defined on weapons
+)
+
+// Creates a new RPPM proc manager for the given effectID.
+// Will manage all equiped items that use the given effect ID and overwrite the given configuration's ilvl accordingly.
+//
+// # Example
+//
+//	character.NewRPPMProcManager(1.2, core.ProcMaskMelee | core.ProcMaskSpellDamage, func(r *core.RPPMProc) {
+//		return r.WithSpecMod(-0.4, proto.Spec_SpecAfflictionWarlock).
+//		WithHasteMod(1, core.HighestHaste)
+//	})
+func (character *Character) NewRPPMProcManager(effectID int32, effectType EffectType, procMask ProcMask, rppmConfig RPPMConfig) *DynamicProcManager {
+	var slotList []proto.ItemSlot
+	builder := func() DynamicProcManager {
+		slotList = []proto.ItemSlot{}
+		manager := DynamicProcManager{
+			procMasks:   []ProcMask{},
+			procChances: []DynamicProc{},
 		}
-		return *character.NewRPPMProcManager(realPPM, procMask, configure)
+
+		for slot, eq := range character.Equipment {
+			if selectEffectId(eq, effectType) != effectID {
+				continue
+			}
+
+			slotList = append(slotList, proto.ItemSlot(slot))
+			rppmConfig.Ilvl = eq.ScalingOptions[int32(eq.UpgradeStep)].Ilvl
+			proc := NewRPPMProc(character, rppmConfig)
+
+			mask := procMask
+			weaponMask := ProcMaskEmpty
+			switch proto.ItemSlot(slot) {
+			case proto.ItemSlot_ItemSlotMainHand:
+				if eq.RangedWeaponType > 0 {
+					weaponMask = ProcMaskRanged
+					if mask.Matches(ProcMaskRangedProc) {
+						weaponMask |= ProcMaskRangedProc
+					}
+				} else {
+					weaponMask = ProcMaskMeleeMH
+					if mask.Matches(ProcMaskMeleeProc) {
+						weaponMask |= ProcMaskMeleeProc
+					}
+				}
+			case proto.ItemSlot_ItemSlotOffHand:
+				weaponMask = ProcMaskMeleeOH
+				if mask.Matches(ProcMaskMeleeProc) {
+					weaponMask |= ProcMaskMeleeProc
+				}
+			}
+
+			// The current proc is attached to a weapon
+			// In this case we want to make sure the proc can only proc off this weapon
+			// Or spells, so we remove any melee proc masks and only add the ones determined
+			if weaponMask != ProcMaskEmpty {
+				mask &= ^(ProcMaskMeleeOrMeleeProc | ProcMaskRangedOrRangedProc)
+				mask |= weaponMask
+			}
+
+			manager.procMasks = append(manager.procMasks, mask)
+			manager.procChances = append(manager.procChances, proc)
+		}
+
+		return manager
 	}
 
 	dpm := builder()
-	character.RegisterItemSwapCallback(MeleeWeaponSlots(), func(s *Simulation, is proto.ItemSlot) {
+	character.RegisterItemSwapCallback(slotList, func(_ *Simulation, _ proto.ItemSlot) {
 		dpm = builder()
 	})
 
 	return &dpm
 }
 
-// Creates a new RPPM proc manager
-//
-//	configure func(*RPPMProc)
-//
-// argument can be used to modify the properties of the RPPM proc
-//
-// Enchants should be configured through
-//
-//	NewRPPMProcManagerForEnchant()
-//
-// # Example
-//
-//	character.NewRPPMProcManager(1.2, core.ProcMaskMelee | core.ProcMaskSpellDamage, func(r *core.RPPMProc) {
-//		r.WithSpecMod(-0.4, proto.Spec_SpecAfflictionWarlock).
-//		WithHasteMod(1, core.HighestHaste)
-//	})
-func (character *Character) NewRPPMProcManager(ppm float64, procMask ProcMask, configure func(*RPPMProc)) *DynamicProcManager {
-	proc := NewRPPMProc(ppm)
-	if configure != nil {
-		configure(proc)
-	}
+func selectEffectId(item Item, effectType EffectType) int32 {
+	switch effectType {
+	case ItemEffect:
+		return item.ID
 
-	proc.ForCharacter(character)
-	return &DynamicProcManager{
-		procMasks:   []ProcMask{procMask},
-		procChances: []DynamicProc{proc},
+		// EnchantEffect and WeaponEffect sore some reason both use the enchant ID
+	case EnchantEffect, WeaponEffect:
+		return item.Enchant.EffectID
+	default:
+		return 0
 	}
 }

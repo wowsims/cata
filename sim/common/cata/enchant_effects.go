@@ -68,7 +68,7 @@ func init() {
 		})
 
 		ppm := 5.0
-		dpm := character.NewDynamicProcForEnchant(4067, ppm, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(4067, ppm, 0)
 		meleeIcd := &core.Cooldown{
 			Duration: time.Millisecond * 1,
 			Timer:    character.NewTimer(),
@@ -90,7 +90,7 @@ func init() {
 				// melee ICD - Melee and Spell Procs are independent
 				// while melee attacks do not have a direct internal CD
 				// only one proc per server batch can occur, so i.E. Storm Strike can not proc avalance twice
-				if meleeIcd.IsReady(sim) && dpm.Proc(&character.Unit, sim, spell.ProcMask, "Avalanche") {
+				if meleeIcd.IsReady(sim) && dpm.Proc(sim, spell.ProcMask, "Avalanche") {
 					meleeIcd.Use(sim)
 					procSpell.Cast(sim, result.Target)
 					return
@@ -143,7 +143,7 @@ func init() {
 			Name:     "Elemental Slayer",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			DPM:      character.NewDynamicProcForEnchant(4074, ppm, 0),
+			DPM:      character.NewDynamicLegacyProcForEnchant(4074, ppm, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -170,7 +170,7 @@ func init() {
 		spAura := procBuilder("Hurricane Enchant Spell", 3)
 
 		ppm := 1.0
-		dpm := character.NewDynamicProcForEnchant(4083, ppm, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(4083, ppm, 0)
 
 		hurricaneSpellProc := func(sim *core.Simulation) {
 			if mhAura.IsActive() {
@@ -211,7 +211,7 @@ func init() {
 					return
 				}
 
-				if dpm.Proc(&character.Unit, sim, spell.ProcMask, "Hurricane") {
+				if dpm.Proc(sim, spell.ProcMask, "Hurricane") {
 					if spell.IsMH() {
 						mhAura.Activate(sim)
 					} else {
@@ -309,7 +309,7 @@ func init() {
 			Name:     "Landslide",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			DPM:      character.NewDynamicProcForEnchant(4099, 1.0, 0),
+			DPM:      character.NewDynamicLegacyProcForEnchant(4099, 1.0, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.IsMH() {
 					mainHand.Activate(sim)

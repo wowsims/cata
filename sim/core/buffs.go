@@ -671,22 +671,29 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		Tag:      BloodlustAuraTag,
 		ActionID: actionID,
 		Duration: BloodlustDuration,
-	})
-
-	aura.NewExclusiveEffect("MultiplyAttackSpeed", false, ExclusiveEffect{
-		Priority: 1.3,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1.3)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.3)
 			sated.Activate(sim)
 		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.3)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.3)
 		},
 	})
 
+	multiplyCastSpeedEffect(aura, 1.3)
 	return aura
+}
+
+func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
+		},
+	})
 }
 
 var TricksOfTheTradeAuraTag = "TricksOfTheTrade"
@@ -779,14 +786,10 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: UnholyFrenzyDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyMeleeSpeed(sim, 1.2)
-			aura.Unit.MultiplyRangedSpeed(sim, 1.2)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.2)
+			aura.Unit.MultiplyAttackSpeed(sim, 1.2)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.2)
-			aura.Unit.MultiplyRangedSpeed(sim, 1.2)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.2)
+			aura.Unit.MultiplyAttackSpeed(sim, 1/1.2)
 		},
 	})
 

@@ -293,7 +293,6 @@ func (pet *Pet) enableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicCastSpeedPets, pet) {
 		pet.Owner.DynamicCastSpeedPets = append(pet.Owner.DynamicCastSpeedPets, pet)
 		inheritance(pet.Owner.PseudoStats.CastSpeedMultiplier)
-		inheritance(pet.Owner.PseudoStats.AttackSpeedMultiplier)
 	}
 	pet.dynamicCastSpeedInheritance = inheritance
 }
@@ -340,7 +339,6 @@ func (pet *Pet) Disable(sim *Simulation) {
 
 		// reset cast speed inheritance here so pets that get enabled later to not keep it
 		pet.dynamicCastSpeedInheritance(1 / pet.Owner.PseudoStats.CastSpeedMultiplier)
-		pet.dynamicCastSpeedInheritance(1 / pet.Owner.PseudoStats.AttackSpeedMultiplier)
 		pet.dynamicCastSpeedInheritance = nil
 	}
 

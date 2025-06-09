@@ -16,8 +16,8 @@ func TestFirstCheckOnPull(t *testing.T) {
 
 	const expectedChance = 0.74
 
-	proc := NewRPPMProc(1.20)
-	procChance := proc.getProcChance(&char.Unit, sim)
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2})
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("First proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -31,9 +31,9 @@ func TestTwoChecksInOneStep(t *testing.T) {
 
 	const expectedChance = 0.0
 
-	proc := NewRPPMProc(1.20)
-	proc.Proc(&char.Unit, sim, "UnitTest")
-	procChance := proc.getProcChance(&char.Unit, sim)
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2})
+	proc.Proc(sim, "UnitTest")
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Second proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -46,10 +46,10 @@ func TestResetSetsCorrectState(t *testing.T) {
 	}
 
 	const expectedChance = 0.74
-	proc := NewRPPMProc(1.20)
-	proc.Proc(&char.Unit, sim, "UnitTest")
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2})
+	proc.Proc(sim, "UnitTest")
 	proc.Reset()
-	procChance := proc.getProcChance(&char.Unit, sim)
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Second proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -63,15 +63,15 @@ func TestSpecModAppliesToCorrectSpec(t *testing.T) {
 	}
 
 	const expectedChance = 0.74
-	proc := NewRPPMProc(1.20).WithSpecMod(0.5, proto.Spec_SpecArmsWarrior).ForCharacter(char)
-	procChance := proc.getProcChance(&char.Unit, sim)
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2}.WithSpecMod(0.5, proto.Spec_SpecArmsWarrior))
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
-	const expectedChanceWithMod = 0.37
-	proc.WithSpecMod(-0.5, proto.Spec_SpecAfflictionWarlock)
-	procChance = proc.getProcChance(&char.Unit, sim)
+	const expectedChanceWithMod = 0.1
+	proc = NewRPPMProc(char, RPPMConfig{PPM: 1.2}.WithSpecMod(-0.5, proto.Spec_SpecAfflictionWarlock))
+	procChance = proc.Chance(sim)
 	if math.Abs(procChance-expectedChanceWithMod) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChanceWithMod, procChance)
 	}
@@ -85,15 +85,15 @@ func TestClassModAppliesToCorrectClass(t *testing.T) {
 	}
 
 	const expectedChance = 0.74
-	proc := NewRPPMProc(1.20).WithClassMod(0.5, 1).ForCharacter(char) // Class Mask Warrior
-	procChance := proc.getProcChance(&char.Unit, sim)
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2}.WithClassMod(0.5, 1))
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
-	const expectedChanceWithMod = 0.37
-	proc.WithClassMod(-0.5, 256) // Class Mask Warlock
-	procChance = proc.getProcChance(&char.Unit, sim)
+	const expectedChanceWithMod = 0.1
+	proc = NewRPPMProc(char, RPPMConfig{PPM: 1.2}.WithClassMod(-0.5, 256)) // Class Mask Warlock
+	procChance = proc.Chance(sim)
 	if math.Abs(procChance-expectedChanceWithMod) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChanceWithMod, procChance)
 	}
@@ -110,50 +110,43 @@ func TestHasteRatingMod(t *testing.T) {
 	}
 
 	char.PseudoStats.AttackSpeedMultiplier = 1
-	char.PseudoStats.MeleeSpeedMultiplier = 1
+	char.PseudoStats.MeleeSpeedMultiplier = 1.5
 	char.PseudoStats.CastSpeedMultiplier = 1
 	char.PseudoStats.RangedSpeedMultiplier = 1
 
-	expectedChance := 0.74 * 1.5
-	proc := NewRPPMProc(1.20).WithHasteMod(1, MeleeHaste)
-	procChance := proc.getProcChance(&char.Unit, sim)
+	expectedChance := 2.19
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2}.WithHasteMod(1))
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
-	char.PseudoStats.CastSpeedMultiplier = 1.5
 	char.PseudoStats.RangedSpeedMultiplier = 1.5
-	char.updateCastSpeed()
-
-	procChance = proc.getProcChance(&char.Unit, sim)
-	if math.Abs(procChance-expectedChance) > 0.001 {
-		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
-	}
-
-	expectedChance = 0.74 * 1.5 * 1.5
-	proc = NewRPPMProc(1.2).WithHasteMod(1, RangedHaste)
-	procChance = proc.getProcChance(&char.Unit, sim)
-	if math.Abs(procChance-expectedChance) > 0.001 {
-		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
-	}
-
-	proc = NewRPPMProc(1.2).WithHasteMod(1, SpellHaste)
-	procChance = proc.getProcChance(&char.Unit, sim)
+	char.updateAttackSpeed()
+	procChance = proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
 	char.PseudoStats.AttackSpeedMultiplier = 1.5
-	char.updateCastSpeed()
-	expectedChance = 0.74 * 1.5 * 1.5 * 1.5
-	procChance = proc.getProcChance(&char.Unit, sim)
+	char.updateAttackSpeed()
+	expectedChance = 5.715
+	procChance = proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
-	expectedChance = 0.74 * 1.5 * 1.5
-	proc = NewRPPMProc(1.2).WithHasteMod(1, HighestHaste)
-	procChance = proc.getProcChance(&char.Unit, sim)
+	char.PseudoStats.CastSpeedMultiplier = 1.5
+	char.updateCastSpeed()
+	procChance = proc.Chance(sim)
+	if math.Abs(procChance-expectedChance) > 0.001 {
+		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
+	}
+
+	char.PseudoStats.CastSpeedMultiplier = 2
+	char.updateCastSpeed()
+	expectedChance = 10.86
+	procChance = proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
@@ -162,48 +155,46 @@ func TestHasteRatingMod(t *testing.T) {
 func TestCritRatingMod(t *testing.T) {
 	sim := SetupFakeSim()
 
-	stats := stats.Stats{stats.PhysicalCritPercent: 50, stats.SpellCritPercent: 100}
+	s := stats.Stats{stats.PhysicalCritPercent: 50}
 	char := &Character{
 		Unit: Unit{
-			stats: stats,
+			stats: s,
 		},
 	}
 
-	expectedChance := 0.74 * 1.5
-	proc := NewRPPMProc(1.20).WithCritMod(1, MeleeCrit)
-	procChance := proc.getProcChance(&char.Unit, sim)
+	expectedChance := 2.19
+	proc := NewRPPMProc(char, RPPMConfig{PPM: 1.2}.WithCritMod(1))
+	procChance := proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 
-	proc = NewRPPMProc(1.20).WithCritMod(1, RangedCrit)
-	procChance = proc.getProcChance(&char.Unit, sim)
-	if math.Abs(procChance-expectedChance) > 0.001 {
-		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
-	}
-
-	proc = NewRPPMProc(1.20).WithCritMod(1, LowestCrit)
-	procChance = proc.getProcChance(&char.Unit, sim)
-	if math.Abs(procChance-expectedChance) > 0.001 {
-		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
-	}
-
-	expectedChance = 0.74 * 2
-	proc = NewRPPMProc(1.20).WithCritMod(1, SpellCrit)
-	procChance = proc.getProcChance(&char.Unit, sim)
+	char.stats[stats.SpellCritPercent] = 100
+	expectedChance = 4.36
+	procChance = proc.Chance(sim)
 	if math.Abs(procChance-expectedChance) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChance, procChance)
 	}
 }
 
-func TestProcManagerShouldProc(t *testing.T) {
+func TestProcManagerShouldProcForItemEffect(t *testing.T) {
 	sim := SetupFakeSim()
 	char := &Character{
 		Unit: Unit{},
+		Equipment: Equipment{
+			proto.ItemSlot_ItemSlotTrinket1: Item{
+				ID: 1234,
+				ScalingOptions: map[int32]*proto.ScalingItemProperties{
+					int32(proto.ItemLevelState_Base): {
+						Ilvl: 528,
+					},
+				},
+			},
+		},
 	}
 
-	procManager := char.NewRPPMProcManager(2, ProcMaskDirect, nil)
-	if !procManager.Proc(&char.Unit, sim, ProcMaskMeleeMHAuto, "Melee Swing") {
+	procManager := char.NewRPPMProcManager(1234, ItemEffect, ProcMaskDirect, RPPMConfig{PPM: 2})
+	if !procManager.Proc(sim, ProcMaskMeleeMHAuto, "Melee Swing") {
 		t.Fatal("Did not proc for 100% proc chance")
 	}
 }
@@ -211,17 +202,171 @@ func TestProcManagerShouldProc(t *testing.T) {
 func TestProcManagerShouldBeConfigurable(t *testing.T) {
 	sim := SetupFakeSim()
 	char := &Character{
-		Unit:  Unit{},
+		Unit: Unit{},
+		Equipment: Equipment{
+			proto.ItemSlot_ItemSlotTrinket1: Item{
+				ID: 1234,
+				ScalingOptions: map[int32]*proto.ScalingItemProperties{
+					int32(proto.ItemLevelState_Base): {
+						Ilvl: 528,
+					},
+				},
+			},
+		},
 		Class: proto.Class_ClassWarlock,
 	}
 
-	const expectedChanceWithMod = 0.37
-	procManager := char.NewRPPMProcManager(1.2, ProcMaskDirect, func(r *RPPMProc) {
-		r.WithClassMod(-0.5, 256)
-	})
-
-	procChance := procManager.Chance(ProcMaskMelee, &char.Unit, sim)
+	const expectedChanceWithMod = 0.1
+	procManager := char.NewRPPMProcManager(1234, ItemEffect, ProcMaskDirect, RPPMConfig{PPM: 1.2}.WithClassMod(-0.5, 256))
+	procChance := procManager.Chance(ProcMaskMelee, sim)
 	if math.Abs(procChance-expectedChanceWithMod) > 0.001 {
 		t.Fatalf("Proc chance wrong. Expected %f, got %f", expectedChanceWithMod, procChance)
+	}
+}
+
+func TestProcManagerShouldProcOffCorrectWeaponForItemEffect(t *testing.T) {
+	sim := SetupFakeSim()
+	masks := []ProcMask{
+		ProcMaskMeleeMH,
+		ProcMaskMeleeOH,
+		ProcMaskRanged,
+	}
+
+	for _, mask := range masks {
+		itemSlot := proto.ItemSlot_ItemSlotMainHand
+		rangedType := proto.RangedWeaponType_RangedWeaponTypeUnknown
+
+		if mask.Matches(ProcMaskMeleeOH) {
+			itemSlot = proto.ItemSlot_ItemSlotOffHand
+		}
+
+		if mask.Matches(ProcMaskRanged) {
+			rangedType = proto.RangedWeaponType_RangedWeaponTypeBow
+		}
+
+		char := &Character{
+			Unit:      Unit{},
+			Equipment: Equipment{},
+		}
+
+		char.Equipment[(itemSlot)] = Item{
+			ID:               1234,
+			RangedWeaponType: rangedType,
+			ScalingOptions: map[int32]*proto.ScalingItemProperties{
+				int32(proto.ItemLevelState_Base): {
+					Ilvl: 528,
+				},
+			},
+		}
+
+		procManager := char.NewRPPMProcManager(1234, ItemEffect, ProcMaskDirect, RPPMConfig{PPM: 2})
+		if mask.Matches(ProcMaskMeleeOHAuto) != (procManager.Chance(ProcMaskMeleeOHAuto, sim) > 0) {
+			t.Fatal("Wrong proc chance")
+		}
+
+		if mask.Matches(ProcMaskRanged) != (procManager.Chance(ProcMaskRanged, sim) > 0) {
+			t.Fatal("Wrong proc chance")
+		}
+
+		if mask.Matches(ProcMaskMeleeMHAuto) != (procManager.Chance(ProcMaskMeleeMHAuto, sim) > 0) {
+			t.Fatal("Wrong proc chance")
+		}
+	}
+}
+
+func TestProcManagerShouldProcOffCorrectWeaponForEnchantEffect(t *testing.T) {
+	sim := SetupFakeSim()
+	masks := []ProcMask{
+		ProcMaskMeleeMH,
+		ProcMaskMeleeOH,
+		ProcMaskRanged,
+	}
+
+	for _, mask := range masks {
+		itemSlot := proto.ItemSlot_ItemSlotMainHand
+		rangedType := proto.RangedWeaponType_RangedWeaponTypeUnknown
+
+		if mask.Matches(ProcMaskMeleeOH) {
+			itemSlot = proto.ItemSlot_ItemSlotOffHand
+		}
+
+		if mask.Matches(ProcMaskRanged) {
+			rangedType = proto.RangedWeaponType_RangedWeaponTypeBow
+		}
+
+		char := &Character{
+			Unit:      Unit{},
+			Equipment: Equipment{},
+		}
+
+		char.Equipment[(itemSlot)] = Item{
+			ID:               1111,
+			RangedWeaponType: rangedType,
+			Enchant: Enchant{
+				EffectID: 1234,
+			},
+			ScalingOptions: map[int32]*proto.ScalingItemProperties{
+				int32(proto.ItemLevelState_Base): {
+					Ilvl: 528,
+				},
+			},
+		}
+
+		procManager := char.NewRPPMProcManager(1234, EnchantEffect, ProcMaskDirect, RPPMConfig{PPM: 2})
+		if mask.Matches(ProcMaskMeleeOHAuto) != (procManager.Chance(ProcMaskMeleeOHAuto, sim) > 0) {
+			t.Fatal("Wrong proc chance")
+		}
+
+		if mask.Matches(ProcMaskRanged) != (procManager.Chance(ProcMaskRanged, sim) > 0) {
+			t.Fatal("Wrong proc chance")
+		}
+
+		if mask.Matches(ProcMaskMeleeMHAuto) != (procManager.Chance(ProcMaskMeleeMHAuto, sim) > 0) {
+			t.Fatal("Wrong proc chance")
+		}
+	}
+}
+
+func TestProcManagerShouldProcIndependentForSameEffect(t *testing.T) {
+	sim := SetupFakeSim()
+	char := &Character{
+		Unit: Unit{},
+		Equipment: Equipment{
+			proto.ItemSlot_ItemSlotMainHand: Item{
+				ID: 1111,
+				Enchant: Enchant{
+					EffectID: 1234,
+				},
+				ScalingOptions: map[int32]*proto.ScalingItemProperties{
+					int32(proto.ItemLevelState_Base): {
+						Ilvl: 528,
+					},
+				},
+			},
+			proto.ItemSlot_ItemSlotOffHand: Item{
+				ID: 1111,
+				Enchant: Enchant{
+					EffectID: 1234,
+				},
+				ScalingOptions: map[int32]*proto.ScalingItemProperties{
+					int32(proto.ItemLevelState_Base): {
+						Ilvl: 528,
+					},
+				},
+			},
+		},
+	}
+
+	procManager := char.NewRPPMProcManager(1234, EnchantEffect, ProcMaskDirect, RPPMConfig{PPM: 2})
+	if !procManager.Proc(sim, ProcMaskMeleeMHAuto, "MH Auto") {
+		t.Fatal("Wrong proc")
+	}
+
+	if procManager.Chance(ProcMaskMeleeMH, sim) == procManager.Chance(ProcMaskMeleeOH, sim) {
+		t.Fatal("Proc chances are not independent")
+	}
+
+	if !procManager.Proc(sim, ProcMaskMeleeOHAuto, "OH Auto") {
+		t.Fatal("Wrong proc")
 	}
 }
