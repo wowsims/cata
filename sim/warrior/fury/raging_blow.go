@@ -33,7 +33,7 @@ func (war *FuryWarrior) registerRagingBlow() {
 		ClassSpellMask: warrior.SpellMaskRagingBlowOH,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 1.9,
 		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -50,7 +50,7 @@ func (war *FuryWarrior) registerRagingBlow() {
 		ClassSpellMask: warrior.SpellMaskRagingBlowMH,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 1.9,
 		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -100,9 +100,10 @@ func (war *FuryWarrior) registerRagingBlow() {
 				return
 			}
 
-			if war.MeatCleaverAura.IsActive() && war.MeatCleaverAura.GetStacks() > 0 {
+			meatCleaverStacks := int(war.MeatCleaverAura.GetStacks())
+			if war.MeatCleaverAura.IsActive() && meatCleaverStacks > 0 {
 				for index, mcTarget := range sim.Encounter.TargetUnits {
-					if index <= int(war.MeatCleaverAura.GetStacks()) {
+					if index <= meatCleaverStacks {
 						mhRagingBlow.Cast(sim, mcTarget)
 						ohRagingBlow.Cast(sim, mcTarget)
 					}
