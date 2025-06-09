@@ -220,8 +220,8 @@ func (proc *RPPMProc) getProcChance(sim *Simulation) float64 {
 		baseCoeff *= mod.GetCoefficient(proc)
 	}
 
-	lastCheck := math.Min(10.0, float64((sim.CurrentTime-proc.lastCheck)/time.Second))
-	lastProc := math.Min(1000.0, float64((sim.CurrentTime-proc.lastProc)/time.Second))
+	lastCheck := math.Min(10.0, (sim.CurrentTime - proc.lastCheck).Seconds())
+	lastProc := math.Min(1000.0, (sim.CurrentTime - proc.lastProc).Seconds())
 
 	// TODO: Adjust implementation if needed
 	// Temporary implementation, targeting the 'intended' MOP proc behavior
