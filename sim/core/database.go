@@ -145,6 +145,7 @@ type Item struct {
 	RandomSuffix RandomSuffix
 	Gems         []Gem
 	Enchant      Enchant
+	Tinker       Enchant
 	Reforging    *ReforgeStat
 
 	//Internal use
@@ -240,6 +241,7 @@ type ItemSpec struct {
 	ID            int32
 	RandomSuffix  int32
 	Enchant       int32
+	Tinker        int32
 	Gems          []int32
 	Reforging     int32
 	UpgradeStep   proto.ItemLevelState
@@ -388,6 +390,7 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 			RandomSuffix:  item.RandomSuffix,
 			Enchant:       item.Enchant,
 			Gems:          item.Gems,
+			Tinker:        item.Tinker,
 			Reforging:     item.Reforging,
 			UpgradeStep:   item.UpgradeStep,
 			ChallengeMode: item.ChallengeMode,
@@ -435,6 +438,12 @@ func NewItem(itemSpec ItemSpec) Item {
 		// else {
 		// 	panic(fmt.Sprintf("No enchant with id: %d", itemSpec.Enchant))
 		// }
+	}
+
+	if itemSpec.Tinker != 0 {
+		if tinker, ok := EnchantsByEffectID[itemSpec.Tinker]; ok {
+			item.Tinker = tinker
+		}
 	}
 
 	if itemSpec.Reforging > 112 { // There is no id below 113

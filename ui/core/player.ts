@@ -502,6 +502,12 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getEnchants(slot).filter(enchant => canEquipEnchant(enchant, this.playerSpec));
 	}
 
+	// Returns all tinkers that this player can wear in the given slot.
+	// For the purpose of this function, they are all enchants still, however we split them since you can have both on the same item.
+	getTinkers(slot: ItemSlot): Array<Enchant> {
+		return this.sim.db.getEnchants(slot).filter(enchant => enchant.requiredProfession == Profession.Engineering);
+	}
+
 	// Returns all gems that this player can wear of the given color.
 	getGems(socketColor?: GemColor): Array<Gem> {
 		return this.sim.db.getGems(socketColor);
@@ -732,6 +738,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
+		console.log(newItem);
 		this.setGear(eventID, this.gear.withEquippedItem(slot, newItem, this.canDualWield2H()));
 	}
 

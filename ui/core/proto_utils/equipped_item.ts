@@ -55,6 +55,7 @@ export interface ReforgeData {
 type EquippedItemOptions = {
 	item: Item;
 	enchant?: Enchant | null;
+	tinker?: Enchant | null;
 	gems?: Array<Gem | null>;
 	randomSuffix?: ItemRandomSuffix | null;
 	reforge?: ReforgeStat | null;
@@ -72,15 +73,17 @@ export class EquippedItem {
 	readonly _randomSuffix: ItemRandomSuffix | null;
 	readonly _reforge: ReforgeStat | null;
 	readonly _enchant: Enchant | null;
+	readonly _tinker: Enchant | null;
 	readonly _gems: Array<Gem | null>;
 	readonly _upgrade: ItemLevelState;
 	readonly _challengeMode: boolean;
 
 	readonly numPossibleSockets: number;
 
-	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeMode }: EquippedItemOptions) {
+	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeMode, tinker }: EquippedItemOptions) {
 		this._item = item;
 		this._enchant = enchant || null;
+		this._tinker = tinker || null;
 		this._gems = gems || [];
 		this._randomSuffix = randomSuffix || null;
 		this._reforge = reforge || null;
@@ -110,6 +113,10 @@ export class EquippedItem {
 	get enchant(): Enchant | null {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;
+	}
+	get tinker(): Enchant | null {
+		// Make a defensive copy
+		return this._tinker ? Enchant.clone(this._tinker) : null;
 	}
 	get reforge(): ReforgeStat | null {
 		return this._reforge ? ReforgeStat.clone(this._reforge) : null;
@@ -259,6 +266,22 @@ export class EquippedItem {
 		});
 	}
 
+	/**
+	 * Returns a new EquippedItem with the given tinker applied.
+	 */
+	withTinker(tinker: Enchant | null): EquippedItem {
+		console.log('equipp[ing tinker', tinker);
+		return new EquippedItem({
+			item: this._item,
+			tinker: tinker,
+			enchant: this._enchant,
+			gems: this._gems,
+			randomSuffix: this._randomSuffix,
+			reforge: this._reforge,
+			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
+		});
+	}
 	/**
 	 * Returns a new EquippedItem with the given reforge applied.
 	 */

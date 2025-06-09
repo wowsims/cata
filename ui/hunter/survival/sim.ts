@@ -8,9 +8,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLListItem, APLRotation } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { SurvivalHunter_Rotation } from '../../core/proto/hunter';
-import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
-import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as SVInputs from './inputs';
@@ -22,7 +21,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
 	warnings: [],
-
+	consumableStatFilter(item) {
+		return item.stats[Stat.StatAgility] > 240 || item.buffsMainStat || item.stats[Stat.StatHitRating] > 200;
+	},
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStamina,

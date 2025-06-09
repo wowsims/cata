@@ -46,7 +46,7 @@ export default class GearPicker extends Component {
 			ItemSlot.ItemSlotChest,
 			ItemSlot.ItemSlotWrist,
 			ItemSlot.ItemSlotMainHand,
-			ItemSlot.ItemSlotOffHand
+			ItemSlot.ItemSlotOffHand,
 		].map(slot => new ItemPicker(leftSideRef.value!, this, simUI, player, slot));
 
 		const rightItemPickers = [
@@ -288,6 +288,7 @@ export class ItemPicker extends Component {
 
 		player.gearChangeEmitter.on(() => {
 			this.item = this.player.getEquippedItem(this.slot);
+			console.log(this.item);
 			if (this._equippedItem) {
 				if (this._equippedItem !== this.quickSwapEnchantPopover?.item) {
 					this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
@@ -318,6 +319,7 @@ export class ItemPicker extends Component {
 	createGearData(): GearData {
 		return {
 			equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
+				console.log({ equippedItem });
 				this.player.equipItem(eventID, this.slot, equippedItem);
 			},
 			getEquippedItem: () => this.player.getEquippedItem(this.slot)?.withChallengeMode(this.player.getChallengeModeEnabled()).withDynamicStats() || null,

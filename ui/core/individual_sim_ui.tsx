@@ -57,6 +57,7 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
+import { Consumable } from './proto/db';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
@@ -113,7 +114,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 
 	knownIssues?: Array<string>;
 	warnings?: Array<(simUI: IndividualSimUI<SpecType>) => SimWarning>;
-
+	consumableStatFilter?: (item: Consumable, index: number, array: Consumable[]) => boolean;
 	epStats: Array<Stat>;
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;
@@ -188,8 +189,6 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
 }
-
-
 
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
 	registerPlayerConfig(spec, config);
@@ -363,7 +362,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 		return config;
 	}
-
 
 	private loadSettings() {
 		const initEventID = TypedEvent.nextEventID();

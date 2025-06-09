@@ -3,6 +3,7 @@ import { ref } from 'tsx-vanilla';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import { ConsumableType } from '../../proto/common';
+import { Consumable } from '../../proto/db';
 import { Database } from '../../proto_utils/database';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
@@ -23,6 +24,13 @@ export class ConsumesPicker extends Component {
 		this.settingsTab = settingsTab;
 		this.simUI = simUI;
 		this.db = db;
+	}
+
+	private getConsumables(type: ConsumableType): Consumable[] {
+		if (this.simUI.individualConfig.consumableStatFilter) {
+			return this.db.getConsumablesByTypeAndFilter(type, this.simUI.individualConfig.consumableStatFilter);
+		}
+		return this.db.getConsumablesByTypeAndStats(type, this.simUI.individualConfig.epStats);
 	}
 
 	public static create(parentElem: HTMLElement, settingsTab: SettingsTab, simUI: IndividualSimUI<any>): ConsumesPicker {
@@ -49,7 +57,7 @@ export class ConsumesPicker extends Component {
 		);
 		const potionsElem = potionsRef.value!;
 
-		const pots = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypePotion, this.simUI.individualConfig.epStats);
+		const pots = this.getConsumables(ConsumableType.ConsumableTypePotion);
 		const prePotOptions = ConsumablesInputs.makeConsumableInput(pots, { consumesFieldName: 'prepotId' }, 'Prepop Potion');
 		const potionsOptions = ConsumablesInputs.makeConsumableInput(pots, { consumesFieldName: 'potId' }, 'Combat Potion');
 
@@ -87,14 +95,14 @@ export class ConsumesPicker extends Component {
 		const battleElixirsElem = battleElixirsRef.value!;
 		const guardianElixirsElem = guardianElixirsRef.value!;
 
-		const flasks = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeFlask, this.simUI.individualConfig.epStats);
+		const flasks = this.getConsumables(ConsumableType.ConsumableTypeFlask);
 		const simpleFlasksOptions = ConsumablesInputs.makeConsumableInput(flasks, { consumesFieldName: 'flaskId' }, '');
 		buildIconInput(flasksElem, this.simUI.player, simpleFlasksOptions);
 
-		const battleElixirs = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeBattleElixir, this.simUI.individualConfig.epStats);
+		const battleElixirs = this.getConsumables(ConsumableType.ConsumableTypeBattleElixir);
 		const battleElixirOptions = ConsumablesInputs.makeConsumableInput(battleElixirs, { consumesFieldName: 'battleElixirId' }, '');
 
-		const guardianElixirs = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeGuardianElixir, this.simUI.individualConfig.epStats);
+		const guardianElixirs = this.getConsumables(ConsumableType.ConsumableTypeGuardianElixir);
 		const guardianElixirOptions = ConsumablesInputs.makeConsumableInput(guardianElixirs, { consumesFieldName: 'guardianElixirId' }, '');
 
 		buildIconInput(battleElixirsElem, this.simUI.player, battleElixirOptions);
@@ -110,7 +118,7 @@ export class ConsumesPicker extends Component {
 			</ConsumeRow>,
 		);
 		const foodsElem = foodRef.value!;
-		const foods = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeFood, this.simUI.individualConfig.epStats);
+		const foods = this.getConsumables(ConsumableType.ConsumableTypeFood);
 		const foodsOptions = ConsumablesInputs.makeConsumableInput(foods, { consumesFieldName: 'foodId' }, '');
 		buildIconInput(foodsElem, this.simUI.player, foodsOptions);
 	}

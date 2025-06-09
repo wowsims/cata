@@ -54,6 +54,7 @@ export class ItemSwapSettings {
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
+		console.log(newItem);
 		this.setGear(eventID, this.gear.withEquippedItem(slot, newItem, this.player.canDualWield2H()));
 	}
 
