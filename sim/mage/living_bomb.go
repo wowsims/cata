@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"sort"
 	"time"
 
@@ -104,7 +103,6 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
-			fmt.Println(len(activeLivingBombs))
 			if result.Landed() {
 				// If there is already an active dot on the target, just reapply
 				if spell.Dot(target).IsActive() {

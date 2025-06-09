@@ -23,9 +23,9 @@ func (frost *FrostMage) registerBrainFreeze() {
 			frost.frostfireFrozenCritBuffMod.Deactivate()
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-		ClassMask:  mage.MageSpellFrostfireBolt,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
+		ClassMask: mage.MageSpellFrostfireBolt,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1,
