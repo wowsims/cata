@@ -48,11 +48,9 @@ func (hunter *Hunter) registerAMOCSpell() {
 			NumberOfTicks: 30,
 			TickLength:    time.Second * 1,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				baseDmg := hunter.GetBaseDamageFromCoeff(0.63) + (0.288 * dot.Spell.RangedAttackPower())
 				dot.Snapshot(target, baseDmg)
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalHit)
 			},
 		},

@@ -385,6 +385,9 @@ func (hp *HunterPet) registerRabidCD() {
 		ActionID: actionID,
 
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 90,

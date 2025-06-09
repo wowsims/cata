@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/hunter"
 )
 
-func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
+func (svHunter *SurvivalHunter) registerBlackArrowSpell() {
 	actionID := core.ActionID{SpellID: 3674}
 
 	svHunter.Hunter.BlackArrow = svHunter.Hunter.RegisterSpell(core.SpellConfig{
@@ -28,7 +28,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
-				Timer:    timer,
+				Timer:    svHunter.NewTimer(),
 				Duration: time.Second * 24, // 24 with trap mastery for survival
 			},
 		},
