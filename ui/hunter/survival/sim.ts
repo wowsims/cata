@@ -97,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			HunterInputs.PetUptime(),
 			HunterInputs.AQTierPrepull(),
 			HunterInputs.NaxxTierPrepull(),
+			HunterInputs.GlaiveTossChance(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
