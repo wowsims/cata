@@ -51,7 +51,7 @@ var PlayerOptionsWindwalker = &proto.Player_WindwalkerMonk{
 
 var FullConsumesSpec = &proto.ConsumesSpec{
 	FlaskId:  76084,  // Flask of Spring Blossoms
-	FoodId:   104303, // Sea Mist Rice Noodles
+	FoodId:   74648,  // Sea Mist Rice Noodles
 	PotId:    76089,  // Virmen's Bite
 	PrepotId: 76089,  // Virmen's Bite
 }
