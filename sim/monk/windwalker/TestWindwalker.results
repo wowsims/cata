@@ -39,14 +39,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 73827.20798
-  tps: 67944.38254
-  hps: 4939.74599
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-AgonyandTorment"
  value: {
   dps: 74386.00826
@@ -119,23 +111,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-AusterePrimalDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 72752.83985
   tps: 66896.43013
@@ -156,14 +132,6 @@ dps_results: {
   dps: 73725.96443
   tps: 67909.71309
   hps: 4658.63906
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 72830.54468
-  tps: 66963.80035
-  hps: 4892.15745
  }
 }
 dps_results: {
@@ -335,22 +303,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 72752.83985
-  tps: 65558.50153
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 71328.58565
@@ -360,14 +312,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BurningPrimalDiamond"
- value: {
-  dps: 73656.26721
-  tps: 67795.50172
-  hps: 4922.66943
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 73656.26721
   tps: 67795.50172
@@ -428,22 +372,6 @@ dps_results: {
   dps: 73042.98679
   tps: 67217.5106
   hps: 4833.44246
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 73843.39924
-  tps: 67965.52156
-  hps: 4926.33993
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 72830.54468
-  tps: 66963.80035
-  hps: 4892.15745
  }
 }
 dps_results: {
@@ -623,22 +551,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 72930.21131
-  tps: 67056.90954
-  hps: 4895.62019
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 72836.62074
-  tps: 66967.79592
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 72180.61542
@@ -648,14 +560,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EffulgentPrimalDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 72752.83985
   tps: 66896.43013
@@ -679,51 +583,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 73188.76871
   tps: 67281.38574
   hps: 4910.50346
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 72930.21131
-  tps: 67056.90954
-  hps: 4895.62019
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 72830.54468
-  tps: 66963.80035
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 72772.79979
-  tps: 66908.0296
-  hps: 4892.15745
  }
 }
 dps_results: {
@@ -767,23 +631,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-EternalPrimalDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 72752.83985
   tps: 66896.43013
@@ -911,14 +759,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 72780.34886
-  tps: 66923.93914
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-FluidDeath-58181"
  value: {
   dps: 73085.19446
@@ -944,30 +784,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ForlornPrimalDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ForlornStarflareDiamond"
  value: {
   dps: 72752.83985
   tps: 66896.43013
@@ -1151,30 +967,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 72930.21131
-  tps: 67056.90954
-  hps: 4895.62019
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 72830.54468
-  tps: 66963.80035
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 72772.79979
-  tps: 66908.0296
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-ImpatienceofYouth-62464"
  value: {
   dps: 71918.59144
@@ -1239,14 +1031,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 71328.58565
@@ -1284,14 +1068,6 @@ dps_results: {
   dps: 71419.69496
   tps: 65821.53115
   hps: 4688.65721
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 72900.12518
-  tps: 67060.52923
-  hps: 4891.7598
  }
 }
 dps_results: {
@@ -1687,22 +1463,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 72772.79979
-  tps: 66908.0296
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 72830.54468
-  tps: 66963.80035
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 71686.80312
@@ -1727,31 +1487,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-PowerfulPrimalDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PowerfulShadowspiritDiamond"
  value: {
   dps: 72752.83985
   tps: 66896.43013
@@ -1799,14 +1535,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 72817.17657
-  tps: 66951.90704
-  hps: 4898.75648
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-ResolveofUndying-77201"
  value: {
   dps: 71328.58565
@@ -1839,14 +1567,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 73721.89503
-  tps: 67852.76605
-  hps: 4930.80112
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-RevitalizingPrimalDiamond"
  value: {
   dps: 73656.26721
@@ -1855,35 +1575,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 73656.26721
-  tps: 67795.50172
-  hps: 4922.66943
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Ricket'sMagneticFireball-70144"
  value: {
   dps: 72797.00171
   tps: 67003.74623
   hps: 4840.91039
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-RidingCrop"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
  }
 }
 dps_results: {
@@ -2127,14 +1823,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 71705.22479
@@ -2335,30 +2023,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 72830.54468
-  tps: 66963.80035
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 72772.79979
-  tps: 66908.0296
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 72768.43726
-  tps: 66905.71496
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-SymbioticWorm-59332"
  value: {
   dps: 71328.58565
@@ -2511,14 +2175,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Tia'sGrace-55874"
  value: {
   dps: 72893.98373
@@ -2532,38 +2188,6 @@ dps_results: {
   dps: 73017.83954
   tps: 67164.98148
   hps: 4802.67564
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 72752.83985
-  tps: 66896.43013
-  hps: 4892.15745
  }
 }
 dps_results: {
