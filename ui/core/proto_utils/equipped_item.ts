@@ -221,8 +221,9 @@ export class EquippedItem {
 	 */
 	withItem(item: Item): EquippedItem {
 		let newEnchant = null;
+		let newTinker = null;
 		if (this._enchant && enchantAppliesToItem(this._enchant, item)) newEnchant = this._enchant;
-
+		if (this._tinker && enchantAppliesToItem(this._tinker, item)) newTinker = this._tinker;
 		// Reorganize gems to match as many colors in the new item as possible.
 		const newGems = new Array(item.gemSockets.length).fill(null);
 		this._gems
@@ -248,6 +249,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item,
 			enchant: newEnchant,
+			tinker: newTinker,
 			gems: newGems,
 			challengeMode: this._challengeMode,
 		});

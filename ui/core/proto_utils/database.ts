@@ -209,13 +209,6 @@ export class Database {
 	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
 		return this.getConsumablesByType(type).filter(consume => consume.buffsMainStat || stats.some(index => consume.stats[index] > 0));
 	}
-	getConsumablesByTypeAndFilter(
-		type: ConsumableType,
-		predicate: (item: Consumable, index: number, array: Consumable[]) => boolean,
-		thisArg?: any,
-	): Consumable[] {
-		return this.getConsumablesByType(type).filter(predicate, thisArg);
-	}
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {
 		return this.randomSuffixes.get(id);
 	}

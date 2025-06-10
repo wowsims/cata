@@ -1457,14 +1457,10 @@ export class Player<SpecType extends Spec> {
 			// i.e dead gems.
 			const statsFilter = this.specConfig.gemStats ?? this.specConfig.epStats;
 			const positiveStatIds = gem.stats.map((value, statId) => (value > 0 ? statId : -1)).filter(statId => statId >= 0);
-			if (positiveStatIds.length === 0) {
+			if (!positiveStatIds.length) {
 				return false;
 			}
-			if (positiveStatIds.some(statId => !statsFilter.includes(statId))) {
-				return false;
-			}
-
-			return true;
+			return !positiveStatIds.some(statId => !statsFilter.includes(statId));
 		});
 	}
 
