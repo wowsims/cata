@@ -146,14 +146,6 @@ func (sp staticProc) Proc(sim *Simulation, label string) bool {
 	return sim.Proc(sp.chance, label)
 }
 
-type EffectType byte
-
-const (
-	ItemEffect EffectType = iota
-	EnchantEffect
-	WeaponEffect // Procs directly defined on weapons
-)
-
 // Creates a new RPPM proc manager for the given effectID.
 // Will manage all equiped items that use the given effect ID and overwrite the given configuration's ilvl accordingly.
 //
@@ -161,58 +153,51 @@ const (
 //
 //	char.NewRPPMProcManager(
 //			1234,
-//			ItemEffect,
+//			false,
 //			ProcMaskDirect,
 //			RPPMConfig{PPM: 2}.
 //				WithClassMod(-0.5, 255).
-//				WithHasteMod(1),
+//				WithHasteMod(),
 //		)
-func (character *Character) NewRPPMProcManager(effectID int32, effectType EffectType, procMask ProcMask, rppmConfig RPPMConfig) *DynamicProcManager {
+func (character *Character) NewRPPMProcManager(effectID int32, isEnchant bool, procMask ProcMask, rppmConfig RPPMConfig) *DynamicProcManager {
 	var slotList []proto.ItemSlot
+	if isEnchant {
+		slotList = character.ItemSwap.EligibleSlotsForEffect(effectID)
+	} else {
+		slotList = character.ItemSwap.EligibleSlotsForItem(effectID)
+	}
+
 	builder := func() DynamicProcManager {
-		slotList = []proto.ItemSlot{}
 		manager := DynamicProcManager{
 			procMasks:   []ProcMask{},
 			procChances: []DynamicProc{},
 		}
 
-		for slot, eq := range character.Equipment {
-			if selectEffectId(eq, effectType) != effectID {
+		for _, slot := range slotList {
+			eq := character.Equipment.GetItemBySlot(slot)
+			if eq.selectEffectId(isEnchant) != effectID {
 				continue
 			}
 
-			slotList = append(slotList, proto.ItemSlot(slot))
-			rppmConfig.Ilvl = eq.ScalingOptions[int32(eq.UpgradeStep)].Ilvl
+			rppmConfig.Ilvl = eq.GetEffectiveScalingOptions().Ilvl
 			proc := NewRPPMProc(character, rppmConfig)
-
 			mask := procMask
-			weaponMask := ProcMaskEmpty
-			switch proto.ItemSlot(slot) {
-			case proto.ItemSlot_ItemSlotMainHand:
-				if eq.RangedWeaponType > 0 {
-					weaponMask = ProcMaskRanged
-					if mask.Matches(ProcMaskRangedProc) {
-						weaponMask |= ProcMaskRangedProc
-					}
-				} else {
-					weaponMask = ProcMaskMeleeMH
-					if mask.Matches(ProcMaskMeleeProc) {
-						weaponMask |= ProcMaskMeleeProc
-					}
-				}
-			case proto.ItemSlot_ItemSlotOffHand:
-				weaponMask = ProcMaskMeleeOH
-				if mask.Matches(ProcMaskMeleeProc) {
-					weaponMask |= ProcMaskMeleeProc
-				}
-			}
 
-			// The current proc is attached to a weapon
-			// In this case we want to make sure the proc can only proc off this weapon
-			// Or spells, so we remove any melee proc masks and only add the ones determined
-			if weaponMask != ProcMaskEmpty {
-				mask &= ^(ProcMaskMeleeOrMeleeProc | ProcMaskRangedOrRangedProc)
-				mask |= weaponMask
+			// If the proc mask is ProcMaskUnknown the caller expects this to be overwritten
+			// For any melee proc mask on a weapon, a proc is only ever allowed to proc from the
+			// weapon it is on. So we need to overwrite any proc masks here.
+			// AutoGen code will generate proc flags for MeleeAttacks, both Main and Offhand that
+			// need to be separated here
+			if procMask == ProcMaskUnknown || procMask.Matches(ProcMaskMeleeOrRanged) {
+				weaponMask := character.GetProcMaskForWeaponSlot(slot)
+
+				// The current proc is attached to a weapon
+				// In this case we want to make sure the proc can only proc off this weapon
+				// Or spells, so we remove any melee proc masks and only add the ones determined
+				if weaponMask != ProcMaskEmpty {
+					mask &= ^(ProcMaskMeleeOrMeleeProc | ProcMaskRangedOrRangedProc)
+					mask |= weaponMask
+				}
 			}
 
 			manager.procMasks = append(manager.procMasks, mask)
@@ -230,15 +215,10 @@ func (character *Character) NewRPPMProcManager(effectID int32, effectType Effect
 	return &dpm
 }
 
-func selectEffectId(item Item, effectType EffectType) int32 {
-	switch effectType {
-	case ItemEffect:
-		return item.ID
-
-		// EnchantEffect and WeaponEffect for both use the enchant ID
-	case EnchantEffect, WeaponEffect:
+func (item *Item) selectEffectId(isEnchant bool) int32 {
+	if isEnchant {
 		return item.Enchant.EffectID
-	default:
-		return 0
 	}
+
+	return item.ID
 }

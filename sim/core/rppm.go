@@ -19,9 +19,7 @@ type rppmMod interface {
 	IsStatic() bool
 }
 
-type rppmCritMod struct {
-	coefficient float64
-}
+type rppmCritMod struct{}
 
 func (r rppmCritMod) GetCoefficient(proc *RPPMProc) float64 {
 	return max(1+proc.character.GetStat(stats.PhysicalCritPercent)/100.0,
@@ -32,9 +30,7 @@ func (r rppmCritMod) IsStatic() bool {
 	return false
 }
 
-type rppmHasteMod struct {
-	coefficient float64
-}
+type rppmHasteMod struct{}
 
 func (r rppmHasteMod) GetCoefficient(proc *RPPMProc) float64 {
 	// as of 5.2 this should no longer include non 'True haste mods' so only i.E. Lust
@@ -122,10 +118,8 @@ type RPPMProc struct {
 }
 
 // Attach a crit mod to the RPPM config
-func (config RPPMConfig) WithCritMod(coefficient float64) RPPMConfig {
-	config.Mods = append(config.Mods, rppmCritMod{
-		coefficient: coefficient,
-	})
+func (config RPPMConfig) WithCritMod() RPPMConfig {
+	config.Mods = append(config.Mods, rppmCritMod{})
 
 	return config
 }
@@ -133,10 +127,8 @@ func (config RPPMConfig) WithCritMod(coefficient float64) RPPMConfig {
 // Attach a haste mod to the RPPM config
 // It uses the highest haste value that does not include effects like Slice and Dice
 // It multiplies the actual proc chance by 1 + haste%
-func (config RPPMConfig) WithHasteMod(coeffienct float64) RPPMConfig {
-	config.Mods = append(config.Mods, rppmHasteMod{
-		coefficient: coeffienct,
-	})
+func (config RPPMConfig) WithHasteMod() RPPMConfig {
+	config.Mods = append(config.Mods, rppmHasteMod{})
 
 	return config
 }
@@ -167,13 +159,13 @@ func (config RPPMConfig) WithSpecMod(coefficient float64, spec proto.Spec) RPPMC
 
 // Attach an approximate Ilvl scaling to the RPPM config
 // The proc chance will be multiplied by 1.00936^(ilvlDiff)
-func (proc *RPPMProc) WithApproximateIlvlMod(coefficient float64, baseIlvl int32) *RPPMProc {
-	proc.mods = append(proc.mods, rppmApproxIlvlMod{
+func (config *RPPMConfig) WithApproximateIlvlMod(coefficient float64, baseIlvl int32) *RPPMConfig {
+	config.Mods = append(config.Mods, rppmApproxIlvlMod{
 		coefficient: coefficient,
 		baseIlvl:    baseIlvl,
 	})
 
-	return proc
+	return config
 }
 
 // Create a new RPPM Proc with the given ppm (usually from the ProcsPerMinute record)
@@ -255,13 +247,9 @@ func RppmModFromProto(config *proto.RppmMod) (rppmMod, error) {
 			coefficient: config.GetCoefficient(),
 		}, nil
 	case *proto.RppmMod_Crit:
-		return rppmCritMod{
-			coefficient: config.GetCoefficient(),
-		}, nil
+		return rppmCritMod{}, nil
 	case *proto.RppmMod_Haste:
-		return rppmHasteMod{
-			coefficient: config.GetCoefficient(),
-		}, nil
+		return rppmHasteMod{}, nil
 	case *proto.RppmMod_Spec:
 		return rppmSpecMod{
 			coefficient: config.GetCoefficient(),
