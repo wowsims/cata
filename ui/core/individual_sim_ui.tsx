@@ -114,7 +114,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 
 	knownIssues?: Array<string>;
 	warnings?: Array<(simUI: IndividualSimUI<SpecType>) => SimWarning>;
-	consumableStatFilter?: (item: Consumable, index: number, array: Consumable[]) => boolean;
+	consumableStats?: Array<Stat>;
 	epStats: Array<Stat>;
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;

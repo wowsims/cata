@@ -371,7 +371,7 @@ func LoadAndWriteRawGems(dbHelper *DBHelper, inputsDir string) ([]dbc.Gem, error
 		JOIN Item i ON s.ID = i.ID
 		JOIN GemProperties gp ON s.Field_1_15_7_59706_035  = gp.ID
 		JOIN SpellItemEnchantment sie ON gp.Enchant_ID = sie.ID
-		WHERE i.ClassID = 3`
+		WHERE i.ClassID = 3 AND s.ItemLevel > 85`
 	items, err := LoadRows(dbHelper.db, query, ScanGemTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)

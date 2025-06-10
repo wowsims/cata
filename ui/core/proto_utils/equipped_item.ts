@@ -196,8 +196,10 @@ export class EquippedItem {
 		if (this._reforge && other.reforge && !ReforgeStat.equals(this._reforge, other.reforge)) return false;
 
 		if ((this._enchant == null) != (other.enchant == null)) return false;
+		if ((this._tinker == null) != (other.tinker == null)) return false;
 
 		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant)) return false;
+		if (this._tinker && other.tinker && !Enchant.equals(this._tinker, other.tinker)) return false;
 
 		if (this._gems.length != other.gems.length) return false;
 
@@ -258,6 +260,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
@@ -289,6 +292,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
 			reforge,
@@ -305,6 +309,7 @@ export class EquippedItem {
 			item: this._item,
 			enchant: this._enchant,
 			gems: this._gems,
+			tinker: this._tinker,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade,
@@ -320,6 +325,7 @@ export class EquippedItem {
 			item: this._item,
 			enchant: this._enchant,
 			gems: this._gems,
+			tinker: this._tinker,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
@@ -341,6 +347,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: newGems,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
@@ -392,6 +399,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix,
 			reforge: this._reforge,
@@ -417,6 +425,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
@@ -443,6 +452,7 @@ export class EquippedItem {
 			id: this._item.id,
 			randomSuffix: this._randomSuffix?.id,
 			enchant: this._enchant?.effectId,
+			tinker: this._tinker?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
 			reforging: this._reforge?.id,
 			upgradeStep: this._upgrade,

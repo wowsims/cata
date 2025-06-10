@@ -384,13 +384,14 @@ type EquipmentSpec [NumItemSlots]ItemSpec
 
 func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
+	fmt.Println("Hello", es)
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
 			ID:            item.Id,
 			RandomSuffix:  item.RandomSuffix,
+			Tinker:        item.Tinker,
 			Enchant:       item.Enchant,
 			Gems:          item.Gems,
-			Tinker:        item.Tinker,
 			Reforging:     item.Reforging,
 			UpgradeStep:   item.UpgradeStep,
 			ChallengeMode: item.ChallengeMode,
@@ -507,6 +508,7 @@ func ProtoToEquipment(es *proto.EquipmentSpec) Equipment {
 type ItemStringSpec struct {
 	Name    string
 	Enchant string
+	Tinker  string
 	Gems    []string
 }
 

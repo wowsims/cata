@@ -229,6 +229,7 @@ export class Sim {
 				}
 
 				let gear = this.db.lookupEquipmentSpec(player.equipment);
+				console.log({ gear }, player.equipment);
 				let gearChanged = false;
 
 				const isBlacksmith = [player.profession1, player.profession2].includes(Profession.Blacksmithing);
@@ -478,6 +479,7 @@ export class Sim {
 		// request is in-flight.
 
 		const players = this.raid.getPlayers();
+		console.log({ players });
 		const req = ComputeStatsRequest.create({
 			raid: this.getModifiedRaidProto(),
 			encounter: this.encounter.toProto(),

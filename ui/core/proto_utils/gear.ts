@@ -131,6 +131,7 @@ abstract class BaseGear {
 
 	toDatabase(db: Database): SimDatabase {
 		const equippedItems = this.asArray().filter(ei => ei != null) as Array<EquippedItem>;
+		console.log(equippedItems);
 		return SimDatabase.create({
 			items: distinct(equippedItems.map(ei => BaseGear.itemToDB(ei.item))),
 			randomSuffixes: distinct(equippedItems.filter(ei => ei.randomSuffix).map(ei => ei.randomSuffix!)),

@@ -277,6 +277,18 @@ export class Database {
 				}
 			}
 		}
+		let tinker: Enchant | null = null;
+		if (itemSpec.tinker) {
+			const slots = getEligibleItemSlots(item);
+			for (let i = 0; i < slots.length; i++) {
+				tinker =
+					(this.enchantsBySlot[slots[i]] || []).find(enchant => [enchant.effectId, enchant.itemId, enchant.spellId].includes(itemSpec.tinker)) ||
+					null;
+				if (tinker) {
+					break;
+				}
+			}
+		}
 
 		const gems = itemSpec.gems.map(gemId => this.lookupGem(gemId));
 
@@ -293,6 +305,7 @@ export class Database {
 		return new EquippedItem({
 			item,
 			enchant,
+			tinker,
 			gems,
 			randomSuffix,
 			reforge,

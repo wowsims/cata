@@ -27,10 +27,7 @@ export class ConsumesPicker extends Component {
 	}
 
 	private getConsumables(type: ConsumableType): Consumable[] {
-		if (this.simUI.individualConfig.consumableStatFilter) {
-			return this.db.getConsumablesByTypeAndFilter(type, this.simUI.individualConfig.consumableStatFilter);
-		}
-		return this.db.getConsumablesByTypeAndStats(type, this.simUI.individualConfig.epStats);
+		return this.db.getConsumablesByTypeAndStats(type, this.simUI.individualConfig.consumableStats ?? this.simUI.individualConfig.epStats);
 	}
 
 	public static create(parentElem: HTMLElement, settingsTab: SettingsTab, simUI: IndividualSimUI<any>): ConsumesPicker {

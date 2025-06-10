@@ -21,9 +21,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
 	warnings: [],
-	consumableStatFilter(item) {
-		return item.stats[Stat.StatAgility] > 240 || item.buffsMainStat || item.stats[Stat.StatHitRating] > 200;
-	},
+	consumableStats: [Stat.StatAgility],
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStamina,
