@@ -18,7 +18,7 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 		ClassSpellMask: mage.MageSpellFrozenOrb,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 6,
+			BaseCostPercent: 10,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -31,6 +31,9 @@ func (frost *FrostMage) registerFrozenOrbSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			// Frozen Orb gives a stack of FoF upon reaching an enemy. It does it a good bit before actually hitting testing on beta, so instant I think is fine.
+			frost.FingersOfFrostAura.Activate(sim)
+			frost.FingersOfFrostAura.AddStack(sim)
 			frost.frozenOrb.EnableWithTimeout(sim, frost.frozenOrb, time.Second*10)
 		},
 	})
@@ -55,8 +58,14 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 
 	createFrozenOrbInheritance := func() func(stats.Stats) stats.Stats {
 		return func(ownerStats stats.Stats) stats.Stats {
+
+			hitRating := ownerStats[stats.HitRating]
+			expertiseRating := ownerStats[stats.ExpertiseRating]
+			combinedHitExp := (hitRating + expertiseRating) * 0.5
+
 			return stats.Stats{
-				stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
+				stats.HitRating:        combinedHitExp,
+				stats.ExpertiseRating:  combinedHitExp,
 				stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
 				stats.SpellPower:       ownerStats[stats.SpellPower],
 			}
@@ -120,7 +129,7 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 84721},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: mage.MageSpellFrozenOrb,
+		ClassSpellMask: mage.MageSpellFrozenOrbTick,
 		Flags:          core.SpellFlagAoE,
 
 		Cast: core.CastConfig{
@@ -138,8 +147,16 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := frozenOrb.mageOwner.CalcAndRollDamageRange(sim, frozenOrbScaling, frozenOrbVariance)
+			anyLanded := false
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				if !anyLanded && result.Landed() {
+					anyLanded = true
+				}
+			}
+			if anyLanded && sim.Proc(0.15, "FingersOfFrostProc") {
+				frozenOrb.mageOwner.Mage.FingersOfFrostAura.Activate(sim)
+				frozenOrb.mageOwner.Mage.FingersOfFrostAura.AddStack(sim)
 			}
 			frozenOrb.TickCount += 1
 		},

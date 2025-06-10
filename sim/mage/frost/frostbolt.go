@@ -38,28 +38,23 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if frostMage.Mage.IcyVeinsAura.IsActive() && hasGlyph {
-				for _ = range 3 {
-					baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
-					result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-					result.Damage = result.Damage * .4
-					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-						spell.DealDamage(sim, result)
-					})
-					if result.Landed() {
-						frostMage.Mage.HandleIcicleGeneration(sim, target, result.Damage)
-					}
-				}
-			} else {
+
+			hasSplitBolts := frostMage.IcyVeinsAura.IsActive() && hasGlyph
+			numberOfBolts := core.TernaryInt32(hasSplitBolts, 3, 1)
+			damageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)
+
+			spell.DamageMultiplier *= damageMultiplier
+			for _ = range numberOfBolts {
 				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
+					if result.Landed() {
+						frostMage.HandleIcicleGeneration(sim, target, result.Damage)
+					}
 				})
-				if result.Landed() {
-					frostMage.HandleIcicleGeneration(sim, target, result.Damage)
-				}
 			}
+			spell.DamageMultiplier /= damageMultiplier
 		},
 	})
 }

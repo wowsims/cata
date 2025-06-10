@@ -510,12 +510,10 @@ export class ActionId {
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
 			case 'Bloodlust':
 			case 'Ferocious Inspiration':
-			case 'Heroism':
 			case 'Innervate':
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
 			case 'Stormlash Totem':
-			case 'Time Warp':
 			case 'Unholy Frenzy':
 			case 'Power Infusion':
 				if (tag != -1) {
@@ -1152,6 +1150,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 124081, tag: 3 }), { spellId: 124098 }],
 	[JSON.stringify({ spellId: 124081, tag: 4 }), { spellId: 124101 }],
 	[JSON.stringify({ spellId: 124081, tag: 5 }), { spellId: 125033 }],
+
+	// Mage - Living Bomb
+	[JSON.stringify({ spellId: 44457, tag: 2 }), { spellId: 44461 }], // Living Bomb Explosion
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
@@ -1161,6 +1162,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Army of the Dead': ActionId.fromSpellId(42650),
 	Bloodworm: ActionId.fromSpellId(50452),
 	'Flame Orb': ActionId.fromSpellId(82731),
+	'Frozen Orb': ActionId.fromSpellId(84721),
 	Gargoyle: ActionId.fromSpellId(49206),
 	Ghoul: ActionId.fromSpellId(46584),
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),

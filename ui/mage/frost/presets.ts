@@ -1,7 +1,7 @@
 import { Mage } from '../../core/player_classes/mage';
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common';
-import { MageMajorGlyph, MageMinorGlyph, FrostMage_Options as MageOptions } from '../../core/proto/mage';
+import { FrostMage_Options as MageOptions,MageMajorGlyph, MageMinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import FrostApl from './apls/frost.apl.json';
@@ -20,13 +20,12 @@ export const FROST_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fros
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Frost P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 0.48,
-		[Stat.StatSpirit]: 0.42,
+		[Stat.StatIntellect]: 1.18,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatHitRating]: 0.38,
-		[Stat.StatCritRating]: 0.58,
-		[Stat.StatHasteRating]: 0.94,
-		[Stat.StatMP5]: 0.09,
+		[Stat.StatHitRating]: 0.67,
+		[Stat.StatCritRating]: 0.30,
+		[Stat.StatHasteRating]: 0.44,
+		[Stat.StatMasteryRating]: 0.33,
 	}),
 );
 

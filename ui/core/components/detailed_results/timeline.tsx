@@ -200,6 +200,7 @@ export class Timeline extends ResultComponent {
 			const { dpsResourcesPlotOptions, rotationLabels, rotationTimeline, rotationHiddenIdsContainer, rotationTimelineTimeRulerImage } = cachedData;
 			this.rotationLabels.replaceChildren(...rotationLabels.cloneNode(true).childNodes);
 			this.rotationTimeline.replaceChildren(...rotationTimeline.cloneNode(true).childNodes);
+
 			this.rotationHiddenIdsContainer.replaceChildren(...rotationHiddenIdsContainer.cloneNode(true).childNodes);
 			this.dpsResourcesPlot.updateOptions(dpsResourcesPlotOptions);
 
@@ -612,7 +613,9 @@ export class Timeline extends ResultComponent {
 		// Don't add a row for buffs that were already visualized in a cast row or are prioritized.
 		const buffsToShow = buffsById.filter(auraUptimeLogs =>
 			playerCastsByAbility.findIndex(
-				casts => auraUptimeLogs[0].actionId && (casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
+				casts =>
+					auraUptimeLogs[0].actionId &&
+					(casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
 			),
 		);
 		if (buffsToShow.length > 0) {
@@ -1411,6 +1414,8 @@ const idToCategoryMap: Record<number, number> = {
 	[47610]: SPELL_ACTION_CATEGORY + 0.02, // Frostfire Bolt
 	[42897]: SPELL_ACTION_CATEGORY + 0.02, // Arcane Blast
 	[42833]: SPELL_ACTION_CATEGORY + 0.02, // Fireball
+	[10]: SPELL_ACTION_CATEGORY + 0.021, // Blizzard - Cast
+	[42208]: SPELL_ACTION_CATEGORY + 0.022, // Blizzard - Tick
 	[42859]: SPELL_ACTION_CATEGORY + 0.03, // Scorch
 	[42891]: SPELL_ACTION_CATEGORY + 0.1, // Pyroblast
 	[42846]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles

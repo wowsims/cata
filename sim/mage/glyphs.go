@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (mage *Mage) applyGlyphs() {
+func (mage *Mage) registerGlyphs() {
 	// Majors MOP
 
 	// Glyph of Frostfire Bolt
@@ -25,6 +25,13 @@ func (mage *Mage) applyGlyphs() {
 			ClassMask:  MageSpellConeOfCold,
 			FloatValue: 2.0,
 			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+	}
+
+	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_AllowCastWhileMoving,
+			ClassMask: MageWaterElementalSpellWaterBolt,
 		})
 	}
 

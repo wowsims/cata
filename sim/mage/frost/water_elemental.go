@@ -51,12 +51,19 @@ type WaterElemental struct {
 func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
 
 	waterElementalStatInheritance := func(ownerStats stats.Stats) stats.Stats {
+
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combinedHitExp := (hitRating + expertiseRating) * 0.5
+
 		// Water elemental usually has about half the HP of the caster, with glyph this is bumped by an additional 40%
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina] * 0.5,
 			stats.SpellPower:       ownerStats[stats.SpellPower],
 			stats.HasteRating:      ownerStats[stats.HasteRating],
 			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+			stats.HitRating:        combinedHitExp,
+			stats.ExpertiseRating:  combinedHitExp,
 			// this (crit) needs to be tested more thoroughly when pet hit is not bugged
 		}
 	}

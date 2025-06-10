@@ -4,10 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (mage *Mage) ApplyMastery() {
-	//These aren't technically spells but I'm not sure how else to create them
+func (mage *Mage) registerFrostMastery() {
+	if mage.Spec != proto.Spec_SpecFrostMage {
+		return
+	}
 
 	mage.Icicle = mage.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 148022},
@@ -33,12 +36,6 @@ func (mage *Mage) ApplyMastery() {
 		MaxStacks: 5,
 	})
 
-	mage.IciclesAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-		if newStacks == 0 {
-			mage.IciclesAura.Deactivate(sim)
-		}
-	}
-
 	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
 		Name:           "Icicles - Trigger",
 		ClassSpellMask: MageSpellFrostbolt | MageSpellFrostfireBolt,
@@ -49,27 +46,6 @@ func (mage *Mage) ApplyMastery() {
 			mage.IciclesAura.AddStack(sim)
 		},
 	})
-
-	// leaving this as a stub as I still have to redo the water elemental code.
-	waterElementalDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: mage.GetFrostMasteryBonus(),
-		ClassMask:  MageWaterElementalSpellWaterBolt,
-	})
-
-	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating, newMasteryRating float64) {
-		waterElementalDamageMod.UpdateFloatValue(mage.GetFrostMasteryBonus())
-	})
-
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Mastery: Icicles - Water Elemental",
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			waterElementalDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			waterElementalDamageMod.Deactivate()
-		},
-	}))
 }
 
 func (mage *Mage) castIcicleWithDamage(sim *core.Simulation, target *core.Unit, damage float64) {
@@ -83,7 +59,11 @@ func (mage *Mage) castIcicleWithDamage(sim *core.Simulation, target *core.Unit, 
 
 func (mage *Mage) HandleIcicleGeneration(sim *core.Simulation, target *core.Unit, baseDamage float64) {
 	numIcicles := len(mage.Icicles)
+	hasGlyphSplittingIce := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce)
 	if numIcicles == 5 {
+		if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
+			mage.castIcicleWithDamage(sim, mage.Env.NextTargetUnit(target), mage.Icicles[0]/2)
+		}
 		mage.castIcicleWithDamage(sim, target, mage.Icicles[0])
 		mage.Icicles = mage.Icicles[1:]
 	}

@@ -74,15 +74,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Mage
 	[Spec.SpecArcaneMage]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecFireMage]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecFrostMage]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Unlaunched,
+		status: LaunchStatus.Alpha,
 	},
 	// Monk
 	[Spec.SpecBrewmasterMonk]: {

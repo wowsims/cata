@@ -1,8 +1,6 @@
 package mage
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -50,7 +48,6 @@ type Mage struct {
 	FrostBombAuras         core.AuraArray
 
 	arcaneMissileCritSnapshot float64
-	brainFreezeProcChance     float64
 	baseHotStreakProcChance   float64
 
 	combustionDotEstimate int32
@@ -91,9 +88,21 @@ func (mage *Mage) GetFrostMasteryBonus() float64 {
 }
 
 func (mage *Mage) Initialize() {
-	mage.applyArmorSpells()
-	mage.applyGlyphs()
-	mage.ApplyMastery()
+	mage.registerGlyphs()
+	mage.registerPassives()
+	mage.registerSpells()
+}
+
+func (mage *Mage) registerPassives() {
+	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89744)
+
+	mage.registerMastery()
+}
+
+func (mage *Mage) registerSpells() {
+	mage.registerArmorSpells()
+
+	// mage.registerArcaneBlastSpell()
 	// mage.registerArcaneExplosionSpell()
 	mage.registerBlizzardSpell()
 	mage.registerConeOfColdSpell()
@@ -103,19 +112,20 @@ func (mage *Mage) Initialize() {
 	mage.registerFlamestrikeSpell()
 	mage.registerIceLanceSpell()
 	mage.registerScorchSpell()
-	mage.registerLivingBombSpell()
-	mage.registerNetherTempestSpell()
 	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
 	// mage.registerManaGemsCD()
-	mage.registerMirrorImageCD()
+	// mage.registerMirrorImageCD()
 	// mage.registerCombustionSpell()
 	// mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
-	mage.registerFrostBombSpell()
 	mage.registerfrostNovaSpell()
 	mage.registerIceLanceSpell()
 	mage.registerIcyVeinsCD()
+}
+
+func (mage *Mage) registerMastery() {
+	mage.registerFrostMastery()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -135,103 +145,11 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	mage.EnableManaBar()
 
 	mage.Icicles = make([]float64, 0)
-	mage.mirrorImage = mage.NewMirrorImage()
+	// mage.mirrorImage = mage.NewMirrorImage()
 	// mage.flameOrb = mage.NewFlameOrb()
 	// mage.frostfireOrb = mage.NewFrostfireOrb()
 
 	return mage
-}
-
-func (mage *Mage) applyArmorSpells() {
-
-	mageArmorEffectCategory := "MageArmors"
-
-	moltenArmor := mage.RegisterAura(core.Aura{
-		Label:    "Molten Armor",
-		ActionID: core.ActionID{SpellID: 30482},
-		Duration: core.NeverExpires,
-	}).AttachStatBuff(stats.SpellCritPercent, 5)
-
-	moltenArmor.NewExclusiveEffect(mageArmorEffectCategory, true, core.ExclusiveEffect{})
-
-	mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 30482},
-		SpellSchool:    core.SpellSchoolFire,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellMoltenArmor,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Second * 3,
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !moltenArmor.IsActive()
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			moltenArmor.Activate(sim)
-		},
-	})
-
-	mageArmor := mage.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 6117},
-		Label:    "Mage Armor",
-		Duration: core.NeverExpires,
-	}).AttachStatBuff(stats.MasteryRating, 3000.0)
-
-	mageArmor.NewExclusiveEffect(mageArmorEffectCategory, true, core.ExclusiveEffect{})
-
-	mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 6117},
-		SpellSchool:    core.SpellSchoolArcane,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellMageArmor,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Second * 3,
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !mageArmor.IsActive()
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mageArmor.Activate(sim)
-		},
-	})
-
-	frostArmor := mage.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 7302},
-		Label:    "Frost Armor",
-		Duration: core.NeverExpires,
-	}).AttachMultiplyCastSpeed(1.07)
-
-	frostArmor.NewExclusiveEffect(mageArmorEffectCategory, true, core.ExclusiveEffect{})
-
-	mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 7302},
-		SpellSchool:    core.SpellSchoolFrost,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellFrostArmor,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Second * 3,
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !frostArmor.IsActive()
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			frostArmor.Activate(sim)
-		},
-	})
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -267,6 +185,7 @@ const (
 	MageSpellFrostfireOrb
 	MageSpellFrostNova
 	MageSpellFrozenOrb
+	MageSpellFrozenOrbTick
 	MageSpellIcicle
 	MageSpellIceFloes
 	MageSpellIceLance
@@ -292,15 +211,15 @@ const (
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
 	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellCombustion // Ignite done manually in spell due to unique mechanic
 	MageSpellFire        = MageSpellBlastWave | MageSpellCombustionApplication | MageSpellDragonsBreath | MageSpellFireball |
-		MageSpellFireBlast | MageSpellFlameOrb | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
+		MageSpellFireBlast | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
 		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
 	MageSpellChill        = MageSpellFrostbolt | MageSpellFrostfireBolt
 	MageSpellBrainFreeze  = MageSpellFireball | MageSpellFrostfireBolt
 	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick | MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
-		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFlameOrb | MageSpellFrostbolt | MageSpellFrostfireBolt |
+		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFrostbolt | MageSpellFrostfireBolt |
 		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
 	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneMissilesTick | MageSpellFireBlast | MageSpellArcaneExplosion |
 		MageSpellBlastWave | MageSpellCombustionApplication | MageSpellConeOfCold | MageSpellDeepFreeze | MageSpellDragonsBreath | MageSpellIceLance |
-		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind | MageSpellFlameOrb
+		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind
 	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
 )

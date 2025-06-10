@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerFrostBombSpell() {
+func (mage *Mage) registerFrostBomb() {
 
 	if !mage.Talents.FrostBomb {
 		return
@@ -16,7 +16,6 @@ func (mage *Mage) registerFrostBombSpell() {
 	frostBombExplosionCoefficient := 1.725 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "EffetBonusCoefficient"
 	frostBombExplosionScaling := 2.21      // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=113092 Field "Coefficient"
 	frostBombVariance := 0.0
-	numTargets := mage.Env.GetNumTargets()
 
 	frostBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 113092},
@@ -31,19 +30,16 @@ func (mage *Mage) registerFrostBombSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
-			baseDamage := mage.CalcAndRollDamageRange(sim, frostBombExplosionScaling, frostBombVariance)
-			for idx := int32(0); idx < numTargets; idx++ {
-				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for idx, aoeTarget := range sim.Encounter.TargetUnits {
 				if idx == 0 {
-					result.Damage = result.Damage * 2
+					spell.DamageMultiplier *= 2
 				}
-				results[idx] = result
-
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
+				baseDamage := mage.CalcAndRollDamageRange(sim, frostBombExplosionScaling, frostBombVariance)
+				result := spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.DealDamage(sim, result)
+				if idx == 0 {
+					spell.DamageMultiplier /= 2
+				}
 			}
 		},
 	})

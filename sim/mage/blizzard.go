@@ -13,18 +13,19 @@ func (mage *Mage) registerBlizzardSpell() {
 	blizzardScaling := 0.323
 	blizzardVariance := 0.0
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 42208},
-		SpellSchool:      core.SpellSchoolFrost,
-		ProcMask:         core.ProcMaskSpellDamage,
-		ClassSpellMask:   MageSpellBlizzard,
-		Flags:            core.SpellFlagAoE,
+		ActionID:       core.ActionID{SpellID: 42208},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: MageSpellBlizzard,
+		Flags:          core.SpellFlagAoE,
+
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),
 		BonusCoefficient: blizzardCoefficient,
 		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := mage.CalcAndRollDamageRange(sim, blizzardScaling, blizzardVariance)
-			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -48,11 +49,13 @@ func (mage *Mage) registerBlizzardSpell() {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "Blizzard",
+				Label:    "Blizzard",
+				ActionID: core.ActionID{SpellID: 10},
 			},
-			NumberOfTicks:       8,
-			TickLength:          time.Second * 1,
-			AffectedByCastSpeed: true,
+			NumberOfTicks:        8,
+			TickLength:           time.Second * 1,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				blizzardTickSpell.Cast(sim, target)
 			},

@@ -21,7 +21,7 @@ func TestFrost(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/mage/frost/gear_sets", "p1_frost_prebis"),
 		Talents:     FrostTalents,
 		Glyphs:      FrostDefaultGlyphs,
-		Consumables: FullConsumesSpec,
+		Consumables: DefaultConsumables,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
 		Rotation:    core.GetAplRotation("../../../ui/mage/frost/apls", "default"),
 
@@ -46,18 +46,21 @@ var PlayerOptionsFrost = &proto.Player_FrostMage{
 	},
 }
 
-var DefaultConsumables = ConsumesSpec.create({
-	flaskId: 76085, // Flask of the Warm Sun
-	foodId: 74650, // Mogu Fish Stew
-	potId: 76093, // Potion of the Jade Serpent
-	prepotId: 76093, // Potion of the Jade Serpent
-	tinkerId: 82174, // Synapse Springs
-});
+var DefaultConsumables = &proto.ConsumesSpec{
+	FlaskId:  76085, // Flask of the Warm Sun
+	FoodId:   74650, // Mogu Fish Stew
+	PotId:    76093, // Potion of the Jade Serpent
+	PrepotId: 76093, // Potion of the Jade Serpent
+	TinkerId: 82174, // Synapse Springs
+}
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeCloth,
 
 	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeDagger,
+		proto.WeaponType_WeaponTypeSword,
+		proto.WeaponType_WeaponTypeOffHand,
 		proto.WeaponType_WeaponTypeStaff,
 	},
 }

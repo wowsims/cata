@@ -349,19 +349,21 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceUndead:
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.99
 
-		touchOfTheGraveSpell := character.RegisterSpell(SpellConfig{
-			ActionID:       ActionID{SpellID: 127802},
-			SpellSchool:    SpellSchoolShadow,
-			ProcMask:       ProcMaskSpellProc,
-			CritMultiplier: character.DefaultCritMultiplier(),
+		actionID := ActionID{SpellID: 127802}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		touchOfTheGraveDamageSpell := character.RegisterSpell(SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: SpellSchoolShadow,
+			ProcMask:    ProcMaskSpellProc,
+
+			CritMultiplier:   character.DefaultCritMultiplier(),
+			DamageMultiplier: 1,
+
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 				baseDamage := sim.Roll(CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassUnknown, 8, 0.15000000596))
-				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-				healAmount := result.Damage * spell.Unit.PseudoStats.HealingTakenMultiplier
-				spell.DealDamage(sim, result)
-				result.Target = spell.Unit
-				result.Damage = healAmount
-				spell.DealHealing(sim, result)
+				result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+
+				character.GainHealth(sim, result.Damage*spell.Unit.PseudoStats.HealingTakenMultiplier, healthMetrics)
 			},
 		})
 
@@ -374,7 +376,7 @@ func applyRaceEffects(agent Agent) {
 			ProcChance: 0.2,
 			ICD:        time.Second * 15,
 			Handler: func(sim *Simulation, spell *Spell, result *SpellResult) {
-				touchOfTheGraveSpell.Cast(sim, result.Target)
+				touchOfTheGraveDamageSpell.Cast(sim, result.Target)
 			},
 		})
 	case proto.Race_RaceWorgen:

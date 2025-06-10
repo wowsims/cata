@@ -1,10 +1,11 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { UnitStat } from '../../core/proto_utils/stats';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -15,21 +16,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatHitRating,
-		Stat.StatCritRating,
-		Stat.StatHasteRating,
-		Stat.StatMP5,
-		Stat.StatMasteryRating,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMP5, Stat.StatMasteryRating],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
@@ -38,6 +30,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		gear: Presets.FROST_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+		statCaps: (() => {
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
+		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
@@ -46,16 +41,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		specOptions: Presets.DefaultFrostOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
-		partyBuffs: PartyBuffs.create({
-			manaTideTotems: 1,
+		raidBuffs: RaidBuffs.create({
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			mindQuickening: true,
+			leaderOfThePack: true,
+			blessingOfMight: true,
+			unholyAura: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			innervateCount: 0,
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// ebonPlaguebringer: true,
-			// shadowAndFlame: true,
+			curseOfElements: true,
 		}),
 	},
 
@@ -101,60 +101,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		}
 	},
 
-	// simpleRotation: (player: Player<Spec.SpecFrostMage>, simple: FrostMage_Rotation, cooldowns: Cooldowns): APLRotation => {
-	// 	const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-	// 	const prepullMirrorImage = APLPrepullAction.fromJsonString(
-	// 		`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
-	// 	);
-
-	// 	const berserking = APLAction.fromJsonString(
-	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
-	// 	);
-	// 	const hyperspeedAcceleration = APLAction.fromJsonString(
-	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
-	// 	);
-	// 	const combatPot = APLAction.fromJsonString(
-	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
-	// 	);
-	// 	const evocation = APLAction.fromJsonString(
-	// 		`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
-	// 	);
-
-	// 	const deepFreeze = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":44545}}},"castSpell":{"spellId":{"spellId":44572}}}`);
-	// 	const frostfireBoltWithBrainFreeze = APLAction.fromJsonString(
-	// 		`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44549}}},"castSpell":{"spellId":{"spellId":47610}}}`,
-	// 	);
-	// 	const frostbolt = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42842}}}`);
-	// 	const iceLance = APLAction.fromJsonString(
-	// 		`{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":44545}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":42914}}}`,
-	// 	);
-
-	// 	prepullActions.push(prepullMirrorImage);
-
-	// 	actions.push(
-	// 		...([
-	// 			berserking,
-	// 			hyperspeedAcceleration,
-	// 			combatPot,
-	// 			evocation,
-	// 			deepFreeze,
-	// 			frostfireBoltWithBrainFreeze,
-	// 			//simple.useIceLance ? iceLance : null,
-	// 			frostbolt,
-	// 		].filter(a => a) as Array<APLAction>),
-	// 	);
-
-	// 	return APLRotation.create({
-	// 		prepullActions: prepullActions,
-	// 		priorityList: actions.map(action =>
-	// 			APLListItem.create({
-	// 				action: action,
-	// 			}),
-	// 		),
-	// 	});
-	// },
-
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostMage,
@@ -183,5 +129,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 export class FrostMageSimUI extends IndividualSimUI<Spec.SpecFrostMage> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFrostMage>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }
