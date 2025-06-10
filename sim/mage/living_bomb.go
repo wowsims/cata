@@ -42,16 +42,19 @@ func (mage *Mage) registerLivingBomb() {
 		ClassSpellMask: MageSpellLivingBombExplosion,
 		Flags:          core.SpellFlagAoE | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		BonusCoefficient:         livingBombExplosionCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		BonusCoefficient: livingBombExplosionCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := mage.CalcAndRollDamageRange(sim, livingBombExplosionScaling, 0)
+			ticks := max(4, float64(mage.LivingBomb.RelatedDotSpell.Dot(target).Duration)/float64(mage.LivingBomb.RelatedDotSpell.Dot(target).TickPeriod()))
+			spell.DamageMultiplier *= ticks
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
+			spell.DamageMultiplier /= ticks
 		},
 	})
 
@@ -78,11 +81,9 @@ func (mage *Mage) registerLivingBomb() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
+				dot := spell.RelatedDotSpell.Dot(target)
 				// If there is already an active dot on the target, just reapply
-				if spell.RelatedDotSpell.Dot(target).IsActive() {
-					if spell.RelatedDotSpell.Dot(target).RemainingTicks() == 1 {
-						livingBombExplosionSpell.Cast(sim, target)
-					}
+				if dot.IsActive() {
 					spell.RelatedDotSpell.Cast(sim, target)
 				} else {
 					activeLbs := len(activeLivingBombs)
@@ -96,7 +97,8 @@ func (mage *Mage) registerLivingBomb() {
 						bombExplode = true
 					}
 					spell.RelatedDotSpell.Cast(sim, target)
-					activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(target))
+					dot = spell.RelatedDotSpell.Dot(target)
+					activeLivingBombs = append(activeLivingBombs, dot)
 					sort.Slice(activeLivingBombs, func(i, j int) bool {
 						return activeLivingBombs[i].Duration < activeLivingBombs[j].Duration
 					})
@@ -142,7 +144,12 @@ func (mage *Mage) registerLivingBomb() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
+			dot := spell.Dot(target)
+			// The Bomb goes ot if the target has a Dot that has <= 1 tick remaining.
+			if dot.IsActive() && dot.RemainingTicks() == 1 {
+				livingBombExplosionSpell.Cast(sim, target)
+			}
+			dot.Apply(sim)
 		},
 	})
 }
