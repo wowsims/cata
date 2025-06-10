@@ -82,7 +82,7 @@ export const DefaultOptions = MonkOptions.create({
 
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 76084, // Flask of Spring Blossoms
-	foodId: 104303, // Sea Mist Rice Noodles
+	foodId: 74648, // Sea Mist Rice Noodles
 	potId: 76089, // Virmen's Bite
 	prepotId: 76089, // Virmen's Bite
 	tinkerId: 126734, // Synapse Springs II
