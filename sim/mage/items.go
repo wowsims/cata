@@ -35,7 +35,7 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellIcyVeins,
 			}).AttachSpellMod(core.SpellModConfig{
-				FloatValue: 0.2,
+				FloatValue: 1 - 0.2,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				ClassMask:  MageSpellCombustion,
 			})
