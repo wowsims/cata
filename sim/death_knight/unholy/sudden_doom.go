@@ -41,24 +41,19 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 		IntValue:  -100,
 	})
 
-	dpm := uhdk.AutoAttacks.NewPPMManager(3.0, core.ProcMaskMeleeMHAuto)
-
 	core.MakeProcTriggerAura(&uhdk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom Trigger" + uhdk.Label,
 		ActionID: core.ActionID{SpellID: 49530},
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto,
 		Outcome:  core.OutcomeLanded,
+		DPM:      uhdk.AutoAttacks.NewPPMManager(3.0, core.ProcMaskMeleeMHAuto),
+
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return uhdk.UnholyPresenceAura.IsActive()
+		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !uhdk.UnholyPresenceAura.IsActive() {
-				return
-			}
-
-			if !dpm.Proc(sim, spell.ProcMask, "Sudden Doom"+uhdk.Label) {
-				return
-			}
-
 			suddenDoomAura.Activate(sim)
 
 			// T13 2pc: Sudden Doom has a 20% chance to grant 2 charges when triggered instead of 1.
