@@ -1450,7 +1450,7 @@ export class TargetedActionMetrics {
 	}
 
 	get avgHitHealing() {
-		return (this.data.healing + this.data.shielding) / this.iterations / this.landedHits;
+		return (this.data.healing + this.data.shielding) / this.iterations / (this.landedHits || this.landedTicks);
 	}
 
 	get avgHitThreat() {

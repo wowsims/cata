@@ -92,7 +92,7 @@ func init() {
 			Name:     "Rune Of The Fallen Crusader",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(3368, 2.0, 0),
+			DPM:      character.NewDynamicLegacyProcForEnchant(3368, 2.0, 0),
 			// PPM:      2.0,
 			// ProcMask: procMask,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -154,7 +154,7 @@ func init() {
 			Name:     "Rune of Cinderglacier",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(3369, 1.0, 0),
+			DPM:      character.NewDynamicLegacyProcForEnchant(3369, 1.0, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				cinderAura.Activate(sim)
 				cinderAura.SetStacks(sim, cinderAura.MaxStacks)
@@ -224,7 +224,7 @@ func init() {
 			})
 		})
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3370, 0, 1.0)
+		dpm := character.NewDynamicLegacyProcForEnchant(3370, 0, 1.0)
 
 		for _, itemSlot := range core.MeleeWeaponSlots() {
 			spell := newRazoriceHitSpell(character, itemSlot == proto.ItemSlot_ItemSlotMainHand)
