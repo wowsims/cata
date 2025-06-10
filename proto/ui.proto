@@ -384,6 +384,13 @@ message SavedGearSet {
 	UnitStats bonus_stats_stats = 3;
 }
 
+message SavedStatWeightSettings {
+	repeated Stat excluded_stats = 1;
+    repeated PseudoStat excluded_pseudo_stats = 2;
+    int32 api_version = 3; // Needed in case the Stat or PseudoStat enum orderings ever change
+
+}
+
 // Local storage data for other settings.
 message SavedSettings {
 	RaidBuffs raid_buffs = 1;
