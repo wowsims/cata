@@ -308,10 +308,15 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Reforging);
 			};
+			const openTinkerSelector = (event: Event) => {
+				event.preventDefault();
+				this.openSelectorModal(SelectorModalTabs.Tinkers);
+			};
 
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
+			this.itemElem.tinkerElem.addEventListener('click', openTinkerSelector);
 			this.addQuickEnchantHelpers();
 		});
 
