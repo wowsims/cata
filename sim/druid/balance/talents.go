@@ -14,6 +14,10 @@ func (moonkin *BalanceDruid) ApplyBalanceTalents() {
 }
 
 func (moonkin *BalanceDruid) registerIncarnation() {
+	if !moonkin.Talents.Incarnation {
+		return
+	}
+
 	actionID := core.ActionID{SpellID: 102560}
 
 	incarnationSpellMod := moonkin.AddDynamicMod(core.SpellModConfig{
