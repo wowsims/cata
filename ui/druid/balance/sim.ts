@@ -88,8 +88,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.StandardRotation],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PreraidPresetGear, Presets.T14PresetGear, Presets.T15PresetGear, Presets.T16PresetGear],
-		builds: [Presets.PresetPreraidBuild, Presets.T14PresetBuild, Presets.T15PresetBuild, Presets.T16PresetBuild],
+		gear: [Presets.PreraidPresetGear, Presets.T14PresetGear, /*Presets.T15PresetGear, Presets.T16PresetGear*/],
+		builds: [Presets.PresetPreraidBuild, Presets.T14PresetBuild, /*Presets.T15PresetBuild, Presets.T16PresetBuild*/],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
