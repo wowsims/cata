@@ -356,7 +356,7 @@ func (equipment *Equipment) EquipItem(item Item) {
 }
 
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
-	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID) || (equipment[slot].Tinker.EffectID == effectID)
 }
 
 func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {
@@ -384,7 +384,6 @@ type EquipmentSpec [NumItemSlots]ItemSpec
 
 func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
-	fmt.Println("Hello", es)
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
 			ID:            item.Id,
@@ -440,7 +439,6 @@ func NewItem(itemSpec ItemSpec) Item {
 		// 	panic(fmt.Sprintf("No enchant with id: %d", itemSpec.Enchant))
 		// }
 	}
-
 	if itemSpec.Tinker != 0 {
 		if tinker, ok := EnchantsByEffectID[itemSpec.Tinker]; ok {
 			item.Tinker = tinker

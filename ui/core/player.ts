@@ -738,7 +738,6 @@ export class Player<SpecType extends Spec> {
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
-		console.log(newItem);
 		this.setGear(eventID, this.gear.withEquippedItem(slot, newItem, this.canDualWield2H()));
 	}
 

@@ -213,7 +213,6 @@ export default class SelectorModal extends BaseModal {
 
 		const hasTinkerTab = !this.disabledTabs?.includes(SelectorModalTabs.Tinkers);
 		if (hasTinkerTab && this.player.hasProfession(Profession.Engineering)) {
-			console.log(eligibleTinkers);
 			this.addTab<Enchant>({
 				id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Tinkers}`),
 				label: SelectorModalTabs.Tinkers,
@@ -230,7 +229,6 @@ export default class SelectorModal extends BaseModal {
 						heroic: false,
 						onEquip: (eventID, tinker) => {
 							const equippedItem = gearData.getEquippedItem();
-							console.log(equippedItem, gearData);
 							if (equippedItem) gearData.equipItem(eventID, equippedItem.withTinker(tinker));
 						},
 					};

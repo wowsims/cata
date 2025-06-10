@@ -273,7 +273,6 @@ export class EquippedItem {
 	 * Returns a new EquippedItem with the given tinker applied.
 	 */
 	withTinker(tinker: Enchant | null): EquippedItem {
-		console.log('equipp[ing tinker', tinker);
 		return new EquippedItem({
 			item: this._item,
 			tinker: tinker,
