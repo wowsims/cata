@@ -47,11 +47,11 @@ func (uhdk *UnholyDeathKnight) registerShadowInfusion() {
 		ClassSpellMask: death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
 		Outcome:        core.OutcomeLanded,
 
-		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			if uhdk.Ghoul.DarkTransformationAura.IsActive() {
-				return
-			}
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return !uhdk.Ghoul.DarkTransformationAura.IsActive()
+		},
 
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 			uhdk.Ghoul.ShadowInfusionAura.Activate(sim)
 			uhdk.Ghoul.ShadowInfusionAura.AddStack(sim)
 		},
