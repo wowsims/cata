@@ -91,7 +91,6 @@ func (treant *BalanceTreant) Initialize() {
 
 func (treant *BalanceTreant) Enable(sim *core.Simulation) {
 	treant.DefaultTreantImpl.Enable(sim)
-	treant.ExtendGCDUntil(sim, sim.CurrentTime+time.Second*15)
 }
 
 func (treant *BalanceTreant) ExecuteCustomRotation(sim *core.Simulation) {
