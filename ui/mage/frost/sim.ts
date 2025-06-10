@@ -4,7 +4,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { UnitStat } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -38,6 +38,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		gear: Presets.FROST_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+		statCaps: (() => {
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
+		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
