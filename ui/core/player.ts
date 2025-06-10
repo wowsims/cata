@@ -3,6 +3,7 @@ import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
 import { CURRENT_API_VERSION } from './constants/other';
 import { SimSettingCategories } from './constants/sim_settings';
+import { IndividualSimUIConfig } from './individual_sim_ui';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
 import { PlayerSpec } from './player_spec';
@@ -270,6 +271,7 @@ export class Player<SpecType extends Spec> {
 	private enchantEPCache = new Map<number, number>();
 	private upgradeEPCache = new Map<string, number>();
 	private talents: SpecTalents<SpecType> | null = null;
+	private specConfig: IndividualSimUIConfig<SpecType>;
 
 	readonly specTypeFunctions: SpecTypeFunctions<SpecType>;
 
@@ -323,17 +325,16 @@ export class Player<SpecType extends Spec> {
 		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = getSpecConfig<SpecType>(this.getSpec());
+		this.specConfig = getSpecConfig<SpecType>(this.getSpec()) as IndividualSimUIConfig<SpecType>;
+		this.secondaryResource = this.specConfig.secondaryResource;
 
-		this.secondaryResource = specConfig.secondaryResource;
-
-		this.autoRotationGenerator = specConfig.autoRotation;
-		if (specConfig.simpleRotation) {
-			this.simpleRotationGenerator = specConfig.simpleRotation;
+		this.autoRotationGenerator = this.specConfig.autoRotation;
+		if (this.specConfig.simpleRotation) {
+			this.simpleRotationGenerator = this.specConfig.simpleRotation;
 		} else {
 			this.simpleRotationGenerator = null;
 		}
-		this.hiddenMCDs = specConfig.hiddenMCDs || new Array<number>();
+		this.hiddenMCDs = this.specConfig.hiddenMCDs || new Array<number>();
 
 		for (let i = 0; i < ItemSlot.ItemSlotOffHand + 1; ++i) {
 			this.itemEPCache[i] = new Map();
@@ -1449,6 +1450,17 @@ export class Player<SpecType extends Spec> {
 			}
 
 			if (filters.matchingGemsOnly && !gemMatchesSocket(gem, socketColor)) {
+				return false;
+			}
+
+			// This is not exactly a player selected filter, just a general filter to remove any gems with stats that is not in use for the player.
+			// i.e dead gems.
+			const statsFilter = this.specConfig.gemStats ?? this.specConfig.epStats;
+			const positiveStatIds = gem.stats.map((value, statId) => (value > 0 ? statId : -1)).filter(statId => statId >= 0);
+			if (positiveStatIds.length === 0) {
+				return false;
+			}
+			if (positiveStatIds.some(statId => !statsFilter.includes(statId))) {
 				return false;
 			}
 

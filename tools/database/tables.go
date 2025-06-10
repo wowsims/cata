@@ -427,8 +427,16 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 	query := `SELECT DISTINCT
 		sie.ID as effectId,
 		CASE
-		    WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
-		    ELSE sn.Name_lang
+		WHEN s.NameSubtext_lang IS NOT NULL
+			AND TRIM(s.NameSubtext_lang) <> ''
+		THEN
+			(CASE
+			WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+			ELSE sn.Name_lang
+			END)
+			|| ' (' || s.NameSubtext_lang || ')'
+		WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+		ELSE sn.Name_lang
 		END AS name,
 		se.SpellID as spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,

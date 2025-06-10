@@ -207,7 +207,7 @@ export class Database {
 		return this.getConsumables().filter(consume => consume.type == type);
 	}
 	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
-		return this.getConsumablesByType(type).filter(consume => consume.buffsMainStat || stats.some(index => consume.stats[index] > 200));
+		return this.getConsumablesByType(type).filter(consume => consume.buffsMainStat || stats.some(index => consume.stats[index] > 0));
 	}
 	getConsumablesByTypeAndFilter(
 		type: ConsumableType,
