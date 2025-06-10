@@ -19,7 +19,7 @@ func (moonkin *BalanceDruid) registerStarfallSpell() {
 	tickLength := time.Second
 
 	starfallTickSpell := moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 50288},
+		ActionID:       core.ActionID{SpellID: 50286},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: druid.DruidSpellStarfall,
@@ -41,6 +41,11 @@ func (moonkin *BalanceDruid) registerStarfallSpell() {
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellProc,
 		Flags:       core.SpellFlagAPL,
+		RelatedSelfBuff: moonkin.GetOrRegisterAura(core.Aura{
+			Label:    "Starfall",
+			ActionID: core.ActionID{SpellID: 48505},
+			Duration: time.Second * 10,
+		}),
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 32.6,
 			PercentModifier: 100,
@@ -72,4 +77,12 @@ func (moonkin *BalanceDruid) registerStarfallSpell() {
 			}
 		},
 	})
+
+	if moonkin.HasEclipseBar() {
+		moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+			if gained && eclipse == LunarEclipse {
+				moonkin.Starfall.CD.Reset()
+			}
+		})
+	}
 }
