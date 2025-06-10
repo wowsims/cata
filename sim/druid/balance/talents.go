@@ -52,7 +52,7 @@ func (moonkin *BalanceDruid) registerIncarnation() {
 		}
 	})
 
-	moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
+	moonkin.ChosenOfElune = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
@@ -69,6 +69,11 @@ func (moonkin *BalanceDruid) registerIncarnation() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			incarnationAura.Activate(sim)
 		},
+	})
+
+	moonkin.AddMajorCooldown(core.MajorCooldown{
+		Spell: moonkin.ChosenOfElune.Spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 

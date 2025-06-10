@@ -59,10 +59,13 @@ type BalanceDruid struct {
 	AstralCommunion      *druid.DruidSpell
 	AstralStorm          *druid.DruidSpell
 	AstralStormTickSpell *druid.DruidSpell
-	Starfire             *druid.DruidSpell
-	Starsurge            *druid.DruidSpell
-	Sunfire              *druid.DruidSpell
+	CelestialAlignment   *druid.DruidSpell
+	ChosenOfElune        *druid.DruidSpell
+	NaturesSwiftness     *druid.DruidSpell
 	Starfall             *druid.DruidSpell
+	Starfire             *druid.DruidSpell
+	Sunfire              *druid.DruidSpell
+	Starsurge            *druid.DruidSpell
 
 	AstralInsight   *core.Aura // Soul of the Forest
 	DreamOfCenarius *core.Aura
@@ -98,6 +101,7 @@ func (moonkin *BalanceDruid) RegisterBalanceSpells() {
 	moonkin.registerCelestialAlignmentSpell()
 	moonkin.registerAstralStormSpell()
 	moonkin.registerWildMushrooms()
+	moonkin.registerNaturesSwiftness()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
