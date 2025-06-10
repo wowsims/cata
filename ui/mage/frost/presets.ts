@@ -1,22 +1,17 @@
+import { Mage } from '../../core/player_classes/mage';
 import * as PresetUtils from '../../core/preset_utils';
-import { ConsumesSpec, Profession, Stat } from '../../core/proto/common';
-import { FrostMage_Options as MageOptions } from '../../core/proto/mage';
+import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common';
+import { MageMajorGlyph, MageMinorGlyph, FrostMage_Options as MageOptions } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import FrostApl from './apls/frost.apl.json';
 import FrostAoeApl from './apls/frost_aoe.apl.json';
-import P1FrostGear from './gear_sets/p1_frost.gear.json';
-import P2FrostGear from './gear_sets/p2_frost.gear.json';
-import P3FrostAllianceGear from './gear_sets/p3_frost_alliance.gear.json';
-import P3FrostHordeGear from './gear_sets/p3_frost_horde.gear.json';
+import P1FrostGear from './gear_sets/p1_frost_prebis.gear.json';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
 export const FROST_P1_PRESET = PresetUtils.makePresetGear('Frost P1 Preset', P1FrostGear);
-export const FROST_P2_PRESET = PresetUtils.makePresetGear('Frost P2 Preset', P2FrostGear);
-export const FROST_P3_PRESET_ALLIANCE = PresetUtils.makePresetGear('Frost P3 Preset [A]', P3FrostAllianceGear);
-export const FROST_P3_PRESET_HORDE = PresetUtils.makePresetGear('Frost P3 Preset [H]', P3FrostHordeGear);
 
 export const FROST_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Frost', FrostApl);
 export const FROST_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Frost AOE', FrostAoeApl);
@@ -38,31 +33,31 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 
-export const FrostTalents = {
-	name: 'Frost',
+export const FrostDefaultTalents = {
+	name: 'Default Frost',
 	data: SavedTalents.create({
-		// talentsString: '23000503110003--0533030310233100030152231351',
-		// glyphs: Glyphs.create({
-		// 	major1: MageMajorGlyph.GlyphOfFrostbolt,
-		// 	major2: MageMajorGlyph.GlyphOfEternalWater,
-		// 	major3: MageMajorGlyph.GlyphOfMoltenArmor,
-		// 	minor1: MageMinorGlyph.GlyphOfSlowFall,
-		// 	minor2: MageMinorGlyph.GlyphOfFrostWard,
-		// 	minor3: MageMinorGlyph.GlyphOfBlastWave,
-		// }),
+		talentsString: '111121',
+		glyphs: Glyphs.create({
+			major1: MageMajorGlyph.GlyphOfSplittingIce,
+			major2: MageMajorGlyph.GlyphOfIcyVeins,
+			major3: MageMajorGlyph.GlyphOfWaterElemental,
+			minor1: MageMinorGlyph.GlyphOfMomentum,
+			minor2: MageMinorGlyph.GlyphOfMirrorImage,
+			minor3: MageMinorGlyph.GlyphOfTheUnboundElemental
+		}),
 	}),
 };
 
+
 export const DefaultFrostOptions = MageOptions.create({
 	classOptions: {},
-	waterElementalDisobeyChance: 0.1,
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 	tinkerId: 82174, // Synapse Springs
 });
 export const OtherDefaults = {

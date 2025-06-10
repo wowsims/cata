@@ -7,6 +7,11 @@ import (
 )
 
 func (mage *Mage) registerEvocation() {
+
+	if mage.Talents.RuneOfPower {
+		return
+	}
+
 	actionID := core.ActionID{SpellID: 12051}
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
@@ -22,7 +27,7 @@ func (mage *Mage) registerEvocation() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Minute * 4,
+				Duration: time.Minute * 2,
 			},
 		},
 
@@ -30,6 +35,9 @@ func (mage *Mage) registerEvocation() {
 			SelfOnly: true,
 			Aura: core.Aura{
 				Label: "Evocation",
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					mage.invocationAura.Activate(sim)
+				},
 			},
 			NumberOfTicks:        3,
 			TickLength:           time.Second * 2,
@@ -50,13 +58,12 @@ func (mage *Mage) registerEvocation() {
 
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: evocation,
-		Type:  core.CooldownTypeMana,
+		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			if sim.GetRemainingDuration() < 12*time.Second {
-				return false
+			if mage.invocationAura.TimeActive(sim) >= time.Duration(time.Second*55) {
+				return true
 			}
-
-			return character.CurrentManaPercent() < 0.1
+			return !mage.invocationAura.IsActive()
 		},
 	})
 }

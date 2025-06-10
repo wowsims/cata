@@ -21,7 +21,7 @@ func (mage *Mage) registerMirrorImageCD() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellMirrorImage,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 10,
+			BaseCostPercent: 2,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
