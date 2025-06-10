@@ -44,6 +44,7 @@ type DeathKnight struct {
 	Bloodworm  []*BloodwormPet
 
 	PestilenceSpell *core.Spell
+	RuneTapSpell    *core.Spell
 
 	ConversionAura     *core.Aura
 	UnholyPresenceAura *core.Aura

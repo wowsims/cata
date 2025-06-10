@@ -55,9 +55,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 			FloatValue: -10.0 * float64(dk.Talents.SanguineFortitude),
 		})
 	}
-
-	// Will of the Necropolis
-	dk.applyWillOfTheNecropolis()
 }
 
 func (dk *DeathKnight) applyBloodCakedBlade() {
@@ -115,64 +112,6 @@ func (dk *DeathKnight) bloodCakedBladeHit(isMh bool) *core.Spell {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialNoCrit)
 		},
 	})
-}
-
-func (dk *DeathKnight) applyWillOfTheNecropolis() {
-	if dk.Talents.WillOfTheNecropolis == 0 {
-		return
-	}
-
-	damageMit := 1.0 - []float64{0.0, 0.06, 0.16, 0.25}[dk.Talents.WillOfTheNecropolis]
-
-	actionID := core.ActionID{SpellID: 96171}
-	wotnAura := dk.RegisterAura(core.Aura{
-		Label:    "Will of The Necropolis Proc",
-		ActionID: actionID,
-		Duration: time.Second * 8,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageMit
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageMit
-		},
-	})
-
-	runeTapMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: DeathKnightSpellRuneTap,
-		IntValue:  -100,
-	})
-
-	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
-		Label: "Will of The Necropolis",
-		Icd: &core.Cooldown{
-			Timer:    dk.NewTimer(),
-			Duration: time.Second * 45,
-		},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !aura.Icd.IsReady(sim) {
-				return
-			}
-
-			if dk.CurrentHealthPercent() <= 0.3 {
-				aura.Icd.Use(sim)
-				wotnAura.Activate(sim)
-				runeTapMod.Activate()
-				dk.GetSpell(RuneTapActionID).CD.Reset()
-			}
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != DeathKnightSpellRuneTap {
-				return
-			}
-
-			if spell.CurCast.Cost > 0 {
-				return
-			}
-
-			runeTapMod.Deactivate()
-		},
-	}))
 }
 
 func (dk *DeathKnight) applyButchery() {

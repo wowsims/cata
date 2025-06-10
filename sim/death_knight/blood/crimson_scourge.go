@@ -21,11 +21,11 @@ func (bdk *BloodDeathKnight) registerCrimsonScourge() {
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: death_knight.DeathKnightSpellBloodBoil | death_knight.DeathKnightSpellDeathAndDecay,
 
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.CurCast.Cost > 0 {
-				return
-			}
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return spell.CurCast.Cost <= 0
+		},
 
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			crimsonScourgeAura.Deactivate(sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{

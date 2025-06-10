@@ -9,7 +9,7 @@ import (
 
 // Converts 1 Blood Rune into 10% of your maximum health.
 func (bdk *BloodDeathKnight) registerRuneTap() {
-	spell := bdk.RegisterSpell(core.SpellConfig{
+	bdk.RuneTapSpell = bdk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 48982},
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
@@ -38,7 +38,7 @@ func (bdk *BloodDeathKnight) registerRuneTap() {
 	})
 
 	bdk.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: bdk.RuneTapSpell,
 		Type:  core.CooldownTypeSurvival,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			return bdk.CurrentHealthPercent() < 0.7

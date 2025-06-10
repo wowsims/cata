@@ -25,7 +25,7 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 		ClassSpellMask: death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
 
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-			return spell.CurCast.Cost == 0
+			return spell.CurCast.Cost <= 0
 		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
