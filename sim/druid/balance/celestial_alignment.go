@@ -46,7 +46,7 @@ func (moonkin *BalanceDruid) registerCelestialAlignmentSpell() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: 0,
 			},
 			CD: core.Cooldown{
 				Timer:    moonkin.NewTimer(),
