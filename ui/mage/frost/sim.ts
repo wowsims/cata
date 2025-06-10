@@ -1,9 +1,10 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
@@ -15,21 +16,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatHitRating,
-		Stat.StatCritRating,
-		Stat.StatHasteRating,
-		Stat.StatMP5,
-		Stat.StatMasteryRating,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMP5, Stat.StatMasteryRating],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
@@ -100,7 +92,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		gear: [Presets.FROST_P1_PRESET],
 	},
 
-
 	autoRotation: (player: Player<Spec.SpecFrostMage>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
@@ -138,5 +129,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 export class FrostMageSimUI extends IndividualSimUI<Spec.SpecFrostMage> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFrostMage>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }
