@@ -7,18 +7,20 @@ import (
 	"github.com/wowsims/mop/sim/druid"
 )
 
+const (
+	EnergyGainPerTick           = 25.0
+	EnergyGainPerTickDuringSotF = 100.0
+)
+
 func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 	actionID := core.ActionID{SpellID: 127663}
 
-	channelTickLength := time.Second * 1
-	numberOfTicks := 4
-	eclipseEnergyGain := 25.0
-	sotfEclipseEnergyGain := 100.0
+	eclipseEnergyGain := EnergyGainPerTick
 
 	solarMetric := moonkin.NewSolarEnergyMetrics(actionID)
 	lunarMetric := moonkin.NewLunarEnergyMetrics(actionID)
 
-	moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
+	moonkin.AstralCommunion = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolArcane,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
@@ -31,32 +33,36 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 		Hot: core.DotConfig{
 			SelfOnly:            true,
 			Aura:                core.Aura{Label: "Astral Communion"},
-			NumberOfTicks:       int32(numberOfTicks),
-			TickLength:          channelTickLength,
+			NumberOfTicks:       4,
+			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: false,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-
 				if moonkin.CanGainEnergy(SolarAndLunarEnergy) {
 					moonkin.AddEclipseEnergy(eclipseEnergyGain, LunarEnergy, sim, lunarMetric, dot.Spell)
 				} else {
 					moonkin.AddEclipseEnergy(eclipseEnergyGain, SolarEnergy, sim, solarMetric, dot.Spell)
 				}
-
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.SelfHot().Apply(sim)
+
 			if moonkin.AstralInsight.IsActive() {
+				eclipseEnergyGain = EnergyGainPerTickDuringSotF
 
-				if moonkin.CanGainEnergy(SolarAndLunarEnergy) {
-					moonkin.AddEclipseEnergy(sotfEclipseEnergyGain, LunarEnergy, sim, lunarMetric, spell)
-				} else {
-					moonkin.AddEclipseEnergy(sotfEclipseEnergyGain, SolarEnergy, sim, solarMetric, spell)
-				}
+				spell.SelfHot().TickOnce(sim)
+				spell.SelfHot().Deactivate(sim)
 
-			} else {
-				spell.SelfHot().Apply(sim)
+				eclipseEnergyGain = EnergyGainPerTick
+				moonkin.AstralInsight.Deactivate(sim)
 			}
 		},
+	})
+
+	moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+		if gained && moonkin.AstralCommunion.SelfHot().IsActive() {
+			moonkin.AstralCommunion.SelfHot().Deactivate(sim)
+		}
 	})
 }

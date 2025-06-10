@@ -56,6 +56,7 @@ type BalanceDruid struct {
 
 	EclipseEnergyMap EclipseEnergyMap
 
+	AstralCommunion      *druid.DruidSpell
 	AstralStorm          *druid.DruidSpell
 	AstralStormTickSpell *druid.DruidSpell
 	Starfire             *druid.DruidSpell
