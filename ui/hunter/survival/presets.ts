@@ -130,7 +130,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	potId: 76089, // Potion of the Tol'vir
 	prepotId: 76089, // Potion of the Tol'vir
 	conjuredId: 5512, // Conjured Healthstone
-	tinkerId: 82174, // Synapse Springs
 });
 export const OtherDefaults = {
 	distanceFromTarget: 24,

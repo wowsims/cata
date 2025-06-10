@@ -1222,11 +1222,11 @@ export class Player<SpecType extends Spec> {
 	async setWowheadData(equippedItem: EquippedItem, elem: HTMLElement) {
 		const isBlacksmithing = this.hasProfession(Profession.Blacksmithing);
 		const gemIds = equippedItem.gems.length ? equippedItem.curGems(isBlacksmithing).map(gem => (gem ? gem.id : 0)) : [];
-
+		const enchantIds = [equippedItem.enchant?.effectId, equippedItem.tinker?.effectId].filter((id): id is number => id !== undefined);
 		equippedItem.asActionId().setWowheadDataset(elem, {
 			gemIds,
 			itemLevel: Number(equippedItem.ilvl),
-			enchantId: equippedItem.enchant?.effectId,
+			enchantIds: enchantIds,
 			reforgeId: equippedItem.reforge?.id,
 			randomEnchantmentId: equippedItem.randomSuffix?.id,
 			setPieceIds: this.gear
