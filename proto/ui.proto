@@ -145,6 +145,28 @@ enum RepFaction {
 	RepFactionHellscreamsReach = 1178;
 	RepFactionAvengersOfHyjal = 1204;
 
+    // MoP Reputations
+    RepFactionGoldenLotus              = 1269;
+    RepFactionTheTillers               = 1272;
+    RepFactionShadoPan                 = 1270;
+    RepFactionShadoPanAssault          = 1435;
+    RepFactionTheBrewmasters           = 1351;
+    RepFactionTheKlaxxi                = 1337;
+    RepFactionTheAugustCelestials      = 1341;
+    RepFactionTheAnglers               = 1302;
+    RepFactionEmperorShaohao           = 1492;
+    RepFactionSunreaverOnslaught       = 1388;
+    RepFactionKirinTorOffensive        = 1387;
+    RepFactionDominanceOffensive       = 1375;
+    RepFactionOrderOfTheCloudSerpent   = 1271;
+    RepFactionShangXisAcademy          = 1216;
+    RepFactionTheLorewalkers           = 1345;
+    RepFactionTheBlackPrince           = 1359;
+    RepFactionForestHozen              = 1228;
+    RepFactionPearlfinJinyu            = 1242;
+    RepFactionHozen                    = 1243;
+    RepFactionOperationShieldwall      = 1376;
+
 }
 
 message UIItemSource {

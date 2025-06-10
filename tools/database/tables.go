@@ -1343,3 +1343,98 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 	}
 	return sourcesByItem, namesByZone, nil
 }
+
+func ScanCraftedItems(rows *sql.Rows) (itemID int, ds *proto.CraftedSource, err error) {
+	var (
+		profId  int
+		crafted proto.CraftedSource
+	)
+
+	err = rows.Scan(
+		&itemID,
+		&profId,
+		&crafted.SpellId,
+	)
+	crafted.Profession = dbc.GetProfession(profId)
+	if err != nil {
+		return 0, nil, fmt.Errorf("scanning drop row: %w", err)
+	}
+	return itemID, &crafted, nil
+}
+
+func LoadCraftedItems(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.CraftedSource,
+) {
+	const query = `
+		SELECT se.EffectItemType, sla.SkillLine, sla.Spell FROM SkillLineAbility sla
+		LEFT JOIN SpellEffect se ON sla.Spell == se.SpellID
+		WHERE se.Effect = 24
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.CraftedSource)
+
+	for rows.Next() {
+		itemID, ds, scanErr := ScanCraftedItems(rows)
+		if scanErr != nil {
+			return nil
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+	}
+	if err = rows.Err(); err != nil {
+		return nil
+	}
+
+	return sourcesByItem
+}
+
+func ScanRepItems(rows *sql.Rows) (itemID int, ds *proto.RepSource, err error) {
+	var (
+		rep proto.RepSource
+	)
+
+	err = rows.Scan(
+		&itemID,
+		&rep.RepFactionId,
+	)
+	if err != nil {
+		return 0, nil, fmt.Errorf("scanning rep row: %w", err)
+	}
+	return itemID, &rep, nil
+}
+
+func LoadRepItems(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.RepSource,
+) {
+	const query = `
+		SELECT isp.ID, fa.ID FROM ItemSparse isp
+		LEFT JOIN Faction fa on fa.ID = isp.MinFactionID
+		WHERE fa.ParentFactionID=1245
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.RepSource)
+
+	for rows.Next() {
+		itemID, ds, scanErr := ScanRepItems(rows)
+		if scanErr != nil {
+			return nil
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+	}
+	if err = rows.Err(); err != nil {
+		return nil
+	}
+	fmt.Println("Loaded rep items", len(sourcesByItem))
+	return sourcesByItem
+}
