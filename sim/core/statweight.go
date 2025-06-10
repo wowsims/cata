@@ -182,7 +182,6 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	for _, s := range swr.PseudoStatsToWeigh {
 		stat := stats.UnitStatFromPseudoStat(s)
 		statName := proto.PseudoStat_name[int32(s)]
-
 		// Scale down the stat increment depending on the type of PseudoStat
 		statMod := defaultStatMod
 
