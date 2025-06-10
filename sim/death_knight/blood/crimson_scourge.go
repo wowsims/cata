@@ -35,21 +35,18 @@ func (bdk *BloodDeathKnight) registerCrimsonScourge() {
 	})
 
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{
-		Name:     "Crimson Scourge Trigger" + bdk.Label,
-		ActionID: core.ActionID{SpellID: 81136},
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMelee,
-		Outcome:  core.OutcomeLanded,
+		Name:       "Crimson Scourge Trigger" + bdk.Label,
+		ActionID:   core.ActionID{SpellID: 81136},
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMelee,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.1,
+
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return bdk.BloodPlagueSpell.Dot(result.Target).IsActive()
+		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !bdk.BloodPlagueSpell.Dot(result.Target).IsActive() {
-				return
-			}
-
-			if !sim.Proc(0.1, "Crimson Scourge Proc") {
-				return
-			}
-
 			crimsonScourgeAura.Activate(sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
