@@ -4,64 +4,36 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func (mage *Mage) ApplyTalents() {
-	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89744)
-	// Cooldowns/Special Implementations
-	mage.applyPresenceOfMindCD()
-	mage.applyIceFloesCD()
-	mage.applyRuneOfPower()
-	mage.applyInvocation()
+
+	// Level 15
+	mage.registerPresenceOfMind()
+	mage.registerIceFloes()
+
+	// Level 30
+
+	// Level 45
+
+	// Level 75
+	mage.registerNetherTempest()
+	mage.registerLivingBomb()
+	mage.registerFrostBomb()
+
+	// Level 90
+	mage.registerRuneOfPower()
+	mage.registerInvocation()
 
 }
 
-func (mage *Mage) applyInvocation() {
-	if !mage.Talents.Invocation {
-		return
-	}
-
-	mage.AddStaticMod(core.SpellModConfig{
-		ClassMask:  MageSpellEvocation,
-		FloatValue: -1,
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-	})
-
-	mage.AddStaticMod(core.SpellModConfig{
-		ClassMask: MageSpellEvocation,
-		TimeValue: time.Second * -1.0,
-		Kind:      core.SpellMod_DotTickLength_Flat,
-	})
-
-	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: 0.15,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	mage.invocationAura = mage.RegisterAura(core.Aura{
-		Label:    "Invocation Aura",
-		ActionID: core.ActionID{SpellID: 116257},
-		Duration: time.Minute,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			invocationDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			invocationDamageMod.Deactivate()
-		},
-	})
-
-}
-
-func (mage *Mage) applyPresenceOfMindCD() {
+func (mage *Mage) registerPresenceOfMind() {
 	if !mage.Talents.PresenceOfMind {
 		return
 	}
 
 	presenceOfMindMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation,
+		ClassMask:  MageSpellsAll ^ (MageSpellInstantCast | MageSpellBlizzard | MageSpellEvocation),
 		FloatValue: -1,
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
@@ -115,7 +87,7 @@ func (mage *Mage) applyPresenceOfMindCD() {
 	})
 }
 
-func (mage *Mage) applyIceFloesCD() {
+func (mage *Mage) registerIceFloes() {
 	if !mage.Talents.IceFloes {
 		return
 	}
@@ -168,7 +140,44 @@ func (mage *Mage) applyIceFloesCD() {
 
 }
 
-func (mage *Mage) applyRuneOfPower() {
+func (mage *Mage) registerInvocation() {
+	if !mage.Talents.Invocation {
+		return
+	}
+
+	mage.AddStaticMod(core.SpellModConfig{
+		ClassMask:  MageSpellEvocation,
+		FloatValue: -1,
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+	})
+
+	mage.AddStaticMod(core.SpellModConfig{
+		ClassMask: MageSpellEvocation,
+		TimeValue: time.Second * -1.0,
+		Kind:      core.SpellMod_DotTickLength_Flat,
+	})
+
+	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAllDamaging,
+		FloatValue: 0.15,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	mage.invocationAura = mage.RegisterAura(core.Aura{
+		Label:    "Invocation Aura",
+		ActionID: core.ActionID{SpellID: 116257},
+		Duration: time.Minute,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			invocationDamageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			invocationDamageMod.Deactivate()
+		},
+	})
+
+}
+
+func (mage *Mage) registerRuneOfPower() {
 	if !mage.Talents.RuneOfPower {
 		return
 	}

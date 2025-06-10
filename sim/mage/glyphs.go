@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (mage *Mage) applyGlyphs() {
+func (mage *Mage) registerGlyphs() {
 	// Majors MOP
 
 	// Glyph of Frostfire Bolt

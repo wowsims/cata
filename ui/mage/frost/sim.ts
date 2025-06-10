@@ -46,16 +46,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		specOptions: Presets.DefaultFrostOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
-		partyBuffs: PartyBuffs.create({
-			manaTideTotems: 1,
+		raidBuffs: RaidBuffs.create({
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			mindQuickening: true,
+			leaderOfThePack: true,
+			blessingOfMight: true,
+			unholyAura: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			innervateCount: 0,
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// ebonPlaguebringer: true,
-			// shadowAndFlame: true,
+			curseOfElements: true,
 		}),
 	},
 
@@ -92,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		gear: [Presets.FROST_P1_PRESET],
 	},
 
+
 	autoRotation: (player: Player<Spec.SpecFrostMage>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
@@ -100,60 +106,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			return Presets.FROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
-
-	// simpleRotation: (player: Player<Spec.SpecFrostMage>, simple: FrostMage_Rotation, cooldowns: Cooldowns): APLRotation => {
-	// 	const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-	// 	const prepullMirrorImage = APLPrepullAction.fromJsonString(
-	// 		`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
-	// 	);
-
-	// 	const berserking = APLAction.fromJsonString(
-	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
-	// 	);
-	// 	const hyperspeedAcceleration = APLAction.fromJsonString(
-	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
-	// 	);
-	// 	const combatPot = APLAction.fromJsonString(
-	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
-	// 	);
-	// 	const evocation = APLAction.fromJsonString(
-	// 		`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
-	// 	);
-
-	// 	const deepFreeze = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":44545}}},"castSpell":{"spellId":{"spellId":44572}}}`);
-	// 	const frostfireBoltWithBrainFreeze = APLAction.fromJsonString(
-	// 		`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44549}}},"castSpell":{"spellId":{"spellId":47610}}}`,
-	// 	);
-	// 	const frostbolt = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42842}}}`);
-	// 	const iceLance = APLAction.fromJsonString(
-	// 		`{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":44545}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":42914}}}`,
-	// 	);
-
-	// 	prepullActions.push(prepullMirrorImage);
-
-	// 	actions.push(
-	// 		...([
-	// 			berserking,
-	// 			hyperspeedAcceleration,
-	// 			combatPot,
-	// 			evocation,
-	// 			deepFreeze,
-	// 			frostfireBoltWithBrainFreeze,
-	// 			//simple.useIceLance ? iceLance : null,
-	// 			frostbolt,
-	// 		].filter(a => a) as Array<APLAction>),
-	// 	);
-
-	// 	return APLRotation.create({
-	// 		prepullActions: prepullActions,
-	// 		priorityList: actions.map(action =>
-	// 			APLListItem.create({
-	// 				action: action,
-	// 			}),
-	// 		),
-	// 	});
-	// },
 
 	raidSimPresets: [
 		{

@@ -1,7 +1,7 @@
 import { Mage } from '../../core/player_classes/mage';
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common';
-import { MageMajorGlyph, MageMinorGlyph, FrostMage_Options as MageOptions } from '../../core/proto/mage';
+import { FrostMage_Options as MageOptions,MageMajorGlyph, MageMinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import FrostApl from './apls/frost.apl.json';

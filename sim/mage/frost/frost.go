@@ -56,17 +56,24 @@ func (frostMage *FrostMage) Reset(sim *core.Simulation) {
 func (frostMage *FrostMage) Initialize() {
 	frostMage.Mage.Initialize()
 
-	frostMage.registerSummonWaterElementalSpell()
-	frostMage.registerFingersOfFrost()
-	frostMage.registerBrainFreeze()
-	frostMage.registerFrostboltSpell()
-	frostMage.registerFrozenOrbSpell()
 	frostMage.registerGlyphs()
+	frostMage.registerPassives()
+	frostMage.registerSpells()
 }
 
-func (frostMage *FrostMage) ApplyTalents() {
-	frostMage.Mage.ApplyTalents()
+func (frostMage *FrostMage) registerPassives() {
+	frostMage.registerMastery()
+	frostMage.registerFingersOfFrost()
+	frostMage.registerBrainFreeze()
+}
 
+func (frostMage *FrostMage) registerSpells() {
+	frostMage.registerSummonWaterElementalSpell()
+	frostMage.registerFrostboltSpell()
+	frostMage.registerFrozenOrbSpell()
+}
+
+func (frostMage *FrostMage) registerMastery() {
 	frozenCritBuff := frostMage.GetStat(stats.SpellCritPercent)*2 + 50
 
 	/*

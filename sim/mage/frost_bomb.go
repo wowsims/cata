@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerFrostBombSpell() {
+func (mage *Mage) registerFrostBomb() {
 
 	if !mage.Talents.FrostBomb {
 		return

@@ -7,8 +7,10 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (mage *Mage) ApplyMastery() {
-	//These aren't technically spells but I'm not sure how else to create them
+func (mage *Mage) registerFrostMastery() {
+	if mage.Spec != proto.Spec_SpecFrostMage {
+		return
+	}
 
 	mage.Icicle = mage.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 148022},

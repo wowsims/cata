@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerLivingBombSpell() {
+func (mage *Mage) registerLivingBomb() {
 	// MOP version has a cap of 3 active dots at once
 	// activeLivingBombs should only ever be 3 LBs long
 	// When a dot is trying to be applied,
@@ -22,6 +22,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 44457}
 	activeLivingBombs := make([]*core.Dot, 0)
 	const maxLivingBombs int = 3
 
@@ -35,7 +36,7 @@ func (mage *Mage) registerLivingBombSpell() {
 	livingBombDotScaling := 1.03           // Per https://wago.tools/db2/SpellEffect?build=4.4.2.60192&filter%5BSpellID%5D=44461 Field "Coefficient"
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 44461},
+		ActionID:       actionID.WithTag(2), // Real Spell ID: 44461
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellLivingBombExplosion,
@@ -57,24 +58,63 @@ func (mage *Mage) registerLivingBombSpell() {
 	bombExplode := true
 
 	mage.LivingBomb = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 44457},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellLivingBombDot,
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1.5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: time.Second,
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		ThreatMultiplier:         1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+			if result.Landed() {
+				// If there is already an active dot on the target, just reapply
+				if spell.RelatedDotSpell.Dot(target).IsActive() {
+					if spell.RelatedDotSpell.Dot(target).RemainingTicks() == 1 {
+						livingBombExplosionSpell.Cast(sim, target)
+					}
+					spell.RelatedDotSpell.Cast(sim, target)
+				} else {
+					activeLbs := len(activeLivingBombs)
+
+					if activeLbs >= maxLivingBombs {
+						bombExplode = false
+						activeLivingBombs[activeLbs-1].Deactivate(sim)
+						if activeLbs != 0 {
+							activeLivingBombs = activeLivingBombs[:1]
+						}
+						bombExplode = true
+					}
+					spell.RelatedDotSpell.Cast(sim, target)
+					activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(target))
+					sort.Slice(activeLivingBombs, func(i, j int) bool {
+						return activeLivingBombs[i].Duration < activeLivingBombs[j].Duration
+					})
+				}
+			}
+			spell.DealOutcome(sim, result)
+		},
+	})
+
+	mage.LivingBomb.RelatedDotSpell = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID.WithTag(1),
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: MageSpellLivingBombDot,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -102,33 +142,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
-			if result.Landed() {
-				// If there is already an active dot on the target, just reapply
-				if spell.Dot(target).IsActive() {
-					if spell.Dot(target).RemainingTicks() == 1 {
-						livingBombExplosionSpell.Cast(sim, target)
-					}
-					spell.Dot(target).Apply(sim)
-				} else {
-					activeLbs := len(activeLivingBombs)
-
-					if activeLbs >= maxLivingBombs {
-						bombExplode = false
-						activeLivingBombs[activeLbs-1].Deactivate(sim)
-						if activeLbs != 0 {
-							activeLivingBombs = activeLivingBombs[:1]
-						}
-						bombExplode = true
-					}
-					spell.Dot(target).Apply(sim)
-					activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(target))
-					sort.Slice(activeLivingBombs, func(i, j int) bool {
-						return activeLivingBombs[i].Duration < activeLivingBombs[j].Duration
-					})
-				}
-			}
-			spell.DealOutcome(sim, result)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 }

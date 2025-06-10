@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerNetherTempestSpell() {
+func (mage *Mage) registerNetherTempest() {
 	if !mage.Talents.NetherTempest {
 		return
 	}
