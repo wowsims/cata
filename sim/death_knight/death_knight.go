@@ -116,7 +116,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerEmpowerRuneWeapon()
 	dk.registerFrostFever()
 	dk.registerHornOfWinter()
-	// dk.registerIceboundFortitude()
+	dk.registerIceboundFortitude()
 	dk.registerIcyTouch()
 	dk.registerOutbreak()
 	dk.registerPestilence()

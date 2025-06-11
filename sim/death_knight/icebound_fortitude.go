@@ -4,45 +4,40 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 // The Death Knight freezes his blood to become immune to Stun effects and reduce all damage taken by 20% for 12 sec.
 func (dk *DeathKnight) registerIceboundFortitude() {
 	actionID := core.ActionID{SpellID: 48792}
 
-	dmgTakenMult := 0.8 - 0.15*float64(dk.Talents.SanguineFortitude)
+	dmgTakenMult := 0.8 - core.TernaryFloat64(dk.Spec == proto.Spec_SpecBloodDeathKnight, 0.3, 0)
 
 	iceBoundFortituteAura := dk.RegisterAura(core.Aura{
-		Label:    "Icebound Fortitude",
+		Label:    "Icebound Fortitude" + dk.Label,
 		ActionID: actionID,
 		Duration: 12 * time.Second,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= dmgTakenMult
-		},
-
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= dmgTakenMult
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&dk.PseudoStats.DamageTakenMultiplier, dmgTakenMult)
 
 	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellIceboundFortitude,
 
-		RuneCost: core.RuneCostOptions{
-			RunicPowerCost: 20,
-		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
 				Duration: time.Minute * 3,
 			},
 		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.RelatedSelfBuff.Activate(sim)
 		},
+
 		RelatedSelfBuff: iceBoundFortituteAura,
 	})
 
