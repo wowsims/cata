@@ -75,6 +75,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.registerRiposte()
 	bdk.registerRuneStrike()
 	bdk.registerRuneTap()
+	bdk.registerSanguineFortitude()
 	bdk.registerScarletFever()
 	bdk.registerScentOfBlood()
 	bdk.registerVampiricBlood()
