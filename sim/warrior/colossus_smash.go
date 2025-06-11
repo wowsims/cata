@@ -19,7 +19,7 @@ func (war *Warrior) registerColossusSmash() {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Colossus Smash",
 			ActionID: actionID,
-			Duration: time.Second * 6,
+			Duration: time.Millisecond * 6500,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				war.AttackTables[aura.Unit.UnitIndex].IgnoreArmor = true
 			},

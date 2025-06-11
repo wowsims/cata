@@ -89,15 +89,6 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		IntValue:  -100,
 	})
 
-	aura.AttachProcTrigger(core.ProcTrigger{
-		Name:           "Sudden Execute - Consume",
-		ClassSpellMask: warrior.SpellMaskOverpower,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			aura.Deactivate(sim)
-		},
-	})
-
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:           "Sudden Execute - Trigger",
 		ClassSpellMask: warrior.SpellMaskExecute,
