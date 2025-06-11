@@ -87,7 +87,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 
 func (bdk *BloodDeathKnight) ApplyTalents() {
 	bdk.DeathKnight.ApplyTalents()
-	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate, 86524)
+	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate, 86537)
 
 	// Vengeance
 	bdk.RegisterVengeance(93099, nil)
