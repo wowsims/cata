@@ -66,7 +66,7 @@ func (war *Warrior) applyMajorGlyphs() {
 	}
 
 	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfIncite) {
-		actionID := core.ActionID{SpellID: 86627}
+		actionID := core.ActionID{SpellID: 122016}
 
 		inciteAura := war.RegisterAura(core.Aura{
 			Label:     "Incite",
