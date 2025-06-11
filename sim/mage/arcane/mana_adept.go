@@ -2,7 +2,15 @@ package arcane
 
 import "github.com/wowsims/mop/sim/core"
 
-func (arcane *ArcaneMage) ApplyMastery() {
+func (arcane *ArcaneMage) GetArcaneMasteryBonus() float64 {
+	return (0.16 + 0.02*arcane.GetMasteryPoints())
+}
+
+func (arcane *ArcaneMage) ArcaneMasteryValue() float64 {
+	return arcane.GetArcaneMasteryBonus() * (arcane.CurrentMana() / arcane.MaxMana())
+}
+
+func (arcane *ArcaneMage) registerMastery() {
 	arcaneMastery := arcane.AddDynamicMod(core.SpellModConfig{
 		School: core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow,
 		Kind:   core.SpellMod_DamageDone_Pct,

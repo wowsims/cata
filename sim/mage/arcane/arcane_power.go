@@ -1,6 +1,7 @@
 package arcane
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -39,21 +40,24 @@ func (arcane *ArcaneMage) registerArcanePowerCD() {
 	})
 
 	if hasGlyph {
-		arcane.arcanePowerAura.AttachSpellMod(core.SpellModConfig{
+		fmt.Println("hi")
+		arcane.AddStaticMod(core.SpellModConfig{
 			ClassMask: mage.MageSpellArcanePower,
 			TimeValue: time.Second * 15,
 			Kind:      core.SpellMod_BuffDuration_Flat,
-		}).AttachSpellMod(core.SpellModConfig{
+		})
+		arcane.AddStaticMod(core.SpellModConfig{
 			ClassMask:  mage.MageSpellArcanePower,
-			FloatValue: 1.0,
+			FloatValue: 2.0,
 			Kind:       core.SpellMod_Cooldown_Multiplier,
 		})
 	}
 
 	arcane.arcanePower = arcane.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
-		ClassSpellMask: mage.MageSpellArcanePower,
-		Flags:          core.SpellFlagNoOnCastComplete,
+		ActionID:        actionID,
+		ClassSpellMask:  mage.MageSpellArcanePower,
+		Flags:           core.SpellFlagNoOnCastComplete,
+		RelatedSelfBuff: arcane.arcanePowerAura,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

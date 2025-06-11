@@ -41,12 +41,12 @@ type ArcaneMage struct {
 func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage {
 	arcaneOptions := options.GetArcaneMage().Options
 
-	arcaneMage := &ArcaneMage{
+	arcane := &ArcaneMage{
 		Mage: mage.NewMage(character, options, arcaneOptions.ClassOptions),
 	}
-	arcaneMage.ArcaneOptions = arcaneOptions
+	arcane.ArcaneOptions = arcaneOptions
 
-	return arcaneMage
+	return arcane
 }
 
 func (arcaneMage *ArcaneMage) GetMage() *mage.Mage {
@@ -57,28 +57,21 @@ func (arcaneMage *ArcaneMage) Reset(sim *core.Simulation) {
 	arcaneMage.Mage.Reset(sim)
 }
 
-func (arcaneMage *ArcaneMage) Initialize() {
-	arcaneMage.Mage.Initialize()
+func (arcane *ArcaneMage) Initialize() {
+	arcane.Mage.Initialize()
 
-	arcaneMage.registerArcaneBarrageSpell()
-	arcaneMage.registerArcaneBlastSpell()
-	arcaneMage.registerArcaneCharges()
-	arcaneMage.registerArcaneMissilesSpell()
-
-	arcaneMage.registerArcanePowerCD()
+	arcane.registerPassives()
+	arcane.registerSpells()
 }
 
-func (arcane *ArcaneMage) ApplyTalents() {
-
-	arcane.Mage.ApplyTalents()
-	arcane.ApplyMastery()
-
+func (arcane *ArcaneMage) registerPassives() {
+	arcane.registerMastery()
+	arcane.registerArcaneCharges()
 }
 
-func (arcaneMage *ArcaneMage) GetArcaneMasteryBonus() float64 {
-	return (0.16 + 0.02*arcaneMage.GetMasteryPoints())
-}
-
-func (arcaneMage *ArcaneMage) ArcaneMasteryValue() float64 {
-	return arcaneMage.GetArcaneMasteryBonus() * (arcaneMage.CurrentMana() / arcaneMage.MaxMana())
+func (arcane *ArcaneMage) registerSpells() {
+	arcane.registerArcaneBarrageSpell()
+	arcane.registerArcaneBlastSpell()
+	arcane.registerArcaneMissilesSpell()
+	arcane.registerArcanePowerCD()
 }

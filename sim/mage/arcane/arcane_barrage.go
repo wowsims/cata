@@ -41,12 +41,25 @@ func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			baseDamage := arcane.CalcAndRollDamageRange(sim, arcaneBarrageScale, arcaneBarrageVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
+
+			spell.DamageMultiplier *= .5
+			currTarget := target
+
+			for _ = range min(arcane.arcaneChargesAura.GetStacks(), int32(len(sim.Encounter.TargetUnits)-1)) {
+				currTarget = arcane.Env.NextTargetUnit(currTarget)
+				baseDamage := arcane.CalcAndRollDamageRange(sim, arcaneBarrageScale, arcaneBarrageVariance)
+				result := spell.CalcDamage(sim, currTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				})
+			}
+			spell.DamageMultiplier /= .5
+
 		},
 	})
 }
