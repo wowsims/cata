@@ -2,6 +2,7 @@ package death_knight
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 var BloodBoilActionID = core.ActionID{SpellID: 48721}
@@ -12,6 +13,7 @@ Deals 50% additional damage to targets infected with Blood Plague or Frost Fever
 */
 func (dk *DeathKnight) registerBloodBoil() {
 	rpMetric := dk.NewRunicPowerMetrics(BloodBoilActionID)
+	hasGlyphOfFesteringBlood := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfFesteringBlood)
 	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       BloodBoilActionID,
@@ -25,19 +27,20 @@ func (dk *DeathKnight) registerBloodBoil() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   dk.DefaultCritMultiplier(),
-		ThreatMultiplier: 1.0,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			anyHit := false
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := dk.ClassSpellScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
-				baseDamage *= core.TernaryFloat64(dk.DiseasesAreActive(aoeTarget), 1.5, 1.0)
+				baseDamage := dk.CalcAndRollDamageRange(sim, 3.09599995613, 0.20000000298) +
+					0.1099999994*spell.MeleeAttackPower()
+				baseDamage *= core.TernaryFloat64(hasGlyphOfFesteringBlood || dk.DiseasesAreActive(aoeTarget), 1.5, 1.0)
 
 				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				anyHit = anyHit || results[idx].Landed()
@@ -65,7 +68,9 @@ func (dk *DeathKnight) registerDrwBloodBoil() *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := dk.ClassSpellScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
+				baseDamage := dk.CalcAndRollDamageRange(sim, 3.09599995613, 0.20000000298) +
+					0.1099999994*spell.MeleeAttackPower()
+				// TODO: Is DRW damage affected by Glyph of Festering Blood?
 				baseDamage *= core.TernaryFloat64(dk.RuneWeapon.DiseasesAreActive(aoeTarget), 1.5, 1.0)
 
 				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
