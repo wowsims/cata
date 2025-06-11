@@ -17,35 +17,30 @@ type Mage struct {
 
 	mirrorImage *MirrorImage
 
-	arcaneMissilesTickSpell *core.Spell
-	Combustion              *core.Spell
-	Ignite                  *core.Spell
-	LivingBomb              *core.Spell
-	NetherTempest           *core.Spell
-	FireBlast               *core.Spell
-	FlameOrbExplode         *core.Spell
-	Flamestrike             *core.Spell
-	FlamestrikeBW           *core.Spell
-	FrostfireOrb            *core.Spell
-	Pyroblast               *core.Spell
-	SummonWaterElemental    *core.Spell
-	IcyVeins                *core.Spell
-	Icicle                  *core.Spell
+	Combustion           *core.Spell
+	Ignite               *core.Spell
+	LivingBomb           *core.Spell
+	NetherTempest        *core.Spell
+	FireBlast            *core.Spell
+	FlameOrbExplode      *core.Spell
+	Flamestrike          *core.Spell
+	FlamestrikeBW        *core.Spell
+	FrostfireOrb         *core.Spell
+	Pyroblast            *core.Spell
+	SummonWaterElemental *core.Spell
+	SummonMirrorImages   *core.Spell
+	IcyVeins             *core.Spell
+	Icicle               *core.Spell
 
-	arcanePowerGCDmod *core.SpellMod
-
-	arcaneMissilesProcAura *core.Aura
-	arcanePotencyAura      *core.Aura
-	arcanePowerAura        *core.Aura
-	invocationAura         *core.Aura
-	runeOfPowerAura        *core.Aura
-	presenceOfMindAura     *core.Aura
-	FingersOfFrostAura     *core.Aura
-	BrainFreezeAura        *core.Aura
-	IcyVeinsAura           *core.Aura
-	iceFloesfAura          *core.Aura
-	IciclesAura            *core.Aura
-	FrostBombAuras         core.AuraArray
+	invocationAura     *core.Aura
+	runeOfPowerAura    *core.Aura
+	presenceOfMindAura *core.Aura
+	FingersOfFrostAura *core.Aura
+	BrainFreezeAura    *core.Aura
+	IcyVeinsAura       *core.Aura
+	iceFloesfAura      *core.Aura
+	IciclesAura        *core.Aura
+	FrostBombAuras     core.AuraArray
 
 	arcaneMissileCritSnapshot float64
 	baseHotStreakProcChance   float64
@@ -115,7 +110,7 @@ func (mage *Mage) registerSpells() {
 	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
 	// mage.registerManaGemsCD()
-	// mage.registerMirrorImageCD()
+	mage.registerMirrorImageCD()
 	// mage.registerCombustionSpell()
 	// mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
@@ -142,6 +137,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString)
 
+	mage.mirrorImage = mage.NewMirrorImage()
 	mage.EnableManaBar()
 
 	mage.Icicles = make([]float64, 0)
