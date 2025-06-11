@@ -53,3 +53,14 @@ enum SecondaryResourceType {
 	SecondaryResourceTypeSoulShards     = 117198;
 	SecondaryResourceTypeHolyPower      = 138248;
 }
+
+message RppmMod {
+    double coefficient = 1;
+    oneof mod_type {
+        bool haste = 2;
+        bool crit = 3;
+        Spec spec = 4;
+        int32 class_mask = 5;
+		int32 ilvl = 6;
+    }
+}

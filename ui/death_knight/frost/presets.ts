@@ -165,7 +165,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 74646, // Black Pepper Ribs and Shrimp
 	potId: 76095, // Potion of Mogu Power
 	prepotId: 76095, // Potion of Mogu Power
-	tinkerId: 126734, // Synapse Springs Mark II
 });
 
 export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P1 - DW Obliterate', {

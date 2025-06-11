@@ -134,6 +134,10 @@ func (aura *Aura) reset(sim *Simulation) {
 	if aura.OnReset != nil {
 		aura.OnReset(aura, sim)
 	}
+
+	if aura.Dpm != nil {
+		aura.Dpm.Reset()
+	}
 }
 
 func (aura *Aura) doneIteration(sim *Simulation) {

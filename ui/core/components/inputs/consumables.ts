@@ -107,44 +107,6 @@ export const EXPLOSIVE_CONFIG = [
 ] as ConsumableStatOption<number>[];
 export const makeExplosivesInput = makeConsumeInputFactory({ consumesFieldName: 'explosiveId' });
 
-///////////////////////////////////////////////////////////////////////////
-//                                 Tinkers
-///////////////////////////////////////////////////////////////////////////
-
-export const TinkerHandsSynapseSprings = {
-	actionId: ActionId.fromSpellId(82174),
-	value: 82174,
-};
-export const TinkerHandsQuickflipDeflectionPlates = {
-	actionId: ActionId.fromSpellId(82176),
-	value: 82176,
-};
-export const TinkerHandsTazikShocker = {
-	actionId: ActionId.fromSpellId(82179),
-	value: 82179,
-};
-export const TinkerHandsSpinalHealingInjector = {
-	actionId: ActionId.fromSpellId(82184),
-	value: 82184,
-};
-export const TinkerHandsZ50ManaGulper = {
-	actionId: ActionId.fromSpellId(82186),
-	value: 82186,
-};
-
-export const TINKERS_HANDS_CONFIG = [
-	{ config: TinkerHandsSynapseSprings, stats: [] },
-	{ config: TinkerHandsQuickflipDeflectionPlates, stats: [] },
-	{ config: TinkerHandsTazikShocker, stats: [] },
-	{ config: TinkerHandsSpinalHealingInjector, stats: [] },
-	{ config: TinkerHandsZ50ManaGulper, stats: [] },
-] as ConsumableStatOption<number>[];
-
-export const makeTinkerHandsInput = makeConsumeInputFactory({
-	consumesFieldName: 'tinkerId',
-	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-});
-
 export interface ConsumableInputOptions {
 	consumesFieldName: keyof ConsumesSpec;
 	setValue?: (eventID: EventID, player: Player<any>, newValue: number) => void;

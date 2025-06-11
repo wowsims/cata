@@ -212,11 +212,11 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 105876},
 				Duration: shaman.spiritwalkersGraceBaseDuration(),
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					shaman.MultiplyCastSpeed(hasteMulti)
+					shaman.MultiplyCastSpeed(hastMulti)
 					shaman.MultiplyAttackSpeed(sim, hasteMulti)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					shaman.MultiplyCastSpeed(1 / hasteMulti)
+					shaman.MultiplyCastSpeed(1 / hastMulti)
 					shaman.MultiplyAttackSpeed(sim, 1/hasteMulti)
 				},
 			})

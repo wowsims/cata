@@ -38,13 +38,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 134318.2414
-  tps: 127313.2352
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-AncientPetrifiedSeed-69001"
  value: {
   dps: 133233.06345
@@ -94,21 +87,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-AusterePrimalDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 132952.21951
   tps: 125953.6985
@@ -147,13 +126,6 @@ dps_results: {
  value: {
   dps: 98444.78241
   tps: 93791.38895
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 133029.97856
-  tps: 126031.45755
  }
 }
 dps_results: {
@@ -304,20 +276,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 132952.21951
-  tps: 123442.79293
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 132404.65121
@@ -329,13 +287,6 @@ dps_results: {
  value: {
   dps: 134327.10319
   tps: 127322.09699
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-BurningShadowspiritDiamond"
- value: {
-  dps: 134311.98504
-  tps: 127306.97884
  }
 }
 dps_results: {
@@ -385,20 +336,6 @@ dps_results: {
  value: {
   dps: 136820.72564
   tps: 129526.54054
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 134545.80126
-  tps: 127527.58742
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 133029.97856
-  tps: 126031.45755
  }
 }
 dps_results: {
@@ -556,20 +493,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 133173.54845
-  tps: 126161.81981
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 133035.27482
-  tps: 126036.75381
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 134563.94124
@@ -578,13 +501,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestRetribution-AllItems-EffulgentPrimalDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 132952.21951
   tps: 125953.6985
@@ -605,45 +521,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125954.6045
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 133849.80918
   tps: 126751.39006
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 133173.54845
-  tps: 126161.81981
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 133029.97856
-  tps: 126031.45755
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 132993.9109
-  tps: 125995.38989
  }
 }
 dps_results: {
@@ -682,21 +563,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-EternalPrimalDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 132952.21951
   tps: 125953.6985
@@ -794,13 +661,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 133180.11582
-  tps: 126181.59481
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-FluidDeath-58181"
  value: {
   dps: 132475.78055
@@ -826,27 +686,6 @@ dps_results: {
  value: {
   dps: 132966.48191
   tps: 125967.96091
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ForlornStarflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
  }
 }
 dps_results: {
@@ -1011,27 +850,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 133173.54845
-  tps: 126161.81981
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 133029.97856
-  tps: 126031.45755
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 132993.9109
-  tps: 125995.38989
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-ImpatienceofYouth-62464"
  value: {
   dps: 135329.37506
@@ -1088,13 +906,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 132390.13799
@@ -1127,13 +938,6 @@ dps_results: {
  value: {
   dps: 132800.51135
   tps: 125862.3495
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 132965.6732
-  tps: 125956.29553
  }
 }
 dps_results: {
@@ -1480,20 +1284,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 132993.9109
-  tps: 125995.38989
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 133029.97856
-  tps: 126031.45755
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 132415.76858
@@ -1529,28 +1319,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-PowerfulPrimalDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-PowerfulShadowspiritDiamond"
  value: {
   dps: 132952.21951
   tps: 125953.6985
@@ -1606,13 +1375,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 132958.12173
-  tps: 125959.60072
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-ResolveofUndying-77201"
  value: {
   dps: 132415.76858
@@ -1641,13 +1403,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 134551.91188
-  tps: 127530.13822
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-RevitalizingPrimalDiamond"
  value: {
   dps: 134311.98504
@@ -1655,31 +1410,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 134311.98504
-  tps: 127306.97884
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Ricket'sMagneticFireball-70144"
  value: {
   dps: 133366.24591
   tps: 126197.04358
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-RidingCrop"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
  }
 }
 dps_results: {
@@ -1895,13 +1629,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 133923.8746
@@ -2056,27 +1783,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 133029.97856
-  tps: 126031.45755
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 132993.9109
-  tps: 125995.38989
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 132979.76228
-  tps: 125981.24127
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-SymbioticWorm-59332"
  value: {
   dps: 132415.76858
@@ -2210,13 +1916,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Tia'sGrace-55874"
  value: {
   dps: 133005.87693
@@ -2228,34 +1927,6 @@ dps_results: {
  value: {
   dps: 133076.70462
   tps: 126138.54277
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 132952.21951
-  tps: 125953.6985
  }
 }
 dps_results: {

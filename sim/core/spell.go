@@ -766,6 +766,7 @@ func (spell *Spell) scheduleRechargeAction(sim *Simulation) {
 		Priority:     ActionPriorityAuto,
 		OnAction: func(sim *Simulation) {
 			spell.RefreshCharge(sim)
+			spell.rechargeTimer = nil
 			if spell.charges < spell.MaxCharges {
 				spell.scheduleRechargeAction(sim)
 			}
