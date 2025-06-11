@@ -821,8 +821,15 @@ func init() {
 			actionID := core.ActionID{ItemID: spindleItemID, SpellID: core.TernaryInt32(heroic, 97129, 96945)}
 			duration := time.Second * 30
 
-			shield := character.NewDamageAbsorptionAura("Loom of Fate"+labelSuffix, actionID, duration, func(unit *core.Unit) float64 {
-				return shieldStrength
+			shield := character.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+				Aura: core.Aura{
+					Label:    "Loom of Fate" + labelSuffix,
+					ActionID: actionID,
+					Duration: duration,
+				},
+				ShieldStrengthCalculator: func(unit *core.Unit) float64 {
+					return shieldStrength
+				},
 			})
 
 			icd := core.Cooldown{
@@ -1068,8 +1075,15 @@ func init() {
 			duration := time.Second * 6
 
 			shieldStrength := 0.0
-			shield := character.NewDamageAbsorptionAura("Indomitable"+labelSuffix, actionID, duration, func(unit *core.Unit) float64 {
-				return shieldStrength
+			shield := character.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+				Aura: core.Aura{
+					Label:    "Indomitable" + labelSuffix,
+					ActionID: actionID,
+					Duration: duration,
+				},
+				ShieldStrengthCalculator: func(unit *core.Unit) float64 {
+					return shieldStrength
+				},
 			})
 
 			icd := core.Cooldown{

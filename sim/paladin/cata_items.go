@@ -248,12 +248,16 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			actionID := core.ActionID{SpellID: 105801}
-			duration := time.Second * 6
-
 			shieldStrength := 0.0
-			shield := paladin.NewDamageAbsorptionAura("Delayed Judgement"+paladin.Label, actionID, duration, func(unit *core.Unit) float64 {
-				return shieldStrength
+			shield := paladin.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+				Aura: core.Aura{
+					Label:    "Delayed Judgement" + paladin.Label,
+					ActionID: core.ActionID{SpellID: 105801},
+					Duration: time.Second * 6,
+				},
+				ShieldStrengthCalculator: func(unit *core.Unit) float64 {
+					return shieldStrength
+				},
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
