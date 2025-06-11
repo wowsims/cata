@@ -40,15 +40,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 128249.19231
-  tps: 888490.50043
-  dtps: 82836.80363
-  hps: 70581.26737
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-AncientPetrifiedSeed-69001"
  value: {
   dps: 125295.54333
@@ -112,30 +103,12 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82810.68097
-  hps: 70374.96556
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-AusterePrimalDiamond"
  value: {
   dps: 127673.04873
   tps: 884478.83352
   dtps: 81909.63598
   hps: 70475.66931
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-AustereShadowspiritDiamond"
- value: {
-  dps: 127683.80148
-  tps: 884554.1028
-  dtps: 81908.15945
-  hps: 70475.02055
  }
 }
 dps_results: {
@@ -181,15 +154,6 @@ dps_results: {
   tps: 800244.67492
   dtps: 98868.65083
   hps: 59138.46542
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 127871.30666
-  tps: 885866.56401
-  dtps: 82831.68048
-  hps: 70400.18035
  }
 }
 dps_results: {
@@ -382,24 +346,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 127793.16144
-  tps: 867631.88567
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 125477.12567
@@ -415,15 +361,6 @@ dps_results: {
   tps: 888654.65847
   dtps: 82836.80363
   hps: 70619.10674
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-BurningShadowspiritDiamond"
- value: {
-  dps: 128256.01019
-  tps: 888538.22558
-  dtps: 82836.80363
-  hps: 70581.26737
  }
 }
 dps_results: {
@@ -487,24 +424,6 @@ dps_results: {
   tps: 880186.7512
   dtps: 82165.39941
   hps: 70253.19469
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 128351.44079
-  tps: 889206.23981
-  dtps: 82836.80363
-  hps: 70619.10674
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 127871.30666
-  tps: 885866.56401
-  dtps: 82831.68048
-  hps: 70400.18035
  }
 }
 dps_results: {
@@ -706,24 +625,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 127883.19032
-  tps: 885949.74963
-  dtps: 82831.68048
-  hps: 70410.5984
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 127880.76674
-  tps: 885932.78457
-  dtps: 82831.68048
-  hps: 70400.18035
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 126610.00237
@@ -739,15 +640,6 @@ dps_results: {
   tps: 884309.39262
   dtps: 82681.35624
   hps: 70405.42849
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EffulgentShadowspiritDiamond"
- value: {
-  dps: 127744.3422
-  tps: 884977.81285
-  dtps: 82789.12625
-  hps: 70361.15051
  }
 }
 dps_results: {
@@ -769,57 +661,12 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 127793.16144
-  tps: 885319.54753
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 128607.7315
   tps: 891021.53791
   dtps: 82845.15618
   hps: 70619.10163
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 127883.19032
-  tps: 885949.74963
-  dtps: 82831.68048
-  hps: 70410.5984
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 127871.30666
-  tps: 885866.56401
-  dtps: 82831.68048
-  hps: 70400.18035
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 127823.85535
-  tps: 885534.40484
-  dtps: 82831.68048
-  hps: 70385.07951
  }
 }
 dps_results: {
@@ -868,30 +715,12 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-EternalPrimalDiamond"
  value: {
   dps: 127786.15474
   tps: 885271.22057
   dtps: 82528.06396
   hps: 70375.66685
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EternalShadowspiritDiamond"
- value: {
-  dps: 127694.59003
-  tps: 884629.72261
-  dtps: 82441.65772
-  hps: 70473.80021
  }
 }
 dps_results: {
@@ -1012,15 +841,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 127762.59579
-  tps: 885105.58798
-  dtps: 82776.43749
-  hps: 70417.51958
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-FluidDeath-58181"
  value: {
   dps: 125329.66067
@@ -1054,33 +874,6 @@ dps_results: {
   tps: 885429.38988
   dtps: 82831.68048
   hps: 70410.5984
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 127793.16144
-  tps: 885319.54753
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ForlornStarflareDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
  }
 }
 dps_results: {
@@ -1264,33 +1057,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 127883.19032
-  tps: 885949.74963
-  dtps: 82831.68048
-  hps: 70410.5984
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 127871.30666
-  tps: 885866.56401
-  dtps: 82831.68048
-  hps: 70400.18035
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 127823.85535
-  tps: 885534.40484
-  dtps: 82831.68048
-  hps: 70385.07951
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-ImpatienceofYouth-62464"
  value: {
   dps: 125985.42147
@@ -1363,15 +1129,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 125333.66738
@@ -1414,15 +1171,6 @@ dps_results: {
   tps: 867934.58845
   dtps: 83069.8997
   hps: 69292.40566
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 128242.45078
-  tps: 888581.62098
-  dtps: 82958.5818
-  hps: 70387.99432
  }
 }
 dps_results: {
@@ -1867,24 +1615,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 127823.85535
-  tps: 885534.40484
-  dtps: 82831.68048
-  hps: 70385.07951
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 127871.30666
-  tps: 885866.56401
-  dtps: 82831.68048
-  hps: 70400.18035
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 126021.67795
@@ -1930,39 +1660,12 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82831.66734
-  hps: 70374.95343
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82810.68097
-  hps: 70374.96556
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-PowerfulPrimalDiamond"
  value: {
   dps: 127648.84289
   tps: 884309.39262
   dtps: 82681.35624
   hps: 70405.42849
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-PowerfulShadowspiritDiamond"
- value: {
-  dps: 127744.3422
-  tps: 884977.81285
-  dtps: 82789.12625
-  hps: 70361.15051
  }
 }
 dps_results: {
@@ -2029,15 +1732,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 127786.72948
-  tps: 885274.5238
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-ResolveofUndying-77201"
  value: {
   dps: 125316.63222
@@ -2074,15 +1768,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 128315.27594
-  tps: 888942.50542
-  dtps: 82838.47218
-  hps: 70632.59199
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-RevitalizingPrimalDiamond"
  value: {
   dps: 128221.92221
@@ -2092,39 +1777,12 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 128221.92221
-  tps: 888299.60973
-  dtps: 82836.80363
-  hps: 70581.26737
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-Ricket'sMagneticFireball-70144"
  value: {
   dps: 126174.62643
   tps: 873951.26827
   dtps: 83159.27567
   hps: 69656.73682
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-RidingCrop"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82831.68048
-  hps: 70374.90088
  }
 }
 dps_results: {
@@ -2398,15 +2056,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82810.68097
-  hps: 70374.96556
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 126368.47502
@@ -2632,33 +2281,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 127871.30666
-  tps: 885866.56401
-  dtps: 82831.68048
-  hps: 70400.18035
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 127823.85535
-  tps: 885534.40484
-  dtps: 82831.68048
-  hps: 70385.07951
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 127796.69282
-  tps: 885344.26713
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-SymbioticWorm-59332"
  value: {
   dps: 125263.79601
@@ -2830,15 +2452,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 127761.00297
-  tps: 885094.43824
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-Tia'sGrace-55874"
  value: {
   dps: 125324.6474
@@ -2854,42 +2467,6 @@ dps_results: {
   tps: 868292.70538
   dtps: 83040.6385
   hps: 69330.02576
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 127763.55641
-  tps: 885112.31227
-  dtps: 82831.68048
-  hps: 70374.90088
  }
 }
 dps_results: {

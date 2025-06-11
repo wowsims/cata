@@ -180,10 +180,43 @@ func main() {
 			db.MergeItem(item)
 		}
 	}
-	for _, consumable := range consumables {
-		protoConsumable := consumable.ToProto()
-		protoConsumable.Icon = strings.ToLower(database.GetIconName(iconsMap, consumable.IconFileDataID))
-		db.MergeConsumable(protoConsumable)
+
+	bestByStat := make(map[int]map[int]*dbc.Consumable)
+
+	// Phase 1: find the best consumable per (subclass, stat-index)
+	for i := range consumables {
+		c := &consumables[i]
+		subclass := int(c.SubClassId)
+
+		// ensure the inner map exists
+		if _, ok := bestByStat[subclass]; !ok {
+			bestByStat[subclass] = make(map[int]*dbc.Consumable)
+		}
+		bucket := bestByStat[subclass]
+
+		// pull the raw stats array once
+		stats := c.ToProto().Stats
+		for idx, val := range stats {
+			if existing, seen := bucket[idx]; !seen || val > existing.ToProto().Stats[idx] {
+				bucket[idx] = c
+			}
+		}
+	}
+
+	// Phase 2: merge each unique consumable exactly once
+	seen := make(map[int]bool)
+	for _, bucket := range bestByStat {
+		for _, c := range bucket {
+			if seen[c.Id] {
+				continue
+			}
+			p := c.ToProto()
+			p.Icon = strings.ToLower(
+				database.GetIconName(iconsMap, c.IconFileDataID),
+			)
+			db.MergeConsumable(p)
+			seen[c.Id] = true
+		}
 	}
 
 	for _, consumable := range database.ConsumableOverrides {

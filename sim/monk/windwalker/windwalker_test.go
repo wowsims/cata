@@ -54,7 +54,6 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	FoodId:   74648,  // Sea Mist Rice Noodles
 	PotId:    76089,  // Virmen's Bite
 	PrepotId: 76089,  // Virmen's Bite
-	TinkerId: 126734, // Synapse Springs II
 }
 
 var ItemFilter = core.ItemFilter{

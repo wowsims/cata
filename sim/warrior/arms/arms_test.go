@@ -56,7 +56,6 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	FoodId:   74646, // Black Pepper Ribs and Shrimp
 	PotId:    76095, // Potion of Mogu Power
 	PrepotId: 76095, // Potion of Mogu Power
-	TinkerId: 82174, // Synapse Springs
 }
 
 var ItemFilter = core.ItemFilter{

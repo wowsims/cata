@@ -8,9 +8,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLListItem, APLRotation } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { SurvivalHunter_Rotation } from '../../core/proto/hunter';
-import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
-import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as SVInputs from './inputs';
@@ -22,7 +21,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
 	warnings: [],
-
+	consumableStats: [Stat.StatAgility],
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStamina,
@@ -36,7 +35,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	],
 	epPseudoStats: [PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatRangedAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
@@ -98,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			HunterInputs.PetUptime(),
 			HunterInputs.AQTierPrepull(),
 			HunterInputs.NaxxTierPrepull(),
+			HunterInputs.GlaiveTossChance(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,

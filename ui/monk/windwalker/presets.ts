@@ -85,7 +85,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 74648, // Sea Mist Rice Noodles
 	potId: 76089, // Virmen's Bite
 	prepotId: 76089, // Virmen's Bite
-	tinkerId: 126734, // Synapse Springs II
 });
 
 export const OtherDefaults = {
