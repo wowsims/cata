@@ -86,6 +86,17 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		return
 	}
 
+	// Soft fail to allow for overrides for bad effects
+	if isEnchant {
+		if core.HasEnchantEffect(config.EnchantID) {
+			return
+		}
+	} else {
+		if core.HasItemEffect(config.ItemID) {
+			return
+		}
+	}
+
 	var effectFn func(id int32, effect core.ApplyEffect)
 	var effectID int32
 	var triggerActionID core.ActionID
@@ -100,14 +111,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 	}
 
 	effectFn(effectID, func(agent core.Agent, itemLevelState proto.ItemLevelState) {
-
-		// Soft fail to allow for overrides for bad effects
-		if core.HasItemEffect(effectID) {
-			return
-		}
-
 		character := agent.GetCharacter()
-
 		var eligibleSlots []proto.ItemSlot
 		var procEffect *proto.ItemEffect
 		if isEnchant {
@@ -143,15 +147,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		var dpm *core.DynamicProcManager
 		if proc.Ppm != 0 {
-			if config.ProcMask == core.ProcMaskUnknown {
-				if isEnchant {
-					dpm = character.NewDynamicLegacyProcForEnchant(effectID, proc.Ppm, 0)
-				} else {
-					dpm = character.NewDynamicLegacyProcForWeapon(effectID, proc.Ppm, 0)
-				}
-			} else {
-				dpm = character.NewLegacyPPMManager(proc.Ppm, config.ProcMask)
-			}
+			dpm = character.NewRPPMProcManager(effectID, isEnchant, config.ProcMask, core.RppmConfigFromProcEffectProto(proc))
 		}
 
 		procAura.CustomProcCondition = config.CustomProcCondition

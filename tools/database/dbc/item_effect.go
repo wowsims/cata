@@ -75,9 +75,15 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 		for _, mod := range spTop.RppmModifiers {
 			switch mod.ModifierType {
 			case RPPMModifierHaste:
-				proc.RppmHasteModifier = mod.Coeff
+				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Haste{}, Coefficient: mod.Coeff})
 			case RPPMModifierCrit:
-				proc.RppmCritModifier = mod.Coeff
+				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Crit{}, Coefficient: mod.Coeff})
+			case RPPMModifierSpec:
+				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Spec{Spec: proto.Spec(mod.Param)}, Coefficient: mod.Coeff})
+			case RPPMModifierClass:
+				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_ClassMask{ClassMask: mod.Param}, Coefficient: mod.Coeff})
+			case RPPMModifierIlevel:
+				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Ilvl{Ilvl: mod.Param}, Coefficient: mod.Coeff})
 			}
 		}
 
@@ -114,7 +120,7 @@ func resolveStatsSpell(spellID int) int {
 	for _, se := range dbcInstance.SpellEffects[spellID] {
 		switch se.EffectAura {
 		case A_MOD_STAT, A_MOD_RATING, A_MOD_RANGED_ATTACK_POWER, A_MOD_ATTACK_POWER, A_MOD_DAMAGE_DONE, A_MOD_TARGET_RESISTANCE, A_MOD_RESISTANCE, A_MOD_INCREASE_ENERGY,
-			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL:
+			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL, A_MOD_CRIT_PCT:
 			return spellID
 		}
 	}
@@ -232,35 +238,8 @@ func MergeItemEffectsForAllStates(parsed *proto.UIItem) *proto.ItemEffect {
 	// add scaling for each saved state
 	for state, opt := range parsed.ScalingOptions {
 		ilvl := int(opt.Ilvl)
-		props := buildScalingProps(statsSpellID, ilvl, baseEff.SpellID)
-		pe.ScalingOptions[state] = props
-
-		if proc := pe.GetProc(); proc != nil {
-			spell := dbcInstance.Spells[statsSpellID]
-			_, specMods := realPpmModifier(&spell, ilvl)
-			proc.SpecModifiers = specMods
-		}
+		pe.ScalingOptions[state] = buildScalingProps(statsSpellID, ilvl, baseEff.SpellID)
 	}
 
 	return pe
-}
-
-func realPpmModifier(spell *Spell, itemLevel int) (float64, map[int32]float64) {
-	specModifier := make(map[int32]float64)
-	ilvlModifier := 1.0
-	for _, mod := range spell.RppmModifiers {
-		switch mod.ModifierType {
-		case RPPMModifierSpec:
-			spec := SpecFromID(mod.Param)
-			specModifier[int32(spec)] = 1.0 * (1.0 + mod.Coeff)
-
-		case RPPMModifierIlevel:
-			basePoints := dbcInstance.RandomPropertiesByIlvl[int(mod.Param)][proto.ItemQuality_ItemQualityRare][0]
-			ilvlPoints := dbcInstance.RandomPropertiesByIlvl[itemLevel][proto.ItemQuality_ItemQualityRare][0]
-			if basePoints != ilvlPoints {
-				ilvlModifier *= 1.0 + ((float64(ilvlPoints)/float64(basePoints))-1.0)*mod.Coeff
-			}
-		}
-	}
-	return ilvlModifier, specModifier
 }

@@ -26,12 +26,9 @@ message ScalingItemEffectProperties {
 
   message ProcEffect {
 	double      proc_chance = 1;  // e.g. 0.20 = 20%
-	double 		ppm = 3;
-	double rppm_haste_modifier = 4; // The SpellProcsPerMinuteMod Coeff of the haste modifier
-	double rppm_crit_modifier = 6; // The SpellProcsPerMinuteMod Coeff of the crit modifier
-	// The key represents a Spec
-	map<int32, double> spec_modifiers = 5;
 	int32       icd_ms         = 2;  // internal cooldown in milliseconds
+	double 		ppm = 3;
+	repeated RppmMod mods = 4;
   }
 
   message OnUseEffect {

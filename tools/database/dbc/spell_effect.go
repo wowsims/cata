@@ -234,34 +234,34 @@ func (effect *SpellEffect) GetScalingValue(ilvl int) float64 {
 	return dbcInstance.SpellScalings[min(spell.MaxScalingLevel, BASE_LEVEL)].Values[scale]
 }
 func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats.Stats {
-	stats := &stats.Stats{}
+	effectStats := &stats.Stats{}
 
 	stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
 
 	switch {
 	case effect.EffectAura == A_MOD_RANGED_ATTACK_POWER:
 		if effect.Coefficient != 0 && scalesWithIlvl {
-			stats[proto.Stat_StatRangedAttackPower] = effect.CalcCoefficientStatValue(ilvl)
+			effectStats[proto.Stat_StatRangedAttackPower] = effect.CalcCoefficientStatValue(ilvl)
 			break
 		}
-		stats[proto.Stat_StatRangedAttackPower] = float64(effect.EffectBasePoints)
+		effectStats[proto.Stat_StatRangedAttackPower] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_ATTACK_POWER:
 		if effect.Coefficient != 0 && scalesWithIlvl {
-			stats[proto.Stat_StatAttackPower] = effect.CalcCoefficientStatValue(ilvl)
+			effectStats[proto.Stat_StatAttackPower] = effect.CalcCoefficientStatValue(ilvl)
 			break
 		}
-		stats[proto.Stat_StatAttackPower] = float64(effect.EffectBasePoints)
+		effectStats[proto.Stat_StatAttackPower] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
 		if effect.Coefficient != 0 && effect.ScalingType != 0 {
-			stats[stat] = effect.CalcCoefficientStatValue(core.TernaryInt(scalesWithIlvl, ilvl, 0))
+			effectStats[stat] = effect.CalcCoefficientStatValue(core.TernaryInt(scalesWithIlvl, ilvl, 0))
 			break
 		}
 
 		// if Coefficient is not set, we fall back to EffectBasePoints
-		stats[stat] = float64(effect.EffectBasePoints)
+		effectStats[stat] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_DAMAGE_DONE && effect.EffectType == E_APPLY_AURA:
 		// Apply spell power, A_MOD_HEALING_DONE is also a possibility for healing power
-		stats[proto.Stat_StatSpellPower] = float64(effect.EffectBasePoints)
+		effectStats[proto.Stat_StatSpellPower] = float64(effect.EffectBasePoints)
 
 	case effect.EffectMiscValues[0] == -1 && effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
 		// -1 represents ALL STATS if present in MiscValue 0
@@ -269,14 +269,14 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 			proto.Stat_StatAgility, proto.Stat_StatIntellect, proto.Stat_StatSpirit,
 			proto.Stat_StatStamina, proto.Stat_StatStrength,
 		} {
-			stats[s] = float64(effect.EffectBasePoints)
+			effectStats[s] = float64(effect.EffectBasePoints)
 		}
 
 	case effect.EffectAura == A_MOD_RESISTANCE:
 		school := SpellSchool(effect.EffectMiscValues[0])
 		for schoolType, stat := range SpellSchoolToStat {
 			if school.Has(schoolType) && stat > -1 {
-				stats[stat] += float64(effect.EffectBasePoints)
+				effectStats[stat] += float64(effect.EffectBasePoints)
 			}
 		}
 
@@ -284,21 +284,23 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 		for _, rating := range getMatchingRatingMods(effect.EffectMiscValues[0]) {
 			if statMod := RatingModToStat[rating]; statMod != -1 {
 				if effect.Coefficient != 0 && scalesWithIlvl {
-					stats[statMod] = effect.CalcCoefficientStatValue(ilvl)
+					effectStats[statMod] = effect.CalcCoefficientStatValue(ilvl)
 					break
 				}
-				stats[statMod] = float64(effect.EffectBasePoints)
+				effectStats[statMod] = float64(effect.EffectBasePoints)
 			}
 		}
 	case effect.EffectAura == A_MOD_INCREASE_ENERGY:
-		stats[proto.Stat_StatMana] = float64(effect.EffectBasePoints)
+		effectStats[proto.Stat_StatMana] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_MOD_INCREASE_HEALTH_2:
-		stats[proto.Stat_StatHealth] = float64(effect.EffectBasePoints)
+		effectStats[proto.Stat_StatHealth] = float64(effect.EffectBasePoints)
 	case effect.EffectAura == A_PERIODIC_TRIGGER_SPELL && effect.EffectAuraPeriod == 10000:
 		for _, sub := range dbcInstance.SpellEffects[effect.EffectTriggerSpell] {
-			stats.AddInplace(sub.ParseStatEffect(false, 0))
+			effectStats.AddInplace(sub.ParseStatEffect(false, 0))
 		}
+	case effect.EffectAura == A_MOD_CRIT_PCT:
+		effectStats.AddInplace(&stats.Stats{stats.CritRating: float64(effect.EffectBasePoints) * core.CritRatingPerCritPercent})
 	}
 
-	return stats
+	return effectStats
 }
