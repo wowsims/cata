@@ -11,6 +11,7 @@ import {
 	HandType,
 	ItemSlot,
 	ItemType,
+	Profession,
 	Race,
 	RangedWeaponType,
 	Spec,
@@ -1980,6 +1981,11 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 
 export function canEquipEnchant<SpecType extends Spec>(enchant: Enchant, playerSpec: PlayerSpec<SpecType>): boolean {
 	if (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(playerSpec.classID)) {
+		return false;
+	}
+
+	// This is a Tinker and we handle them differently
+	if (enchant.requiredProfession == Profession.Engineering) {
 		return false;
 	}
 

@@ -28,7 +28,7 @@ func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
 	hunter.registerExplosiveShotSpell()
-	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
+	hunter.registerBlackArrowSpell()
 	// Apply SV Hunter mastery
 	schoolsAffectedBySurvivalMastery := []stats.SchoolIndex{
 		stats.SchoolIndexNature,
@@ -38,6 +38,7 @@ func (hunter *SurvivalHunter) Initialize() {
 		stats.SchoolIndexShadow,
 	}
 	baseMasteryRating := hunter.GetStat(stats.MasteryRating)
+
 	for _, school := range schoolsAffectedBySurvivalMastery {
 		hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(baseMasteryRating)
 	}

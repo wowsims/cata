@@ -23,7 +23,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatStrength]: 2.29,
 
-			[Stat.StatCritRating]: 1.00,
+			[Stat.StatCritRating]: 1.0,
 			[Stat.StatHasteRating]: 1.11,
 			[Stat.StatMasteryRating]: 1.05,
 
@@ -68,7 +68,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 74646, // Black Pepper Ribs and Shrimp
 	potId: 76095, // Potion of Mogu Power
 	prepotId: 76095, // Potion of Mogu Power
-	tinkerId: 126734, // Synapse Springs Mark II
 });
 
 export const OtherDefaults = {

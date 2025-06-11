@@ -1,10 +1,18 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Player } from '../../player';
 import { PetSpec } from '../../proto/hunter';
 import { HunterSpecs } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
+
+// Specs with corresponding icon keys
+const specs: Array<{ spec: PetSpec; label: string; iconKey: string }> = [
+	{ spec: PetSpec.Ferocity, label: 'Ferocity', iconKey: 'ability_druid_kingofthejungle' },
+	{ spec: PetSpec.Tenacity, label: 'Tenacity', iconKey: 'ability_druid_demoralizingroar' },
+	{ spec: PetSpec.Cunning, label: 'Cunning', iconKey: 'ability_eyeoftheowl' },
+];
 
 export class PetSpecPicker<SpecType extends HunterSpecs> extends Component {
 	private readonly player: Player<SpecType>;
@@ -14,50 +22,35 @@ export class PetSpecPicker<SpecType extends HunterSpecs> extends Component {
 		super(parent, 'pet-spec-picker');
 		this.player = player;
 
-		// Header
-		const header = document.createElement('div');
-		header.className = 'talent-tree-header';
-		const title = document.createElement('span');
-		title.className = 'talent-tree-title';
-		title.textContent = 'Pet Spec';
-		header.appendChild(title);
-		this.rootElem.appendChild(header);
+		const containerRef = ref<HTMLDivElement>();
 
-		// Container for spec items (vertical block)
-		this.container = document.createElement('div');
-		this.container.className = 'talent-tree-main pet-spec-list';
-		this.rootElem.appendChild(this.container);
+		this.rootElem.replaceChildren(
+			<>
+				<div className="talent-tree-header">
+					<span className="talent-tree-title">Pet Spec</span>
+				</div>
+				<div ref={containerRef} className="talent-tree-main pet-spec-list">
+					{specs.map(({ spec, label, iconKey }) => {
+						const item = (
+							<div className="talent-picker-root pet-spec-item" onclick={() => this.onClickSpec(spec)}>
+								<div
+									className="talent-picker-icon"
+									style={{ backgroundImage: `url('https://wow.zamimg.com/images/wow/icons/large/${iconKey}.jpg')` }}
+								/>
+								<div className="talent-picker-label">{label}</div>
+							</div>
+						);
+						// Tooltip
+						const tooltip = tippy(item, { content: label });
+						this.addOnDisposeCallback(() => tooltip.destroy());
 
-		// Specs with corresponding icon keys
-		const specs: Array<{ spec: PetSpec; label: string; iconKey: string }> = [
-			{ spec: PetSpec.Ferocity, label: 'Ferocity', iconKey: 'ability_druid_kingofthejungle' },
-			{ spec: PetSpec.Tenacity, label: 'Tenacity', iconKey: 'ability_druid_demoralizingroar' },
-			{ spec: PetSpec.Cunning, label: 'Cunning', iconKey: 'ability_eyeoftheowl' },
-		];
+						return item;
+					})}
+				</div>
+			</>,
+		);
 
-		specs.forEach(({ spec, label, iconKey }) => {
-			// Wrap each as a talent-picker style item
-			const item = document.createElement('div');
-			item.className = 'talent-picker-root pet-spec-item';
-			item.addEventListener('click', () => this.onClickSpec(spec));
-
-			// Icon div with background image
-			const icon = document.createElement('div');
-			icon.className = 'talent-picker-icon';
-			icon.style.backgroundImage = `url('https://wow.zamimg.com/images/wow/icons/large/${iconKey}.jpg')`;
-			item.appendChild(icon);
-
-			// Label text
-			const lbl = document.createElement('div');
-			lbl.className = 'talent-picker-label';
-			lbl.textContent = label;
-			item.appendChild(lbl);
-
-			// Tooltip
-			tippy(item, { content: label });
-
-			this.container.appendChild(item);
-		});
+		this.container = containerRef.value!;
 
 		// Listen and render selection
 		player.specOptionsChangeEmitter.on(() => this.renderActive());
@@ -75,7 +68,9 @@ export class PetSpecPicker<SpecType extends HunterSpecs> extends Component {
 	private renderActive() {
 		const active = this.player.getClassOptions().petSpec;
 		const order = [PetSpec.Ferocity, PetSpec.Tenacity, PetSpec.Cunning];
-		Array.from(this.container.children).forEach((el, idx) => {
+		console.log(this.container.children, [...this.container.children]);
+
+		[...this.container.children].forEach((el, idx) => {
 			const spec = order[idx];
 			el.classList.toggle('selected', spec === active);
 		});

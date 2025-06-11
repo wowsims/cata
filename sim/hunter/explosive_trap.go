@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
+func (hunter *Hunter) registerExplosiveTrapSpell() {
 	bonusPeriodicDamageMultiplier := core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 0.30, 0)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
@@ -25,7 +25,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				GCD: time.Second,
 			},
 			CD: core.Cooldown{
-				Timer:    timer,
+				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 30,
 			},
 		},
