@@ -10,9 +10,16 @@ import (
 func (war *Warrior) applyMajorGlyphs() {
 	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfRecklessness) {
 		war.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskRecklessness,
-			Kind:       core.SpellMod_BonusCrit_Percent,
-			FloatValue: -12,
+			ClassMask: SpellMaskRecklessness,
+			Kind:      core.SpellMod_Custom,
+			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+				spell.RelatedSelfBuff.AttachSpellMod(core.SpellModConfig{
+					ProcMask:   core.ProcMaskMeleeSpecial,
+					Kind:       core.SpellMod_BonusCrit_Percent,
+					FloatValue: -12,
+				})
+			},
+			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {},
 		})
 
 		war.AddStaticMod(core.SpellModConfig{
