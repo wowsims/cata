@@ -42,15 +42,19 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: arcaneMissilesCoefficient,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := arcane.CalcScalingSpellDmg(arcaneMissilesScaling)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, arcane.OutcomeArcaneMissiles)
+			baseDamage := arcane.CalcAndRollDamageRange(sim, arcaneMissilesScaling, 0)
+			result := spell.CalcDamage(sim, target, baseDamage, arcane.OutcomeArcaneMissiles)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
+			if arcane.arcaneMissiles.Dot(target).RemainingTicks() == 0 {
+				arcane.arcaneChargesAura.Activate(sim)
+				arcane.arcaneChargesAura.AddStack(sim)
+			}
 		},
 	})
 
-	arcane.RegisterSpell(core.SpellConfig{
+	arcane.arcaneMissiles = arcane.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -69,10 +73,6 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "ArcaneMissiles",
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					arcane.arcaneChargesAura.Activate(sim)
-					arcane.arcaneChargesAura.AddStack(sim)
-				},
 			},
 			NumberOfTicks:        5,
 			TickLength:           time.Millisecond * 400,
@@ -101,9 +101,6 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(mage.MageSpellArcaneMissilesCast) {
 				arcane.arcaneMissilesProcAura.RemoveStack(sim)
-				if arcane.arcaneMissilesProcAura.GetStacks() == 0 {
-					aura.Deactivate(sim)
-				}
 			}
 		},
 	})

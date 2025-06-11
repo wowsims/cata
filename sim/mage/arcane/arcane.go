@@ -32,6 +32,7 @@ type ArcaneMage struct {
 	arcaneMissilesProcAura *core.Aura
 	arcanePowerAura        *core.Aura
 
+	arcaneMissiles          *core.Spell
 	arcaneMissilesTickSpell *core.Spell
 	arcanePower             *core.Spell
 
