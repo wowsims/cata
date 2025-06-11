@@ -261,7 +261,7 @@ func InferPhase(item *proto.UIItem) int32 {
 		return 4
 	}
 
-	// - Any blue pvp ''Crafted'' item of ilvl 458 is 5.2
+	//- Any blue pvp ''Crafted'' item of ilvl 458 is 5.2
 	//- Any blue pvp ''Crafted'' item of ilvl 476 is 5.4
 	if strings.Contains(name, "Crafted") {
 		switch ilvl {
@@ -272,9 +272,9 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 	}
 
-	// - Any "Tyrannical" item is 5.2
-	// - Any "Grievous" item is 5.4
-	// - Any "Prideful" item is 5.4
+	//- Any "Tyrannical" item is 5.2
+	//- Any "Grievous" item is 5.4
+	//- Any "Prideful" item is 5.4
 	switch {
 	case strings.Contains(name, "Grievous"),
 		strings.Contains(name, "Prideful"):
@@ -283,10 +283,10 @@ func InferPhase(item *proto.UIItem) int32 {
 		return 3
 	}
 
-	// 	- Any 476 epic item with random stats is 5.1
-	// 	- Any 496 epic item with random stats is 5.4
-	// - Any 516 epic items with random stats are 5.3
-	// - Any 535 epic items with random stats are 5.4
+	//- Any 476 epic item with random stats is 5.1
+	//- Any 496 epic item with random stats is 5.4
+	//- Any 516 epic items with random stats are 5.3
+	//- Any 535 epic items with random stats are 5.4
 	//- Any 489 random stat epic is 5.3
 	if item.RandPropPoints > 0 {
 		switch ilvl {
@@ -303,7 +303,7 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 	}
 
-	// 4) iLvl 600 legendary vs. epic
+	//iLvl 600 legendary vs. epic
 	if ilvl == 600 {
 		if quality == proto.ItemQuality_ItemQualityLegendary {
 			return 5
@@ -323,8 +323,8 @@ func InferPhase(item *proto.UIItem) int32 {
 		return 5
 	}
 
-	// - All pve tier items of ilvl 502/522/535 are 5.2
-	// - All pve tier items of ilvl 528/540/553/566 are 5.4
+	//- All pve tier items of ilvl 502/522/535 are 5.2
+	//- All pve tier items of ilvl 528/540/553/566 are 5.4
 	if item.SetId > 0 {
 		switch ilvl {
 		case 528, 540, 553, 566:
@@ -334,7 +334,7 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 	}
 
-	// 8) AtlasLoot‐style source checks
+	//AtlasLoot‐style source checks
 	for _, src := range item.Sources {
 		//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
 		if rep := src.GetRep(); rep != nil {
@@ -366,7 +366,7 @@ func InferPhase(item *proto.UIItem) int32 {
 			case 6738:
 				return 5
 			}
-			// /- All "Oondasta (World Boss)" items are 5.2
+			//- All "Oondasta (World Boss)" items are 5.2
 			if drop.NpcId == 826 {
 				return 3
 			}

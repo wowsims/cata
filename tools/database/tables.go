@@ -1401,6 +1401,7 @@ func ScanRepItems(rows *sql.Rows) (itemID int, ds *proto.RepSource, err error) {
 	err = rows.Scan(
 		&itemID,
 		&rep.RepFactionId,
+		&rep.RepLevel,
 	)
 	if err != nil {
 		return 0, nil, fmt.Errorf("scanning rep row: %w", err)
@@ -1412,7 +1413,7 @@ func LoadRepItems(dbHelper *DBHelper) (
 	sourcesByItem map[int][]*proto.RepSource,
 ) {
 	const query = `
-		SELECT isp.ID, fa.ID FROM ItemSparse isp
+		SELECT isp.ID, fa.ID, isp.MinReputation FROM ItemSparse isp
 		LEFT JOIN Faction fa on fa.ID = isp.MinFactionID
 		WHERE fa.ParentFactionID=1245
     `
