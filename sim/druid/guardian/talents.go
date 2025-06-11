@@ -77,30 +77,3 @@ func (bear *GuardianDruid) registerIncarnation() {
 		},
 	})
 }
-
-func (bear *GuardianDruid) registerForceOfNature() {
-	if !bear.Talents.ForceOfNature {
-		return
-	}
-
-	bear.ForceOfNature = bear.RegisterSpell(druid.Any, core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 102706},
-		Flags:    core.SpellFlagAPL,
-
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    bear.NewTimer(),
-				Duration: time.Second * 20,
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			bear.Treants.Enable(sim)
-		},
-	})
-
-	bear.AddMajorCooldown(core.MajorCooldown{
-		Spell: bear.ForceOfNature.Spell,
-		Type:  core.CooldownTypeDPS,
-	})
-}

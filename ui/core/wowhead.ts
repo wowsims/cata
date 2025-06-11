@@ -22,7 +22,7 @@ export type WowheadTooltipItemParams = {
 	 * @description Enchant
 	 * @see ench - mapped value from wowhead
 	 * */
-	enchantId?: number;
+	enchantIds?: number[];
 	/**
 	 * @description Gems
 	 * @see gems - mapped value from wowhead
@@ -112,8 +112,8 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 		if (options.gemIds?.length) {
 			params.set('gems', options.gemIds.join(':'));
 		}
-		if (options.enchantId) {
-			params.set('ench', String(options.enchantId));
+		if (options.enchantIds) {
+			params.set('ench', options.enchantIds.join(':'));
 		}
 		if (options.reforgeId) {
 			params.set('forg', String(options.reforgeId));

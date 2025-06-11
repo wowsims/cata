@@ -90,15 +90,16 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				if result.Landed() {
-					spell.Dot(target).Apply(sim)
-					if IsSurvival {
-						hunter.ImprovedSerpentSting.Cast(sim, target)
-					}
+			if result.Landed() {
+				if IsSurvival {
+					hunter.ImprovedSerpentSting.Cast(sim, target)
 				}
-				spell.DealOutcome(sim, result)
-			})
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.Dot(target).Apply(sim)
+					spell.DealOutcome(sim, result)
+				})
+
+			}
 		},
 	})
 }

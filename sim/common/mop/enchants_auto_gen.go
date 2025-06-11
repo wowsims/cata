@@ -180,7 +180,7 @@ func RegisterAllEnchants() {
 	// Embroidering your cloak will cause it to become soulbound and requires the Tailoring profession to remain
 	// active.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:      "Lightweave Embroidery",
+		Name:      "Lightweave Embroidery (Rank 3)",
 		EnchantID: 4892,
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
@@ -194,7 +194,7 @@ func RegisterAllEnchants() {
 	// Embroidering your cloak will cause it to become soulbound and requires the Tailoring profession to remain
 	// active.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:      "Darkglow Embroidery",
+		Name:      "Darkglow Embroidery (Rank 3)",
 		EnchantID: 4893,
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -208,7 +208,7 @@ func RegisterAllEnchants() {
 	// Embroidering your cloak will cause it to become soulbound and requires the Tailoring profession to remain
 	// active.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:      "Swordguard Embroidery",
+		Name:      "Swordguard Embroidery (Rank 3)",
 		EnchantID: 4894,
 		Callback:  core.CallbackOnSpellHitDealt,
 		ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial,
@@ -222,7 +222,7 @@ func RegisterAllEnchants() {
 	// Embroidering your cloak will cause it to become soulbound and requires the Tailoring profession to remain
 	// active.
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:      "Lightweave Embroidery",
+		Name:      "Lightweave Embroidery (Rank 3)",
 		EnchantID: 5110,
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,

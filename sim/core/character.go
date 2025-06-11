@@ -724,9 +724,9 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	for _, itemSlot := range ArmorSpecializationSlots() {
 		item := character.Equipment[itemSlot]
-		// if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
-		// 	continue
-		// }
+		if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
+			continue
+		}
 		if item.ArmorType != armorType {
 			return false
 		}
