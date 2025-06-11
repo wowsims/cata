@@ -1,7 +1,6 @@
 package arcane
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -40,7 +39,6 @@ func (arcane *ArcaneMage) registerArcanePowerCD() {
 	})
 
 	if hasGlyph {
-		fmt.Println("hi")
 		arcane.AddStaticMod(core.SpellModConfig{
 			ClassMask: mage.MageSpellArcanePower,
 			TimeValue: time.Second * 15,
