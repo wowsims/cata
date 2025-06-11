@@ -34,7 +34,7 @@ func TestArms(t *testing.T) {
 	}))
 }
 
-var ArmsTalents = "213331"
+var ArmsTalents = "113332"
 var ArmsDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.WarriorMajorGlyph_GlyphOfBullRush),
 	Major2: int32(proto.WarriorMajorGlyph_GlyphOfUnendingRage),

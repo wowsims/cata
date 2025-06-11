@@ -67,15 +67,14 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
-			rppm := core.TernaryFloat64(war.Spec == proto.Spec_SpecFuryWarrior, 1.1, 0.41)
 
 			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 				Name:     "Item - Warrior T15 DPS 2P Bonus",
 				ActionID: core.ActionID{SpellID: 138120},
-				ProcMask: core.ProcMaskMeleeWhiteHit,
 				ICD:      250 * time.Millisecond,
-				// TODO: Implement this as RPPM
-				PPM:      rppm,
+				DPM: war.NewRPPMProcManager(138120, false, core.ProcMaskMeleeWhiteHit, core.RPPMConfig{
+					PPM: 1.1,
+				}.WithSpecMod(-0.625, proto.Spec_SpecFuryWarrior)),
 				Outcome:  core.OutcomeHit,
 				Callback: core.CallbackOnSpellHitDealt,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -198,9 +197,8 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 				ActionID:       core.ActionID{SpellID: 144442},
 				ClassSpellMask: SpellMaskMortalStrike | SpellMaskBloodthirst,
 				Outcome:        core.OutcomeHit,
-				// TODO: Implement this as RPPM
-				PPM:      1,
-				Callback: core.CallbackOnSpellHitDealt,
+				ProcChance:     0.1,
+				Callback:       core.CallbackOnSpellHitDealt,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					war.T16Dps4P.Activate(sim)
 				},

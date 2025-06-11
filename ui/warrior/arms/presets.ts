@@ -45,7 +45,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const ArmsTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '213332',
+		talentsString: '113332',
 		glyphs: Glyphs.create({
 			major1: WarriorMajorGlyph.GlyphOfBullRush,
 			major2: WarriorMajorGlyph.GlyphOfUnendingRage,
