@@ -43,6 +43,8 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 		Options: furyOptions,
 	}
 
+	war.ApplySyncType(furyOptions.SyncType)
+
 	return war
 }
 
