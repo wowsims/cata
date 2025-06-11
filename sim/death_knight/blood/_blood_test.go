@@ -59,7 +59,7 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	FoodId:   62670, // Beer‑Basted Crocolisk
 	PotId:    58146, // Golemblood Potion
 	PrepotId: 58146, // Golemblood Potion
-	TinkerId: 82174, // Synapse Springs
+
 }
 
 var ItemFilter = core.ItemFilter{

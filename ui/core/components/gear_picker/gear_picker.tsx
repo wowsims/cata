@@ -46,7 +46,7 @@ export default class GearPicker extends Component {
 			ItemSlot.ItemSlotChest,
 			ItemSlot.ItemSlotWrist,
 			ItemSlot.ItemSlotMainHand,
-			ItemSlot.ItemSlotOffHand
+			ItemSlot.ItemSlotOffHand,
 		].map(slot => new ItemPicker(leftSideRef.value!, this, simUI, player, slot));
 
 		const rightItemPickers = [
@@ -73,6 +73,7 @@ export class ItemRenderer extends Component {
 	readonly nameContainerElem: HTMLDivElement;
 	readonly nameElem: HTMLAnchorElement;
 	readonly ilvlElem: HTMLSpanElement;
+	readonly tinkerElem: HTMLAnchorElement;
 	readonly enchantElem: HTMLAnchorElement;
 	readonly reforgeElem: HTMLAnchorElement;
 	readonly socketsContainerElem: HTMLElement;
@@ -93,6 +94,7 @@ export class ItemRenderer extends Component {
 		const nameElem = ref<HTMLAnchorElement>();
 		const ilvlElem = ref<HTMLSpanElement>();
 		const enchantElem = ref<HTMLAnchorElement>();
+		const tinkerElem = ref<HTMLAnchorElement>();
 		const reforgeElem = ref<HTMLAnchorElement>();
 		const sce = ref<HTMLDivElement>();
 
@@ -108,6 +110,7 @@ export class ItemRenderer extends Component {
 						<a ref={nameElem} className="item-picker-name-container" href="javascript:void(0)" attributes={{ role: 'button' }} />
 					</div>
 					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
+					<a ref={tinkerElem} className="item-picker-tinker hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
 					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
 				</div>
 			</>,
@@ -119,6 +122,7 @@ export class ItemRenderer extends Component {
 		this.ilvlElem = ilvlElem.value!;
 		this.reforgeElem = reforgeElem.value!;
 		this.enchantElem = enchantElem.value!;
+		this.tinkerElem = tinkerElem.value!;
 		this.socketsContainerElem = sce.value!;
 	}
 
@@ -132,12 +136,15 @@ export class ItemRenderer extends Component {
 		this.iconElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
 		this.enchantElem.removeAttribute('href');
+		this.tinkerElem.removeAttribute('data-wowhead');
+		this.tinkerElem.removeAttribute('href');
 		this.enchantElem.classList.add('hide');
 		this.reforgeElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = `url('${getEmptySlotIconUrl(slot)}')`;
 
 		this.enchantElem.replaceChildren();
+		this.tinkerElem.replaceChildren();
 		this.reforgeElem.replaceChildren();
 		this.socketsContainerElem.replaceChildren();
 		this.nameElem.replaceChildren();
@@ -227,6 +234,28 @@ export class ItemRenderer extends Component {
 			this.enchantElem.classList.add('hide');
 		}
 
+		if (newItem.tinker) {
+			getEnchantDescription(newItem.tinker).then(description => {
+				this.tinkerElem.textContent = description;
+			});
+			// Make enchant text hover have a tooltip.
+			if (newItem.tinker.spellId) {
+				this.tinkerElem.href = ActionId.makeSpellUrl(newItem.tinker.spellId);
+				ActionId.makeSpellTooltipData(newItem.tinker.spellId).then(url => {
+					this.tinkerElem.dataset.wowhead = url;
+				});
+			} else {
+				this.enchantElem.href = ActionId.makeItemUrl(newItem.tinker.itemId);
+				ActionId.makeItemTooltipData(newItem.tinker.itemId).then(url => {
+					this.tinkerElem.dataset.wowhead = url;
+				});
+			}
+			this.tinkerElem.dataset.whtticon = 'false';
+			this.tinkerElem.classList.remove('hide');
+		} else {
+			this.tinkerElem.classList.add('hide');
+		}
+
 		newItem.allSocketColors().forEach((socketColor, gemIdx) => {
 			const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx);
 			if (gemIdx === newItem.numPossibleSockets - 1 && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(newItem.item.type)) {
@@ -279,10 +308,15 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Reforging);
 			};
+			const openTinkerSelector = (event: Event) => {
+				event.preventDefault();
+				this.openSelectorModal(SelectorModalTabs.Tinkers);
+			};
 
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
+			this.itemElem.tinkerElem.addEventListener('click', openTinkerSelector);
 			this.addQuickEnchantHelpers();
 		});
 

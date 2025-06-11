@@ -143,7 +143,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62290, // Seafood Magnifique Feast
 	potId: 58091, // Volcanic Potion
 	prepotId: 58091, // Volcanic Potion
-	tinkerId: 82174, // Synapse Springs
 });
 
 const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(

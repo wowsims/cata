@@ -2,7 +2,7 @@ character_stats_results: {
  key: "TestWindwalker-CharacterStats-Default"
  value: {
   final_stats: 183.75
-  final_stats: 15319.2375
+  final_stats: 15649.9875
   final_stats: 16893.8
   final_stats: 257.25
   final_stats: 271
@@ -13,7 +13,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 3879
-  final_stats: 34069.4475
+  final_stats: 34797.0975
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -25,7 +25,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 7.75882
   final_stats: 14.91471
-  final_stats: 31.01271
+  final_stats: 31.27531
   final_stats: 13.22
   final_stats: 0
  }
@@ -33,3376 +33,3000 @@ character_stats_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-AgilePrimalDiamond"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 73327.14648
-  tps: 67530.42403
-  hps: 4848.95879
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-AgonyandTorment"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-AncientPetrifiedSeed-69001"
  value: {
-  dps: 72092.02226
-  tps: 66388.4914
-  hps: 4700.96756
+  dps: 72644.92063
+  tps: 66861.44742
+  hps: 4790.05064
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Anhuur'sHymnal-55889"
  value: {
-  dps: 70888.88603
-  tps: 65362.29654
-  hps: 4597.81049
+  dps: 71410.0921
+  tps: 65807.29019
+  hps: 4689.07466
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Anhuur'sHymnal-56407"
  value: {
-  dps: 70907.91977
-  tps: 65381.33028
-  hps: 4597.81049
+  dps: 71431.80906
+  tps: 65829.00715
+  hps: 4689.07466
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 71005.67705
-  tps: 65431.34853
-  hps: 4632.96598
+  dps: 71933.67863
+  tps: 66248.09743
+  hps: 4729.18693
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 70859.51418
-  tps: 65284.09642
-  hps: 4638.29301
+  dps: 71775.68364
+  tps: 66071.99439
+  hps: 4734.7079
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ArmorofSevenSacredSeals"
  value: {
-  dps: 79859.1333
-  tps: 73403.9736
-  hps: 5269.83668
+  dps: 80690.75613
+  tps: 74114.68745
+  hps: 5403.33717
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ArmoroftheRedCrane"
  value: {
-  dps: 70390.48906
-  tps: 64697.9002
-  hps: 4703.50678
+  dps: 71198.61558
+  tps: 65419.05225
+  hps: 4791.77214
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ArrowofTime-72897"
  value: {
-  dps: 72071.81948
-  tps: 66451.55196
-  hps: 4693.82107
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72953.78714
+  tps: 67171.46319
+  hps: 4794.98751
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-AusterePrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-AustereShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BattlegearofSevenSacredSeals"
  value: {
-  dps: 76719.66381
-  tps: 70463.83162
-  hps: 5323.54323
+  dps: 77397.61244
+  tps: 70976.06769
+  hps: 5414.80075
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BattlegearoftheRedCrane"
  value: {
-  dps: 73497.3375
-  tps: 67819.32792
-  hps: 4567.21944
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 72305.75594
-  tps: 66528.95429
-  hps: 4801.9657
+  dps: 73725.96443
+  tps: 67909.71309
+  hps: 4658.63906
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 71195.60773
-  tps: 65659.47765
-  hps: 4609.97285
+  dps: 71703.20517
+  tps: 66083.10263
+  hps: 4701.05096
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 71256.02406
-  tps: 65719.45423
-  hps: 4616.05403
+  dps: 71760.66149
+  tps: 66137.0991
+  hps: 4707.24783
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BindingPromise-67037"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Blood-SoakedAleMug-63843"
  value: {
-  dps: 71798.25325
-  tps: 66120.34155
-  hps: 4669.60087
+  dps: 72342.74365
+  tps: 66584.72222
+  hps: 4761.53678
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodofIsiset-55995"
  value: {
-  dps: 71007.63264
-  tps: 65494.82415
-  hps: 4597.81049
+  dps: 71533.61644
+  tps: 65935.45263
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodofIsiset-56414"
  value: {
-  dps: 70994.34783
-  tps: 65481.53935
-  hps: 4597.81049
+  dps: 71514.22529
+  tps: 65916.06149
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 73138.52065
-  tps: 67248.90306
-  hps: 4823.04099
+  dps: 73581.89962
+  tps: 67607.1527
+  hps: 4912.94084
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
  value: {
-  dps: 71507.26932
-  tps: 65879.13428
-  hps: 4687.04486
+  dps: 72031.48109
+  tps: 66318.67041
+  hps: 4778.68787
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 71118.00263
-  tps: 65586.81581
-  hps: 4603.89167
+  dps: 71665.28834
+  tps: 66050.10119
+  hps: 4694.85408
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
  value: {
-  dps: 71007.63264
-  tps: 65494.82415
-  hps: 4597.81049
+  dps: 71533.61644
+  tps: 65935.45263
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
  value: {
-  dps: 73482.3114
-  tps: 67675.55925
-  hps: 4778.18121
+  dps: 74361.55642
+  tps: 68460.89279
+  hps: 4855.13663
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
  value: {
-  dps: 71840.35853
-  tps: 66184.65496
-  hps: 4686.16773
+  dps: 72353.08566
+  tps: 66609.95718
+  hps: 4776.06163
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 73021.8448
-  tps: 67438.1095
-  hps: 4666.79569
+  dps: 73714.1524
+  tps: 68045.34549
+  hps: 4757.62606
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 72719.4053
-  tps: 67143.72283
-  hps: 4658.96331
+  dps: 73465.15979
+  tps: 67804.3735
+  hps: 4749.79553
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 73198.79971
-  tps: 67605.92755
-  hps: 4675.68243
+  dps: 73937.59391
+  tps: 68259.68669
+  hps: 4766.51069
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BottledLightning-66879"
  value: {
-  dps: 70973.25116
-  tps: 65444.49869
-  hps: 4610.83161
+  dps: 71538.67166
+  tps: 65910.55952
+  hps: 4702.68103
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BottledWishes-77114"
  value: {
-  dps: 70882.71422
-  tps: 65386.87807
-  hps: 4564.1233
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 65154.3432
-  hps: 4801.9657
+  dps: 71672.21472
+  tps: 66032.82302
+  hps: 4673.60252
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 73151.81856
-  tps: 67373.52146
-  hps: 4831.87817
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BurningShadowspiritDiamond"
- value: {
-  dps: 73151.81856
-  tps: 67373.52146
-  hps: 4831.87817
+  dps: 73656.26721
+  tps: 67795.50172
+  hps: 4922.66943
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CapacitivePrimalDiamond"
  value: {
-  dps: 72594.68047
-  tps: 66787.56175
-  hps: 4813.97808
+  dps: 73151.4718
+  tps: 67257.2302
+  hps: 4904.38812
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
  value: {
-  dps: 73634.53785
-  tps: 67694.96069
-  hps: 4897.32694
+  dps: 74202.84086
+  tps: 68171.11545
+  hps: 4990.83458
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
  value: {
-  dps: 71929.25672
-  tps: 66232.27971
-  hps: 4740.43737
+  dps: 72452.14307
+  tps: 66670.89495
+  hps: 4832.55119
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
  value: {
-  dps: 74238.68075
-  tps: 68246.22076
-  hps: 4885.78797
+  dps: 75173.5799
+  tps: 69077.59293
+  hps: 4981.86929
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
  value: {
-  dps: 72398.91592
-  tps: 66657.47767
-  hps: 4738.36373
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 73250.88897
-  tps: 67463.76595
-  hps: 4835.49083
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 72305.75594
-  tps: 66528.95429
-  hps: 4801.9657
+  dps: 73042.98679
+  tps: 67217.5106
+  hps: 4833.44246
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 71774.05871
-  tps: 66143.63994
-  hps: 4688.91023
+  dps: 72351.76738
+  tps: 66636.64353
+  hps: 4782.72492
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CoreofRipeness-58184"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CourageousPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CrecheoftheFinalDragon-77205"
  value: {
-  dps: 71919.57689
-  tps: 66272.623
-  hps: 4718.43192
+  dps: 72520.40478
+  tps: 66761.94922
+  hps: 4810.18786
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CrecheoftheFinalDragon-77972"
  value: {
-  dps: 71794.70972
-  tps: 66158.38186
-  hps: 4714.11785
+  dps: 72359.42614
+  tps: 66626.68078
+  hps: 4809.41114
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CrecheoftheFinalDragon-77992"
  value: {
-  dps: 72121.94126
-  tps: 66443.48156
-  hps: 4724.83411
+  dps: 72701.01078
+  tps: 66923.06355
+  hps: 4822.73447
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CrushingWeight-59506"
  value: {
-  dps: 71088.84949
-  tps: 65547.83314
-  hps: 4609.11153
+  dps: 72191.86603
+  tps: 66514.08599
+  hps: 4692.67553
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CrushingWeight-65118"
  value: {
-  dps: 71327.74981
-  tps: 65731.09368
-  hps: 4611.5425
+  dps: 72375.19021
+  tps: 66704.82068
+  hps: 4688.63674
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 71328.21987
-  tps: 65827.59358
-  hps: 4597.81049
+  dps: 71790.01385
+  tps: 66214.66399
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 71243.79706
-  tps: 65740.73918
-  hps: 4597.81049
+  dps: 71719.31538
+  tps: 66168.4162
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 71381.34971
-  tps: 65894.72364
-  hps: 4597.81049
+  dps: 71824.99277
+  tps: 66273.0389
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 71477.6363
-  tps: 65910.11123
-  hps: 4644.32535
+  dps: 72444.8777
+  tps: 66806.29139
+  hps: 4741.98194
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 72046.18166
-  tps: 66412.7977
-  hps: 4697.51023
+  dps: 73097.91001
+  tps: 67393.19414
+  hps: 4795.15421
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkmoonCard:Tsunami-62050"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 71038.81728
-  tps: 65549.86214
-  hps: 4597.81049
+  dps: 71546.84647
+  tps: 65946.12008
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkwalkerIdolofRage-92118"
  value: {
-  dps: 72512.56495
-  tps: 66789.50197
-  hps: 4708.12294
+  dps: 73605.69121
+  tps: 67736.3537
+  hps: 4800.16618
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 71977.00686
-  tps: 66347.2584
-  hps: 4699.34526
+  dps: 72541.75865
+  tps: 66827.12548
+  hps: 4790.16791
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DelivererIdolofDestruction-92113"
  value: {
-  dps: 70666.11182
-  tps: 65172.91761
-  hps: 4575.83288
+  dps: 71460.83887
+  tps: 65849.06303
+  hps: 4684.5616
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 70944.91011
-  tps: 65432.10162
-  hps: 4597.81049
+  dps: 71443.72167
+  tps: 65845.55787
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DelivererStoneofWisdom-92115"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-DestructivePrimalDiamond"
  value: {
-  dps: 72735.91167
-  tps: 66922.91479
-  hps: 4819.98427
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 72352.29934
-  tps: 66569.22778
-  hps: 4805.37387
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 72308.13399
-  tps: 66531.33234
-  hps: 4801.9657
+  dps: 73188.76871
+  tps: 67281.38574
+  hps: 4910.50346
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 71743.90998
-  tps: 66139.48539
-  hps: 4670.95425
+  dps: 72180.61542
+  tps: 66486.01543
+  hps: 4762.19377
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EffulgentPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EffulgentShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ElectrosparkHeartstarter-67118"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EmberPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EnigmaticPrimalDiamond"
  value: {
-  dps: 72735.91167
-  tps: 66922.91479
-  hps: 4819.98427
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 72352.29934
-  tps: 66569.22778
-  hps: 4805.37387
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 72305.75594
-  tps: 66528.95429
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 72292.04555
-  tps: 66516.02942
-  hps: 4801.9657
+  dps: 73188.76871
+  tps: 67281.38574
+  hps: 4910.50346
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EnlightenedIdolofDestruction-92144"
  value: {
-  dps: 70899.14439
-  tps: 65408.97568
-  hps: 4557.19299
+  dps: 71831.21809
+  tps: 66220.13562
+  hps: 4639.03945
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 70956.18411
-  tps: 65443.37563
-  hps: 4597.81049
+  dps: 71447.50975
+  tps: 65849.34594
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 72249.80489
-  tps: 66583.60421
-  hps: 4725.5058
+  dps: 72794.03281
+  tps: 67030.308
+  hps: 4817.69497
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 72447.92114
-  tps: 66763.5314
-  hps: 4746.32979
+  dps: 72938.20375
+  tps: 67153.00783
+  hps: 4841.38344
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EssenceoftheEternalFlame-69002"
  value: {
-  dps: 71448.73475
-  tps: 65854.04427
-  hps: 4646.93291
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 71969.25502
+  tps: 66290.56299
+  hps: 4736.93979
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EternalPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EternalShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EyeofUnmaking-77200"
  value: {
-  dps: 72065.39284
-  tps: 66360.15605
-  hps: 4728.66447
+  dps: 72743.01357
+  tps: 66949.56087
+  hps: 4819.47978
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EyeofUnmaking-77977"
  value: {
-  dps: 71945.24079
-  tps: 66255.02418
-  hps: 4713.7947
+  dps: 72623.03506
+  tps: 66844.53257
+  hps: 4804.61358
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-EyeofUnmaking-77997"
  value: {
-  dps: 72197.56009
-  tps: 66475.8011
-  hps: 4745.02122
+  dps: 72874.98992
+  tps: 67065.092
+  hps: 4835.8326
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FallofMortality-59500"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FallofMortality-65124"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FieryQuintessence-69000"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Figurine-DemonPanther-52199"
  value: {
-  dps: 71840.34028
-  tps: 66154.60196
-  hps: 4694.31489
+  dps: 72372.09929
+  tps: 66604.69841
+  hps: 4787.16551
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Figurine-DreamOwl-52354"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Figurine-JeweledSerpent-52353"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Figurine-KingofBoars-52351"
  value: {
-  dps: 71353.376
-  tps: 65771.21278
-  hps: 4643.76497
+  dps: 71872.00238
+  tps: 66204.96598
+  hps: 4735.36714
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Fire-CharmArmor"
  value: {
-  dps: 77510.92281
-  tps: 71157.3739
-  hps: 5255.23202
+  dps: 78629.29572
+  tps: 72139.69848
+  hps: 5350.79873
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Fire-CharmBattlegear"
  value: {
-  dps: 79320.8469
-  tps: 73112.46172
-  hps: 5102.83704
+  dps: 80485.07049
+  tps: 74141.17768
+  hps: 5195.81619
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 71017.67748
-  tps: 65504.869
-  hps: 4597.81049
+  dps: 71541.32923
+  tps: 65943.16542
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FleetPrimalDiamond"
  value: {
-  dps: 72469.27961
-  tps: 66694.94737
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 72316.21682
-  tps: 66541.88458
-  hps: 4801.9657
+  dps: 72975.29446
+  tps: 67118.88474
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FluidDeath-58181"
  value: {
-  dps: 72200.14743
-  tps: 66451.0721
-  hps: 4719.4391
+  dps: 73085.19446
+  tps: 67217.92865
+  hps: 4815.16625
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ForestwalkerIdolofRage-92142"
  value: {
-  dps: 72972.56191
-  tps: 67219.6221
-  hps: 4708.93115
+  dps: 73507.73468
+  tps: 67662.47374
+  hps: 4807.66865
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 72045.71664
-  tps: 66415.96818
-  hps: 4699.34526
+  dps: 72601.79476
+  tps: 66887.16159
+  hps: 4790.16791
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ForlornPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ForlornStarflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FoulGiftoftheDemonLord-72898"
  value: {
-  dps: 70903.95634
-  tps: 65391.14786
-  hps: 4597.81049
+  dps: 71513.84458
+  tps: 65915.68077
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-FuryofAngerforge-59461"
  value: {
-  dps: 71704.94559
-  tps: 66111.23141
-  hps: 4661.14928
+  dps: 72212.11559
+  tps: 66533.87255
+  hps: 4756.23154
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-GaleofShadows-56138"
  value: {
-  dps: 70576.24025
-  tps: 65086.9326
-  hps: 4582.35741
+  dps: 71531.67632
+  tps: 65916.63408
+  hps: 4674.25318
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-GaleofShadows-56462"
  value: {
-  dps: 70699.93514
-  tps: 65197.36852
-  hps: 4582.68741
+  dps: 71373.3203
+  tps: 65764.38079
+  hps: 4674.04429
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-GearDetector-61462"
  value: {
-  dps: 71203.14605
-  tps: 65644.695
-  hps: 4651.39168
+  dps: 72029.47605
+  tps: 66349.602
+  hps: 4715.90907
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 71599.754
-  tps: 65985.9058
-  hps: 4673.38865
+  dps: 72071.14309
+  tps: 66362.03363
+  hps: 4761.74414
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 71949.7671
-  tps: 66288.90375
-  hps: 4700.34036
+  dps: 72426.03362
+  tps: 66671.23378
+  hps: 4791.39711
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Gurthalak,VoiceoftheDeeps-77191"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Gurthalak,VoiceoftheDeeps-78478"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Gurthalak,VoiceoftheDeeps-78487"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HarmlightToken-63839"
  value: {
-  dps: 70932.30625
-  tps: 65419.49777
-  hps: 4597.81049
+  dps: 71458.58084
+  tps: 65860.41703
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 71123.33778
-  tps: 65574.29159
-  hps: 4633.0562
+  dps: 71674.46551
+  tps: 66040.20893
+  hps: 4723.89457
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofRage-59224"
  value: {
-  dps: 71786.15774
-  tps: 66106.27965
-  hps: 4656.09501
+  dps: 72499.74504
+  tps: 66718.37123
+  hps: 4750.90723
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofRage-65072"
  value: {
-  dps: 71875.64222
-  tps: 66185.70672
-  hps: 4668.07657
+  dps: 72635.69692
+  tps: 66853.13409
+  hps: 4762.9761
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofSolace-55868"
  value: {
-  dps: 71135.01373
-  tps: 65489.94124
-  hps: 4625.70818
+  dps: 72201.47638
+  tps: 66436.13169
+  hps: 4716.80237
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofSolace-56393"
  value: {
-  dps: 71402.56394
-  tps: 65748.65063
-  hps: 4627.41044
+  dps: 72083.01003
+  tps: 66320.23073
+  hps: 4719.9168
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofThunder-55845"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartofThunder-56370"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 71711.26954
-  tps: 66081.82137
-  hps: 4671.82649
+  dps: 72158.70933
+  tps: 66445.92551
+  hps: 4762.65566
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ImpassivePrimalDiamond"
  value: {
-  dps: 72735.91167
-  tps: 66922.91479
-  hps: 4819.98427
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 72352.29934
-  tps: 66569.22778
-  hps: 4805.37387
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 72305.75594
-  tps: 66528.95429
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 72292.04555
-  tps: 66516.02942
-  hps: 4801.9657
+  dps: 73188.76871
+  tps: 67281.38574
+  hps: 4910.50346
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ImpatienceofYouth-62464"
  value: {
-  dps: 71393.91466
-  tps: 65802.99084
-  hps: 4649.56974
+  dps: 71918.59144
+  tps: 66242.85535
+  hps: 4741.26734
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ImpatienceofYouth-62469"
  value: {
-  dps: 71393.91466
-  tps: 65802.99084
-  hps: 4649.56974
+  dps: 71918.59144
+  tps: 66242.85535
+  hps: 4741.26734
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 71007.63264
-  tps: 65494.82415
-  hps: 4597.81049
+  dps: 71533.61644
+  tps: 65935.45263
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 70994.34783
-  tps: 65481.53935
-  hps: 4597.81049
+  dps: 71514.22529
+  tps: 65916.06149
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-IndomitablePride-77211"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-IndomitablePride-77983"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-IndomitablePride-78003"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-IndomitablePrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 71231.82656
-  tps: 65772.68797
-  hps: 4564.41744
+  dps: 72075.59085
+  tps: 66491.26667
+  hps: 4656.1891
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 70845.85018
-  tps: 65333.6791
-  hps: 4566.21007
+  dps: 72168.46282
+  tps: 66507.70857
+  hps: 4653.8683
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 71399.44624
-  tps: 65850.72234
-  hps: 4583.52778
+  dps: 71977.96695
+  tps: 66304.43888
+  hps: 4678.42658
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-InsigniaoftheEarthenLord-61429"
  value: {
-  dps: 70935.47096
-  tps: 65422.66248
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 72067.97322
-  tps: 66296.22898
-  hps: 4785.98176
+  dps: 71419.69496
+  tps: 65821.53115
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-JarofAncientRemedies-59354"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-JarofAncientRemedies-65029"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-JawsofDefeat-68926"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-JawsofDefeat-69111"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-JujuofNimbleness-63840"
  value: {
-  dps: 71798.25325
-  tps: 66120.34155
-  hps: 4669.60087
+  dps: 72342.74365
+  tps: 66584.72222
+  hps: 4761.53678
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-KeytotheEndlessChamber-55795"
  value: {
-  dps: 71843.21665
-  tps: 66152.50276
-  hps: 4677.14046
+  dps: 72732.22616
+  tps: 66939.29324
+  hps: 4767.9768
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-KeytotheEndlessChamber-56328"
  value: {
-  dps: 72127.82205
-  tps: 66360.7969
-  hps: 4710.45976
+  dps: 72881.43736
+  tps: 67013.43591
+  hps: 4793.87274
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-KiroptyricSigil-77113"
  value: {
-  dps: 72583.09921
-  tps: 66747.14927
-  hps: 4709.43128
+  dps: 73339.00327
+  tps: 67366.36461
+  hps: 4825.4058
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 70755.63078
-  tps: 65220.74296
-  hps: 4596.88477
+  dps: 71819.14975
+  tps: 66165.26721
+  hps: 4687.17066
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 70755.63078
-  tps: 65220.74296
-  hps: 4596.88477
+  dps: 71819.14975
+  tps: 66165.26721
+  hps: 4687.17066
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 70276.48063
-  tps: 64790.74325
-  hps: 4598.17382
+  dps: 71046.47054
+  tps: 65409.28878
+  hps: 4691.06632
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-LeadenDespair-55816"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-LeadenDespair-56347"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-LeftEyeofRajh-56102"
  value: {
-  dps: 71996.84656
-  tps: 66235.67471
-  hps: 4701.80144
+  dps: 72501.97425
+  tps: 66624.05519
+  hps: 4798.52309
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-LeftEyeofRajh-56427"
  value: {
-  dps: 71703.17159
-  tps: 65944.26507
-  hps: 4704.67036
+  dps: 72628.13185
+  tps: 66751.06837
+  hps: 4809.28782
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 71572.97318
-  tps: 65924.08335
-  hps: 4654.31562
+  dps: 72226.85025
+  tps: 66501.04736
+  hps: 4745.56622
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MagnetiteMirror-55814"
  value: {
-  dps: 71250.63196
-  tps: 65671.15159
-  hps: 4634.49278
+  dps: 71962.50924
+  tps: 66286.00728
+  hps: 4728.63763
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MagnetiteMirror-56345"
  value: {
-  dps: 71352.40007
-  tps: 65750.47508
-  hps: 4645.50891
+  dps: 72063.34281
+  tps: 66364.64039
+  hps: 4739.65376
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 71194.55061
-  tps: 65642.7169
-  hps: 4635.76741
+  dps: 71747.06636
+  tps: 66110.03342
+  hps: 4726.60513
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 71253.10385
-  tps: 65696.15969
-  hps: 4640.73796
+  dps: 71797.62083
+  tps: 66155.49788
+  hps: 4731.57451
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MartialDefenderIdol-92127"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 70965.62083
-  tps: 65452.81235
-  hps: 4597.81049
+  dps: 71469.62968
+  tps: 65871.46588
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MartialIdolofBattle-92128"
  value: {
-  dps: 71588.02942
-  tps: 65941.35348
-  hps: 4650.8546
+  dps: 72074.9076
+  tps: 66349.85514
+  hps: 4740.92132
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 71296.40516
-  tps: 65733.88596
-  hps: 4646.16038
+  dps: 71813.36894
+  tps: 66165.69327
+  hps: 4736.99564
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 72522.07761
-  tps: 66852.59794
-  hps: 4679.08329
+  dps: 73293.30501
+  tps: 67534.96227
+  hps: 4804.3289
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 72686.9932
-  tps: 67033.31895
-  hps: 4694.89061
+  dps: 73717.03071
+  tps: 67926.18096
+  hps: 4803.11299
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MightoftheOcean-55251"
  value: {
-  dps: 71104.02042
-  tps: 65532.47349
-  hps: 4621.69379
+  dps: 71627.26381
+  tps: 65976.09587
+  hps: 4712.90286
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MightoftheOcean-56285"
  value: {
-  dps: 71326.80546
-  tps: 65708.3253
-  hps: 4642.29899
+  dps: 71842.60835
+  tps: 66149.8522
+  hps: 4734.23812
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 71147.31322
-  tps: 65611.95371
-  hps: 4606.50288
+  dps: 71686.44611
+  tps: 66071.25896
+  hps: 4697.52314
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 70933.09665
-  tps: 65420.28817
-  hps: 4597.81049
+  dps: 71530.52878
+  tps: 65932.36497
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NaturalistIdolofDestruction-92137"
  value: {
-  dps: 70769.37331
-  tps: 65271.02625
-  hps: 4599.49448
+  dps: 71602.16789
+  tps: 65998.47857
+  hps: 4687.88965
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NaturalistIdolofRage-92133"
  value: {
-  dps: 72503.64435
-  tps: 66747.34747
-  hps: 4711.50383
+  dps: 73083.40072
+  tps: 67232.46687
+  hps: 4792.91581
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 70981.24457
-  tps: 65468.43609
-  hps: 4597.81049
+  dps: 71513.40525
+  tps: 65915.24144
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 71947.38489
-  tps: 66317.63643
-  hps: 4699.34526
+  dps: 72584.66109
+  tps: 66870.02792
+  hps: 4790.16791
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NaturalistStoneofWisdom-92139"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NecromanticFocus-68982"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-NecromanticFocus-69139"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-No'Kaled,theElementsofDeath-77188"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-No'Kaled,theElementsofDeath-78472"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-No'Kaled,theElementsofDeath-78481"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Oremantle'sFavor-61448"
  value: {
-  dps: 71297.68326
-  tps: 65724.61339
-  hps: 4650.49957
+  dps: 71869.15808
+  tps: 66189.16829
+  hps: 4746.06123
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PartisanDefenderIdol-92147"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 70947.86727
-  tps: 65435.05879
-  hps: 4597.81049
+  dps: 71493.85653
+  tps: 65895.69272
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PartisanIdolofBattle-92148"
  value: {
-  dps: 71492.11007
-  tps: 65848.21267
-  hps: 4651.23299
+  dps: 72021.80564
+  tps: 66292.33747
+  hps: 4741.8296
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 71391.72079
-  tps: 65829.20159
-  hps: 4646.16038
+  dps: 71844.03671
+  tps: 66196.36103
+  hps: 4736.99564
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PartisanStoneofWisdom-92145"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 72292.04555
-  tps: 66516.02942
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 72305.75594
-  tps: 66528.95429
-  hps: 4801.9657
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 71053.45671
-  tps: 65548.73279
-  hps: 4597.26508
+  dps: 71686.80312
+  tps: 66082.93239
+  hps: 4689.87612
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 70853.07384
-  tps: 65340.26535
-  hps: 4597.81049
+  dps: 71364.44179
+  tps: 65766.27798
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 70937.40257
-  tps: 65424.59409
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 71420.77418
+  tps: 65822.61038
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-PowerfulPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PowerfulShadowspiritDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 71709.88302
-  tps: 66062.04412
-  hps: 4687.07985
+  dps: 72544.55616
+  tps: 66805.76407
+  hps: 4740.27104
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 71796.30435
-  tps: 66186.45893
-  hps: 4669.40974
+  dps: 73311.08837
+  tps: 67572.64973
+  hps: 4778.60364
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Rainsong-55854"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Rainsong-56377"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ReflectionoftheLight-77115"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 72336.46415
-  tps: 66555.27718
-  hps: 4808.56626
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ResolveofUndying-77201"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ResolveofUndying-77978"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ResolveofUndying-77998"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ReverberatingPrimalDiamond"
  value: {
-  dps: 73415.28838
-  tps: 67603.39457
-  hps: 4864.41268
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 73217.68602
-  tps: 67430.98974
-  hps: 4840.0118
+  dps: 73918.77851
+  tps: 68024.55903
+  hps: 4955.19622
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 73151.81856
-  tps: 67373.52146
-  hps: 4831.87817
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 73151.81856
-  tps: 67373.52146
-  hps: 4831.87817
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 73656.26721
+  tps: 67795.50172
+  hps: 4922.66943
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Ricket'sMagneticFireball-70144"
  value: {
-  dps: 72186.21078
-  tps: 66503.90323
-  hps: 4745.03029
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-RidingCrop"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72797.00171
+  tps: 67003.74623
+  hps: 4840.91039
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 71055.03856
-  tps: 65406.72269
-  hps: 4646.84933
+  dps: 71723.65323
+  tps: 65999.18146
+  hps: 4736.81892
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 71216.46555
-  tps: 65565.0741
-  hps: 4656.07723
+  dps: 71772.83562
+  tps: 66041.88368
+  hps: 4740.03865
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RosaryofLight-72901"
  value: {
-  dps: 71794.86557
-  tps: 66186.36058
-  hps: 4678.6087
+  dps: 72264.51299
+  tps: 66555.1685
+  hps: 4773.3447
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RottingSkull-77116"
  value: {
-  dps: 72031.66086
-  tps: 66344.49151
-  hps: 4688.17864
+  dps: 72586.97153
+  tps: 66796.70418
+  hps: 4780.45714
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuneofZeth-68998"
  value: {
-  dps: 71287.99733
-  tps: 65750.1593
-  hps: 4616.05403
+  dps: 71811.38103
+  tps: 66177.10721
+  hps: 4707.24783
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
  value: {
-  dps: 73190.7617
-  tps: 67322.94917
-  hps: 4848.77367
+  dps: 73761.84999
+  tps: 67802.90407
+  hps: 4941.85237
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
  value: {
-  dps: 73330.82695
-  tps: 67442.8559
-  hps: 4863.2042
+  dps: 73882.3727
+  tps: 67900.39726
+  hps: 4956.40936
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
  value: {
-  dps: 71746.52942
-  tps: 66079.37405
-  hps: 4717.31677
+  dps: 72269.98961
+  tps: 66518.3878
+  hps: 4809.22633
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
  value: {
-  dps: 71800.84598
-  tps: 66124.84146
-  hps: 4724.18845
+  dps: 72324.13546
+  tps: 66563.73643
+  hps: 4816.15823
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
  value: {
-  dps: 73979.75818
-  tps: 68048.22613
-  hps: 4840.42978
+  dps: 74646.23799
+  tps: 68583.37415
+  hps: 4937.40087
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
  value: {
-  dps: 74046.9567
-  tps: 68070.43308
-  hps: 4861.37156
+  dps: 75217.24693
+  tps: 69140.87256
+  hps: 4960.04446
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
  value: {
-  dps: 72111.5406
-  tps: 66412.64572
-  hps: 4715.43311
+  dps: 72711.88202
+  tps: 66931.03253
+  hps: 4805.48498
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
  value: {
-  dps: 72092.06329
-  tps: 66378.96623
-  hps: 4725.59481
+  dps: 72747.88596
+  tps: 66948.99537
+  hps: 4815.25378
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ScalesofLife-68915"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4919.49622
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 5010.69761
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ScalesofLife-69109"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4961.73921
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 5052.79035
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 71577.06382
-  tps: 65980.96236
-  hps: 4671.82649
+  dps: 72114.31831
+  tps: 66432.22595
+  hps: 4762.65566
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ScourgeheartDefenderIdol-92135"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 71023.04902
-  tps: 65510.24054
-  hps: 4597.81049
+  dps: 71596.58104
+  tps: 65998.41723
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ScourgeheartIdolofBattle-92167"
  value: {
-  dps: 71532.31943
-  tps: 65886.26119
-  hps: 4651.20763
+  dps: 72221.67146
+  tps: 66490.21824
+  hps: 4740.86259
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 71307.08285
-  tps: 65744.56365
-  hps: 4646.16038
+  dps: 71894.66733
+  tps: 66246.99165
+  hps: 4736.99564
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SeaStar-55256"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SeaStar-56290"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SealoftheSevenSigns-77204"
  value: {
-  dps: 71143.7666
-  tps: 65637.62342
-  hps: 4584.60096
+  dps: 71664.532
+  tps: 66092.44996
+  hps: 4692.25741
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SealoftheSevenSigns-77969"
  value: {
-  dps: 70986.34624
-  tps: 65515.80972
-  hps: 4583.27088
+  dps: 71914.50652
+  tps: 66327.1411
+  hps: 4671.92559
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SealoftheSevenSigns-77989"
  value: {
-  dps: 71093.67848
-  tps: 65609.6686
-  hps: 4558.67644
+  dps: 71960.44897
+  tps: 66316.31426
+  hps: 4653.03309
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ShardofWoe-60233"
  value: {
-  dps: 70653.62669
-  tps: 65132.95908
-  hps: 4553.97315
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 71856.172
+  tps: 66217.07049
+  hps: 4671.60988
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 70953.46328
-  tps: 65398.40669
-  hps: 4619.82278
+  dps: 71705.22479
+  tps: 66053.40905
+  hps: 4728.16899
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SinisterPrimalDiamond"
  value: {
-  dps: 72594.68047
-  tps: 66787.56175
-  hps: 4813.97808
+  dps: 73151.4718
+  tps: 67257.2302
+  hps: 4904.38812
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 71764.10644
-  tps: 66160.65772
-  hps: 4677.52003
+  dps: 72275.52417
+  tps: 66586.07415
+  hps: 4768.34785
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 71867.33538
-  tps: 66249.70795
-  hps: 4687.95818
+  dps: 72410.13221
+  tps: 66707.57699
+  hps: 4778.78353
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Sorrowsong-55879"
  value: {
-  dps: 71007.63264
-  tps: 65494.82415
-  hps: 4597.81049
+  dps: 71533.61644
+  tps: 65935.45263
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Sorrowsong-56400"
  value: {
-  dps: 70994.34783
-  tps: 65481.53935
-  hps: 4597.81049
+  dps: 71514.22529
+  tps: 65916.06149
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Soul'sAnguish-66994"
  value: {
-  dps: 71113.673
-  tps: 65537.75273
-  hps: 4621.69379
+  dps: 71630.66994
+  tps: 65979.5768
+  hps: 4713.32031
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SoulCasket-58183"
  value: {
-  dps: 70989.78697
-  tps: 65476.97849
-  hps: 4597.81049
+  dps: 71515.36502
+  tps: 65917.20121
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Souldrinker-77193"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Souldrinker-78479"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Souldrinker-78488"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SoulseizerIdolofDestruction-92125"
  value: {
-  dps: 70861.53898
-  tps: 65355.01587
-  hps: 4579.03982
+  dps: 71835.74047
+  tps: 66232.17054
+  hps: 4695.23366
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 70964.83874
-  tps: 65452.03026
-  hps: 4597.81049
+  dps: 71528.48281
+  tps: 65930.31901
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SoulshifterVortex-77206"
  value: {
-  dps: 71087.18425
-  tps: 65574.37576
-  hps: 4597.81049
+  dps: 71671.24952
+  tps: 66073.08571
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SoulshifterVortex-77970"
  value: {
-  dps: 71012.85107
-  tps: 65500.04259
-  hps: 4597.81049
+  dps: 71578.4535
+  tps: 65980.28969
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SoulshifterVortex-77990"
  value: {
-  dps: 71105.86803
-  tps: 65593.05955
-  hps: 4597.81049
+  dps: 71672.14959
+  tps: 66073.98578
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SpidersilkSpindle-68981"
  value: {
-  dps: 71045.11799
-  tps: 65532.30951
-  hps: 4597.81049
+  dps: 71574.26428
+  tps: 65976.10047
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SpidersilkSpindle-69138"
  value: {
-  dps: 71017.67748
-  tps: 65504.869
-  hps: 4597.81049
+  dps: 71541.32923
+  tps: 65943.16542
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 72437.90965
-  tps: 66763.05833
-  hps: 4710.47446
+  dps: 73241.10378
+  tps: 67434.32645
+  hps: 4811.86729
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 72157.72944
-  tps: 66475.88499
-  hps: 4680.28898
+  dps: 73161.23079
+  tps: 67399.41312
+  hps: 4774.09394
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-StarcatcherCompass-77993"
  value: {
-  dps: 72899.0517
-  tps: 67172.5883
-  hps: 4702.82701
+  dps: 73810.16062
+  tps: 67958.07579
+  hps: 4816.97281
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-StayofExecution-68996"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 71030.20393
-  tps: 65497.75632
-  hps: 4610.74416
+  dps: 71570.95006
+  tps: 65948.94005
+  hps: 4701.82227
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-StumpofTime-62465"
  value: {
-  dps: 70931.36896
-  tps: 65404.77948
-  hps: 4597.81049
+  dps: 71475.83986
+  tps: 65873.0931
+  hps: 4689.07466
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-StumpofTime-62470"
  value: {
-  dps: 70931.36896
-  tps: 65404.77948
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 72305.75594
-  tps: 66528.95429
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 72292.04555
-  tps: 66516.02942
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 72284.92263
-  tps: 66508.9065
-  hps: 4801.9657
+  dps: 71475.83986
+  tps: 65873.0931
+  hps: 4689.07466
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SymbioticWorm-59332"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-SymbioticWorm-65048"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 70923.22459
-  tps: 65410.41611
-  hps: 4597.81049
+  dps: 71440.31925
+  tps: 65842.15544
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 70880.71657
-  tps: 65339.18986
-  hps: 4626.56673
+  dps: 71604.43122
+  tps: 65970.2971
+  hps: 4713.37162
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TearofBlood-55819"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TearofBlood-56351"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TendrilsofBurrowingDark-55810"
  value: {
-  dps: 70985.51225
-  tps: 65472.70377
-  hps: 4597.81049
+  dps: 71522.46774
+  tps: 65924.30393
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 70994.34783
-  tps: 65481.53935
-  hps: 4597.81049
+  dps: 71514.22529
+  tps: 65916.06149
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TheHungerer-68927"
  value: {
-  dps: 71823.89238
-  tps: 66180.72265
-  hps: 4703.60231
+  dps: 73192.61686
+  tps: 67438.20056
+  hps: 4800.51423
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TheHungerer-69112"
  value: {
-  dps: 72241.80177
-  tps: 66551.87068
-  hps: 4720.57082
+  dps: 73110.46737
+  tps: 67369.26485
+  hps: 4813.6316
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 70882.27295
-  tps: 65369.46447
-  hps: 4597.81049
+  dps: 71462.12285
+  tps: 65863.95904
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Theralion'sMirror-65105"
  value: {
-  dps: 70921.71436
-  tps: 65408.90587
-  hps: 4597.81049
+  dps: 71434.48085
+  tps: 65836.31704
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Throngus'sFinger-56121"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Throngus'sFinger-56449"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ThundercallerIdolofDestruction-92120"
  value: {
-  dps: 71002.16926
-  tps: 65493.75224
-  hps: 4589.24392
+  dps: 71730.96019
+  tps: 66136.08811
+  hps: 4682.1361
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ThundercallerIdolofRage-92116"
  value: {
-  dps: 72657.68532
-  tps: 66918.35084
-  hps: 4698.85219
+  dps: 73583.91711
+  tps: 67720.26381
+  hps: 4802.34601
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 70956.59837
-  tps: 65443.78989
-  hps: 4597.81049
+  dps: 71452.55293
+  tps: 65854.38912
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 71965.1004
-  tps: 66335.35194
-  hps: 4699.34526
+  dps: 72524.19442
+  tps: 66809.56125
+  hps: 4790.16791
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 71993.29689
-  tps: 66284.7028
-  hps: 4694.13389
+  dps: 72893.98373
+  tps: 67053.91958
+  hps: 4790.18504
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 72111.71496
-  tps: 66389.96958
-  hps: 4706.6215
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 73017.83954
+  tps: 67164.98148
+  hps: 4802.67564
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 72258.35591
-  tps: 66484.02367
-  hps: 4801.9657
+  dps: 72752.83985
+  tps: 66896.43013
+  hps: 4892.15745
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-UnheededWarning-59520"
  value: {
-  dps: 72237.82236
-  tps: 66541.60247
-  hps: 4751.97509
+  dps: 72772.32307
+  tps: 66991.30666
+  hps: 4846.14408
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-UnquenchableFlame-67101"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 72066.15742
-  tps: 66372.17724
-  hps: 4706.50492
+  dps: 72586.60724
+  tps: 66804.91785
+  hps: 4799.13849
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-UnsolvableRiddle-62468"
  value: {
-  dps: 72066.15742
-  tps: 66372.17724
-  hps: 4706.50492
+  dps: 72586.60724
+  tps: 66804.91785
+  hps: 4799.13849
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-UnsolvableRiddle-68709"
  value: {
-  dps: 72066.15742
-  tps: 66372.17724
-  hps: 4706.50492
+  dps: 72586.60724
+  tps: 66804.91785
+  hps: 4799.13849
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 70882.93395
-  tps: 65394.28887
-  hps: 4597.81049
+  dps: 71406.71454
+  tps: 65810.85081
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 70863.55589
-  tps: 65368.92854
-  hps: 4597.81049
+  dps: 71396.67177
+  tps: 65792.39707
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Varo'then'sBrooch-72899"
  value: {
-  dps: 71356.07216
-  tps: 65783.95152
-  hps: 4655.49899
+  dps: 71849.33334
+  tps: 66192.09462
+  hps: 4746.33203
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VeilofLies-72900"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 71817.37202
-  tps: 66215.97662
-  hps: 4677.43053
+  dps: 72321.12814
+  tps: 66625.41648
+  hps: 4768.60984
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 71915.30245
-  tps: 66305.43131
-  hps: 4688.71613
+  dps: 72476.2618
+  tps: 66766.5586
+  hps: 4779.95144
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VialofShadows-77207"
  value: {
-  dps: 74445.07594
-  tps: 68769.16154
-  hps: 4742.67941
+  dps: 75109.38094
+  tps: 69349.81285
+  hps: 4833.4918
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VialofShadows-77979"
  value: {
-  dps: 73998.35798
-  tps: 68340.90217
-  hps: 4726.23141
+  dps: 74960.63294
+  tps: 69218.40422
+  hps: 4817.04769
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VialofShadows-77999"
  value: {
-  dps: 74730.86644
-  tps: 69032.68451
-  hps: 4761.34156
+  dps: 75611.68169
+  tps: 69832.95819
+  hps: 4852.14953
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sBadgeofConquest-61033"
  value: {
-  dps: 72792.73161
-  tps: 66989.43436
-  hps: 4801.71353
+  dps: 73314.53671
+  tps: 67422.96133
+  hps: 4894.32454
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sBadgeofConquest-70517"
  value: {
-  dps: 72947.69399
-  tps: 67118.60068
-  hps: 4820.2066
+  dps: 73475.7024
+  tps: 67557.54774
+  hps: 4913.02667
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sBadgeofVictory-61034"
  value: {
-  dps: 71569.83015
-  tps: 65932.29286
-  hps: 4694.90718
+  dps: 72093.83902
+  tps: 66371.6759
+  hps: 4786.59403
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sBadgeofVictory-70519"
  value: {
-  dps: 71639.06819
-  tps: 65989.54475
-  hps: 4703.7134
+  dps: 72162.8651
+  tps: 66428.79094
+  hps: 4795.49981
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 70923.6463
-  tps: 65397.05682
-  hps: 4597.81049
+  dps: 71448.18658
+  tps: 65845.38467
+  hps: 4689.07466
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 70678.48511
-  tps: 65176.93639
-  hps: 4591.29543
+  dps: 71378.5551
+  tps: 65770.90444
+  hps: 4670.54192
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 71143.2434
-  tps: 65608.27247
-  hps: 4606.50288
+  dps: 71686.44611
+  tps: 66071.25896
+  hps: 4697.52314
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 70938.05848
-  tps: 65427.51514
-  hps: 4600.6575
+  dps: 71652.80615
+  tps: 66044.49132
+  hps: 4694.80235
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 70994.34783
-  tps: 65481.53935
-  hps: 4597.81049
+  dps: 71514.22529
+  tps: 65916.06149
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 70994.34783
-  tps: 65481.53935
-  hps: 4597.81049
+  dps: 71514.22529
+  tps: 65916.06149
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 73446.06665
-  tps: 67584.98762
-  hps: 4801.85458
+  dps: 74011.63606
+  tps: 68047.91974
+  hps: 4891.23294
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
  value: {
-  dps: 73701.69431
-  tps: 67808.83866
-  hps: 4811.81844
+  dps: 74349.24516
+  tps: 68327.82262
+  hps: 4920.60237
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 71980.81967
-  tps: 66302.0578
-  hps: 4693.6283
+  dps: 72530.58224
+  tps: 66770.01687
+  hps: 4785.73559
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
  value: {
-  dps: 72174.06263
-  tps: 66491.01472
-  hps: 4707.93062
+  dps: 72649.30436
+  tps: 66882.14634
+  hps: 4794.80837
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Vishanka,JawsoftheEarth-78359"
  value: {
-  dps: 55754.11925
-  tps: 49842.7544
-  hps: 4836.10292
+  dps: 56126.47994
+  tps: 50172.40112
+  hps: 4933.35951
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Vishanka,JawsoftheEarth-78471"
  value: {
-  dps: 56624.15993
-  tps: 50688.2641
-  hps: 4857.1758
+  dps: 56962.5002
+  tps: 50984.54151
+  hps: 4954.43741
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Vishanka,JawsoftheEarth-78480"
  value: {
-  dps: 55003.8416
-  tps: 49113.11522
-  hps: 4817.54621
+  dps: 55398.91413
+  tps: 49469.28815
+  hps: 4914.79837
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WaterdancerDefenderIdol-92399"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 70992.98868
-  tps: 65480.1802
-  hps: 4597.81049
+  dps: 71584.22276
+  tps: 65986.05895
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WaterdancerIdolofRage-92401"
  value: {
-  dps: 72555.5042
-  tps: 66822.93543
-  hps: 4709.55917
+  dps: 73403.93679
+  tps: 67528.84738
+  hps: 4805.5535
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 72017.16433
-  tps: 66387.41587
-  hps: 4699.34526
+  dps: 72521.84679
+  tps: 66807.21362
+  hps: 4790.16791
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WaterdancerStoneofWisdom-92402"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WillofUnbinding-77198"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WillofUnbinding-77975"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WillofUnbinding-77995"
  value: {
-  dps: 70802.16156
-  tps: 65289.35308
-  hps: 4597.81049
+  dps: 71328.58565
+  tps: 65730.42185
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 70608.37646
-  tps: 65101.58198
-  hps: 4595.27368
+  dps: 71543.86013
+  tps: 65931.16914
+  hps: 4690.0684
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 71023.8466
-  tps: 65520.54008
-  hps: 4577.52073
+  dps: 71591.46331
+  tps: 65981.50613
+  hps: 4672.11663
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-World-QuellerFocus-63842"
  value: {
-  dps: 70985.51225
-  tps: 65472.70377
-  hps: 4597.81049
+  dps: 71522.46774
+  tps: 65924.30393
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WrathofUnchaining-77197"
  value: {
-  dps: 73621.90075
-  tps: 67739.16414
-  hps: 4872.90498
+  dps: 74461.15681
+  tps: 68475.98716
+  hps: 4963.23345
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WrathofUnchaining-77974"
  value: {
-  dps: 73344.55656
-  tps: 67493.51593
-  hps: 4841.69345
+  dps: 74109.30601
+  tps: 68161.87294
+  hps: 4932.02942
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-WrathofUnchaining-77994"
  value: {
-  dps: 73979.33717
-  tps: 68051.75695
-  hps: 4907.23766
+  dps: 74802.34244
+  tps: 68775.53644
+  hps: 4997.55789
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 70888.55873
-  tps: 65375.75024
-  hps: 4597.81049
+  dps: 71441.91209
+  tps: 65843.74828
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 70888.55873
-  tps: 65375.75024
-  hps: 4597.81049
+  dps: 71441.91209
+  tps: 65843.74828
+  hps: 4688.65721
  }
 }
 dps_results: {
  key: "TestWindwalker-Average-Default"
  value: {
-  dps: 73459.21627
-  tps: 67570.98451
-  hps: 4947.5596
+  dps: 74365.91073
+  tps: 68356.07541
+  hps: 5045.23945
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 900757.23591
-  tps: 210769.59905
-  hps: 5485.15929
+  dps: 910745.20933
+  tps: 213291.27229
+  hps: 5566.78852
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 71254.0381
-  tps: 64643.06768
-  hps: 5200.20213
+  dps: 72746.90782
+  tps: 65988.56876
+  hps: 5273.06042
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 101181.69455
-  tps: 81401.35715
-  hps: 6441.6933
+  dps: 103244.93037
+  tps: 83085.69015
+  hps: 6554.71982
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 730477.43935
-  tps: 171208.5149
-  hps: 4426.78856
+  dps: 731134.17853
+  tps: 171360.73377
+  hps: 4426.86806
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54685.4089
-  tps: 50299.97776
-  hps: 4271.30391
+  dps: 54687.87153
+  tps: 50289.30038
+  hps: 4250.58102
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 66372.37764
-  tps: 55282.98914
+  dps: 66256.80748
+  tps: 55091.89901
   hps: 4934.89301
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.2777305436e+06
-  tps: 308521.88243
-  hps: 6650.42371
+  dps: 1.2886492973e+06
+  tps: 311154.71271
+  hps: 6754.28117
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 105347.74828
-  tps: 97868.44766
-  hps: 6214.16218
+  dps: 106028.65292
+  tps: 98430.03662
+  hps: 6311.01849
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 138967.22117
-  tps: 116776.68817
-  hps: 6691.1608
+  dps: 139590.376
+  tps: 117064.13172
+  hps: 6782.22862
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.04460358108e+06
-  tps: 250834.96655
+  dps: 1.04441176577e+06
+  tps: 250711.34389
   hps: 5299.38607
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 81313.10635
-  tps: 76311.151
+  dps: 81342.35456
+  tps: 76345.82476
   hps: 5292.58526
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 93080.23348
-  tps: 80389.18006
+  dps: 93643.5953
+  tps: 80974.94057
   hps: 6243.02658
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 901403.70688
-  tps: 212867.54353
-  hps: 5414.11225
+  dps: 910135.80712
+  tps: 214807.74288
+  hps: 5536.74345
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 71570.2946
-  tps: 65015.91738
-  hps: 5084.38383
+  dps: 72384.94408
+  tps: 65676.41343
+  hps: 5232.98031
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 101215.47114
-  tps: 81565.52655
-  hps: 6218.58224
+  dps: 101883.40641
+  tps: 81809.10979
+  hps: 6468.29793
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 728712.69375
-  tps: 170982.03149
-  hps: 4373.1792
+  dps: 729043.65046
+  tps: 171018.48345
+  hps: 4392.30706
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54953.98408
-  tps: 50600.9858
-  hps: 4283.69312
+  dps: 54813.98044
+  tps: 50453.88363
+  hps: 4214.68499
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 65805.74908
-  tps: 54799.09009
-  hps: 4936.79051
+  dps: 65470.62626
+  tps: 54398.76147
+  hps: 4912.09318
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 889794.19687
-  tps: 210749.19577
-  hps: 5341.96723
+  dps: 899351.41869
+  tps: 212863.85757
+  hps: 5411.66587
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 73485.93786
-  tps: 67423.95029
-  hps: 5056.29287
+  dps: 74891.15784
+  tps: 68752.84831
+  hps: 5165.07155
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 102064.48942
-  tps: 83857.00684
-  hps: 6157.43412
+  dps: 103403.07621
+  tps: 85029.28375
+  hps: 6272.605
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 725665.17742
-  tps: 171109.88036
-  hps: 4266.84074
+  dps: 725816.34676
+  tps: 171126.12238
+  hps: 4286.88738
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 56112.22427
-  tps: 52159.83699
-  hps: 4221.24035
+  dps: 55960.71559
+  tps: 52010.41017
+  hps: 4210.42899
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 66024.78992
-  tps: 55975.73267
+  dps: 65587.43356
+  tps: 55573.12992
   hps: 4828.57334
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 884721.81244
-  tps: 210929.81502
-  hps: 5316.8585
+  dps: 893576.44676
+  tps: 212847.74075
+  hps: 5422.87339
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 72028.08926
-  tps: 65577.11785
-  hps: 4966.47741
+  dps: 72596.15301
+  tps: 66034.32634
+  hps: 5064.6504
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 100639.75024
-  tps: 81469.40835
-  hps: 5792.26228
+  dps: 100632.94939
+  tps: 81234.09615
+  hps: 5870.39535
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 717692.5301
-  tps: 170990.52848
-  hps: 4331.67576
+  dps: 718494.11449
+  tps: 171230.36717
+  hps: 4310.7083
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54490.50309
-  tps: 50269.7885
-  hps: 4156.41497
+  dps: 54673.9189
+  tps: 50426.93496
+  hps: 4176.62343
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 65883.63381
-  tps: 55346.54917
+  dps: 65462.79259
+  tps: 54865.76971
   hps: 4776.21787
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.2599714081e+06
-  tps: 309284.6037
-  hps: 6342.17114
+  dps: 1.27067572664e+06
+  tps: 311853.79432
+  hps: 6441.46296
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 105362.73343
-  tps: 98127.65678
-  hps: 6071.21193
+  dps: 106399.08685
+  tps: 99017.36986
+  hps: 6167.68272
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 137705.61785
-  tps: 116445.66033
-  hps: 6148.97863
+  dps: 139862.38746
+  tps: 118088.59679
+  hps: 6236.11168
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.02863601951e+06
-  tps: 250300.71251
+  dps: 1.02864125646e+06
+  tps: 250374.69078
   hps: 5206.78429
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 81029.8439
-  tps: 76181.73782
+  dps: 81093.69458
+  tps: 76198.74571
   hps: 5133.80696
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 93311.92028
-  tps: 81314.34029
+  dps: 93721.38287
+  tps: 81557.48545
   hps: 6082.00042
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 884736.40249
-  tps: 212209.3111
-  hps: 5274.12258
+  dps: 894158.0692
+  tps: 214399.61975
+  hps: 5371.20674
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 71697.58144
-  tps: 65269.53875
-  hps: 4920.70739
+  dps: 72065.44563
+  tps: 65558.01452
+  hps: 5009.46871
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 99456.45955
-  tps: 80393.08944
-  hps: 5696.78008
+  dps: 99286.16926
+  tps: 80059.88091
+  hps: 5564.03776
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 717575.77985
-  tps: 170979.06604
-  hps: 4135.17072
+  dps: 718092.41823
+  tps: 171396.72511
+  hps: 4105.59358
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54563.64202
-  tps: 50336.22063
-  hps: 4162.56058
+  dps: 54672.02105
+  tps: 50422.21591
+  hps: 4135.36419
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 65422.91365
-  tps: 54981.81688
-  hps: 4764.52473
+  dps: 65424.25092
+  tps: 54917.80075
+  hps: 4752.8316
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 882181.27268
-  tps: 212261.46732
-  hps: 5183.14153
+  dps: 892374.93053
+  tps: 214724.71043
+  hps: 5285.85861
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 73815.26411
-  tps: 67957.70825
-  hps: 4900.20063
+  dps: 74386.00826
+  tps: 68441.75898
+  hps: 4990.97569
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 102082.77637
-  tps: 84729.11472
-  hps: 5684.84991
+  dps: 102657.16129
+  tps: 85034.59118
+  hps: 5774.39391
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 712001.97121
-  tps: 170718.44604
+  dps: 711383.35953
+  tps: 170474.25939
   hps: 4065.07074
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 55617.8638
-  tps: 51785.6725
-  hps: 4079.98286
+  dps: 55554.91274
+  tps: 51709.31524
+  hps: 4067.89124
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 65818.20525
-  tps: 56285.45975
+  dps: 65347.39836
+  tps: 55760.53137
   hps: 4635.3715
  }
 }
 dps_results: {
  key: "TestWindwalker-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 63985.95757
-  tps: 58372.2146
-  hps: 4905.22793
+  dps: 64864.57618
+  tps: 59013.24792
+  hps: 5020.02059
  }
 }

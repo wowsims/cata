@@ -145,6 +145,7 @@ type Item struct {
 	RandomSuffix RandomSuffix
 	Gems         []Gem
 	Enchant      Enchant
+	Tinker       Enchant
 	Reforging    *ReforgeStat
 
 	//Internal use
@@ -240,6 +241,7 @@ type ItemSpec struct {
 	ID            int32
 	RandomSuffix  int32
 	Enchant       int32
+	Tinker        int32
 	Gems          []int32
 	Reforging     int32
 	UpgradeStep   proto.ItemLevelState
@@ -362,7 +364,7 @@ func (equipment *Equipment) EquipItem(item Item) {
 }
 
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
-	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID) || (equipment[slot].Tinker.EffectID == effectID)
 }
 
 func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {
@@ -394,6 +396,7 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 		coreEquip[i] = ItemSpec{
 			ID:            item.Id,
 			RandomSuffix:  item.RandomSuffix,
+			Tinker:        item.Tinker,
 			Enchant:       item.Enchant,
 			Gems:          item.Gems,
 			Reforging:     item.Reforging,
@@ -449,6 +452,11 @@ func NewItem(itemSpec ItemSpec) Item {
 		// else {
 		// 	panic(fmt.Sprintf("No enchant with id: %d", itemSpec.Enchant))
 		// }
+	}
+	if itemSpec.Tinker != 0 {
+		if tinker, ok := EnchantsByEffectID[itemSpec.Tinker]; ok {
+			item.Tinker = tinker
+		}
 	}
 
 	if itemSpec.Reforging > 112 { // There is no id below 113
@@ -512,6 +520,7 @@ func ProtoToEquipment(es *proto.EquipmentSpec) Equipment {
 type ItemStringSpec struct {
 	Name    string
 	Enchant string
+	Tinker  string
 	Gems    []string
 }
 

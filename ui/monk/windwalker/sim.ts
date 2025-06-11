@@ -21,14 +21,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
-		Stat.StatStrength,
 		Stat.StatAgility,
+		Stat.StatAttackPower,
 		Stat.StatHitRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
 		Stat.StatExpertiseRating,
 		Stat.StatMasteryRating,
-		Stat.StatAttackPower,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP.

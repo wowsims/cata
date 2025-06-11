@@ -158,7 +158,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	}
 
 	// Do half the iterations with a positive, and half with a negative value for better accuracy.
-	const defaultStatMod = 160.0 // match to the impact of a single gem
+	const defaultStatMod = 320.0 // match to the impact of a single gem for secondaries
 	statModsLow := make([]float64, stats.UnitStatsLen)
 	statModsHigh := make([]float64, stats.UnitStatsLen)
 
@@ -170,7 +170,10 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	for _, s := range statsToWeigh {
 		stat := stats.UnitStatFromStat(s)
 		statMod := defaultStatMod
-		if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) {
+		// Primary stats have half the value of a secondary stat
+		if s <= stats.Intellect {
+			statMod /= 2
+		} else if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) {
 			statMod = defaultStatMod * 10
 		}
 		statModsHigh[stat] = statMod
@@ -179,7 +182,6 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	for _, s := range swr.PseudoStatsToWeigh {
 		stat := stats.UnitStatFromPseudoStat(s)
 		statName := proto.PseudoStat_name[int32(s)]
-
 		// Scale down the stat increment depending on the type of PseudoStat
 		statMod := defaultStatMod
 
@@ -267,11 +269,11 @@ func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsRe
 
 		calcWeightResults := func(baselineMetrics *proto.DistributionMetrics, modLowMetrics *proto.DistributionMetrics, modHighMetrics *proto.DistributionMetrics, weightResults *StatWeightValues) {
 			var lo, hi aggregator
-			for i := 0; i < len(baselineMetrics.AllValues); i++ {
+			for i := range baselineMetrics.AllValues {
 				lo.add(modLowMetrics.AllValues[i] - baselineMetrics.AllValues[i])
 			}
 			lo.scale(1 / statResult.StatData.ModLow)
-			for i := 0; i < len(baselineMetrics.AllValues); i++ {
+			for i := range baselineMetrics.AllValues {
 				hi.add(modHighMetrics.AllValues[i] - baselineMetrics.AllValues[i])
 			}
 			hi.scale(1 / statResult.StatData.ModHigh)
