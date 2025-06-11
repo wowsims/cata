@@ -861,10 +861,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-GaleofShadows-56462"
  value: {
-  dps: 83880.61188
-  tps: 581548.44723
-  dtps: 57037.65099
-  hps: 22687.82512
+  dps: 83879.85099
+  tps: 581543.07227
+  dtps: 56773.96526
+  hps: 22394.50726
  }
 }
 dps_results: {
@@ -960,10 +960,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-HeartofSolace-56393"
  value: {
-  dps: 84086.42242
-  tps: 582926.17358
-  dtps: 57028.96099
-  hps: 22717.02033
+  dps: 84085.66154
+  tps: 582920.79862
+  dtps: 56765.27526
+  hps: 22423.70248
  }
 }
 dps_results: {
@@ -1968,10 +1968,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-SealoftheSevenSigns-77969"
  value: {
-  dps: 83776.37132
-  tps: 580703.41754
-  dtps: 56844.35418
-  hps: 22576.91904
+  dps: 83769.37314
+  tps: 580654.45158
+  dtps: 56598.57635
+  hps: 22251.11175
  }
 }
 dps_results: {
@@ -2634,10 +2634,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 83794.55876
-  tps: 580946.18168
-  dtps: 56960.93987
-  hps: 22580.35412
+  dps: 83793.96502
+  tps: 580941.97679
+  dtps: 56714.28995
+  hps: 22286.99336
  }
 }
 dps_results: {
