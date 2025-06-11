@@ -148,6 +148,7 @@ message HunterOptions {
 	bool use_hunters_mark = 6;
 	bool use_aq_tier = 7;
 	bool use_naxx_tier = 8;
+	double glaive_toss_success = 9;
 }
 
 message BeastMasteryHunter {
