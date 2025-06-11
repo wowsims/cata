@@ -1050,7 +1050,7 @@ func RegisterAllProcs() {
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeCrit,
+		Outcome:  core.OutcomeLanded,
 		Harmful:  false,
 	}, []shared.ItemVariant{
 		{ItemID: 94524, ItemName: "Unerring Vision of Lei Shen (N)"},
