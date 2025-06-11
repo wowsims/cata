@@ -38,13 +38,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 74493.99327
-  tps: 52514.11777
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-AncientPetrifiedSeed-69001"
  value: {
   dps: 73417.64792
@@ -87,21 +80,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-AusterePrimalDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 73381.02219
   tps: 51726.58555
@@ -119,13 +98,6 @@ dps_results: {
  value: {
   dps: 77011.21971
   tps: 54305.58453
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 73480.59465
-  tps: 51797.282
  }
 }
 dps_results: {
@@ -283,20 +255,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 73381.02219
-  tps: 50692.05384
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 71310.66902
@@ -305,13 +263,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestSubtlety-AllItems-BurningPrimalDiamond"
- value: {
-  dps: 74270.19746
-  tps: 52356.32921
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 74270.19746
   tps: 52356.32921
@@ -364,20 +315,6 @@ dps_results: {
  value: {
   dps: 72498.7525
   tps: 51100.15742
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 74479.64629
-  tps: 52505.03788
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 73480.59465
-  tps: 51797.282
  }
 }
 dps_results: {
@@ -535,20 +472,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 73578.5546
-  tps: 51866.83356
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 73483.72791
-  tps: 51799.50662
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 72038.48004
@@ -557,13 +480,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestSubtlety-AllItems-EffulgentPrimalDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 73381.02219
   tps: 51726.58555
@@ -584,45 +500,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 74219.93532
   tps: 52321.13
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 73578.5546
-  tps: 51866.83356
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 73480.59465
-  tps: 51797.282
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 73388.20813
-  tps: 51731.68757
  }
 }
 dps_results: {
@@ -661,21 +542,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-EternalPrimalDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 73381.02219
   tps: 51726.58555
@@ -794,13 +661,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 73789.3042
-  tps: 52017.27099
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-FluidDeath-58181"
  value: {
   dps: 72873.71658
@@ -823,27 +683,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestSubtlety-AllItems-ForlornPrimalDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ForlornStarflareDiamond"
  value: {
   dps: 73381.02219
   tps: 51726.58555
@@ -997,27 +836,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 73578.5546
-  tps: 51866.83356
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 73480.59465
-  tps: 51797.282
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 73388.20813
-  tps: 51731.68757
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-ImpatienceofYouth-62464"
  value: {
   dps: 71914.63548
@@ -1074,13 +892,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 71310.66902
@@ -1113,13 +924,6 @@ dps_results: {
  value: {
   dps: 71593.74938
   tps: 50471.04021
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 73250.42458
-  tps: 51634.66646
  }
 }
 dps_results: {
@@ -1466,20 +1270,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 73388.20813
-  tps: 51731.68757
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 73480.59465
-  tps: 51797.282
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 71310.66902
@@ -1501,28 +1291,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-PowerfulPrimalDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-PowerfulShadowspiritDiamond"
  value: {
   dps: 73381.02219
   tps: 51726.58555
@@ -1585,13 +1354,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 73460.10608
-  tps: 51782.30662
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-ResolveofUndying-77201"
  value: {
   dps: 71310.66902
@@ -1620,13 +1382,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 74338.71883
-  tps: 52404.57408
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-RevitalizingPrimalDiamond"
  value: {
   dps: 74270.19746
@@ -1634,31 +1389,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 74270.19746
-  tps: 52356.32921
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Ricket'sMagneticFireball-70144"
  value: {
   dps: 73285.18559
   tps: 51659.26397
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-RidingCrop"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
  }
 }
 dps_results: {
@@ -1874,13 +1608,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 71704.09213
@@ -2042,27 +1769,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 73480.59465
-  tps: 51797.282
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 73388.20813
-  tps: 51731.68757
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 73388.20813
-  tps: 51731.68757
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-SymbioticWorm-59332"
  value: {
   dps: 71310.66902
@@ -2203,13 +1909,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Tia'sGrace-55874"
  value: {
   dps: 72699.20371
@@ -2221,34 +1920,6 @@ dps_results: {
  value: {
   dps: 72488.88567
   tps: 51104.53951
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 73381.02219
-  tps: 51726.58555
  }
 }
 dps_results: {

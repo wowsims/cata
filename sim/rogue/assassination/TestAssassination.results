@@ -70,13 +70,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 73569.00786
-  tps: 51784.04843
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-AncientPetrifiedSeed-69001"
  value: {
   dps: 71792.96254
@@ -119,21 +112,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-AusterePrimalDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 72759.88868
   tps: 51212.65786
@@ -151,13 +130,6 @@ dps_results: {
  value: {
   dps: 76314.47657
   tps: 53736.08122
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 72674.34273
-  tps: 51151.92024
  }
 }
 dps_results: {
@@ -315,20 +287,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 72759.88868
-  tps: 50188.4047
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 70107.12842
@@ -337,13 +295,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestAssassination-AllItems-BurningPrimalDiamond"
- value: {
-  dps: 73486.6876
-  tps: 51726.91438
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 73486.6876
   tps: 51726.91438
@@ -396,20 +347,6 @@ dps_results: {
  value: {
   dps: 71737.26583
   tps: 50481.03782
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 73498.77529
-  tps: 51735.49664
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 72674.34273
-  tps: 51151.92024
  }
 }
 dps_results: {
@@ -567,20 +504,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 72772.33276
-  tps: 51221.49316
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 72679.06211
-  tps: 51155.271
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 71193.58096
@@ -589,13 +512,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestAssassination-AllItems-EffulgentPrimalDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 72759.88868
   tps: 51212.65786
@@ -616,45 +532,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 73264.02294
   tps: 51570.05943
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 72772.33276
-  tps: 51221.49316
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 72674.34273
-  tps: 51151.92024
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 72627.28407
-  tps: 51118.50859
  }
 }
 dps_results: {
@@ -693,21 +574,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-EternalPrimalDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 72759.88868
   tps: 51212.65786
@@ -826,13 +693,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 72894.90319
-  tps: 51308.51816
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-FluidDeath-58181"
  value: {
   dps: 71743.17584
@@ -855,27 +715,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestAssassination-AllItems-ForlornPrimalDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ForlornStarflareDiamond"
  value: {
   dps: 72759.88868
   tps: 51212.65786
@@ -1029,27 +868,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 72772.33276
-  tps: 51221.49316
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 72674.34273
-  tps: 51151.92024
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 72627.28407
-  tps: 51118.50859
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-ImpatienceofYouth-62464"
  value: {
   dps: 71271.64064
@@ -1106,13 +924,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 70107.12842
@@ -1145,13 +956,6 @@ dps_results: {
  value: {
   dps: 70338.7696
   tps: 49509.88998
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 72636.70987
-  tps: 51110.12364
  }
 }
 dps_results: {
@@ -1498,20 +1302,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 72627.28407
-  tps: 51118.50859
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 72674.34273
-  tps: 51151.92024
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 70107.12842
@@ -1533,28 +1323,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-PowerfulPrimalDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-PowerfulShadowspiritDiamond"
  value: {
   dps: 72759.88868
   tps: 51212.65786
@@ -1617,13 +1386,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 72619.99571
-  tps: 51112.82513
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-ResolveofUndying-77201"
  value: {
   dps: 70107.12842
@@ -1652,13 +1414,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 73575.21174
-  tps: 51789.14112
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-RevitalizingPrimalDiamond"
  value: {
   dps: 73486.6876
@@ -1666,31 +1421,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 73486.6876
-  tps: 51726.91438
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-Ricket'sMagneticFireball-70144"
  value: {
   dps: 72149.00501
   tps: 50765.30643
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-RidingCrop"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
  }
 }
 dps_results: {
@@ -1906,13 +1640,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 71265.35407
@@ -2074,27 +1801,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 72674.34273
-  tps: 51151.92024
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 72627.28407
-  tps: 51118.50859
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 72548.56443
-  tps: 51062.61765
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-SymbioticWorm-59332"
  value: {
   dps: 70107.12842
@@ -2235,13 +1941,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-Tia'sGrace-55874"
  value: {
   dps: 71711.16601
@@ -2253,34 +1952,6 @@ dps_results: {
  value: {
   dps: 71924.73371
   tps: 50627.65543
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 72759.88868
-  tps: 51212.65786
  }
 }
 dps_results: {
