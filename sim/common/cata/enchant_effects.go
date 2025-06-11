@@ -68,7 +68,7 @@ func init() {
 		})
 
 		ppm := 5.0
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(4067, ppm, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(4067, ppm, 0)
 		meleeIcd := &core.Cooldown{
 			Duration: time.Millisecond * 1,
 			Timer:    character.NewTimer(),
@@ -143,7 +143,7 @@ func init() {
 			Name:     "Elemental Slayer",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(4074, ppm, 0),
+			DPM:      character.NewDynamicLegacyProcForEnchant(4074, ppm, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -170,7 +170,7 @@ func init() {
 		spAura := procBuilder("Hurricane Enchant Spell", 3)
 
 		ppm := 1.0
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(4083, ppm, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(4083, ppm, 0)
 
 		hurricaneSpellProc := func(sim *core.Simulation) {
 			if mhAura.IsActive() {
@@ -309,7 +309,7 @@ func init() {
 			Name:     "Landslide",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(4099, 1.0, 0),
+			DPM:      character.NewDynamicLegacyProcForEnchant(4099, 1.0, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.IsMH() {
 					mainHand.Activate(sim)

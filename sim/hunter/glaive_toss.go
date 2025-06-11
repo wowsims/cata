@@ -27,6 +27,7 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				numHits := hunter.Env.GetNumTargets()
+
 				sharedDmg := spell.RangedAttackPower() * 0.2
 				sharedDmg += hunter.CalcAndRollDamageRange(sim, 0.69999998808, 1)
 				// Here we assume the Glaive Toss hits every single target in the encounter.
@@ -34,6 +35,14 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 				results := make([]*core.SpellResult, numHits)
 				for i := int32(0); i < numHits; i++ {
 					unit := hunter.Env.GetTargetUnit(i)
+					// Primary always hits, secondaries only on a successful roll
+					if unit != target {
+						successChance := hunter.Options.GlaiveTossSuccess / 100.0
+						roll := sim.RollWithLabel(0, 1, "GlaiveTossSuccess")
+						if roll > successChance {
+							continue
+						}
+					}
 					dmg := sharedDmg
 					if unit == target {
 						dmg *= 4 // primary target takes 4× damage

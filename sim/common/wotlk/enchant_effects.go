@@ -16,7 +16,7 @@ func init() {
 	core.NewEnchantEffect(3251, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3251, 4.0, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(3251, 4.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 44622},
@@ -56,7 +56,7 @@ func init() {
 	core.NewEnchantEffect(3239, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3239, 4.0, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(3239, 4.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 44525},
@@ -139,7 +139,7 @@ func init() {
 	core.NewEnchantEffect(3789, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3789, 1.0, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(3789, 1.0, 0)
 
 		// Modify only gear armor, including from agility
 		fivePercentOfArmor := (character.EquipStats()[stats.Armor] + 2.0*character.EquipStats()[stats.Agility]) * 0.05
@@ -174,7 +174,7 @@ func init() {
 	core.NewEnchantEffect(3241, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3241, 3.0, 0)
+		dpm := character.NewDynamicLegacyProcForEnchant(3241, 3.0, 0)
 
 		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: 44494})
 

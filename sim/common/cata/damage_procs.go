@@ -16,10 +16,12 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
+		TriggerDPM: func(c *core.Character) *core.DynamicProcManager {
+			return c.NewLegacyPPMManager(1, core.ProcMaskMeleeOrRanged)
+		},
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
-			PPM:      1,
 			Outcome:  core.OutcomeLanded,
 			Callback: core.CallbackOnSpellHitDealt,
 		},
@@ -33,10 +35,12 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
+		TriggerDPM: func(c *core.Character) *core.DynamicProcManager {
+			return c.NewLegacyPPMManager(1, core.ProcMaskMeleeOrRanged)
+		},
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
-			PPM:      1,
 			Outcome:  core.OutcomeLanded,
 			Callback: core.CallbackOnSpellHitDealt,
 		},
