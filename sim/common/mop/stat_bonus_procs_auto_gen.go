@@ -387,14 +387,24 @@ func RegisterAllProcs() {
 	
 	// Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027
 	// for 15s. ( 20% chance, 55 sec cooldown)
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Relic of Xuen",
+		ItemID: 79327,
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
 		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 79327, ItemName: "Relic of Xuen"},
-		{ItemID: 79328, ItemName: "Relic of Xuen"},
+	})
+	
+	// When you deliver a melee or ranged critical strike, you have a chance to gain Blessing of the Celestials,
+	// increasing your Agility by 3027 for 15s.
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Relic of Xuen",
+		ItemID: 79328,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
+		Outcome:  core.OutcomeLanded,
+		Harmful:  false,
 	})
 	
 	// When you cast healing spells, you have a chance to gain Blessing of the Celestials, increasing your Spirit

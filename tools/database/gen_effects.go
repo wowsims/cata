@@ -5,6 +5,7 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -196,9 +197,27 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 		})
 
 		for _, entry := range grp.Entries {
-			if groupEntry, ok := entryGroupings[entry.Variants[0].Name]; ok {
-				groupEntry.AddVariant(entry.Variants[0])
-			} else {
+			var idx int64 = 0
+			added := false
+
+			// Make sure to only group by name and proc mask, each proc mask will create it's own sub group
+			for _, group := range entryGroupings {
+				if group.Variants[0].Name == entry.Variants[0].Name {
+					idx++
+					if group.ProcInfo.ProcMask == entry.ProcInfo.ProcMask {
+						group.AddVariant(entry.Variants[0])
+						added = true
+						break
+					}
+				}
+			}
+
+			if !added {
+				groupName := entry.Variants[0].Name
+				if idx > 0 {
+					groupName += "(" + strconv.FormatInt(idx, 10) + ")"
+				}
+
 				newEntries = append(newEntries, entry)
 				entryGroupings[entry.Variants[0].Name] = entry
 			}
@@ -355,7 +374,7 @@ func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Gro
 }
 
 var harmFulMatcher = regexp.MustCompile(`harmful`)
-var critMatcher = regexp.MustCompile(`critical ([^\s,]+|damage,?) [^fb]`)
+var critMatcher = regexp.MustCompile(`critical ([^\s,]+|damage,?)( chance)? [^fbc]`)
 var pureHealMatcher = regexp.MustCompile(`healing spells`)
 var hasHealMatcher = regexp.MustCompile(`heal(ing)?[^,]`)
 var hasGenericMatcher = regexp.MustCompile(`a spell`)
