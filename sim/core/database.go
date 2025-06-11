@@ -430,12 +430,13 @@ func NewItem(itemSpec ItemSpec) Item {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
 
+	item.UpgradeStep = itemSpec.UpgradeStep
+	item.ChallengeMode = itemSpec.ChallengeMode
 	scalingOptions := item.GetEffectiveScalingOptions()
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
 	item.RandPropPoints = scalingOptions.RandPropPoints
-	item.UpgradeStep = itemSpec.UpgradeStep
 
 	if itemSpec.RandomSuffix != 0 {
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {

@@ -181,7 +181,7 @@ func TestProcManagerShouldBeConfigurable(t *testing.T) {
 	}
 }
 
-func TestProcManagerShouldProcOffCorrectWeaponForfalse(t *testing.T) {
+func TestProcManagerShouldProcOffCorrectWeaponForItemEffect(t *testing.T) {
 	sim := SetupFakeSim()
 	masks := []ProcMask{
 		ProcMaskMeleeMH,
