@@ -8,7 +8,14 @@ import (
 )
 
 func (fire *FireMage) registerPyroblastSpell() {
-	fire.Pyroblast = fire.RegisterSpell(core.SpellConfig{
+
+	pyroblastVariance := 0.24    // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "Variance"
+	pyroblastScaling := 1.98     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "Coefficient"
+	pyroblastCoefficient := 1.98 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "BonusCoefficient"
+	pyroblastDotScaling := .36
+	pyroblastDotCoefficient := .36
+
+	fire.pyroblast = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -17,7 +24,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 17,
+			BaseCostPercent: 5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -26,25 +33,27 @@ func (fire *FireMage) registerPyroblastSpell() {
 			},
 		},
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultCritMultiplier(),
-		BonusCoefficient:         1.545,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   fire.DefaultCritMultiplier(),
+		BonusCoefficient: pyroblastCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.5 * fire.ClassSpellScaling
+
+			baseDamage := fire.CalcAndRollDamageRange(sim, pyroblastScaling, pyroblastVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					spell.RelatedDotSpell.Cast(sim, target)
 					spell.DealDamage(sim, result)
+					fire.ApplyIgnite(sim, target, result.Damage)
+					fire.pyroblastAura.Deactivate(sim)
 				}
 			})
 		},
 	})
 
-	fire.Pyroblast.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
+	fire.pyroblast.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -59,12 +68,12 @@ func (fire *FireMage) registerPyroblastSpell() {
 			Aura: core.Aura{
 				Label: "PyroblastDoT",
 			},
-			NumberOfTicks:       4,
+			NumberOfTicks:       6,
 			TickLength:          time.Second * 3,
-			BonusCoefficient:    0.180,
+			BonusCoefficient:    pyroblastDotCoefficient,
 			AffectedByCastSpeed: true,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, 0.175*fire.ClassSpellScaling)
+				dot.Snapshot(target, fire.CalcScalingSpellDmg(pyroblastDotScaling))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
