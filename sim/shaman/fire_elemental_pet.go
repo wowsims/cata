@@ -71,6 +71,11 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 func (fireElemental *FireElemental) enable(isGuardian bool) func(*core.Simulation) {
 	return func(sim *core.Simulation) {
 		fireElemental.EnableDynamicStats(fireElemental.shamanOwner.fireElementalStatInheritance(isGuardian))
+		if fireElemental.empowerAutocast {
+			if fireElemental.Empower.Cast(sim, &fireElemental.shamanOwner.Unit) {
+				fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt(), false)
+			}
+		}
 	}
 }
 
@@ -99,13 +104,6 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 		Fire Blast on CD, Fire nova on CD when 2+ targets, Immolate on CD if not up on a target
 	*/
 	target := fireElemental.CurrentTarget
-
-	if fireElemental.empowerAutocast {
-		if fireElemental.Empower.Cast(sim, &fireElemental.shamanOwner.Unit) {
-			fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt(), false)
-			return
-		}
-	}
 
 	if fireElemental.immolateAutocast {
 		for _, target := range sim.Encounter.TargetUnits {

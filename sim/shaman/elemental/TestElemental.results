@@ -2450,126 +2450,126 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74829.68863
+  dps: 75474.39611
   tps: 105143.9716
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21395.85984
+  dps: 21773.16789
   tps: 127.00813
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61882.87283
+  dps: 63493.77037
   tps: 635.04067
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 46133.20952
+  dps: 46692.91408
   tps: 75519.89842
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 17923.49268
+  dps: 18255.88141
   tps: 116.5
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 48528.50759
+  dps: 49995.0893
   tps: 582.5
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 37208.37119
+  dps: 37857.64143
   tps: 23547.18498
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 44943.52162
+  dps: 45315.66385
   tps: 901.00813
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 70465.76896
+  dps: 72050.83745
   tps: 850.04067
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 30668.25759
+  dps: 31230.35992
   tps: 23945.69212
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37670.57772
+  dps: 38010.85607
   tps: 899
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 55702.96028
+  dps: 57208.99007
   tps: 827.5
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35509.16459
+  dps: 36170.58557
   tps: 23657.33169
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43963.48431
+  dps: 44338.36022
   tps: 807.50813
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 69607.68768
+  dps: 71206.42452
   tps: 825.04067
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29396.50842
+  dps: 29955.92581
   tps: 24111.83221
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 36952.45834
+  dps: 37286.38332
   tps: 784.5
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 55168.67874
+  dps: 56642.94172
   tps: 770
  }
 }
@@ -2828,126 +2828,126 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 72579.64314
+  dps: 73178.89923
   tps: 104918.15332
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21228.33493
+  dps: 21570.88052
   tps: 126.50813
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 60277.9154
+  dps: 61720.42177
   tps: 632.54067
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43765.25825
+  dps: 44296.35781
   tps: 73731.91185
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 17528.24994
+  dps: 17837.62833
   tps: 115
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 46367.68072
+  dps: 47723.0527
   tps: 575
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36505.04373
+  dps: 37093.57043
   tps: 23748.98522
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 44556.97426
+  dps: 44900.71201
   tps: 904.00813
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 68918.58975
+  dps: 70367.0569
   tps: 865.04067
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 30102.21721
+  dps: 30620.0577
   tps: 24156.13554
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37503.51494
+  dps: 37810.68348
   tps: 895
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 53976.82234
+  dps: 55321.14509
   tps: 850
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 34708.75504
+  dps: 35322.31698
   tps: 23928.04504
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43696.53567
+  dps: 44051.0028
   tps: 794.00813
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 68688.45606
+  dps: 70190.57013
   tps: 795.04067
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28850.8442
+  dps: 29373.10438
   tps: 24416.08494
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 36353.22744
+  dps: 36667.02552
   tps: 788
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 53200.43234
+  dps: 54577.90278
   tps: 795
  }
 }
