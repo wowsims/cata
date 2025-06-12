@@ -1,6 +1,8 @@
 package death_knight
 
 import (
+	"math"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
 )
@@ -31,8 +33,11 @@ type RuneWeaponPet struct {
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
 
-	drwDmgSnapshot  float64
-	drwPhysSnapshot float64
+	drwDmgSnapshot       float64
+	drwSchoolDmgSnapshot [stats.SchoolLen]float64
+
+	StrikeWeapon       *core.Weapon
+	StrikeWeaponDamage float64
 
 	RuneWeaponSpells map[core.ActionID]*core.Spell
 }
@@ -103,20 +108,32 @@ func (dk *DeathKnight) NewRuneWeapon() *RuneWeaponPet {
 	runeWeapon.OnPetEnable = runeWeapon.enable
 	runeWeapon.OnPetDisable = runeWeapon.disable
 
-	mhWeapon := dk.WeaponFromMainHand(dk.DefaultCritMultiplier())
-
-	// baseDamage := mhWeapon.AverageDamage() / mhWeapon.SwingSpeed * 3.5
 	baseDamage := dk.CalcScalingSpellDmg(3.0)
-	mhWeapon.BaseDamageMin = baseDamage
-	mhWeapon.BaseDamageMax = baseDamage
-
-	mhWeapon.SwingSpeed = 3.5
-	mhWeapon.NormalizedSwingSpeed = 3.3
-
 	runeWeapon.EnableAutoAttacks(runeWeapon, core.AutoAttackOptions{
-		MainHand:       mhWeapon,
+		MainHand: core.Weapon{
+			BaseDamageMin:        baseDamage,
+			BaseDamageMax:        baseDamage,
+			SwingSpeed:           3.5,
+			NormalizedSwingSpeed: 3.5,
+			CritMultiplier:       dk.DefaultCritMultiplier(),
+			AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
+			MaxRange:             core.MaxMeleeRange,
+		},
 		AutoSwingMelee: true,
 	})
+
+	// Special weapon used for some strikes like DS and HS
+	strikeWeaponBaseDamage := math.Floor(dk.CalcScalingSpellDmg(1.6))
+	runeWeapon.StrikeWeapon = &core.Weapon{
+		BaseDamageMin:        strikeWeaponBaseDamage,
+		BaseDamageMax:        strikeWeaponBaseDamage,
+		SwingSpeed:           3.5,
+		NormalizedSwingSpeed: 3.5,
+		CritMultiplier:       dk.DefaultCritMultiplier(),
+		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
+		MaxRange:             core.MaxMeleeRange,
+	}
+	runeWeapon.StrikeWeaponDamage = math.Floor(runeWeapon.StrikeWeapon.DPS()) * 3.5
 
 	runeWeapon.PseudoStats.DamageTakenMultiplier = 0
 
@@ -137,16 +154,27 @@ func (runeWeapon *RuneWeaponPet) ExecuteCustomRotation(_ *core.Simulation) {
 
 func (runeWeapon *RuneWeaponPet) enable(sim *core.Simulation) {
 	runeWeapon.drwDmgSnapshot = runeWeapon.dkOwner.PseudoStats.DamageDealtMultiplier * 0.5
-	runeWeapon.PseudoStats.DamageDealtMultiplier *= runeWeapon.drwDmgSnapshot
+	runeWeapon.drwSchoolDmgSnapshot = runeWeapon.dkOwner.PseudoStats.SchoolDamageDealtMultiplier
 
-	runeWeapon.drwPhysSnapshot = runeWeapon.dkOwner.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
-	runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= runeWeapon.drwPhysSnapshot
+	// Tiny delay to have the absolute first attack not be modified by any % modifier from the owner
+	// And not have the -50% dmg penalty
+	core.StartDelayedAction(sim, core.DelayedActionOptions{
+		DoAt: sim.CurrentTime + core.SpellBatchWindow,
+		OnAction: func(sim *core.Simulation) {
+			runeWeapon.PseudoStats.DamageDealtMultiplier *= runeWeapon.drwDmgSnapshot
+			for i := range stats.SchoolLen {
+				runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] *= runeWeapon.drwSchoolDmgSnapshot[i]
+			}
+		},
+	})
 }
 
 func (runeWeapon *RuneWeaponPet) disable(sim *core.Simulation) {
 	// Clear snapshot damage multipliers
 	runeWeapon.PseudoStats.DamageDealtMultiplier /= runeWeapon.drwDmgSnapshot
-	runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= runeWeapon.drwPhysSnapshot
-	runeWeapon.drwPhysSnapshot = 1
+	for i := range stats.SchoolLen {
+		runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] /= runeWeapon.drwSchoolDmgSnapshot[i]
+	}
+	runeWeapon.drwSchoolDmgSnapshot = stats.NewSchoolFloatArray()
 	runeWeapon.drwDmgSnapshot = 1
 }

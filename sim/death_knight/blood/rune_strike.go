@@ -58,7 +58,9 @@ func (bdk *BloodDeathKnight) registerDrwRuneStrike() *core.Spell {
 		MaxRange: core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.MeleeAttackPower()*0.1
+			baseDamage := spell.MeleeAttackPower()*0.1 +
+				bdk.RuneWeapon.StrikeWeapon.CalculateWeaponDamage(sim, spell.MeleeAttackPower()) +
+				bdk.RuneWeapon.StrikeWeaponDamage
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},

@@ -24,17 +24,13 @@ func (dk *DeathKnight) GetDiseaseMulti(target *core.Unit, base float64, increase
 	return base + increase*float64(count)
 }
 
-func getFrostFeverConfig(character *core.Character) core.SpellConfig {
+func (dk *DeathKnight) getFrostFeverConfig(character *core.Character) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 55095},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagDisease | core.SpellFlagPassiveSpell,
 		ClassSpellMask: DeathKnightSpellFrostFever,
-
-		DamageMultiplier: 1.15,
-		CritMultiplier:   character.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -43,37 +39,36 @@ func getFrostFeverConfig(character *core.Character) core.SpellConfig {
 			NumberOfTicks: 10,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseTickDamage := character.CalcScalingSpellDmg(0.13300000131) + dot.Spell.MeleeAttackPower()*0.15800000727
+				baseTickDamage := dk.CalcScalingSpellDmg(0.13300000131) + dot.Spell.MeleeAttackPower()*0.15800000727
 				dot.Snapshot(target, baseTickDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
-		},
 	}
 }
 
 // A disease dealing (166 + 0.158 * <AP>) Frost damage every 3 sec for 30 sec.
 func (dk *DeathKnight) registerFrostFever() {
-	config := getFrostFeverConfig(dk.GetCharacter())
+	config := dk.getFrostFeverConfig(dk.GetCharacter())
+	config.DamageMultiplier = 1.15
+	config.CritMultiplier = dk.DefaultCritMultiplier()
+	config.ThreatMultiplier = 1
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		spell.Dot(target).Apply(sim)
+	}
+
 	dk.FrostFeverSpell = dk.RegisterSpell(config)
 }
 
-func getBloodPlagueConfig(character *core.Character) core.SpellConfig {
+func (dk *DeathKnight) getBloodPlagueConfig(character *core.Character) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 55078},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagDisease | core.SpellFlagPassiveSpell,
 		ClassSpellMask: DeathKnightSpellBloodPlague,
-
-		DamageMultiplier: 1.15,
-		CritMultiplier:   character.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -83,42 +78,44 @@ func getBloodPlagueConfig(character *core.Character) core.SpellConfig {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseTickDamage := character.CalcScalingSpellDmg(0.15800000727) + dot.Spell.MeleeAttackPower()*0.15800000727
+				baseTickDamage := dk.CalcScalingSpellDmg(0.15800000727) + dot.Spell.MeleeAttackPower()*0.15800000727
 				dot.Snapshot(target, baseTickDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
-		},
 	}
 }
 
 // A disease dealing (197 + 0.158 * <AP>) Shadow damage every 3 sec for 30 sec.
 func (dk *DeathKnight) registerBloodPlague() {
-	dk.BloodPlagueSpell = dk.RegisterSpell(getBloodPlagueConfig(dk.GetCharacter()))
+	config := dk.getBloodPlagueConfig(dk.GetCharacter())
+	config.DamageMultiplier = 1.15
+	config.CritMultiplier = dk.DefaultCritMultiplier()
+	config.ThreatMultiplier = 1
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		spell.Dot(target).Apply(sim)
+	}
+
+	dk.BloodPlagueSpell = dk.RegisterSpell(config)
 }
 
 func (dk *DeathKnight) registerDrwFrostFever() {
-	config := getFrostFeverConfig(dk.RuneWeapon.GetCharacter())
-	oldApplyEffects := config.ApplyEffects
+	config := dk.getFrostFeverConfig(dk.RuneWeapon.GetCharacter())
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		CopySpellMultipliers(dk.FrostFeverSpell, dk.RuneWeapon.FrostFeverSpell, target)
-		oldApplyEffects(sim, target, spell)
+		spell.Dot(target).Apply(sim)
 	}
 
 	dk.RuneWeapon.FrostFeverSpell = dk.RuneWeapon.RegisterSpell(config)
 }
 
 func (dk *DeathKnight) registerDrwBloodPlague() {
-	config := getBloodPlagueConfig(dk.RuneWeapon.GetCharacter())
-	oldApplyEffects := config.ApplyEffects
+	config := dk.getBloodPlagueConfig(dk.RuneWeapon.GetCharacter())
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		CopySpellMultipliers(dk.BloodPlagueSpell, dk.RuneWeapon.BloodPlagueSpell, target)
-		oldApplyEffects(sim, target, spell)
+		spell.Dot(target).Apply(sim)
 	}
 
 	dk.RuneWeapon.BloodPlagueSpell = dk.RuneWeapon.RegisterSpell(config)

@@ -12,7 +12,7 @@ Boils the blood of all enemies within 10 yards, dealing (<3472-4245> + <AP> * 0.
 Deals 50% additional damage to targets infected with Blood Plague or Frost Fever.
 */
 func (dk *DeathKnight) registerBloodBoil() {
-	rpMetric := dk.NewRunicPowerMetrics(BloodBoilActionID)
+	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 65658})
 	hasGlyphOfFesteringBlood := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfFesteringBlood)
 	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
 	dk.RegisterSpell(core.SpellConfig{
@@ -46,7 +46,6 @@ func (dk *DeathKnight) registerBloodBoil() {
 				anyHit = anyHit || results[idx].Landed()
 			}
 
-			// TODO: Check if this still happens with Conversion talent active
 			if anyHit {
 				dk.AddRunicPower(sim, 10, rpMetric)
 			}
@@ -70,8 +69,11 @@ func (dk *DeathKnight) registerDrwBloodBoil() *core.Spell {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := dk.CalcAndRollDamageRange(sim, 3.09599995613, 0.20000000298) +
 					0.1099999994*spell.MeleeAttackPower()
+
 				// TODO: Is DRW damage affected by Glyph of Festering Blood?
-				baseDamage *= core.TernaryFloat64(dk.RuneWeapon.DiseasesAreActive(aoeTarget), 1.5, 1.0)
+				// TODO: Verify if owner's diseases count, simc says so
+				anyDiseasesActive := dk.DiseasesAreActive(aoeTarget) || dk.RuneWeapon.DiseasesAreActive(aoeTarget)
+				baseDamage *= core.TernaryFloat64(anyDiseasesActive, 1.5, 1.0)
 
 				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

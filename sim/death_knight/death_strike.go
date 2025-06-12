@@ -125,7 +125,8 @@ func (dk *DeathKnight) registerDrwDeathStrike() *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.CalcScalingSpellDmg(0.40000000596) +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				dk.RuneWeapon.StrikeWeapon.CalculateWeaponDamage(sim, spell.MeleeAttackPower()) +
+				dk.RuneWeapon.StrikeWeaponDamage
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialNoParry)
 		},
