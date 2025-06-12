@@ -74,7 +74,7 @@ message UIItem {
 	int32 phase = 16;
 	ItemQuality quality = 17;
 	bool unique = 18;
-	bool heroic = 19;
+	string name_description = 19;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;
