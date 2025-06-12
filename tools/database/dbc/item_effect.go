@@ -79,7 +79,7 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 			case RPPMModifierCrit:
 				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Crit{}, Coefficient: mod.Coeff})
 			case RPPMModifierSpec:
-				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Spec{Spec: proto.Spec(mod.Param)}, Coefficient: mod.Coeff})
+				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Spec{Spec: SpecFromID(mod.Param)}, Coefficient: mod.Coeff})
 			case RPPMModifierClass:
 				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_ClassMask{ClassMask: mod.Param}, Coefficient: mod.Coeff})
 			case RPPMModifierIlevel:
