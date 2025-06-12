@@ -102,5 +102,4 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	PotId:      58091, // Volcanic Potion
 	PrepotId:   58091, // Volcanic Potion
 	ConjuredId: 20520, // Dark Rune
-	TinkerId:   82174, // Synapse Springs
 }

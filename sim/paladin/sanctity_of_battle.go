@@ -1,6 +1,8 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -25,22 +27,33 @@ Hammer of the Righteous, Exorcism
 and Hammer of Wrath.
 */
 func (paladin *Paladin) registerSanctityOfBattle() {
-	var classMask int64
+	var cooldownMask int64
+	var gcdMask int64
 	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
-		classMask = SpellMaskSanctityOfBattleProt
+		cooldownMask = SpellMaskSanctityOfBattleProt
+		gcdMask = SpellMaskSanctityOfBattleProtGcd
 	} else if paladin.Spec == proto.Spec_SpecHolyPaladin {
-		classMask = SpellMaskSanctityOfBattleHoly
+		cooldownMask = SpellMaskSanctityOfBattleHoly
+		gcdMask = SpellMaskSanctityOfBattleHolyGcd
 	} else {
-		classMask = SpellMaskSanctityOfBattleRet
+		cooldownMask = SpellMaskSanctityOfBattleRet
+		gcdMask = SpellMaskSanctityOfBattleRetGcd
 	}
 
 	cooldownMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Multiplier,
-		ClassMask: classMask,
+		ClassMask: cooldownMask,
+	})
+
+	gcdMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		ClassMask: gcdMask,
 	})
 
 	updateFloatValue := func(attackSpeed float64) {
-		cooldownMod.UpdateFloatValue(1 / attackSpeed)
+		multiplier := 1 / attackSpeed
+		cooldownMod.UpdateFloatValue(multiplier)
+		gcdMod.UpdateTimeValue(-(core.DurationFromSeconds(min(0.5, 1.5-1.5*multiplier)).Round(time.Millisecond)))
 	}
 
 	paladin.AddOnMeleeAttackSpeedChanged(func(_ float64, attackSpeed float64) {
@@ -52,10 +65,12 @@ func (paladin *Paladin) registerSanctityOfBattle() {
 		ActionID: core.ActionID{SpellID: 25956},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			updateFloatValue(paladin.SwingSpeed())
+			updateFloatValue(paladin.TotalMeleeHasteMultiplier())
 			cooldownMod.Activate()
+			gcdMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			gcdMod.Activate()
 			cooldownMod.Deactivate()
 		},
 	}))

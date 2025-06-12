@@ -29,3 +29,10 @@ export const NaxxTierPrepull = <SpecType extends HunterSpecs>() =>
 		label: 'Prepull T3',
 		labelTooltip: 'Use T3 during prepull.',
 	});
+
+export const GlaiveTossChance = <SpecType extends HunterSpecs>() =>
+	InputHelpers.makeClassOptionsNumberInput<SpecType>({
+		fieldName: 'glaiveTossSuccess',
+		label: 'Glaive Toss Success %',
+		labelTooltip: 'The chance that Glaive Toss hits secondary targets in percentages.',
+	});

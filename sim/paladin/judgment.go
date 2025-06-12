@@ -39,6 +39,7 @@ func (paladin *Paladin) registerJudgment() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: time.Second * 6,

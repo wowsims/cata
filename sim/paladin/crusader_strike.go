@@ -33,6 +33,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.BuilderCooldown(),
 				Duration: time.Millisecond * 4500,

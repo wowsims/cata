@@ -80,7 +80,8 @@
 
 		.item-picker-name-container *,
 		.item-picker-reforge,
-		.item-picker-enchant {
+		.item-picker-enchant,
+		.item-picker-tinker {
 			letter-spacing: normal;
 
 			.gear-picker-right & {
@@ -100,6 +101,10 @@
 			font-size: var(--content-font-size);
 		}
 		.item-picker-enchant {
+			color: var(--bs-uncommon);
+			font-size: var(--content-font-size);
+		}
+		.item-picker-tinker {
 			color: var(--bs-uncommon);
 			font-size: var(--content-font-size);
 		}

@@ -341,6 +341,7 @@ func (paladin *Paladin) registerGlyphOfFlashOfLight() {
 			Label:    "Glyph of Flash of Light" + unit.Label,
 			ActionID: core.ActionID{SpellID: 54957},
 			Duration: time.Second * 7,
+
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				paladin.AttackTables[unit.UnitIndex].HealingDealtMultiplier *= 1.1
 			},
@@ -348,7 +349,7 @@ func (paladin *Paladin) registerGlyphOfFlashOfLight() {
 				paladin.AttackTables[unit.UnitIndex].HealingDealtMultiplier /= 1.1
 			},
 			OnHealTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Unit == &paladin.Unit {
+				if spell.Unit == &paladin.Unit && aura.ExpiresAt()-sim.CurrentTime > aura.Duration {
 					aura.Deactivate(sim)
 				}
 			},
@@ -360,8 +361,14 @@ func (paladin *Paladin) registerGlyphOfFlashOfLight() {
 		ActionID:       core.ActionID{SpellID: 57955},
 		Callback:       core.CallbackOnHealDealt,
 		ClassSpellMask: SpellMaskFlashOfLight,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			glyphAuras.Get(result.Target).Activate(sim)
+			target := result.Target
+			if result.Target.IsOpponent(&paladin.Unit) {
+				target = &paladin.Unit
+			}
+
+			glyphAuras.Get(target).Activate(sim)
 		},
 	})
 }
@@ -407,7 +414,6 @@ func (paladin *Paladin) registerGlyphOfHarshWords() {
 				GCD:      core.TernaryDuration(isProt, 0, core.GCDDefault),
 				NonEmpty: isProt,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: time.Millisecond * 1500,

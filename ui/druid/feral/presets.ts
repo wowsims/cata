@@ -141,7 +141,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62669, // Skewered Eel
 	potId: 58145, // Potion of the Tol'vir
 	prepotId: 58145, // Potion of the Tol'vir
-	tinkerId: 82174, // Synapse Springs
+
 	explosiveId: 89637, // Big Daddy Explosive
 });
 

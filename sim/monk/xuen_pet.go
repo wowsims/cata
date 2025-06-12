@@ -132,7 +132,6 @@ func (xuen *Xuen) Reset(sim *core.Simulation) {
 }
 
 func (xuen *Xuen) enable(sim *core.Simulation) {
-	xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
 }
 
 func (xuen *Xuen) GetPet() *core.Pet {

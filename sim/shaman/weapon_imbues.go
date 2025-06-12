@@ -288,7 +288,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = 2
 	}
 
-	dpm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
+	dpm := shaman.NewLegacyPPMManager(9.0, procMask)
 
 	fbSpell := shaman.newFrostbrandImbueSpell()
 

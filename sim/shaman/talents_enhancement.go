@@ -173,7 +173,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	dpm := shaman.AutoAttacks.NewPPMManager(10.0, core.ProcMaskMeleeOrMeleeProc)
+	dpm := shaman.NewLegacyPPMManager(10.0, core.ProcMaskMeleeOrMeleeProc)
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{

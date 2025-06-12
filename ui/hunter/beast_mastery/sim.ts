@@ -48,7 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	],
 	epPseudoStats: [PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatRangedAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMasteryRating],
@@ -108,6 +108,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			HunterInputs.PetUptime(),
 			HunterInputs.AQTierPrepull(),
 			HunterInputs.NaxxTierPrepull(),
+
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,

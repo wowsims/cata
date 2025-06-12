@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 const RendAndTearBonusCritPercent = 35.0
@@ -52,6 +54,7 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 func (druid *Druid) ApplyPrimalFury() {
 	actionID := core.ActionID{SpellID: 16961}
 	rageMetrics := druid.NewRageMetrics(actionID)
+	rageGen := 15.0 * core.TernaryFloat64((druid.Spec == proto.Spec_SpecGuardianDruid) && druid.Talents.SoulOfTheForest, 1.3, 1)
 	cpMetrics := druid.NewComboPointMetrics(actionID)
 
 	druid.RegisterAura(core.Aura{
@@ -69,7 +72,7 @@ func (druid *Druid) ApplyPrimalFury() {
 
 			if druid.InForm(Bear) {
 				if (spell == druid.MHAutoSpell) || druid.MangleBear.IsEqual(spell) {
-					druid.AddRage(sim, 15, rageMetrics)
+					druid.AddRage(sim, rageGen, rageMetrics)
 				}
 			} else if druid.InForm(Cat) {
 				if druid.MangleCat.IsEqual(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) || druid.Ravage.IsEqual(spell) {
@@ -81,9 +84,7 @@ func (druid *Druid) ApplyPrimalFury() {
 }
 
 func (druid *Druid) ApplyLeaderOfThePack() {
-	actionID := core.ActionID{SpellID: 17007}
-	manaMetrics := druid.NewManaMetrics(actionID)
-	healthMetrics := druid.NewHealthMetrics(actionID)
+	manaMetrics := druid.NewManaMetrics(core.ActionID{SpellID: 68285})
 	manaRestore := 0.08
 	healthRestore := 0.04
 
@@ -91,6 +92,19 @@ func (druid *Druid) ApplyLeaderOfThePack() {
 		Timer:    druid.NewTimer(),
 		Duration: time.Second * 6,
 	}
+
+	healingSpell := druid.RegisterSpell(Cat | Bear, core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 34299},
+		SpellSchool:      core.SpellSchoolPhysical,
+		ProcMask:         core.ProcMaskEmpty,
+		Flags:            core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreModifiers,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealHealing(sim, target, healthRestore * spell.Unit.MaxHealth(), spell.OutcomeHealing)
+		},
+	})
 
 	druid.RegisterAura(core.Aura{
 		Icd:      &icd,
@@ -114,8 +128,19 @@ func (druid *Druid) ApplyLeaderOfThePack() {
 			}
 			icd.Use(sim)
 			druid.AddMana(sim, druid.MaxMana()*manaRestore, manaMetrics)
-			druid.GainHealth(sim, druid.MaxHealth()*healthRestore, healthMetrics)
+			healingSpell.Cast(sim, &druid.Unit)
 		},
 	})
 }
 
+func (druid *Druid) ApplyNurturingInstinct() {
+	druid.GetSpellPowerValue = func(spell *core.Spell) float64 {
+		sp := druid.GetStat(stats.SpellPower) + spell.BonusSpellPower
+
+		if spell.ProcMask.Matches(core.ProcMaskSpellHealing) || (spell.SpellSchool == core.SpellSchoolNature) {
+			sp += druid.GetStat(stats.Agility)
+		}
+
+		return sp
+	}
+}

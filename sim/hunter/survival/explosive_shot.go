@@ -45,25 +45,37 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.SnapshotAttackerMultiplier = 1
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
+			rap := spell.RangedAttackPower()
+			baseDamage := svHunter.CalcAndRollDamageRange(sim, 0.391, 1) + (0.391 * rap)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			svHunter.GetHunter().HuntersMarkSpell.Cast(sim, target)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					dot := spell.Dot(target)
-					rap := dot.Spell.RangedAttackPower()
-					dot.SnapshotBaseDamage = ((dot.OutstandingDmg() / 3) + ((243.35 + sim.RandomFloat("Explosive Shot")*487) + (0.39 * rap)))
-					dot.Apply(sim)
-					dot.TickOnce(sim)
-					spell.DealOutcome(sim, result)
+					remaining := dot.RemainingTicks()
+					// If only the last tick is still queued, add one more so we end up with two.
+					if remaining == 1 {
+						dot.AddTick()
+					}
 
+					// When more than once tick remain, add it to the outstanding damage pile
+					outstandingDamage := 0.0
+					if remaining > 1 {
+						outstandingDamage = dot.OutstandingDmg() / 4
+					}
+
+					// Tick before outstanding damage is added
+					dot.Snapshot(target, baseDamage+outstandingDamage)
+
+					dot.Apply(sim)
+					spell.DealDamage(sim, result)
 				}
 			})
 		},
