@@ -118,19 +118,21 @@ enum Faction {
 	Horde = 2;
 }
 
+// Should aways be in order of dbc class file to properly match class masks
+// Found at https://wago.tools/db2/ChrClasses?build=5.5.0.61217&sort%5BID%5D=asc
 enum Class {
 	ClassUnknown = 0;
-	ClassDruid = 1;
-	ClassHunter = 2;
-	ClassMage = 3;
-	ClassPaladin = 4;
+	ClassWarrior = 1;
+	ClassPaladin = 2;
+	ClassHunter = 3;
+	ClassRogue = 4;
 	ClassPriest = 5;
-	ClassRogue = 6;
+	ClassDeathKnight = 6;
 	ClassShaman = 7;
-	ClassWarlock = 8;
-	ClassWarrior = 9;
-	ClassDeathKnight = 10;
-	ClassMonk = 11;
+	ClassMage = 8;
+	ClassWarlock = 9;
+	ClassMonk = 10;
+	ClassDruid = 11;
 }
 
 enum Profession {
@@ -553,8 +555,6 @@ message ConsumesSpec {
 	int32 food_id = 6;
 	int32 explosive_id = 7;
 	int32 conjured_id = 9;
-
-	int32 tinker_id = 10;
 }
 
 enum MobType {
@@ -676,6 +676,7 @@ message ItemSpec {
 	int32 reforging = 5; //reforging id
 	ItemLevelState upgrade_step = 7;
 	bool challenge_mode = 8;
+	int32 tinker = 9;
 }
 
 

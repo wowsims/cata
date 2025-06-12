@@ -114,6 +114,11 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
 
+		if applyTinkerEffects, ok := enchantEffects[eq.Tinker.EffectID]; ok && !registeredItemEnchantEffects[eq.Tinker.EffectID] {
+			applyTinkerEffects(agent)
+			registeredItemEnchantEffects[eq.Tinker.EffectID] = true
+		}
+
 		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
 			applyWeaponEffect(agent, proto.ItemSlot(slot))
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true

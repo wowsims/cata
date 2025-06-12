@@ -318,12 +318,10 @@ func applyRaceEffects(agent Agent) {
 			OnGain: func(aura *Aura, sim *Simulation) {
 				character.MultiplyCastSpeed(1.2)
 				character.MultiplyAttackSpeed(sim, 1.2)
-				character.MultiplyResourceRegenSpeed(sim, 1.2)
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed(1 / 1.2)
 				character.MultiplyAttackSpeed(sim, 1/1.2)
-				character.MultiplyResourceRegenSpeed(sim, 1/1.2)
+				character.MultiplyCastSpeed(1 / 1.2)
 			},
 		})
 

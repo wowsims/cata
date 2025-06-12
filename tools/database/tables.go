@@ -371,7 +371,7 @@ func LoadAndWriteRawGems(dbHelper *DBHelper, inputsDir string) ([]dbc.Gem, error
 		JOIN Item i ON s.ID = i.ID
 		JOIN GemProperties gp ON s.Field_1_15_7_59706_035  = gp.ID
 		JOIN SpellItemEnchantment sie ON gp.Enchant_ID = sie.ID
-		WHERE i.ClassID = 3`
+		WHERE i.ClassID = 3 AND s.ItemLevel > 85 AND s.OverallQualityId > 2`
 	items, err := LoadRows(dbHelper.db, query, ScanGemTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
@@ -427,8 +427,16 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 	query := `SELECT DISTINCT
 		sie.ID as effectId,
 		CASE
-		    WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
-		    ELSE sn.Name_lang
+		WHEN s.NameSubtext_lang IS NOT NULL
+			AND TRIM(s.NameSubtext_lang) <> ''
+		THEN
+			(CASE
+			WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+			ELSE sn.Name_lang
+			END)
+			|| ' (' || s.NameSubtext_lang || ')'
+		WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+		ELSE sn.Name_lang
 		END AS name,
 		se.SpellID as spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,
@@ -834,7 +842,7 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
 			LEFT JOIN SpellMisc sm ON ie.SpellId = sm.SpellID
 			LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 70 OR i.ID = 22788 OR i.ID = 13442)
+			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 85 OR i.ID = 22788 OR i.ID = 13442)
 			AND s.Display_lang != ''
 			AND s.Display_lang NOT LIKE '%Test%'
 			AND s.Display_lang NOT LIKE 'QA%'
