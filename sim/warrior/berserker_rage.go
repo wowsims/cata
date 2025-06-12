@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 // Rather than update a variable somewhere for one effect (Fury's Unshackled Fury) just take a callback
@@ -13,11 +14,15 @@ type RageMultiplierCB func() float64
 func (war *Warrior) registerBerserkerRage() {
 
 	actionID := core.ActionID{SpellID: 18499}
+	duration := time.Second * 6
+	if war.Spec == proto.Spec_SpecFuryWarrior {
+		duration = time.Second * 8
+	}
 
 	war.BerserkerRageAura = war.RegisterAura(core.Aura{
 		Label:    "Berserker Rage",
 		ActionID: actionID,
-		Duration: time.Second * 6,
+		Duration: duration,
 	})
 
 	war.RegisterSpell(core.SpellConfig{

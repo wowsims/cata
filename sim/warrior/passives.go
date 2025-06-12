@@ -11,12 +11,16 @@ import (
 func (war *Warrior) registerEnrage() {
 	actionID := core.ActionID{SpellID: 12880}
 	rageMetrics := war.NewRageMetrics(actionID)
+	duration := time.Second * 6
+	if war.Spec == proto.Spec_SpecFuryWarrior {
+		duration = time.Second * 8
+	}
 
 	war.EnrageAura = war.RegisterAura(core.Aura{
 		Label:    "Enrage",
 		Tag:      EnrageTag,
 		ActionID: actionID,
-		Duration: 6 * time.Second,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			war.AddRage(sim, 10, rageMetrics)
 			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1

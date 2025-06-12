@@ -12,11 +12,11 @@ func (war *FuryWarrior) registerCrazedBerserker() {
 	war.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ProcMask:   core.ProcMaskMeleeOH,
-		FloatValue: 0.25,
+		FloatValue: 0.3,
 	})
 
-	war.AutoAttacks.MHConfig().DamageMultiplier *= 1.1
-	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.1
+	war.AutoAttacks.MHConfig().DamageMultiplier *= 1.15
+	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.15
 }
 
 func (war *FuryWarrior) registerFlurry() {
