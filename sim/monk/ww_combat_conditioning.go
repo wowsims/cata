@@ -3,15 +3,15 @@ package monk
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/cata"
+	"github.com/wowsims/mop/sim/common/shared"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 var combatConditioningActionID = core.ActionID{SpellID: 100784}.WithTag(2) // actual 128531
 
-func combatConditioningConfig(unit *core.Unit, isSEFClone bool) cata.IgniteConfig {
-	config := cata.IgniteConfig{
+func combatConditioningConfig(unit *core.Unit, isSEFClone bool) shared.IgniteConfig {
+	config := shared.IgniteConfig{
 		ActionID:           combatConditioningActionID,
 		DotAuraLabel:       "Blackout Kick (DoT)" + unit.Label,
 		DisableCastMetrics: true,
@@ -44,7 +44,7 @@ func (monk *Monk) registerCombatConditioning() {
 		return
 	}
 
-	cata.RegisterIgniteEffect(&monk.Unit, combatConditioningConfig(&monk.Unit, false))
+	shared.RegisterIgniteEffect(&monk.Unit, combatConditioningConfig(&monk.Unit, false))
 }
 
 func (pet *StormEarthAndFirePet) registerSEFCombatConditioning() {
@@ -52,5 +52,5 @@ func (pet *StormEarthAndFirePet) registerSEFCombatConditioning() {
 		return
 	}
 
-	cata.RegisterIgniteEffect(&pet.Unit, combatConditioningConfig(&pet.Unit, true))
+	shared.RegisterIgniteEffect(&pet.Unit, combatConditioningConfig(&pet.Unit, true))
 }

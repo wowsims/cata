@@ -155,7 +155,6 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 	// Example loop over your items
 	for _, parsed := range db.Items {
 		parsed.ItemEffect = dbc.MergeItemEffectsForAllStates(parsed)
-		db.MergeItem(parsed)
 
 		if TryParseOnUseEffect(parsed, groupMapOnUse) > EffectParseResultInvalid {
 			continue
