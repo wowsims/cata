@@ -135,7 +135,6 @@ func (war *FuryWarrior) registerUnshackledFury() {
 	})
 
 	war.EnrageAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-		masteryMod.GetFloatValue()
 		masteryMod.Activate()
 	})
 	war.EnrageAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
