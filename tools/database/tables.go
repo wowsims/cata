@@ -457,6 +457,7 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		COALESCE(sie.Name_lang, "")
 		FROM SpellEffect se
 		JOIN Spell s ON se.SpellID = s.ID
+		LEFT JOIN SpellScaling ss ON se.SpellID = ss.SpellID
 		JOIN SpellName sn ON se.SpellID = sn.ID
 		JOIN SpellItemEnchantment sie ON se.EffectMiscValue_0 = sie.ID
 		LEFT JOIN ItemEffect ie ON se.SpellID = ie.SpellID
@@ -464,7 +465,19 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		LEFT JOIN SkillLineAbility sla ON se.SpellID = sla.Spell
 		LEFT JOIN Item it ON ie.ParentItemId = it.ID
 		LEFT JOIN ItemSparse isp ON ie.ParentItemId = isp.ID
-		WHERE se.Effect = 53 GROUP BY sn.Name_lang, sie.ID`
+WHERE se.Effect = 53
+  AND (ss.MaxScalingLevel > 84 or ss.MaxScalingLevel is null)
+  AND (
+       ( sie.Field_1_15_3_55112_014 > 0
+         AND sla.ID               IS NOT NULL
+         AND sie.Field_1_15_3_55112_015 IS NOT NULL
+       )
+    OR
+       sie.Field_1_15_3_55112_014 = 0
+    OR
+       sie.Field_1_15_3_55112_014 = 773
+  )
+		GROUP BY name `
 	items, err := LoadRows(dbHelper.db, query, ScanEnchantsTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
