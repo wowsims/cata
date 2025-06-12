@@ -32,6 +32,7 @@ type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcTrigger struct {
 	Name              string
 	ActionID          ActionID
+	MetricsActionID   ActionID
 	Duration          time.Duration
 	Callback          AuraCallback
 	ProcMask          ProcMask
@@ -185,6 +186,7 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 		Label:           config.Name,
 		ActionIDForProc: config.ActionID,
 		Duration:        config.Duration,
+		ActionID:        config.MetricsActionID,
 	}
 	if config.Duration == 0 {
 		aura.Duration = NeverExpires
