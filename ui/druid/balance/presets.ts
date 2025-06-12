@@ -1,8 +1,8 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, PartyBuffs, Profession, RaidBuffs, Stat, UnitReference } from '../../core/proto/common.js';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, PartyBuffs, Profession, PseudoStat, RaidBuffs, Stat, UnitReference } from '../../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import StandardApl from './apls/standard.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 import T14Gear from './gear_sets/t14.gear.json';
@@ -23,9 +23,9 @@ export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 		[Stat.StatSpirit]: 1.27,
 		[Stat.StatSpellPower]: 1,
 		[Stat.StatHitRating]: 1.27,
-		[Stat.StatCritRating]: 0.41,
+		[Stat.StatCritRating]: 0.56,
 		[Stat.StatHasteRating]: 0.8,
-		[Stat.StatMasteryRating]: 0.56,
+		[Stat.StatMasteryRating]: 0.41,
 	}),
 );
 
@@ -50,19 +50,19 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 76085, 	// Flask of the Warm Sun
-	foodId: 74650, 		// Mogu Fish Stew
-	potId: 76093, 		// Potion of the Jade Serpent
-	prepotId: 76093, 	// Potion of the Jade Serpent
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	markOfTheWild: true,	// stats
-	darkIntent: true, 		// spell power
-	moonkinAura: true, 		// spell haste
-	leaderOfThePack: true, 	// crit %
-	blessingOfMight: true, 	// mastery
-	bloodlust: true,        // major haste
+	markOfTheWild: true, // stats
+	darkIntent: true, // spell power
+	moonkinAura: true, // spell haste
+	leaderOfThePack: true, // crit %
+	blessingOfMight: true, // mastery
+	bloodlust: true, // major haste
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
@@ -106,3 +106,32 @@ export const T16PresetBuild = PresetUtils.makePresetBuild('Balance T16', {
 	rotation: StandardRotation,
 	epWeights: StandardEPWeights,
 });
+
+export const BALANCE_BREAKPOINTS: UnitStatPresets[] = [
+	{
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
+			['9-tick MF/SF', 5.5618],
+			['10-tick MF/SF', 18.0272],
+			['11-tick MF/SF', 30.4347],
+			['12-tick MF/SF', 42.8444],
+			['13-tick MF/SF', 55.3489],
+			['14-tick MF/SF', 67.627],
+		]),
+	},
+];
+
+export const BALANCE_T14_4P_BREAKPOINTS: UnitStatPresets[] = [
+	{
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
+			['10-tick MF/SF', 3.2431],
+			['11-tick MF/SF', 14.1536],
+			['12-tick MF/SF', 24.9824],
+			['13-tick MF/SF', 35.9227],
+			['14-tick MF/SF', 46.7002],
+			['15-tick MF/SF', 57.6013],
+			['16-tick MF/SF', 68.4388],
+		]),
+	},
+];
