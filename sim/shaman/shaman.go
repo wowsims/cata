@@ -161,8 +161,9 @@ type Shaman struct {
 	UnleashFrost    *core.Spell
 	UnleashWind     *core.Spell
 
-	MaelstromWeaponAura *core.Aura
-	SearingFlames       *core.Spell
+	MaelstromWeaponAura           *core.Aura
+	AncestralSwiftnessInstantAura *core.Aura
+	SearingFlames                 *core.Spell
 
 	SearingFlamesMultiplier float64
 

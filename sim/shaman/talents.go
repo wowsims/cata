@@ -86,12 +86,17 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 	asCd := time.Second * 90
 
 	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskElementalBlast
-	ancestralSwiftnessInstantaura := shaman.RegisterAura(core.Aura{
+	shaman.AncestralSwiftnessInstantAura = shaman.RegisterAura(core.Aura{
 		Label:    "Ancestral swiftness",
 		ActionID: core.ActionID{SpellID: 16188},
 		Duration: core.NeverExpires,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Matches(affectedSpells) {
+				return
+			}
+			//If both AS and MW 5 stacks buff are active, only MW gets consumed.
+			//As i don't know which OnCastComplete is going to be executed first, check here if MW has not just been consumed/is active
+			if shaman.Spec == proto.Spec_SpecEnhancementShaman && (shaman.MaelstromWeaponAura.TimeInactive(sim) == 0 && (!shaman.MaelstromWeaponAura.IsActive() || shaman.MaelstromWeaponAura.GetStacks() == 5)) {
 				return
 			}
 			asCdTimer.Set(sim.CurrentTime + asCd)
@@ -114,7 +119,7 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			ancestralSwiftnessInstantaura.Activate(sim)
+			shaman.AncestralSwiftnessInstantAura.Activate(sim)
 		},
 	})
 

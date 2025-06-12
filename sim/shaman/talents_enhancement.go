@@ -169,6 +169,11 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 			if !spell.Matches(mwAffectedSpells) {
 				return
 			}
+			//If AS is active and MW < 5 stacks, do not consume MW stacks
+			//As i don't know which OnCastComplete is going to be executed first, check here if AS has not just been consumed/is active
+			if aura.GetStacks() < 5 && shaman.Talents.AncestralSwiftness && shaman.AncestralSwiftnessInstantAura.TimeInactive(sim) == 0 {
+				return
+			}
 			shaman.MaelstromWeaponAura.Deactivate(sim)
 		},
 	})
