@@ -220,8 +220,8 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 		procGroups = append(procGroups, &grp)
 	}
 
-	updateNames := func(entires []*Entry) {
-		for _, entry := range entires {
+	updateNames := func(entries []*Entry) {
+		for _, entry := range entries {
 			for _, variant := range entry.Variants {
 				if _, ok := needsStatPostfix[variant.Name]; ok {
 					item := db.Items[int32(variant.ID)]
