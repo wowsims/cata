@@ -54,7 +54,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '313232',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
@@ -85,10 +85,10 @@ export const OtherDefaults = {
 };
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId: 76084, // Flask of Spring Blossoms
+	foodId: 74648, // Sea Mist Rice Noodles
+	potId: 76089, // Virmen's Bite
+	prepotId: 76089, // Virmen's Bite
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({});

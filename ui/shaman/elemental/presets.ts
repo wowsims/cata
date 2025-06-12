@@ -53,22 +53,10 @@ export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/mop-classic/talent-calc and copy the numbers in the url.
-export const TalentsTotemDuration = {
+export const StandardTalents = {
 	name: 'Totem Duration',
 	data: SavedTalents.create({
-		talentsString: '',
-		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfLightningShield,
-			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-		}),
-	}),
-};
-
-export const TalentsImprovedShields = {
-	name: 'Improved Shields',
-	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '313232',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
@@ -80,9 +68,9 @@ export const TalentsImprovedShields = {
 export const TalentsAoE = {
 	name: 'AoE (4+)',
 	data: SavedTalents.create({
-		...TalentsTotemDuration.data,
+		...StandardTalents.data,
 		glyphs: Glyphs.create({
-			...TalentsTotemDuration.data.glyphs,
+			...StandardTalents.data.glyphs,
 			major2: ShamanMajorGlyph.GlyphOfChainLightning,
 		}),
 	}),
@@ -107,10 +95,10 @@ export const OtherDefaults = {
 };
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 });
 
 const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(
@@ -129,13 +117,13 @@ const ENCOUNTER_AOE = PresetUtils.makePresetEncounter(
 );
 
 export const P3_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('Default', {
-	talents: TalentsTotemDuration,
+	talents: StandardTalents,
 	rotation: ROTATION_PRESET_DEFAULT,
 	encounter: ENCOUNTER_SINGLE_TARGET,
 });
 
 export const P3_PRESET_BUILD_CLEAVE = PresetUtils.makePresetBuild('Cleave', {
-	talents: TalentsTotemDuration,
+	talents: StandardTalents,
 	rotation: ROTATION_PRESET_AOE,
 	encounter: ENCOUNTER_CLEAVE,
 });
