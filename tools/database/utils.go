@@ -94,39 +94,42 @@ func formatStrings(maxLength int, input []string) []string {
 	return result
 }
 
-func parseDungeonDifficultyMask(mask int) proto.DungeonDifficulty {
+func parseDungeonDifficultyMask(mask int, isRaid bool) proto.DungeonDifficulty {
 	// for negative masks take the 2 compliment value of the lower 8 bits
 	if mask < 0 {
 		mask = mask & 0xFF
 	}
 
-	// we only map to one difficulty so for now do the best match
-	if mask&dbc.LOOKING_FOR_RAID > 0 {
-		return proto.DungeonDifficulty_DifficultyRaid25RF
-	}
+	if isRaid {
+		// we only map to one difficulty so for now do the best match
+		if mask&dbc.LOOKING_FOR_RAID > 0 {
+			return proto.DungeonDifficulty_DifficultyRaid25RF
+		}
 
-	if mask&dbc.HEROIC_RAID_25_MAN > 0 {
-		return proto.DungeonDifficulty_DifficultyRaid25H
-	}
+		if mask&dbc.HEROIC_RAID_25_MAN > 0 {
+			return proto.DungeonDifficulty_DifficultyRaid25H
+		}
 
-	if mask&dbc.HEROIC_RAID_10_MAN > 0 {
-		return proto.DungeonDifficulty_DifficultyRaid10H
-	}
+		if mask&dbc.HEROIC_RAID_10_MAN > 0 {
+			return proto.DungeonDifficulty_DifficultyRaid10H
+		}
 
-	if mask&dbc.NORMAL_RAID_25_MAN > 0 {
-		return proto.DungeonDifficulty_DifficultyRaid25
-	}
+		if mask&dbc.NORMAL_RAID_25_MAN > 0 {
+			return proto.DungeonDifficulty_DifficultyRaid25
+		}
 
-	if mask&dbc.NORMAL_RAID_10_MAN > 0 {
-		return proto.DungeonDifficulty_DifficultyRaid10
-	}
+		if mask&dbc.NORMAL_RAID_10_MAN > 0 {
+			return proto.DungeonDifficulty_DifficultyRaid10
+		}
 
-	if mask&dbc.HEROIC_DUNGEON > 0 {
-		return proto.DungeonDifficulty_DifficultyHeroic
-	}
+	} else {
+		if mask&dbc.HEROIC_DUNGEON > 0 {
+			return proto.DungeonDifficulty_DifficultyHeroic
+		}
 
-	if mask&dbc.NORMAL_DUNGEON > 0 {
-		return proto.DungeonDifficulty_DifficultyNormal
+		if mask&dbc.NORMAL_DUNGEON > 0 {
+			return proto.DungeonDifficulty_DifficultyNormal
+		}
 	}
 
 	return proto.DungeonDifficulty_DifficultyUnknown
@@ -196,4 +199,23 @@ func SpellUsesStacks(spellId int, instance *dbc.DBC) bool {
 	}
 
 	return false
+}
+
+func GetEffectStatString(item *proto.UIItem) string {
+	if item.ItemEffect == nil {
+		return ""
+	}
+
+	stats := item.ItemEffect.ScalingOptions[int32(proto.ItemLevelState_Base)].Stats
+	var firstStat proto.Stat = proto.Stat_StatStrength
+	found := false
+	for k := range stats {
+		stat := proto.Stat(k)
+		if !found || stat < firstStat {
+			firstStat = stat
+			found = true
+		}
+	}
+
+	return firstStat.String()[4:]
 }

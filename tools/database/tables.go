@@ -1380,9 +1380,10 @@ func LoadAndWriteEnchantDescriptions(outputPath string, db *WowDatabase, instanc
 
 func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName string, err error) {
 	var (
-		mask       int
-		dropSource proto.DropSource
-		jiName     string
+		mask         int
+		dropSource   proto.DropSource
+		jiName       string
+		instanceType int
 	)
 	err = rows.Scan(
 		&itemID,
@@ -1391,12 +1392,13 @@ func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName
 		&dropSource.ZoneId,
 		&dropSource.OtherName,
 		&jiName,
+		&instanceType,
 	)
 	if err != nil {
 		return 0, nil, "", fmt.Errorf("scanning drop row: %w", err)
 	}
 
-	dropSource.Difficulty = parseDungeonDifficultyMask(mask)
+	dropSource.Difficulty = parseDungeonDifficultyMask(mask, instanceType == 2)
 	return itemID, &dropSource, jiName, nil
 }
 
@@ -1415,7 +1417,8 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 			at.ID
 		), 0)                                AS ZoneId,
 		je.Name_lang                     AS OtherName,
-		ji.Name_lang
+		ji.Name_lang,
+		Map.InstanceType
 		FROM JournalEncounterItem AS jei
 		INNER JOIN JournalEncounter AS je
 		ON je.ID = jei.JournalEncounterID
@@ -1426,6 +1429,7 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 			at.ZoneName       = ji.Name_lang
 			OR at.AreaName_lang  = ji.Name_lang
 		)
+		LEFT JOIN Map ON Map.ID = ji.MapID
 		GROUP BY jei.ItemID
     `
 

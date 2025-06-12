@@ -5,18 +5,18 @@
 export const MISSING_ITEM_EFFECTS = [
     75274, // Zen Alchemist Stone
     77530, // Ghost Iron Dragonling
-    81266, // Price of Progress (N)
+    81266, // Price of Progress (H)
     84373, // Dreadful Gladiator's Dreadplate Gauntlets (Season 12)
     84835, // Malevolent Gladiator's Dreadplate Gauntlets (LFR) (Season 12)
     85028, // Malevolent Gladiator's Dreadplate Gauntlets (Season 12 Elite)
     86518, // Yaungol Fire Carrier
     88149, // The Gloaming Blade
     88585, // Dislodged Stinger
-    91149, // Tyrannical Gladiator's Dreadplate Gauntlets (LFR) (Season 13)
+    91149, // Tyrannical Gladiator's Dreadplate Gauntlets (LFR) (Season 13) (Alliance)
     91150, // Tyrannical Gladiator's Dreadplate Gauntlets (Season 13 Elite)
     91502, // Malevolent Gladiator's Dreadplate Gauntlets (Season 13)
     93454, // Crafted Dreadful Gladiator's Dreadplate Gauntlets
-    94364, // Tyrannical Gladiator's Dreadplate Gauntlets (LFR) (Season 13)
+    94364, // Tyrannical Gladiator's Dreadplate Gauntlets (LFR) (Season 13) (Horde)
     94512, // Renataki's Soul Charm (N)
     94513, // Wushoolay's Final Choice (N)
     94514, // Horridon's Last Gasp (N)
@@ -73,10 +73,10 @@ export const MISSING_ITEM_EFFECTS = [
     96895, // Delicate Vial of the Sanguinaire (Heroic Thunderforged)
     96915, // Gaze of the Twins (Heroic Thunderforged)
     98785, // Crafted Malevolent Gladiator's Dreadplate Gauntlets
-    99807, // Tyrannical Gladiator's Dreadplate Gauntlets (Season 14)
-    100034, // Tyrannical Gladiator's Dreadplate Gauntlets (Season 14)
-    100245, // Grievous Gladiator's Dreadplate Gauntlets (Season 14)
-    100594, // Grievous Gladiator's Dreadplate Gauntlets (Season 14)
+    99807, // Tyrannical Gladiator's Dreadplate Gauntlets (Season 14) (Alliance)
+    100034, // Tyrannical Gladiator's Dreadplate Gauntlets (Season 14) (Horde)
+    100245, // Grievous Gladiator's Dreadplate Gauntlets (Season 14) (Alliance)
+    100594, // Grievous Gladiator's Dreadplate Gauntlets (Season 14) (Horde)
     101038, // Springrain Idol of Wisdom
     101102, // Mistdancer Idol of Wisdom
     101135, // Sunsoul Idol of Wisdom
@@ -102,10 +102,10 @@ export const MISSING_ITEM_EFFECTS = [
     102309, // Dysmorphic Samophlange of Discontinuity (N)
     102310, // Black Blood of Y'Shaarj (N)
     102311, // Ticking Ebon Detonator (N)
-    102650, // Prideful Gladiator's Dreadplate Gauntlets (LFR) (Season 15)
-    102847, // Grievous Gladiator's Dreadplate Gauntlets (Season 15)
-    103180, // Grievous Gladiator's Dreadplate Gauntlets (Season 15)
-    103377, // Prideful Gladiator's Dreadplate Gauntlets (LFR) (Season 15)
+    102650, // Prideful Gladiator's Dreadplate Gauntlets (LFR) (Season 15) (Alliance)
+    102847, // Grievous Gladiator's Dreadplate Gauntlets (Season 15) (Horde)
+    103180, // Grievous Gladiator's Dreadplate Gauntlets (Season 15) (Alliance)
+    103377, // Prideful Gladiator's Dreadplate Gauntlets (LFR) (Season 15) (Horde)
     103678, // Time-Lost Artifact
     104313, // Golden Moss
     104426, // Purified Bindings of Immerseus (H)

@@ -187,6 +187,7 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 
 	// Merge variants
 	var procGroups []*Group
+	var needsStatPostfix map[string]bool = map[string]bool{}
 	for _, grp := range groupMapProc {
 		newEntries := []*Entry{}
 		entryGroupings := map[string]*Entry{}
@@ -215,6 +216,7 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 			if !added {
 				groupName := entry.Variants[0].Name
 				if idx > 0 {
+					needsStatPostfix[groupName] = true
 					groupName += "(" + strconv.FormatInt(idx, 10) + ")"
 				}
 
@@ -230,6 +232,11 @@ func GenerateItemEffects(instance *dbc.DBC, iconsMap map[int]string, db *WowData
 	updateNames := func(entires []*Entry) {
 		for _, entry := range entires {
 			for _, variant := range entry.Variants {
+				if _, ok := needsStatPostfix[variant.Name]; ok {
+					item := db.Items[int32(variant.ID)]
+					variant.Name += " - " + GetEffectStatString(item)
+				}
+
 				variant.Name += BuildItemDifficultyPostfix(itemSources, variant.ID, instance)
 			}
 		}
@@ -260,6 +267,14 @@ func BuildItemDifficultyPostfix(itemSources map[int][]*proto.DropSource, itemId 
 	if item, ok := instance.Items[itemId]; ok {
 		if len(item.NameDescription) > 0 && item.NameDescription != "Heroic" {
 			difficultyPostfix += " (" + item.NameDescription + ")"
+		}
+
+		if item.Flags1.Has(dbc.HORDE_SPECIFIC) {
+			difficultyPostfix += " (Horde)"
+		}
+
+		if item.Flags1.Has(dbc.ALLIANCE_SPECIFIC) {
+			difficultyPostfix += " (Alliance)"
 		}
 	}
 
@@ -315,18 +330,7 @@ func TryParseOnUseEffect(parsed *proto.UIItem, item dbc.Item, groupMap map[strin
 			return EffectParseResultSuccess
 		}
 
-		stats := parsed.ItemEffect.ScalingOptions[int32(proto.ItemLevelState_Base)].Stats
-		var firstStat proto.Stat = proto.Stat_StatStrength
-		found := false
-		for k := range stats {
-			stat := proto.Stat(k)
-			if !found || stat < firstStat {
-				firstStat = stat
-				found = true
-			}
-		}
-
-		groupName := firstStat.String()
+		groupName := GetEffectStatString(parsed)
 		grp, exists := groupMap[groupName]
 		if !exists {
 			grp = Group{Name: groupName}
