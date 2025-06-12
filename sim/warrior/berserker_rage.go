@@ -13,7 +13,6 @@ type RageMultiplierCB func() float64
 func (war *Warrior) registerBerserkerRage() {
 
 	actionID := core.ActionID{SpellID: 18499}
-	rageMetrics := war.NewRageMetrics(actionID)
 
 	war.BerserkerRageAura = war.RegisterAura(core.Aura{
 		Label:    "Berserker Rage",
@@ -34,7 +33,7 @@ func (war *Warrior) registerBerserkerRage() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			war.AddRage(sim, 10, rageMetrics)
+
 			war.EnrageAura.Deactivate(sim)
 			war.EnrageAura.Activate(sim)
 			war.BerserkerRageAura.Activate(sim)

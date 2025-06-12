@@ -86,7 +86,6 @@ type Warrior struct {
 
 	// Current state
 	Stance                  Stance
-	EnrageMultiplier        float64
 	EnrageMasteryMultiplier float64
 	CriticalBlockChance     []float64 // Can be gained as non-prot via certain talents and spells
 
