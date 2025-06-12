@@ -29,10 +29,35 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	var statValue string
 	var socketTypes string
 	var statPercentEditor string
-	err := rows.Scan(&raw.Id, &raw.Name, &raw.InventoryType, &raw.ItemDelay, &raw.OverallQuality, &raw.DmgVariance,
+	err := rows.Scan(
+		&raw.Id,
+		&raw.Name,
+		&raw.InventoryType,
+		&raw.ItemDelay,
+		&raw.OverallQuality,
+		&raw.DmgVariance,
 		&raw.ItemLevel,
-		&statValue, &bonusStatString,
-		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.Flags1, &raw.Flags2, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
+		&statValue,
+		&bonusStatString,
+		&statPercentEditor,
+		&socketTypes,
+		&raw.SocketEnchantmentId,
+		&raw.Flags0,
+		&raw.Flags1,
+		&raw.Flags2,
+		&raw.FDID,
+		&raw.ItemSetName,
+		&raw.ItemSetId,
+		&raw.ClassMask,
+		&raw.RaceMask,
+		&raw.QualityModifier,
+		&randomSuffixOptions,
+		&statPercentageOfSocket,
+		&bonusAmountCalculated,
+		&raw.ItemClass,
+		&raw.ItemSubClass,
+		&raw.NameDescription,
+	)
 	if err != nil {
 		panic(err)
 	}
@@ -101,7 +126,8 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 			 s.StatPercentageOfSocket,
 			 s.StatModifier_bonusAmount,
 			 i.ClassID,
-			 i.SubClassID
+			 i.SubClassID,
+			 COALESCE(ind.Description_lang, '')
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
@@ -110,6 +136,7 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
 		LEFT JOIN ItemSet itemset ON s.ItemSet = itemset.ID
 		LEFT JOIN ItemArmorQuality iaq ON s.ItemLevel = iaq.ID
+		LEFT JOIN ItemNameDescription as ind ON i.ID = ind.Field_5_5_0_61000_002
 		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
 		`
 
@@ -457,6 +484,7 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		COALESCE(sie.Name_lang, "")
 		FROM SpellEffect se
 		JOIN Spell s ON se.SpellID = s.ID
+		LEFT JOIN SpellScaling ss ON se.SpellID = ss.SpellID
 		JOIN SpellName sn ON se.SpellID = sn.ID
 		JOIN SpellItemEnchantment sie ON se.EffectMiscValue_0 = sie.ID
 		LEFT JOIN ItemEffect ie ON se.SpellID = ie.SpellID
@@ -464,7 +492,19 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		LEFT JOIN SkillLineAbility sla ON se.SpellID = sla.Spell
 		LEFT JOIN Item it ON ie.ParentItemId = it.ID
 		LEFT JOIN ItemSparse isp ON ie.ParentItemId = isp.ID
-		WHERE se.Effect = 53 GROUP BY sn.Name_lang, sie.ID`
+WHERE se.Effect = 53
+  AND (ss.MaxScalingLevel > 84 or ss.MaxScalingLevel is null)
+  AND (
+       ( sie.Field_1_15_3_55112_014 > 0
+         AND sla.ID               IS NOT NULL
+         AND sie.Field_1_15_3_55112_015 IS NOT NULL
+       )
+    OR
+       sie.Field_1_15_3_55112_014 = 0
+    OR
+       sie.Field_1_15_3_55112_014 = 773
+  )
+		GROUP BY name `
 	items, err := LoadRows(dbHelper.db, query, ScanEnchantsTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
@@ -1350,4 +1390,100 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 		log.Fatalf("Error writing file: %v", err)
 	}
 	return sourcesByItem, namesByZone, nil
+}
+
+func ScanCraftedItems(rows *sql.Rows) (itemID int, ds *proto.CraftedSource, err error) {
+	var (
+		profId  int
+		crafted proto.CraftedSource
+	)
+
+	err = rows.Scan(
+		&itemID,
+		&profId,
+		&crafted.SpellId,
+	)
+	crafted.Profession = dbc.GetProfession(profId)
+	if err != nil {
+		return 0, nil, fmt.Errorf("scanning drop row: %w", err)
+	}
+	return itemID, &crafted, nil
+}
+
+func LoadCraftedItems(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.CraftedSource,
+) {
+	const query = `
+		SELECT se.EffectItemType, sla.SkillLine, sla.Spell FROM SkillLineAbility sla
+		LEFT JOIN SpellEffect se ON sla.Spell == se.SpellID
+		WHERE se.Effect = 24
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.CraftedSource)
+
+	for rows.Next() {
+		itemID, ds, scanErr := ScanCraftedItems(rows)
+		if scanErr != nil {
+			return nil
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+	}
+	if err = rows.Err(); err != nil {
+		return nil
+	}
+
+	return sourcesByItem
+}
+
+func ScanRepItems(rows *sql.Rows) (itemID int, ds *proto.RepSource, err error) {
+	var (
+		rep proto.RepSource
+	)
+
+	err = rows.Scan(
+		&itemID,
+		&rep.RepFactionId,
+		&rep.RepLevel,
+	)
+	if err != nil {
+		return 0, nil, fmt.Errorf("scanning rep row: %w", err)
+	}
+	return itemID, &rep, nil
+}
+
+func LoadRepItems(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.RepSource,
+) {
+	const query = `
+		SELECT isp.ID, fa.ID, isp.MinReputation FROM ItemSparse isp
+		LEFT JOIN Faction fa on fa.ID = isp.MinFactionID
+		WHERE fa.ParentFactionID=1245
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.RepSource)
+
+	for rows.Next() {
+		itemID, ds, scanErr := ScanRepItems(rows)
+		if scanErr != nil {
+			return nil
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+	}
+	if err = rows.Err(); err != nil {
+		return nil
+	}
+	fmt.Println("Loaded rep items", len(sourcesByItem))
+	return sourcesByItem
 }

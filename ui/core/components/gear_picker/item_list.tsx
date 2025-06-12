@@ -29,7 +29,7 @@ import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';
 import { SelectorModalTabs } from './selector_modal';
-import { createHeroicLabel } from './utils';
+import { createNameDescriptionLabel } from './utils';
 
 export interface ItemData<T extends ItemListType> {
 	item: T;
@@ -40,7 +40,7 @@ export interface ItemData<T extends ItemListType> {
 	phase: number;
 	ilvl?: number;
 	ignoreEPFilter: boolean;
-	heroic: boolean;
+	nameDescription: string;
 	onEquip: (eventID: EventID, item: T) => void;
 }
 
@@ -487,7 +487,7 @@ export default class ItemList<T extends ItemListType> {
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
 							{typeof itemData.name === 'string' ? itemData.name : itemData.name.cloneNode(true)}
-							{itemData.heroic && createHeroicLabel()}
+							{itemData.nameDescription && createNameDescriptionLabel(itemData.nameDescription)}
 						</label>
 					</a>
 				</div>

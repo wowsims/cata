@@ -22,6 +22,7 @@
 	"Tables": [
 		"Spell",
 		"Item",
+		"Faction",
 		"GemProperties",
 		"ItemSet",
 		"ItemSetSpell",
