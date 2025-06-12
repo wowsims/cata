@@ -32,7 +32,9 @@ func (mage *Mage) registerMirrorImageCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.mirrorImage.EnableWithTimeout(sim, mage.mirrorImage, time.Second*30)
+			for _, mirrorImage := range mage.mirrorImages {
+				mirrorImage.EnableWithTimeout(sim, mirrorImage, time.Second*30)
+			}
 		},
 	})
 
@@ -52,6 +54,8 @@ type MirrorImage struct {
 	Fireblast   *core.Spell
 	Fireball    *core.Spell
 	ArcaneBlast *core.Spell
+
+	arcaneChargesAura *core.Aura
 
 	hasGlyph bool
 }
@@ -140,7 +144,7 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 1,
+			BaseCostPercent: .1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -149,7 +153,7 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 			},
 		},
 
-		DamageMultiplier: 3,
+		DamageMultiplier: 1,
 		CritMultiplier:   mi.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: frostBoltCoefficient,
@@ -168,6 +172,11 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 // If Fire spec with glyph, will chain cast Fireball
 // *******************************************************
 func (mi *MirrorImage) registerFireballSpell() {
+
+	fireBallCoefficient := .34
+	fireBallScaling := .33
+	fireBallVariance := 0.24
+
 	mi.Fireball = mi.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 88082}, // confirmed via logs
 		SpellSchool:  core.SpellSchoolFire,
@@ -175,7 +184,7 @@ func (mi *MirrorImage) registerFireballSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 1,
+			BaseCostPercent: .1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -187,10 +196,10 @@ func (mi *MirrorImage) registerFireballSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   mi.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: fireBallCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//3x damage for 3 mirror images
-			baseDamage := (317 + 0.338*spell.SpellPower()) * 3
+			baseDamage := mi.CalcAndRollDamageRange(sim, fireBallScaling, fireBallVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
@@ -203,32 +212,69 @@ func (mi *MirrorImage) registerFireballSpell() {
 // If Arcane spec with glyph, will chain cast Arcane Blast
 // *******************************************************
 func (mi *MirrorImage) registerArcaneBlastSpell() {
+
+	arcaneBlastCoefficient := .28
+	arcaneBlastScaling := .26
+	arcaneBlastVariance := 0.15
+
 	mi.ArcaneBlast = mi.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 88084}, //Confirmed via logs
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ActionID:       core.ActionID{SpellID: 88084}, //Confirmed via logs
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: MageMirrorImageSpellArcaneBlast,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 7,
+			BaseCostPercent: .1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 3,
+				CastTime: time.Millisecond * 2500,
 			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mi.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: arcaneBlastCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//3x damage for 3 mirror images
-			baseDamage := (257.76 + 0.275*spell.SpellPower()) * 3 //unsure how to get MI scaling, just used mage's # but can't call it certain
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
+			baseDamage := mi.CalcAndRollDamageRange(sim, arcaneBlastScaling, arcaneBlastVariance)
+			result := spell.CalcAndDealDamage(sim, mi.CurrentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				mi.arcaneChargesAura.Activate(sim)
+				mi.arcaneChargesAura.AddStack(sim)
+			}
+		},
+	})
+
+	abDamageMod := mi.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageMirrorImageSpellArcaneBlast,
+		FloatValue: .5,
+		Kind:       core.SpellMod_DamageDone_Flat,
+	})
+	abCostMod := mi.AddDynamicMod(core.SpellModConfig{
+		ClassMask: MageMirrorImageSpellArcaneBlast,
+		IntValue:  150,
+		Kind:      core.SpellMod_PowerCost_Pct,
+	})
+
+	mi.arcaneChargesAura = mi.GetOrRegisterAura(core.Aura{
+		Label:     "Mirror Images: Arcane Charges Aura",
+		ActionID:  core.ActionID{SpellID: 36032}, //idk if it gets its own
+		Duration:  time.Second * 10,
+		MaxStacks: 4,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			abDamageMod.Activate()
+			abCostMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			abDamageMod.Deactivate()
+			abCostMod.Deactivate()
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			abDamageMod.UpdateFloatValue(.5 * float64(newStacks))
+			abCostMod.UpdateIntValue(150 * newStacks)
 		},
 	})
 }

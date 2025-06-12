@@ -15,7 +15,7 @@ type Mage struct {
 	FireOptions   *proto.FireMage_Options
 	FrostOptions  *proto.FrostMage_Options
 
-	mirrorImage *MirrorImage
+	mirrorImages []*MirrorImage
 
 	Combustion           *core.Spell
 	Ignite               *core.Spell
@@ -137,7 +137,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString)
 
-	mage.mirrorImage = mage.NewMirrorImage()
+	mage.mirrorImages = []*MirrorImage{mage.NewMirrorImage(), mage.NewMirrorImage(), mage.NewMirrorImage()}
 	mage.EnableManaBar()
 
 	mage.Icicles = make([]float64, 0)
@@ -201,6 +201,7 @@ const (
 	MageSpellScorch
 	MageSpellCombustion
 	MageSpellCombustionApplication
+	MageMirrorImageSpellArcaneBlast
 	MageWaterElementalSpellWaterBolt
 	MageSpellLast
 	MageSpellsAll        = MageSpellLast<<1 - 1
