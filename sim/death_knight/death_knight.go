@@ -113,7 +113,7 @@ func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 // }
 
 func (dk *DeathKnight) Initialize() {
-	// dk.registerAntiMagicShell()
+	dk.registerAntiMagicShell()
 	dk.registerArmyOfTheDead()
 	dk.registerBloodBoil()
 	dk.registerBloodPlague()
