@@ -129,7 +129,7 @@ func (war *FuryWarrior) registerSingleMindedFuryOrTitansGrip() {
 func (war *FuryWarrior) registerUnshackledFury() {
 	masteryPoints := war.GetMasteryBonusMultiplier()
 	masteryMod := war.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: masteryPoints,
 		School:     core.SpellSchoolPhysical,
 	})
