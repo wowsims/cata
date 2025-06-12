@@ -43,7 +43,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		},
 	})
 
-	dpm := paladin.AutoAttacks.NewPPMManager(15, core.ProcMaskMeleeMH)
+	dpm := paladin.NewLegacyPPMManager(15, core.ProcMaskMeleeMH)
 	paladin.SealOfInsightAura = paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Insight" + paladin.Label,
 		Tag:      "Seal",

@@ -119,5 +119,4 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62670, // Beer-Basted Crocolisk
 	potId: 58146, // Golemblood Potion
 	prepotId: 58146, // Golemblood Potion
-	tinkerId: 82174, // Synapse Springs
 });

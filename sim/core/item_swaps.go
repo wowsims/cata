@@ -452,6 +452,7 @@ func toItem(itemSpec *proto.ItemSpec) Item {
 		ID:            itemSpec.Id,
 		Gems:          itemSpec.Gems,
 		Enchant:       itemSpec.Enchant,
+		Tinker:        itemSpec.Tinker,
 		RandomSuffix:  itemSpec.RandomSuffix,
 		Reforging:     itemSpec.Reforging,
 		UpgradeStep:   itemSpec.UpgradeStep,
