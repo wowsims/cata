@@ -407,6 +407,9 @@ func processItems(instance *dbc.DBC, iconsMap map[int]string, names map[int]stri
 	sourceMap := make(map[string][]*proto.UIItemSource, len(instance.Items))
 	parsedItems := make([]*proto.UIItem, 0, len(instance.Items))
 	for _, item := range instance.Items {
+		if item.Flags2&0x10 != 0 && (item.StatAlloc[0] > 0 && item.StatAlloc[0] < 600) {
+			continue
+		}
 		parsed := item.ToUIItem()
 		if parsed.Icon == "" {
 			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
