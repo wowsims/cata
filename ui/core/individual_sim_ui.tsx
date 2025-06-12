@@ -337,7 +337,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				ItemNotice.registerSetBonusNotices(this.sim.db);
 				this.loadSettings();
 
-				if (this.player.getPlayerSpec().isHealingSpec) {
+				if (this.player.getPlayerSpec().isHealingSpec && !isDevMode()) {
 					alert(Tooltips.HEALING_SIM_DISCLAIMER);
 				}
 			});
