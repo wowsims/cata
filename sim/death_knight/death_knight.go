@@ -12,9 +12,8 @@ import (
 
 // Damage Done By Caster setup
 const (
-	DDBC_MercilessCombat   int = 0
-	DDBC_EbonPlaguebringer     = iota
-	DDBC_RuneOfRazorice
+	DDBC_MercilessCombat int = 0
+	DDBC_RuneOfRazorice      = iota
 
 	DDBC_Total
 )
@@ -43,11 +42,19 @@ type DeathKnight struct {
 	RuneWeapon *RuneWeaponPet
 	Bloodworm  []*BloodwormPet
 
+	BloodPresenceSpell *core.Spell
+	BloodPresenceAura  *core.Aura
+
+	FrostPresenceSpell *core.Spell
+	FrostPresenceAura  *core.Aura
+
+	UnholyPresenceSpell *core.Spell
+	UnholyPresenceAura  *core.Aura
+
 	PestilenceSpell *core.Spell
 	RuneTapSpell    *core.Spell
 
-	ConversionAura     *core.Aura
-	UnholyPresenceAura *core.Aura
+	ConversionAura *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -230,6 +237,7 @@ const (
 	DeathKnightSpellArmyOfTheDead int64 = 1 << iota
 	DeathKnightSpellBloodBoil
 	DeathKnightSpellBloodPlague
+	DeathKnightSpellBloodPresence
 	DeathKnightSpellBloodStrike
 	DeathKnightSpellBloodTap
 	DeathKnightSpellBoneShield
@@ -247,6 +255,7 @@ const (
 	DeathKnightSpellEmpowerRuneWeapon
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellFrostFever
+	DeathKnightSpellFrostPresence
 	DeathKnightSpellFrostStrike
 	DeathKnightSpellHeartStrike
 	DeathKnightSpellHornOfWinter
@@ -268,6 +277,7 @@ const (
 	DeathKnightSpellSummonGargoyle
 	DeathKnightSpellUnholyBlight
 	DeathKnightSpellUnholyFrenzy
+	DeathKnightSpellUnholyPresence
 	DeathKnightSpellVampiricBlood
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
