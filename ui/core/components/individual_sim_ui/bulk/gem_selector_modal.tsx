@@ -65,7 +65,7 @@ export default class GemSelectorModal extends BaseModal {
 						name: gem.name,
 						quality: gem.quality,
 						phase: gem.phase,
-						heroic: false,
+						nameDescription: '',
 						baseEP: this.simUI.player.computeStatsEP(new Stats(gem.stats)),
 						ignoreEPFilter: true,
 						onEquip: noop,

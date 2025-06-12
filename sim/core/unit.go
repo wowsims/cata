@@ -33,7 +33,8 @@ const (
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult, isPeriodic bool)
 type DynamicHealingTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
 
-type GetSpellpowerValue func(spell *Spell) float64
+type GetSpellPowerValue func(spell *Spell) float64
+type GetAttackPowerValue func(spell *Spell) float64
 
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
@@ -197,11 +198,16 @@ type Unit struct {
 	// Used for reacting to transient stat changes if a spec needs if (e.g. for caching snapshotting calculations)
 	OnTemporaryStatsChanges []OnTemporaryStatsChange
 
-	GetSpellPowerValue GetSpellpowerValue
+	GetSpellPowerValue GetSpellPowerValue
+
+	GetAttackPowerValue GetAttackPowerValue
 }
 
-func (unit *Unit) getSpellpowerValueImpl(spell *Spell) float64 {
+func (unit *Unit) getSpellPowerValueImpl(spell *Spell) float64 {
 	return unit.stats[stats.SpellPower] + spell.BonusSpellPower
+}
+func (unit *Unit) getAttackPowerValueImpl(spell *Spell) float64 {
+	return unit.stats[stats.AttackPower]
 }
 
 // Units can be disabled for several reasons:
@@ -646,7 +652,11 @@ func (unit *Unit) finalize() {
 	unit.AutoAttacks.finalize()
 
 	if unit.GetSpellPowerValue == nil {
-		unit.GetSpellPowerValue = unit.getSpellpowerValueImpl
+		unit.GetSpellPowerValue = unit.getSpellPowerValueImpl
+	}
+
+	if unit.GetAttackPowerValue == nil {
+		unit.GetAttackPowerValue = unit.getAttackPowerValueImpl
 	}
 
 	for _, spell := range unit.Spellbook {
