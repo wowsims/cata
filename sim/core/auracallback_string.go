@@ -16,7 +16,7 @@ func _() {
 	_ = x[CallbackOnPeriodicHealDealt-32]
 	_ = x[CallbackOnCastComplete-64]
 	_ = x[CallbackOnApplyEffects-128]
-	_ = x[CalbackLast-256]
+	_ = x[CallbackLast-256]
 }
 
 const (

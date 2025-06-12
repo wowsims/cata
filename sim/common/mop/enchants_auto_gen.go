@@ -20,8 +20,8 @@ func RegisterAllEnchants() {
 	//	EnchantID: 4441,
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Outcome:   core.OutcomeCrit,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -37,7 +37,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -52,7 +52,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -67,7 +67,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -82,7 +82,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -98,7 +98,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -114,7 +114,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -130,7 +130,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// TODO: Manual implementation required
@@ -145,7 +145,7 @@ func RegisterAllEnchants() {
 	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   false,
+	//	Harmful:   true,
 	// })
 	
 	// Permanently attaches Lord Blastington's special scope to a ranged weapon, sometimes increasing Agility
@@ -158,7 +158,7 @@ func RegisterAllEnchants() {
 		Callback:  core.CallbackOnSpellHitDealt,
 		ProcMask:  core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial,
 		Outcome:   core.OutcomeLanded,
-		Harmful:   false,
+		Harmful:   true,
 	})
 	
 	// Permanently attaches a mirrored scope to a ranged weapon, sometimes increases critical strike by 900 for
@@ -171,7 +171,7 @@ func RegisterAllEnchants() {
 		Callback:  core.CallbackOnSpellHitDealt,
 		ProcMask:  core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial,
 		Outcome:   core.OutcomeLanded,
-		Harmful:   false,
+		Harmful:   true,
 	})
 	
 	// Embroiders a subtle pattern of light into your cloak, giving you a chance to increase your Intellect by
@@ -185,7 +185,7 @@ func RegisterAllEnchants() {
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:   core.OutcomeLanded,
-		Harmful:   false,
+		Harmful:   true,
 	})
 	
 	// Embroiders a magical pattern into your cloak, giving you a chance to increase your Spirit by 3000 for
@@ -199,7 +199,7 @@ func RegisterAllEnchants() {
 		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 		Outcome:   core.OutcomeLanded,
-		Harmful:   false,
+		Harmful:   true,
 	})
 	
 	// Embroiders a magical pattern into your cloak, causing your damaging melee and ranged attacks to sometimes
@@ -213,20 +213,6 @@ func RegisterAllEnchants() {
 		Callback:  core.CallbackOnSpellHitDealt,
 		ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial,
 		Outcome:   core.OutcomeLanded,
-		Harmful:   false,
-	})
-	
-	// Embroiders a subtle pattern of light into your cloak, giving you a chance to increase your Intellect by
-	// 2000 for 15s when casting a spell.
-	// 
-	// Embroidering your cloak will cause it to become soulbound and requires the Tailoring profession to remain
-	// active.
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:      "Lightweave Embroidery (Rank 3)",
-		EnchantID: 5110,
-		Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-		ProcMask:  core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
-		Outcome:   core.OutcomeLanded,
-		Harmful:   false,
+		Harmful:   true,
 	})
 }

@@ -28,7 +28,6 @@ func RegisterAllOnUseCds() {
 	// CritRating
 	shared.NewSimpleStatActive(86044) // Jade Magistrate Figurine
 	shared.NewSimpleStatActive(86773) // Jade Magistrate Figurine (Celestial)
-	shared.NewSimpleStatActive(87080) // Jade Magistrate Figurine
 	shared.NewSimpleStatActive(89081) // Blossom of Pure Snow
 	shared.NewSimpleStatActive(93253) // Woundripper Medallion (Horde)
 	shared.NewSimpleStatActive(93256) // Skullrender Medallion (Horde)
@@ -46,7 +45,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(81181) // Heart of Fire (H)
 	shared.NewSimpleStatActive(87571) // Brawler's Statue
 	shared.NewSimpleStatActive(94507) // Steadfast Talisman of the Shado-Pan Assault
-	shared.NewSimpleStatActive(102316) // 5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Tank Trinket (5)
 	shared.NewSimpleStatActive(103690) // Resolve of Niuzao
 	shared.NewSimpleStatActive(103990) // Resolve of Niuzao (Timeless)
 
@@ -55,8 +53,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(86043) // Jade Bandit Figurine
 	shared.NewSimpleStatActive(86771) // Jade Charioteer Figurine (Celestial)
 	shared.NewSimpleStatActive(86772) // Jade Bandit Figurine (Celestial)
-	shared.NewSimpleStatActive(87079) // Jade Bandit Figurine
-	shared.NewSimpleStatActive(87082) // Jade Charioteer Figurine
 	shared.NewSimpleStatActive(89082) // Hawkmaster's Talon
 	shared.NewSimpleStatActive(89083) // Iron Belly Wok
 	shared.NewSimpleStatActive(93342) // Dominator's Arcane Badge (Horde)
@@ -139,7 +135,6 @@ func RegisterAllOnUseCds() {
 	// MasteryRating
 	shared.NewSimpleStatActive(86046) // Jade Warlord Figurine
 	shared.NewSimpleStatActive(86775) // Jade Warlord Figurine (Celestial)
-	shared.NewSimpleStatActive(87083) // Jade Warlord Figurine
 	shared.NewSimpleStatActive(89079) // Lao-Chin's Liquid Courage
 	shared.NewSimpleStatActive(93257) // Medallion of Mystifying Vapors (Horde)
 	shared.NewSimpleStatActive(93262) // Vaporshield Medallion (Alliance)
@@ -169,7 +164,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(81264) // Vial of Ichorous Blood (H)
 	shared.NewSimpleStatActive(86045) // Jade Courtesan Figurine
 	shared.NewSimpleStatActive(86774) // Jade Courtesan Figurine (Celestial)
-	shared.NewSimpleStatActive(87081) // Jade Courtesan Figurine
 	shared.NewSimpleStatActive(89080) // Scroll of Revered Ancestors
 	shared.NewSimpleStatActive(93255) // Cutstitcher Medallion (Horde)
 	shared.NewSimpleStatActive(93260) // Heartwarmer Medallion (Alliance)
@@ -177,7 +171,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(93348) // Mending Badge of the Shieldwall (Alliance)
 	shared.NewSimpleStatActive(97305) // Jade Courtesan Figurine
 	shared.NewSimpleStatActive(100963) // Vial of Ichorous Blood (N)
-	shared.NewSimpleStatActive(102314) // 5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Int Spirit Trinket (5)
 	shared.NewSimpleStatActive(103688) // Contemplation of Chi-Ji
 	shared.NewSimpleStatActive(103988) // Contemplation of Chi-Ji (Timeless)
 

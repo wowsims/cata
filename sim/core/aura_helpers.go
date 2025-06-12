@@ -25,7 +25,7 @@ const (
 	CallbackOnCastComplete
 	CallbackOnApplyEffects
 
-	CalbackLast
+	CallbackLast
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)

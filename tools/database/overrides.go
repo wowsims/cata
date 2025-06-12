@@ -523,6 +523,16 @@ var ItemDenyList = map[int32]struct{}{
 	78508: {}, // Woundlicker Cover - 410
 	78619: {}, // Zeherah's Dragonskull Crown - 384
 	78536: {}, // Zeherah's Dragonskull Crown - 410
+
+	// MOP
+	87080: {}, // HC Trash Jade Magistrate Figurine - 502
+	87079: {}, // HC Trash Jade Bandit Figurine - 502
+	87082: {}, // HC Trash Jade Charioteer Figurine - 502
+	87081: {}, // HC Trash Jade Courteasan Figurine - 502
+	87083: {}, // HC Trash Jade Warlord Figurine - 502
+	97304: {}, // Empty Frut Barrel - 463
+	98019: {}, // Light of the Cosmos
+	98050: {}, // Light of the Cosmos
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
@@ -883,6 +893,7 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`zOLD`),
 	regexp.MustCompile(`Archaic Spell`),
 	regexp.MustCompile(`Well Repaired`),
+	regexp.MustCompile(`Boss X`),
 }
 
 // Allows manual overriding for Gem fields in case WowHead is wrong.
@@ -918,4 +929,5 @@ var EnchantDenyList = map[int32]struct{}{
 	4671: {}, // Kyle's Test Enchantment
 	4687: {}, // Enchant Weapon - Ninja (TEST VERSION)
 	4717: {}, // Enchant Weapon - Pandamonium (DNT)
+	5110: {}, // Lightweave Embroidery - Junk
 }

@@ -124,6 +124,7 @@ func resolveStatsSpell(spellID int) int {
 			return spellID
 		}
 	}
+
 	// If we cant resolve the spell in the first loop, we follow proc triggers downwards
 	for _, se := range dbcInstance.SpellEffects[spellID] {
 		switch se.EffectAura {
@@ -140,7 +141,7 @@ func resolveTriggerType(topType, spellID int) int {
 	}
 	for _, se := range dbcInstance.SpellEffects[spellID] {
 		if se.EffectAura == A_PROC_TRIGGER_SPELL || se.EffectAura == A_PROC_TRIGGER_SPELL_WITH_VALUE {
-			return resolveTriggerType(ITEM_SPELLTRIGGER_CHANCE_ON_HIT, se.EffectTriggerSpell)
+			return ITEM_SPELLTRIGGER_CHANCE_ON_HIT
 		}
 	}
 	return topType

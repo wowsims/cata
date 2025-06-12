@@ -20,7 +20,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackEmpty,
 	//	ProcMask: core.ProcMaskEmpty,
 	//	Outcome:  core.OutcomeEmpty,
-	//	Harmful:  false
+	//	Harmful:  true
 	// })
 	
 	// TODO: Manual implementation required
@@ -32,7 +32,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitTaken,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 94518, ItemName: "Delicate Vial of the Sanguinaire (N)"},
 	//	{ItemID: 95779, ItemName: "Delicate Vial of the Sanguinaire (LFR) (Celestial)"},
@@ -51,7 +51,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 94519, ItemName: "Primordius' Talisman of Rage (N)"},
 	//	{ItemID: 95757, ItemName: "Primordius' Talisman of Rage (LFR) (Celestial)"},
@@ -70,7 +70,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 94522, ItemName: "Talisman of Bloodlust (N)"},
 	//	{ItemID: 95748, ItemName: "Talisman of Bloodlust (LFR) (Celestial)"},
@@ -89,7 +89,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeCrit,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 94529, ItemName: "Gaze of the Twins (N)"},
 	//	{ItemID: 95799, ItemName: "Gaze of the Twins (LFR) (Celestial)"},
@@ -108,7 +108,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102292, ItemName: "Assurance of Consequence (N)"},
 	//	{ItemID: 104476, ItemName: "Assurance of Consequence (H)"},
@@ -127,7 +127,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102293, ItemName: "Purified Bindings of Immerseus (N)"},
 	//	{ItemID: 104426, ItemName: "Purified Bindings of Immerseus (H)"},
@@ -147,7 +147,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102294, ItemName: "Nazgrim's Burnished Insignia (N)"},
 	//	{ItemID: 104553, ItemName: "Nazgrim's Burnished Insignia (H)"},
@@ -166,7 +166,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102295, ItemName: "Fusion-Fire Core (N)"},
 	//	{ItemID: 104463, ItemName: "Fusion-Fire Core (H)"},
@@ -186,7 +186,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102298, ItemName: "Evil Eye of Galakras (N)"},
 	//	{ItemID: 104495, ItemName: "Evil Eye of Galakras (H)"},
@@ -205,7 +205,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102299, ItemName: "Prismatic Prison of Pride (N)"},
 	//	{ItemID: 104478, ItemName: "Prismatic Prison of Pride (H)"},
@@ -225,7 +225,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102300, ItemName: "Kardris' Toxic Totem (N)"},
 	//	{ItemID: 104544, ItemName: "Kardris' Toxic Totem (H)"},
@@ -245,7 +245,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102301, ItemName: "Haromm's Talisman (N)"},
 	//	{ItemID: 104531, ItemName: "Haromm's Talisman (H)"},
@@ -264,7 +264,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102302, ItemName: "Sigil of Rampage (N)"},
 	//	{ItemID: 104584, ItemName: "Sigil of Rampage (H)"},
@@ -283,7 +283,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102303, ItemName: "Frenzied Crystal of Rage (N)"},
 	//	{ItemID: 104576, ItemName: "Frenzied Crystal of Rage (H)"},
@@ -302,7 +302,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102304, ItemName: "Thok's Acid-Grooved Tooth (N)"},
 	//	{ItemID: 104611, ItemName: "Thok's Acid-Grooved Tooth (H)"},
@@ -321,7 +321,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102305, ItemName: "Thok's Tail Tip (N)"},
 	//	{ItemID: 104613, ItemName: "Thok's Tail Tip (H)"},
@@ -341,7 +341,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 	//	ProcMask: core.ProcMaskSpellHealing,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102309, ItemName: "Dysmorphic Samophlange of Discontinuity (N)"},
 	//	{ItemID: 104619, ItemName: "Dysmorphic Samophlange of Discontinuity (H)"},
@@ -361,7 +361,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false,
+	//	Harmful:  true,
 	// }, []shared.ItemVariant{
 	//	{ItemID: 102311, ItemName: "Ticking Ebon Detonator (N)"},
 	//	{ItemID: 104616, ItemName: "Ticking Ebon Detonator (H)"},
@@ -382,7 +382,7 @@ func RegisterAllProcs() {
 	//	Callback: core.CallbackOnSpellHitDealt,
 	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  false
+	//	Harmful:  true
 	// })
 	
 	// Your melee attacks have a chance to grant Blessing of the Celestials, increasing your Strength by 3027
@@ -393,7 +393,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deliver a melee or ranged critical strike, you have a chance to gain Blessing of the Celestials,
@@ -403,8 +403,8 @@ func RegisterAllProcs() {
 		ItemID:   79328,
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Outcome:  core.OutcomeCrit,
+		Harmful:  true,
 	})
 	
 	// When you cast healing spells, you have a chance to gain Blessing of the Celestials, increasing your Spirit
@@ -415,7 +415,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect
@@ -424,7 +424,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 79331, ItemName: "Relic of Yu'lon"},
 		{ItemID: 98049, ItemName: "Relic of Yu'lon"},
@@ -438,18 +438,17 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing spells have a chance to grant 1926 Intellect for 10s.
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Empty Fruit Barrel (H)",
+		ItemID:   81133,
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	}, []shared.ItemVariant{
-		{ItemID: 81133, ItemName: "Empty Fruit Barrel (H)"},
-		{ItemID: 97304, ItemName: "Empty Fruit Barrel"},
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115 sec cooldown)
@@ -459,7 +458,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your spells deal damage you have a chance to gain 2573 critical strike for 30s. ( 15% chance, 115
@@ -470,7 +469,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
@@ -478,7 +477,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 81243, ItemName: "Iron Protector Talisman (H)"},
 		{ItemID: 85181, ItemName: "Iron Protector Talisman (N)"},
@@ -492,7 +491,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeCrit,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing and damaging spells have a chance to grant 1851 mastery for 20s.
@@ -502,7 +501,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1851 haste for 20s.
@@ -512,7 +511,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.
@@ -522,7 +521,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee attacks have a chance to grant 1851 parry for 20s.
@@ -532,7 +531,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.
@@ -542,7 +541,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing and damaging spells have a chance to grant 1851 spirit for 20s.
@@ -552,7 +551,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1851 critical strike for 20s.
@@ -562,7 +561,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
@@ -572,7 +571,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee attacks have a chance to grant 1851 mastery for 20s.
@@ -582,7 +581,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 mastery for 20s.
@@ -592,7 +591,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing and damaging spells have a chance to grant 1851 haste for 20s.
@@ -602,7 +601,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1851 haste for 20s.
@@ -612,7 +611,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
@@ -622,7 +621,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee attacks have a chance to grant 1851 parry for 20s.
@@ -632,7 +631,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
@@ -642,7 +641,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing and damaging spells have a chance to grant 1851 critical strike for 20s.
@@ -652,7 +651,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1851 mastery for 20s.
@@ -662,7 +661,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 haste for 20s.
@@ -672,7 +671,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee attacks have a chance to grant 1851 dodge for 20s.
@@ -682,7 +681,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your melee and ranged attacks have a chance to grant 1851 critical strike for 20s.
@@ -692,7 +691,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskMeleeProc | core.ProcMaskRangedProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Agility for 20s.
@@ -702,7 +701,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
@@ -712,7 +711,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Strength for 20s.
@@ -722,7 +721,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Agility for 20s.
@@ -730,7 +729,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 84935, ItemName: "Malevolent Gladiator's Insignia of Conquest (Season 12)"},
 		{ItemID: 91457, ItemName: "Malevolent Gladiator's Insignia of Conquest (Season 13)"},
@@ -741,7 +740,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 84937, ItemName: "Malevolent Gladiator's Insignia of Victory (Season 12)"},
 		{ItemID: 91768, ItemName: "Malevolent Gladiator's Insignia of Victory (Season 13)"},
@@ -752,7 +751,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 84941, ItemName: "Malevolent Gladiator's Insignia of Dominance (Season 12)"},
 		{ItemID: 91754, ItemName: "Malevolent Gladiator's Insignia of Dominance (Season 13)"},
@@ -763,7 +762,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86131, ItemName: "Vial of Dragon's Blood (N)"},
 		{ItemID: 86790, ItemName: "Vial of Dragon's Blood (LFR) (Celestial)"},
@@ -775,7 +774,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86132, ItemName: "Bottle of Infinite Stars (N)"},
 		{ItemID: 86791, ItemName: "Bottle of Infinite Stars (LFR) (Celestial)"},
@@ -788,13 +787,11 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86133, ItemName: "Light of the Cosmos (N)"},
 		{ItemID: 86792, ItemName: "Light of the Cosmos (LFR) (Celestial)"},
 		{ItemID: 87065, ItemName: "Light of the Cosmos (H)"},
-		{ItemID: 98019, ItemName: "Light of the Cosmos"},
-		{ItemID: 98050, ItemName: "Light of the Cosmos"},
 	})
 	
 	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
@@ -802,7 +799,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86144, ItemName: "Lei Shen's Final Orders (N)"},
 		{ItemID: 86802, ItemName: "Lei Shen's Final Orders (LFR) (Celestial)"},
@@ -814,7 +811,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86147, ItemName: "Qin-xi's Polarizing Seal (N)"},
 		{ItemID: 86805, ItemName: "Qin-xi's Polarizing Seal (LFR) (Celestial)"},
@@ -826,7 +823,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86323, ItemName: "Stuff of Nightmares (N)"},
 		{ItemID: 86881, ItemName: "Stuff of Nightmares (LFR) (Celestial)"},
@@ -838,7 +835,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86327, ItemName: "Spirits of the Sun (N)"},
 		{ItemID: 86885, ItemName: "Spirits of the Sun (LFR) (Celestial)"},
@@ -851,7 +848,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86332, ItemName: "Terror in the Mists (N)"},
 		{ItemID: 86890, ItemName: "Terror in the Mists (LFR) (Celestial)"},
@@ -863,7 +860,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 86336, ItemName: "Darkmist Vortex (N)"},
 		{ItemID: 86894, ItemName: "Darkmist Vortex (LFR) (Celestial)"},
@@ -892,7 +889,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your harmful spells have a chance to increase your spell power by 2040 for 10s. ( 10% chance, 55 sec cooldown)
@@ -913,7 +910,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Chance on melee and ranged critical strike to increase your attack power by 4000 for 10s.
@@ -923,7 +920,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial,
 		Outcome:  core.OutcomeCrit,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Agility for 20s.
@@ -931,7 +928,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 91104, ItemName: "Tyrannical Gladiator's Insignia of Conquest (Season 13) (Alliance)"},
 		{ItemID: 94356, ItemName: "Tyrannical Gladiator's Insignia of Conquest (Season 13) (Horde)"},
@@ -944,7 +941,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 91401, ItemName: "Tyrannical Gladiator's Insignia of Dominance (Season 13) (Alliance)"},
 		{ItemID: 94482, ItemName: "Tyrannical Gladiator's Insignia of Dominance (Season 13) (Horde)"},
@@ -957,7 +954,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 91415, ItemName: "Tyrannical Gladiator's Insignia of Victory (Season 13) (Alliance)"},
 		{ItemID: 94415, ItemName: "Tyrannical Gladiator's Insignia of Victory (Season 13) (Horde)"},
@@ -972,7 +969,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
@@ -982,7 +979,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Strength for 20s.
@@ -992,7 +989,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Strength for 15s. ( 15% chance, 85 sec cooldown)
@@ -1002,7 +999,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Each time your harmful spells hit, you have a chance to gain 963 haste for 10s. ( 15% chance, 55 sec cooldown)
@@ -1022,7 +1019,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your periodic damage spells have a chance to grant 1926 Intellect for 10s. (Approximately 1.10 procs per
@@ -1031,7 +1028,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 94521, ItemName: "Breath of the Hydra (N)"},
 		{ItemID: 95711, ItemName: "Breath of the Hydra (LFR) (Celestial)"},
@@ -1046,7 +1043,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 94523, ItemName: "Bad Juju (N)"},
 		{ItemID: 95665, ItemName: "Bad Juju (LFR) (Celestial)"},
@@ -1061,7 +1058,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 94524, ItemName: "Unerring Vision of Lei Shen (N)"},
 		{ItemID: 95814, ItemName: "Unerring Vision of Lei Shen (LFR) (Celestial)"},
@@ -1076,7 +1073,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeCrit,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 94531, ItemName: "Cha-Ye's Essence of Brilliance (N)"},
 		{ItemID: 95772, ItemName: "Cha-Ye's Essence of Brilliance (LFR) (Celestial)"},
@@ -1092,7 +1089,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage or heal a target you have a chance to gain 1287 Intellect for 20s.
@@ -1102,7 +1099,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Strength for 20s.
@@ -1112,7 +1109,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Agility for 20s.
@@ -1120,7 +1117,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 100200, ItemName: "Grievous Gladiator's Insignia of Conquest (Season 14) (Alliance)"},
 		{ItemID: 100586, ItemName: "Grievous Gladiator's Insignia of Conquest (Season 14) (Horde)"},
@@ -1133,7 +1130,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 100491, ItemName: "Grievous Gladiator's Insignia of Dominance (Season 14) (Alliance)"},
 		{ItemID: 100712, ItemName: "Grievous Gladiator's Insignia of Dominance (Season 14) (Horde)"},
@@ -1146,7 +1143,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 100505, ItemName: "Grievous Gladiator's Insignia of Victory (Season 14) (Alliance)"},
 		{ItemID: 100645, ItemName: "Grievous Gladiator's Insignia of Victory (Season 14) (Horde)"},
@@ -1161,7 +1158,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
@@ -1171,7 +1168,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
@@ -1181,7 +1178,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1191,7 +1188,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
@@ -1201,7 +1198,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1211,7 +1208,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
@@ -1232,7 +1229,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing spells have a chance to grant 1926 Intellect for 10s.
@@ -1242,7 +1239,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
@@ -1252,7 +1249,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1262,7 +1259,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
@@ -1283,7 +1280,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1293,7 +1290,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
@@ -1303,7 +1300,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing spells have a chance to grant 1926 Intellect for 10s.
@@ -1313,7 +1310,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
@@ -1323,7 +1320,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1333,7 +1330,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing spells have a chance to grant 1926 Intellect for 10s.
@@ -1343,7 +1340,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1353,7 +1350,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
@@ -1363,7 +1360,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
@@ -1373,7 +1370,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1383,7 +1380,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
@@ -1404,7 +1401,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing spells have a chance to grant 1926 Intellect for 10s.
@@ -1414,7 +1411,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
@@ -1424,7 +1421,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1434,7 +1431,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Agility for 20s. ( 15% chance, 55 sec cooldown)
@@ -1444,7 +1441,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1454,7 +1451,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
@@ -1475,7 +1472,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your healing spells have a chance to grant 1926 Intellect for 10s.
@@ -1485,7 +1482,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskSpellHealing,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Each time your harmful spells hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec
@@ -1506,7 +1503,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1516,7 +1513,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 Strength for 20s. ( 15% chance, 55 sec cooldown)
@@ -1526,7 +1523,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// Your attacks have a chance to grant you 963 dodge for 15s. ( 15% chance, 55 sec cooldown)
@@ -1536,7 +1533,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 Mastery for 20s.
@@ -1546,38 +1543,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	})
-	
-	// When your attacks hit you have a chance to gain 2573 Mastery for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Agi DPS Trinket (5)",
-		ItemID:   102312,
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	})
-	
-	// When your spells deal damage you have a chance to gain 2573 critical strike for 20s. ( 15% chance, 115
-	// sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Int Hit Trinket (5)",
-		ItemID:   102313,
-		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
-	})
-	
-	// Each time your melee attacks hit, you have a chance to gain 963 haste for 20s. ( 15% chance, 115 sec cooldown)
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:     "5.4 Raid - Normal - Siege of Orgrimmar - Boss X Loot X - Str DPS Trinket (5)",
-		ItemID:   102315,
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	})
 	
 	// When you deal damage you have a chance to gain 1287 Agility for 20s.
@@ -1585,7 +1551,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 102643, ItemName: "Prideful Gladiator's Insignia of Conquest (Season 15) (Alliance)"},
 		{ItemID: 103347, ItemName: "Prideful Gladiator's Insignia of Conquest (Season 15) (Horde)"},
@@ -1596,7 +1562,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 102699, ItemName: "Prideful Gladiator's Insignia of Victory (Season 15) (Alliance)"},
 		{ItemID: 103516, ItemName: "Prideful Gladiator's Insignia of Victory (Season 15) (Horde)"},
@@ -1607,7 +1573,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 102766, ItemName: "Prideful Gladiator's Insignia of Dominance (Season 15) (Alliance)"},
 		{ItemID: 103506, ItemName: "Prideful Gladiator's Insignia of Dominance (Season 15) (Horde)"},
@@ -1618,7 +1584,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 103686, ItemName: "Discipline of Xuen"},
 		{ItemID: 103986, ItemName: "Discipline of Xuen (Timeless)"},
@@ -1630,7 +1596,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 103687, ItemName: "Yu'lon's Bite"},
 		{ItemID: 103987, ItemName: "Yu'lon's Bite (Timeless)"},
@@ -1641,7 +1607,7 @@ func RegisterAllProcs() {
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc,
 		Outcome:  core.OutcomeLanded,
-		Harmful:  false,
+		Harmful:  true,
 	}, []shared.ItemVariant{
 		{ItemID: 103689, ItemName: "Alacrity of Xuen"},
 		{ItemID: 103989, ItemName: "Alacrity of Xuen (Timeless)"},

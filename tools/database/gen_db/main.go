@@ -149,7 +149,15 @@ func main() {
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
 	database.GenerateProtos(instance, db)
-	database.GenerateItemEffects(instance, iconsMap, db, itemSources)
+
+	for _, item := range instance.Items {
+		parsed := item.ToUIItem()
+		if parsed.Icon == "" {
+			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
+		}
+
+		db.MergeItem(parsed)
+	}
 
 	for _, gem := range instance.Gems {
 		parsed := gem.ToProto()
@@ -225,6 +233,7 @@ func main() {
 	leftovers.WriteBinaryAndJson(fmt.Sprintf("%s/leftover_db.bin", dbDir), fmt.Sprintf("%s/leftover_db.json", dbDir))
 	ApplySimmableFilters(db)
 
+	database.GenerateItemEffects(instance, db, itemSources)
 	database.GenerateEnchantEffects(instance, db)
 	database.GenerateMissingEffectsFile()
 

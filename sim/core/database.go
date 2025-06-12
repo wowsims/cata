@@ -454,7 +454,6 @@ func NewItem(itemSpec ItemSpec) Item {
 	item.RandPropPoints = scalingOptions.RandPropPoints
 
 	if itemSpec.RandomSuffix != 0 {
-		item.RandPropPoints = scalingOptions.RandPropPoints
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
 			item.RandomSuffix = randomSuffix
 		} else {

@@ -97,7 +97,7 @@ func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
 func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool, includeGemEffects bool) {
 	for slot, eq := range equipment {
 		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
-			applyItemEffect(agent, eq.UpgradeStep)
+			applyItemEffect(agent, eq.GetScalingState())
 			registeredItemEffects[eq.ID] = true
 		}
 
