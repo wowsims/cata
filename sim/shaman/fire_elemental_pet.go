@@ -116,7 +116,7 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 		fireElemental.TryCast(sim, target, fireElemental.FireNova)
 	}
 	if fireElemental.fireBlastAutocast {
-		fireElemental.TryCast(sim, target, fireElemental.FireBlast)
+		fireElemental.FireBlast.Cast(sim, target)
 	}
 
 	if !fireElemental.GCD.IsReady(sim) {
