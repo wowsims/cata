@@ -1,8 +1,8 @@
 package sim
 
 import (
+	"github.com/wowsims/mop/sim/common"
 	_ "github.com/wowsims/mop/sim/common"
-	"github.com/wowsims/mop/sim/common/mop"
 	"github.com/wowsims/mop/sim/death_knight/blood"
 	frostDeathKnight "github.com/wowsims/mop/sim/death_knight/frost"
 	"github.com/wowsims/mop/sim/death_knight/unholy"
@@ -93,7 +93,5 @@ func RegisterAll() {
 	mistweaver.RegisterMistweaverMonk()
 	windwalker.RegisterWindwalkerMonk()
 
-	mop.RegisterAllOnUseCds()
-	mop.RegisterAllProcs()
-	mop.RegisterAllEnchants()
+	common.RegisterAllEffects()
 }

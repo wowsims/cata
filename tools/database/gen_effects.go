@@ -156,7 +156,18 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 	for _, parsed := range db.Items {
 		parsed.ItemEffect = dbc.MergeItemEffectsForAllStates(parsed)
 
-		if TryParseOnUseEffect(parsed, groupMapOnUse) > EffectParseResultInvalid {
+		result := TryParseOnUseEffect(parsed, groupMapOnUse)
+		if result == EffectParseResultSuccess {
+			continue
+		}
+
+		if result == EffectParseResultUnsupported {
+			missingEffectsMap["ItemEffects"] = append(missingEffectsMap["ItemEffects"],
+				Variant{
+					ID:   int(parsed.Id),
+					Name: parsed.Name + BuildItemDifficultyPostfix(itemSources, int(parsed.Id), instance),
+				})
+
 			continue
 		}
 
@@ -318,6 +329,10 @@ func TryParseOnUseEffect(parsed *proto.UIItem, groupMap map[string]Group) int {
 		// Effect was already manually implemented
 		if core.HasItemEffect(parsed.Id) {
 			return EffectParseResultSuccess
+		}
+
+		if parsed.ItemEffect.GetOnUse().CooldownMs < 0 && parsed.ItemEffect.GetOnUse().CategoryCooldownMs < 0 {
+			return EffectParseResultUnsupported
 		}
 
 		groupName := GetEffectStatString(parsed)

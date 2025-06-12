@@ -3,13 +3,14 @@ package windwalker
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/common" // imported to get item effects included.
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterWindwalkerMonk()
+	common.RegisterAllEffects()
 }
 
 func TestWindwalker(t *testing.T) {
@@ -50,10 +51,10 @@ var PlayerOptionsWindwalker = &proto.Player_WindwalkerMonk{
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  76084,  // Flask of Spring Blossoms
-	FoodId:   74648,  // Sea Mist Rice Noodles
-	PotId:    76089,  // Virmen's Bite
-	PrepotId: 76089,  // Virmen's Bite
+	FlaskId:  76084, // Flask of Spring Blossoms
+	FoodId:   74648, // Sea Mist Rice Noodles
+	PotId:    76089, // Virmen's Bite
+	PrepotId: 76089, // Virmen's Bite
 }
 
 var ItemFilter = core.ItemFilter{

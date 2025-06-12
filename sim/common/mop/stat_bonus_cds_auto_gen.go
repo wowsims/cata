@@ -160,7 +160,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(97936) // Malevolent Gladiator's Badge of Dominance (Season 12)
 
 	// Spirit
-	shared.NewSimpleStatActive(81136) // Cloak of Hidden Flasks (H)
 	shared.NewSimpleStatActive(81264) // Vial of Ichorous Blood (H)
 	shared.NewSimpleStatActive(86045) // Jade Courtesan Figurine
 	shared.NewSimpleStatActive(86774) // Jade Courtesan Figurine (Celestial)

@@ -5,6 +5,7 @@
 export const MISSING_ITEM_EFFECTS = [
     75274, // Zen Alchemist Stone
     77530, // Ghost Iron Dragonling
+    81136, // Cloak of Hidden Flasks (H)
     81266, // Price of Progress (H)
     84373, // Dreadful Gladiator's Dreadplate Gauntlets (Season 12)
     84835, // Malevolent Gladiator's Dreadplate Gauntlets (LFR) (Season 12)
