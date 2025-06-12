@@ -173,9 +173,9 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 // *******************************************************
 func (mi *MirrorImage) registerFireballSpell() {
 
-	fireBallCoefficient := .34
-	fireBallScaling := .33
-	fireBallVariance := 0.24
+	fireBallCoefficient := 1.8
+	fireBallScaling := 1.8
+	fireBallVariance := 0.2
 
 	mi.Fireball = mi.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 88082}, // confirmed via logs
@@ -213,8 +213,8 @@ func (mi *MirrorImage) registerFireballSpell() {
 // *******************************************************
 func (mi *MirrorImage) registerArcaneBlastSpell() {
 
-	arcaneBlastCoefficient := .28
-	arcaneBlastScaling := .26
+	arcaneBlastCoefficient := .9
+	arcaneBlastScaling := .9
 	arcaneBlastVariance := 0.15
 
 	mi.ArcaneBlast = mi.RegisterSpell(core.SpellConfig{
