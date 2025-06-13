@@ -30,6 +30,7 @@ message ProtoVersion {
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
 }
+
 enum ItemLevelState {
     Base = 0;
     ChallengeMode = -1;
@@ -38,6 +39,7 @@ enum ItemLevelState {
     UpgradeStepThree = 3;
     UpgradeStepFour = 4;
 }
+
 message ScalingItemProperties {
     int32 rand_prop_points = 1;
     double weapon_damage_min = 2;
@@ -45,6 +47,7 @@ message ScalingItemProperties {
     map<int32, double> stats = 4; // for compactness
 	int32 ilvl = 6;
 }
+
 enum Spec {
 	SpecUnknown = 0;
 
@@ -133,6 +136,12 @@ enum Class {
 	ClassWarlock = 9;
 	ClassMonk = 10;
 	ClassDruid = 11;
+	ClassExtra1 = 12;
+	ClassExtra2 = 13;
+	ClassExtra3 = 14;
+	ClassExtra4 = 15;
+	ClassExtra5 = 16;
+	ClassExtra6 = 17;
 }
 
 enum Profession {
@@ -707,20 +716,6 @@ enum EnchantType {
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
 	EnchantTypeOffHand = 5;
-}
-
-// Contains only the Enchant info needed by the sim.
-message SimEnchant {
-	int32 effect_id = 1;
-	repeated double stats = 2;
-}
-
-// Contains only the Gem info needed by the sim.
-message SimGem {
-	int32 id = 1;
-	string name = 2;
-	GemColor color = 3;
-	repeated double stats = 4;
 }
 
 message UnitReference {

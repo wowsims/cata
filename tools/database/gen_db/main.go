@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"maps"
 	"os"
 	"slices"
 	"strings"
@@ -148,7 +149,6 @@ func main() {
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
-
 	database.GenerateProtos(instance, db)
 
 	processItems(instance, iconsMap, names, dropSources, craftingSources, repSources, db)
@@ -163,6 +163,7 @@ func main() {
 
 	for _, enchant := range instance.Enchants {
 		parsed := enchant.ToProto()
+
 		if parsed.Icon == "" {
 			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, enchant.FDID))
 		}
@@ -225,7 +226,15 @@ func main() {
 	ApplyNonSimmableFilters(leftovers)
 	leftovers.WriteBinaryAndJson(fmt.Sprintf("%s/leftover_db.bin", dbDir), fmt.Sprintf("%s/leftover_db.json", dbDir))
 	ApplySimmableFilters(db)
-	for _, enchant := range db.Enchants {
+
+	database.GenerateItemEffects(instance, db, dropSources)
+	database.GenerateEnchantEffects(instance, db)
+	database.GenerateMissingEffectsFile()
+
+	for _, key := range slices.SortedFunc(maps.Keys(db.Enchants), func(l database.EnchantDBKey, r database.EnchantDBKey) int {
+		return int(l.EffectID) - int(r.EffectID)
+	}) {
+		enchant := db.Enchants[key]
 		if enchant.ItemId != 0 {
 			db.AddItemIcon(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
@@ -614,6 +623,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 				return false
 			}
 		}
+
+		if _, ok := database.EnchantDenyList[enchant.EffectId]; ok {
+			return false
+		}
+
 		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 

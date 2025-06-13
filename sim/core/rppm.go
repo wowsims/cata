@@ -266,3 +266,20 @@ func RppmModFromProto(config *proto.RppmMod) (rppmMod, error) {
 		return nil, fmt.Errorf("Unknown ModType: %T", modType)
 	}
 }
+
+func RppmConfigFromProcEffectProto(effect *proto.ProcEffect) RPPMConfig {
+	config := RPPMConfig{
+		PPM: effect.Ppm,
+	}
+
+	for _, protoMod := range effect.Mods {
+		mod, error := RppmModFromProto(protoMod)
+		if error != nil {
+			panic("Could not parse rrpm mod from proto")
+		}
+
+		config.Mods = append(config.Mods, mod)
+	}
+
+	return config
+}
