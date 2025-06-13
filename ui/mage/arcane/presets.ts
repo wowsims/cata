@@ -65,12 +65,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	potId: 58091, // Volcanic Potion
 	prepotId: 58091, // Volcanic Potion
 });
-export const DefaultRaidBuffs = RaidBuffs.create({});
-
-export const DefaultDebuffs = Debuffs.create({
-	// ebonPlaguebringer: true,
-	// shadowAndFlame: true,
-});
 
 export const OtherDefaults = {
 	distanceFromTarget: 20,

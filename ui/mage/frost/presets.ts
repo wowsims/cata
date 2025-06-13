@@ -1,4 +1,3 @@
-import { Mage } from '../../core/player_classes/mage';
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common';
 import { FrostMage_Options as MageOptions,MageMajorGlyph, MageMinorGlyph } from '../../core/proto/mage';
