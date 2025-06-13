@@ -122,7 +122,7 @@ export const monkGlyphsConfig: GlyphsConfig = {
 		},
 		[MonkMajorGlyph.GlyphOfTargetedExpulsion]: {
 			name: "Glyph of Targeted Expulsion",
-			description: "Expel Harm can now be used on other allies, but the healing is reduced by 50% on them.",
+			description: "Outside of Battlegrounds and Arenas:\u000D\u000A Your Uplift no longer costs Chi, but instead costs 10% Mana.\u000D\u000A\u000D\u000A Inside of Battlegrounds and Arenas:\u000D\u000A Expel Harm can now be used on other allies, but the healing is reduced by 50% on them.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_monk_expelharm.jpg",
 		},
 	},
