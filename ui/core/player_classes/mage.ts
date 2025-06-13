@@ -20,6 +20,7 @@ export class Mage extends PlayerClass<Class.ClassMage> {
 		Race.RaceOrc,
 		Race.RaceUndead,
 		Race.RaceBloodElf,
+		Race.RaceHordePandaren,
 		// [A]
 		Race.RaceWorgen,
 		Race.RaceGnome,
@@ -27,6 +28,7 @@ export class Mage extends PlayerClass<Class.ClassMage> {
 		Race.RaceDwarf,
 		Race.RaceNightElf,
 		Race.RaceDraenei,
+		Race.RaceAlliancePandaren,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [
