@@ -19,7 +19,7 @@ type DefaultTreantImpl struct {
 }
 
 // Overwrite these for spec variants that register spells.
-func (treant *DefaultTreantImpl) Initialize() {}
+func (treant *DefaultTreantImpl) Initialize()                              {}
 func (treant *DefaultTreantImpl) ExecuteCustomRotation(_ *core.Simulation) {}
 
 func (treant *DefaultTreantImpl) Reset(sim *core.Simulation) {
@@ -31,7 +31,7 @@ func (treant *DefaultTreantImpl) GetPet() *core.Pet {
 }
 
 func (treant *DefaultTreantImpl) Enable(sim *core.Simulation) {
-	treant.EnableWithTimeout(sim, treant, time.Second * 15)
+	treant.EnableWithTimeout(sim, treant, time.Second*15)
 }
 
 type TreantConfig struct {
@@ -75,7 +75,7 @@ func (druid *Druid) NewDefaultTreant(config TreantConfig) *DefaultTreantImpl {
 		treant.PseudoStats.InFrontOfTarget = true
 
 		sim.AddPendingAction(&core.PendingAction{
-			NextActionAt: sim.CurrentTime + time.Millisecond * 500,
+			NextActionAt: sim.CurrentTime + time.Millisecond*500,
 
 			OnAction: func(_ *core.Simulation) {
 				treant.PseudoStats.InFrontOfTarget = false

@@ -15,37 +15,32 @@ type Mage struct {
 	FireOptions   *proto.FireMage_Options
 	FrostOptions  *proto.FrostMage_Options
 
-	mirrorImage *MirrorImage
+	mirrorImages []*MirrorImage
 
-	arcaneMissilesTickSpell *core.Spell
-	Combustion              *core.Spell
-	Ignite                  *core.Spell
-	LivingBomb              *core.Spell
-	NetherTempest           *core.Spell
-	FireBlast               *core.Spell
-	FlameOrbExplode         *core.Spell
-	Flamestrike             *core.Spell
-	FlamestrikeBW           *core.Spell
-	FrostfireOrb            *core.Spell
-	Pyroblast               *core.Spell
-	SummonWaterElemental    *core.Spell
-	IcyVeins                *core.Spell
-	Icicle                  *core.Spell
+	Combustion           *core.Spell
+	Ignite               *core.Spell
+	LivingBomb           *core.Spell
+	NetherTempest        *core.Spell
+	FireBlast            *core.Spell
+	FlameOrbExplode      *core.Spell
+	Flamestrike          *core.Spell
+	FlamestrikeBW        *core.Spell
+	FrostfireOrb         *core.Spell
+	Pyroblast            *core.Spell
+	SummonWaterElemental *core.Spell
+	SummonMirrorImages   *core.Spell
+	IcyVeins             *core.Spell
+	Icicle               *core.Spell
 
-	arcanePowerGCDmod *core.SpellMod
-
-	arcaneMissilesProcAura *core.Aura
-	arcanePotencyAura      *core.Aura
-	arcanePowerAura        *core.Aura
-	invocationAura         *core.Aura
-	runeOfPowerAura        *core.Aura
-	presenceOfMindAura     *core.Aura
-	FingersOfFrostAura     *core.Aura
-	BrainFreezeAura        *core.Aura
-	IcyVeinsAura           *core.Aura
-	iceFloesfAura          *core.Aura
-	IciclesAura            *core.Aura
-	FrostBombAuras         core.AuraArray
+	invocationAura     *core.Aura
+	runeOfPowerAura    *core.Aura
+	presenceOfMindAura *core.Aura
+	FingersOfFrostAura *core.Aura
+	BrainFreezeAura    *core.Aura
+	IcyVeinsAura       *core.Aura
+	iceFloesfAura      *core.Aura
+	IciclesAura        *core.Aura
+	FrostBombAuras     core.AuraArray
 
 	arcaneMissileCritSnapshot float64
 	baseHotStreakProcChance   float64
@@ -104,7 +99,6 @@ func (mage *Mage) registerSpells() {
 
 	// mage.registerArcaneBlastSpell()
 	// mage.registerArcaneExplosionSpell()
-	mage.registerArcaneMissilesSpell()
 	mage.registerBlizzardSpell()
 	mage.registerConeOfColdSpell()
 	mage.registerDeepFreezeSpell()
@@ -116,56 +110,18 @@ func (mage *Mage) registerSpells() {
 	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
 	// mage.registerManaGemsCD()
-	// mage.registerMirrorImageCD()
+	mage.registerMirrorImageCD()
 	// mage.registerCombustionSpell()
 	// mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
 	mage.registerfrostNovaSpell()
 	mage.registerIceLanceSpell()
 	mage.registerIcyVeinsCD()
-	// mage.applyArcaneMissileProc()
 }
 
 func (mage *Mage) registerMastery() {
 	mage.registerFrostMastery()
 }
-
-// TODO: Fix this to work with the new talent system.
-// func (mage *Mage) applyArcaneMissileProc() {
-// 	if mage.Talents.HotStreak || mage.Talents.BrainFreeze > 0 {
-// 		return
-// 	}
-
-// 	// Aura for when proc is successful
-// 	mage.arcaneMissilesProcAura = mage.RegisterAura(core.Aura{
-// 		Label:    "Arcane Missiles Proc",
-// 		ActionID: core.ActionID{SpellID: 79683},
-// 		Duration: time.Second * 20,
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if spell.ClassSpellMask == MageSpellArcaneMissilesCast {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 	})
-
-// 	procChance := 0.4
-
-// 	const MageSpellsArcaneMissilesNow = MageSpellArcaneBarrage | MageSpellArcaneBlast |
-// 		MageSpellFireball | MageSpellFrostbolt | MageSpellFrostfireBolt | MageSpellFrostfireOrb
-
-// 	// Listener for procs
-// 	core.MakePermanent(mage.RegisterAura(core.Aura{
-// 		Label: "Arcane Missiles Activation",
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if spell.ClassSpellMask&MageSpellsArcaneMissilesNow == 0 {
-// 				return
-// 			}
-// 			if sim.Proc(procChance, "Arcane Missiles") {
-// 				mage.arcaneMissilesProcAura.Activate(sim)
-// 			}
-// 		},
-// 	}))
-// }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 	mage.arcaneMissileCritSnapshot = 0.0
@@ -181,6 +137,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString)
 
+	mage.mirrorImages = []*MirrorImage{mage.NewMirrorImage(), mage.NewMirrorImage(), mage.NewMirrorImage()}
 	mage.EnableManaBar()
 
 	mage.Icicles = make([]float64, 0)
@@ -244,6 +201,7 @@ const (
 	MageSpellScorch
 	MageSpellCombustion
 	MageSpellCombustionApplication
+	MageMirrorImageSpellArcaneBlast
 	MageWaterElementalSpellWaterBolt
 	MageSpellLast
 	MageSpellsAll        = MageSpellLast<<1 - 1
