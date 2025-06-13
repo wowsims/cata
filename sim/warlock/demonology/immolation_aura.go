@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
-const immolationAuraScale = 0.17499999702
-const immolationAuraCoeff = 0.17499999702
+const immolationAuraScale = 0.17499999702 * 1.25 // 2025.06.13 Changes to Beta - Immolation Aura damage increased by 25%
+const immolationAuraCoeff = 0.17499999702 * 1.25
 
 func (demonology *DemonologyWarlock) registerImmolationAura() {
 	var baseDamage = demonology.CalcScalingSpellDmg(immolationAuraScale)

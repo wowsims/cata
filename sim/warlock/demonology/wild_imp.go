@@ -96,9 +96,9 @@ func (pet *WildImpPet) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 // Hotfixes already included
-const felFireBoltScale = 0.242
+const felFireBoltScale = 0.242 * 1.43 // 2025.06.13 Changes to Beta - Wild Imp Damage increased by 43%
 const felFireBoltVariance = 0.05
-const felFireBoltCoeff = 0.242
+const felFireBoltCoeff = 0.242 * 1.43
 
 func (pet *WildImpPet) registerFireboltSpell() {
 	pet.Fireball = pet.RegisterSpell(core.SpellConfig{
