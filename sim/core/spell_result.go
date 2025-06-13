@@ -77,7 +77,7 @@ func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64
 }
 
 func (spell *Spell) MeleeAttackPower() float64 {
-	return spell.Unit.stats[stats.AttackPower]
+	return spell.Unit.GetAttackPowerValue(spell)
 }
 
 func (spell *Spell) RangedAttackPower() float64 {
@@ -100,7 +100,9 @@ func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 	hitPercent := spell.Unit.stats[stats.PhysicalHitPercent] + spell.BonusHitPercent
 	return hitPercent / 100
 }
-
+func (spell *Spell) PhysicalHitCheck(sim *Simulation, attackTable *AttackTable) bool {
+	return sim.Proc(1.0-spell.GetPhysicalMissChance(attackTable), "Physical Hit Roll")
+}
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
 	critPercent := spell.Unit.stats[stats.PhysicalCritPercent] + spell.BonusCritPercent
 	return critPercent/100 - attackTable.MeleeCritSuppression

@@ -58,7 +58,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62290, // Seafood Magnifique Feast
 	potId: 76093, // Potion of the Jade Serpent
 	prepotId: 76093, // Potion of the Jade Serpent
-	tinkerId: 141330, // Synapse Springs II
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

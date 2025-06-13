@@ -4,10 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {
-
+	if hunter.Spec != proto.Spec_SpecMarksmanshipHunter {
+		return
+	}
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
@@ -20,7 +23,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		MinRange:       0,
 		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
-
 			Cost: 0,
 		},
 		Cast: core.CastConfig{
@@ -34,7 +36,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 
 			CastTime: func(spell *core.Spell) time.Duration {
-				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
+				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.TotalRangedHasteMultiplier())
 			},
 		},
 		BonusCritPercent:         0,

@@ -29,7 +29,7 @@ import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';
 import { SelectorModalTabs } from './selector_modal';
-import { createHeroicLabel } from './utils';
+import { createNameDescriptionLabel } from './utils';
 
 export interface ItemData<T extends ItemListType> {
 	item: T;
@@ -40,7 +40,7 @@ export interface ItemData<T extends ItemListType> {
 	phase: number;
 	ilvl?: number;
 	ignoreEPFilter: boolean;
-	heroic: boolean;
+	nameDescription: string;
 	onEquip: (eventID: EventID, item: T) => void;
 }
 
@@ -265,6 +265,9 @@ export default class ItemList<T extends ItemListType> {
 				case SelectorModalTabs.Enchants:
 					removeButton.textContent = 'Remove Enchant';
 					break;
+				case SelectorModalTabs.Tinkers:
+					removeButton.textContent = 'Remove Tinkers';
+					break;
 				case SelectorModalTabs.Reforging:
 					removeButton.textContent = 'Remove Reforge';
 					break;
@@ -300,6 +303,8 @@ export default class ItemList<T extends ItemListType> {
 	private getItemIdByItemType(item: ItemListType | null | undefined) {
 		switch (this.label) {
 			case SelectorModalTabs.Enchants:
+				return (item as Enchant)?.effectId;
+			case SelectorModalTabs.Tinkers:
 				return (item as Enchant)?.effectId;
 			case SelectorModalTabs.Reforging:
 				return (item as ReforgeData)?.reforge!.id;
@@ -353,7 +358,7 @@ export default class ItemList<T extends ItemListType> {
 
 		if (this.label === SelectorModalTabs.Items) {
 			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
-		} else if (this.label === SelectorModalTabs.Enchants) {
+		} else if (this.label === SelectorModalTabs.Enchants || this.label === SelectorModalTabs.Tinkers) {
 			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
 		} else if (this.label === SelectorModalTabs.Gem1 || this.label === SelectorModalTabs.Gem2 || this.label === SelectorModalTabs.Gem3) {
 			itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
@@ -425,7 +430,9 @@ export default class ItemList<T extends ItemListType> {
 				sortFn = (itemA: T, itemB: T) => {
 					const first = (this.sortDirection === SortDirection.DESC ? itemB : itemA) as unknown as Item;
 					const second = (this.sortDirection === SortDirection.DESC ? itemA : itemB) as unknown as Item;
-					return (first.scalingOptions?.[ItemLevelState.Base].ilvl || first.ilvl) - (second.scalingOptions?.[ItemLevelState.Base].ilvl || second.ilvl);
+					return (
+						(first.scalingOptions?.[ItemLevelState.Base].ilvl || first.ilvl) - (second.scalingOptions?.[ItemLevelState.Base].ilvl || second.ilvl)
+					);
 				};
 				break;
 		}
@@ -480,7 +487,7 @@ export default class ItemList<T extends ItemListType> {
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
 							{typeof itemData.name === 'string' ? itemData.name : itemData.name.cloneNode(true)}
-							{itemData.heroic && createHeroicLabel()}
+							{itemData.nameDescription && createNameDescriptionLabel(itemData.nameDescription)}
 						</label>
 					</a>
 				</div>
@@ -525,6 +532,10 @@ export default class ItemList<T extends ItemListType> {
 					favId = itemData.id;
 					break;
 				case SelectorModalTabs.Enchants:
+					favMethodName = 'favoriteEnchants';
+					favId = getUniqueEnchantString(itemData.item as unknown as Enchant);
+					break;
+				case SelectorModalTabs.Tinkers:
 					favMethodName = 'favoriteEnchants';
 					favId = getUniqueEnchantString(itemData.item as unknown as Enchant);
 					break;
@@ -636,6 +647,8 @@ export default class ItemList<T extends ItemListType> {
 		if (this.label === SelectorModalTabs.Items) {
 			return this.currentFilters.favoriteItems.includes(itemData.id);
 		} else if (this.label === SelectorModalTabs.Enchants) {
+			return this.currentFilters.favoriteEnchants.includes(getUniqueEnchantString(itemData.item as unknown as Enchant));
+		} else if (this.label === SelectorModalTabs.Tinkers) {
 			return this.currentFilters.favoriteEnchants.includes(getUniqueEnchantString(itemData.item as unknown as Enchant));
 		} else if (this.label.startsWith('Gem')) {
 			return this.currentFilters.favoriteGems.includes(itemData.id);

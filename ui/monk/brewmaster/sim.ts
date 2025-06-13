@@ -22,7 +22,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatAgility,
-		Stat.StatStrength,
 		Stat.StatAttackPower,
 		Stat.StatHitRating,
 		Stat.StatExpertiseRating,

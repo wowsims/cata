@@ -74,7 +74,7 @@ message UIItem {
 	int32 phase = 16;
 	ItemQuality quality = 17;
 	bool unique = 18;
-	bool heroic = 19;
+	string name_description = 19;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;
@@ -144,6 +144,28 @@ enum RepFaction {
 	RepFactionBaradinsWardens = 1177;
 	RepFactionHellscreamsReach = 1178;
 	RepFactionAvengersOfHyjal = 1204;
+
+    // MoP Reputations
+    RepFactionGoldenLotus              = 1269;
+    RepFactionTheTillers               = 1272;
+    RepFactionShadoPan                 = 1270;
+    RepFactionShadoPanAssault          = 1435;
+    RepFactionTheBrewmasters           = 1351;
+    RepFactionTheKlaxxi                = 1337;
+    RepFactionTheAugustCelestials      = 1341;
+    RepFactionTheAnglers               = 1302;
+    RepFactionEmperorShaohao           = 1492;
+    RepFactionSunreaverOnslaught       = 1388;
+    RepFactionKirinTorOffensive        = 1387;
+    RepFactionDominanceOffensive       = 1375;
+    RepFactionOrderOfTheCloudSerpent   = 1271;
+    RepFactionShangXisAcademy          = 1216;
+    RepFactionTheLorewalkers           = 1345;
+    RepFactionTheBlackPrince           = 1359;
+    RepFactionForestHozen              = 1228;
+    RepFactionPearlfinJinyu            = 1242;
+    RepFactionHozen                    = 1243;
+    RepFactionOperationShieldwall      = 1376;
 
 }
 
@@ -382,6 +404,13 @@ enum StatCapType {
 message SavedGearSet {
 	EquipmentSpec gear = 1;
 	UnitStats bonus_stats_stats = 3;
+}
+
+message SavedStatWeightSettings {
+	repeated Stat excluded_stats = 1;
+    repeated PseudoStat excluded_pseudo_stats = 2;
+    int32 api_version = 3; // Needed in case the Stat or PseudoStat enum orderings ever change
+
 }
 
 // Local storage data for other settings.

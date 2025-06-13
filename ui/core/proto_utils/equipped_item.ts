@@ -55,6 +55,7 @@ export interface ReforgeData {
 type EquippedItemOptions = {
 	item: Item;
 	enchant?: Enchant | null;
+	tinker?: Enchant | null;
 	gems?: Array<Gem | null>;
 	randomSuffix?: ItemRandomSuffix | null;
 	reforge?: ReforgeStat | null;
@@ -72,15 +73,17 @@ export class EquippedItem {
 	readonly _randomSuffix: ItemRandomSuffix | null;
 	readonly _reforge: ReforgeStat | null;
 	readonly _enchant: Enchant | null;
+	readonly _tinker: Enchant | null;
 	readonly _gems: Array<Gem | null>;
 	readonly _upgrade: ItemLevelState;
 	readonly _challengeMode: boolean;
 
 	readonly numPossibleSockets: number;
 
-	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeMode }: EquippedItemOptions) {
+	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeMode, tinker }: EquippedItemOptions) {
 		this._item = item;
 		this._enchant = enchant || null;
+		this._tinker = tinker || null;
 		this._gems = gems || [];
 		this._randomSuffix = randomSuffix || null;
 		this._reforge = reforge || null;
@@ -110,6 +113,10 @@ export class EquippedItem {
 	get enchant(): Enchant | null {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;
+	}
+	get tinker(): Enchant | null {
+		// Make a defensive copy
+		return this._tinker ? Enchant.clone(this._tinker) : null;
 	}
 	get reforge(): ReforgeStat | null {
 		return this._reforge ? ReforgeStat.clone(this._reforge) : null;
@@ -189,8 +196,10 @@ export class EquippedItem {
 		if (this._reforge && other.reforge && !ReforgeStat.equals(this._reforge, other.reforge)) return false;
 
 		if ((this._enchant == null) != (other.enchant == null)) return false;
+		if ((this._tinker == null) != (other.tinker == null)) return false;
 
 		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant)) return false;
+		if (this._tinker && other.tinker && !Enchant.equals(this._tinker, other.tinker)) return false;
 
 		if (this._gems.length != other.gems.length) return false;
 
@@ -212,8 +221,9 @@ export class EquippedItem {
 	 */
 	withItem(item: Item): EquippedItem {
 		let newEnchant = null;
+		let newTinker = null;
 		if (this._enchant && enchantAppliesToItem(this._enchant, item)) newEnchant = this._enchant;
-
+		if (this._tinker && enchantAppliesToItem(this._tinker, item)) newTinker = this._tinker;
 		// Reorganize gems to match as many colors in the new item as possible.
 		const newGems = new Array(item.gemSockets.length).fill(null);
 		this._gems
@@ -239,6 +249,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item,
 			enchant: newEnchant,
+			tinker: newTinker,
 			gems: newGems,
 			challengeMode: this._challengeMode,
 		});
@@ -251,6 +262,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
@@ -260,12 +272,28 @@ export class EquippedItem {
 	}
 
 	/**
+	 * Returns a new EquippedItem with the given tinker applied.
+	 */
+	withTinker(tinker: Enchant | null): EquippedItem {
+		return new EquippedItem({
+			item: this._item,
+			tinker: tinker,
+			enchant: this._enchant,
+			gems: this._gems,
+			randomSuffix: this._randomSuffix,
+			reforge: this._reforge,
+			upgrade: this._upgrade,
+			challengeMode: this._challengeMode,
+		});
+	}
+	/**
 	 * Returns a new EquippedItem with the given reforge applied.
 	 */
 	withReforge(reforge: ReforgeStat): EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
 			reforge,
@@ -282,6 +310,7 @@ export class EquippedItem {
 			item: this._item,
 			enchant: this._enchant,
 			gems: this._gems,
+			tinker: this._tinker,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade,
@@ -297,6 +326,7 @@ export class EquippedItem {
 			item: this._item,
 			enchant: this._enchant,
 			gems: this._gems,
+			tinker: this._tinker,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
@@ -318,6 +348,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: newGems,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
@@ -369,6 +400,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix,
 			reforge: this._reforge,
@@ -394,6 +426,7 @@ export class EquippedItem {
 		return new EquippedItem({
 			item,
 			enchant: this._enchant,
+			tinker: this._tinker,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
@@ -420,6 +453,7 @@ export class EquippedItem {
 			id: this._item.id,
 			randomSuffix: this._randomSuffix?.id,
 			enchant: this._enchant?.effectId,
+			tinker: this._tinker?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
 			reforging: this._reforge?.id,
 			upgradeStep: this._upgrade,

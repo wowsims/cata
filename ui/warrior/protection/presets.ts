@@ -74,7 +74,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62670, // Beer-Basted Crocolisk
 	potId: 58090, // Earthen Potion
 	prepotId: 58090, // Earthen Potion
-	tinkerId: 82174, // Synapse Springs
 	explosiveId: 89637, // Big Daddy Explosive
 });
 

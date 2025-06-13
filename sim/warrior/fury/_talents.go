@@ -43,7 +43,7 @@ func (war *FuryWarrior) applyFlurry() {
 			war.MultiplyMeleeSpeed(sim, atkSpeedBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.MultiplyAttackSpeed(sim, 1.0/atkSpeedBonus)
+			war.MultiplyMeleeSpeed(sim, 1.0/atkSpeedBonus)
 		},
 	})
 
