@@ -3,13 +3,14 @@ package elemental
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common"
+	"github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterElementalShaman()
+	common.RegisterAllEffects()
 }
 
 func TestElemental(t *testing.T) {
