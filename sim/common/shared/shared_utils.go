@@ -405,7 +405,7 @@ type StackingStatBonusEffect struct {
 }
 
 func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
-	core.NewItemEffect(config.ItemID, func(agent core.Agent, _ proto.ItemLevelState) {
+	core.NewItemEffect(config.ItemID, func(agent core.Agent, state proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
@@ -414,6 +414,17 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 		if auraID.IsEmptyAction() {
 			auraID = core.ActionID{ItemID: config.ItemID}
 		}
+
+		// If we do not get a manual stat, overwrite it with scaling stats
+		if config.Bonus.Equals(stats.Stats{}) {
+			item := core.GetItemByID(config.ItemID)
+			if item == nil || item.ItemEffect == nil {
+				panic("Unsupported Item-/Effect")
+			}
+
+			config.Bonus = stats.FromProtoMap(item.ItemEffect.ScalingOptions[int32(state)].Stats)
+		}
+
 		procAura := core.MakeStackingAura(character, core.StackingStatAura{
 			Aura: core.Aura{
 				Label:     config.Name + " Proc",
