@@ -61,7 +61,6 @@ type BalanceDruid struct {
 	AstralStormTickSpell *druid.DruidSpell
 	CelestialAlignment   *druid.DruidSpell
 	ChosenOfElune        *druid.DruidSpell
-	NaturesSwiftness     *druid.DruidSpell
 	Starfall             *druid.DruidSpell
 	Starfire             *druid.DruidSpell
 	Sunfire              *druid.DruidSpell
@@ -84,6 +83,8 @@ func (moonkin *BalanceDruid) Initialize() {
 
 	moonkin.RegisterBalancePassives()
 	moonkin.RegisterBalanceSpells()
+
+	moonkin.ApplyGlyphs()
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {
@@ -101,7 +102,6 @@ func (moonkin *BalanceDruid) RegisterBalanceSpells() {
 	moonkin.registerCelestialAlignmentSpell()
 	moonkin.registerAstralStormSpell()
 	moonkin.registerWildMushrooms()
-	moonkin.registerNaturesSwiftness()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {

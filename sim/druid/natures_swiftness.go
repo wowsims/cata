@@ -1,24 +1,23 @@
-package balance
+package druid
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/druid"
 )
 
-func (moonkin *BalanceDruid) registerNaturesSwiftness() {
+func (druid *Druid) registerNaturesSwiftness() {
 	actionID := core.ActionID{SpellID: 132158}
-	cdTimer := moonkin.NewTimer()
+	cdTimer := druid.NewTimer()
 	cd := time.Minute * 1
 
-	htCastTimeMod := moonkin.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  druid.DruidSpellHealingTouch,
+	htCastTimeMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  DruidSpellHealingTouch,
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1,
 	})
 
-	nsAura := moonkin.RegisterAura(core.Aura{
+	nsAura := druid.RegisterAura(core.Aura{
 		Label:    "Nature's Swiftness",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
@@ -29,17 +28,17 @@ func (moonkin *BalanceDruid) registerNaturesSwiftness() {
 			htCastTimeMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Matches(druid.DruidSpellHealingTouch) {
+			if !spell.Matches(DruidSpellHealingTouch) {
 				return
 			}
 
 			aura.Deactivate(sim)
 			cdTimer.Set(sim.CurrentTime + cd)
-			moonkin.UpdateMajorCooldowns()
+			druid.UpdateMajorCooldowns()
 		},
 	})
 
-	moonkin.NaturesSwiftness = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
+	druid.NaturesSwiftness = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -53,8 +52,8 @@ func (moonkin *BalanceDruid) registerNaturesSwiftness() {
 		},
 	})
 
-	moonkin.AddMajorCooldown(core.MajorCooldown{
-		Spell: moonkin.NaturesSwiftness.Spell,
+	druid.AddMajorCooldown(core.MajorCooldown{
+		Spell: druid.NaturesSwiftness.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }

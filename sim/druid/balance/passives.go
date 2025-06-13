@@ -1,7 +1,6 @@
 package balance
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -26,7 +25,7 @@ func (moonkin *BalanceDruid) RegisterBalancePassives() {
 func (moonkin *BalanceDruid) registerMoonkinForm() {
 	moonkin.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-		FloatValue: 0.1,
+		FloatValue: 0.2,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
@@ -74,25 +73,32 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 		Name:           "Shooting Stars Trigger" + moonkin.Label,
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		Outcome:        core.OutcomeCrit,
+		ProcChance:     0.3,
 		ClassSpellMask: druid.DruidSpellSunfireDoT | druid.DruidSpellMoonfireDoT,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			activeTargetCount := 0
-			baseProcChance := 0.3
-
-			for _, target := range sim.Encounter.TargetUnits {
-				dot := spell.Dot(target)
-				if dot != nil && dot.IsActive() {
-					activeTargetCount++
-				}
-			}
-
-			procChance := baseProcChance * math.Sqrt(float64(activeTargetCount)) / float64(activeTargetCount)
-
-			if sim.Proc(procChance, "Shooting Stars") {
-				ssAura.Activate(sim)
-			}
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			ssAura.Activate(sim)
 		},
 	})
+
+	// Keeping the logic below for when the nerf is reverted in the latest phase of MOP
+
+	// ShootingStarsHandler540 := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 	activeTargetCount := 0
+	// 	baseProcChance := 0.3
+
+	// 	for _, target := range sim.Encounter.TargetUnits {
+	// 		dot := spell.Dot(target)
+	// 		if dot != nil && dot.IsActive() {
+	// 			activeTargetCount++
+	// 		}
+	// 	}
+
+	// 	procChance := baseProcChance * math.Sqrt(float64(activeTargetCount)) / float64(activeTargetCount)
+
+	// 	if sim.Proc(procChance, "Shooting Stars") {
+	// 		ssAura.Activate(sim)
+	// 	}
+	// }
 }
 
 func (moonkin *BalanceDruid) registerBalanceOfPower() {

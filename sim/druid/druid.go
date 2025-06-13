@@ -49,6 +49,7 @@ type Druid struct {
 	Maul                  *DruidSpell
 	MightOfUrsoc          *DruidSpell
 	Moonfire              *DruidSpell
+	NaturesSwiftness      *DruidSpell
 	Prowl                 *DruidSpell
 	Rebirth               *DruidSpell
 	Rake                  *DruidSpell
@@ -233,6 +234,8 @@ func (druid *Druid) Initialize() {
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	druid.registerTranquilityCD()
+
+	druid.ApplyGlyphs()
 }
 
 func (druid *Druid) RegisterBaselineSpells() {
@@ -240,6 +243,7 @@ func (druid *Druid) RegisterBaselineSpells() {
 	druid.registerWrathSpell()
 	druid.registerHealingTouchSpell()
 	druid.registerHurricaneSpell()
+	druid.registerNaturesSwiftness()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
