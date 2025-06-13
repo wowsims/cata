@@ -138,6 +138,9 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	mage.mirrorImages = []*MirrorImage{mage.NewMirrorImage(), mage.NewMirrorImage(), mage.NewMirrorImage()}
 	mage.EnableManaBar()
+	// Nether Attunement
+	// https://www.wowhead.com/mop-classic/spell=117957/nether-attunement
+	mage.HasteEffectsManaRegen()
 
 	mage.Icicles = make([]float64, 0)
 	// mage.mirrorImage = mage.NewMirrorImage()
