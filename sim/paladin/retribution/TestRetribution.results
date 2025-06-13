@@ -731,20 +731,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-EssenceofTerror-98020"
- value: {
-  dps: 136186.29619
-  tps: 128708.93787
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-EssenceofTerror-98076"
- value: {
-  dps: 136229.34783
-  tps: 128744.43503
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-EternalPrimalDiamond"
  value: {
   dps: 143188.3599
@@ -1256,13 +1242,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-JadeCourtesanFigurine-97305"
- value: {
-  dps: 136666.91751
-  tps: 129191.26078
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-JadeMagistrateFigurine-86044"
  value: {
   dps: 139055.93656
@@ -1400,27 +1379,6 @@ dps_results: {
  value: {
   dps: 136739.86226
   tps: 129259.95399
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-MalevolentGladiator'sBadgeofDominance-97531"
- value: {
-  dps: 136657.32115
-  tps: 129181.66442
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-MalevolentGladiator'sBadgeofDominance-97532"
- value: {
-  dps: 136657.32115
-  tps: 129181.66442
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-MalevolentGladiator'sBadgeofDominance-97936"
- value: {
-  dps: 136657.32115
-  tps: 129181.66442
  }
 }
 dps_results: {
@@ -1855,20 +1813,6 @@ dps_results: {
  value: {
   dps: 136692.34191
   tps: 129212.43365
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-RelicofYu'lon-98049"
- value: {
-  dps: 136654.21751
-  tps: 129178.56079
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-RelicofYu'lon-98075"
- value: {
-  dps: 136654.21751
-  tps: 129178.56079
  }
 }
 dps_results: {

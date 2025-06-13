@@ -958,24 +958,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-EssenceofTerror-98020"
- value: {
-  dps: 114879.99467
-  tps: 804159.96272
-  dtps: 45356.45979
-  hps: 6030.3598
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-EssenceofTerror-98076"
- value: {
-  dps: 114872.23449
-  tps: 804105.64146
-  dtps: 45453.87566
-  hps: 6097.68817
- }
-}
-dps_results: {
  key: "TestBrewmaster-AllItems-EternalPrimalDiamond"
  value: {
   dps: 116507.60473
@@ -1642,15 +1624,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-JadeCourtesanFigurine-97305"
- value: {
-  dps: 114378.4026
-  tps: 800648.81819
-  dtps: 44707.78682
-  hps: 6533.98288
- }
-}
-dps_results: {
  key: "TestBrewmaster-AllItems-JadeMagistrateFigurine-86044"
  value: {
   dps: 114378.4026
@@ -1832,33 +1805,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofDominance-91753"
- value: {
-  dps: 114378.4026
-  tps: 800648.81819
-  dtps: 44707.78682
-  hps: 6533.98288
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofDominance-97531"
- value: {
-  dps: 114378.4026
-  tps: 800648.81819
-  dtps: 44707.78682
-  hps: 6533.98288
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofDominance-97532"
- value: {
-  dps: 114378.4026
-  tps: 800648.81819
-  dtps: 44707.78682
-  hps: 6533.98288
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofDominance-97936"
  value: {
   dps: 114378.4026
   tps: 800648.81819
@@ -2399,24 +2345,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-RelicofYu'lon-79331"
- value: {
-  dps: 114378.4026
-  tps: 800648.81819
-  dtps: 44707.78682
-  hps: 6533.98288
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RelicofYu'lon-98049"
- value: {
-  dps: 114378.4026
-  tps: 800648.81819
-  dtps: 44707.78682
-  hps: 6533.98288
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RelicofYu'lon-98075"
  value: {
   dps: 114378.4026
   tps: 800648.81819

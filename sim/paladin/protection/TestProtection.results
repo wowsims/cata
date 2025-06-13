@@ -931,24 +931,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-EssenceofTerror-98020"
- value: {
-  dps: 128218.49646
-  tps: 887992.38431
-  dtps: 81911.12451
-  hps: 70739.07625
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-EssenceofTerror-98076"
- value: {
-  dps: 128249.33771
-  tps: 888207.81303
-  dtps: 81815.52017
-  hps: 70746.0951
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-EternalPrimalDiamond"
  value: {
   dps: 130330.08388
@@ -1606,15 +1588,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-JadeCourtesanFigurine-97305"
- value: {
-  dps: 127912.81052
-  tps: 885851.4177
-  dtps: 81909.60678
-  hps: 70731.93798
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-JadeMagistrateFigurine-86044"
  value: {
   dps: 130140.80844
@@ -1792,33 +1765,6 @@ dps_results: {
   tps: 885682.55442
   dtps: 81916.51042
   hps: 70878.74354
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-MalevolentGladiator'sBadgeofDominance-97531"
- value: {
-  dps: 127857.63132
-  tps: 885465.16328
-  dtps: 81909.5302
-  hps: 70722.04171
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-MalevolentGladiator'sBadgeofDominance-97532"
- value: {
-  dps: 127857.63132
-  tps: 885465.16328
-  dtps: 81909.5302
-  hps: 70722.04171
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-MalevolentGladiator'sBadgeofDominance-97936"
- value: {
-  dps: 127857.63132
-  tps: 885465.16328
-  dtps: 81909.5302
-  hps: 70722.04171
  }
 }
 dps_results: {
@@ -2377,24 +2323,6 @@ dps_results: {
   tps: 887388.35451
   dtps: 81941.75206
   hps: 70985.17941
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-RelicofYu'lon-98049"
- value: {
-  dps: 127886.07026
-  tps: 885664.23592
-  dtps: 81909.54276
-  hps: 70732.47837
- }
-}
-dps_results: {
- key: "TestProtection-AllItems-RelicofYu'lon-98075"
- value: {
-  dps: 127886.07026
-  tps: 885664.23592
-  dtps: 81909.54276
-  hps: 70732.47837
  }
 }
 dps_results: {

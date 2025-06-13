@@ -922,24 +922,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-EssenceofTerror-98020"
- value: {
-  dps: 85225.15685
-  tps: 590732.50254
-  dtps: 56086.56638
-  hps: 22922.43392
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EssenceofTerror-98076"
- value: {
-  dps: 85225.15685
-  tps: 590732.50254
-  dtps: 56086.56638
-  hps: 22922.4247
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-EternalPrimalDiamond"
  value: {
   dps: 89177.03436
@@ -1579,15 +1561,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-JadeCourtesanFigurine-97305"
- value: {
-  dps: 85197.17684
-  tps: 590536.24852
-  dtps: 55953.71775
-  hps: 22571.53866
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-JadeMagistrateFigurine-86044"
  value: {
   dps: 87151.36354
@@ -1771,33 +1744,6 @@ dps_results: {
  key: "TestGuardian-AllItems-MalevolentGladiator'sBadgeofDominance-91753"
  value: {
   dps: 85224.09375
-  tps: 590536.24852
-  dtps: 55953.71775
-  hps: 22571.53866
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-MalevolentGladiator'sBadgeofDominance-97531"
- value: {
-  dps: 85197.17684
-  tps: 590536.24852
-  dtps: 55953.71775
-  hps: 22571.53866
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-MalevolentGladiator'sBadgeofDominance-97532"
- value: {
-  dps: 85197.17684
-  tps: 590536.24852
-  dtps: 55953.71775
-  hps: 22571.53866
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-MalevolentGladiator'sBadgeofDominance-97936"
- value: {
-  dps: 85197.17684
   tps: 590536.24852
   dtps: 55953.71775
   hps: 22571.53866
@@ -2339,24 +2285,6 @@ dps_results: {
  value: {
   dps: 85232.43232
   tps: 590594.61845
-  dtps: 55953.71775
-  hps: 22571.53866
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RelicofYu'lon-98049"
- value: {
-  dps: 85197.17684
-  tps: 590536.24852
-  dtps: 55953.71775
-  hps: 22571.53866
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RelicofYu'lon-98075"
- value: {
-  dps: 85197.17684
-  tps: 590536.24852
   dtps: 55953.71775
   hps: 22571.53866
  }
