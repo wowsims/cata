@@ -239,7 +239,7 @@ export function stringToResourceType(str: string): [ResourceType, SecondaryResou
 		}
 	}
 
-	for (const val of Object.keys(SecondaryResourceType).filter(key=> isNaN(Number(key)))) {
+	for (const val of Object.keys(SecondaryResourceType).filter(key => isNaN(Number(key)))) {
 		if (val.toLowerCase() == str.toLowerCase()) {
 			return [ResourceType.ResourceTypeGenericResource, (<any>SecondaryResourceType)[val]];
 		}
@@ -308,6 +308,27 @@ export const REP_FACTION_NAMES: Record<RepFaction, string> = {
 	[RepFaction.RepFactionBaradinsWardens]: "Baradin's Wardens",
 	[RepFaction.RepFactionHellscreamsReach]: "Hellscream's Reach",
 	[RepFaction.RepFactionAvengersOfHyjal]: 'Avengers of Hyjal',
+
+	[RepFaction.RepFactionGoldenLotus]: 'Golden Lotus',
+	[RepFaction.RepFactionTheTillers]: 'The Tillers',
+	[RepFaction.RepFactionShadoPan]: 'Shado-Pan',
+	[RepFaction.RepFactionShadoPanAssault]: 'Shado-Pan Assault',
+	[RepFaction.RepFactionTheBrewmasters]: 'The Brewmasters',
+	[RepFaction.RepFactionTheKlaxxi]: 'The Klaxxi',
+	[RepFaction.RepFactionTheAugustCelestials]: 'The August Celestials',
+	[RepFaction.RepFactionTheAnglers]: 'The Anglers',
+	[RepFaction.RepFactionEmperorShaohao]: 'Emperor Shaohao',
+	[RepFaction.RepFactionSunreaverOnslaught]: 'Sunreaver Onslaught',
+	[RepFaction.RepFactionKirinTorOffensive]: 'Kirin Tor Offensive',
+	[RepFaction.RepFactionDominanceOffensive]: 'Dominance Offensive',
+	[RepFaction.RepFactionOrderOfTheCloudSerpent]: 'Order of the Cloud Serpent',
+	[RepFaction.RepFactionShangXisAcademy]: 'Shang Xi’s Academy',
+	[RepFaction.RepFactionTheLorewalkers]: 'The Lorewalkers',
+	[RepFaction.RepFactionTheBlackPrince]: 'The Black Prince',
+	[RepFaction.RepFactionForestHozen]: 'Forest Hozen',
+	[RepFaction.RepFactionPearlfinJinyu]: 'Pearlfin Jinyu',
+	[RepFaction.RepFactionHozen]: 'Hozen',
+	[RepFaction.RepFactionOperationShieldwall]: 'Operation: Shieldwall',
 };
 
 export const REP_FACTION_QUARTERMASTERS: Record<RepFaction, number> = {
@@ -321,6 +342,27 @@ export const REP_FACTION_QUARTERMASTERS: Record<RepFaction, number> = {
 	[RepFaction.RepFactionBaradinsWardens]: 47328,
 	[RepFaction.RepFactionHellscreamsReach]: 48531,
 	[RepFaction.RepFactionAvengersOfHyjal]: 54401,
+
+	[RepFaction.RepFactionGoldenLotus]: 59908,
+	[RepFaction.RepFactionTheTillers]: 58706,
+	[RepFaction.RepFactionShadoPan]: 64595,
+	[RepFaction.RepFactionShadoPanAssault]: 70346,
+	[RepFaction.RepFactionTheBrewmasters]: 64596,
+	[RepFaction.RepFactionTheKlaxxi]: 64599,
+	[RepFaction.RepFactionTheAugustCelestials]: 64032,
+	[RepFaction.RepFactionTheAnglers]: 63721,
+	[RepFaction.RepFactionEmperorShaohao]: 0,
+	[RepFaction.RepFactionSunreaverOnslaught]: 67672,
+	[RepFaction.RepFactionKirinTorOffensive]: 68000,
+	[RepFaction.RepFactionDominanceOffensive]: 69060,
+	[RepFaction.RepFactionOrderOfTheCloudSerpent]: 58414,
+	[RepFaction.RepFactionShangXisAcademy]: 0,
+	[RepFaction.RepFactionTheLorewalkers]: 64605,
+	[RepFaction.RepFactionTheBlackPrince]: 0,
+	[RepFaction.RepFactionForestHozen]: 0,
+	[RepFaction.RepFactionPearlfinJinyu]: 0,
+	[RepFaction.RepFactionHozen]: 0,
+	[RepFaction.RepFactionOperationShieldwall]: 69059,
 };
 
 export const masterySpellNames: Map<Spec, string> = new Map([

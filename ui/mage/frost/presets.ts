@@ -57,8 +57,8 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 74650, // Mogu Fish Stew
 	potId: 76093, // Potion of the Jade Serpent
 	prepotId: 76093, // Potion of the Jade Serpent
-	tinkerId: 82174, // Synapse Springs
 });
+
 export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,

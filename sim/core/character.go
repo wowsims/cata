@@ -589,12 +589,32 @@ func (character *Character) getCurrentProcMaskFor(pred func(item *Item) bool) Pr
 	}
 
 	if pred(character.MainHand()) {
-		mask |= ProcMaskMeleeMH
+		if character.MainHand().RangedWeaponType > 0 {
+			mask |= ProcMaskRanged
+		} else {
+			mask |= ProcMaskMeleeMH
+		}
 	}
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
 	}
 	return mask
+}
+
+func (character *Character) GetProcMaskForWeaponSlot(slot proto.ItemSlot) ProcMask {
+	item := character.GetItemBySlot(slot)
+	switch slot {
+	case proto.ItemSlot_ItemSlotMainHand:
+		if item.RangedWeaponType > 0 {
+			return ProcMaskRanged
+		} else {
+			return ProcMaskMeleeMH
+		}
+	case proto.ItemSlot_ItemSlotOffHand:
+		return ProcMaskMeleeOH
+	}
+
+	return ProcMaskEmpty
 }
 
 func (character *Character) doneIteration(sim *Simulation) {
@@ -621,11 +641,11 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatBlockPercent: Ternary(character.PseudoStats.CanBlock, (character.PseudoStats.BaseBlockChance+character.GetDiminishedBlockChance())*100, 0),
 
 		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
-		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
-		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
+		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier * character.PseudoStats.AttackSpeedMultiplier,
+		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier * character.PseudoStats.AttackSpeedMultiplier,
 		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
-		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.SwingSpeed() - 1) * 100,
-		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.RangedSwingSpeed() - 1) * 100,
+		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.TotalMeleeHasteMultiplier() - 1) * 100,
+		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.TotalRangedHasteMultiplier() - 1) * 100,
 		proto.PseudoStat_PseudoStatSpellHastePercent:     (character.TotalSpellHasteMultiplier() - 1) * 100,
 
 		// School-specific fully buffed Hit/Crit are represented as proper Stats in the back-end so

@@ -47,10 +47,6 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
-			if arcane.arcaneMissiles.Dot(target).RemainingTicks() == 0 {
-				arcane.arcaneChargesAura.Activate(sim)
-				arcane.arcaneChargesAura.AddStack(sim)
-			}
 		},
 	})
 
@@ -80,6 +76,10 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			AffectedByCastSpeed:  true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				arcane.arcaneMissilesTickSpell.Cast(sim, target)
+				if dot.RemainingTicks() == 0 {
+					arcane.arcaneChargesAura.Activate(sim)
+					arcane.arcaneChargesAura.AddStack(sim)
+				}
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

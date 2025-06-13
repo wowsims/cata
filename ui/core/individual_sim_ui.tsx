@@ -57,6 +57,7 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
+import { Consumable } from './proto/db';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
@@ -113,7 +114,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 
 	knownIssues?: Array<string>;
 	warnings?: Array<(simUI: IndividualSimUI<SpecType>) => SimWarning>;
-
+	consumableStats?: Array<Stat>;
+	gemStats?: Array<Stat>;
 	epStats: Array<Stat>;
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;
@@ -142,6 +144,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
 		softCapBreakpoints?: StatCap[];
+		breakpointLimits?: Stats;
 		consumables: ConsumesSpec;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -188,8 +191,6 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
 }
-
-
 
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
 	registerPlayerConfig(spec, config);
@@ -337,7 +338,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				ItemNotice.registerSetBonusNotices(this.sim.db);
 				this.loadSettings();
 
-				if (this.player.getPlayerSpec().isHealingSpec) {
+				if (this.player.getPlayerSpec().isHealingSpec && !isDevMode()) {
 					alert(Tooltips.HEALING_SIM_DISCLAIMER);
 				}
 			});
@@ -365,7 +366,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 		return config;
 	}
-
 
 	private loadSettings() {
 		const initEventID = TypedEvent.nextEventID();
@@ -556,7 +556,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);
 			if (this.individualConfig.defaults.softCapBreakpoints)
 				this.player.setSoftCapBreakpoints(eventID, this.individualConfig.defaults.softCapBreakpoints);
-			this.player.setBreakpointLimits(eventID, new Stats());
+			this.player.setBreakpointLimits(eventID, this.individualConfig.defaults.breakpointLimits || new Stats());
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
 
 			if (this.individualConfig.defaults.other?.profession2 === undefined) {
