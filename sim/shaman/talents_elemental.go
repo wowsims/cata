@@ -10,6 +10,13 @@ import (
 
 func (shaman *Shaman) ApplyElementalTalents() {
 
+	//MoP Classic Changes "https://us.forums.blizzard.com/en/wow/t/feedback-mists-of-pandaria-class-changes/2117387/1"
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask:  SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.1,
+	})
+
 	//Elemental Precision
 	shaman.AddStat(stats.HitRating, -shaman.GetBaseStats()[stats.Spirit])
 	shaman.AddStatDependency(stats.Spirit, stats.HitRating, 1.0)

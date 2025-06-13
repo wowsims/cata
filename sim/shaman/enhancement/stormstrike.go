@@ -36,7 +36,7 @@ func (enh *EnhancementShaman) newStormstrikeHitSpellConfig(spellID int32, isMH b
 		ClassSpellMask: shaman.SpellMaskStormstrikeDamage,
 
 		ThreatMultiplier: 1,
-		DamageMultiplier: 3.8,
+		DamageMultiplier: 4.5, //MoP Classic Changes "https://us.forums.blizzard.com/en/wow/t/feedback-mists-of-pandaria-class-changes/2117387/1"
 		CritMultiplier:   enh.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
