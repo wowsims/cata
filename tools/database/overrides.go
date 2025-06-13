@@ -213,6 +213,9 @@ var ItemAllowList = map[int32]struct{}{
 	34677: {}, // Shattered Sun Pendant of Restoration
 
 	45703: {}, // Spark of Hope
+
+	49982: {}, // Heartpierce N
+	50641: {}, // Heartpierce H
 }
 
 // Keep these sorted by item ID.

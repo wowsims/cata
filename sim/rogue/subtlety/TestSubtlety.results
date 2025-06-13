@@ -829,6 +829,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Heartpierce-49982"
+ value: {
+  dps: 75259.66813
+  tps: 53054.42753
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Heartpierce-50641"
+ value: {
+  dps: 75259.66813
+  tps: 53054.42753
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 74219.93532

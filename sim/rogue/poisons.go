@@ -26,8 +26,8 @@ func (rogue *Rogue) GetLethalPoisonProcChance() float64 {
 
 func (rogue *Rogue) UpdateLethalPoisonPPH(bonusChance float64) {
 	pph := rogue.GetLethalPoisonProcChance() + bonusChance
-	rogue.deadlyPoisonPPHM = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, core.ProcMaskMelee)
-	rogue.woundPoisonPPHM = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, core.ProcMaskMelee)
+	rogue.deadlyPoisonPPHM = rogue.NewFixedProcChanceManager(pph, core.ProcMaskMelee)
+	rogue.woundPoisonPPHM = rogue.NewFixedProcChanceManager(pph, core.ProcMaskMelee)
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
