@@ -156,7 +156,7 @@ export default class SelectorModal extends BaseModal {
 						ilvl: item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl,
 						name: item.name,
 						quality: item.quality,
-						heroic: item.heroic,
+						nameDescription: item.nameDescription,
 						phase: item.phase,
 						ignoreEPFilter: false,
 						onEquip: (eventID, item) => {
@@ -196,7 +196,7 @@ export default class SelectorModal extends BaseModal {
 						quality: enchant.quality,
 						phase: enchant.phase || 1,
 						ignoreEPFilter: true,
-						heroic: false,
+						nameDescription: '',
 						onEquip: (eventID, enchant) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(enchant));
@@ -226,7 +226,7 @@ export default class SelectorModal extends BaseModal {
 						quality: tinker.quality,
 						phase: tinker.phase || 1,
 						ignoreEPFilter: true,
-						heroic: false,
+						nameDescription: '',
 						onEquip: (eventID, tinker) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) gearData.equipItem(eventID, equippedItem.withTinker(tinker));
@@ -352,7 +352,7 @@ export default class SelectorModal extends BaseModal {
 						name: gem.name,
 						quality: gem.quality,
 						phase: gem.phase,
-						heroic: false,
+						nameDescription: '',
 						ignoreEPFilter: true,
 						onEquip: (eventID, gem) => {
 							const equippedItem = gearData.getEquippedItem();
@@ -425,7 +425,7 @@ export default class SelectorModal extends BaseModal {
 					name: randomSuffix.name,
 					quality: itemProto.quality,
 					phase: itemProto.phase,
-					heroic: false,
+					nameDescription: '',
 					ignoreEPFilter: true,
 					onEquip: (eventID, randomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
@@ -476,7 +476,7 @@ export default class SelectorModal extends BaseModal {
 					) as HTMLElement,
 					quality: ItemQuality.ItemQualityCommon,
 					phase: itemProto.phase,
-					heroic: false,
+					nameDescription: '',
 					ignoreEPFilter: true,
 					onEquip: (eventID, reforgeData) => {
 						const equippedItem = gearData.getEquippedItem();
@@ -527,7 +527,7 @@ export default class SelectorModal extends BaseModal {
 					ilvl: upgradeData.ilvl,
 					quality: ItemQuality.ItemQualityCommon,
 					phase: itemProto.phase,
-					heroic: false,
+					nameDescription: '',
 					ignoreEPFilter: true,
 					onEquip: (eventID, upgradeStep) => {
 						const equippedItem = gearData.getEquippedItem();
