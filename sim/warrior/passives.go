@@ -10,22 +10,23 @@ import (
 
 func (war *Warrior) registerEnrage() {
 	actionID := core.ActionID{SpellID: 12880}
-	war.EnrageMultiplier = 1.0
+	rageMetrics := war.NewRageMetrics(actionID)
+	duration := time.Second * 6
+	if war.Spec == proto.Spec_SpecFuryWarrior {
+		duration = time.Second * 8
+	}
 
-	var bonusSnapshot float64
 	war.EnrageAura = war.RegisterAura(core.Aura{
 		Label:    "Enrage",
 		Tag:      EnrageTag,
 		ActionID: actionID,
-		Duration: 6 * time.Second,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			war.EnrageMultiplier += 0.1
-			bonusSnapshot = war.EnrageMultiplier + (0.1 * war.EnrageMasteryMultiplier)
-			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
+			war.AddRage(sim, 10, rageMetrics)
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.EnrageMultiplier -= 0.1
-			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
 		},
 	})
 
@@ -76,7 +77,7 @@ func (warrior *Warrior) registerDeepWounds() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseDamage := warrior.CalcScalingSpellDmg(deepWoundsCoeff)
 				baseDamage += deepWoundsBonusCoeff * dot.Spell.MeleeAttackPower()
-				dot.SnapshotPhysical(target, baseDamage*warrior.EnrageMultiplier)
+				dot.SnapshotPhysical(target, baseDamage)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
