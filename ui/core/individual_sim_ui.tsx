@@ -144,6 +144,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
 		softCapBreakpoints?: StatCap[];
+		breakpointLimits?: Stats;
 		consumables: ConsumesSpec;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -337,7 +338,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				ItemNotice.registerSetBonusNotices(this.sim.db);
 				this.loadSettings();
 
-				if (this.player.getPlayerSpec().isHealingSpec) {
+				if (this.player.getPlayerSpec().isHealingSpec && !isDevMode()) {
 					alert(Tooltips.HEALING_SIM_DISCLAIMER);
 				}
 			});
@@ -555,7 +556,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);
 			if (this.individualConfig.defaults.softCapBreakpoints)
 				this.player.setSoftCapBreakpoints(eventID, this.individualConfig.defaults.softCapBreakpoints);
-			this.player.setBreakpointLimits(eventID, new Stats());
+			this.player.setBreakpointLimits(eventID, this.individualConfig.defaults.breakpointLimits || new Stats());
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
 
 			if (this.individualConfig.defaults.other?.profession2 === undefined) {

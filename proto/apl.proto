@@ -85,9 +85,9 @@ message APLAction {
     }
 }
 
-// NextIndex: 102
+// NextIndex: 101
 message APLValue {
-	UUID uuid = 87;
+	UUID uuid = 85;
 
     oneof value {
         // Operators
@@ -125,15 +125,15 @@ message APLValue {
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
 		APLValueCurrentGenericResource current_generic_resource = 75;
-        APLValueMaxHealth max_health = 99;
-		APLValueMaxComboPoints max_combo_points = 94;
-		APLValueMaxEnergy max_energy = 88;
-		APLValueMaxFocus max_focus = 89;
+        APLValueMaxHealth max_health = 98;
+		APLValueMaxComboPoints max_combo_points = 93;
+		APLValueMaxEnergy max_energy = 87;
+		APLValueMaxFocus max_focus = 88;
 		APLValueMaxRunicPower max_runic_power = 86;
-		APLValueEnergyRegenPerSecond energy_regen_per_second = 90;
-		APLValueFocusRegenPerSecond focus_regen_per_second = 91;
-		APLValueEnergyTimeToTarget energy_time_to_target = 92;
-		APLValueFocusTimeToTarget focus_time_to_target = 93;
+		APLValueEnergyRegenPerSecond energy_regen_per_second = 89;
+		APLValueFocusRegenPerSecond focus_regen_per_second = 90;
+		APLValueEnergyTimeToTarget energy_time_to_target = 91;
+		APLValueFocusTimeToTarget focus_time_to_target = 92;
 
 		// Unit values
 		APLValueUnitIsMoving unit_is_moving = 72;
@@ -165,8 +165,8 @@ message APLValue {
         APLValueSpellIsChanneling spell_is_channeling = 56;
         APLValueSpellChanneledTicks spell_channeled_ticks = 57;
         APLValueSpellCurrentCost spell_current_cost = 62;
-        APLValueSpellNumCharges spell_num_charges = 97;
-        APLValueSpellTimeToCharge spell_time_to_charge = 98;
+        APLValueSpellNumCharges spell_num_charges = 96;
+        APLValueSpellTimeToCharge spell_time_to_charge = 97;
 
         // Aura values
         APLValueAuraIsKnown aura_is_known = 73;
@@ -183,9 +183,9 @@ message APLValue {
         APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80; // TODO: Rename in MoP as it includes all item/effect procs
-        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 82; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81; // TODO: Rename in MoP as it includes all item/effect procs
-        APLValueNumStatBuffCooldowns num_stat_buff_cooldowns = 85;
+        APLValueNumStatBuffCooldowns num_stat_buff_cooldowns = 84;
 
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
@@ -210,12 +210,11 @@ message APLValue {
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
-		APLValueShamanCanSnapshotStrongerFireElemental shaman_can_snapshot_stronger_fire_elemental = 82;
         APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
-        APLValueMonkCurrentChi monk_current_chi = 95;
-		APLValueMonkMaxChi monk_max_chi = 96;
-		APLValueBrewmasterMonkCurrentStaggerPercent brewmaster_monk_current_stagger_percent = 100;
-		APLValueProtectionPaladinDamageTakenLastGlobal protection_paladin_damage_taken_last_global = 101;
+        APLValueMonkCurrentChi monk_current_chi = 94;
+		APLValueMonkMaxChi monk_max_chi = 95;
+		APLValueBrewmasterMonkCurrentStaggerPercent brewmaster_monk_current_stagger_percent = 99;
+		APLValueProtectionPaladinDamageTakenLastGlobal protection_paladin_damage_taken_last_global = 100;
     }
 }
 
@@ -695,7 +694,6 @@ message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
 message APLValueMageCurrentCombustionDotEstimate {}
-message APLValueShamanCanSnapshotStrongerFireElemental {}
 message APLValueShamanFireElementalDuration {}
 
 message APLValueMonkCurrentChi {}

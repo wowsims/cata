@@ -32,6 +32,7 @@ type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcTrigger struct {
 	Name              string
 	ActionID          ActionID
+	MetricsActionID   ActionID
 	Duration          time.Duration
 	Callback          AuraCallback
 	ProcMask          ProcMask
@@ -185,6 +186,7 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 		Label:           config.Name,
 		ActionIDForProc: config.ActionID,
 		Duration:        config.Duration,
+		ActionID:        config.MetricsActionID,
 	}
 	if config.Duration == 0 {
 		aura.Duration = NeverExpires
@@ -484,6 +486,24 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 
 	if parentAura.IsActive() {
 		parentAura.Unit.MultiplyCastSpeed(multiplier)
+	}
+
+	return parentAura
+}
+
+// Attaches a Damage Done By Caster buff to a parent Aura
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*AttackTable, handler DynamicDamageDoneByCaster) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, _ *Simulation) {
+		DisableDamageDoneByCaster(index, (*attackTables)[parentAura.Unit.UnitIndex])
+	})
+
+	if parentAura.IsActive() {
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
 	}
 
 	return parentAura

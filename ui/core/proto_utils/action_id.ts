@@ -425,7 +425,9 @@ export class ActionId {
 					name += ' (DoT)'
 				}
 				break;
+			case 'Wind Lash':
 			case 'Stormstrike':
+			case 'Stormblast' :
 				if (tag == 0) {
 					name += ' (Cast)';
 				} else if (tag == 1) {
@@ -434,22 +436,41 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Elemental Blast':
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
+			case 'Lava Beam':
 			case 'Lava Burst':
 				if (tag == 6) {
 					name += ' (Overload)';
+				} else if (tag == 7) {
+					name += ' (Echo)'	
+				} else if (tag == 8) {
+					name += ' (Echo Overload)'	
+				} else if (tag == 9) {
+					name += ' (Mastery)';
+				} else if (tag == 10) {
+					name += ' (Haste)';
+				} else if (tag == 11) {
+					name += ' (Crit)';
+				} else if (tag == 12) {
+					name += ' (Agi)';
 				} else if (tag) {
 					name += ` (${tag} MW)`;
 				}
 				break;
 			case 'Flame Shock':
+			case 'Earth Shock':
+			case 'Frost Shock' :
+			case 'Fire Nova':
 				if (tag == 1) {
 					name += ' (DoT)';
+				} else if (tag == 7) {
+					name += ' (Echo)'	
 				}
 				break;
 			case 'Fulmination':
-				name += ` (${tag + 3})`;
+				name += ` (${tag + 2})`;
 				break;
 			case 'Lightning Shield':
 				if (tag == 1) {
@@ -1178,6 +1199,8 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),
 	'Greater Earth Elemental': ActionId.fromSpellId(2062),
 	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	'Primal Earth Elemental': ActionId.fromSpellId(2062),
+	'Primal Fire Elemental': ActionId.fromSpellId(2894),
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
 	'Rune Weapon': ActionId.fromSpellId(49028),
