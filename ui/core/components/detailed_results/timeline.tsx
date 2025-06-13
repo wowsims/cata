@@ -1265,6 +1265,9 @@ const auraAsResource = [
 
 	// Monk
 	124255, // Stagger
+
+	// Mage
+	148022, // Icicle
 ];
 
 // Hard-coded spell categories for controlling rotation ordering.
