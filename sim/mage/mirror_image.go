@@ -71,7 +71,7 @@ func (mage *Mage) NewMirrorImage() *MirrorImage {
 
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina],
-			stats.SpellPower:       ownerStats[stats.SpellPower],
+			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.05,
 			stats.HasteRating:      ownerStats[stats.HasteRating],
 			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
 			stats.HitRating:        combinedHitExp,
@@ -159,7 +159,7 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 		BonusCoefficient: frostBoltCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := mi.CalcAndRollDamageRange(sim, frostBoltScaling, frostBoltVariance)
+			baseDamage := mi.Owner.CalcAndRollDamageRange(sim, frostBoltScaling, frostBoltVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
@@ -199,7 +199,7 @@ func (mi *MirrorImage) registerFireballSpell() {
 		BonusCoefficient: fireBallCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := mi.CalcAndRollDamageRange(sim, fireBallScaling, fireBallVariance)
+			baseDamage := mi.Owner.CalcAndRollDamageRange(sim, fireBallScaling, fireBallVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
@@ -239,7 +239,7 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 		BonusCoefficient: arcaneBlastCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := mi.CalcAndRollDamageRange(sim, arcaneBlastScaling, arcaneBlastVariance)
+			baseDamage := mi.Owner.CalcAndRollDamageRange(sim, arcaneBlastScaling, arcaneBlastVariance)
 			result := spell.CalcAndDealDamage(sim, mi.CurrentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				mi.arcaneChargesAura.Activate(sim)
