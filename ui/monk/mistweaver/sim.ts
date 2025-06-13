@@ -64,6 +64,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
+			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
+				breakpoints: [15],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [(Presets.DEFAULT_EP_PRESET.epWeights.getStat(Stat.StatCritRating) - 0.02) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT],
+			});
+
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('10-tick - ReM')!,
@@ -76,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 				postCapEPs: [(Presets.DEFAULT_EP_PRESET.epWeights.getStat(Stat.StatCritRating) - 0.01) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [hasteSoftCapConfig];
+			return [hasteSoftCapConfig, spellHitSoftCapConfig];
 		})(),
 		breakpointLimits: new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHastePercent, hasteBreakpoints.get('11-tick - ReM')!),
 		other: Presets.OtherDefaults,
