@@ -85,9 +85,8 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance                  Stance
-	EnrageMasteryMultiplier float64
-	CriticalBlockChance     []float64 // Can be gained as non-prot via certain talents and spells
+	Stance              Stance
+	CriticalBlockChance []float64 // Can be gained as non-prot via certain talents and spells
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -146,7 +145,6 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	warrior.EnrageMasteryMultiplier = 1.0
 	warrior.sharedHSCleaveCD = warrior.NewTimer()
 	warrior.sharedShoutsCD = warrior.NewTimer()
 

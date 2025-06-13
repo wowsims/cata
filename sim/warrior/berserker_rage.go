@@ -15,6 +15,8 @@ func (war *Warrior) registerBerserkerRage() {
 
 	actionID := core.ActionID{SpellID: 18499}
 	duration := time.Second * 6
+	// 2025-06-13 - Balance change
+	// https://www.wowhead.com/blue-tracker/topic/eu/mists-of-pandaria-classic-development-notes-updated-6-june-571162
 	if war.Spec == proto.Spec_SpecFuryWarrior {
 		duration = time.Second * 8
 	}
