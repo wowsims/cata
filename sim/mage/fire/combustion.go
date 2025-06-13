@@ -47,7 +47,7 @@ func (fire *FireMage) registerCombustionSpell() {
 		spell := fire.Ignite
 		dot := spell.Dot(target)
 		if dot.IsActive() {
-			tickDamage += dot.SnapshotBaseDamage / 2
+			tickDamage += dot.SnapshotBaseDamage * .5
 		}
 		return tickDamage
 	}
