@@ -546,7 +546,7 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var shaWeaponIDs = []int32{86990, 86865, 86227, 97296}
+var shaWeaponIDs = []int32{86990, 86865, 86227}
 
 func init() {
 	for _, id := range shaWeaponIDs {

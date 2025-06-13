@@ -1,7 +1,6 @@
 package windwalker
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -15,9 +14,9 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 	ww.Monk.RegisterOnChiSpent(func(sim *core.Simulation, chiSpent int32) {
 		accumulatedChi := ww.outstandingChi + chiSpent
 
-		for accumulatedChi >= 4 {
+		for accumulatedChi >= 3 {
 			ww.AddBrewStacks(sim, 1)
-			accumulatedChi -= 4
+			accumulatedChi -= 3
 		}
 
 		ww.outstandingChi = accumulatedChi
@@ -32,18 +31,7 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 
 	ww.Monk.RegisterOnNewBrewStacks(func(sim *core.Simulation, stacksToAdd int32) {
 		ww.TigereyeBrewStackAura.Activate(sim)
-
-		// Mastery: Bottled Fury
-		// When you generate Tigereye Brew charges, you have a chance to generate an additional charge.
-		// Can go above 100% and should then add the correct amount of guaranteed stacks.
-		procChance := ww.getMasteryPercent()
-		if sim.Proc(math.Mod(procChance, 1), "Mastery: Bottled Fury") {
-			stacksToAdd += int32(math.Ceil(procChance))
-		} else {
-			stacksToAdd += int32(math.Floor(procChance))
-		}
-
-		ww.TigereyeBrewStackAura.SetStacks(sim, ww.TigereyeBrewStackAura.GetStacks()+stacksToAdd)
+		ww.TigereyeBrewStackAura.AddStack(sim)
 	})
 
 	var damageMultiplier float64
@@ -55,7 +43,7 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			stacksToConsume := min(10, ww.TigereyeBrewStackAura.GetStacks())
 
-			damagePerStack := 0.06 + core.TernaryFloat64(ww.T15Windwalker4P != nil && ww.T15Windwalker4P.IsActive(), 0.005, 0)
+			damagePerStack := 0.035 + ww.getMasteryPercent() + core.TernaryFloat64(ww.T15Windwalker4P != nil && ww.T15Windwalker4P.IsActive(), 0.005, 0)
 			damageMultiplier = (1 + damagePerStack*float64(stacksToConsume))
 
 			ww.PseudoStats.DamageDealtMultiplier *= damageMultiplier
@@ -97,5 +85,7 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			buffAura.Activate(sim)
 		},
+
+		RelatedSelfBuff: buffAura,
 	})
 }

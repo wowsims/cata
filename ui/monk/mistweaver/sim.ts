@@ -6,11 +6,12 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
-import { Sim } from '../../core/sim';
 import * as Presets from './presets';
+
+const hasteBreakpoints = Presets.MISTWEAVER_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 	cssClass: 'mistweaver-monk-sim-ui',
@@ -20,55 +21,70 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
-		Stat.StatAgility,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		Stat.StatSpellPower,
 		Stat.StatHitRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
 		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
-	],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatIntellect,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
-			PseudoStat.PseudoStatPhysicalHitPercent,
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpirit,
+			Stat.StatSpellPower,
+			Stat.StatMasteryRating,
+			Stat.StatExpertiseRating,
+		],
+		[
 			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
+			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
 		],
 	),
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PREPATCH_GEAR_PRESET.gear,
+		gear: Presets.PREBIS_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
+		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			return expCap;
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
+		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
+				breakpoints: [15],
 				capType: StatCapType.TypeSoftCap,
-				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0],
+				postCapEPs: [(Presets.DEFAULT_EP_PRESET.epWeights.getStat(Stat.StatCritRating) - 0.02) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT],
 			});
 
-			return [meleeHitSoftCapConfig];
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
+				breakpoints: [
+					hasteBreakpoints.get('10-tick - ReM')!,
+					hasteBreakpoints.get('11-tick - ReM')!,
+					hasteBreakpoints.get('12-tick - ReM')!,
+					hasteBreakpoints.get('13-tick - ReM')!,
+					hasteBreakpoints.get('14-tick - ReM')!,
+				],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [(Presets.DEFAULT_EP_PRESET.epWeights.getStat(Stat.StatCritRating) - 0.01) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			});
+
+			return [hasteSoftCapConfig, spellHitSoftCapConfig];
 		})(),
+		breakpointLimits: new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHastePercent, hasteBreakpoints.get('11-tick - ReM')!),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -77,11 +93,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			mindQuickening: true,
+			leaderOfThePack: true,
+			blessingOfMight: true,
+			unholyAura: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			curseOfElements:true,
+			curseOfElements: true,
 			physicalVulnerability: true,
 			weakenedArmor: true,
 		}),
@@ -102,13 +128,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 	},
 
 	presets: {
-		epWeights: [Presets.PREPATCH_EP_PRESET],
+		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREPATCH_GEAR_PRESET],
+		gear: [Presets.PREBIS_GEAR_PRESET],
 	},
 
 	autoRotation: (_: Player<Spec.SpecMistweaverMonk>): APLRotation => {
@@ -129,16 +155,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.PREBIS_GEAR_PRESET.gear,
+					2: Presets.PREBIS_GEAR_PRESET.gear,
+					3: Presets.PREBIS_GEAR_PRESET.gear,
+					4: Presets.PREBIS_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PREPATCH_GEAR_PRESET.gear,
-					2: Presets.PREPATCH_GEAR_PRESET.gear,
-					3: Presets.PREPATCH_GEAR_PRESET.gear,
-					4: Presets.PREPATCH_GEAR_PRESET.gear,
+					1: Presets.PREBIS_GEAR_PRESET.gear,
+					2: Presets.PREBIS_GEAR_PRESET.gear,
+					3: Presets.PREBIS_GEAR_PRESET.gear,
+					4: Presets.PREBIS_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -146,41 +172,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 	],
 });
 
-const getActiveEPWeight = (player: Player<Spec.SpecMistweaverMonk>, sim: Sim): Stats => {
-	if (sim.getUseCustomEPValues()) {
-		return player.getEpWeights();
-	} else {
-		return Presets.PREPATCH_EP_PRESET.epWeights;
-	}
-};
-
 export class MistweaverMonkSimUI extends IndividualSimUI<Spec.SpecMistweaverMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecMistweaverMonk>) {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				updateSoftCaps: (softCaps: StatCap[]) => {
-					// Dynamic adjustments to the static Hit soft cap EP
-					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
-					if (meleeSoftCap) {
-						const activeEPWeight = getActiveEPWeight(player, this.sim);
-						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						const mhWep = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
-						const ohWep = player.getEquippedItem(ItemSlot.ItemSlotOffHand);
-						if (mhWep?.item.handType === HandType.HandTypeTwoHand || !ohWep) {
-							meleeSoftCap.breakpoints = [meleeSoftCap.breakpoints[0]];
-							meleeSoftCap.postCapEPs = [0];
-						} else if (ohWep) {
-							meleeSoftCap.postCapEPs = [initialEP / 2, 0];
-						}
-					}
-
-					return softCaps;
-				},
-				getEPDefaults: (player: Player<Spec.SpecMistweaverMonk>) => {
-					return getActiveEPWeight(player, this.sim);
-				},
+				statSelectionPresets: Presets.MISTWEAVER_BREAKPOINTS,
+				enableBreakpointLimits: true,
 			});
 		});
 	}
