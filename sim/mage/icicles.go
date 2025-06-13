@@ -35,44 +35,30 @@ func (mage *Mage) registerFrostMastery() {
 		Duration:  time.Hour * 1,
 		MaxStacks: 5,
 	})
-
-	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
-		Name:           "Icicles - Trigger",
-		ClassSpellMask: MageSpellFrostbolt | MageSpellFrostfireBolt,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			mage.IciclesAura.Activate(sim)
-			mage.IciclesAura.AddStack(sim)
-		},
-	})
 }
 
-func (mage *Mage) castIcicleWithDamage(sim *core.Simulation, target *core.Unit, damage float64) {
+func (mage *Mage) SpendIcicle(sim *core.Simulation, target *core.Unit, damage float64) {
+	if !mage.IciclesAura.IsActive() || mage.IciclesAura.GetStacks() == 0 {
+		return
+	}
+	mage.IciclesAura.RemoveStack(sim)
+
 	mage.Icicle.DamageMultiplier *= damage
 	mage.Icicle.Cast(sim, target)
 	mage.Icicle.DamageMultiplier /= damage
-	if mage.IciclesAura.IsActive() {
-		mage.IciclesAura.RemoveStack(sim)
-	}
 }
 
-func (mage *Mage) HandleIcicleGeneration(sim *core.Simulation, target *core.Unit, baseDamage float64) {
-	numIcicles := len(mage.Icicles)
+func (mage *Mage) GainIcicle(sim *core.Simulation, target *core.Unit, baseDamage float64) {
+	mage.IciclesAura.Activate(sim)
+	numIcicles := int32(len(mage.Icicles))
 	hasGlyphSplittingIce := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce)
-	if numIcicles == 5 {
+	if numIcicles == mage.IciclesAura.MaxStacks {
 		if hasGlyphSplittingIce && mage.Env.GetNumTargets() > 1 {
-			mage.castIcicleWithDamage(sim, mage.Env.NextTargetUnit(target), mage.Icicles[0]/2)
+			mage.SpendIcicle(sim, mage.Env.NextTargetUnit(target), mage.Icicles[0]/2)
 		}
-		mage.castIcicleWithDamage(sim, target, mage.Icicles[0])
+		mage.SpendIcicle(sim, target, mage.Icicles[0])
 		mage.Icicles = mage.Icicles[1:]
 	}
 	mage.Icicles = append(mage.Icicles, baseDamage*mage.GetFrostMasteryBonus())
-}
-
-func (mage *Mage) HandleUseAllIcicles(sim *core.Simulation, target *core.Unit) {
-	for _, icicle := range mage.Icicles {
-		mage.castIcicleWithDamage(sim, target, icicle)
-	}
-	mage.Icicles = make([]float64, 0) // Note this only really works if the code executes purely sequentially.
+	mage.IciclesAura.AddStack(sim)
 }

@@ -44,13 +44,13 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 			damageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)
 
 			spell.DamageMultiplier *= damageMultiplier
-			for _ = range numberOfBolts {
+			for range numberOfBolts {
 				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 					if result.Landed() {
-						frostMage.HandleIcicleGeneration(sim, target, result.Damage)
+						frostMage.GainIcicle(sim, target, result.Damage)
 					}
 				})
 			}

@@ -49,7 +49,7 @@ func (mage *Mage) registerIceLanceSpell() {
 			spell.DamageMultiplier *= icyVeinsDamageMultiplier
 			if hasSplittingIce {
 				spell.DamageMultiplier /= 2
-				for _ = range numberOfBolts {
+				for range numberOfBolts {
 					baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 					result := spell.CalcDamage(sim, randomTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
@@ -61,7 +61,7 @@ func (mage *Mage) registerIceLanceSpell() {
 
 			// Main Target hit
 			results := make([]*core.SpellResult, 0)
-			for _ = range numberOfBolts {
+			for range numberOfBolts {
 				baseDamage := mage.CalcAndRollDamageRange(sim, iceLanceScaling, iceLanceVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				results = append(results, result)
@@ -77,12 +77,12 @@ func (mage *Mage) registerIceLanceSpell() {
 			spell.DamageMultiplier /= icyVeinsDamageMultiplier
 
 			if mage.Spec == proto.Spec_SpecFrostMage {
-				//I've confirmed in game Icicles launch even if ice lance misses.
+				// Confirmed in game Icicles launch even if ice lance misses.
 				for _, icicle := range mage.Icicles {
 					if hasSplittingIce {
-						mage.castIcicleWithDamage(sim, randomTarget, icicle/2)
+						mage.SpendIcicle(sim, randomTarget, icicle/2)
 					}
-					mage.castIcicleWithDamage(sim, target, icicle)
+					mage.SpendIcicle(sim, target, icicle)
 				}
 				mage.Icicles = make([]float64, 0)
 			}
