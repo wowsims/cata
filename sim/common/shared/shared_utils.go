@@ -147,8 +147,18 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		)
 
 		var dpm *core.DynamicProcManager
-		if proc.Ppm != 0 {
+		if proc.GetRppm() != nil {
 			dpm = character.NewRPPMProcManager(effectID, isEnchant, config.ProcMask, core.RppmConfigFromProcEffectProto(proc))
+		} else if proc.GetPpm() > 0 {
+			if config.ProcMask == core.ProcMaskUnknown {
+				if isEnchant {
+					dpm = character.NewDynamicLegacyProcForEnchant(effectID, proc.GetPpm(), 0)
+				} else {
+					dpm = character.NewDynamicLegacyProcForWeapon(effectID, proc.GetPpm(), 0)
+				}
+			} else {
+				dpm = character.NewLegacyPPMManager(proc.GetPpm(), config.ProcMask)
+			}
 		}
 
 		procAura.CustomProcCondition = config.CustomProcCondition
@@ -194,7 +204,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			ProcMask:   config.ProcMask,
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
-			ProcChance: proc.ProcChance,
+			ProcChance: proc.GetProcChance(),
 			DPM:        dpm,
 			ICD:        time.Millisecond * time.Duration(proc.IcdMs),
 			Handler:    handler,
@@ -291,6 +301,7 @@ type StackingStatBonusCD struct {
 	Harmful     bool
 	ProcChance  float64
 	IsDefensive bool
+	Rppm        core.RPPMConfig
 
 	// The stacks will only be granted as long as the trinket is active
 	TrinketLimitsDuration bool
@@ -315,6 +326,11 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 			}
 
 			config.Bonus = stats.FromProtoMap(item.ItemEffect.ScalingOptions[int32(state)].Stats)
+		}
+
+		var dpm *core.DynamicProcManager
+		if config.Rppm.PPM > 0 {
+			dpm = character.NewRPPMProcManager(config.ID, false, config.ProcMask, config.Rppm)
 		}
 
 		duration := core.TernaryDuration(config.TrinketLimitsDuration, core.NeverExpires, config.Duration)
@@ -349,6 +365,7 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
 			ProcChance: config.ProcChance,
+			DPM:        dpm,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				statAura.AddStack(sim)
 			},
@@ -397,6 +414,7 @@ type StackingStatBonusEffect struct {
 	MaxStacks  int32
 	Callback   core.AuraCallback
 	ProcMask   core.ProcMask
+	Rppm       core.RPPMConfig
 	SpellFlags core.SpellFlag
 	Outcome    core.HitOutcome
 	Harmful    bool
@@ -425,6 +443,11 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			config.Bonus = stats.FromProtoMap(item.ItemEffect.ScalingOptions[int32(state)].Stats)
 		}
 
+		var dpm *core.DynamicProcManager
+		if config.Rppm.PPM > 0 {
+			dpm = character.NewRPPMProcManager(config.ItemID, false, config.ProcMask, config.Rppm)
+		}
+
 		procAura := core.MakeStackingAura(character, core.StackingStatAura{
 			Aura: core.Aura{
 				Label:     config.Name + " Proc",
@@ -444,6 +467,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
 			ProcChance: config.ProcChance,
+			DPM:        dpm,
 			ICD:        config.Icd,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)
