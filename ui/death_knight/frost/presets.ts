@@ -233,7 +233,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62670, // Beer-Basted Crocolisk
 	potId: 58146, // Golemblood Potion
 	prepotId: 58146, // Golemblood Potion
-	tinkerId: 82174, // Synapse Springs
 });
 export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P3 - DW Obliterate', {
 	gear: P3_DW_GEAR_PRESET,

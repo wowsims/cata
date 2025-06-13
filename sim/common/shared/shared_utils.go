@@ -110,11 +110,15 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
 
 		var dpm *core.DynamicProcManager
-		if (config.PPM != 0) && (config.ProcMask == core.ProcMaskUnknown) {
-			if isEnchant {
-				dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, config.PPM, 0)
+		if config.PPM != 0 {
+			if config.ProcMask == core.ProcMaskUnknown {
+				if isEnchant {
+					dpm = character.NewDynamicLegacyProcForEnchant(effectID, config.PPM, 0)
+				} else {
+					dpm = character.NewDynamicLegacyProcForWeapon(effectID, config.PPM, 0)
+				}
 			} else {
-				dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, config.PPM, 0)
+				dpm = character.NewLegacyPPMManager(config.PPM, config.ProcMask)
 			}
 		}
 
@@ -158,7 +162,6 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
 			ProcChance: config.ProcChance,
-			PPM:        config.PPM,
 			DPM:        dpm,
 			ICD:        config.ICD,
 			Handler:    handler,
@@ -426,17 +429,17 @@ const (
 )
 
 type ProcDamageEffect struct {
-	ItemID    int32
-	SpellID   int32
-	EnchantID int32
-	Trigger   core.ProcTrigger
-
-	School  core.SpellSchool
-	MinDmg  float64
-	MaxDmg  float64
-	IsMelee bool
-	Flags   core.SpellFlag
-	Outcome OutcomeType
+	ItemID     int32
+	SpellID    int32
+	EnchantID  int32
+	Trigger    core.ProcTrigger
+	TriggerDPM func(*core.Character) *core.DynamicProcManager
+	School     core.SpellSchool
+	MinDmg     float64
+	MaxDmg     float64
+	IsMelee    bool
+	Flags      core.SpellFlag
+	Outcome    OutcomeType
 }
 
 func GetOutcome(spell *core.Spell, outcome OutcomeType) core.OutcomeApplier {
@@ -485,6 +488,10 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 
 		if core.ActionID.IsEmptyAction(config.Trigger.ActionID) {
 			config.Trigger.ActionID = triggerActionID
+		}
+
+		if config.TriggerDPM != nil {
+			config.Trigger.DPM = config.TriggerDPM(character)
 		}
 
 		damageSpell := character.RegisterSpell(core.SpellConfig{

@@ -9,7 +9,7 @@ import { ActionId } from '../../../proto_utils/action_id';
 import { canEquipItem, getEligibleItemSlots } from '../../../proto_utils/utils';
 import { EventID, TypedEvent } from '../../../typed_event';
 import { ContentBlock } from '../../content_block';
-import { createHeroicLabel } from '../../gear_picker/utils';
+import { createNameDescriptionLabel } from '../../gear_picker/utils';
 import { NumberPicker } from '../../pickers/number_picker';
 import Toast from '../../toast';
 import { BulkTab } from '../bulk_tab';
@@ -181,7 +181,7 @@ export default class BulkItemSearch extends ContentBlock {
 							<div className="d-flex flex-column ps-2">
 								<div className="d-flex">
 									<span ref={itemNameRef}>{item.name}</span>
-									{item.heroic && createHeroicLabel()}
+									{item.nameDescription && createNameDescriptionLabel(item.nameDescription)}
 									{item.factionRestriction === UIItem_FactionRestriction.HORDE_ONLY && <span className="faction-horde">(H)</span>}
 									{item.factionRestriction === UIItem_FactionRestriction.ALLIANCE_ONLY && <span className="faction-alliance">(A)</span>}
 								</div>

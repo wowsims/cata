@@ -10,7 +10,7 @@ character_stats_results: {
   final_stats: 6255
   final_stats: 3451.5
   final_stats: 2567
-  final_stats: 9689.3152
+  final_stats: 9489.3152
   final_stats: 0
   final_stats: 4348
   final_stats: 21015.885
@@ -35,17 +35,8 @@ dps_results: {
  value: {
   dps: 87136.42528
   tps: 604085.42263
-  dtps: 56890.83152
-  hps: 23136.35812
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-AgileShadowspiritDiamond"
- value: {
-  dps: 86742.32929
-  tps: 601347.88236
-  dtps: 56615.3956
-  hps: 22980.19894
+  dtps: 56953.18118
+  hps: 23136.43592
  }
 }
 dps_results: {
@@ -53,7 +44,7 @@ dps_results: {
  value: {
   dps: 84415.36001
   tps: 585130.25989
-  dtps: 56122.38123
+  dtps: 56222.45548
   hps: 22465.49209
  }
 }
@@ -62,7 +53,7 @@ dps_results: {
  value: {
   dps: 84297.47109
   tps: 584269.84877
-  dtps: 56566.34789
+  dtps: 56667.01894
   hps: 22044.06531
  }
 }
@@ -71,7 +62,7 @@ dps_results: {
  value: {
   dps: 84306.1821
   tps: 584331.15985
-  dtps: 56564.18612
+  dtps: 56664.85717
   hps: 22098.00833
  }
 }
@@ -80,7 +71,7 @@ dps_results: {
  value: {
   dps: 84583.26942
   tps: 586288.98717
-  dtps: 56140.50631
+  dtps: 56241.17736
   hps: 22759.95578
  }
 }
@@ -89,7 +80,7 @@ dps_results: {
  value: {
   dps: 84546.55352
   tps: 585999.27453
-  dtps: 56008.29535
+  dtps: 56073.00411
   hps: 22782.3848
  }
 }
@@ -98,44 +89,17 @@ dps_results: {
  value: {
   dps: 84493.00637
   tps: 585970.90801
-  dtps: 56109.3764
-  hps: 22535.84223
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-AustereEarthsiegeDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22959.77315
+  dtps: 56240.98123
+  hps: 22536.0798
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AusterePrimalDiamond"
  value: {
-  dps: 85484.85111
-  tps: 592597.97442
-  dtps: 55888.87514
-  hps: 22981.48243
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-AustereShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.69708
-  dtps: 55965.43521
-  hps: 22972.91931
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-BeamingEarthsiegeDiamond"
- value: {
-  dps: 85654.68395
-  tps: 593710.50506
-  dtps: 56862.19811
-  hps: 23061.39642
+  dps: 85536.21356
+  tps: 592957.4013
+  dtps: 55885.44485
+  hps: 23092.67519
  }
 }
 dps_results: {
@@ -143,8 +107,8 @@ dps_results: {
  value: {
   dps: 83926.16522
   tps: 581867.89628
-  dtps: 55668.49003
-  hps: 22245.66705
+  dtps: 55890.74136
+  hps: 22245.45975
  }
 }
 dps_results: {
@@ -152,7 +116,7 @@ dps_results: {
  value: {
   dps: 84574.56725
   tps: 586237.02704
-  dtps: 56334.52613
+  dtps: 56435.19718
   hps: 23033.84431
  }
 }
@@ -161,7 +125,7 @@ dps_results: {
  value: {
   dps: 84651.38986
   tps: 586774.92583
-  dtps: 56223.87618
+  dtps: 56324.54724
   hps: 23154.41799
  }
 }
@@ -170,7 +134,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56246.7094
+  dtps: 56339.74286
   hps: 22181.89024
  }
 }
@@ -179,7 +143,7 @@ dps_results: {
  value: {
   dps: 84246.38661
   tps: 583970.39808
-  dtps: 56154.6933
+  dtps: 56289.71615
   hps: 22362.43304
  }
 }
@@ -188,7 +152,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56179.64411
+  dtps: 56279.9217
   hps: 22181.9676
  }
 }
@@ -197,7 +161,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56150.49945
+  dtps: 56250.72573
   hps: 22181.9676
  }
 }
@@ -206,8 +170,8 @@ dps_results: {
  value: {
   dps: 85207.63251
   tps: 590676.89275
-  dtps: 56422.78202
-  hps: 22526.73152
+  dtps: 56501.98878
+  hps: 22526.57359
  }
 }
 dps_results: {
@@ -215,7 +179,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -224,7 +188,7 @@ dps_results: {
  value: {
   dps: 84226.61576
   tps: 583857.42141
-  dtps: 56391.87167
+  dtps: 56492.54272
   hps: 22234.37959
  }
 }
@@ -233,7 +197,7 @@ dps_results: {
  value: {
   dps: 84491.58383
   tps: 585656.13357
-  dtps: 56496.47967
+  dtps: 56597.15073
   hps: 22955.86976
  }
 }
@@ -242,7 +206,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22218.5809
  }
 }
@@ -251,7 +215,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56166.39284
+  dtps: 56266.6471
   hps: 22218.5809
  }
 }
@@ -260,7 +224,7 @@ dps_results: {
  value: {
   dps: 85012.06336
   tps: 589400.90616
-  dtps: 55766.90443
+  dtps: 55843.92641
   hps: 22662.12602
  }
 }
@@ -269,7 +233,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -278,7 +242,7 @@ dps_results: {
  value: {
   dps: 84204.44953
   tps: 583780.48245
-  dtps: 56396.13586
+  dtps: 56496.80692
   hps: 22248.9695
  }
 }
@@ -287,8 +251,8 @@ dps_results: {
  value: {
   dps: 87485.87624
   tps: 606622.93551
-  dtps: 56713.43143
-  hps: 22293.81109
+  dtps: 56812.73669
+  hps: 22293.77883
  }
 }
 dps_results: {
@@ -296,8 +260,8 @@ dps_results: {
  value: {
   dps: 86729.06652
   tps: 601380.83511
-  dtps: 56523.18229
-  hps: 22801.17824
+  dtps: 56618.5031
+  hps: 22801.18758
  }
 }
 dps_results: {
@@ -305,8 +269,8 @@ dps_results: {
  value: {
   dps: 87599.55763
   tps: 607499.00082
-  dtps: 56862.97899
-  hps: 22663.24632
+  dtps: 56994.26209
+  hps: 22663.22341
  }
 }
 dps_results: {
@@ -314,35 +278,17 @@ dps_results: {
  value: {
   dps: 84021.69553
   tps: 582358.79159
-  dtps: 56740.29791
+  dtps: 56840.96897
   hps: 22338.18934
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BottledWishes-77114"
  value: {
-  dps: 83594.0227
-  tps: 579551.29022
-  dtps: 56221.36743
-  hps: 22379.05451
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-BracingEarthsiegeDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-BracingShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 580782.42411
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 83594.59506
+  tps: 579555.29676
+  dtps: 56248.43922
+  hps: 22374.81141
  }
 }
 dps_results: {
@@ -350,35 +296,26 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56041.71376
+  dtps: 56070.22976
   hps: 22181.89024
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 86635.19295
-  tps: 600524.73807
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-BurningShadowspiritDiamond"
- value: {
-  dps: 86623.71822
-  tps: 600524.73807
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 86688.97347
+  tps: 600901.09145
+  dtps: 56649.97907
+  hps: 23059.793
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CapacitivePrimalDiamond"
  value: {
-  dps: 86118.50508
-  tps: 596856.84403
-  dtps: 56933.93988
-  hps: 23490.15029
+  dps: 86166.08088
+  tps: 597189.73186
+  dtps: 56921.40415
+  hps: 23575.23908
  }
 }
 dps_results: {
@@ -386,8 +323,8 @@ dps_results: {
  value: {
   dps: 85440.34814
   tps: 592250.05102
-  dtps: 55898.93373
-  hps: 22855.43391
+  dtps: 56179.99754
+  hps: 22855.53236
  }
 }
 dps_results: {
@@ -395,7 +332,7 @@ dps_results: {
  value: {
   dps: 83889.76162
   tps: 581536.50458
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -404,17 +341,17 @@ dps_results: {
  value: {
   dps: 84439.62779
   tps: 585281.14289
-  dtps: 56385.14283
+  dtps: 56485.81389
   hps: 22265.88115
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
  value: {
-  dps: 85564.05234
-  tps: 593252.95742
-  dtps: 56108.88713
-  hps: 22831.95072
+  dps: 85574.13955
+  tps: 593323.56792
+  dtps: 56299.46896
+  hps: 22832.37104
  }
 }
 dps_results: {
@@ -422,7 +359,7 @@ dps_results: {
  value: {
   dps: 83889.76162
   tps: 581536.50458
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -431,26 +368,8 @@ dps_results: {
  value: {
   dps: 84469.35247
   tps: 585576.76079
-  dtps: 56495.99553
+  dtps: 56596.66658
   hps: 22504.99357
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ChaoticShadowspiritDiamond"
- value: {
-  dps: 86982.10907
-  tps: 602953.36914
-  dtps: 56985.91935
-  hps: 23206.30464
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ChaoticSkyflareDiamond"
- value: {
-  dps: 85654.68395
-  tps: 593710.50506
-  dtps: 56862.19811
-  hps: 23061.39642
  }
 }
 dps_results: {
@@ -458,7 +377,7 @@ dps_results: {
  value: {
   dps: 84769.40621
   tps: 587541.85184
-  dtps: 56507.87574
+  dtps: 56608.54679
   hps: 22992.20731
  }
 }
@@ -467,17 +386,17 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CourageousPrimalDiamond"
  value: {
-  dps: 85501.0087
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 85552.37115
+  tps: 592994.12755
+  dtps: 56649.97907
+  hps: 23059.793
  }
 }
 dps_results: {
@@ -485,8 +404,8 @@ dps_results: {
  value: {
   dps: 84996.93801
   tps: 588963.4233
-  dtps: 56522.45396
-  hps: 22921.30473
+  dtps: 56623.12501
+  hps: 22921.29798
  }
 }
 dps_results: {
@@ -494,7 +413,7 @@ dps_results: {
  value: {
   dps: 84843.34868
   tps: 587862.31595
-  dtps: 56765.06324
+  dtps: 56865.7343
   hps: 22661.56066
  }
 }
@@ -503,8 +422,8 @@ dps_results: {
  value: {
   dps: 85024.00497
   tps: 589240.35802
-  dtps: 56441.6752
-  hps: 22905.96123
+  dtps: 56542.34625
+  hps: 22905.95448
  }
 }
 dps_results: {
@@ -512,8 +431,8 @@ dps_results: {
  value: {
   dps: 83927.29153
   tps: 582182.03682
-  dtps: 56443.49172
-  hps: 21828.52579
+  dtps: 56455.04457
+  hps: 21827.93539
  }
 }
 dps_results: {
@@ -521,8 +440,8 @@ dps_results: {
  value: {
   dps: 83871.1229
   tps: 581538.85068
-  dtps: 56385.86188
-  hps: 22688.94186
+  dtps: 56486.53293
+  hps: 22688.82334
  }
 }
 dps_results: {
@@ -530,7 +449,7 @@ dps_results: {
  value: {
   dps: 83945.77942
   tps: 581928.6292
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -539,7 +458,7 @@ dps_results: {
  value: {
   dps: 83928.65514
   tps: 581808.75924
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -548,7 +467,7 @@ dps_results: {
  value: {
   dps: 83930.0183
   tps: 581818.30137
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -566,7 +485,7 @@ dps_results: {
  value: {
   dps: 84211.8558
   tps: 583811.41535
-  dtps: 56709.93675
+  dtps: 56810.60781
   hps: 22714.01231
  }
 }
@@ -584,7 +503,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -593,7 +512,7 @@ dps_results: {
  value: {
   dps: 83876.67935
   tps: 581521.32291
-  dtps: 56118.73926
+  dtps: 56218.90964
   hps: 22181.9676
  }
 }
@@ -602,7 +521,7 @@ dps_results: {
  value: {
   dps: 84421.16086
   tps: 585251.51851
-  dtps: 56079.09187
+  dtps: 56313.32545
   hps: 22428.08284
  }
 }
@@ -620,7 +539,7 @@ dps_results: {
  value: {
   dps: 84042.11458
   tps: 582679.44476
-  dtps: 56217.8596
+  dtps: 56318.02999
   hps: 22308.37733
  }
 }
@@ -629,7 +548,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56088.04134
+  dtps: 56188.7124
   hps: 22182.08015
  }
 }
@@ -638,35 +557,17 @@ dps_results: {
  value: {
   dps: 83897.73655
   tps: 581592.32908
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DestructivePrimalDiamond"
  value: {
-  dps: 86265.62767
-  tps: 597886.84838
-  dtps: 56986.75951
-  hps: 23616.89977
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-DestructiveShadowspiritDiamond"
- value: {
-  dps: 85830.05745
-  tps: 594938.26008
-  dtps: 56985.91935
-  hps: 23206.30464
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-DestructiveSkyflareDiamond"
- value: {
-  dps: 85700.62068
-  tps: 594032.09466
-  dtps: 56872.6727
-  hps: 23095.74199
+  dps: 86312.7898
+  tps: 598216.84051
+  dtps: 56965.14982
+  hps: 23695.90366
  }
 }
 dps_results: {
@@ -674,8 +575,8 @@ dps_results: {
  value: {
   dps: 85476.30098
   tps: 592462.54857
-  dtps: 56416.9788
-  hps: 23991.14727
+  dtps: 56509.26002
+  hps: 23990.88656
  }
 }
 dps_results: {
@@ -683,26 +584,17 @@ dps_results: {
  value: {
   dps: 84501.27392
   tps: 585777.09254
-  dtps: 56826.588
+  dtps: 56891.29676
   hps: 22727.57654
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EffulgentPrimalDiamond"
  value: {
-  dps: 85484.85111
-  tps: 592597.97802
-  dtps: 56576.19566
-  hps: 22985.10749
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EffulgentShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22976.54437
+  dps: 85536.21356
+  tps: 592957.40489
+  dtps: 56572.72388
+  hps: 23096.30025
  }
 }
 dps_results: {
@@ -710,71 +602,26 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EmberPrimalDiamond"
  value: {
-  dps: 85501.0087
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EmberShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EmberSkyflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 85552.37115
+  tps: 592994.12755
+  dtps: 56649.97907
+  hps: 23059.793
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EnigmaticPrimalDiamond"
  value: {
-  dps: 86265.62767
-  tps: 597886.84838
-  dtps: 56986.75951
-  hps: 23616.89977
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EnigmaticShadowspiritDiamond"
- value: {
-  dps: 85830.05745
-  tps: 594938.26008
-  dtps: 56985.91935
-  hps: 23206.30464
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EnigmaticSkyflareDiamond"
- value: {
-  dps: 85654.68395
-  tps: 593710.50506
-  dtps: 56862.19811
-  hps: 23061.39642
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EnigmaticStarflareDiamond"
- value: {
-  dps: 85540.6197
-  tps: 592988.34057
-  dtps: 56656.85403
-  hps: 22978.98663
+  dps: 86312.7898
+  tps: 598216.84051
+  dtps: 56965.14982
+  hps: 23695.90366
  }
 }
 dps_results: {
@@ -782,7 +629,7 @@ dps_results: {
  value: {
   dps: 83879.84455
   tps: 581543.38757
-  dtps: 55955.08087
+  dtps: 56085.71105
   hps: 22239.46732
  }
 }
@@ -791,7 +638,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56085.13172
+  dtps: 56185.80277
   hps: 22182.08015
  }
 }
@@ -800,7 +647,7 @@ dps_results: {
  value: {
   dps: 85055.89062
   tps: 589571.20433
-  dtps: 56401.80257
+  dtps: 56439.28392
   hps: 23343.1935
  }
 }
@@ -809,8 +656,8 @@ dps_results: {
  value: {
   dps: 85166.61012
   tps: 590400.64328
-  dtps: 56329.96563
-  hps: 23164.75893
+  dtps: 56514.3931
+  hps: 23164.94884
  }
 }
 dps_results: {
@@ -818,35 +665,17 @@ dps_results: {
  value: {
   dps: 84118.83806
   tps: 583135.52964
-  dtps: 56164.0987
+  dtps: 56264.17296
   hps: 22277.24132
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EternalEarthsiegeDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56612.08743
-  hps: 22948.71803
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EternalPrimalDiamond"
  value: {
-  dps: 85542.82115
-  tps: 593004.01774
-  dtps: 56402.41579
-  hps: 23079.42798
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-EternalShadowspiritDiamond"
- value: {
   dps: 85490.09524
   tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22976.54437
+  dtps: 56553.58134
+  hps: 22948.71803
  }
 }
 dps_results: {
@@ -854,7 +683,7 @@ dps_results: {
  value: {
   dps: 84376.41975
   tps: 584981.15041
-  dtps: 56434.18199
+  dtps: 56534.85304
   hps: 22290.25891
  }
 }
@@ -863,7 +692,7 @@ dps_results: {
  value: {
   dps: 84318.92996
   tps: 584583.08044
-  dtps: 56435.03249
+  dtps: 56535.70354
   hps: 22277.95041
  }
 }
@@ -872,7 +701,7 @@ dps_results: {
  value: {
   dps: 84439.65851
   tps: 585419.02738
-  dtps: 56433.24715
+  dtps: 56533.91821
   hps: 22303.79826
  }
 }
@@ -881,7 +710,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -890,7 +719,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -899,7 +728,7 @@ dps_results: {
  value: {
   dps: 83895.91382
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -908,8 +737,8 @@ dps_results: {
  value: {
   dps: 84666.911
   tps: 586670.06746
-  dtps: 56506.07054
-  hps: 22345.37421
+  dtps: 56645.82571
+  hps: 22345.59816
  }
 }
 dps_results: {
@@ -917,7 +746,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -926,7 +755,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56161.23159
+  dtps: 56300.98676
   hps: 22329.23879
  }
 }
@@ -935,7 +764,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -944,7 +773,7 @@ dps_results: {
  value: {
   dps: 84057.61357
   tps: 582697.38942
-  dtps: 56142.05112
+  dtps: 56242.2774
   hps: 22200.29413
  }
 }
@@ -953,26 +782,17 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 55716.29199
+  dtps: 55847.66869
   hps: 22197.05713
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-FleetPrimalDiamond"
  value: {
-  dps: 85490.09524
-  tps: 592634.69708
-  dtps: 56271.79187
-  hps: 22945.03329
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-FleetShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56557.55928
-  hps: 22948.79583
+  dps: 85541.45769
+  tps: 592994.12395
+  dtps: 56268.34311
+  hps: 23056.03045
  }
 }
 dps_results: {
@@ -980,7 +800,7 @@ dps_results: {
  value: {
   dps: 85370.81371
   tps: 591748.5475
-  dtps: 56590.35442
+  dtps: 56721.95924
   hps: 22908.14637
  }
 }
@@ -989,7 +809,7 @@ dps_results: {
  value: {
   dps: 84380.87638
   tps: 584976.50071
-  dtps: 56014.94032
+  dtps: 56272.0985
   hps: 22366.81305
  }
 }
@@ -1005,37 +825,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ForlornPrimalDiamond"
  value: {
-  dps: 85501.0087
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ForlornShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ForlornSkyflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ForlornStarflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 85552.37115
+  tps: 592994.12755
+  dtps: 56649.97907
+  hps: 23059.793
  }
 }
 dps_results: {
@@ -1043,7 +836,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56144.1658
+  dtps: 56243.69952
   hps: 22182.05668
  }
 }
@@ -1052,7 +845,7 @@ dps_results: {
  value: {
   dps: 84803.86756
   tps: 587842.19368
-  dtps: 56331.18829
+  dtps: 56431.85934
   hps: 23257.75484
  }
 }
@@ -1061,17 +854,17 @@ dps_results: {
  value: {
   dps: 84051.54833
   tps: 582745.47077
-  dtps: 56466.68371
+  dtps: 56562.00451
   hps: 22310.8447
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GaleofShadows-56462"
  value: {
-  dps: 83880.61188
-  tps: 581548.44723
-  dtps: 56882.77991
-  hps: 22687.82744
+  dps: 83879.85099
+  tps: 581543.07227
+  dtps: 56773.96526
+  hps: 22394.50726
  }
 }
 dps_results: {
@@ -1079,7 +872,7 @@ dps_results: {
  value: {
   dps: 84060.93988
   tps: 582677.40823
-  dtps: 56488.08948
+  dtps: 56614.85356
   hps: 22053.85625
  }
 }
@@ -1088,7 +881,7 @@ dps_results: {
  value: {
   dps: 84292.20259
   tps: 584299.19318
-  dtps: 56362.65319
+  dtps: 56489.41727
   hps: 22655.71908
  }
 }
@@ -1106,7 +899,7 @@ dps_results: {
  value: {
   dps: 83892.12049
   tps: 581553.01664
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1115,7 +908,7 @@ dps_results: {
  value: {
   dps: 84007.69196
   tps: 582423.55454
-  dtps: 56240.00967
+  dtps: 56340.17393
   hps: 22210.88204
  }
 }
@@ -1124,7 +917,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1133,7 +926,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1142,7 +935,7 @@ dps_results: {
  value: {
   dps: 84841.00583
   tps: 587999.66352
-  dtps: 56765.10932
+  dtps: 56829.81808
   hps: 22226.55324
  }
 }
@@ -1151,7 +944,7 @@ dps_results: {
  value: {
   dps: 85038.28074
   tps: 589390.56624
-  dtps: 56883.19046
+  dtps: 56947.89922
   hps: 22513.03884
  }
 }
@@ -1160,17 +953,17 @@ dps_results: {
  value: {
   dps: 84235.55479
   tps: 583971.7389
-  dtps: 56457.97538
+  dtps: 56553.29618
   hps: 22337.58857
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofSolace-56393"
  value: {
-  dps: 84086.42242
-  tps: 582926.17358
-  dtps: 56874.08991
-  hps: 22717.02265
+  dps: 84085.66154
+  tps: 582920.79862
+  dtps: 56765.27526
+  hps: 22423.70248
  }
 }
 dps_results: {
@@ -1178,7 +971,7 @@ dps_results: {
  value: {
   dps: 83810.64997
   tps: 581059.24799
-  dtps: 56076.80368
+  dtps: 56141.02975
   hps: 22207.21573
  }
 }
@@ -1187,7 +980,7 @@ dps_results: {
  value: {
   dps: 83810.64997
   tps: 581059.24799
-  dtps: 55940.11822
+  dtps: 56004.18998
   hps: 22211.44093
  }
 }
@@ -1196,44 +989,17 @@ dps_results: {
  value: {
   dps: 84492.5703
   tps: 585775.49917
-  dtps: 56519.8463
+  dtps: 56577.65311
   hps: 22608.95689
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ImpassivePrimalDiamond"
  value: {
-  dps: 86265.62767
-  tps: 597886.84838
-  dtps: 56986.75951
-  hps: 23616.89977
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ImpassiveShadowspiritDiamond"
- value: {
-  dps: 85830.05745
-  tps: 594938.26008
-  dtps: 56985.91935
-  hps: 23206.30464
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ImpassiveSkyflareDiamond"
- value: {
-  dps: 85654.68395
-  tps: 593710.50506
-  dtps: 56862.19811
-  hps: 23061.39642
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ImpassiveStarflareDiamond"
- value: {
-  dps: 85540.6197
-  tps: 592988.34057
-  dtps: 56656.85403
-  hps: 22978.98663
+  dps: 86312.7898
+  tps: 598216.84051
+  dtps: 56965.14982
+  hps: 23695.90366
  }
 }
 dps_results: {
@@ -1241,7 +1007,7 @@ dps_results: {
  value: {
   dps: 84081.24775
   tps: 582851.40055
-  dtps: 56109.22343
+  dtps: 56209.39381
   hps: 22202.60906
  }
 }
@@ -1250,7 +1016,7 @@ dps_results: {
  value: {
   dps: 84081.24775
   tps: 582851.40055
-  dtps: 56109.22343
+  dtps: 56209.39381
   hps: 22202.60906
  }
 }
@@ -1259,7 +1025,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56179.64411
+  dtps: 56279.9217
   hps: 22181.9676
  }
 }
@@ -1268,7 +1034,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56150.49945
+  dtps: 56250.72573
   hps: 22181.9676
  }
 }
@@ -1277,7 +1043,7 @@ dps_results: {
  value: {
   dps: 83932.28792
   tps: 581910.80394
-  dtps: 55078.39299
+  dtps: 55179.06404
   hps: 22511.28606
  }
 }
@@ -1286,7 +1052,7 @@ dps_results: {
  value: {
   dps: 83932.28792
   tps: 581910.80394
-  dtps: 55271.20272
+  dtps: 55371.87378
   hps: 22484.34286
  }
 }
@@ -1295,26 +1061,17 @@ dps_results: {
  value: {
   dps: 83932.28792
   tps: 581910.80394
-  dtps: 54914.73251
+  dtps: 55015.40357
   hps: 22542.01036
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-IndomitablePrimalDiamond"
  value: {
-  dps: 85484.85111
-  tps: 592597.97802
-  dtps: 56576.19566
-  hps: 22985.10749
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-InsightfulEarthsiegeDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 85536.21356
+  tps: 592957.40489
+  dtps: 56572.72388
+  hps: 23096.30025
  }
 }
 dps_results: {
@@ -1322,7 +1079,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22193.79167
  }
 }
@@ -1331,8 +1088,8 @@ dps_results: {
  value: {
   dps: 84004.36011
   tps: 582399.48681
-  dtps: 57211.70387
-  hps: 22694.9033
+  dtps: 57236.3529
+  hps: 22694.63146
  }
 }
 dps_results: {
@@ -1340,7 +1097,7 @@ dps_results: {
  value: {
   dps: 84068.9214
   tps: 582747.3564
-  dtps: 57222.54448
+  dtps: 57291.23771
   hps: 23049.53327
  }
 }
@@ -1349,8 +1106,8 @@ dps_results: {
  value: {
   dps: 83887.63112
   tps: 581712.07158
-  dtps: 56273.23859
-  hps: 22970.8295
+  dtps: 56341.93182
+  hps: 22970.70263
  }
 }
 dps_results: {
@@ -1358,17 +1115,8 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56230.94043
+  dtps: 56331.3083
   hps: 22182.08015
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-InvigoratingEarthsiegeDiamond"
- value: {
-  dps: 85102.22048
-  tps: 589919.5497
-  dtps: 57356.90258
-  hps: 23091.53334
  }
 }
 dps_results: {
@@ -1376,7 +1124,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1385,7 +1133,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1394,7 +1142,7 @@ dps_results: {
  value: {
   dps: 84001.96398
   tps: 582321.87521
-  dtps: 55701.12845
+  dtps: 55832.41154
   hps: 24110.13199
  }
 }
@@ -1403,7 +1151,7 @@ dps_results: {
  value: {
   dps: 84010.30254
   tps: 582380.24514
-  dtps: 55701.12845
+  dtps: 55832.41154
   hps: 24110.13199
  }
 }
@@ -1412,17 +1160,17 @@ dps_results: {
  value: {
   dps: 84246.38661
   tps: 583970.39808
-  dtps: 56154.6933
+  dtps: 56289.71615
   hps: 22362.43304
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-KeytotheEndlessChamber-55795"
  value: {
-  dps: 84487.57232
-  tps: 585659.64919
-  dtps: 56374.7548
-  hps: 22237.42931
+  dps: 84568.32342
+  tps: 586224.88337
+  dtps: 56407.21759
+  hps: 22221.10134
  }
 }
 dps_results: {
@@ -1430,17 +1178,17 @@ dps_results: {
  value: {
   dps: 84711.16475
   tps: 587054.38739
-  dtps: 56367.04393
+  dtps: 56399.77486
   hps: 22319.82125
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Kiril,FuryofBeasts-77194"
  value: {
-  dps: 87085.16039
-  tps: 603711.6283
-  dtps: 55486.86957
-  hps: 23727.28239
+  dps: 87032.22273
+  tps: 603340.82894
+  dtps: 55581.19213
+  hps: 23595.77685
  }
 }
 dps_results: {
@@ -1448,26 +1196,26 @@ dps_results: {
  value: {
   dps: 87139.61997
   tps: 604072.62767
-  dtps: 55391.30671
+  dtps: 55448.07822
   hps: 23898.38761
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78482"
  value: {
-  dps: 86865.8829
-  tps: 602181.13437
-  dtps: 55589.91203
-  hps: 23819.13484
+  dps: 86812.89623
+  tps: 601809.99197
+  dtps: 55711.53724
+  hps: 23687.70314
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-KiroptyricSigil-77113"
  value: {
-  dps: 84260.91773
-  tps: 583902.02497
-  dtps: 55661.99919
-  hps: 22362.42396
+  dps: 84261.49009
+  tps: 583906.03151
+  dtps: 55720.71353
+  hps: 22333.29345
  }
 }
 dps_results: {
@@ -1475,7 +1223,7 @@ dps_results: {
  value: {
   dps: 84022.08156
   tps: 582486.65705
-  dtps: 56574.62484
+  dtps: 56639.3336
   hps: 22131.88042
  }
 }
@@ -1484,7 +1232,7 @@ dps_results: {
  value: {
   dps: 84022.08156
   tps: 582486.65705
-  dtps: 56574.62484
+  dtps: 56639.3336
   hps: 22131.88042
  }
 }
@@ -1493,7 +1241,7 @@ dps_results: {
  value: {
   dps: 83615.65359
   tps: 579702.20855
-  dtps: 55948.01641
+  dtps: 56012.72518
   hps: 21780.3702
  }
 }
@@ -1502,7 +1250,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56113.0842
+  dtps: 56212.44916
   hps: 22293.51706
  }
 }
@@ -1511,7 +1259,7 @@ dps_results: {
  value: {
   dps: 83754.99434
   tps: 580669.48637
-  dtps: 56000.74763
+  dtps: 56064.77982
   hps: 22278.11937
  }
 }
@@ -1520,7 +1268,7 @@ dps_results: {
  value: {
   dps: 84856.2363
   tps: 588045.70672
-  dtps: 56520.97056
+  dtps: 56621.64161
   hps: 22106.27474
  }
 }
@@ -1529,7 +1277,7 @@ dps_results: {
  value: {
   dps: 84792.87478
   tps: 587577.79519
-  dtps: 56277.92775
+  dtps: 56409.21084
   hps: 22346.23712
  }
 }
@@ -1538,7 +1286,7 @@ dps_results: {
  value: {
   dps: 84828.13196
   tps: 587967.61258
-  dtps: 56772.30982
+  dtps: 56837.01858
   hps: 22237.47062
  }
 }
@@ -1547,7 +1295,7 @@ dps_results: {
  value: {
   dps: 84257.55067
   tps: 584055.79452
-  dtps: 56370.46739
+  dtps: 56471.13845
   hps: 22011.74058
  }
 }
@@ -1556,7 +1304,7 @@ dps_results: {
  value: {
   dps: 84475.02015
   tps: 585419.84621
-  dtps: 56557.26531
+  dtps: 56657.93637
   hps: 22128.32237
  }
 }
@@ -1565,7 +1313,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1574,7 +1322,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1583,7 +1331,7 @@ dps_results: {
  value: {
   dps: 84073.98798
   tps: 582886.65614
-  dtps: 56272.07052
+  dtps: 56372.12627
   hps: 22276.70189
  }
 }
@@ -1592,7 +1340,7 @@ dps_results: {
  value: {
   dps: 84093.34572
   tps: 583020.06517
-  dtps: 56241.47459
+  dtps: 56341.45151
   hps: 22280.66582
  }
 }
@@ -1601,7 +1349,7 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 56245.84219
+  dtps: 56417.82193
   hps: 22363.66652
  }
 }
@@ -1610,7 +1358,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56072.54487
+  dtps: 56172.16885
   hps: 22348.40803
  }
 }
@@ -1619,7 +1367,7 @@ dps_results: {
  value: {
   dps: 84717.36913
   tps: 587197.82191
-  dtps: 56329.30596
+  dtps: 56429.97701
   hps: 23060.12941
  }
 }
@@ -1628,7 +1376,7 @@ dps_results: {
  value: {
   dps: 84058.69565
   tps: 582775.0568
-  dtps: 56060.49243
+  dtps: 56160.11641
   hps: 22221.47788
  }
 }
@@ -1637,8 +1385,8 @@ dps_results: {
  value: {
   dps: 85436.62687
   tps: 592101.23344
-  dtps: 56353.49999
-  hps: 23247.10092
+  dtps: 56612.39585
+  hps: 23247.19937
  }
 }
 dps_results: {
@@ -1646,8 +1394,8 @@ dps_results: {
  value: {
   dps: 85886.51301
   tps: 595265.55444
-  dtps: 56198.9709
-  hps: 23287.19071
+  dtps: 56435.89973
+  hps: 23287.2254
  }
 }
 dps_results: {
@@ -1655,7 +1403,7 @@ dps_results: {
  value: {
   dps: 84153.84447
   tps: 583349.76512
-  dtps: 56436.22388
+  dtps: 56536.89493
   hps: 22027.21554
  }
 }
@@ -1664,7 +1412,7 @@ dps_results: {
  value: {
   dps: 84475.02015
   tps: 585419.84621
-  dtps: 56557.26531
+  dtps: 56657.93637
   hps: 22128.32237
  }
 }
@@ -1673,7 +1421,7 @@ dps_results: {
  value: {
   dps: 84522.11308
   tps: 585869.85459
-  dtps: 56518.26057
+  dtps: 56618.93163
   hps: 22935.46253
  }
 }
@@ -1682,7 +1430,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56096.52034
+  dtps: 56197.1914
   hps: 22181.9676
  }
 }
@@ -1691,7 +1439,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56130.51626
+  dtps: 56261.90264
   hps: 22357.90605
  }
 }
@@ -1700,7 +1448,7 @@ dps_results: {
  value: {
   dps: 83800.11247
   tps: 580985.45124
-  dtps: 55763.72946
+  dtps: 55863.89984
   hps: 21938.26456
  }
 }
@@ -1709,8 +1457,8 @@ dps_results: {
  value: {
   dps: 84416.4938
   tps: 585226.96808
-  dtps: 55661.35573
-  hps: 22422.43117
+  dtps: 55959.84589
+  hps: 22422.16684
  }
 }
 dps_results: {
@@ -1718,7 +1466,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56072.3369
+  dtps: 56172.05496
   hps: 22182.08015
  }
 }
@@ -1736,7 +1484,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1745,7 +1493,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1754,7 +1502,7 @@ dps_results: {
  value: {
   dps: 83889.76162
   tps: 581536.50458
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1763,7 +1511,7 @@ dps_results: {
  value: {
   dps: 84117.72863
   tps: 582969.82284
-  dtps: 56811.57718
+  dtps: 56912.24823
   hps: 22576.61269
  }
 }
@@ -1772,7 +1520,7 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 56181.95921
+  dtps: 56394.54223
   hps: 22363.47661
  }
 }
@@ -1781,7 +1529,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56079.1043
+  dtps: 56178.82236
   hps: 22348.40803
  }
 }
@@ -1790,7 +1538,7 @@ dps_results: {
  value: {
   dps: 84719.95445
   tps: 587207.70307
-  dtps: 56329.14263
+  dtps: 56429.81368
   hps: 23060.86905
  }
 }
@@ -1799,7 +1547,7 @@ dps_results: {
  value: {
   dps: 84058.69565
   tps: 582775.0568
-  dtps: 56067.34595
+  dtps: 56167.08593
   hps: 22221.47788
  }
 }
@@ -1808,26 +1556,8 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-PersistentEarthshatterDiamond"
- value: {
-  dps: 85540.6197
-  tps: 592988.34057
-  dtps: 56656.85403
-  hps: 22978.98663
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-PersistentEarthsiegeDiamond"
- value: {
-  dps: 85654.68395
-  tps: 593710.50506
-  dtps: 56862.19811
-  hps: 23061.39642
  }
 }
 dps_results: {
@@ -1835,8 +1565,8 @@ dps_results: {
  value: {
   dps: 83587.35932
   tps: 579419.56849
-  dtps: 57362.61493
-  hps: 22361.88849
+  dtps: 57463.28599
+  hps: 22361.64085
  }
 }
 dps_results: {
@@ -1844,7 +1574,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56154.27024
+  dtps: 56243.56267
   hps: 22182.08015
  }
 }
@@ -1858,39 +1588,12 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-PowerfulEarthshatterDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22957.7149
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-PowerfulEarthsiegeDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22959.77315
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-PowerfulPrimalDiamond"
  value: {
-  dps: 85484.85111
-  tps: 592597.97802
-  dtps: 56576.19566
-  hps: 22985.10749
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-PowerfulShadowspiritDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22976.54437
+  dps: 85536.21356
+  tps: 592957.40489
+  dtps: 56572.72388
+  hps: 23096.30025
  }
 }
 dps_results: {
@@ -1898,7 +1601,7 @@ dps_results: {
  value: {
   dps: 84589.14953
   tps: 586559.02141
-  dtps: 56145.9693
+  dtps: 56221.95364
   hps: 22671.01442
  }
 }
@@ -1907,7 +1610,7 @@ dps_results: {
  value: {
   dps: 84943.6795
   tps: 589002.89789
-  dtps: 56196.12095
+  dtps: 56366.78986
   hps: 22722.26051
  }
 }
@@ -1916,7 +1619,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1925,7 +1628,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -1934,7 +1637,7 @@ dps_results: {
  value: {
   dps: 76332.90973
   tps: 528869.39915
-  dtps: 56659.70471
+  dtps: 56927.67464
   hps: 21829.86894
  }
 }
@@ -1943,7 +1646,7 @@ dps_results: {
  value: {
   dps: 76584.5252
   tps: 530630.70742
-  dtps: 56659.70471
+  dtps: 56927.67464
   hps: 21844.17461
  }
 }
@@ -1952,7 +1655,7 @@ dps_results: {
  value: {
   dps: 76173.58542
   tps: 527754.12897
-  dtps: 56659.70471
+  dtps: 56927.67464
   hps: 21825.77425
  }
 }
@@ -1961,7 +1664,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2006,8 +1709,8 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 55818.93691
-  hps: 22197.1121
+  dtps: 56020.91668
+  hps: 22196.90479
  }
 }
 dps_results: {
@@ -2015,7 +1718,7 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 55958.69466
+  dtps: 56082.1544
   hps: 22196.90479
  }
 }
@@ -2024,53 +1727,26 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 55631.95917
-  hps: 22197.1121
+  dtps: 55921.57903
+  hps: 22196.90479
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ReverberatingPrimalDiamond"
  value: {
-  dps: 86754.24672
-  tps: 601424.23378
-  dtps: 56656.49588
-  hps: 22976.92998
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ReverberatingShadowspiritDiamond"
- value: {
-  dps: 86656.35035
-  tps: 600749.612
-  dtps: 56658.08822
-  hps: 22955.67503
+  dps: 86808.08353
+  tps: 601800.98123
+  dtps: 56653.0241
+  hps: 23088.10866
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 86623.71822
-  tps: 600524.73807
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RevitalizingShadowspiritDiamond"
- value: {
-  dps: 86623.71822
-  tps: 600524.73807
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RevitalizingSkyflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 86677.49874
+  tps: 600901.09145
+  dtps: 56649.97907
+  hps: 23059.793
  }
 }
 dps_results: {
@@ -2078,17 +1754,8 @@ dps_results: {
  value: {
   dps: 85150.08743
   tps: 589838.40825
-  dtps: 56547.49959
+  dtps: 56644.47426
   hps: 23233.6607
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RidingCrop"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
  }
 }
 dps_results: {
@@ -2096,7 +1763,7 @@ dps_results: {
  value: {
   dps: 84475.8382
   tps: 585448.25571
-  dtps: 56559.49744
+  dtps: 56660.1685
   hps: 22077.88486
  }
 }
@@ -2105,7 +1772,7 @@ dps_results: {
  value: {
   dps: 84494.36178
   tps: 585580.79167
-  dtps: 56556.94445
+  dtps: 56657.6155
   hps: 22133.36742
  }
 }
@@ -2114,7 +1781,7 @@ dps_results: {
  value: {
   dps: 84893.30746
   tps: 588463.36944
-  dtps: 56621.06008
+  dtps: 56721.73113
   hps: 23197.32402
  }
 }
@@ -2123,7 +1790,7 @@ dps_results: {
  value: {
   dps: 84907.90378
   tps: 588420.72099
-  dtps: 56484.47372
+  dtps: 56585.14477
   hps: 23065.75027
  }
 }
@@ -2132,7 +1799,7 @@ dps_results: {
  value: {
   dps: 84614.77406
   tps: 586464.95116
-  dtps: 56366.61205
+  dtps: 56467.28311
   hps: 23045.12248
  }
 }
@@ -2141,7 +1808,7 @@ dps_results: {
  value: {
   dps: 85337.45552
   tps: 591510.3954
-  dtps: 56232.6857
+  dtps: 56356.61726
   hps: 22716.85138
  }
 }
@@ -2150,8 +1817,8 @@ dps_results: {
  value: {
   dps: 85477.1741
   tps: 592471.24333
-  dtps: 56122.11127
-  hps: 22637.78378
+  dtps: 56250.06911
+  hps: 22637.88223
  }
 }
 dps_results: {
@@ -2159,7 +1826,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2168,7 +1835,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2177,7 +1844,7 @@ dps_results: {
  value: {
   dps: 84347.38293
   tps: 584664.6342
-  dtps: 56388.0595
+  dtps: 56488.73055
   hps: 22252.24951
  }
 }
@@ -2186,7 +1853,7 @@ dps_results: {
  value: {
   dps: 84374.79378
   tps: 584847.87557
-  dtps: 56387.19683
+  dtps: 56487.86789
   hps: 22256.31328
  }
 }
@@ -2195,7 +1862,7 @@ dps_results: {
  value: {
   dps: 85345.47521
   tps: 591654.99637
-  dtps: 55929.90573
+  dtps: 56026.47341
   hps: 22886.47083
  }
 }
@@ -2204,8 +1871,8 @@ dps_results: {
  value: {
   dps: 85441.80945
   tps: 592321.3462
-  dtps: 56049.96139
-  hps: 22746.98048
+  dtps: 56218.0253
+  hps: 22747.25077
  }
 }
 dps_results: {
@@ -2213,7 +1880,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2222,7 +1889,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2231,7 +1898,7 @@ dps_results: {
  value: {
   dps: 84376.43143
   tps: 584954.40012
-  dtps: 56461.98171
+  dtps: 56562.65276
   hps: 22335.71459
  }
 }
@@ -2240,7 +1907,7 @@ dps_results: {
  value: {
   dps: 84410.44629
   tps: 585179.95384
-  dtps: 56459.19391
+  dtps: 56559.86496
   hps: 22335.69862
  }
 }
@@ -2249,7 +1916,7 @@ dps_results: {
  value: {
   dps: 83750.09255
   tps: 580635.15756
-  dtps: 56396.69483
+  dtps: 56461.40359
   hps: 22661.48744
  }
 }
@@ -2258,7 +1925,7 @@ dps_results: {
  value: {
   dps: 83750.09255
   tps: 580635.15756
-  dtps: 56432.86459
+  dtps: 56497.57335
   hps: 22732.36863
  }
 }
@@ -2267,7 +1934,7 @@ dps_results: {
  value: {
   dps: 84437.47554
   tps: 585417.35155
-  dtps: 56145.56958
+  dtps: 56202.97615
   hps: 22475.23712
  }
 }
@@ -2276,7 +1943,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56191.58923
+  dtps: 56395.49339
   hps: 22348.11966
  }
 }
@@ -2285,7 +1952,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56074.2481
+  dtps: 56173.98809
   hps: 22348.40803
  }
 }
@@ -2294,7 +1961,7 @@ dps_results: {
  value: {
   dps: 84720.26379
   tps: 587211.57987
-  dtps: 56329.95863
+  dtps: 56430.62968
   hps: 23059.69569
  }
 }
@@ -2303,7 +1970,7 @@ dps_results: {
  value: {
   dps: 84058.69565
   tps: 582775.0568
-  dtps: 56073.78645
+  dtps: 56173.41043
   hps: 22221.47788
  }
 }
@@ -2312,7 +1979,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2321,7 +1988,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2330,17 +1997,17 @@ dps_results: {
  value: {
   dps: 84317.11183
   tps: 584527.95617
-  dtps: 56231.69713
-  hps: 23362.10901
+  dtps: 56298.81581
+  hps: 23361.51861
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SealoftheSevenSigns-77969"
  value: {
-  dps: 83776.37132
-  tps: 580703.41754
-  dtps: 56753.13082
-  hps: 22577.17331
+  dps: 83769.37314
+  tps: 580654.45158
+  dtps: 56598.57635
+  hps: 22251.11175
  }
 }
 dps_results: {
@@ -2348,8 +2015,8 @@ dps_results: {
  value: {
   dps: 84152.39969
   tps: 583409.96624
-  dtps: 57423.2474
-  hps: 22652.1464
+  dtps: 57428.50932
+  hps: 22651.32867
  }
 }
 dps_results: {
@@ -2357,17 +2024,8 @@ dps_results: {
  value: {
   dps: 83759.04461
   tps: 581247.44524
-  dtps: 56533.90789
+  dtps: 56622.20464
   hps: 22297.58077
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ShieldedSkyflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22959.77315
  }
 }
 dps_results: {
@@ -2375,17 +2033,17 @@ dps_results: {
  value: {
   dps: 83930.51668
   tps: 581864.25119
-  dtps: 57042.87629
-  hps: 22547.18687
+  dtps: 57056.22012
+  hps: 22545.65592
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SinisterPrimalDiamond"
  value: {
-  dps: 86118.50508
-  tps: 596856.84403
-  dtps: 56933.93988
-  hps: 23490.15029
+  dps: 86166.08088
+  tps: 597189.73186
+  dtps: 56921.40415
+  hps: 23575.23908
  }
 }
 dps_results: {
@@ -2393,7 +2051,7 @@ dps_results: {
  value: {
   dps: 84458.65278
   tps: 585563.30658
-  dtps: 56077.89088
+  dtps: 56135.13187
   hps: 22475.53468
  }
 }
@@ -2411,7 +2069,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56179.64411
+  dtps: 56279.9217
   hps: 22181.9676
  }
 }
@@ -2420,7 +2078,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56150.49945
+  dtps: 56250.72573
   hps: 22181.9676
  }
 }
@@ -2429,7 +2087,7 @@ dps_results: {
  value: {
   dps: 84389.14457
   tps: 584861.54019
-  dtps: 56563.10805
+  dtps: 56663.77911
   hps: 22060.05562
  }
 }
@@ -2438,7 +2096,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56118.73926
+  dtps: 56218.90964
   hps: 22181.9676
  }
 }
@@ -2447,7 +2105,7 @@ dps_results: {
  value: {
   dps: 83941.65687
   tps: 581975.8729
-  dtps: 56240.37642
+  dtps: 56340.5468
   hps: 22265.44814
  }
 }
@@ -2456,7 +2114,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56077.93168
+  dtps: 56178.60274
   hps: 22182.08015
  }
 }
@@ -2465,7 +2123,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 55912.31413
+  dtps: 56012.98519
   hps: 22419.14914
  }
 }
@@ -2474,7 +2132,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 55970.76377
+  dtps: 56071.43482
   hps: 22392.23301
  }
 }
@@ -2483,7 +2141,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 55839.62676
+  dtps: 55940.29782
   hps: 22449.51605
  }
 }
@@ -2492,7 +2150,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 55817.45403
+  dtps: 55917.52828
   hps: 22181.94413
  }
 }
@@ -2501,17 +2159,17 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 55736.98962
+  dtps: 55836.98648
   hps: 22181.94413
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 84916.95327
-  tps: 589019.18563
-  dtps: 56658.31607
-  hps: 22974.12791
+  dps: 84855.57158
+  tps: 588589.46252
+  dtps: 56942.41067
+  hps: 23007.36669
  }
 }
 dps_results: {
@@ -2519,8 +2177,8 @@ dps_results: {
  value: {
   dps: 84741.93822
   tps: 587706.23206
-  dtps: 56250.11177
-  hps: 23125.41472
+  dtps: 56424.1752
+  hps: 23125.16274
  }
 }
 dps_results: {
@@ -2528,8 +2186,8 @@ dps_results: {
  value: {
   dps: 84772.41801
   tps: 587880.44178
-  dtps: 56606.44205
-  hps: 23477.89779
+  dtps: 56857.63348
+  hps: 23478.18845
  }
 }
 dps_results: {
@@ -2537,8 +2195,8 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 55581.69852
-  hps: 22181.81512
+  dtps: 55743.69834
+  hps: 22182.10348
  }
 }
 dps_results: {
@@ -2546,7 +2204,7 @@ dps_results: {
  value: {
   dps: 84115.56599
   tps: 583117.11742
-  dtps: 56554.65909
+  dtps: 56655.33015
   hps: 22314.62117
  }
 }
@@ -2555,7 +2213,7 @@ dps_results: {
  value: {
   dps: 84607.47537
   tps: 586440.94134
-  dtps: 56775.87615
+  dtps: 56840.58492
   hps: 22190.50102
  }
 }
@@ -2564,35 +2222,8 @@ dps_results: {
  value: {
   dps: 84607.47537
   tps: 586440.94134
-  dtps: 56775.87615
+  dtps: 56840.58492
   hps: 22190.50102
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-SwiftSkyflareDiamond"
- value: {
-  dps: 85654.68395
-  tps: 593710.50506
-  dtps: 56862.19811
-  hps: 23061.39642
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-SwiftStarflareDiamond"
- value: {
-  dps: 85540.6197
-  tps: 592988.34057
-  dtps: 56656.85403
-  hps: 22978.98663
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-SwiftWindfireDiamond"
- value: {
-  dps: 85529.57055
-  tps: 592910.99653
-  dtps: 56656.85403
-  hps: 22978.98663
  }
 }
 dps_results: {
@@ -2600,7 +2231,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56221.2642
+  dtps: 56321.05917
   hps: 22348.38456
  }
 }
@@ -2609,7 +2240,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56193.50073
+  dtps: 56293.18298
   hps: 22369.77943
  }
 }
@@ -2618,7 +2249,7 @@ dps_results: {
  value: {
   dps: 83879.55471
   tps: 581465.12062
-  dtps: 56264.84763
+  dtps: 56365.51869
   hps: 22337.60685
  }
 }
@@ -2627,7 +2258,7 @@ dps_results: {
  value: {
   dps: 83973.11758
   tps: 582285.10516
-  dtps: 56710.39768
+  dtps: 56834.65673
   hps: 22486.31693
  }
 }
@@ -2636,7 +2267,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2645,7 +2276,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2654,7 +2285,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56212.35696
+  dtps: 56312.69212
   hps: 22182.08015
  }
 }
@@ -2663,17 +2294,17 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56150.49945
+  dtps: 56250.72573
   hps: 22181.9676
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TheHungerer-68927"
  value: {
-  dps: 84695.37142
-  tps: 587465.13877
-  dtps: 56004.60914
-  hps: 22697.26775
+  dps: 84709.8428
+  tps: 587566.41964
+  dtps: 56131.91666
+  hps: 22742.81439
  }
 }
 dps_results: {
@@ -2681,8 +2312,8 @@ dps_results: {
  value: {
   dps: 84655.77007
   tps: 587088.1895
-  dtps: 55849.14129
-  hps: 22936.93029
+  dtps: 56040.01911
+  hps: 22937.02874
  }
 }
 dps_results: {
@@ -2690,7 +2321,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56371.19046
+  dtps: 56471.86151
   hps: 22182.08015
  }
 }
@@ -2699,7 +2330,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56360.51594
+  dtps: 56461.18699
   hps: 22182.08015
  }
 }
@@ -2708,7 +2339,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2717,7 +2348,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2726,7 +2357,7 @@ dps_results: {
  value: {
   dps: 83906.26685
   tps: 581728.54021
-  dtps: 56421.17758
+  dtps: 56521.34796
   hps: 22367.87695
  }
 }
@@ -2735,7 +2366,7 @@ dps_results: {
  value: {
   dps: 84377.47505
   tps: 584966.50311
-  dtps: 56068.17602
+  dtps: 56274.49603
   hps: 22384.88035
  }
 }
@@ -2744,7 +2375,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56077.45284
+  dtps: 56178.12389
   hps: 22182.08015
  }
 }
@@ -2762,44 +2393,35 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ThunderingSkyflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 85549.40967
-  tps: 592973.56461
-  dtps: 55981.82334
-  hps: 23299.44194
+  dps: 85600.77212
+  tps: 593332.99149
+  dtps: 55978.39306
+  hps: 23411.10073
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 85539.26962
-  tps: 592902.58427
-  dtps: 55932.66136
-  hps: 23333.81165
+  dps: 85590.63207
+  tps: 593262.01114
+  dtps: 55929.23107
+  hps: 23445.53021
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 85549.40967
-  tps: 592973.56461
-  dtps: 55981.82334
-  hps: 23268.91127
+  dps: 85600.77212
+  tps: 593332.99149
+  dtps: 55978.39306
+  hps: 23380.51634
  }
 }
 dps_results: {
@@ -2821,57 +2443,21 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-TirelessSkyflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-TirelessStarflareDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-TrenchantEarthshatterDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-TrenchantEarthsiegeDiamond"
- value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
   dps: 83816.02267
   tps: 580677.76789
-  dtps: 56511.06924
+  dtps: 56611.74029
   hps: 22010.5941
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 85490.09524
-  tps: 592634.70067
-  dtps: 56653.45086
-  hps: 22948.79583
+  dps: 85541.45769
+  tps: 592994.12755
+  dtps: 56649.97907
+  hps: 23059.793
  }
 }
 dps_results: {
@@ -2888,7 +2474,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -2897,7 +2483,7 @@ dps_results: {
  value: {
   dps: 84422.14938
   tps: 585135.99568
-  dtps: 56211.58432
+  dtps: 56350.64444
   hps: 22345.36354
  }
 }
@@ -2906,7 +2492,7 @@ dps_results: {
  value: {
   dps: 84422.14938
   tps: 585135.99568
-  dtps: 56211.58432
+  dtps: 56350.64444
   hps: 22345.36354
  }
 }
@@ -2915,7 +2501,7 @@ dps_results: {
  value: {
   dps: 84422.14938
   tps: 585135.99568
-  dtps: 56211.58432
+  dtps: 56350.64444
   hps: 22345.36354
  }
 }
@@ -2924,7 +2510,7 @@ dps_results: {
  value: {
   dps: 83829.47134
   tps: 581114.40197
-  dtps: 56332.63248
+  dtps: 56433.30353
   hps: 22133.05958
  }
 }
@@ -2933,7 +2519,7 @@ dps_results: {
  value: {
   dps: 83835.25318
   tps: 581154.87486
-  dtps: 56327.83421
+  dtps: 56428.50527
   hps: 22125.33586
  }
 }
@@ -2942,7 +2528,7 @@ dps_results: {
  value: {
   dps: 84148.93299
   tps: 583403.01847
-  dtps: 56083.81049
+  dtps: 56183.91949
   hps: 22449.15007
  }
 }
@@ -2951,7 +2537,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56094.0461
+  dtps: 56229.41624
   hps: 22380.70764
  }
 }
@@ -2960,7 +2546,7 @@ dps_results: {
  value: {
   dps: 84823.84343
   tps: 587971.26249
-  dtps: 56134.53945
+  dtps: 56235.2105
   hps: 22950.73192
  }
 }
@@ -2969,7 +2555,7 @@ dps_results: {
  value: {
   dps: 84931.48276
   tps: 588721.23651
-  dtps: 56153.65563
+  dtps: 56254.32669
   hps: 22838.85174
  }
 }
@@ -2978,8 +2564,8 @@ dps_results: {
  value: {
   dps: 88844.60571
   tps: 616230.51469
-  dtps: 56655.32857
-  hps: 22353.26621
+  dtps: 56891.60713
+  hps: 22353.13423
  }
 }
 dps_results: {
@@ -2987,7 +2573,7 @@ dps_results: {
  value: {
   dps: 88388.53318
   tps: 613124.0678
-  dtps: 56466.45886
+  dtps: 56529.09583
   hps: 22096.17237
  }
 }
@@ -2996,8 +2582,8 @@ dps_results: {
  value: {
   dps: 89629.0598
   tps: 621666.5831
-  dtps: 56208.11593
-  hps: 22722.91106
+  dtps: 56422.30554
+  hps: 22722.92198
  }
 }
 dps_results: {
@@ -3005,7 +2591,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56161.23159
+  dtps: 56261.90264
   hps: 22348.21811
  }
 }
@@ -3014,7 +2600,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56130.51626
+  dtps: 56261.90264
   hps: 22369.63873
  }
 }
@@ -3023,7 +2609,7 @@ dps_results: {
  value: {
   dps: 85099.64551
   tps: 589906.28026
-  dtps: 56353.27041
+  dtps: 56381.78641
   hps: 22678.40609
  }
 }
@@ -3041,7 +2627,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3050,7 +2636,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3059,7 +2645,7 @@ dps_results: {
  value: {
   dps: 84257.70882
   tps: 584067.51758
-  dtps: 56391.07467
+  dtps: 56491.74572
   hps: 22239.65764
  }
 }
@@ -3068,7 +2654,7 @@ dps_results: {
  value: {
   dps: 84293.07721
   tps: 584301.95388
-  dtps: 56389.79883
+  dtps: 56490.46989
   hps: 22244.30385
  }
 }
@@ -3077,17 +2663,17 @@ dps_results: {
  value: {
   dps: 84462.43401
   tps: 585425.44778
-  dtps: 56971.44036
+  dtps: 57072.11141
   hps: 22192.15613
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 83794.55876
-  tps: 580946.18168
-  dtps: 56842.03108
-  hps: 22580.35644
+  dps: 83793.96502
+  tps: 580941.97679
+  dtps: 56714.28995
+  hps: 22286.99336
  }
 }
 dps_results: {
@@ -3095,7 +2681,7 @@ dps_results: {
  value: {
   dps: 84522.11308
   tps: 585869.85459
-  dtps: 56489.58412
+  dtps: 56590.25517
   hps: 22973.59137
  }
 }
@@ -3104,7 +2690,7 @@ dps_results: {
  value: {
   dps: 84462.43401
   tps: 585425.44778
-  dtps: 56971.44036
+  dtps: 57072.11141
   hps: 22192.15613
  }
 }
@@ -3113,7 +2699,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56136.37944
+  dtps: 56236.58087
   hps: 22220.68062
  }
 }
@@ -3122,7 +2708,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56136.37944
+  dtps: 56236.58087
   hps: 22220.68062
  }
 }
@@ -3131,7 +2717,7 @@ dps_results: {
  value: {
   dps: 85050.73923
   tps: 589634.25836
-  dtps: 55788.38864
+  dtps: 55917.82713
   hps: 22723.4497
  }
 }
@@ -3140,7 +2726,7 @@ dps_results: {
  value: {
   dps: 85015.23819
   tps: 589360.17155
-  dtps: 56206.20181
+  dtps: 56235.35264
   hps: 22629.43541
  }
 }
@@ -3149,7 +2735,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3158,7 +2744,7 @@ dps_results: {
  value: {
   dps: 83881.42306
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3167,7 +2753,7 @@ dps_results: {
  value: {
   dps: 84242.86447
   tps: 584028.48891
-  dtps: 56394.55467
+  dtps: 56495.22572
   hps: 22256.66998
  }
 }
@@ -3176,35 +2762,35 @@ dps_results: {
  value: {
   dps: 84273.04203
   tps: 584236.11521
-  dtps: 56394.05
+  dtps: 56494.72105
   hps: 22264.68706
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Vishanka,JawsoftheEarth-78359"
  value: {
-  dps: 80239.67681
-  tps: 556152.53602
-  dtps: 56078.61824
-  hps: 22354.84261
+  dps: 80124.99854
+  tps: 555349.43236
+  dtps: 56546.05524
+  hps: 22188.7588
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Vishanka,JawsoftheEarth-78471"
  value: {
-  dps: 81067.94607
-  tps: 561942.52838
-  dtps: 56123.64132
-  hps: 22660.58776
+  dps: 81016.69536
+  tps: 561583.61742
+  dtps: 56434.17642
+  hps: 22629.88932
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Vishanka,JawsoftheEarth-78480"
  value: {
-  dps: 79602.92692
-  tps: 551702.69006
-  dtps: 56178.50044
-  hps: 22292.45371
+  dps: 79489.90616
+  tps: 550911.18894
+  dtps: 56574.29825
+  hps: 22126.48389
  }
 }
 dps_results: {
@@ -3212,8 +2798,8 @@ dps_results: {
  value: {
   dps: 83876.67821
   tps: 581521.29868
-  dtps: 56159.27825
-  hps: 22363.68391
+  dtps: 56323.97879
+  hps: 22363.47661
  }
 }
 dps_results: {
@@ -3221,7 +2807,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56071.00565
+  dtps: 56171.67671
   hps: 22348.40803
  }
 }
@@ -3230,7 +2816,7 @@ dps_results: {
  value: {
   dps: 84492.2145
   tps: 585750.26377
-  dtps: 55839.77897
+  dtps: 56074.60041
   hps: 22516.2409
  }
 }
@@ -3248,7 +2834,7 @@ dps_results: {
  value: {
   dps: 83889.39799
   tps: 581533.95914
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3257,7 +2843,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3266,7 +2852,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3275,7 +2861,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56403.191
+  dtps: 56503.86205
   hps: 22182.08015
  }
 }
@@ -3284,7 +2870,7 @@ dps_results: {
  value: {
   dps: 83961.58072
   tps: 582039.2028
-  dtps: 56489.02758
+  dtps: 56589.69864
   hps: 22244.95332
  }
 }
@@ -3293,7 +2879,7 @@ dps_results: {
  value: {
   dps: 83923.3284
   tps: 581771.35779
-  dtps: 56466.80512
+  dtps: 56567.47618
   hps: 22106.39609
  }
 }
@@ -3302,7 +2888,7 @@ dps_results: {
  value: {
   dps: 83870.5096
   tps: 581478.13465
-  dtps: 56208.81863
+  dtps: 56309.14756
   hps: 22181.9676
  }
 }
@@ -3311,8 +2897,8 @@ dps_results: {
  value: {
   dps: 85431.65012
   tps: 592329.87485
-  dtps: 55950.92436
-  hps: 22800.38864
+  dtps: 56152.90412
+  hps: 22800.12432
  }
 }
 dps_results: {
@@ -3320,7 +2906,7 @@ dps_results: {
  value: {
   dps: 85287.35104
   tps: 591328.49842
-  dtps: 56010.49812
+  dtps: 56133.95785
   hps: 22767.06726
  }
 }
@@ -3329,8 +2915,8 @@ dps_results: {
  value: {
   dps: 85683.74267
   tps: 594085.15318
-  dtps: 55218.83764
-  hps: 23089.80666
+  dtps: 55545.57314
+  hps: 23089.54234
  }
 }
 dps_results: {
@@ -3338,7 +2924,7 @@ dps_results: {
  value: {
   dps: 83926.16522
   tps: 581867.89628
-  dtps: 56304.74738
+  dtps: 56404.88236
   hps: 22359.25211
  }
 }
@@ -3347,17 +2933,17 @@ dps_results: {
  value: {
   dps: 83926.16522
   tps: 581867.89628
-  dtps: 56304.74738
+  dtps: 56404.88236
   hps: 22359.25211
  }
 }
 dps_results: {
  key: "TestGuardian-Average-Default"
  value: {
-  dps: 85836.56538
-  tps: 594571.70525
-  dtps: 56010.91663
-  hps: 23693.35699
+  dps: 85837.17193
+  tps: 594577.10506
+  dtps: 56154.47139
+  hps: 23696.63589
  }
 }
 dps_results: {
@@ -3365,26 +2951,26 @@ dps_results: {
  value: {
   dps: 1.71103656733e+06
   tps: 1.191657915802e+07
-  dtps: 1.13381065412e+06
+  dtps: 1.13679518472e+06
   hps: 105212.99143
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Worgen-preraid-DefaultTalents-Default-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 92600.15292
-  tps: 641754.59532
-  dtps: 56155.41785
-  hps: 26753.79455
+  dps: 92614.85773
+  tps: 641857.57525
+  dtps: 56064.09438
+  hps: 26880.02247
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Worgen-preraid-DefaultTalents-Default-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 90616.80058
-  tps: 601967.49313
-  dtps: 50848.15055
-  hps: 21375.42864
+  dps: 90534.2597
+  tps: 601389.86945
+  dtps: 51011.8052
+  hps: 21561.34163
  }
 }
 dps_results: {
@@ -3419,7 +3005,7 @@ dps_results: {
  value: {
   dps: 1.70164804656e+06
   tps: 1.178328295756e+07
-  dtps: 1.13742376865e+06
+  dtps: 1.1406032826e+06
   hps: 78983.63605
  }
 }
@@ -3428,8 +3014,8 @@ dps_results: {
  value: {
   dps: 91778.87435
   tps: 617807.02977
-  dtps: 57293.12398
-  hps: 21720.59426
+  dtps: 57361.81721
+  hps: 21720.51606
  }
 }
 dps_results: {
@@ -3437,8 +3023,8 @@ dps_results: {
  value: {
   dps: 90300.6979
   tps: 572519.43678
-  dtps: 53953.55743
-  hps: 18497.18447
+  dtps: 54117.21209
+  hps: 18496.79348
  }
 }
 dps_results: {
@@ -3471,9 +3057,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 92600.15292
-  tps: 641754.59532
-  dtps: 56155.41785
-  hps: 26753.79455
+  dps: 92614.85773
+  tps: 641857.57525
+  dtps: 56064.09438
+  hps: 26880.02247
  }
 }

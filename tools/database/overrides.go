@@ -355,174 +355,350 @@ var ItemDenyList = map[int32]struct{}{
 	71591: {}, // Deflecting Brimstone Band - 391
 
 	// Patch 4.3 items not available in the game
-	78610: {}, // Arrowflick Gauntlets - 384
-	78527: {}, // Arrowflick Gauntlets - 410
-	78601: {}, // Band of Reconstruction - 384
-	78523: {}, // Band of Reconstruction - 410
-	78587: {}, // Batwing Cloak - 384
-	78509: {}, // Batwing Cloak - 410
-	78640: {}, // Belt of Hidden Keys - 384
-	78565: {}, // Belt of Hidden Keys - 410
-	78641: {}, // Belt of Universal Curing - 384
-	78566: {}, // Belt of Universal Curing - 410
-	78591: {}, // Bladeshatter Treads - 384
-	78511: {}, // Bladeshatter Treads - 410
-	78644: {}, // Blinding Girdle of Truth - 384
-	78563: {}, // Blinding Girdle of Truth - 410
-	78583: {}, // Bones of the Damned - 384
-	78499: {}, // Bones of the Damned - 410
-	78596: {}, // Boneshard Boots - 384
-	78512: {}, // Boneshard Boots - 410
-	78592: {}, // Boots of Fungoid Growth - 384
-	78517: {}, // Boots of Fungoid Growth - 410
-	77985: {}, // Bottled Wishes - 384
-	78005: {}, // Bottled Wishes - 410
-	78654: {}, // Bracers of Manifold Pockets - 384
-	78574: {}, // Bracers of Manifold Pockets - 410
-	78655: {}, // Bracers of the Black Dream - 384
-	78577: {}, // Bracers of the Black Dream - 410
-	78651: {}, // Bracers of the Spectral Wolf - 384
-	78572: {}, // Bracers of the Spectral Wolf - 410
-	78650: {}, // Bracers of Unrelenting Excellence - 384
-	78570: {}, // Bracers of Unrelenting Excellence - 410
-	78622: {}, // Cameo of Terrible Memories - 384
-	78546: {}, // Cameo of Terrible Memories - 410
-	78584: {}, // Chestplate of the Unshakable Titan - 384
-	78500: {}, // Chestplate of the Unshakable Titan - 410
-	78656: {}, // Chronoboost Bracers - 384
-	78576: {}, // Chronoboost Bracers - 410
-	78608: {}, // Clockwinder's Immaculate Gloves - 384
-	78532: {}, // Clockwinder's Immaculate Gloves - 410
-	78642: {}, // Cord of Dragon Sinew - 384
-	78561: {}, // Cord of Dragon Sinew - 410
-	78638: {}, // Darting Chakram - 384
-	78558: {}, // Darting Chakram - 410
-	78582: {}, // Decaying Herbalist's Robes - 384
-	78505: {}, // Decaying Herbalist's Robes - 410
-	78645: {}, // Demonbone Waistguard - 384
-	78564: {}, // Demonbone Waistguard - 410
-	78653: {}, // Dragonbelly Bracers - 384
-	78571: {}, // Dragonbelly Bracers - 410
-	78579: {}, // Dragonflayer Vest - 384
-	78501: {}, // Dragonflayer Vest - 410
-	78586: {}, // Dreamcrusher Drape - 384
-	78506: {}, // Dreamcrusher Drape - 410
-	78599: {}, // Emergency Descent Loop - 384
-	78524: {}, // Emergency Descent Loop - 410
-	77988: {}, // Fire of the Deep - 384
-	78008: {}, // Fire of the Deep - 410
-	78648: {}, // Flashing Bracers of Warmth - 384
-	78573: {}, // Flashing Bracers of Warmth - 410
-	78646: {}, // Forgesmelter Waistplate - 384
-	78560: {}, // Forgesmelter Waistplate - 410
-	78604: {}, // Fungus-Born Gloves - 384
-	78531: {}, // Fungus-Born Gloves - 410
-	78606: {}, // Gauntlets of Feathery Blows - 384
-	78526: {}, // Gauntlets of Feathery Blows - 410
-	78580: {}, // Ghostworld Chestguard - 384
-	78502: {}, // Ghostworld Chestguard - 410
-	78643: {}, // Girdle of Shamanic Fury - 384
-	78562: {}, // Girdle of Shamanic Fury - 410
-	78612: {}, // Gleaming Grips of Mending - 384
-	78529: {}, // Gleaming Grips of Mending - 410
-	78611: {}, // Gloves of Ghostly Dreams - 384
-	78528: {}, // Gloves of Ghostly Dreams - 410
-	78621: {}, // Glowing Wings of Hope - 384
-	78538: {}, // Glowing Wings of Hope - 410
-	78605: {}, // Grimfist Crushers - 384
-	78525: {}, // Grimfist Crushers - 410
-	78623: {}, // Guardspike Choker - 384
-	78544: {}, // Guardspike Choker - 410
-	78629: {}, // Gutripper Shard - 384
-	78550: {}, // Gutripper Shard - 410
-	78649: {}, // Heartcrusher Wristplates - 384
-	78569: {}, // Heartcrusher Wristplates - 410
-	78618: {}, // Helmet of Perpetual Rebirth - 384
-	78540: {}, // Helmet of Perpetual Rebirth - 410
-	78616: {}, // Hood of Hidden Flesh - 384
-	78541: {}, // Hood of Hidden Flesh - 410
-	78627: {}, // Hungermouth Wand - 384
-	78548: {}, // Hungermouth Wand - 410
-	78589: {}, // Indefatigable Greatcloak - 384
-	78507: {}, // Indefatigable Greatcloak - 410
-	78615: {}, // Jaw of Repudiation - 384
-	78535: {}, // Jaw of Repudiation - 410
-	78597: {}, // Kavan's Forsaken Treads - 384
-	78518: {}, // Kavan's Forsaken Treads - 410
-	77984: {}, // Kiroptyric Sigil - 384
-	78004: {}, // Kiroptyric Sigil - 410
-	78590: {}, // Kneebreaker Boots - 384
-	78515: {}, // Kneebreaker Boots - 410
-	78609: {}, // Lightfinger Handwraps - 384
-	78530: {}, // Lightfinger Handwraps - 410
-	78631: {}, // Lightning Spirit in a Bottle - 384
-	78552: {}, // Lightning Spirit in a Bottle - 410
-	78635: {}, // Lightwarper Vestments - 384
-	78556: {}, // Lightwarper Vestments - 410
-	78652: {}, // Luminescent Bracers - 384
-	78575: {}, // Luminescent Bracers - 410
-	78630: {}, // Mindbender Lens - 384
-	78553: {}, // Mindbender Lens - 410
-	78588: {}, // Nanoprecise Cape - 384
-	78510: {}, // Nanoprecise Cape - 410
-	78625: {}, // Necklace of Black Dragon's Teeth - 384
-	78543: {}, // Necklace of Black Dragon's Teeth - 410
-	78617: {}, // Nocturnal Gaze - 384
-	78539: {}, // Nocturnal Gaze - 410
-	78624: {}, // Opal of the Secret Order - 384
-	78547: {}, // Opal of the Secret Order - 410
-	77986: {}, // Reflection of the Light - 384
-	78006: {}, // Reflection of the Light - 410
-	78603: {}, // Ring of Torn Flesh - 384
-	78520: {}, // Ring of Torn Flesh - 410
-	78633: {}, // Ripfang Relic - 384
-	78554: {}, // Ripfang Relic - 410
-	78634: {}, // Robes of Searing Shadow - 384
-	78555: {}, // Robes of Searing Shadow - 410
-	78594: {}, // Rooftop Griptoes - 384
-	78516: {}, // Rooftop Griptoes - 410
-	77987: {}, // Rotting Skull - 384
-	78007: {}, // Rotting Skull - 410
-	78595: {}, // Sabatons of the Graceful Spirit - 384
-	78513: {}, // Sabatons of the Graceful Spirit - 410
-	78628: {}, // Scintillating Rods - 384
-	78549: {}, // Scintillating Rods - 410
-	78600: {}, // Seal of the Grand Architect - 384
-	78522: {}, // Seal of the Grand Architect - 410
-	78581: {}, // Shadowbinder Chestguard - 384
-	78504: {}, // Shadowbinder Chestguard - 410
-	78578: {}, // Shining Carapace of Glory - 384
-	78503: {}, // Shining Carapace of Glory - 410
-	78602: {}, // Signet of the Resolute - 384
-	78521: {}, // Signet of the Resolute - 410
-	78593: {}, // Silver Sabatons of Fury - 384
-	78514: {}, // Silver Sabatons of Fury - 410
-	78620: {}, // Soulgaze Cowl - 384
-	78542: {}, // Soulgaze Cowl - 410
-	78598: {}, // Splinterfoot Sandals - 384
-	78519: {}, // Splinterfoot Sandals - 410
-	78632: {}, // Stoutheart Talisman - 384
-	78551: {}, // Stoutheart Talisman - 410
-	78639: {}, // Tentacular Belt - 384
-	78567: {}, // Tentacular Belt - 410
-	78607: {}, // The Hands of Gilly - 384
-	78533: {}, // The Hands of Gilly - 410
-	78626: {}, // Threadlinked Chain - 384
-	78545: {}, // Threadlinked Chain - 410
-	78636: {}, // Unexpected Backup - 384
-	78557: {}, // Unexpected Backup - 410
-	78647: {}, // Vestal's Irrepressible Girdle - 384
-	78568: {}, // Vestal's Irrepressible Girdle - 410
-	78614: {}, // Visage of Petrification - 384
-	78534: {}, // Visage of Petrification - 410
-	78637: {}, // Windslicer Boomerang - 384
-	78559: {}, // Windslicer Boomerang - 410
-	78613: {}, // Wolfdream Circlet - 384
-	78537: {}, // Wolfdream Circlet - 410
-	78585: {}, // Woundlicker Cover - 384
-	78508: {}, // Woundlicker Cover - 410
-	78619: {}, // Zeherah's Dragonskull Crown - 384
-	78536: {}, // Zeherah's Dragonskull Crown - 410
+	78610:  {}, // Arrowflick Gauntlets - 384
+	78527:  {}, // Arrowflick Gauntlets - 410
+	78601:  {}, // Band of Reconstruction - 384
+	78523:  {}, // Band of Reconstruction - 410
+	78587:  {}, // Batwing Cloak - 384
+	78509:  {}, // Batwing Cloak - 410
+	78640:  {}, // Belt of Hidden Keys - 384
+	78565:  {}, // Belt of Hidden Keys - 410
+	78641:  {}, // Belt of Universal Curing - 384
+	78566:  {}, // Belt of Universal Curing - 410
+	78591:  {}, // Bladeshatter Treads - 384
+	78511:  {}, // Bladeshatter Treads - 410
+	78644:  {}, // Blinding Girdle of Truth - 384
+	78563:  {}, // Blinding Girdle of Truth - 410
+	78583:  {}, // Bones of the Damned - 384
+	78499:  {}, // Bones of the Damned - 410
+	78596:  {}, // Boneshard Boots - 384
+	78512:  {}, // Boneshard Boots - 410
+	78592:  {}, // Boots of Fungoid Growth - 384
+	78517:  {}, // Boots of Fungoid Growth - 410
+	77985:  {}, // Bottled Wishes - 384
+	78005:  {}, // Bottled Wishes - 410
+	78654:  {}, // Bracers of Manifold Pockets - 384
+	78574:  {}, // Bracers of Manifold Pockets - 410
+	78655:  {}, // Bracers of the Black Dream - 384
+	78577:  {}, // Bracers of the Black Dream - 410
+	78651:  {}, // Bracers of the Spectral Wolf - 384
+	78572:  {}, // Bracers of the Spectral Wolf - 410
+	78650:  {}, // Bracers of Unrelenting Excellence - 384
+	78570:  {}, // Bracers of Unrelenting Excellence - 410
+	78622:  {}, // Cameo of Terrible Memories - 384
+	78546:  {}, // Cameo of Terrible Memories - 410
+	78584:  {}, // Chestplate of the Unshakable Titan - 384
+	78500:  {}, // Chestplate of the Unshakable Titan - 410
+	78656:  {}, // Chronoboost Bracers - 384
+	78576:  {}, // Chronoboost Bracers - 410
+	78608:  {}, // Clockwinder's Immaculate Gloves - 384
+	78532:  {}, // Clockwinder's Immaculate Gloves - 410
+	78642:  {}, // Cord of Dragon Sinew - 384
+	78561:  {}, // Cord of Dragon Sinew - 410
+	78638:  {}, // Darting Chakram - 384
+	78558:  {}, // Darting Chakram - 410
+	78582:  {}, // Decaying Herbalist's Robes - 384
+	78505:  {}, // Decaying Herbalist's Robes - 410
+	78645:  {}, // Demonbone Waistguard - 384
+	78564:  {}, // Demonbone Waistguard - 410
+	78653:  {}, // Dragonbelly Bracers - 384
+	78571:  {}, // Dragonbelly Bracers - 410
+	78579:  {}, // Dragonflayer Vest - 384
+	78501:  {}, // Dragonflayer Vest - 410
+	78586:  {}, // Dreamcrusher Drape - 384
+	78506:  {}, // Dreamcrusher Drape - 410
+	78599:  {}, // Emergency Descent Loop - 384
+	78524:  {}, // Emergency Descent Loop - 410
+	77988:  {}, // Fire of the Deep - 384
+	78008:  {}, // Fire of the Deep - 410
+	78648:  {}, // Flashing Bracers of Warmth - 384
+	78573:  {}, // Flashing Bracers of Warmth - 410
+	78646:  {}, // Forgesmelter Waistplate - 384
+	78560:  {}, // Forgesmelter Waistplate - 410
+	78604:  {}, // Fungus-Born Gloves - 384
+	78531:  {}, // Fungus-Born Gloves - 410
+	78606:  {}, // Gauntlets of Feathery Blows - 384
+	78526:  {}, // Gauntlets of Feathery Blows - 410
+	78580:  {}, // Ghostworld Chestguard - 384
+	78502:  {}, // Ghostworld Chestguard - 410
+	78643:  {}, // Girdle of Shamanic Fury - 384
+	78562:  {}, // Girdle of Shamanic Fury - 410
+	78612:  {}, // Gleaming Grips of Mending - 384
+	78529:  {}, // Gleaming Grips of Mending - 410
+	78611:  {}, // Gloves of Ghostly Dreams - 384
+	78528:  {}, // Gloves of Ghostly Dreams - 410
+	78621:  {}, // Glowing Wings of Hope - 384
+	78538:  {}, // Glowing Wings of Hope - 410
+	78605:  {}, // Grimfist Crushers - 384
+	78525:  {}, // Grimfist Crushers - 410
+	78623:  {}, // Guardspike Choker - 384
+	78544:  {}, // Guardspike Choker - 410
+	78629:  {}, // Gutripper Shard - 384
+	78550:  {}, // Gutripper Shard - 410
+	78649:  {}, // Heartcrusher Wristplates - 384
+	78569:  {}, // Heartcrusher Wristplates - 410
+	78618:  {}, // Helmet of Perpetual Rebirth - 384
+	78540:  {}, // Helmet of Perpetual Rebirth - 410
+	78616:  {}, // Hood of Hidden Flesh - 384
+	78541:  {}, // Hood of Hidden Flesh - 410
+	78627:  {}, // Hungermouth Wand - 384
+	78548:  {}, // Hungermouth Wand - 410
+	78589:  {}, // Indefatigable Greatcloak - 384
+	78507:  {}, // Indefatigable Greatcloak - 410
+	78615:  {}, // Jaw of Repudiation - 384
+	78535:  {}, // Jaw of Repudiation - 410
+	78597:  {}, // Kavan's Forsaken Treads - 384
+	78518:  {}, // Kavan's Forsaken Treads - 410
+	77984:  {}, // Kiroptyric Sigil - 384
+	78004:  {}, // Kiroptyric Sigil - 410
+	78590:  {}, // Kneebreaker Boots - 384
+	78515:  {}, // Kneebreaker Boots - 410
+	78609:  {}, // Lightfinger Handwraps - 384
+	78530:  {}, // Lightfinger Handwraps - 410
+	78631:  {}, // Lightning Spirit in a Bottle - 384
+	78552:  {}, // Lightning Spirit in a Bottle - 410
+	78635:  {}, // Lightwarper Vestments - 384
+	78556:  {}, // Lightwarper Vestments - 410
+	78652:  {}, // Luminescent Bracers - 384
+	78575:  {}, // Luminescent Bracers - 410
+	78630:  {}, // Mindbender Lens - 384
+	78553:  {}, // Mindbender Lens - 410
+	78588:  {}, // Nanoprecise Cape - 384
+	78510:  {}, // Nanoprecise Cape - 410
+	78625:  {}, // Necklace of Black Dragon's Teeth - 384
+	78543:  {}, // Necklace of Black Dragon's Teeth - 410
+	78617:  {}, // Nocturnal Gaze - 384
+	78539:  {}, // Nocturnal Gaze - 410
+	78624:  {}, // Opal of the Secret Order - 384
+	78547:  {}, // Opal of the Secret Order - 410
+	77986:  {}, // Reflection of the Light - 384
+	78006:  {}, // Reflection of the Light - 410
+	78603:  {}, // Ring of Torn Flesh - 384
+	78520:  {}, // Ring of Torn Flesh - 410
+	78633:  {}, // Ripfang Relic - 384
+	78554:  {}, // Ripfang Relic - 410
+	78634:  {}, // Robes of Searing Shadow - 384
+	78555:  {}, // Robes of Searing Shadow - 410
+	78594:  {}, // Rooftop Griptoes - 384
+	78516:  {}, // Rooftop Griptoes - 410
+	77987:  {}, // Rotting Skull - 384
+	78007:  {}, // Rotting Skull - 410
+	78595:  {}, // Sabatons of the Graceful Spirit - 384
+	78513:  {}, // Sabatons of the Graceful Spirit - 410
+	78628:  {}, // Scintillating Rods - 384
+	78549:  {}, // Scintillating Rods - 410
+	78600:  {}, // Seal of the Grand Architect - 384
+	78522:  {}, // Seal of the Grand Architect - 410
+	78581:  {}, // Shadowbinder Chestguard - 384
+	78504:  {}, // Shadowbinder Chestguard - 410
+	78578:  {}, // Shining Carapace of Glory - 384
+	78503:  {}, // Shining Carapace of Glory - 410
+	78602:  {}, // Signet of the Resolute - 384
+	78521:  {}, // Signet of the Resolute - 410
+	78593:  {}, // Silver Sabatons of Fury - 384
+	78514:  {}, // Silver Sabatons of Fury - 410
+	78620:  {}, // Soulgaze Cowl - 384
+	78542:  {}, // Soulgaze Cowl - 410
+	78598:  {}, // Splinterfoot Sandals - 384
+	78519:  {}, // Splinterfoot Sandals - 410
+	78632:  {}, // Stoutheart Talisman - 384
+	78551:  {}, // Stoutheart Talisman - 410
+	78639:  {}, // Tentacular Belt - 384
+	78567:  {}, // Tentacular Belt - 410
+	78607:  {}, // The Hands of Gilly - 384
+	78533:  {}, // The Hands of Gilly - 410
+	78626:  {}, // Threadlinked Chain - 384
+	78545:  {}, // Threadlinked Chain - 410
+	78636:  {}, // Unexpected Backup - 384
+	78557:  {}, // Unexpected Backup - 410
+	78647:  {}, // Vestal's Irrepressible Girdle - 384
+	78568:  {}, // Vestal's Irrepressible Girdle - 410
+	78614:  {}, // Visage of Petrification - 384
+	78534:  {}, // Visage of Petrification - 410
+	78637:  {}, // Windslicer Boomerang - 384
+	78559:  {}, // Windslicer Boomerang - 410
+	78613:  {}, // Wolfdream Circlet - 384
+	78537:  {}, // Wolfdream Circlet - 410
+	78585:  {}, // Woundlicker Cover - 384
+	78508:  {}, // Woundlicker Cover - 410
+	78619:  {}, // Zeherah's Dragonskull Crown - 384
+	78536:  {}, // Zeherah's Dragonskull Crown - 410
+	97290:  {},
+	98064:  {},
+	98029:  {},
+	98007:  {},
+	98065:  {},
+	98066:  {},
+	97292:  {},
+	97517:  {},
+	100414: {},
+	100424: {},
+	103087: {},
+	103082: {},
+	103079: {},
+	103084: {},
+	100408: {},
+	100418: {},
+	97515:  {},
+	98067:  {},
+	98030:  {},
+	98009:  {},
+	97294:  {},
+	97520:  {},
+	98068:  {},
+	100422: {},
+	100412: {},
+	103086: {},
+	103081: {},
+	97928:  {},
+	97838:  {},
+	97521:  {},
+	98069:  {},
+	98011:  {},
+	97295:  {},
+	98042:  {},
+	98070:  {},
+	97296:  {},
+	97944:  {},
+	97846:  {},
+	98043:  {},
+	100497: {},
+	100493: {},
+	100481: {},
+	100304: {},
+	100300: {},
+	100279: {},
+	100240: {},
+	100230: {},
+	100228: {},
+	100192: {},
+	98012:  {},
+	103120: {},
+	103118: {},
+	103114: {},
+	103032: {},
+	103030: {},
+	103021: {},
+	103002: {},
+	103000: {},
+	102999: {},
+	102988: {},
+	97297:  {},
+	97945:  {},
+	97847:  {},
+	100238: {},
+	100224: {},
+	103001: {},
+	102997: {},
+	97304:  {},
+	98049:  {},
+	97935:  {},
+	97845:  {},
+	97533:  {},
+	97531:  {},
+	98075:  {},
+	98050:  {},
+	97305:  {},
+	97936:  {},
+	97532:  {},
+	98076:  {},
+	98020:  {},
+	98019:  {},
+	102316: {},
+	102315: {},
+	102314: {},
+	102313: {},
+	102312: {},
+	97302:  {},
+	98074:  {},
+	97934:  {},
+	97528:  {},
+	97844:  {},
+	97933:  {},
+	97843:  {},
+	98048:  {},
+	97303:  {},
+	98018:  {},
+	98017:  {},
+	103897: {},
+	103825: {},
+	98047:  {},
+	97526:  {},
+	97932:  {},
+	97842:  {},
+	97301:  {},
+	98016:  {},
+	102140: {},
+	100216: {},
+	103135: {},
+	102996: {},
+	97525:  {},
+	98073:  {},
+	97300:  {},
+	98046:  {},
+	100420: {},
+	100410: {},
+	103085: {},
+	103080: {},
+	98072:  {},
+	103903: {},
+	97930:  {},
+	97523:  {},
+	97840:  {},
+	97299:  {},
+	98045:  {},
+	98014:  {},
+	102141: {},
+	100210: {},
+	103136: {},
+	102993: {},
+	97522:  {},
+	97298:  {},
+	100416: {},
+	100406: {},
+	98013:  {},
+	103083: {},
+	103078: {},
+	100513: {},
+	103124: {},
+	100519: {},
+	103127: {},
+	100517: {},
+	103126: {},
+	90118:  {},
+	102989: {},
+	103117: {},
+	103121: {},
+	100194: {},
+	100489: {},
+	100499: {},
+	100515: {},
+	103125: {},
+	100511: {},
+	103123: {},
+	100335: {},
+	100329: {},
+	100206: {},
+	100212: {},
+	100333: {},
+	100337: {},
+	100331: {},
+	103042: {},
+	103045: {},
+	102994: {},
+	102991: {},
+	103046: {},
+	103044: {},
+	103043: {},
+	102992: {},
+	102995: {},
+	100208: {},
+	100214: {},
+	101067: {},
+	100346: {},
+	100356: {},
+	103055: {},
+	103050: {},
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
@@ -882,7 +1058,9 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`DELETED`),
 	regexp.MustCompile(`zOLD`),
 	regexp.MustCompile(`Archaic Spell`),
-	regexp.MustCompile(`Well Repaired`),
+	regexp.MustCompile(`Adventurine`),
+	regexp.MustCompile(`Sardonyx`),
+	regexp.MustCompile(`Zyanite`),
 }
 
 // Allows manual overriding for Gem fields in case WowHead is wrong.
@@ -893,6 +1071,32 @@ var GemAllowList = map[int32]struct{}{
 	//22459: {}, // Void Sphere
 	//36766: {}, // Bright Dragon's Eye
 	//36767: {}, // Solid Dragon's Eye
+}
+var EnchantDenyListSpells = map[int32]struct{}{
+	141168: {},
+	141973: {},
+	142173: {},
+	142175: {},
+	141170: {},
+	141974: {},
+	142177: {},
+	141868: {},
+	141984: {},
+	141177: {},
+	141981: {},
+	141176: {},
+	141978: {},
+	141173: {},
+	141975: {},
+	141862: {},
+	141983: {},
+	141175: {},
+	141977: {},
+}
+var EnchantDenyListItems = map[int32]struct{}{
+	87583: {},
+	89717: {},
+	79061: {},
 }
 var GemDenyList = map[int32]struct{}{
 	// pvp non-unique gems not in game currently.
@@ -912,4 +1116,45 @@ var GemDenyList = map[int32]struct{}{
 	97306: {}, // Unused Revitalizing Primal Diamond
 	97534: {}, // Unused Burning Primal Diamond
 	97937: {}, // Unused Burning Primal Diamond
+	97313: {},
+	98094: {},
+	69922: {},
+	69923: {},
+	97311: {},
+	98088: {},
+	98026: {},
+	98027: {},
+	97938: {},
+	97535: {},
+	77134: {},
+	77140: {},
+	76714: {},
+	97307: {},
+	98090: {},
+	97537: {},
+	97941: {},
+	97312: {},
+	97308: {},
+	98025: {},
+	77130: {},
+	77142: {},
+	77137: {},
+	77154: {},
+	77143: {},
+	77139: {},
+	97310: {},
+	77133: {},
+	97536: {},
+	97547: {},
+	97939: {},
+	98051: {},
+	77144: {},
+	97538: {},
+	97943: {},
+	98028: {},
+	98089: {},
+	77132: {},
+	77141: {},
+	77138: {},
+	77136: {},
 }

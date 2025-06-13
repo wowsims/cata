@@ -127,12 +127,11 @@ export const DefaultOptions = DruidOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId:  76087,
-	foodId:  105717,
+	flaskId: 76087,
+	foodId: 105717,
 	potId: 76089,
 	prepotId: 76089,
 	conjuredId: 5512, // Conjured Healthstone
-	tinkerId: 82174, // Synapse Springs
 });
 export const OtherDefaults = {
 	iterationCount: 50000,

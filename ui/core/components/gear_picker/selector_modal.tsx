@@ -3,7 +3,7 @@ import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { Player } from '../../player';
-import { GemColor, ItemLevelState, ItemQuality, ItemRandomSuffix, ItemSlot } from '../../proto/common';
+import { GemColor, ItemLevelState, ItemQuality, ItemRandomSuffix, ItemSlot, Profession } from '../../proto/common';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { EquippedItem, ReforgeData } from '../../proto_utils/equipped_item';
@@ -22,6 +22,7 @@ export enum SelectorModalTabs {
 	Items = 'Items',
 	RandomSuffixes = 'Random Suffix',
 	Enchants = 'Enchants',
+	Tinkers = 'Tinkers',
 	Reforging = 'Reforging',
 	Upgrades = 'Upgrades',
 	Gem1 = 'Gem1',
@@ -120,6 +121,7 @@ export default class SelectorModal extends BaseModal {
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
+		const eligibleTinkers = this.player.getTinkers(selectedSlot);
 		const hasEligibleReforges = equippedItem?.item ? !!this.player.getAvailableReforgings(equippedItem).length : false;
 		const hasEligibleUpgrades = !this.player.getChallengeModeEnabled() && equippedItem?.item ? equippedItem.hasUpgradeOptions() : false;
 
@@ -154,7 +156,7 @@ export default class SelectorModal extends BaseModal {
 						ilvl: item.scalingOptions?.[ItemLevelState.Base].ilvl || item.ilvl,
 						name: item.name,
 						quality: item.quality,
-						heroic: item.heroic,
+						nameDescription: item.nameDescription,
 						phase: item.phase,
 						ignoreEPFilter: false,
 						onEquip: (eventID, item) => {
@@ -194,7 +196,7 @@ export default class SelectorModal extends BaseModal {
 						quality: enchant.quality,
 						phase: enchant.phase || 1,
 						ignoreEPFilter: true,
-						heroic: false,
+						nameDescription: '',
 						onEquip: (eventID, enchant) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(enchant));
@@ -208,6 +210,37 @@ export default class SelectorModal extends BaseModal {
 					if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(null));
 				},
 			});
+
+		const hasTinkerTab = !this.disabledTabs?.includes(SelectorModalTabs.Tinkers);
+		if (hasTinkerTab && this.player.hasProfession(Profession.Engineering)) {
+			this.addTab<Enchant>({
+				id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Tinkers}`),
+				label: SelectorModalTabs.Tinkers,
+				gearData,
+				itemData: eligibleTinkers.map(tinker => {
+					return {
+						item: tinker,
+						id: tinker.effectId,
+						actionId: tinker.itemId ? ActionId.fromItemId(tinker.itemId) : ActionId.fromSpellId(tinker.spellId),
+						name: tinker.name,
+						quality: tinker.quality,
+						phase: tinker.phase || 1,
+						ignoreEPFilter: true,
+						nameDescription: '',
+						onEquip: (eventID, tinker) => {
+							const equippedItem = gearData.getEquippedItem();
+							if (equippedItem) gearData.equipItem(eventID, equippedItem.withTinker(tinker));
+						},
+					};
+				}),
+				computeEP: (tinker: Enchant) => this.player.computeEnchantEP(tinker),
+				equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.tinker,
+				onRemove: (eventID: number) => {
+					const equippedItem = gearData.getEquippedItem();
+					if (equippedItem) gearData.equipItem(eventID, equippedItem.withTinker(null));
+				},
+			});
+		}
 
 		const hasRandomSuffixTab = !this.disabledTabs?.includes(SelectorModalTabs.RandomSuffixes);
 		if (hasRandomSuffixTab) this.addRandomSuffixTab(equippedItem, gearData);
@@ -319,7 +352,7 @@ export default class SelectorModal extends BaseModal {
 						name: gem.name,
 						quality: gem.quality,
 						phase: gem.phase,
-						heroic: false,
+						nameDescription: '',
 						ignoreEPFilter: true,
 						onEquip: (eventID, gem) => {
 							const equippedItem = gearData.getEquippedItem();
@@ -378,7 +411,7 @@ export default class SelectorModal extends BaseModal {
 			return;
 		}
 
-		const itemProto = equippedItem.item
+		const itemProto = equippedItem.item;
 
 		this.addTab<ItemRandomSuffix>({
 			id: sanitizeId(`${this.options.id}-${SelectorModalTabs.RandomSuffixes}`),
@@ -392,7 +425,7 @@ export default class SelectorModal extends BaseModal {
 					name: randomSuffix.name,
 					quality: itemProto.quality,
 					phase: itemProto.phase,
-					heroic: false,
+					nameDescription: '',
 					ignoreEPFilter: true,
 					onEquip: (eventID, randomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
@@ -420,7 +453,7 @@ export default class SelectorModal extends BaseModal {
 			return;
 		}
 
-		const itemProto = equippedItem.item
+		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({
 			id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Reforging}`),
@@ -443,7 +476,7 @@ export default class SelectorModal extends BaseModal {
 					) as HTMLElement,
 					quality: ItemQuality.ItemQualityCommon,
 					phase: itemProto.phase,
-					heroic: false,
+					nameDescription: '',
 					ignoreEPFilter: true,
 					onEquip: (eventID, reforgeData) => {
 						const equippedItem = gearData.getEquippedItem();
@@ -469,7 +502,7 @@ export default class SelectorModal extends BaseModal {
 			return;
 		}
 
-		const itemProto = equippedItem.item
+		const itemProto = equippedItem.item;
 		const itemUpgrades = equippedItem.getUpgrades();
 		const itemUpgradesAsEntries = Object.entries(itemUpgrades);
 		const numberOfUpgrades = itemUpgradesAsEntries.length - 1;
@@ -494,7 +527,7 @@ export default class SelectorModal extends BaseModal {
 					ilvl: upgradeData.ilvl,
 					quality: ItemQuality.ItemQualityCommon,
 					phase: itemProto.phase,
-					heroic: false,
+					nameDescription: '',
 					ignoreEPFilter: true,
 					onEquip: (eventID, upgradeStep) => {
 						const equippedItem = gearData.getEquippedItem();
