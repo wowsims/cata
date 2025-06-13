@@ -20,7 +20,13 @@ var basicSpec = &proto.Player_ElementalShaman{
 	ElementalShaman: &proto.ElementalShaman{
 		Options: &proto.ElementalShaman_Options{
 			ClassOptions: &proto.ShamanOptions{
-				Shield: proto.ShamanShield_WaterShield,
+				Shield: proto.ShamanShield_LightningShield,
+				FeleAutocast: &proto.FeleAutocastSettings{
+					AutocastFireblast: true,
+					AutocastFirenova:  true,
+					AutocastImmolate:  true,
+					AutocastEmpower:   false,
+				},
 			},
 		},
 	},
