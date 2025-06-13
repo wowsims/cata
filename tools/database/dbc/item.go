@@ -65,6 +65,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         NullFloat(item.GetGemBonus().ToProtoArray()),
+		NameDescription:     item.NameDescription,
 	}
 
 	item.ParseItemFlags(uiItem)
@@ -135,10 +136,6 @@ func (item *Item) ParseItemFlags(uiItem *proto.UIItem) {
 
 	if item.Flags0.Has(UNIQUE_EQUIPPABLE) {
 		uiItem.Unique = true
-	}
-
-	if item.Flags0.Has(HEROIC_TOOLTIP) {
-		uiItem.Heroic = true
 	}
 }
 

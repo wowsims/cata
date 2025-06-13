@@ -154,11 +154,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(92783) // Mark of the Hardened Grunt
 	shared.NewSimpleStatActive(103639) // Pouch of White Ash
 
-	// SpellPower
-	shared.NewSimpleStatActive(97531) // Malevolent Gladiator's Badge of Dominance (Season 12)
-	shared.NewSimpleStatActive(97532) // Malevolent Gladiator's Badge of Dominance (Season 12)
-	shared.NewSimpleStatActive(97936) // Malevolent Gladiator's Badge of Dominance (Season 12)
-
 	// Spirit
 	shared.NewSimpleStatActive(81264) // Vial of Ichorous Blood (H)
 	shared.NewSimpleStatActive(86045) // Jade Courtesan Figurine
@@ -168,7 +163,6 @@ func RegisterAllOnUseCds() {
 	shared.NewSimpleStatActive(93260) // Heartwarmer Medallion (Alliance)
 	shared.NewSimpleStatActive(93343) // Dominator's Mending Badge (Horde)
 	shared.NewSimpleStatActive(93348) // Mending Badge of the Shieldwall (Alliance)
-	shared.NewSimpleStatActive(97305) // Jade Courtesan Figurine
 	shared.NewSimpleStatActive(100963) // Vial of Ichorous Blood (N)
 	shared.NewSimpleStatActive(103688) // Contemplation of Chi-Ji
 	shared.NewSimpleStatActive(103988) // Contemplation of Chi-Ji (Timeless)

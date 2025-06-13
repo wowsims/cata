@@ -420,15 +420,13 @@ func RegisterAllProcs() {
 	
 	// When you deal spell damage, you have a chance to gain Blessing of the Celestials, increasing your Intellect
 	// by 3027 for 15s.
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:     "Relic of Yu'lon",
+		ItemID:   79331,
 		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
 		Outcome:  core.OutcomeLanded,
 		Harmful:  true,
-	}, []shared.ItemVariant{
-		{ItemID: 79331, ItemName: "Relic of Yu'lon"},
-		{ItemID: 98049, ItemName: "Relic of Yu'lon"},
-		{ItemID: 98075, ItemName: "Relic of Yu'lon"},
 	})
 	
 	// When your attacks hit you have a chance to gain 2573 haste for 20s.
@@ -878,8 +876,6 @@ func RegisterAllProcs() {
 		{ItemID: 86388, ItemName: "Essence of Terror (N)"},
 		{ItemID: 86907, ItemName: "Essence of Terror (LFR) (Celestial)"},
 		{ItemID: 87175, ItemName: "Essence of Terror (H)"},
-		{ItemID: 98020, ItemName: "Essence of Terror"},
-		{ItemID: 98076, ItemName: "Essence of Terror"},
 	})
 	
 	// Your healing spells have a chance to grant 1926 spellpower for 20s. ( 15% chance, 115 sec cooldown)

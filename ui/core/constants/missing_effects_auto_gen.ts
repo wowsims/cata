@@ -197,8 +197,6 @@ export const MISSING_ENCHANT_EFFECTS = [
     4444, // Enchant Weapon - Dancing Steel
     4445, // Enchant Weapon - Colossus
     4446, // Enchant Weapon - River's Song
-    5062, // Enchant Weapon - Jade Spirit
-    5098, // Enchant Weapon - Jade Spirit
     5124, // Enchant Weapon - Spirit of Conquest
     5125, // Enchant Weapon - Bloody Dancing Steel
 ]

@@ -89,38 +89,6 @@ func RegisterAllEnchants() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Permanently enchants a melee weapon to sometimes increase your Intellect by 165 when healing or dealing
-	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
-	// also increase by 75. Requires a level 372 or higher item.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:      "Enchant Weapon - Jade Spirit",
-	//	EnchantID: 5062,
-	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   true,
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
-	// Permanently enchants a melee weapon to sometimes increase your Intellect by 165 when healing or dealing
-	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
-	// also increase by 75. Requires a level 372 or higher item.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:      "Enchant Weapon - Jade Spirit",
-	//	EnchantID: 5098,
-	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   true,
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Permanently enchants a melee weapon to sometimes increase your Intellect by 0 when healing or dealing
 	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
 	// also increase by 0.
