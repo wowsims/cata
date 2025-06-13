@@ -1671,10 +1671,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-RegaliaoftheEternalBlossom"
  value: {
-  dps: 74974.99126
-  tps: 520099.82227
-  dtps: 55745.52119
-  hps: 20984.50479
+  dps: 74972.93027
+  tps: 520085.23813
+  dtps: 54828.29682
+  hps: 19751.0203
  }
 }
 dps_results: {
@@ -1682,26 +1682,17 @@ dps_results: {
  value: {
   dps: 76612.04483
   tps: 531350.58234
-  dtps: 53350.85801
+  dtps: 53521.45858
   hps: 22810.15991
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-RegaliaoftheShatteredVale"
  value: {
-  dps: 78904.42514
-  tps: 548230.15345
-  dtps: 52812.93908
-  hps: 25619.28889
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RelentlessEarthsiegeDiamond"
- value: {
-  dps: 85554.63302
-  tps: 593083.69205
-  dtps: 56619.29733
-  hps: 22979.48834
+  dps: 78924.24181
+  tps: 548368.85864
+  dtps: 53010.99526
+  hps: 25610.61145
  }
 }
 dps_results: {
@@ -2943,7 +2934,7 @@ dps_results: {
   dps: 85837.17193
   tps: 594577.10506
   dtps: 56154.47139
-  hps: 23696.63589
+  hps: 23696.63517
  }
 }
 dps_results: {
