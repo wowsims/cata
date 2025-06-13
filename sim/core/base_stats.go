@@ -185,7 +185,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 		stats.Intellect:   151,
 		stats.Spirit:      169,
 		stats.Stamina:     161,
-		stats.AttackPower: float64(CharacterLevel)*2.0 - 30,
+		stats.AttackPower: float64(CharacterLevel) * 2.0,
 	},
 	proto.Class_ClassMage: {
 		stats.Health:    146663,

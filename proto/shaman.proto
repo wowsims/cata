@@ -84,66 +84,46 @@ enum ShamanMinorGlyph {
 
 enum EarthTotem {
 	NoEarthTotem = 0;
-	StrengthOfEarthTotem = 1;
+	EarthElementalTotem = 1;
 	TremorTotem = 2;
-	StoneskinTotem = 3;
-	EarthElementalTotem = 4;
+	EarthbindTotem = 3;
 }
 
 enum AirTotem {
 	NoAirTotem = 0;
-	WindfuryTotem = 2;
-	WrathOfAirTotem = 3;
+	StormlashTotem = 1;
+	GroundingTotem = 2;
+	CapacitorTotem = 3;
+	SpiritLinkTotem = 4;
 }
 
 enum FireTotem {
 	NoFireTotem = 0;
 	MagmaTotem = 1;
 	SearingTotem = 2;
-	FlametongueTotem = 3;
-	FireElementalTotem = 4;
+	FireElementalTotem = 3;
 }
 
 enum WaterTotem {
 	NoWaterTotem = 0;
-	ManaSpringTotem = 1;
+	HealingTideTotem = 1;
 	HealingStreamTotem = 2;
-	TotemOfTranquilMind = 3;
-	ElementalResistanceTotem = 4;
+	ManaTideTotem = 3;
 }
 
-enum CallTotem {
-	NoCall = 0;
-	Elements = 1;
-	Ancestors = 2;
-	Spirits = 3;
-}
-
-message TotemSet {
+message ShamanTotems {
+    enum TotemType {
+	    TypeUnknownTotem = 0;
+	    Earth = 1;
+	    Air = 2;
+	    Fire = 3;
+	    Water = 4;
+    }
+    
 	EarthTotem earth = 1;
 	AirTotem air = 2;
 	FireTotem fire = 3;
 	WaterTotem water = 4;
-}
-
-message ShamanTotems {
-	// Not used here, but used by APL
-	enum TotemType {
-		TypeUnknown = 0;
-		Earth = 1;
-		Air = 2;
-		Fire = 3;
-		Water = 4;
-	}
-
-	TotemSet elements = 5;
-	TotemSet ancestors = 6;
-	TotemSet spirits = 7;
-
-	EarthTotem earth = 8;
-	AirTotem air = 9;
-	FireTotem fire = 10;
-	WaterTotem water = 11;
 }
 
 enum ShamanShield {
@@ -158,6 +138,7 @@ enum ShamanImbue {
     FlametongueWeapon = 2;
     FrostbrandWeapon = 3;
 	EarthlivingWeapon = 4;
+    RockbiterWeapon = 5;
 }
 
 enum ShamanSyncType {
@@ -167,11 +148,18 @@ enum ShamanSyncType {
 	Auto = 3;
 }
 
+message FeleAutocastSettings {
+    bool autocast_fireblast = 1;
+    bool autocast_firenova = 2;
+    bool autocast_immolate = 3;
+    bool autocast_empower = 4;
+}
+
 message ShamanOptions {
 	ShamanShield shield = 1;
-	ShamanTotems totems = 2;
-	CallTotem call = 3;
-	ShamanImbue imbue_mh = 4;
+	ShamanImbue imbue_mh = 2;
+
+    FeleAutocastSettings fele_autocast = 3;
 }
 
 message ElementalShaman {
