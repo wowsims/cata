@@ -58,6 +58,7 @@ func (mw *MistweaverMonk) GetMonk() *monk.Monk {
 
 func (mw *MistweaverMonk) Initialize() {
 	mw.Monk.Initialize()
+
 	mw.RegisterSpecializationEffects()
 }
 
