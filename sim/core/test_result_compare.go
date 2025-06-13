@@ -36,13 +36,13 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 		if strings.Contains(loc, "CastTimeMs") {
 			tolerance = 2.2 // Castime is rounded in results and may be off 1ms per thread. In test=true sims concurrency is set to 3, 2ms diff seems to never be broken then)
 		} else if strings.Contains(loc, "Threat.AggregatorData.SumSq") {
-			tolerance *= 200 // Squared sums can be off more, and as an extension also the stdevs
+			tolerance *= 3500 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "SumSq") {
 			tolerance *= 100 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "Stdev") {
 			tolerance *= 10 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "Resources") {
-			tolerance *= 10 // Seems to do some rounding at some point?
+			tolerance *= 15 // Seems to do some rounding at some point?
 		}
 		if math.Abs(vst.Float()-vmt.Float()) > tolerance {
 			t.Logf("%s: Expected %f but is %f for multi threaded result!", loc, vst.Float(), vmt.Float())

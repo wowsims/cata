@@ -46,7 +46,7 @@ func (demonology *DemonologyWarlock) registerImmolationAura() {
 					return
 				}
 
-				demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25), dot.Spell.ActionID, sim)
+				demonology.DemonicFury.Spend(sim, core.TernaryInt32(demonology.T15_2pc.IsActive(), 18, 25), dot.Spell.ActionID)
 
 				for _, unit := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, unit, baseDamage, dot.OutcomeTick)

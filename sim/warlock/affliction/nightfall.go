@@ -24,7 +24,7 @@ func (affliction *AfflictionWarlock) registerNightfall() {
 				return
 			}
 
-			affliction.SoulShards.Gain(1, buff.ActionID, sim)
+			affliction.SoulShards.Gain(sim, 1, buff.ActionID)
 			buff.Activate(sim)
 		},
 	})

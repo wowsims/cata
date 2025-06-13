@@ -38,7 +38,7 @@ func (demonology *DemonologyWarlock) registerTouchOfChaos() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcDamage(sim, target, demonology.CalcAndRollDamageRange(sim, tocScale, tocVariance), spell.OutcomeMagicHitAndCrit)
-			demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 28, 40), spell.ActionID, sim)
+			demonology.DemonicFury.Spend(sim, core.TernaryInt32(demonology.T15_2pc.IsActive(), 28, 40), spell.ActionID)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 

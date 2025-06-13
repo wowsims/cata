@@ -31,7 +31,7 @@ func (demonology *DemonologyWarlock) registerVoidRay() {
 			return demonology.IsInMeta() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 56, 80))
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 56, 80), spell.ActionID, sim)
+			demonology.DemonicFury.Spend(sim, core.TernaryInt32(demonology.T15_2pc.IsActive(), 56, 80), spell.ActionID)
 			for _, enemy := range sim.Encounter.TargetUnits {
 				baseDamage := demonology.CalcAndRollDamageRange(sim, voidRayScale, voidRayVariance)
 				spell.CalcAndDealDamage(sim, enemy, baseDamage, spell.OutcomeMagicHitAndCrit)

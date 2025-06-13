@@ -45,7 +45,7 @@ func (affliction *AfflictionWarlock) registerDrainSoul() {
 
 				// Every 2nd tick grants 1 soul shard
 				if dot.TickCount()%2 == 1 {
-					affliction.SoulShards.Gain(1, dot.Spell.ActionID, sim)
+					affliction.SoulShards.Gain(sim, 1, dot.Spell.ActionID)
 				}
 
 				if !result.Landed() || !sim.IsExecutePhase20() {

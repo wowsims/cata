@@ -48,7 +48,7 @@ func (demonology *DemonologyWarlock) registerSoulfire() {
 			spell.DamageMultiplier /= (1 + demonology.GetStat(stats.SpellCritPercent)/100)
 
 			if !demonology.IsInMeta() {
-				demonology.DemonicFury.Gain(30, spell.ActionID, sim)
+				demonology.DemonicFury.Gain(sim, 30, spell.ActionID)
 			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

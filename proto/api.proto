@@ -197,7 +197,7 @@ message TargetedActionMetrics {
 	// # of times this action was a critical tick on a target.
 	int32 crit_ticks = 6;
 
-	// # of times this action was a Miss or Resist.
+	// # of times this action was a Miss.
 	int32 misses = 7;
 
 	// # of times this action was a Dodge.

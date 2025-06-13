@@ -77,7 +77,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		},
 		[MageMajorGlyph.GlyphOfRemoveCurse]: {
 			name: "Glyph of Remove Curse",
-			description: "Increases the damage you deal by 5% for 0ms after you successfully remove a curse.",
+			description: "Increases the damage you deal by 5% for 10s after you successfully remove a curse.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg",
 		},
 		[MageMajorGlyph.GlyphOfArcanePower]: {
@@ -164,7 +164,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		},
 		[MageMinorGlyph.GlyphOfIllusion]: {
 			name: "Glyph of Illusion",
-			description: "Teaches you the ability Illusion.\u000D\u000A\u000D\u000A Transforms the Mage to look like someone else for 0ms.",
+			description: "Teaches you the ability Illusion.\u000D\u000A\u000D\u000A Transforms the Mage to look like someone else for 2min.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_mask_01.jpg",
 		},
 		[MageMinorGlyph.GlyphOfMirrorImage]: {

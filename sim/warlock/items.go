@@ -433,7 +433,7 @@ var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 					for _, enemy := range warlock.Env.Encounter.TargetUnits {
 						spell.Dot(enemy).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 							if sim.Proc(0.1, "T16 4p") {
-								warlock.GetSecondaryResourceBar().Gain(1, spell.ActionID, sim)
+								warlock.GetSecondaryResourceBar().Gain(sim, 1, spell.ActionID)
 							}
 						})
 					}
@@ -459,9 +459,9 @@ var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
 				}).AttachStatBuff(stats.CritRating, core.CritRatingPerCritPercent*15)
 
 				warlock.GetSecondaryResourceBar().RegisterOnGain(func(
+					sim *core.Simulation,
 					gain, realGain int32,
 					actionID core.ActionID,
-					sim *core.Simulation,
 				) {
 					if realGain == 0 || buff.Icd.IsReady(sim) {
 						return

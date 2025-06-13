@@ -188,7 +188,7 @@ enum Profession {
 // the Go Stats array to be larger than the size of the Stat enum proto, but the
 // shared indices between the two must exactly match.
 //
-// NextIndex: 27;
+// NextIndex: 22;
 enum Stat {
 	// Primary attributes ("main stat")
 	StatStrength = 0;
@@ -210,22 +210,17 @@ enum Stat {
 	StatAttackPower = 12;
 	StatRangedAttackPower = 13;
 	StatSpellPower = 14;
-	StatSpellPenetration = 15;
-	StatResilienceRating = 16;
-	StatArcaneResistance = 17;
-	StatFireResistance = 18;
-	StatFrostResistance = 19;
-	StatNatureResistance = 20;
-	StatShadowResistance = 21;
-	StatArmor = 22; // "white armor" that fully scales with all multipliers
-	StatBonusArmor = 23; // "green armor" that does not scale
+	StatPvpResilienceRating = 15;
+	StatPvpPowerRating = 16;
+	StatArmor = 17; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 18; // "green armor" that does not scale
 
 	// Composite stats that are built up from the above gear stats + buffs.
 	// These still belong in the Stat enum because they can be present on
 	// some enchants and because the base values need to be stored for NPCs.
-	StatHealth = 24;
-	StatMana = 25;
-	StatMP5 = 26;
+	StatHealth = 19;
+	StatMana = 20;
+	StatMP5 = 21;
 
 	// DO NOT add new stats here without discussing it first; new stats come
 	// with a performance penalty.
@@ -482,13 +477,11 @@ message RaidBuffs {
 
 	// Major Haste
 	bool bloodlust                = 32;
-	bool heroism                  = 33;
-	bool time_warp                = 34;
 
 	// Raid Cooldowns
-	int32 mana_tide_totem_count   = 35;
-	int32 stormlash_totem_count = 36;
-	int32 skull_banner_count = 37;
+	int32 mana_tide_totem_count   = 33;
+	int32 stormlash_totem_count = 34;
+	int32 skull_banner_count = 35;
   }
 
 // Buffs that affect a single party.
@@ -508,7 +501,7 @@ message IndividualBuffs {
 	// Other Buffs
 	int32 unholy_frenzy_count = 12;
 	TristateEffect tricks_of_the_trade = 101; // "Regular" = Glyphed, "Improved" = un-Glyphed
-	int32 divine_guardian_count = 23;
+	int32 devotion_aura_count = 23;
 	int32 pain_suppression_count = 24;
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;

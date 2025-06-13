@@ -1,4 +1,4 @@
-import { Faction, Stat } from '../../proto/common';
+import { Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import {
 	makeBooleanDebuffInput,
@@ -100,8 +100,6 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput(
 export const MajorHasteBuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(2825), fieldName: 'bloodlust' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(32182), fieldName: 'heroism' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(80353), fieldName: 'timeWarp' }),
 	],
 	'Major Haste',
 );
@@ -110,7 +108,7 @@ export const MajorHasteBuff = InputHelpers.makeMultiIconInput(
 export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
 	[
 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrificeCount' }),
-		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
+		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(31821), numStates: 11, fieldName: 'devotionAuraCount' }),
 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressionCount' }),
 		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(97462), numStates: 11, fieldName: 'rallyingCryCount' }),

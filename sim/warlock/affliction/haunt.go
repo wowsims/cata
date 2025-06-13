@@ -60,7 +60,7 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := affliction.CalcScalingSpellDmg(hauntScale)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			affliction.SoulShards.Spend(1, spell.ActionID, sim)
+			affliction.SoulShards.Spend(sim, 1, spell.ActionID)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() {

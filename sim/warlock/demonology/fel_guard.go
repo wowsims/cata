@@ -81,7 +81,7 @@ func registerLegionStrikeSpell(pet *warlock.WarlockPet, demo *DemonologyWarlock)
 				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 
-			demo.DemonicFury.Gain(12, core.ActionID{SpellID: 30213}, sim)
+			demo.DemonicFury.Gain(sim, 12, core.ActionID{SpellID: 30213})
 		},
 	}))
 }

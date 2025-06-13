@@ -40,7 +40,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				demonology.DemonicFury.Gain(2, dot.Spell.ActionID, sim)
+				demonology.DemonicFury.Gain(sim, 2, dot.Spell.ActionID)
 			},
 		},
 

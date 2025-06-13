@@ -278,6 +278,10 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			}
 		}
 
+		if spell.MaxCharges > 0 && spell.charges == 0 {
+			return spell.castFailureHelper(sim, "not enough charges")
+		}
+
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 			spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
 				spell.ActionID, 0.0, "0s", "0s")

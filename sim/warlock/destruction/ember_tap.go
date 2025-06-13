@@ -22,7 +22,7 @@ func (destruction *DestructionWarlock) registerEmberTap() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			destruction.BurningEmbers.Spend(10, spell.ActionID, sim)
+			destruction.BurningEmbers.Spend(sim, 10, spell.ActionID)
 			destruction.GainHealth(sim, destruction.MaxHealth()*(1.15*spell.DamageMultiplier), metric)
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

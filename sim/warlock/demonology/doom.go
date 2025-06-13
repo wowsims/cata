@@ -48,7 +48,7 @@ func (demonology *DemonologyWarlock) registerDoom() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 42, 60), spell.ActionID, sim)
+				demonology.DemonicFury.Spend(sim, core.TernaryInt32(demonology.T15_2pc.IsActive(), 42, 60), spell.ActionID)
 				demonology.ApplyDotWithPandemic(spell.Dot(target), sim)
 			}
 			spell.DealOutcome(sim, result)

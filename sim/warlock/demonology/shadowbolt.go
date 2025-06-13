@@ -43,7 +43,7 @@ func (demonology *DemonologyWarlock) registerShadowBolt() {
 			})
 
 			if result.Landed() {
-				demonology.DemonicFury.Gain(25, core.ActionID{SpellID: 686}, sim)
+				demonology.DemonicFury.Gain(sim, 25, core.ActionID{SpellID: 686})
 			}
 		},
 	})
