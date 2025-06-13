@@ -487,17 +487,16 @@ func processItems(instance *dbc.DBC, iconsMap map[int]string, names map[int]stri
 		}
 
 		parsedItems = append(parsedItems, parsed)
-		db.MergeItem(parsed)
 	}
 
 	for _, parsed := range parsedItems {
 		if len(parsed.Sources) == 0 {
 			if fallbacks, ok := sourceMap[parsed.Name]; ok {
 				parsed.Sources = fallbacks
-				db.MergeItem(parsed)
 			}
 		}
 	}
+	db.MergeItems(parsedItems)
 }
 
 // Filters out entities which shouldn't be included anywhere.
