@@ -19,8 +19,7 @@ func (affliction *AfflictionWarlock) registerMaleficEffect() {
 			CritMultiplier:   affliction.DefaultCritMultiplier(),
 			BonusSpellPower:  0, // used to transmit base damage
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHit)
-				spell.DealPeriodicDamage(sim, result)
+				spell.CalcAndDealDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHit)
 			},
 		})
 	}
