@@ -309,6 +309,7 @@ export class ActionId {
 			case 'Combustion':
 				if (tag) name += ' (DoT)';
 				break;
+			case 'Frost Bomb':
 			case 'Living Bomb':
 				if (tag == 1) name += ' (DoT)';
 				else if (tag == 2) name += ' (Explosion)';
@@ -434,9 +435,9 @@ export class ActionId {
 				if (tag == 6) {
 					name += ' (Overload)';
 				} else if (tag == 7) {
-					name += ' (Echo)'	
+					name += ' (Echo)'
 				} else if (tag == 8) {
-					name += ' (Echo Overload)'	
+					name += ' (Echo Overload)'
 				} else if (tag == 9) {
 					name += ' (Mastery)';
 				} else if (tag == 10) {
@@ -456,7 +457,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (DoT)';
 				} else if (tag == 7) {
-					name += ' (Echo)'	
+					name += ' (Echo)'
 				}
 				break;
 			case 'Fulmination':
