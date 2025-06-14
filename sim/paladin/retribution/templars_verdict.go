@@ -1,19 +1,20 @@
-package paladin
+package retribution
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/paladin"
 )
 
 // A powerful weapon strike that consumes 3 charges of Holy Power to deal 275% weapon damage plus 628.
-func (paladin *Paladin) registerTemplarsVerdict() {
+func (ret *RetributionPaladin) registerTemplarsVerdict() {
 	actionID := core.ActionID{SpellID: 85256}
 
-	paladin.RegisterSpell(core.SpellConfig{
+	ret.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskTemplarsVerdict,
+		ClassSpellMask: paladin.SpellMaskTemplarsVerdict,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -22,26 +23,26 @@ func (paladin *Paladin) registerTemplarsVerdict() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return paladin.HolyPower.CanSpend(3)
+			return ret.HolyPower.CanSpend(3)
 		},
 
 		DamageMultiplier: 2.75,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		CritMultiplier:   ret.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if paladin.T15Ret4pc.IsActive() {
-				paladin.T15Ret4pcTemplarsVerdict.Cast(sim, target)
+			if ret.T15Ret4pc.IsActive() {
+				ret.T15Ret4pcTemplarsVerdict.Cast(sim, target)
 				spell.SpellMetrics[target.UnitIndex].Casts--
 				return
 			}
 
-			baseDamage := paladin.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + paladin.CalcScalingSpellDmg(0.55000001192)
+			baseDamage := ret.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + ret.CalcScalingSpellDmg(0.55000001192)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.HolyPower.Spend(sim, 3, actionID)
+				ret.HolyPower.Spend(sim, 3, actionID)
 			}
 
 			spell.DealDamage(sim, result)

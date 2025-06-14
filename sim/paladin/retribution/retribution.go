@@ -58,6 +58,7 @@ func (ret *RetributionPaladin) Initialize() {
 	ret.registerJudgmentsOfTheBold()
 	ret.registerSealOfJustice()
 	ret.registerSwordOfLight()
+	ret.registerTemplarsVerdict()
 }
 
 func (ret *RetributionPaladin) ApplyTalents() {
