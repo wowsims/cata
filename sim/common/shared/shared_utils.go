@@ -191,12 +191,6 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			}
 		}
 
-		// All Weapon Effects are PPM / RPPM based - so actual proc mask is handeled in ProcManager
-		if config.ProcMask.Matches(core.ProcMaskUnknown) &&
-			(core.GetItemByID(config.ItemID).WeaponType > 0 || core.GetItemByID(config.ItemID).RangedWeaponType > 0) {
-			config.ProcMask = core.ProcMaskMeleeOrRanged
-		}
-
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   triggerActionID,
 			Name:       config.Name,
@@ -224,11 +218,20 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 }
 
 func NewProcStatBonusEffectWithVariants(config ProcStatBonusEffect, variants []ItemVariant) {
+	var maxItemID int32
+
+	for _, variant := range variants {
+		maxItemID = max(maxItemID, variant.ItemID)
+	}
+
 	for _, variant := range variants {
 		config.Name = variant.ItemName
 		config.ItemID = variant.ItemID
+		core.AddEffectsToTest = (config.ItemID == maxItemID)
 		NewProcStatBonusEffect(config)
 	}
+
+	core.AddEffectsToTest = true
 }
 
 func NewProcStatBonusEffect(config ProcStatBonusEffect) {

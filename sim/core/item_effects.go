@@ -3,11 +3,8 @@ package core
 import (
 	"fmt"
 	"slices"
-	"strconv"
-	"time"
 
 	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // Function for applying permanent effects to an Agent.
@@ -102,61 +99,6 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 			registeredItemEnchantEffects[eq.Tinker.EffectID] = true
 		}
 	}
-}
-
-// Helpers for making common types of active item effects.
-
-func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration, sharedCDFunc func(*Character) Cooldown, otherEffects ApplyEffect) {
-	NewItemEffect(itemID, func(agent Agent, _ proto.ItemLevelState) {
-		registerCD := MakeTemporaryStatsOnUseCDRegistration(
-			"ItemActive-"+strconv.Itoa(int(itemID)),
-			bonus,
-			duration,
-			SpellConfig{
-				ActionID: ActionID{ItemID: itemID},
-			},
-			func(character *Character) Cooldown {
-				return Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: cooldown,
-				}
-			},
-			sharedCDFunc,
-		)
-
-		registerCD(agent, proto.ItemLevelState_Base)
-		if otherEffects != nil {
-			otherEffects(agent, proto.ItemLevelState_Base)
-		}
-	})
-}
-
-// No shared CD
-func NewSimpleStatItemEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration) {
-	NewSimpleStatItemActiveEffect(itemID, bonus, duration, cooldown, func(character *Character) Cooldown {
-		return Cooldown{}
-	}, nil)
-}
-
-func NewSimpleStatOffensiveTrinketEffectWithOtherEffects(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration, otherEffects ApplyEffect) {
-	NewSimpleStatItemActiveEffect(itemID, bonus, duration, cooldown, func(character *Character) Cooldown {
-		return Cooldown{
-			Timer:    character.GetOffensiveTrinketCD(),
-			Duration: duration,
-		}
-	}, otherEffects)
-}
-func NewSimpleStatOffensiveTrinketEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration) {
-	NewSimpleStatOffensiveTrinketEffectWithOtherEffects(itemID, bonus, duration, cooldown, nil)
-}
-
-func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration) {
-	NewSimpleStatItemActiveEffect(itemID, bonus, duration, cooldown, func(character *Character) Cooldown {
-		return Cooldown{
-			Timer:    character.GetDefensiveTrinketCD(),
-			Duration: duration,
-		}
-	}, nil)
 }
 
 // Applies 3% Crit Damage effect

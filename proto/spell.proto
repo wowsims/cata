@@ -9,7 +9,6 @@ import "common.proto";
 message ScalingItemEffectProperties {
 	// keys are the numeric values of proto.common.Stat
 	map<int32, double> stats = 1;
-	double rppm_ilvl_modifier = 2;
 }
   message ItemEffect {
 	int32            buff_id         = 1;

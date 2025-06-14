@@ -39,14 +39,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-AlacrityofXuen-103689"
- value: {
-  dps: 116118.77475
-  tps: 107702.79362
-  hps: 6787.14457
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-AlacrityofXuen-103989"
  value: {
   dps: 118284.19055
@@ -95,38 +87,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-BadJuju-94523"
- value: {
-  dps: 119158.7006
-  tps: 110022.8714
-  hps: 7112.68159
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BadJuju-95665"
- value: {
-  dps: 118006.05579
-  tps: 109074.59295
-  hps: 7100.85099
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BadJuju-96037"
- value: {
-  dps: 120811.08794
-  tps: 111683.23199
-  hps: 7229.61981
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BadJuju-96409"
- value: {
-  dps: 120691.71435
-  tps: 111296.34623
-  hps: 7165.93894
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-BadJuju-96781"
  value: {
   dps: 120903.94511
@@ -167,22 +127,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-BottleofInfiniteStars-86132"
- value: {
-  dps: 117882.38297
-  tps: 109058.75708
-  hps: 7044.27121
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BottleofInfiniteStars-86791"
- value: {
-  dps: 117140.13301
-  tps: 108401.95733
-  hps: 7019.19368
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-BraidofTenSongs-84072"
  value: {
   dps: 114006.04165
@@ -196,38 +140,6 @@ dps_results: {
   dps: 111518.81986
   tps: 103303.43032
   hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BreathoftheHydra-94521"
- value: {
-  dps: 114558.80153
-  tps: 106292.71706
-  hps: 6675.93153
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BreathoftheHydra-95711"
- value: {
-  dps: 113695.41276
-  tps: 105419.59156
-  hps: 6655.46185
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BreathoftheHydra-96083"
- value: {
-  dps: 114854.19656
-  tps: 106622.93412
-  hps: 6632.61034
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-BreathoftheHydra-96455"
- value: {
-  dps: 115176.42834
-  tps: 106898.47406
-  hps: 6617.45095
  }
 }
 dps_results: {
@@ -276,38 +188,6 @@ dps_results: {
   dps: 114527.82634
   tps: 106011.28718
   hps: 6897.37138
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Cha-Ye'sEssenceofBrilliance-94531"
- value: {
-  dps: 114100.39527
-  tps: 105760.6229
-  hps: 6826.41179
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Cha-Ye'sEssenceofBrilliance-95772"
- value: {
-  dps: 113608.04309
-  tps: 105285.715
-  hps: 6791.52707
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Cha-Ye'sEssenceofBrilliance-96144"
- value: {
-  dps: 114211.93105
-  tps: 105853.29749
-  hps: 6832.1689
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Cha-Ye'sEssenceofBrilliance-96516"
- value: {
-  dps: 114422.65069
-  tps: 106049.18686
-  hps: 6851.7322
  }
 }
 dps_results: {
@@ -607,22 +487,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-DarkmistVortex-86336"
- value: {
-  dps: 116766.97952
-  tps: 108291.2661
-  hps: 6766.91093
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DarkmistVortex-86894"
- value: {
-  dps: 115469.58538
-  tps: 107101.31568
-  hps: 6832.19895
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-DarkmistVortex-87172"
  value: {
   dps: 116613.45987
@@ -644,14 +508,6 @@ dps_results: {
   dps: 117202.77444
   tps: 108380.37116
   hps: 6993.79894
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DisciplineofXuen-103686"
- value: {
-  dps: 117798.15171
-  tps: 109114.0267
-  hps: 7047.61723
  }
 }
 dps_results: {
@@ -828,22 +684,6 @@ dps_results: {
   dps: 117202.77444
   tps: 108380.37116
   hps: 6993.79894
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EssenceofTerror-86388"
- value: {
-  dps: 112992.10683
-  tps: 104795.15535
-  hps: 6669.67842
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-EssenceofTerror-86907"
- value: {
-  dps: 113255.55057
-  tps: 105039.06097
-  hps: 6678.95774
  }
 }
 dps_results: {
@@ -1191,30 +1031,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofConquest-100200"
- value: {
-  dps: 119670.34941
-  tps: 110509.60935
-  hps: 7284.28735
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofConquest-100586"
- value: {
-  dps: 119290.19787
-  tps: 110138.83413
-  hps: 7248.86469
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofConquest-102840"
- value: {
-  dps: 119315.60915
-  tps: 110184.82482
-  hps: 7306.18885
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofConquest-103150"
  value: {
   dps: 119541.11052
@@ -1223,59 +1039,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofDominance-100491"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofDominance-100712"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofDominance-102963"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofDominance-103309"
  value: {
   dps: 111518.81986
   tps: 103303.43032
   hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofVictory-100505"
- value: {
-  dps: 114668.37424
-  tps: 106052.36711
-  hps: 6978.86605
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofVictory-100645"
- value: {
-  dps: 114681.94909
-  tps: 106072.80298
-  hps: 6985.57039
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GrievousGladiator'sInsigniaofVictory-102896"
- value: {
-  dps: 114673.23255
-  tps: 106060.35173
-  hps: 6993.30658
  }
 }
 dps_results: {
@@ -1380,14 +1148,6 @@ dps_results: {
   dps: 115274.79227
   tps: 106777.48016
   hps: 6851.07293
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-IronProtectorTalisman-81243"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
  }
 }
 dps_results: {
@@ -1511,22 +1271,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-LeiShen'sFinalOrders-86144"
- value: {
-  dps: 115672.71835
-  tps: 107185.20192
-  hps: 6904.9598
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-LeiShen'sFinalOrders-86802"
- value: {
-  dps: 114926.60725
-  tps: 106469.73504
-  hps: 6829.73963
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-LeiShen'sFinalOrders-87072"
  value: {
   dps: 115855.61327
@@ -1556,22 +1300,6 @@ dps_results: {
   dps: 116955.69685
   tps: 108320.96242
   hps: 7020.03815
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-LightoftheCosmos-86133"
- value: {
-  dps: 113803.30954
-  tps: 105571.58274
-  hps: 6711.68917
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-LightoftheCosmos-86792"
- value: {
-  dps: 113314.84594
-  tps: 105072.88739
-  hps: 6660.42236
  }
 }
 dps_results: {
@@ -1695,14 +1423,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-MalevolentGladiator'sInsigniaofConquest-84935"
- value: {
-  dps: 116331.70795
-  tps: 107466.22171
-  hps: 7068.16872
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-MalevolentGladiator'sInsigniaofConquest-91457"
  value: {
   dps: 116792.63119
@@ -1711,27 +1431,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-MalevolentGladiator'sInsigniaofDominance-84941"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-MalevolentGladiator'sInsigniaofDominance-91754"
  value: {
   dps: 111518.81986
   tps: 103303.43032
   hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-MalevolentGladiator'sInsigniaofVictory-84937"
- value: {
-  dps: 114037.49211
-  tps: 105534.02533
-  hps: 6891.71977
  }
 }
 dps_results: {
@@ -1999,27 +1703,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-PridefulGladiator'sInsigniaofConquest-102643"
- value: {
-  dps: 121688.01851
-  tps: 112295.94132
-  hps: 7538.48447
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-PridefulGladiator'sInsigniaofConquest-103347"
  value: {
   dps: 121758.30793
   tps: 112323.12743
   hps: 7553.13671
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-PridefulGladiator'sInsigniaofDominance-102766"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
  }
 }
 dps_results: {
@@ -2031,35 +1719,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-PridefulGladiator'sInsigniaofVictory-102699"
- value: {
-  dps: 115570.70528
-  tps: 106836.10012
-  hps: 7084.76947
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-PridefulGladiator'sInsigniaofVictory-103516"
  value: {
   dps: 115557.3349
   tps: 106827.4375
   hps: 7056.15679
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Qin-xi'sPolarizingSeal-86147"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Qin-xi'sPolarizingSeal-86805"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
  }
 }
 dps_results: {
@@ -2247,22 +1911,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-SpiritsoftheSun-86327"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-SpiritsoftheSun-86885"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-SpiritsoftheSun-87163"
  value: {
   dps: 111518.81986
@@ -2375,22 +2023,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-StuffofNightmares-86323"
- value: {
-  dps: 112830.03366
-  tps: 104608.523
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-StuffofNightmares-86881"
- value: {
-  dps: 112680.92862
-  tps: 104460.11402
-  hps: 6683.67232
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-StuffofNightmares-87160"
  value: {
   dps: 112998.48821
@@ -2444,22 +2076,6 @@ dps_results: {
   dps: 113490.55432
   tps: 105161.72574
   hps: 6742.65459
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TerrorintheMists-86332"
- value: {
-  dps: 118438.47933
-  tps: 109511.7523
-  hps: 7181.20718
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TerrorintheMists-86890"
- value: {
-  dps: 117866.67865
-  tps: 109004.42214
-  hps: 7147.41219
  }
 }
 dps_results: {
@@ -2695,55 +2311,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofConquest-91104"
- value: {
-  dps: 117394.84597
-  tps: 108446.0792
-  hps: 7166.49247
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofConquest-94356"
- value: {
-  dps: 117908.76219
-  tps: 108993.32355
-  hps: 7166.05365
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofConquest-99777"
- value: {
-  dps: 117740.09685
-  tps: 108835.58201
-  hps: 7196.27642
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofDominance-100152"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofDominance-91401"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofDominance-94482"
- value: {
-  dps: 111518.81986
-  tps: 103303.43032
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofDominance-99938"
  value: {
   dps: 111518.81986
   tps: 103303.43032
@@ -2759,67 +2327,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofVictory-91415"
- value: {
-  dps: 114087.32939
-  tps: 105562.12775
-  hps: 6907.17953
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofVictory-94415"
- value: {
-  dps: 114274.2256
-  tps: 105738.178
-  hps: 6922.26288
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TyrannicalGladiator'sInsigniaofVictory-99948"
- value: {
-  dps: 114259.24116
-  tps: 105730.2032
-  hps: 6928.48163
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-TyrannicalPrimalDiamond"
  value: {
   dps: 116270.13879
   tps: 107489.92319
   hps: 6966.57219
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-UnerringVisionofLeiShen-94524"
- value: {
-  dps: 113391.21333
-  tps: 105106.83273
-  hps: 7385.15575
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-UnerringVisionofLeiShen-95814"
- value: {
-  dps: 113093.97492
-  tps: 104772.23452
-  hps: 7226.15822
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-UnerringVisionofLeiShen-96186"
- value: {
-  dps: 113266.75876
-  tps: 104993.17324
-  hps: 7269.2171
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-UnerringVisionofLeiShen-96558"
- value: {
-  dps: 113680.71714
-  tps: 105383.23823
-  hps: 7394.44883
  }
 }
 dps_results: {
@@ -2835,22 +2347,6 @@ dps_results: {
  value: {
   dps: 113236.68195
   tps: 105000.8993
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-VialofDragon'sBlood-86131"
- value: {
-  dps: 112746.94459
-  tps: 104525.82181
-  hps: 6683.67232
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-VialofDragon'sBlood-86790"
- value: {
-  dps: 112606.9452
-  tps: 104386.47598
   hps: 6683.67232
  }
 }
@@ -2916,14 +2412,6 @@ dps_results: {
   dps: 117748.10472
   tps: 108932.03501
   hps: 7187.3152
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Yu'lon'sBite-103687"
- value: {
-  dps: 113142.17397
-  tps: 104805.99661
-  hps: 6785.84639
  }
 }
 dps_results: {
