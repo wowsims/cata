@@ -41,15 +41,21 @@ var petBaseStats = map[proto.WarlockOptions_Summon]*stats.Stats{
 
 func (warlock *Warlock) SimplePetStatInheritanceWithScale(apScale float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
+
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combinedHitExp := (hitRating + expertiseRating) * 0.5
+
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 1.0 / 3.0,
-			stats.SpellPower:  ownerStats[stats.SpellPower], // All pets inherit spell 1:1
-			stats.CritRating:  ownerStats[stats.CritRating],
-			stats.HasteRating: ownerStats[stats.HasteRating],
+			stats.Stamina:             ownerStats[stats.Stamina] * 1.0 / 3.0,
+			stats.SpellPower:          ownerStats[stats.SpellPower], // All pets inherit spell 1:1
+			stats.HasteRating:         ownerStats[stats.HasteRating],
+			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+			stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 
 			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
-			stats.HitRating:       ownerStats[stats.HitRating],
-			stats.ExpertiseRating: ownerStats[stats.HitRating] / core.SpellHitRatingPerHitPercent * core.ExpertisePerQuarterPercentReduction * 4, // 1% hit = 1% expertise
+			stats.HitRating:       combinedHitExp,
+			stats.ExpertiseRating: combinedHitExp,
 
 			stats.AttackPower: ownerStats[stats.SpellPower] * apScale,
 		}
