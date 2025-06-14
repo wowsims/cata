@@ -584,6 +584,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 145696.02105
+  tps: 137274.74773
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 147468.77981
+  tps: 139045.28767
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 144212.05265

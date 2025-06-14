@@ -679,6 +679,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 119010.1522
+  tps: 110142.35878
+  hps: 7090.02528
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 120118.35897
+  tps: 111200.03853
+  hps: 7108.23134
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 117202.77444

@@ -733,6 +733,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 89325.35523
+  tps: 618247.28015
+  dtps: 54571.70568
+  hps: 24228.77394
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 89560.79405
+  tps: 620076.853
+  dtps: 54295.37849
+  hps: 25033.5338
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 90099.71428

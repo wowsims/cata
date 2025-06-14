@@ -13,37 +13,6 @@ func RegisterAllEnchants() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Permanently enchants a melee weapon to sometimes increase your critical strike, haste, or mastery by 1500
-	// for 12s when dealing damage or healing with spells and melee attacks.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:      "Enchant Weapon - Windsong",
-	//	EnchantID: 4441,
-	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:   core.OutcomeCrit,
-	//	Harmful:   true,
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
-	// Permanently enchants a melee weapon to sometimes increase your Intellect by 0 when healing or dealing
-	// damage with spells. If less than 25% of your mana remains when the effect is triggered, your Spirit will
-	// also increase by 0.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:      "Enchant Weapon - Jade Spirit",
-	//	EnchantID: 4442,
-	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   true,
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
 	// damage. Your highest stat is always chosen.
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{

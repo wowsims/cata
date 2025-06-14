@@ -417,7 +417,7 @@ export class ActionId {
 				break;
 			case 'Wind Lash':
 			case 'Stormstrike':
-			case 'Stormblast' :
+			case 'Stormblast':
 				if (tag == 0) {
 					name += ' (Cast)';
 				} else if (tag == 1) {
@@ -434,9 +434,9 @@ export class ActionId {
 				if (tag == 6) {
 					name += ' (Overload)';
 				} else if (tag == 7) {
-					name += ' (Echo)'	
+					name += ' (Echo)';
 				} else if (tag == 8) {
-					name += ' (Echo Overload)'	
+					name += ' (Echo Overload)';
 				} else if (tag == 9) {
 					name += ' (Mastery)';
 				} else if (tag == 10) {
@@ -451,12 +451,12 @@ export class ActionId {
 				break;
 			case 'Flame Shock':
 			case 'Earth Shock':
-			case 'Frost Shock' :
+			case 'Frost Shock':
 			case 'Fire Nova':
 				if (tag == 1) {
 					name += ' (DoT)';
 				} else if (tag == 7) {
-					name += ' (Echo)'	
+					name += ' (Echo)';
 				}
 				break;
 			case 'Fulmination':
@@ -738,6 +738,7 @@ export class ActionId {
 					name += ' (Heal)';
 				}
 				break;
+
 			case 'Item - Paladin T11 Retribution 4P Bonus':
 				name = 'Reinforced Sapphirium Battleplate - T11 4pc';
 				break;
@@ -794,6 +795,13 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
+				}
+				break;
+			case 'Jade Spirit':
+				if (tag == 1) {
+					name += ' (Intellect)';
+				} else if (tag == 2) {
+					name += ' (Spirit)';
 				}
 				break;
 

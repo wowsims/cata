@@ -605,6 +605,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 54934.52615
+  tps: 32759.62519
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 55681.98099
+  tps: 33359.68781
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 55016.63332

@@ -769,6 +769,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 119597.03216
+  tps: 837179.22515
+  dtps: 43640.40343
+  hps: 5770.65552
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 116328.81169
