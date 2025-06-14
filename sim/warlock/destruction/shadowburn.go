@@ -37,7 +37,7 @@ func (destruction *DestructionWarlock) registerShadowBurnSpell() {
 			baseDamage := destruction.CalcAndRollDamageRange(sim, shadowBurnScale, shadowBurnVariance)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				destruction.BurningEmbers.Spend(core.TernaryInt32(destruction.T15_2pc.IsActive(), 8, 10), spell.ActionID, sim)
+				destruction.BurningEmbers.Spend(sim, core.TernaryInt32(destruction.T15_2pc.IsActive(), 8, 10), spell.ActionID)
 			}
 
 			sim.AddPendingAction(&core.PendingAction{

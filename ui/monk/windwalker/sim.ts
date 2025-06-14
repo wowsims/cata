@@ -21,18 +21,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
-		Stat.StatStrength,
 		Stat.StatAgility,
+		Stat.StatAttackPower,
 		Stat.StatHitRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
 		Stat.StatExpertiseRating,
 		Stat.StatMasteryRating,
-		Stat.StatAttackPower,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatExpertiseRating, Stat.StatMasteryRating],
@@ -54,17 +53,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
 			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			return expCap;
-		})(),
-		softCapBreakpoints: (() => {
-			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [7.5, 27],
-				capType: StatCapType.TypeSoftCap,
-				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0],
-			});
-
-			return [meleeHitSoftCapConfig];
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			return expCap.add(hitCap);
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -170,23 +160,6 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				updateSoftCaps: (softCaps: StatCap[]) => {
-					// Dynamic adjustments to the static Hit soft cap EP
-					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
-					if (meleeSoftCap) {
-						const activeEPWeight = getActiveEPWeight(player, this.sim);
-						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						const mhWep = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
-						const ohWep = player.getEquippedItem(ItemSlot.ItemSlotOffHand);
-						if (mhWep?.item.handType === HandType.HandTypeTwoHand || !ohWep) {
-							meleeSoftCap.breakpoints = [meleeSoftCap.breakpoints[0]];
-							meleeSoftCap.postCapEPs = [0];
-						} else if (ohWep) {
-							meleeSoftCap.postCapEPs = [initialEP / 5.5, 0];
-						}
-					}
-					return softCaps;
-				},
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {
 					return getActiveEPWeight(player, this.sim);
 				},

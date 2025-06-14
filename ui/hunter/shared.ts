@@ -17,11 +17,11 @@ export const sharedHunterDisplayStatsModifiers = (
 	if (rangedWeapon?.enchant?.effectId == 4176) {
 		stats = stats.addStat(Stat.StatHitRating, 88);
 	}
-	if (player.getRace() == Race.RaceDwarf && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeGun) {
-		stats = stats.withPseudoStat(PseudoStat.PseudoStatPhysicalCritPercent, 1);
+	if (player.getRace() == Race.RaceDwarf) {
+		stats = stats.withStat(Stat.StatExpertiseRating, Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * 4);
 	}
-	if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
-		stats = stats.withPseudoStat(PseudoStat.PseudoStatPhysicalCritPercent, 1);
+	if (player.getRace() == Race.RaceTroll) {
+		stats = stats.withStat(Stat.StatExpertiseRating, Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * 4);
 	}
 	return {
 		talents: stats,

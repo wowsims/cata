@@ -32,6 +32,7 @@ type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcTrigger struct {
 	Name              string
 	ActionID          ActionID
+	MetricsActionID   ActionID
 	Duration          time.Duration
 	Callback          AuraCallback
 	ProcMask          ProcMask
@@ -41,7 +42,6 @@ type ProcTrigger struct {
 	Outcome           HitOutcome
 	Harmful           bool
 	ProcChance        float64
-	PPM               float64
 	DPM               *DynamicProcManager
 	ICD               time.Duration
 	Handler           ProcHandler
@@ -62,12 +62,7 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 	var dpm *DynamicProcManager
 	if config.DPM != nil {
 		dpm = config.DPM
-	} else if config.PPM > 0 {
-		dpm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
-	}
-
-	if dpm != nil {
-		procAura.Dpm = dpm
+		procAura.Dpm = config.DPM
 	}
 
 	handler := config.Handler
@@ -191,6 +186,7 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 		Label:           config.Name,
 		ActionIDForProc: config.ActionID,
 		Duration:        config.Duration,
+		ActionID:        config.MetricsActionID,
 	}
 	if config.Duration == 0 {
 		aura.Duration = NeverExpires
@@ -238,7 +234,7 @@ func (aura *StatBuffAura) CanProc(sim *Simulation) bool {
 func (aura *StatBuffAura) InferCDType() CooldownType {
 	cdType := CooldownTypeUnknown
 
-	if aura.BuffsMatchingStat([]stats.Stat{stats.Armor, stats.BlockPercent, stats.DodgeRating, stats.ParryRating, stats.Health, stats.ArcaneResistance, stats.FireResistance, stats.FrostResistance, stats.NatureResistance, stats.ShadowResistance}) {
+	if aura.BuffsMatchingStat([]stats.Stat{stats.Armor, stats.BlockPercent, stats.DodgeRating, stats.ParryRating, stats.Health}) {
 		cdType |= CooldownTypeSurvival
 	} else {
 		cdType |= CooldownTypeDPS
@@ -495,6 +491,24 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 	return parentAura
 }
 
+// Attaches a Damage Done By Caster buff to a parent Aura
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*AttackTable, handler DynamicDamageDoneByCaster) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, _ *Simulation) {
+		DisableDamageDoneByCaster(index, (*attackTables)[parentAura.Unit.UnitIndex])
+	})
+
+	if parentAura.IsActive() {
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
+	}
+
+	return parentAura
+}
+
 type ShieldStrengthCalculator func(unit *Unit) float64
 
 type DamageAbsorptionAura struct {
@@ -511,19 +525,19 @@ func (aura *DamageAbsorptionAura) Activate(sim *Simulation) {
 	aura.Aura.SetStacks(sim, stacks)
 }
 
-func (character *Character) NewDamageAbsorptionAura(auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
-	return CreateDamageAbsorptionAura(character, auraLabel, actionID, duration, calculator, nil)
+func (unit *Unit) NewDamageAbsorptionAura(auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
+	return CreateDamageAbsorptionAura(unit, auraLabel, actionID, duration, calculator, nil)
 }
 
-func (character *Character) NewDamageAbsorptionAuraForSchool(auraLabel string, actionID ActionID, duration time.Duration, school SpellSchool, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
-	return CreateDamageAbsorptionAura(character, auraLabel, actionID, duration, calculator, func(spell *Spell) bool {
+func (unit *Unit) NewDamageAbsorptionAuraForSchool(auraLabel string, actionID ActionID, duration time.Duration, school SpellSchool, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
+	return CreateDamageAbsorptionAura(unit, auraLabel, actionID, duration, calculator, func(spell *Spell) bool {
 		return spell.SpellSchool.Matches(school)
 	})
 }
 
-func CreateDamageAbsorptionAura(character *Character, auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator, extraSpellCheck func(spell *Spell) bool) *DamageAbsorptionAura {
+func CreateDamageAbsorptionAura(unit *Unit, auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator, extraSpellCheck func(spell *Spell) bool) *DamageAbsorptionAura {
 	aura := &DamageAbsorptionAura{
-		Aura: character.RegisterAura(Aura{
+		Aura: unit.RegisterAura(Aura{
 			Label:    auraLabel,
 			ActionID: actionID,
 			Duration: duration,
@@ -535,14 +549,14 @@ func CreateDamageAbsorptionAura(character *Character, auraLabel string, actionID
 		aura.ShieldStrength = 0
 	})
 
-	character.AddDynamicDamageTakenModifier(func(sim *Simulation, spell *Spell, result *SpellResult) {
+	unit.AddDynamicDamageTakenModifier(func(sim *Simulation, spell *Spell, result *SpellResult, isPeriodic bool) {
 		if aura.Aura.IsActive() && result.Damage > 0 && (extraSpellCheck == nil || extraSpellCheck(spell)) {
 			absorbedDamage := min(aura.ShieldStrength, result.Damage)
 			result.Damage -= absorbedDamage
 			aura.ShieldStrength -= absorbedDamage
 
 			if sim.Log != nil {
-				character.Log(sim, "%s absorbed %.1f damage, new shield strength: %.1f", auraLabel, absorbedDamage, aura.ShieldStrength)
+				unit.Log(sim, "%s absorbed %.1f damage, new shield strength: %.1f", auraLabel, absorbedDamage, aura.ShieldStrength)
 			}
 
 			aura.Aura.SetStacks(sim, int32(aura.ShieldStrength))
@@ -550,6 +564,45 @@ func CreateDamageAbsorptionAura(character *Character, auraLabel string, actionID
 	})
 
 	return aura
+}
+
+type DamageAbsorptionAuraArray []*DamageAbsorptionAura
+
+func (auras DamageAbsorptionAuraArray) Get(target *Unit) *DamageAbsorptionAura {
+	if auras == nil {
+		return nil
+	}
+	return auras[target.UnitIndex]
+}
+
+func (auras DamageAbsorptionAuraArray) IsEmpty() bool {
+	for _, aura := range auras {
+		if aura != nil {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (auras DamageAbsorptionAuraArray) FindLabel() string {
+	for _, aura := range auras {
+		if aura != nil {
+			return aura.Label
+		}
+	}
+
+	panic("No valid damage absorption auras in array!")
+}
+
+func (caster *Unit) NewAllyDamageAbsorptionAuraArray(makeAura func(*Unit) *DamageAbsorptionAura) DamageAbsorptionAuraArray {
+	auras := make([]*DamageAbsorptionAura, len(caster.Env.AllUnits))
+	for _, target := range caster.Env.AllUnits {
+		if target.Type != EnemyUnit {
+			auras[target.UnitIndex] = makeAura(target)
+		}
+	}
+	return auras
 }
 
 func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, startTime time.Duration) {

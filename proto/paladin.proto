@@ -75,7 +75,6 @@ enum PaladinMinorGlyph {
     GlyphOfTheFallingAvenger = 80584;
     GlyphOfTheRighteousRetreat = 80585;
     GlyphOfBladedJudgment = 80586;
-    GlyphOfRighteousRetreat = 85716;
     GlyphOfTheExorcist = 104107;
     GlyphOfPillarOfLight = 104108;
 }
@@ -88,12 +87,6 @@ enum Blessings {
 	BlessingOfMight = 2;
 }
 
-enum PaladinAura {
-	Devotion = 0;
-	Retribution = 1;
-	Resistance = 2;
-}
-
 enum PaladinSeal {
 	Truth = 0;
 	Justice = 1;
@@ -103,8 +96,6 @@ enum PaladinSeal {
 
 message PaladinOptions {
 	PaladinSeal seal = 2;
-	PaladinAura aura = 3;
-	bool snapshot_guardian = 4;
 }
 
 message RetributionPaladin {

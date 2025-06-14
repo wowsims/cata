@@ -6,16 +6,6 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (hunter *Hunter) applyBlinkStrike() {
-	if !hunter.Talents.BlinkStrikes {
-		return
-	}
-	hunter.Pet.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  HunterPetFocusDump,
-		FloatValue: 0.5,
-	})
-}
 func (hunter *Hunter) applyThrillOfTheHunt() {
 	if !hunter.Talents.ThrillOfTheHunt {
 		return
@@ -54,7 +44,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Either currcast or base cast idk
+			// Needs to cost Focus to proc
 			if spell.CurCast.Cost <= 0 {
 				return
 			}

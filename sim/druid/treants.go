@@ -1,114 +1,89 @@
 package druid
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
-type Treant struct {
+// Extension of PetAgent interface, for treants.
+type TreantAgent interface {
+	core.PetAgent
+
+	Enable(sim *core.Simulation)
+}
+
+// Embed this in spec-specific treant structs.
+type DefaultTreantImpl struct {
 	core.Pet
-
-	druidOwner *Druid
 }
 
-type Treants struct {
-	Treant1 *Treant
-	Treant2 *Treant
-	Treant3 *Treant
+// Overwrite these for spec variants that register spells.
+func (treant *DefaultTreantImpl) Initialize() {}
+func (treant *DefaultTreantImpl) ExecuteCustomRotation(_ *core.Simulation) {}
+
+func (treant *DefaultTreantImpl) Reset(sim *core.Simulation) {
+	treant.Disable(sim)
 }
 
-func (treants *Treants) EnableWithTimeout(sim *core.Simulation) {
-	treants.Treant1.EnableWithTimeout(sim, treants.Treant1, time.Second*30)
-	treants.Treant2.EnableWithTimeout(sim, treants.Treant2, time.Second*30)
-	treants.Treant3.EnableWithTimeout(sim, treants.Treant3, time.Second*30)
-}
-
-func (treants *Treants) CancelGCDTimer(sim *core.Simulation) {
-	treants.Treant1.CancelGCDTimer(sim)
-	treants.Treant2.CancelGCDTimer(sim)
-	treants.Treant3.CancelGCDTimer(sim)
-}
-
-var treantBaseStats = stats.Stats{
-	stats.Stamina:   422,
-	stats.Spirit:    116,
-	stats.Intellect: 120,
-	stats.Armor:     11092,
-
-	stats.Agility:     1218,
-	stats.Strength:    476,
-	stats.AttackPower: -20,
-
-	stats.PhysicalCritPercent: 1.1515 + 1.8,
-}
-
-func (druid *Druid) NewTreant() *Treant {
-	treant := &Treant{
-		Pet: core.NewPet(core.PetConfig{
-			Name:            "Treant",
-			Owner:           &druid.Character,
-			BaseStats:       treantBaseStats,
-			StatInheritance: druid.makeStatInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      false,
-		}),
-		druidOwner: druid,
-	}
-
-	treant.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	treant.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
-
-	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
-		MainHand: core.Weapon{
-			BaseDamageMin:  252,
-			BaseDamageMax:  357,
-			SwingSpeed:     1.9,
-			CritMultiplier: druid.DefaultCritMultiplier(),
-		},
-		AutoSwingMelee: true,
-	})
-
-	druid.AddPet(treant)
-	return treant
-}
-
-func (treant *Treant) GetPet() *core.Pet {
+func (treant *DefaultTreantImpl) GetPet() *core.Pet {
 	return &treant.Pet
 }
 
-func (treant *Treant) Reset(sim *core.Simulation) {
-	treant.Disable(sim)
-	if sim.Log != nil {
-		treant.Log(sim, "Base Stats: %s", treantBaseStats)
-		inheritedStats := treant.druidOwner.makeStatInheritance()(treant.druidOwner.GetStats())
-		treant.Log(sim, "Inherited Stats: %s", inheritedStats)
-		treant.Log(sim, "Total Stats: %s", treant.GetStats())
+func (treant *DefaultTreantImpl) Enable(sim *core.Simulation) {
+	treant.EnableWithTimeout(sim, treant, time.Second * 15)
+}
+
+type TreantConfig struct {
+	StatInheritance         core.PetStatInheritance
+	EnableAutos             bool
+	WeaponDamageCoefficient float64
+}
+
+func (druid *Druid) NewDefaultTreant(config TreantConfig) *DefaultTreantImpl {
+	treant := &DefaultTreantImpl{
+		Pet: core.NewPet(core.PetConfig{
+			Name:                            "Treant",
+			Owner:                           &druid.Character,
+			StatInheritance:                 config.StatInheritance,
+			HasDynamicMeleeSpeedInheritance: true,
+			HasDynamicCastSpeedInheritance:  true,
+		}),
 	}
-}
 
-const PetExpertiseScale = 3.25
-
-func (druid *Druid) makeStatInheritance() core.PetStatInheritance {
-	return func(ownerStats stats.Stats) stats.Stats {
-		treantHitChance := ownerStats[stats.SpellHitPercent] * 8 / 17
-
-		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3189,
-			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.SpellPower] * 0.65,
-
-			stats.HitRating:       treantHitChance * core.PhysicalHitRatingPerHitPercent,
-			stats.ExpertiseRating: math.Floor(treantHitChance*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
-		}
+	if !config.EnableAutos {
+		return treant
 	}
+
+	baseWeaponDamage := config.WeaponDamageCoefficient * druid.ClassSpellScaling
+
+	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			BaseDamageMin:        baseWeaponDamage,
+			BaseDamageMax:        baseWeaponDamage,
+			SwingSpeed:           2,
+			NormalizedSwingSpeed: 2,
+			CritMultiplier:       druid.DefaultCritMultiplier(),
+			SpellSchool:          core.SpellSchoolPhysical,
+		},
+
+		AutoSwingMelee: true,
+	})
+
+	treant.OnPetEnable = func(sim *core.Simulation) {
+		// Treant spawns in front of boss but moves behind after first swing.
+		treant.PseudoStats.InFrontOfTarget = true
+
+		sim.AddPendingAction(&core.PendingAction{
+			NextActionAt: sim.CurrentTime + time.Millisecond * 500,
+
+			OnAction: func(_ *core.Simulation) {
+				treant.PseudoStats.InFrontOfTarget = false
+			},
+		})
+	}
+
+	return treant
 }
 
-func (treant *Treant) Initialize() {
-}
-
-func (treant *Treant) ExecuteCustomRotation(_ *core.Simulation) {
-}
+type TreantAgents [3]TreantAgent

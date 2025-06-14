@@ -194,7 +194,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		},
 		[DruidMinorGlyph.GlyphOfCharmWoodlandCreature]: {
 			name: "Glyph of Charm Woodland Creature",
-			description: "Teaches you the ability Charm Woodland Creature.\u000D\u000A\u000D\u000A Allows the Druid to befriend an ambient creature, which will follow the Druid for 0ms.",
+			description: "Teaches you the ability Charm Woodland Creature.\u000D\u000A\u000D\u000A Allows the Druid to befriend an ambient creature, which will follow the Druid for 1hr.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_rabbit.jpg",
 		},
 		[DruidMinorGlyph.GlyphOfStars]: {

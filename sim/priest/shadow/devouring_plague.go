@@ -41,7 +41,7 @@ func (shadow *ShadowPriest) registerDevouringPlagueSpell() {
 			result := spell.CalcDamage(sim, target, shadow.CalcScalingSpellDmg(dpImpactScale), spell.OutcomeMagicHitAndCrit)
 			spell.DamageMultiplier /= float64(shadow.orbsConsumed)
 			if result.Landed() {
-				shadow.ShadowOrbs.Spend(shadow.orbsConsumed, actionID, sim)
+				shadow.ShadowOrbs.Spend(sim, shadow.orbsConsumed, actionID)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
 

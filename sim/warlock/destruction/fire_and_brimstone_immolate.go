@@ -41,7 +41,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneImmolate() {
 			spell.DamageMultiplier *= reduction
 			spell.RelatedDotSpell.DamageMultiplier *= reduction
 
-			destruction.BurningEmbers.Spend(10, spell.ActionID, sim)
+			destruction.BurningEmbers.Spend(sim, 10, spell.ActionID)
 			for _, enemy := range sim.Environment.Encounter.TargetUnits {
 				result := spell.CalcDamage(sim, enemy, destruction.CalcScalingSpellDmg(immolateScale), spell.OutcomeMagicHitAndCrit)
 				if result.Landed() {
@@ -49,7 +49,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneImmolate() {
 				}
 
 				if result.DidCrit() {
-					destruction.BurningEmbers.Gain(1, spell.ActionID, sim)
+					destruction.BurningEmbers.Gain(sim, 1, spell.ActionID)
 				}
 
 				spell.DealDamage(sim, result)
@@ -91,7 +91,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneImmolate() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if result.DidCrit() {
-					destruction.BurningEmbers.Gain(1, dot.Spell.ActionID, sim)
+					destruction.BurningEmbers.Gain(sim, 1, dot.Spell.ActionID)
 				}
 			},
 		},

@@ -43,7 +43,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneIncinerate() {
 
 			reduction := destruction.getFABReduction()
 			spell.DamageMultiplier *= reduction
-			destruction.BurningEmbers.Spend(10, spell.ActionID, sim)
+			destruction.BurningEmbers.Spend(sim, 10, spell.ActionID)
 			for _, enemy := range sim.Encounter.TargetUnits {
 				baseDamage := destruction.CalcAndRollDamageRange(sim, bafIncinerateScale, incinerateVariance)
 				result := spell.CalcDamage(sim, enemy, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -61,7 +61,7 @@ func (destruction *DestructionWarlock) registerFireAndBrimstoneIncinerate() {
 					emberGain += 1
 				}
 
-				destruction.BurningEmbers.Gain(emberGain, spell.ActionID, sim)
+				destruction.BurningEmbers.Gain(sim, emberGain, spell.ActionID)
 
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)

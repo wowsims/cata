@@ -41,6 +41,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatCritRating]: 1.72,
 			[Stat.StatHasteRating]: 1.09,
 			[Stat.StatMasteryRating]: 0.98,
+			[Stat.StatExpertiseRating]: 2.56,
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 3.64,
@@ -59,6 +60,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatCritRating]: 1.27,
 			[Stat.StatHasteRating]: 1.09,
 			[Stat.StatMasteryRating]: 1.04,
+			[Stat.StatExpertiseRating]: 2.56,
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 4.16,
@@ -74,7 +76,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 3.47,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.56,
-			[Stat.StatExpertiseRating]: 22.222,
+			[Stat.StatExpertiseRating]: 2.222,
 			[Stat.StatCritRating]: 1.45,
 			[Stat.StatHasteRating]: 1.09,
 			[Stat.StatMasteryRating]: 1.04,
@@ -128,7 +130,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	potId: 76089, // Potion of the Tol'vir
 	prepotId: 76089, // Potion of the Tol'vir
 	conjuredId: 5512, // Conjured Healthstone
-	tinkerId: 82174, // Synapse Springs
 });
 export const OtherDefaults = {
 	distanceFromTarget: 24,

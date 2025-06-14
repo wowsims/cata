@@ -2,29 +2,17 @@ import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
-	AirTotem,
-	CallTotem,
-	EarthTotem,
 	EnhancementShaman_Options as EnhancementShamanOptions,
-	FireTotem,
+	FeleAutocastSettings,
 	ShamanImbue,
 	ShamanMajorGlyph,
-	ShamanMinorGlyph,
 	ShamanShield,
 	ShamanSyncType,
-	ShamanTotems,
-	TotemSet,
-	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1NonOrcGear from './gear_sets/p1.non-orc.gear.json';
 import P1OrcGear from './gear_sets/p1.orc.gear.json';
-import P3NonOrcGear from './gear_sets/p3.non-orc.gear.json';
-import P3OrcGear from './gear_sets/p3.orc.gear.json';
-import P4OrcGear from './gear_sets/p4.orc.gear.json';
-import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -34,12 +22,6 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 
 export const P1_ORC_PRESET = PresetUtils.makePresetGear('P1 - Orc', P1OrcGear);
-export const P1_NON_ORC_PRESET = PresetUtils.makePresetGear('P1 - Non-Orc', P1NonOrcGear);
-export const P3_ORC_PRESET = PresetUtils.makePresetGear('P3 - Orc', P3OrcGear);
-export const P3_NON_ORC_PRESET = PresetUtils.makePresetGear('P3 - Non-Orc', P3NonOrcGear);
-export const P4_ORC_PRESET = PresetUtils.makePresetGear('P4', P4OrcGear);
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap', ItemSwapP4);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -72,7 +54,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '313232',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
@@ -84,32 +66,13 @@ export const StandardTalents = {
 export const DefaultOptions = EnhancementShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
-		call: CallTotem.Elements,
-		totems: ShamanTotems.create({
-			elements: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			ancestors: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			spirits: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			earth: EarthTotem.StrengthOfEarthTotem,
-			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.SearingTotem,
-			water: WaterTotem.ManaSpringTotem,
-		}),
 		imbueMh: ShamanImbue.WindfuryWeapon,
+		feleAutocast: FeleAutocastSettings.create({
+			autocastFireblast: true,
+			autocastFirenova: true,
+			autocastImmolate: true,
+			autocastEmpower: false,
+		}),
 	},
 	imbueOh: ShamanImbue.FlametongueWeapon,
 	syncType: ShamanSyncType.Auto,
@@ -122,11 +85,10 @@ export const OtherDefaults = {
 };
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
-	tinkerId: 82174, // Synapse Springs
+	flaskId: 76084, // Flask of Spring Blossoms
+	foodId: 74648, // Sea Mist Rice Noodles
+	potId: 76089, // Virmen's Bite
+	prepotId: 76089, // Virmen's Bite
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({});

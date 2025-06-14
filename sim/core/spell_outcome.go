@@ -30,7 +30,15 @@ func (dot *Dot) OutcomeTick(_ *Simulation, result *SpellResult, _ *AttackTable) 
 	result.Outcome = OutcomeHit
 	dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 }
-
+func (dot *Dot) OutcomeTickPhysicalHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.PhysicalHitCheck(sim, attackTable) {
+		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+	} else {
+		result.Outcome = OutcomeMiss
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
 func (dot *Dot) OutcomeTickPhysicalCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if dot.Spell.PhysicalCritCheck(sim, attackTable) {
 		result.Outcome = OutcomeCrit
@@ -50,6 +58,23 @@ func (dot *Dot) OutcomeTickMagicCrit(sim *Simulation, result *SpellResult, attac
 	} else {
 		result.Outcome = OutcomeHit
 		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+	}
+}
+
+func (dot *Dot) OutcomeTickMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.MagicHitCheck(sim, attackTable) {
+		if dot.Spell.MagicCritCheck(sim, result.Target) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= dot.Spell.CritDamageMultiplier()
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++
 	}
 }
 
@@ -195,6 +220,23 @@ func (spell *Spell) OutcomeTickMagicHit(sim *Simulation, result *SpellResult, at
 	} else {
 		result.Outcome = OutcomeMiss
 		result.Damage = 0
+	}
+}
+
+func (spell *Spell) OutcomeTickMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if spell.MagicHitCheck(sim, attackTable) {
+		if spell.MagicCritCheck(sim, result.Target) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= spell.CritDamageMultiplier()
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+		spell.SpellMetrics[result.Target.UnitIndex].Misses++
 	}
 }
 

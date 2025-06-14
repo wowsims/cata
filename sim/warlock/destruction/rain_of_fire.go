@@ -50,7 +50,7 @@ func (destruction DestructionWarlock) registerRainOfFire() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					result := dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.OutcomeTickMagicCrit)
 					if result.Landed() && sim.Proc(0.125, "RoF - Ember Proc") {
-						destruction.BurningEmbers.Gain(2, dot.ActionID, sim)
+						destruction.BurningEmbers.Gain(sim, 2, dot.ActionID)
 					}
 				}
 			},

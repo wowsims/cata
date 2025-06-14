@@ -40,6 +40,7 @@ type Item struct {
 	BonusAmountCalculated  []float64
 	Sockets                []int
 	SocketModifier         []float64 // Todo: Figure out if this is socket modifier in disguise or something else - I call it that for now.
+	NameDescription        string    // Contains information for i.E. Thunderforging. Normal = Thunderforged, HC = Heroic Thunderforged
 }
 
 func (item *Item) ToUIItem() *proto.UIItem {
@@ -64,6 +65,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
+		NameDescription:     item.NameDescription,
 	}
 
 	item.ParseItemFlags(uiItem)
@@ -88,8 +90,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 
 	// Amount of upgrade steps is defined in MAX_UPGRADE_LEVELS
 	// In P2 of MoP it is expected to be 2 steps
-	//
-	if item.ItemLevel > 458 && UPGRADE_SYSTEM_ACTIVE {
+	if UPGRADE_SYSTEM_ACTIVE && item.Flags2.Has(CAN_BE_UPGRADED) && item.ItemLevel > 458 {
 		for _, upgradeLevel := range MAX_UPGRADE_LEVELS {
 			upgradedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(upgradeLevel)
 			upgradeStep := proto.ItemLevelState(upgradeLevel)
@@ -134,10 +135,6 @@ func (item *Item) ParseItemFlags(uiItem *proto.UIItem) {
 
 	if item.Flags0.Has(UNIQUE_EQUIPPABLE) {
 		uiItem.Unique = true
-	}
-
-	if item.Flags0.Has(HEROIC_TOOLTIP) {
-		uiItem.Heroic = true
 	}
 }
 

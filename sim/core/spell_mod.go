@@ -15,18 +15,19 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask    int64
-	Kind         SpellModType
-	School       SpellSchool
-	ProcMask     ProcMask
-	ResourceType proto.ResourceType
-	IntValue     int32
-	TimeValue    time.Duration
-	FloatValue   float64
-	KeyValue     string
-	ApplyCustom  SpellModApply
-	RemoveCustom SpellModRemove
-	ResetCustom  SpellModOnReset
+	ClassMask         int64
+	Kind              SpellModType
+	School            SpellSchool
+	ProcMask          ProcMask
+	ResourceType      proto.ResourceType
+	IntValue          int32
+	TimeValue         time.Duration
+	FloatValue        float64
+	KeyValue          string
+	ApplyCustom       SpellModApply
+	RemoveCustom      SpellModRemove
+	ResetCustom       SpellModOnReset
+	ShouldApplyToPets bool
 }
 
 type SpellMod struct {
@@ -115,6 +116,24 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		unit.RegisterResetEffect(func(s *Simulation) {
 			mod.OnReset(mod)
 		})
+	}
+
+	if config.ShouldApplyToPets {
+		for _, pet := range unit.PetAgents {
+			pet.GetPet().OnSpellRegistered(func(spell *Spell) {
+				if shouldApply(spell, mod) {
+					mod.AffectedSpells = append(mod.AffectedSpells, spell)
+					if mod.IsActive {
+						mod.Apply(mod, spell)
+					}
+				}
+			})
+			if mod.OnReset != nil {
+				pet.GetPet().RegisterResetEffect(func(s *Simulation) {
+					mod.OnReset(mod)
+				})
+			}
+		}
 	}
 
 	return mod
@@ -260,7 +279,7 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
-	// Increases or decreases spell.CD.Multiplier by flat amount
+	// Will multiply the spell CD multiplier. -5% = 0.95
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
@@ -513,11 +532,11 @@ func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CdMultiplier += mod.floatValue
+	spell.CdMultiplier *= mod.floatValue
 }
 
 func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CdMultiplier -= mod.floatValue
+	spell.CdMultiplier /= mod.floatValue
 }
 
 func applyCritMultiplierFlat(mod *SpellMod, spell *Spell) {

@@ -44,7 +44,7 @@ func (monk *Monk) registerGlyphOfFortuitousSpheres() {
 		Callback: core.CallbackOnSpellHitTaken,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Target.CurrentHealthPercent() < 0.25 {
-				monk.HealingSphereSummon.Cast(sim, &monk.Unit)
+				monk.SummonHealingSphere(sim)
 			}
 		},
 	})

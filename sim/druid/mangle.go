@@ -4,12 +4,15 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (druid *Druid) registerMangleBearSpell() {
 	maxHits := min(druid.Env.GetNumTargets(), 3)
 	actionID := core.ActionID{SpellID: 33878}
 	rageMetrics := druid.NewRageMetrics(actionID)
+	applySotF := (druid.Spec == proto.Spec_SpecGuardianDruid) && druid.Talents.SoulOfTheForest
+	rageGen := 5.0 * core.TernaryFloat64(applySotF, 1.3, 1)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:       actionID,
@@ -29,7 +32,7 @@ func (druid *Druid) registerMangleBearSpell() {
 			},
 		},
 
-		DamageMultiplier: 2.8,
+		DamageMultiplier: 2.8 * core.TernaryFloat64(applySotF, 1.15, 1),
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
@@ -38,16 +41,21 @@ func (druid *Druid) registerMangleBearSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := core.TernaryInt32(druid.BerserkBearAura.IsActive(), maxHits, 1)
 			curTarget := target
+			anyLanded := false
 
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 				if result.Landed() {
-					druid.AddRage(sim, 5, rageMetrics)
+					anyLanded = true
 				}
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
+
+			if anyLanded {
+				druid.AddRage(sim, rageGen, rageMetrics)
 			}
 
 			if druid.BerserkBearAura.IsActive() {

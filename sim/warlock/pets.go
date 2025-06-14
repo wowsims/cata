@@ -251,7 +251,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 			if result.Landed() {
 				switch pet.Owner.Spec {
 				case proto.Spec_SpecDemonologyWarlock:
-					pet.Owner.Unit.GetSecondaryResourceBar().Gain(12, spell.ActionID, sim)
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(sim, 12, spell.ActionID)
 				}
 			}
 		},
@@ -292,7 +292,7 @@ func (pet *WarlockPet) registerFireboltSpell() {
 			if result.Landed() {
 				switch pet.Owner.Spec {
 				case proto.Spec_SpecDemonologyWarlock:
-					pet.Owner.Unit.GetSecondaryResourceBar().Gain(8, spell.ActionID, sim)
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(sim, 8, spell.ActionID)
 				}
 			}
 		},
@@ -327,7 +327,7 @@ func (pet *WarlockPet) registerLashOfPainSpell() {
 			if result.Landed() {
 				switch pet.Owner.Spec {
 				case proto.Spec_SpecDemonologyWarlock:
-					pet.Owner.Unit.GetSecondaryResourceBar().Gain(12, spell.ActionID, sim)
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(sim, 12, spell.ActionID)
 				}
 			}
 		},
@@ -361,7 +361,7 @@ func (pet *WarlockPet) registerTormentSpell() {
 			if result.Landed() {
 				switch pet.Owner.Spec {
 				case proto.Spec_SpecDemonologyWarlock:
-					pet.Owner.Unit.GetSecondaryResourceBar().Gain(10, spell.ActionID, sim)
+					pet.Owner.Unit.GetSecondaryResourceBar().Gain(sim, 10, spell.ActionID)
 				}
 			}
 		},

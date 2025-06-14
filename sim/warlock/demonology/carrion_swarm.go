@@ -38,7 +38,7 @@ func (demonology *DemonologyWarlock) registerCarrionSwarm() {
 			return demonology.IsInMeta() && demonology.DemonicFury.CanSpend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 35, 50))
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			demonology.DemonicFury.Spend(core.TernaryInt32(demonology.T15_2pc.IsActive(), 35, 50), spell.ActionID, sim)
+			demonology.DemonicFury.Spend(sim, core.TernaryInt32(demonology.T15_2pc.IsActive(), 35, 50), spell.ActionID)
 			for _, enemy := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(
 					sim,

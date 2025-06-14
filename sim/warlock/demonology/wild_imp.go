@@ -124,7 +124,7 @@ func (pet *WildImpPet) registerFireboltSpell() {
 		BonusCoefficient: felFireBoltCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			pet.Owner.Unit.GetSecondaryResourceBar().Gain(5, spell.ActionID, sim)
+			pet.Owner.Unit.GetSecondaryResourceBar().Gain(sim, 5, spell.ActionID)
 			result := spell.CalcDamage(sim, target, pet.CalcAndRollDamageRange(sim, felFireBoltScale, felFireBoltVariance), spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

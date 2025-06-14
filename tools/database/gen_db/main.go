@@ -71,7 +71,7 @@ func main() {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 
-	_, err = database.LoadAndWriteRawItems(helper, "s.OverallQualityId != 7 AND s.Field_1_15_7_59706_054 = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')", inputsDir)
+	_, err = database.LoadAndWriteRawItems(helper, "s.OverallQualityId != 7 AND NOT (s.Bonding = 2 AND ind.Description_lang IS NOT NULL and ind.Description_lang NOT LIKE '%Season%') AND s.Field_1_15_7_59706_054 = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')", inputsDir)
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
@@ -129,11 +129,12 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-	_, _, err = database.LoadAndWriteDropSources(helper, inputsDir)
+	dropSources, names, err := database.LoadAndWriteDropSources(helper, inputsDir)
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
+	craftingSources := database.LoadCraftedItems(helper)
+	repSources := database.LoadRepItems(helper)
 	//Todo: See if we cant get rid of these as well
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 
@@ -142,23 +143,15 @@ func main() {
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
-	db.GlyphIDs = getGlyphIDsFromJson(fmt.Sprintf("%s/glyph_id_map.json", inputsDir))
 	db.ReforgeStats = reforgeStats.ToProto()
 
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
 
-	database.GenerateProtos(instance)
+	database.GenerateProtos(instance, db)
 
-	for _, item := range instance.Items {
-		parsed := item.ToUIItem()
-		if parsed.Icon == "" {
-			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
-		}
-
-		db.MergeItem(parsed)
-	}
+	processItems(instance, iconsMap, names, dropSources, craftingSources, repSources, db)
 
 	for _, gem := range instance.Gems {
 		parsed := gem.ToProto()
@@ -181,10 +174,43 @@ func main() {
 			db.MergeItem(item)
 		}
 	}
-	for _, consumable := range consumables {
-		protoConsumable := consumable.ToProto()
-		protoConsumable.Icon = strings.ToLower(database.GetIconName(iconsMap, consumable.IconFileDataID))
-		db.MergeConsumable(protoConsumable)
+
+	bestByStat := make(map[int]map[int]*dbc.Consumable)
+
+	// Phase 1: find the best consumable per (subclass, stat-index)
+	for i := range consumables {
+		c := &consumables[i]
+		subclass := int(c.SubClassId)
+
+		// ensure the inner map exists
+		if _, ok := bestByStat[subclass]; !ok {
+			bestByStat[subclass] = make(map[int]*dbc.Consumable)
+		}
+		bucket := bestByStat[subclass]
+
+		// pull the raw stats array once
+		stats := c.ToProto().Stats
+		for idx, val := range stats {
+			if existing, seen := bucket[idx]; !seen || val > existing.ToProto().Stats[idx] {
+				bucket[idx] = c
+			}
+		}
+	}
+
+	// Phase 2: merge each unique consumable exactly once
+	seen := make(map[int]bool)
+	for _, bucket := range bestByStat {
+		for _, c := range bucket {
+			if seen[c.Id] {
+				continue
+			}
+			p := c.ToProto()
+			p.Icon = strings.ToLower(
+				database.GetIconName(iconsMap, c.IconFileDataID),
+			)
+			db.MergeConsumable(p)
+			seen[c.Id] = true
+		}
 	}
 
 	for _, consumable := range database.ConsumableOverrides {
@@ -245,7 +271,6 @@ func main() {
 				craftedSpellIds = append(craftedSpellIds, crafted.SpellId)
 			}
 		}
-
 		if item.Phase < 2 {
 			item.Phase = InferPhase(item)
 		}
@@ -260,87 +285,225 @@ func main() {
 	db.WriteBinaryAndJson(fmt.Sprintf("%s/db.bin", dbDir), fmt.Sprintf("%s/db.json", dbDir))
 }
 
-// Uses heuristics on ilvl + source to infer release phase of an item when missing.
 func InferPhase(item *proto.UIItem) int32 {
-	if item.Ilvl <= 463 {
-		return 1
-	}
-	if item.Ilvl > 516 {
-		return 2
+	ilvl := item.ScalingOptions[int32(proto.ItemLevelState_Base)].Ilvl
+	name := item.Name
+	quality := item.Quality
+
+	if strings.Contains(name, "Necklace of the Terra-Cotta") {
+		return 4
 	}
 
-	// Since we populate some drops before we run inferphase, we can use Atlasloot data to help us infer the phase
-	for _, source := range item.Sources {
-		if drop := source.GetDrop(); drop != nil {
-			switch drop.ZoneId {
-			case 6297, 6125, 6067: // MSV, Terrace, Heart of Fear
-				return 1
-			case 6622: // Throne of Thunder
-				return 2
-			case 6738: //Siege
+	//- Any blue pvp ''Crafted'' item of ilvl 458 is 5.2
+	//- Any blue pvp ''Crafted'' item of ilvl 476 is 5.4
+	if strings.Contains(name, "Crafted") {
+		switch ilvl {
+		case 458:
+			return 3
+		case 476:
+			return 5
+		}
+	}
+
+	//- Any "Tyrannical" item is 5.2
+	//- Any "Grievous" item is 5.4
+	//- Any "Prideful" item is 5.4
+	switch {
+	case strings.Contains(name, "Grievous"),
+		strings.Contains(name, "Prideful"):
+		return 5
+	case strings.Contains(name, "Tyrannical"):
+		return 3
+	}
+
+	//- Any 476 epic item with random stats is 5.1
+	//- Any 496 epic item with random stats is 5.4
+	//- Any 516 epic items with random stats are 5.3
+	//- Any 535 epic items with random stats are 5.4
+	//- Any 489 random stat epic is 5.3
+	if item.RandPropPoints > 0 {
+		switch ilvl {
+		case 476:
+			return 2
+		case 489:
+			return 4
+		case 496:
+			return 5
+		case 516:
+			return 4
+		case 535:
+			return 5
+		}
+	}
+
+	//iLvl 600 legendary vs. epic
+	if ilvl == 600 {
+		if quality == proto.ItemQuality_ItemQualityLegendary {
+			return 5
+		}
+		if quality == proto.ItemQuality_ItemQualityEpic {
+			return 4
+		}
+	}
+
+	//- Any item above ilvl 542 is 5.4 (except the 600 ilvl Epic Cloaks from the legendary questline)
+	if ilvl > 542 && quality < proto.ItemQuality_ItemQualityLegendary {
+		return 5
+	}
+
+	//- Any 483 green item is a boosted level 90 item in 5.4
+	if ilvl == 483 && quality == proto.ItemQuality_ItemQualityUncommon {
+		return 5
+	}
+
+	//- All pve tier items of ilvl 502/522/535 are 5.2
+	//- All pve tier items of ilvl 528/540/553/566 are 5.4
+	if item.SetId > 0 {
+		switch ilvl {
+		case 528, 540, 553, 566:
+			return 5
+		case 502, 522, 535:
+			return 3
+		}
+	}
+
+	// Timeless Isle trinkets are all ilvl 496 and does not have a source listed.
+	if item.Sources == nil {
+		if item.Type == proto.ItemType_ItemTypeTrinket && ilvl == 496 {
+			return 3
+		}
+	}
+
+	//AtlasLoot‐style source checks
+	for _, src := range item.Sources {
+		//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
+		if rep := src.GetRep(); rep != nil {
+			if rep.RepFactionId == proto.RepFaction_RepFactionShadoPanAssault {
 				return 3
+			}
+			if rep.RepFactionId == proto.RepFaction_RepFactionOperationShieldwall || rep.RepFactionId == proto.RepFaction_RepFactionDominanceOffensive {
+				return 2
+			}
+		}
+		if craft := src.GetCrafted(); craft != nil {
+			switch ilvl {
+			case 476, 496:
+				return 1
+			case 502:
+				return 4
+			case 522:
+				return 3
+			case 553:
+				return 4
+			}
+		}
+		if drop := src.GetDrop(); drop != nil {
+			switch drop.ZoneId {
+			case 6297, 6125, 6067:
+				return 1
+			case 6622:
+				return 3
+			case 6738:
+				return 5
+			}
+			//- All "Oondasta (World Boss)" items are 5.2
+			if drop.NpcId == 826 {
+				return 3
+			}
+			//- All "Ordos (World Boss)" items are 5.4
+			if drop.NpcId == 861 {
+				return 5
 			}
 		}
 	}
 
-	if (item.Ilvl >= 489) && item.RandomSuffixOptions != nil && len(item.RandomSuffixOptions) > 0 {
-		return 2 // These are random throne of thunder drops
+	// Any 489 random stat epic is 5.3
+	if ilvl >= 489 && len(item.RandomSuffixOptions) > 0 {
+		return 2
 	}
-	if item.Ilvl > 440 && item.Quality < proto.ItemQuality_ItemQualityRare {
-		return 3 // Green items should not have high ilvl until salvage in 5.4
-	}
-	switch item.Ilvl {
-	case 476, 483, 489, 496, 509, 502, 516, 503: // Should be p1 raids and pvp items
-		if strings.Contains(item.Name, "Tyrannical") {
-			return 2
-		}
 
+	// high ilvl greens probably boosted
+	if ilvl > 440 && quality < proto.ItemQuality_ItemQualityRare {
+		return 5
+	}
+
+	if ilvl <= 463 {
 		return 1
 	}
-	// if item.Ilvl >= 397 {
-	// 	return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
-	// }
 
-	switch item.Ilvl {
-	// case 353:
-	// 	return 2
-	// case 358, 371, 391:
-	// 	return 3
-	// case 359:
-	// 	if item.Quality == proto.ItemQuality_ItemQualityUncommon {
-	// 		return 4
-	// 	}
-
-	// 	return 1
-	// case 372, 379:
-	// 	return 1
-	// case 377, 390:
-	// 	return 4
-	// case 365:
-	// 	if strings.Contains(item.Name, "Vicious") {
-	// 		return 1
-	// 	}
-
-	// 	return 3
-	// case 378:
-	// 	for _, itemSource := range item.Sources {
-	// 		dropSource := itemSource.GetDrop()
-
-	// 		if (dropSource != nil) && slices.Contains([]int32{5788, 5789, 5844}, dropSource.ZoneId) {
-	// 			return 4
-	// 		}
-	// 	}
-
-	// 	return 3
-	// case 384:
-	// 	if strings.Contains(item.Name, "Ruthless") {
-	// 		return 3
-	// 	}
-
-	// 	return 4
-	default:
-		return 0
+	switch ilvl {
+	case 476, 483, 489, 496:
+		return 1
+	case 502, 522, 535, 541:
+		return 3
+	case 553, 528, 566, 540:
+		return 5
 	}
+
+	return 0
+}
+
+func processItems(instance *dbc.DBC, iconsMap map[int]string, names map[int]string, dropSources map[int][]*proto.DropSource, craftingSources map[int][]*proto.CraftedSource, repSources map[int][]*proto.RepSource, db *database.WowDatabase) {
+	sourceMap := make(map[string][]*proto.UIItemSource, len(instance.Items))
+	parsedItems := make([]*proto.UIItem, 0, len(instance.Items))
+	for _, item := range instance.Items {
+		if item.Flags2&0x10 != 0 && (item.StatAlloc[0] > 0 && item.StatAlloc[0] < 600) {
+			continue
+		}
+		parsed := item.ToUIItem()
+		if parsed.Icon == "" {
+			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
+		}
+
+		drops := dropSources[int(item.Id)]
+		if drops != nil {
+			sources := make([]*proto.UIItemSource, 0, len(drops))
+			for _, drop := range drops {
+				sources = append(sources, &proto.UIItemSource{
+					Source: &proto.UIItemSource_Drop{Drop: drop},
+				})
+				db.MergeZone(&proto.UIZone{Id: drop.ZoneId, Name: names[int(drop.ZoneId)]})
+				db.MergeNpc(&proto.UINPC{Id: drop.NpcId, Name: drop.OtherName, ZoneId: drop.ZoneId})
+			}
+			parsed.Sources = sources
+			sourceMap[parsed.Name] = sources
+		}
+
+		crafted := craftingSources[int(item.Id)]
+		if crafted != nil {
+			sources := make([]*proto.UIItemSource, 0, len(crafted))
+			for _, craft := range crafted {
+				sources = append(sources, &proto.UIItemSource{
+					Source: &proto.UIItemSource_Crafted{Crafted: craft},
+				})
+			}
+			parsed.Sources = sources
+			sourceMap[parsed.Name] = sources
+		}
+
+		rep := repSources[int(item.Id)]
+		if rep != nil {
+			sources := make([]*proto.UIItemSource, 0, len(rep))
+			for _, repItem := range rep {
+				sources = append(sources, &proto.UIItemSource{
+					Source: &proto.UIItemSource_Rep{Rep: repItem},
+				})
+			}
+			parsed.Sources = sources
+			sourceMap[parsed.Name] = sources
+		}
+
+		parsedItems = append(parsedItems, parsed)
+	}
+
+	for _, parsed := range parsedItems {
+		if len(parsed.Sources) == 0 {
+			if fallbacks, ok := sourceMap[parsed.Name]; ok {
+				parsed.Sources = fallbacks
+			}
+		}
+	}
+	db.MergeItems(parsedItems)
 }
 
 // Filters out entities which shouldn't be included anywhere.
@@ -408,23 +571,15 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// Theres an invalid 251 t10 set for every class
-	// The invalid set has a higher item id than the 'correct' ones
-	t10invalidItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
-		return item.SetName != "" && item.Ilvl == 251
-	})
-	db.Items = core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
-		for _, t10item := range t10invalidItems {
-			if t10item.Name == item.Name && item.Ilvl == t10item.Ilvl && item.Id > t10item.Id {
-				return false
-			}
-		}
-		return true
-	})
-
 	db.Gems = core.FilterMap(db.Gems, func(_ int32, gem *proto.UIGem) bool {
 		if _, ok := database.GemDenyList[gem.Id]; ok {
 			return false
+		}
+
+		if gem.Quality == proto.ItemQuality_ItemQualityLegendary || gem.Id == 95348 {
+			gem.Phase = 3
+		} else {
+			gem.Phase = 1
 		}
 
 		for _, pattern := range database.DenyListNameRegexes {
@@ -450,6 +605,16 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 
 	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {
+		// MoP no longer has head enchants, so filter them.
+		if enchant.Type == proto.ItemType_ItemTypeHead {
+			return false
+		}
+		if _, ok := database.EnchantDenyListSpells[enchant.SpellId]; ok {
+			return false
+		}
+		if _, ok := database.EnchantDenyListItems[enchant.ItemId]; ok {
+			return false
+		}
 		for _, pattern := range database.DenyListNameRegexes {
 			if pattern.MatchString(enchant.Name) {
 				return false
@@ -617,33 +782,6 @@ func GetAllTalentSpellIds(inputsDir *string) map[string][]int32 {
 type GlyphID struct {
 	ItemID  int32 `json:"itemId"`
 	SpellID int32 `json:"spellId"`
-}
-
-func getGlyphIDsFromJson(infile string) []*proto.GlyphID {
-	data, err := os.ReadFile(infile)
-	if err != nil {
-		log.Fatalf("failed to load glyph json file: %s", err)
-	}
-
-	var buf bytes.Buffer
-	err = json.Compact(&buf, []byte(data))
-	if err != nil {
-		log.Fatalf("failed to compact json: %s", err)
-	}
-
-	var glyphIDs []GlyphID
-
-	err = json.Unmarshal(buf.Bytes(), &glyphIDs)
-	if err != nil {
-		log.Fatalf("failed to parse glyph IDs to json %s", err)
-	}
-
-	return core.MapSlice(glyphIDs, func(gid GlyphID) *proto.GlyphID {
-		return &proto.GlyphID{
-			ItemId:  gid.ItemID,
-			SpellId: gid.SpellID,
-		}
-	})
 }
 
 func CreateTempAgent(r *proto.Raid) core.Agent {

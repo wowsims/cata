@@ -279,7 +279,7 @@ func init() {
 			},
 		})
 
-		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) {
 			if absorbAura.IsActive() && result.Damage > 0 && totalAbsorbed < maxShieldStrength {
 				remainingAbsorb := maxShieldStrength - totalAbsorbed
 				absorbedDamage := min(result.Damage*0.2, remainingAbsorb)

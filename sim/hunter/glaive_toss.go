@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -25,16 +24,25 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 			CritMultiplier:           hunter.DefaultCritMultiplier(),
 			ThreatMultiplier:         1,
 			BonusCoefficient:         1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				numHits := hunter.Env.GetNumTargets()
-				sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
-				sharedDmg += spell.RangedAttackPower() * 0.2
-				sharedDmg += (435.8 + sim.RandomFloat(fmt.Sprintf("Glaive Toss-%v", spellID))*872)
+
+				sharedDmg := spell.RangedAttackPower() * 0.2
+				sharedDmg += hunter.CalcAndRollDamageRange(sim, 0.69999998808, 1)
 				// Here we assume the Glaive Toss hits every single target in the encounter.
 				// This might be unrealistic, but until we have more spatial parameters, this is what we should do.
 				results := make([]*core.SpellResult, numHits)
 				for i := int32(0); i < numHits; i++ {
 					unit := hunter.Env.GetTargetUnit(i)
+					// Primary always hits, secondaries only on a successful roll
+					if unit != target {
+						successChance := hunter.Options.GlaiveTossSuccess / 100.0
+						roll := sim.RollWithLabel(0, 1, "GlaiveTossSuccess")
+						if roll > successChance {
+							continue
+						}
+					}
 					dmg := sharedDmg
 					if unit == target {
 						dmg *= 4 // primary target takes 4× damage
@@ -42,11 +50,9 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 					results[i] = spell.CalcDamage(sim, unit, dmg, spell.OutcomeRangedHitAndCrit)
 				}
 
-				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-					for _, res := range results {
-						spell.DealDamage(sim, res)
-					}
-				})
+				for _, res := range results {
+					spell.DealDamage(sim, res)
+				}
 			},
 		})
 	}
@@ -55,12 +61,13 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 	secondGlaive := registerGlaive(120756)
 
 	hunter.GlaiveToss = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 117050},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskProc,
-		Flags:       core.SpellFlagAPL,
-		MaxRange:    40,
-		MinRange:    0,
+		ActionID:     core.ActionID{SpellID: 117050},
+		SpellSchool:  core.SpellSchoolPhysical,
+		ProcMask:     core.ProcMaskProc,
+		Flags:        core.SpellFlagAPL,
+		MaxRange:     40,
+		MissileSpeed: 15,
+		MinRange:     0,
 		FocusCost: core.FocusCostOptions{
 			Cost: 15,
 		},
@@ -78,8 +85,10 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			firstGlaive.Cast(sim, target)
-			secondGlaive.Cast(sim, target)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				firstGlaive.Cast(sim, target)
+				secondGlaive.Cast(sim, target)
+			})
 		},
 	})
 }

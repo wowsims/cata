@@ -61,7 +61,7 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 			})
 
 			if result.Landed() {
-				destro.BurningEmbers.Spend(core.TernaryInt32(destro.T15_2pc.IsActive(), 8, 10), spell.ActionID, sim)
+				destro.BurningEmbers.Spend(sim, core.TernaryInt32(destro.T15_2pc.IsActive(), 8, 10), spell.ActionID)
 			}
 		},
 

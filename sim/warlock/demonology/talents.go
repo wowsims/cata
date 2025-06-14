@@ -58,7 +58,7 @@ func (demonlogy *DemonologyWarlock) registerGrimoireOfSupremacy() {
 				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 
-			demonlogy.DemonicFury.Gain(12, core.ActionID{SpellID: 30213}, sim)
+			demonlogy.DemonicFury.Gain(sim, 12, core.ActionID{SpellID: 30213})
 		},
 	})
 

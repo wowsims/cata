@@ -41,7 +41,7 @@ func customFulminationHandler(sim *core.Simulation, spell *core.Spell, result *c
 
 	// some closure magic
 	shaman := spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).(shaman.ShamanAgent).GetShaman()
-	totalDamage := (shaman.ClassSpellScaling*0.38899999857 + 0.267*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
+	totalDamage := (shaman.CalcScalingSpellDmg(0.38899999857) + 0.267*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 	if copySpell == nil {
 		copyConfig := cata.GetDRTSpellConfig(spell)
 		copyConfig.Cast.ModifyCast = nil

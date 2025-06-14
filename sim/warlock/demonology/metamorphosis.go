@@ -45,7 +45,7 @@ func (demo *DemonologyWarlock) registerMetamorphosis() {
 					return
 				}
 
-				demo.DemonicFury.SpendUpTo(core.TernaryInt32(demo.T15_2pc.IsActive(), 4, 6), metaActionId, sim)
+				demo.DemonicFury.SpendUpTo(sim, core.TernaryInt32(demo.T15_2pc.IsActive(), 4, 6), metaActionId)
 				if demo.DemonicFury.Value() < 50 {
 					metaAura.Deactivate(sim)
 					return

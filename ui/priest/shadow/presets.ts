@@ -128,7 +128,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62290, // Seafood Magnifique Feast
 	potId: 58091, // Volcanic Potion
 	prepotId: 58091, // Volcanic Potion
-	tinkerId: 82174, // Synapse Springs
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -146,7 +145,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	curseOfElements: true
+	curseOfElements: true,
 });
 
 export const OtherDefaults = {

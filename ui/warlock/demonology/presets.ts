@@ -73,7 +73,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 34749, // Shoveltusk Steak
 	potId: 76093, // Potion of the Jade Serpent
 	prepotId: 76093, // Potion of the Jade Serpent
-	tinkerId: 82174, // Synapse Springs II
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

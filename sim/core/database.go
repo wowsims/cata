@@ -145,6 +145,7 @@ type Item struct {
 	RandomSuffix RandomSuffix
 	Gems         []Gem
 	Enchant      Enchant
+	Tinker       Enchant
 	Reforging    *ReforgeStat
 
 	//Internal use
@@ -240,6 +241,7 @@ type ItemSpec struct {
 	ID            int32
 	RandomSuffix  int32
 	Enchant       int32
+	Tinker        int32
 	Gems          []int32
 	Reforging     int32
 	UpgradeStep   proto.ItemLevelState
@@ -321,6 +323,14 @@ func (equipment *Equipment) Finger2() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotFinger2]
 }
 
+func (equipment *Equipment) GetItemBySlot(slot proto.ItemSlot) *Item {
+	if (slot < 0) || (slot >= NumItemSlots) {
+		panic(fmt.Sprintf("%d is an invalid item slot index!", slot))
+	}
+
+	return &equipment[slot]
+}
+
 func (equipment *Equipment) EquipItem(item Item) {
 	if item.Type == proto.ItemType_ItemTypeFinger {
 		if equipment.Finger1().ID == 0 {
@@ -354,7 +364,7 @@ func (equipment *Equipment) EquipItem(item Item) {
 }
 
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
-	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID) || (equipment[slot].Tinker.EffectID == effectID)
 }
 
 func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {
@@ -386,6 +396,7 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 		coreEquip[i] = ItemSpec{
 			ID:            item.Id,
 			RandomSuffix:  item.RandomSuffix,
+			Tinker:        item.Tinker,
 			Enchant:       item.Enchant,
 			Gems:          item.Gems,
 			Reforging:     item.Reforging,
@@ -396,6 +407,21 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	return coreEquip
 }
 
+func (item *Item) GetScalingState() proto.ItemLevelState {
+	if !item.ChallengeMode {
+		return item.UpgradeStep
+	} else if item.ScalingOptions[0].Ilvl <= MaxChallengeModeIlvl {
+		return proto.ItemLevelState_Base
+	} else {
+		return proto.ItemLevelState_ChallengeMode
+	}
+}
+
+// Returns the current scaling options for the item based on challenge mode and upgrade level
+func (item *Item) GetEffectiveScalingOptions() *proto.ScalingItemProperties {
+	return item.ScalingOptions[int32(item.GetScalingState())]
+}
+
 func NewItem(itemSpec ItemSpec) Item {
 	item := Item{}
 	if foundItem, ok := ItemsByID[itemSpec.ID]; ok {
@@ -404,21 +430,13 @@ func NewItem(itemSpec ItemSpec) Item {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
 
-	var itemLevelState proto.ItemLevelState
-	if !itemSpec.ChallengeMode {
-		itemLevelState = itemSpec.UpgradeStep
-	} else if item.ScalingOptions[0].Ilvl <= MaxChallengeModeIlvl {
-		itemLevelState = proto.ItemLevelState_Base
-	} else {
-		itemLevelState = proto.ItemLevelState_ChallengeMode
-	}
-
-	scalingOptions := item.ScalingOptions[int32(itemLevelState)]
+	item.UpgradeStep = itemSpec.UpgradeStep
+	item.ChallengeMode = itemSpec.ChallengeMode
+	scalingOptions := item.GetEffectiveScalingOptions()
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
 	item.RandPropPoints = scalingOptions.RandPropPoints
-	item.UpgradeStep = itemSpec.UpgradeStep
 
 	if itemSpec.RandomSuffix != 0 {
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
@@ -435,6 +453,11 @@ func NewItem(itemSpec ItemSpec) Item {
 		// else {
 		// 	panic(fmt.Sprintf("No enchant with id: %d", itemSpec.Enchant))
 		// }
+	}
+	if itemSpec.Tinker != 0 {
+		if tinker, ok := EnchantsByEffectID[itemSpec.Tinker]; ok {
+			item.Tinker = tinker
+		}
 	}
 
 	if itemSpec.Reforging > 112 { // There is no id below 113
@@ -498,6 +521,7 @@ func ProtoToEquipment(es *proto.EquipmentSpec) Equipment {
 type ItemStringSpec struct {
 	Name    string
 	Enchant string
+	Tinker  string
 	Gems    []string
 }
 

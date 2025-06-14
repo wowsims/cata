@@ -113,28 +113,28 @@ export class EncounterPicker extends Component {
 			//	});
 			//}
 
-			// if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.canEnableTargetDummies()) {
-			// 	const player = (simUI as IndividualSimUI<any>).player;
-			// 	new NumberPicker(this.rootElem, simUI.sim.raid, {
-			// 		id: 'encounter-num-allies',
-			// 		label: 'Num Allies',
-			// 		labelTooltip: 'Number of allied players in the raid.',
-			// 		changedEvent: (raid: Raid) => TypedEvent.onAny([raid.targetDummiesChangeEmitter, player.itemSwapSettings.changeEmitter]),
-			// 		getValue: (raid: Raid) => raid.getTargetDummies(),
-			// 		setValue: (eventID: EventID, raid: Raid, newValue: number) => {
-			// 			raid.setTargetDummies(eventID, newValue);
-			// 		},
-			// 		showWhen: (raid: Raid) => {
-			// 			const shouldEnable = player.shouldEnableTargetDummies();
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.canEnableTargetDummies()) {
+				const player = (simUI as IndividualSimUI<any>).player;
+				new NumberPicker(this.rootElem, simUI.sim.raid, {
+					id: 'encounter-num-allies',
+					label: 'Num Allies',
+					labelTooltip: 'Number of allied players in the raid.',
+					changedEvent: (raid: Raid) => TypedEvent.onAny([raid.targetDummiesChangeEmitter, player.itemSwapSettings.changeEmitter]),
+					getValue: (raid: Raid) => raid.getTargetDummies(),
+					setValue: (eventID: EventID, raid: Raid, newValue: number) => {
+						raid.setTargetDummies(eventID, newValue);
+					},
+					showWhen: (raid: Raid) => {
+						const shouldEnable = player.shouldEnableTargetDummies();
 
-			// 			if (!shouldEnable) {
-			// 				raid.setTargetDummies(TypedEvent.nextEventID(), 0);
-			// 			}
+						if (!shouldEnable) {
+							raid.setTargetDummies(TypedEvent.nextEventID(), 0);
+						}
 
-			// 			return shouldEnable;
-			// 		},
-			// 	});
-			// }
+						return shouldEnable;
+					},
+				});
+			}
 
 			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getPlayerSpec().isTankSpec) {
 				new NumberPicker(this.rootElem, modEncounter, {
@@ -344,11 +344,12 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			id: 'target-picker-level',
 			label: 'Level',
 			values: [
-				{ name: '85', value: 85 },
 				{ name: '93', value: 93 },
 				{ name: '92', value: 92 },
 				{ name: '91', value: 91 },
 				{ name: '90', value: 90 },
+				{ name: '88', value: 88 },
+
 			],
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().level,
@@ -802,11 +803,6 @@ function equalTargetsIgnoreInputs(target1: TargetProto | undefined, target2: Tar
 const ALL_TARGET_STATS: Array<{ stat: Stat; tooltip: string; extraCssClasses: Array<string> }> = [
 	{ stat: Stat.StatHealth, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatArmor, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatArcaneResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatFireResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatFrostResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatNatureResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatShadowResistance, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatAttackPower, tooltip: '', extraCssClasses: ['threat-metrics'] },
 ];
 

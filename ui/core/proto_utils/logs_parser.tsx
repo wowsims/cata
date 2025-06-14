@@ -685,7 +685,12 @@ export class AuraUptimeLog extends SimLog {
 			}
 
 			if (log.isAuraStacksChange()) {
-				const matchingGainedIdx = unmatchedGainedLogs.findIndex(gainedLog => gainedLog.gained.actionId!.equals(log.actionId!));
+				if (log.newStacks <= 0) {
+					return;
+				}
+				const matchingGainedIdx = unmatchedGainedLogs.findIndex(
+					gainedLog => gainedLog.gained.actionId!.equals(log.actionId!) || gainedLog.gained.actionId!.equalsIgnoringTag(log.actionId!),
+				);
 				if (matchingGainedIdx == -1) {
 					console.warn('Unmatched aura stacks change log: ' + log.actionId!.name);
 					return;
@@ -703,7 +708,9 @@ export class AuraUptimeLog extends SimLog {
 				return;
 			}
 
-			const matchingGainedIdx = unmatchedGainedLogs.findIndex(gainedLog => gainedLog.gained.actionId!.equals(log.actionId!));
+			const matchingGainedIdx = unmatchedGainedLogs.findIndex(
+				gainedLog => gainedLog.gained.actionId!.equals(log.actionId!) || gainedLog.gained.actionId!.equalsIgnoringTag(log.actionId!),
+			);
 			if (matchingGainedIdx == -1) {
 				console.warn('Unmatched aura faded log: ' + log.actionId!.name);
 				return;

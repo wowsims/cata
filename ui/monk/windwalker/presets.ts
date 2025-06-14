@@ -19,44 +19,42 @@ export const ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', Defa
 
 // Preset options for EP weights
 export const P1_PREBIS_2H_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Pre-BIS - 2H',
+	'Default - 2H',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAgility]: 2.58,
-			[Stat.StatHitRating]: 2.54,
-			[Stat.StatCritRating]: 0.89,
-			[Stat.StatHasteRating]: 1.47,
-			[Stat.StatExpertiseRating]: 2.04,
-			[Stat.StatMasteryRating]: 0.29,
-			[Stat.StatAttackPower]: 1,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatHitRating]: 1.11,
+			[Stat.StatCritRating]: 0.33,
+			[Stat.StatHasteRating]: 0.43,
+			[Stat.StatExpertiseRating]: 1.02	,
+			[Stat.StatMasteryRating]: 0.27,
+			[Stat.StatAttackPower]: 0.37,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.32,
+			[PseudoStat.PseudoStatMainHandDps]: 3.02,
 			[PseudoStat.PseudoStatOffHandDps]: 0,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 863.66,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 378.01,
 		},
 	),
 );
 
 // Preset options for EP weights
 export const P1_PREBIS_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Pre-BIS - DW',
+	'Default - DW',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAgility]: 2.58,
-			[Stat.StatHitRating]: 2.54,
-			[Stat.StatCritRating]: 0.89,
-			[Stat.StatHasteRating]: 1.83,
-			[Stat.StatExpertiseRating]: 2.02,
-			[Stat.StatMasteryRating]: 0.15,
-			[Stat.StatAttackPower]: 1,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatHitRating]: 1.09,
+			[Stat.StatCritRating]: 0.42,
+			[Stat.StatHasteRating]: 0.47,
+			[Stat.StatExpertiseRating]: 0.99,
+			[Stat.StatMasteryRating]: 0.26,
+			[Stat.StatAttackPower]: 0.37,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 6.76,
-			[PseudoStat.PseudoStatOffHandDps]: 3.38,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 863.23,
+			[PseudoStat.PseudoStatMainHandDps]: 2.55,
+			[PseudoStat.PseudoStatOffHandDps]: 1.27,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 370.12,
 		},
 	),
 );
@@ -82,10 +80,9 @@ export const DefaultOptions = MonkOptions.create({
 
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 76084, // Flask of Spring Blossoms
-	foodId: 104303, // Sea Mist Rice Noodles
+	foodId: 74648, // Sea Mist Rice Noodles
 	potId: 76089, // Virmen's Bite
 	prepotId: 76089, // Virmen's Bite
-	tinkerId: 126734, // Synapse Springs II
 });
 
 export const OtherDefaults = {

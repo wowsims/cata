@@ -211,6 +211,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns
+	warrior.PseudoStats.BaseBlockChance += 0.05
 	warrior.PseudoStats.BaseDodgeChance += 0.03664
 	warrior.PseudoStats.BaseParryChance += 0.05
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)

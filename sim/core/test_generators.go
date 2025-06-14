@@ -118,6 +118,7 @@ type SettingsCombos struct {
 	ItemSwapSets      []ItemSwapSetCombo
 	SimOptions        *proto.SimOptions
 	IsHealer          bool
+	IsTank            bool
 	StartingDistances []float64
 	Cooldowns         *proto.Cooldowns
 }
@@ -213,6 +214,9 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	}
 	if combos.IsHealer {
 		rsr.Raid.TargetDummies = 1
+	}
+	if combos.IsTank {
+		rsr.Raid.Tanks = append(rsr.Raid.Tanks, &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0})
 	}
 
 	return strings.Join(testNameParts, "-"), nil, nil, rsr
@@ -323,6 +327,7 @@ type ItemsTestGenerator struct {
 	Encounter  *proto.Encounter
 	SimOptions *proto.SimOptions
 	IsHealer   bool
+	IsTank     bool
 
 	// Some fields are populated automatically.
 	ItemFilter ItemFilter
@@ -411,6 +416,9 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 	}
 	if generator.IsHealer {
 		rsr.Raid.TargetDummies = 1
+	}
+	if generator.IsTank {
+		rsr.Raid.Tanks = append(rsr.Raid.Tanks, &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0})
 	}
 
 	return label, nil, nil, rsr
@@ -559,6 +567,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 						},
 					},
 					IsHealer:          config.IsHealer,
+					IsTank:            config.IsTank,
 					Encounters:        MakeDefaultEncounterCombos(),
 					SimOptions:        DefaultSimTestOptions,
 					Cooldowns:         config.Cooldowns,
@@ -576,6 +585,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 					SimOptions: DefaultSimTestOptions,
 					ItemFilter: config.ItemFilter,
 					IsHealer:   config.IsHealer,
+					IsTank:     config.IsTank,
 				},
 			},
 		},

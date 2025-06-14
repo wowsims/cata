@@ -186,7 +186,7 @@ export class ReforgeOptimizer {
 		this.player = simUI.player;
 		this.playerClass = this.player.getClass();
 		this.isExperimental = options?.experimental;
-		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman].includes(this.player.getSpec());
+		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman, Spec.SpecMistweaverMonk].includes(this.player.getSpec());
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
 		this.getEPDefaults = options?.getEPDefaults;
@@ -946,7 +946,7 @@ export class ReforgeOptimizer {
 				continue;
 			}
 
-			for (const reforgeData of this.player.getAvailableReforgings(item)) {
+			for (const reforgeData of this.player.getAvailableReforgings(item.withDynamicStats())) {
 				if (!epStats.includes(reforgeData.toStat)) {
 					continue;
 				}
@@ -966,7 +966,7 @@ export class ReforgeOptimizer {
 	// Apply stat dependencies before setting optimization coefficients
 	applyReforgeStat(coefficients: YalpsCoefficients, stat: Stat, amount: number, preCapEPs: Stats) {
 		// Handle Spirit to Spell Hit conversion for hybrid casters separately from standard dependencies
-		if (stat == Stat.StatSpirit && this.isHybridCaster) {
+		if ((stat == Stat.StatSpirit && this.isHybridCaster) || stat == Stat.StatExpertiseRating) {
 			this.setPseudoStatCoefficient(coefficients, PseudoStat.PseudoStatSpellHitPercent, amount / Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT);
 		}
 

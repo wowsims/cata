@@ -18,11 +18,11 @@ func TestWindwalker(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet: core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_prebis_dw"),
+		GearSet: core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_bis_dw"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_prebis_2h"),
-			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_bis_dw"),
 			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_bis_2h"),
+			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_prebis_dw"),
+			core.GetGearSet("../../../ui/monk/windwalker/gear_sets", "p1_prebis_2h"),
 		},
 		Talents:     WindwalkerTalents,
 		Glyphs:      WindwalkerDefaultGlyphs,
@@ -50,11 +50,10 @@ var PlayerOptionsWindwalker = &proto.Player_WindwalkerMonk{
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  76084,  // Flask of Spring Blossoms
-	FoodId:   104303, // Sea Mist Rice Noodles
-	PotId:    76089,  // Virmen's Bite
-	PrepotId: 76089,  // Virmen's Bite
-	TinkerId: 126734, // Synapse Springs II
+	FlaskId:  76084, // Flask of Spring Blossoms
+	FoodId:   74648, // Sea Mist Rice Noodles
+	PotId:    76089, // Virmen's Bite
+	PrepotId: 76089, // Virmen's Bite
 }
 
 var ItemFilter = core.ItemFilter{

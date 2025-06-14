@@ -42,7 +42,7 @@ func (destruction *DestructionWarlock) registerImmolate() {
 			}
 
 			if result.DidCrit() {
-				destruction.BurningEmbers.Gain(1, spell.ActionID, sim)
+				destruction.BurningEmbers.Gain(sim, 1, spell.ActionID)
 			}
 
 			spell.DealDamage(sim, result)
@@ -73,7 +73,7 @@ func (destruction *DestructionWarlock) registerImmolate() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if result.DidCrit() {
-					destruction.BurningEmbers.Gain(1, dot.Spell.ActionID, sim)
+					destruction.BurningEmbers.Gain(sim, 1, dot.Spell.ActionID)
 				}
 			},
 		},

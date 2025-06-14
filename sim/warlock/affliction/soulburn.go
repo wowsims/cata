@@ -51,7 +51,7 @@ func (affliction *AfflictionWarlock) registerSoulburn() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			affliction.SoulBurnAura.Activate(sim)
-			affliction.SoulShards.Spend(1, spell.ActionID, sim)
+			affliction.SoulShards.Spend(sim, 1, spell.ActionID)
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
