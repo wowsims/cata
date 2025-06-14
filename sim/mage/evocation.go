@@ -7,7 +7,6 @@ import (
 )
 
 func (mage *Mage) registerEvocation() {
-
 	if mage.Talents.RuneOfPower {
 		return
 	}

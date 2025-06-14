@@ -45,14 +45,14 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			damageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)
 
 			spell.DamageMultiplier *= damageMultiplier
-			for _ = range numberOfBolts {
+			for range numberOfBolts {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				mage.BrainFreezeAura.Deactivate(sim)
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 					if result.Landed() {
-						mage.HandleIcicleGeneration(sim, target, result.Damage)
+						mage.GainIcicle(sim, target, result.Damage)
 					}
 				})
 			}

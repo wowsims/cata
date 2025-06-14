@@ -186,9 +186,15 @@ func (mage *Mage) registerRuneOfPower() {
 		Label:    "Rune of Power",
 		ActionID: core.ActionID{SpellID: 116011},
 		Duration: time.Minute,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			mage.MultiplyManaRegenSpeed(sim, 1.75)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			mage.MultiplyManaRegenSpeed(sim, 1/1.75)
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: .15,
+		FloatValue: 0.15,
 		ClassMask:  MageSpellsAllDamaging,
 	})
 

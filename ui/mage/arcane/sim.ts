@@ -10,6 +10,7 @@ import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { DefaultDebuffs, DefaultRaidBuffs, MAGE_BREAKPOINTS } from '../presets';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
 
@@ -35,21 +36,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
-		})(),
-		// Default soft caps for the Reforge optimizer
-		softCapBreakpoints: (() => {
-			// Sources:
-			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
-			// https://www.wowhead.com/mop-classic/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
-			const breakpoints = [23.14];
-			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
-				breakpoints,
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.48 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
-			});
-
-			return [hasteSoftCapConfig];
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -59,13 +46,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		specOptions: Presets.DefaultArcaneOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: Presets.DefaultRaidBuffs,
+		raidBuffs: DefaultRaidBuffs,
 
-		partyBuffs: PartyBuffs.create({
-			manaTideTotems: 1,
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Presets.DefaultDebuffs,
+		debuffs: DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -96,82 +81,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
-		/* 		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets > 3) {
-			return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
-		} else {
-			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} */
 		return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
-
-	/* simpleRotation: (player: Player<Spec.SpecArcaneMage>, simple: ArcaneMage_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		const prepullMirrorImage = APLPrepullAction.fromJsonString(
-			`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
-		);
-
-		const berserking = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
-		);
-		const hyperspeedAcceleration = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
-		);
-		const combatPot = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
-		);
-		const evocation = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
-		);
-
-		const arcaneBlastBelowStacks = APLAction.fromJsonString(
-			`{"condition":{"or":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":36032}}},"rhs":{"const":{"val":"4"}}}},{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":36032}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-				simple.only3ArcaneBlastStacksBelowManaPercent * 100
-			).toFixed(0)}%"}}}}]}}]}},"castSpell":{"spellId":{"spellId":42897}}}`,
-		);
-		const arcaneMissilesWithMissileBarrageBelowMana = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44401}}},{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-				simple.missileBarrageBelowManaPercent * 100
-			).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":42846}}}`,
-		);
-		const arcaneMisslesWithMissileBarrage = APLAction.fromJsonString(
-			`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44401}}},"castSpell":{"spellId":{"spellId":42846}}}`,
-		);
-		const arcaneBlastAboveMana = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpGt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-				simple.blastWithoutMissileBarrageAboveManaPercent * 100
-			).toFixed(0)}%"}}}},"castSpell":{"spellId":{"spellId":42897}}}`,
-		);
-		const arcaneMissiles = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42846}}}`);
-		const arcaneBarrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":44781}}}`);
-
-		prepullActions.push(prepullMirrorImage);
-
-		actions.push(
-			...([
-				berserking,
-				hyperspeedAcceleration,
-				combatPot,
-				simple.missileBarrageBelowManaPercent > 0 ? arcaneMissilesWithMissileBarrageBelowMana : null,
-				arcaneBlastBelowStacks,
-				arcaneMisslesWithMissileBarrage,
-				evocation,
-				arcaneBlastAboveMana,
-				simple.useArcaneBarrage ? arcaneBarrage : null,
-				arcaneMissiles,
-			].filter(a => a) as Array<APLAction>),
-		);
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
-	}, */
 
 	raidSimPresets: [
 		{
@@ -206,19 +117,7 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				updateSoftCaps: softCaps => {
-					const gear = player.getGear();
-					const hasT114P = gear.getItemSetCount("Firelord's Vestments") >= 4;
-
-					if (hasT114P) {
-						const softCapToModify = softCaps.find(sc => sc.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent));
-						if (softCapToModify) {
-							softCapToModify.breakpoints[0] = 17.48;
-						}
-					}
-
-					return softCaps;
-				},
+				statSelectionPresets: [MAGE_BREAKPOINTS],
 			});
 		});
 	}

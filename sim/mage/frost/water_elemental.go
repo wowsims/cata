@@ -9,9 +9,9 @@ import (
 	"github.com/wowsims/mop/sim/mage"
 )
 
-func (Mage *FrostMage) registerSummonWaterElementalSpell() {
+func (mage *FrostMage) registerSummonWaterElementalSpell() {
 
-	Mage.SummonWaterElemental = Mage.RegisterSpell(core.SpellConfig{
+	mage.SummonWaterElemental = mage.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 31687},
 		Flags:    core.SpellFlagAPL,
 
@@ -24,19 +24,14 @@ func (Mage *FrostMage) registerSummonWaterElementalSpell() {
 				CastTime: 1500 * time.Millisecond,
 			},
 			CD: core.Cooldown{
-				Timer:    Mage.NewTimer(),
+				Timer:    mage.NewTimer(),
 				Duration: time.Minute * 1,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			Mage.waterElemental.Enable(sim, Mage.waterElemental)
+			mage.waterElemental.Enable(sim, mage.waterElemental)
 		},
-	})
-
-	Mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: Mage.SummonWaterElemental,
-		Type:  core.CooldownTypeDPS,
 	})
 }
 
@@ -48,7 +43,7 @@ type WaterElemental struct {
 	Waterbolt *core.Spell
 }
 
-func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
+func (mage *FrostMage) NewWaterElemental() *WaterElemental {
 
 	waterElementalStatInheritance := func(ownerStats stats.Stats) stats.Stats {
 
@@ -76,19 +71,19 @@ func (Mage *FrostMage) NewWaterElemental() *WaterElemental {
 	waterElemental := &WaterElemental{
 		Pet: core.NewPet(core.PetConfig{
 			Name:                           "Water Elemental",
-			Owner:                          &Mage.Character,
+			Owner:                          &mage.Character,
 			BaseStats:                      waterElementalBaseStats,
 			StatInheritance:                waterElementalStatInheritance,
 			HasDynamicCastSpeedInheritance: true,
 			EnabledOnStart:                 true,
 			IsGuardian:                     true,
 		}),
-		mageOwner: Mage,
+		mageOwner: mage,
 	}
 	waterElemental.EnableManaBar()
 	waterElemental.EnableDynamicStats(waterElementalStatInheritance)
 
-	Mage.AddPet(waterElemental)
+	mage.AddPet(waterElemental)
 
 	return waterElemental
 }

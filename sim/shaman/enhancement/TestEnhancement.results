@@ -1,0 +1,2708 @@
+character_stats_results: {
+ key: "TestEnhancement-CharacterStats-Default"
+ value: {
+  final_stats: 154.35
+  final_stats: 10990.8225
+  final_stats: 14446.3
+  final_stats: 157.5
+  final_stats: 168
+  final_stats: 1707
+  final_stats: 3714
+  final_stats: 261
+  final_stats: 2177
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5825
+  final_stats: 24514.5945
+  final_stats: 0
+  final_stats: 162.25
+  final_stats: 0
+  final_stats: 0
+  final_stats: 21758
+  final_stats: 0
+  final_stats: 348651.2
+  final_stats: 60000
+  final_stats: 3000
+  final_stats: 5.02059
+  final_stats: 11.42353
+  final_stats: 22.83616
+  final_stats: 13.45216
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 52376.40952
+  tps: 31583.22783
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-AgonyandTorment"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 50033.40307
+  tps: 30554.01155
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Anhuur'sHymnal-55889"
+ value: {
+  dps: 49159.16237
+  tps: 30105.22005
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Anhuur'sHymnal-56407"
+ value: {
+  dps: 48970.25765
+  tps: 29848.88279
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 49413.98033
+  tps: 30084.57129
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 49573.40254
+  tps: 30145.83799
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ArrowofTime-72897"
+ value: {
+  dps: 50130.20594
+  tps: 30464.42855
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BattlegearoftheFirebird"
+ value: {
+  dps: 64676.64666
+  tps: 37690.12213
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BattlegearoftheWitchDoctor"
+ value: {
+  dps: 70366.02926
+  tps: 39691.60412
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BedrockTalisman-58182"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BellofEnragingResonance-59326"
+ value: {
+  dps: 48604.92809
+  tps: 29689.8474
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BellofEnragingResonance-65053"
+ value: {
+  dps: 48665.24969
+  tps: 29752.52916
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BindingPromise-67037"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Blood-SoakedAleMug-63843"
+ value: {
+  dps: 49475.61625
+  tps: 30275.77654
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodofIsiset-55995"
+ value: {
+  dps: 48755.35042
+  tps: 29804.91567
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodofIsiset-56414"
+ value: {
+  dps: 48781.16376
+  tps: 29816.38405
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
+ value: {
+  dps: 50923.04431
+  tps: 30982.03806
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
+ value: {
+  dps: 48566.12524
+  tps: 29722.696
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
+ value: {
+  dps: 49549.06399
+  tps: 30112.99783
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
+ value: {
+  dps: 48654.10406
+  tps: 29673.67079
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
+ value: {
+  dps: 48767.08375
+  tps: 29810.12857
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
+ value: {
+  dps: 50441.56356
+  tps: 30697.818
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
+ value: {
+  dps: 48566.12524
+  tps: 29722.696
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
+ value: {
+  dps: 49438.52228
+  tps: 30098.21547
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Bone-LinkFetish-77210"
+ value: {
+  dps: 50267.743
+  tps: 30818.95611
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Bone-LinkFetish-77982"
+ value: {
+  dps: 49886.14945
+  tps: 30680.71334
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Bone-LinkFetish-78002"
+ value: {
+  dps: 50607.80224
+  tps: 31055.08219
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BottledLightning-66879"
+ value: {
+  dps: 48428.27329
+  tps: 29829.1193
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BottledWishes-77114"
+ value: {
+  dps: 49166.35147
+  tps: 29836.45486
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Brawler'sTrophy-232015"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 51709.55768
+  tps: 31220.41452
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 51547.56466
+  tps: 31231.15657
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 51925.33366
+  tps: 31190.69934
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 48569.06746
+  tps: 29724.53172
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 50140.95369
+  tps: 30349.58969
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 51707.34401
+  tps: 31201.27288
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 48569.06746
+  tps: 29724.53172
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 50013.09858
+  tps: 30348.10906
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CelestialHarmonyBattlegear"
+ value: {
+  dps: 71425.08076
+  tps: 42805.92889
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CelestialHarmonyRegalia"
+ value: {
+  dps: 40804.49601
+  tps: 25982.87851
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Coren'sChilledChromiumCoaster-232012"
+ value: {
+  dps: 49299.2529
+  tps: 29975.91361
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CoreofRipeness-58184"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 51168.19842
+  tps: 30889.84051
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CrecheoftheFinalDragon-77205"
+ value: {
+  dps: 49777.00944
+  tps: 30542.26227
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CrecheoftheFinalDragon-77972"
+ value: {
+  dps: 49367.629
+  tps: 30319.80537
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CrecheoftheFinalDragon-77992"
+ value: {
+  dps: 49797.50037
+  tps: 30447.78444
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CrushingWeight-59506"
+ value: {
+  dps: 49291.03472
+  tps: 29953.99408
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CrushingWeight-65118"
+ value: {
+  dps: 49186.81659
+  tps: 29865.79242
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CunningoftheCruel-77208"
+ value: {
+  dps: 49262.79176
+  tps: 30526.05413
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CunningoftheCruel-77980"
+ value: {
+  dps: 49193.57819
+  tps: 30453.92699
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-CunningoftheCruel-78000"
+ value: {
+  dps: 49288.48166
+  tps: 30620.83023
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkmoonCard:Earthquake-62048"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkmoonCard:Hurricane-62049"
+ value: {
+  dps: 49748.08201
+  tps: 30361.3076
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkmoonCard:Hurricane-62051"
+ value: {
+  dps: 50355.11237
+  tps: 30595.42848
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkmoonCard:Tsunami-62050"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkmoonCard:Volcano-62047"
+ value: {
+  dps: 49061.02926
+  tps: 29947.97233
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkwalkerIdolofRage-92118"
+ value: {
+  dps: 49997.83177
+  tps: 30436.09917
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DarkwalkerStoneofRage-92117"
+ value: {
+  dps: 50001.64045
+  tps: 30370.92746
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelivererIdolofDestruction-92113"
+ value: {
+  dps: 49092.35174
+  tps: 29843.48647
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelivererStoneofDestruction-92151"
+ value: {
+  dps: 48938.78913
+  tps: 29890.86644
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelivererStoneofWisdom-92115"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 51664.76865
+  tps: 31261.40629
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 49281.38985
+  tps: 30191.21558
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ElectrosparkHeartstarter-67118"
+ value: {
+  dps: 48562.85773
+  tps: 29719.17471
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 51165.46066
+  tps: 30889.22653
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 51664.76865
+  tps: 31261.40629
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnlightenedIdolofDestruction-92144"
+ value: {
+  dps: 48922.70214
+  tps: 29822.59397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnlightenedStoneofDestruction-92143"
+ value: {
+  dps: 48952.71488
+  tps: 29899.39162
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EssenceoftheCyclone-59473"
+ value: {
+  dps: 49824.1952
+  tps: 30301.23231
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EssenceoftheCyclone-65140"
+ value: {
+  dps: 49829.34643
+  tps: 30382.64297
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 49453.96052
+  tps: 30097.56177
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EyeofUnmaking-77200"
+ value: {
+  dps: 49795.86867
+  tps: 30264.35132
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EyeofUnmaking-77977"
+ value: {
+  dps: 49655.22795
+  tps: 30202.19083
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EyeofUnmaking-77997"
+ value: {
+  dps: 49950.57345
+  tps: 30332.72786
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FallofMortality-59500"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FallofMortality-65124"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FieryQuintessence-69000"
+ value: {
+  dps: 48589.09321
+  tps: 29725.13079
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Figurine-DemonPanther-52199"
+ value: {
+  dps: 50511.44313
+  tps: 30672.09935
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Figurine-DreamOwl-52354"
+ value: {
+  dps: 48566.12524
+  tps: 29722.696
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Figurine-EarthenGuardian-52352"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Figurine-JeweledSerpent-52353"
+ value: {
+  dps: 48566.12524
+  tps: 29722.696
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Figurine-KingofBoars-52351"
+ value: {
+  dps: 49353.85325
+  tps: 30030.0981
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FireoftheDeep-77117"
+ value: {
+  dps: 48916.48825
+  tps: 29876.50613
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 51520.05605
+  tps: 31044.67629
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FluidDeath-58181"
+ value: {
+  dps: 50566.85697
+  tps: 30739.79173
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ForestwalkerIdolofRage-92142"
+ value: {
+  dps: 49889.10171
+  tps: 30403.90524
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ForestwalkerStoneofRage-92141"
+ value: {
+  dps: 49972.63593
+  tps: 30354.72316
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 51165.46066
+  tps: 30889.22653
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FoulGiftoftheDemonLord-72898"
+ value: {
+  dps: 48896.33903
+  tps: 29880.85459
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-FuryofAngerforge-59461"
+ value: {
+  dps: 49122.87024
+  tps: 29913.45229
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-GaleofShadows-56138"
+ value: {
+  dps: 48546.94146
+  tps: 29649.92459
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-GaleofShadows-56462"
+ value: {
+  dps: 48625.29841
+  tps: 29613.18348
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-GearDetector-61462"
+ value: {
+  dps: 49272.75199
+  tps: 29970.02375
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-GraceoftheHerald-55266"
+ value: {
+  dps: 49270.51886
+  tps: 30081.83875
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-GraceoftheHerald-56295"
+ value: {
+  dps: 49504.15715
+  tps: 30234.21589
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HarmlightToken-63839"
+ value: {
+  dps: 48727.60233
+  tps: 29882.27745
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Harrison'sInsigniaofPanache-65803"
+ value: {
+  dps: 49087.59977
+  tps: 29950.73028
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofIgnacious-59514"
+ value: {
+  dps: 48894.24675
+  tps: 29784.45678
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofIgnacious-65110"
+ value: {
+  dps: 48859.61863
+  tps: 29898.72702
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofRage-59224"
+ value: {
+  dps: 49619.37321
+  tps: 30004.59415
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofRage-65072"
+ value: {
+  dps: 49538.60175
+  tps: 30038.21253
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofSolace-55868"
+ value: {
+  dps: 49076.26164
+  tps: 29861.72448
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofSolace-56393"
+ value: {
+  dps: 49220.68789
+  tps: 29850.89847
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofThunder-55845"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartofThunder-56370"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HeartoftheVile-66969"
+ value: {
+  dps: 49419.05197
+  tps: 30176.18195
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 51664.76865
+  tps: 31261.40629
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ImpatienceofYouth-62464"
+ value: {
+  dps: 49454.81075
+  tps: 30069.7413
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ImpatienceofYouth-62469"
+ value: {
+  dps: 49454.81075
+  tps: 30069.7413
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ImpetuousQuery-55881"
+ value: {
+  dps: 48755.35042
+  tps: 29804.91567
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ImpetuousQuery-56406"
+ value: {
+  dps: 48781.16376
+  tps: 29816.38405
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-IndomitablePride-77211"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-IndomitablePride-77983"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-IndomitablePride-78003"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-InsigniaofDiplomacy-61433"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-InsigniaoftheCorruptedMind-77203"
+ value: {
+  dps: 48916.35153
+  tps: 29673.8188
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-InsigniaoftheCorruptedMind-77971"
+ value: {
+  dps: 49100.3134
+  tps: 29978.3551
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-InsigniaoftheCorruptedMind-77991"
+ value: {
+  dps: 49378.62914
+  tps: 30025.88605
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-InsigniaoftheEarthenLord-61429"
+ value: {
+  dps: 48709.98151
+  tps: 29784.75913
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-JarofAncientRemedies-59354"
+ value: {
+  dps: 48558.23035
+  tps: 29719.59541
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-JarofAncientRemedies-65029"
+ value: {
+  dps: 48558.23035
+  tps: 29719.64282
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 48567.80448
+  tps: 29721.92074
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 48569.06746
+  tps: 29723.12363
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-JujuofNimbleness-63840"
+ value: {
+  dps: 49475.61625
+  tps: 30275.77654
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-KeytotheEndlessChamber-55795"
+ value: {
+  dps: 50021.21781
+  tps: 30454.92124
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-KeytotheEndlessChamber-56328"
+ value: {
+  dps: 50565.98564
+  tps: 30574.30314
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-KiroptyricSigil-77113"
+ value: {
+  dps: 51208.78452
+  tps: 30971.08642
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-KvaldirBattleStandard-59685"
+ value: {
+  dps: 49005.68378
+  tps: 29752.44554
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-KvaldirBattleStandard-59689"
+ value: {
+  dps: 49005.68378
+  tps: 29752.44554
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-LadyLa-La'sSingingShell-67152"
+ value: {
+  dps: 48858.04678
+  tps: 29648.03368
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-LeadenDespair-55816"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-LeadenDespair-56347"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-LeftEyeofRajh-56102"
+ value: {
+  dps: 50086.49556
+  tps: 30357.46037
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-LeftEyeofRajh-56427"
+ value: {
+  dps: 50129.82323
+  tps: 30213.66278
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-LicensetoSlay-58180"
+ value: {
+  dps: 49648.47254
+  tps: 30096.64832
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MagnetiteMirror-55814"
+ value: {
+  dps: 49146.83807
+  tps: 29981.94793
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MagnetiteMirror-56345"
+ value: {
+  dps: 49522.70565
+  tps: 30006.88511
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MandalaofStirringPatterns-62467"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MandalaofStirringPatterns-62472"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MarkofKhardros-56132"
+ value: {
+  dps: 49252.04709
+  tps: 30054.30738
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MarkofKhardros-56458"
+ value: {
+  dps: 49343.2933
+  tps: 30098.58053
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MartialDefenderIdol-92127"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MartialDefenderStone-92126"
+ value: {
+  dps: 48936.33513
+  tps: 29885.17111
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MartialIdolofBattle-92128"
+ value: {
+  dps: 49053.30419
+  tps: 29875.33846
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MartialStoneofBattle-92129"
+ value: {
+  dps: 49407.30199
+  tps: 30094.72642
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 50423.32131
+  tps: 30546.65806
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 50455.56499
+  tps: 30502.67268
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MightoftheOcean-55251"
+ value: {
+  dps: 49155.65932
+  tps: 30029.46377
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MightoftheOcean-56285"
+ value: {
+  dps: 49530.96601
+  tps: 30097.63888
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MithrilStopwatch-232013"
+ value: {
+  dps: 48599.45358
+  tps: 29685.256
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MoonwellChalice-70142"
+ value: {
+  dps: 48964.32256
+  tps: 29899.34016
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NaturalistIdolofDestruction-92137"
+ value: {
+  dps: 48976.72654
+  tps: 29737.43104
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NaturalistIdolofRage-92133"
+ value: {
+  dps: 49878.64823
+  tps: 30407.39353
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NaturalistStoneofDestruction-92136"
+ value: {
+  dps: 48930.23875
+  tps: 29880.56647
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NaturalistStoneofRage-92138"
+ value: {
+  dps: 49970.71211
+  tps: 30350.91575
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NaturalistStoneofWisdom-92139"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 48764.7066
+  tps: 29808.95445
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 48791.21345
+  tps: 29821.20278
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Oremantle'sFavor-61448"
+ value: {
+  dps: 48837.28009
+  tps: 30045.28225
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PartisanDefenderIdol-92147"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PartisanDefenderStone-92114"
+ value: {
+  dps: 48938.48005
+  tps: 29889.15892
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PartisanIdolofBattle-92148"
+ value: {
+  dps: 49055.50437
+  tps: 29880.99998
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PartisanStoneofBattle-92149"
+ value: {
+  dps: 49420.53353
+  tps: 30099.86758
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PartisanStoneofWisdom-92145"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PetrifiedPickledEgg-232014"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PorcelainCrab-55237"
+ value: {
+  dps: 48743.71431
+  tps: 29798.71834
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PorcelainCrab-56280"
+ value: {
+  dps: 48868.19826
+  tps: 29854.47074
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Prestor'sTalismanofMachination-59441"
+ value: {
+  dps: 49917.93672
+  tps: 30436.01563
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Prestor'sTalismanofMachination-65026"
+ value: {
+  dps: 50029.80191
+  tps: 30357.17888
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rainsong-55854"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rainsong-56377"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 42335.10287
+  tps: 23222.51188
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 42549.58074
+  tps: 23597.8572
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 41993.00045
+  tps: 23082.96569
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ReflectionoftheLight-77115"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RegaliaoftheFirebird"
+ value: {
+  dps: 39735.25646
+  tps: 25350.02193
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RegaliaoftheWitchDoctor"
+ value: {
+  dps: 40605.24882
+  tps: 25810.15497
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ResolveofUndying-77201"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ResolveofUndying-77978"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ResolveofUndying-77998"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 52019.93941
+  tps: 31358.28597
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 51705.95415
+  tps: 31219.82881
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 49917.98379
+  tps: 30535.00166
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RightEyeofRajh-56100"
+ value: {
+  dps: 49658.89319
+  tps: 30309.83697
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RightEyeofRajh-56431"
+ value: {
+  dps: 49511.34548
+  tps: 30077.87863
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RosaryofLight-72901"
+ value: {
+  dps: 49442.31608
+  tps: 30327.04368
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RottingSkull-77116"
+ value: {
+  dps: 49619.99394
+  tps: 30177.30997
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 48707.71134
+  tps: 29773.90316
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 51185.61452
+  tps: 31014.6944
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 51304.21503
+  tps: 31035.42483
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 49884.58217
+  tps: 30247.12824
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 49960.69437
+  tps: 30277.56807
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 51182.06736
+  tps: 30974.38413
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 51241.08923
+  tps: 30970.76584
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 49757.71565
+  tps: 30235.4088
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 49841.27713
+  tps: 30275.02288
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+  hps: 323.0955
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+  hps: 364.4487
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Schnottz'sMedallionofCommand-65805"
+ value: {
+  dps: 49475.65518
+  tps: 30051.83388
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScourgeheartDefenderIdol-92135"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScourgeheartDefenderStone-92134"
+ value: {
+  dps: 48960.42398
+  tps: 29896.96258
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScourgeheartIdolofBattle-92167"
+ value: {
+  dps: 49058.93933
+  tps: 29877.8534
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScourgeheartStoneofBattle-92168"
+ value: {
+  dps: 49414.53568
+  tps: 30100.12507
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SeaStar-55256"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SeaStar-56290"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 48569.47656
+  tps: 29724.94082
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 48573.17946
+  tps: 29726.53681
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 49123.35902
+  tps: 29807.6565
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Shrine-CleansingPurifier-63838"
+ value: {
+  dps: 48593.18501
+  tps: 29619.64231
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 51547.56466
+  tps: 31231.15657
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Skardyn'sGrace-56115"
+ value: {
+  dps: 49622.7508
+  tps: 30110.81182
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Skardyn'sGrace-56440"
+ value: {
+  dps: 49839.12874
+  tps: 30284.75148
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Sorrowsong-55879"
+ value: {
+  dps: 48755.35042
+  tps: 29804.91567
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Sorrowsong-56400"
+ value: {
+  dps: 48781.16376
+  tps: 29816.38405
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Soul'sAnguish-66994"
+ value: {
+  dps: 49465.02043
+  tps: 30239.65294
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SoulCasket-58183"
+ value: {
+  dps: 48809.32377
+  tps: 29828.895
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SoulseizerIdolofDestruction-92125"
+ value: {
+  dps: 49069.90533
+  tps: 29782.22938
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SoulseizerStoneofDestruction-92124"
+ value: {
+  dps: 48951.01817
+  tps: 29888.49051
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SoulshifterVortex-77206"
+ value: {
+  dps: 49175.97787
+  tps: 29990.06178
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SoulshifterVortex-77970"
+ value: {
+  dps: 49105.58344
+  tps: 29961.46549
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SoulshifterVortex-77990"
+ value: {
+  dps: 49230.32339
+  tps: 30014.04981
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 48857.82156
+  tps: 29850.44164
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 48896.93268
+  tps: 29867.81797
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StarcatcherCompass-77202"
+ value: {
+  dps: 50900.09318
+  tps: 30754.66845
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StarcatcherCompass-77973"
+ value: {
+  dps: 50485.75959
+  tps: 30736.45395
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StarcatcherCompass-77993"
+ value: {
+  dps: 51037.36004
+  tps: 30818.64148
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StayofExecution-68996"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Stonemother'sKiss-61411"
+ value: {
+  dps: 48689.23561
+  tps: 29867.54595
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StumpofTime-62465"
+ value: {
+  dps: 49106.01383
+  tps: 29858.87507
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StumpofTime-62470"
+ value: {
+  dps: 49106.01383
+  tps: 29858.87507
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SymbioticWorm-59332"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SymbioticWorm-65048"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TalismanofSinisterOrder-65804"
+ value: {
+  dps: 48704.94267
+  tps: 29782.76631
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Tank-CommanderInsignia-63841"
+ value: {
+  dps: 49053.49735
+  tps: 29949.82795
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TearofBlood-55819"
+ value: {
+  dps: 48564.70215
+  tps: 29722.12326
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TearofBlood-56351"
+ value: {
+  dps: 48566.12524
+  tps: 29722.696
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TendrilsofBurrowingDark-55810"
+ value: {
+  dps: 48726.40818
+  tps: 29792.05719
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TendrilsofBurrowingDark-56339"
+ value: {
+  dps: 48781.16376
+  tps: 29816.38405
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TheHungerer-68927"
+ value: {
+  dps: 50344.38293
+  tps: 30529.6613
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TheHungerer-69112"
+ value: {
+  dps: 50263.37152
+  tps: 30333.47583
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Theralion'sMirror-59519"
+ value: {
+  dps: 48815.13372
+  tps: 29837.14076
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Theralion'sMirror-65105"
+ value: {
+  dps: 48875.5875
+  tps: 29868.84282
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Throngus'sFinger-56121"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Throngus'sFinger-56449"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ThundercallerIdolofDestruction-92120"
+ value: {
+  dps: 48637.41802
+  tps: 29824.50493
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ThundercallerIdolofRage-92116"
+ value: {
+  dps: 49857.69715
+  tps: 30340.55031
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ThundercallerStoneofDestruction-92119"
+ value: {
+  dps: 48953.96256
+  tps: 29895.29792
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ThundercallerStoneofRage-92121"
+ value: {
+  dps: 49971.7732
+  tps: 30352.46536
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ThundercallerStoneofWisdom-92122"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Tia'sGrace-55874"
+ value: {
+  dps: 49706.3212
+  tps: 30233.64384
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Tia'sGrace-56394"
+ value: {
+  dps: 49821.70063
+  tps: 30286.84501
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Tyrande'sFavoriteDoll-64645"
+ value: {
+  dps: 48662.56253
+  tps: 29873.77526
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-UnheededWarning-59520"
+ value: {
+  dps: 50187.05248
+  tps: 30428.2128
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-UnquenchableFlame-67101"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 50085.63405
+  tps: 30535.05592
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-UnsolvableRiddle-62468"
+ value: {
+  dps: 50085.63405
+  tps: 30535.05592
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-UnsolvableRiddle-68709"
+ value: {
+  dps: 50085.63405
+  tps: 30535.05592
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 48915.518
+  tps: 30130.11043
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 49296.45403
+  tps: 30134.82472
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Varo'then'sBrooch-72899"
+ value: {
+  dps: 49510.45949
+  tps: 30137.88986
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VeilofLies-72900"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 49249.30101
+  tps: 29986.34197
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 49391.07226
+  tps: 29989.75113
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VialofShadows-77207"
+ value: {
+  dps: 51603.71734
+  tps: 31570.35883
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VialofShadows-77979"
+ value: {
+  dps: 51454.26715
+  tps: 31332.18843
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VialofShadows-77999"
+ value: {
+  dps: 51579.73593
+  tps: 31660.55562
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VialofStolenMemories-59515"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-VialofStolenMemories-65109"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sBadgeofConquest-61033"
+ value: {
+  dps: 50820.46988
+  tps: 30837.26085
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 51025.74027
+  tps: 30944.11758
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sBadgeofDominance-70518"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sBadgeofVictory-61034"
+ value: {
+  dps: 49631.85457
+  tps: 30147.17363
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sBadgeofVictory-70519"
+ value: {
+  dps: 49733.23152
+  tps: 30186.76591
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
+ value: {
+  dps: 48940.31234
+  tps: 29849.43179
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
+ value: {
+  dps: 48414.77376
+  tps: 29477.3054
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
+ value: {
+  dps: 48595.78544
+  tps: 29683.07633
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
+ value: {
+  dps: 48944.49461
+  tps: 29739.39573
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofProwess-61029"
+ value: {
+  dps: 48793.67932
+  tps: 29821.94447
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
+ value: {
+  dps: 48793.67932
+  tps: 29821.94447
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
+ value: {
+  dps: 50602.16268
+  tps: 30670.45567
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 50806.49285
+  tps: 30856.85348
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
+ value: {
+  dps: 49535.76463
+  tps: 30139.45068
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
+ value: {
+  dps: 49628.15205
+  tps: 30181.36824
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 51741.64784
+  tps: 30317.33898
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 53292.63417
+  tps: 31611.33341
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 50932.00068
+  tps: 29832.8973
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WaterdancerDefenderIdol-92399"
+ value: {
+  dps: 48558.23035
+  tps: 29717.33899
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WaterdancerDefenderStone-92398"
+ value: {
+  dps: 48952.12208
+  tps: 29893.51737
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WaterdancerIdolofRage-92401"
+ value: {
+  dps: 49943.88173
+  tps: 30446.69503
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WaterdancerStoneofRage-92400"
+ value: {
+  dps: 49979.63748
+  tps: 30354.83176
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WaterdancerStoneofWisdom-92402"
+ value: {
+  dps: 48567.80448
+  tps: 29723.26874
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WillofUnbinding-77198"
+ value: {
+  dps: 48592.69247
+  tps: 29733.25472
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WillofUnbinding-77975"
+ value: {
+  dps: 48582.50332
+  tps: 29729.48999
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WillofUnbinding-77995"
+ value: {
+  dps: 48614.68958
+  tps: 29733.25472
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WitchingHourglass-55787"
+ value: {
+  dps: 48364.40826
+  tps: 29549.0099
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WitchingHourglass-56320"
+ value: {
+  dps: 48806.36772
+  tps: 29734.82603
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-World-QuellerFocus-63842"
+ value: {
+  dps: 48729.53707
+  tps: 29793.4473
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WrathofUnchaining-77197"
+ value: {
+  dps: 51211.11211
+  tps: 30917.42661
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WrathofUnchaining-77974"
+ value: {
+  dps: 50914.47951
+  tps: 30771.41715
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WrathofUnchaining-77994"
+ value: {
+  dps: 51420.47012
+  tps: 31018.57478
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Za'brox'sLuckyTooth-63742"
+ value: {
+  dps: 48844.43443
+  tps: 29870.9313
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Za'brox'sLuckyTooth-63745"
+ value: {
+  dps: 48844.43443
+  tps: 29870.9313
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Average-Default"
+ value: {
+  dps: 51812.69887
+  tps: 31158.23299
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 65304.59735
+  tps: 40379.59765
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51162.06111
+  tps: 30888.67397
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 65444.67494
+  tps: 36871.60633
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 52175.28721
+  tps: 34788.60115
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 41094.70689
+  tps: 25482.49669
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 49815.75023
+  tps: 29367.47941
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 60496.53192
+  tps: 40574.53696
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 44726.91136
+  tps: 30408.24296
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 58562.39641
+  tps: 35863.98561
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 48595.50166
+  tps: 35270.87682
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 36262.3007
+  tps: 25259.29653
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 45851.62613
+  tps: 29520.4612
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 64503.2839
+  tps: 43363.68783
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 48642.95713
+  tps: 33209.37783
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60905.41431
+  tps: 39010.54435
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 51415.87188
+  tps: 37273.45941
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 39369.1104
+  tps: 27385.13751
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Dwarf-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 47610.33271
+  tps: 31754.36894
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 67354.86039
+  tps: 40889.38416
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 52222.1443
+  tps: 31105.13496
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 69861.40197
+  tps: 38260.91401
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 53291.4584
+  tps: 34851.03009
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 42409.60498
+  tps: 26024.90641
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 52694.07509
+  tps: 30568.73309
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 63377.90346
+  tps: 40904.54466
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 45854.82983
+  tps: 30852.3945
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 62041.99733
+  tps: 36929.49118
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 50251.81852
+  tps: 35442.80528
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 37023.07006
+  tps: 25587.56068
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 48727.93608
+  tps: 30631.94086
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 66222.27347
+  tps: 43686.9485
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 50059.35125
+  tps: 33868.25194
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 64570.83934
+  tps: 40457.4285
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 53125.71538
+  tps: 37740.90488
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 40406.3761
+  tps: 27785.1662
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Orc-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 50362.79668
+  tps: 32574.2063
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 65786.32368
+  tps: 40949.16338
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51978.76641
+  tps: 31570.89134
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 67738.25112
+  tps: 38168.70951
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 52294.03378
+  tps: 35036.55564
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 41646.29941
+  tps: 25639.09213
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 52446.97898
+  tps: 30844.50687
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 60850.80225
+  tps: 40734.10652
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 45045.29008
+  tps: 30656.2525
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60164.68303
+  tps: 36272.87437
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 48956.10219
+  tps: 34936.2908
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 36314.50669
+  tps: 25171.33552
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 46337.59324
+  tps: 29222.4069
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 65537.18326
+  tps: 43457.61593
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 49194.67065
+  tps: 33316.47103
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 63721.56267
+  tps: 40258.06452
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 52052.48038
+  tps: 37410.80235
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 39333.1878
+  tps: 27237.07775
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Settings-Troll-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 47449.38583
+  tps: 31301.68843
+ }
+}
+dps_results: {
+ key: "TestEnhancement-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 47524.78274
+  tps: 27699.80347
+ }
+}

@@ -6,6 +6,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { DefaultDebuffs, DefaultRaidBuffs, MAGE_BREAKPOINTS } from '../presets';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -41,22 +42,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		specOptions: Presets.DefaultFrostOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			blessingOfKings: true,
-			mindQuickening: true,
-			leaderOfThePack: true,
-			blessingOfMight: true,
-			unholyAura: true,
-			bloodlust: true,
-			skullBannerCount: 2,
-			stormlashTotemCount: 4,
-		}),
+		raidBuffs: DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({
-			curseOfElements: true,
-		}),
+		debuffs: DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -131,7 +120,9 @@ export class FrostMageSimUI extends IndividualSimUI<Spec.SpecFrostMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				statSelectionPresets: [MAGE_BREAKPOINTS],
+			});
 		});
 	}
 }
