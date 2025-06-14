@@ -31,13 +31,8 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 		Shield: restoOptions.ClassOptions.Shield,
 	}
 
-	totems := &proto.ShamanTotems{}
-	if restoOptions.ClassOptions.Totems != nil {
-		totems = restoOptions.ClassOptions.Totems
-	}
-
 	resto := &RestorationShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
+		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, false, restoOptions.ClassOptions.FeleAutocast),
 	}
 
 	// if resto.HasMHWeapon() {

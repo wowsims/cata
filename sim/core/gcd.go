@@ -83,6 +83,11 @@ func (unit *Unit) CancelGCDTimer(sim *Simulation) {
 	unit.rotationAction.Cancel(sim)
 }
 
+func (unit *Unit) CancelHardcast(sim *Simulation) {
+	unit.Hardcast.Expires = startingCDTime
+	unit.SetGCDTimer(sim, sim.CurrentTime+unit.ReactionTime)
+}
+
 func (unit *Unit) WaitUntil(sim *Simulation, readyTime time.Duration) {
 	if readyTime < sim.CurrentTime {
 		panic(unit.Label + ": cannot wait negative time")

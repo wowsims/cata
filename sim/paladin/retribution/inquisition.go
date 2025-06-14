@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/paladin"
 )
 
@@ -16,18 +17,27 @@ func (ret *RetributionPaladin) registerInquisition() {
 	actionID := core.ActionID{SpellID: 84963}
 	inquisitionDuration := time.Second * 20
 
+	critBuffs := stats.Stats{
+		stats.PhysicalCritPercent: 10,
+		stats.SpellCritPercent:    10,
+	}
+
 	inquisitionAura := ret.RegisterAura(core.Aura{
 		Label:     "Inquisition" + ret.Label,
 		ActionID:  actionID,
 		Duration:  inquisitionDuration,
 		MaxStacks: 3,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			ret.AddStatsDynamic(sim, critBuffs)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			ret.AddStatsDynamic(sim, critBuffs.Invert())
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.3,
 		School:     core.SpellSchoolHoly,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 10,
 	})
 
 	// Inquisition self-buff.

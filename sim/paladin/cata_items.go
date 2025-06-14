@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -146,6 +147,9 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 		// Your Shield of the Righteous deals 20% additional damage as Fire damage.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if paladin.Spec != proto.Spec_SpecProtectionPaladin {
+				return
+			}
 
 			procDamage := 0.0
 
@@ -231,6 +235,10 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 		},
 		// Increases damage done by your Templar's Verdict by 20%.
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			if agent.GetCharacter().Spec != proto.Spec_SpecRetributionPaladin {
+				return
+			}
+
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  SpellMaskTemplarsVerdict,
