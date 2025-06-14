@@ -2641,15 +2641,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-UnerringVisionofLeiShen-96930"
- value: {
-  dps: 115522.16569
-  tps: 808655.15986
-  dtps: 43714.06342
-  hps: 6663.18018
- }
-}
-dps_results: {
  key: "TestBrewmaster-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 114524.33646

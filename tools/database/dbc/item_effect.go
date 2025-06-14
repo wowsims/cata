@@ -134,7 +134,7 @@ func resolveStatsSpell(spellID int) int {
 	for _, se := range dbcInstance.SpellEffects[spellID] {
 		switch se.EffectAura {
 		case A_MOD_STAT, A_MOD_RATING, A_MOD_RANGED_ATTACK_POWER, A_MOD_ATTACK_POWER, A_MOD_DAMAGE_DONE, A_MOD_TARGET_RESISTANCE, A_MOD_RESISTANCE, A_MOD_INCREASE_ENERGY,
-			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL, A_MOD_CRIT_PCT:
+			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL:
 			return spellID
 		}
 	}

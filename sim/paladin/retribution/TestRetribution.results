@@ -2047,13 +2047,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-UnerringVisionofLeiShen-96930"
- value: {
-  dps: 141697.28872
-  tps: 134041.38926
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 139029.07783

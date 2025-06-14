@@ -2335,14 +2335,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-UnerringVisionofLeiShen-96930"
- value: {
-  dps: 114234.21709
-  tps: 105940.96066
-  hps: 7500.72235
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 113236.68195

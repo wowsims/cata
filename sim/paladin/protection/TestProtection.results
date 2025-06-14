@@ -2623,15 +2623,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-AllItems-UnerringVisionofLeiShen-96930"
- value: {
-  dps: 133933.48163
-  tps: 927828.39467
-  dtps: 81925.9476
-  hps: 73507.73853
- }
-}
-dps_results: {
  key: "TestProtection-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 128165.47111
