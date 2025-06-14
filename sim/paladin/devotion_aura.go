@@ -2,6 +2,7 @@ package paladin
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 /*
@@ -14,11 +15,20 @@ all party and raid members within 40 yards, granting them
 ----------
 
 immunity to Silence and Interrupt effects and reducing all magic damage taken by 20%.
+
+-- Holy --
+
+Devotion Aura also reduces physical damage taken by 20% while outside of Arenas and Battlegrounds
+
+-- /Holy --
+
 Lasts 6 sec.
 */
 func (paladin *Paladin) registerDevotionAura() {
+	isHoly := paladin.Spec == proto.Spec_SpecHolyPaladin
+
 	devotionAura := paladin.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
-		return core.DevotionAuraAura(&paladin.Character, 0)
+		return core.DevotionAuraAura(unit, 0, isHoly)
 	})
 
 	paladin.RegisterSpell(core.SpellConfig{
