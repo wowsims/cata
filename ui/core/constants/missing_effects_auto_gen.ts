@@ -197,5 +197,4 @@ export const MISSING_ITEM_EFFECTS = [
 ]
 
 export const MISSING_ENCHANT_EFFECTS = [
-    5124, // Enchant Weapon - Spirit of Conquest
 ]
