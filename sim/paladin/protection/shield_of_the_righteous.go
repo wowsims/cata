@@ -1,10 +1,11 @@
-package paladin
+package protection
 
 import (
 	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/paladin"
 )
 
 /*
@@ -27,44 +28,44 @@ Selfless Healer also increases healing from Flash of Light on yourself by 20% pe
 
 Stacks up to 5 times.
 */
-func (paladin *Paladin) registerShieldOfTheRighteous() {
-	paladin.BastionOfGloryAura = paladin.RegisterAura(core.Aura{
+func (prot *ProtectionPaladin) registerShieldOfTheRighteous() {
+	prot.BastionOfGloryAura = prot.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 114637},
-		Label:     "Bastion of Glory" + paladin.Label,
+		Label:     "Bastion of Glory" + prot.Label,
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks == 0 {
-				paladin.BastionOfGloryMultiplier = 0.0
+				prot.BastionOfGloryMultiplier = 0.0
 				return
 			}
 
-			paladin.BastionOfGloryMultiplier = 0.1*float64(newStacks) + paladin.ShieldOfTheRighteousAdditiveMultiplier
+			prot.BastionOfGloryMultiplier = 0.1*float64(newStacks) + prot.ShieldOfTheRighteousAdditiveMultiplier
 		},
 	}).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnCastComplete,
-		ClassSpellMask: SpellMaskWordOfGlory,
+		ClassSpellMask: paladin.SpellMaskWordOfGlory,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.BastionOfGloryAura.Deactivate(sim)
+			prot.BastionOfGloryAura.Deactivate(sim)
 		},
 	})
 
 	var snapshotDmgReduction float64
-	shieldOfTheRighteousAura := paladin.RegisterAura(core.Aura{
+	shieldOfTheRighteousAura := prot.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 132403},
-		Label:     "Shield of the Righteous" + paladin.Label,
+		Label:     "Shield of the Righteous" + prot.Label,
 		Duration:  time.Second * 3,
 		MaxStacks: 100,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			snapshotDmgReduction = 1.0 +
-				(-0.25-paladin.ShieldOfTheRighteousAdditiveMultiplier)*(1.0+paladin.ShieldOfTheRighteousMultiplicativeMultiplier)
+				(-0.25-prot.ShieldOfTheRighteousAdditiveMultiplier)*(1.0+prot.ShieldOfTheRighteousMultiplicativeMultiplier)
 
 			snapshotDmgReduction = max(0.2, snapshotDmgReduction)
 
-			paladin.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] *= snapshotDmgReduction
+			prot.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] *= snapshotDmgReduction
 
 			percent := int32(math.Round((1.0 - snapshotDmgReduction) * 100))
 			if percent > 0 {
@@ -72,20 +73,20 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] /= snapshotDmgReduction
+			prot.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] /= snapshotDmgReduction
 		},
 	})
 
-	paladin.AddDefensiveCooldownAura(shieldOfTheRighteousAura)
+	prot.AddDefensiveCooldownAura(shieldOfTheRighteousAura)
 
 	actionID := core.ActionID{SpellID: 53600}
 
-	paladin.RegisterSpell(core.SpellConfig{
+	prot.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskShieldOfTheRighteous,
+		ClassSpellMask: paladin.SpellMaskShieldOfTheRighteous,
 
 		MaxRange: core.MaxMeleeRange,
 
@@ -94,25 +95,25 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 				NonEmpty: true,
 			},
 			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
+				Timer:    prot.NewTimer(),
 				Duration: time.Millisecond * 1500,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return paladin.PseudoStats.CanBlock && paladin.HolyPower.CanSpend(3)
+			return prot.PseudoStats.CanBlock && prot.HolyPower.CanSpend(3)
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
+		CritMultiplier:   prot.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := paladin.CalcScalingSpellDmg(0.73199999332) + 0.61699998379*spell.MeleeAttackPower()
+			baseDamage := prot.CalcScalingSpellDmg(0.73199999332) + 0.61699998379*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.HolyPower.Spend(sim, 3, actionID)
+				prot.HolyPower.Spend(sim, 3, actionID)
 			}
 
 			// Buff should apply even if the spell misses/dodges/parries
@@ -123,8 +124,8 @@ func (paladin *Paladin) registerShieldOfTheRighteous() {
 				spell.RelatedSelfBuff.Activate(sim)
 			}
 
-			paladin.BastionOfGloryAura.Activate(sim)
-			paladin.BastionOfGloryAura.AddStack(sim)
+			prot.BastionOfGloryAura.Activate(sim)
+			prot.BastionOfGloryAura.AddStack(sim)
 
 			spell.DealDamage(sim, result)
 		},

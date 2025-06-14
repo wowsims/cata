@@ -620,6 +620,10 @@ func (paladin *Paladin) registerGlyphOfProtectorOfTheInnocent() {
 
 // You take 10% less damage for 6 sec after dealing damage with Templar's Verdict or Exorcism.
 func (paladin *Paladin) registerGlyphOfTemplarsVerdict() {
+	if paladin.Spec != proto.Spec_SpecRetributionPaladin {
+		return
+	}
+
 	glyphOfTemplarVerdictAura := paladin.RegisterAura(core.Aura{
 		Label:    "Glyph of Templar's Verdict" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 115668},
@@ -640,6 +644,10 @@ func (paladin *Paladin) registerGlyphOfTemplarsVerdict() {
 
 // Your successful blocks increase the damage of your next Shield of the Righteous by 10%. Stacks up to 3 times.
 func (paladin *Paladin) registerGlyphOfTheAlabasterShield() {
+	if paladin.Spec != proto.Spec_SpecProtectionPaladin {
+		return
+	}
+
 	spellMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  SpellMaskShieldOfTheRighteous,
