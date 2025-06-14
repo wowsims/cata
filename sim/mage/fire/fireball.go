@@ -42,9 +42,6 @@ func (fire *FireMage) registerFireballSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-				if result.Landed() {
-					fire.ApplyIgnite(sim, target, result.Damage)
-				}
 			})
 		},
 	})

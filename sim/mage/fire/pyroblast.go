@@ -46,7 +46,6 @@ func (fire *FireMage) registerPyroblastSpell() {
 				if result.Landed() {
 					spell.RelatedDotSpell.Cast(sim, target)
 					spell.DealDamage(sim, result)
-					fire.ApplyIgnite(sim, target, result.Damage)
 					fire.pyroblastAura.Deactivate(sim)
 				}
 			})

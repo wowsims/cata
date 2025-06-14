@@ -1,64 +1,38 @@
 package fire
 
 import (
-	"fmt"
-	"time"
-
+	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/mage"
 )
 
 func (fire *FireMage) registerMastery() {
 
-	fire.ignite = fire.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 413843},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+	fire.ignite = cata.RegisterIgniteEffect(&fire.Unit, cata.IgniteConfig{
+		ActionID:       core.ActionID{SpellID: 12846},
 		ClassSpellMask: mage.MageSpellIgnite,
+		DotAuraLabel:   "Ignite",
+		DotAuraTag:     "IgniteDot",
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		ProcTrigger: core.ProcTrigger{
+			Name:     "Ignite Talent",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskSpellDamage,
+			Outcome:  core.OutcomeLanded,
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Ignite",
-			},
-			NumberOfTicks: 2,
-			TickLength:    2 * time.Second,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, 1)
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+			ExtraCondition: func(_ *core.Simulation, spell *core.Spell, _ *core.SpellResult) bool {
+				return spell.SpellSchool.Matches(core.SpellSchoolFire)
 			},
 		},
-		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			dot := spell.Dot(target)
-			return spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
+		DamageCalculator: func(result *core.SpellResult) float64 {
+			return result.Damage * fire.GetMasteryBonus()
 		},
 	})
 
-}
+	// This is needed because we want to listen for the spell "cast" event that refreshes the Dot
+	fire.ignite.Flags ^= core.SpellFlagNoOnCastComplete
 
-func (fire *FireMage) ApplyIgnite(sim *core.Simulation, target *core.Unit, damage float64) {
-	existingDot := fire.ignite.Dot(target)
-
-	masteryAdjustedDamage := damage * fire.GetMasteryBonus()
-
-	if existingDot.IsActive() {
-		masteryAdjustedDamage += float64(existingDot.RemainingTicks()) * existingDot.Spell.ExpectedTickDamage(sim, target)
-	}
-
-	fmt.Println(masteryAdjustedDamage)
-	fire.ignite.DamageMultiplier *= masteryAdjustedDamage
-	fire.ignite.Dot(target).Apply(sim)
-	fire.ignite.DamageMultiplier /= masteryAdjustedDamage
 }
 
 func (fire *FireMage) GetMasteryBonus() float64 {

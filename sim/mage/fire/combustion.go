@@ -42,14 +42,13 @@ func (fire *FireMage) registerCombustionSpell() {
 		},
 	})
 
-	calculatedDotTick := func(target *core.Unit) float64 {
-		tickDamage := 0.0
-		spell := fire.Ignite
+	calculatedDotTick := func(sim *core.Simulation, target *core.Unit) float64 {
+		spell := fire.ignite
 		dot := spell.Dot(target)
-		if dot.IsActive() {
-			tickDamage += dot.SnapshotBaseDamage * .5
+		if !dot.IsActive() {
+			return 0.0
 		}
-		return tickDamage
+		return dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick).Damage
 	}
 
 	fire.combustion.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
@@ -72,7 +71,7 @@ func (fire *FireMage) registerCombustionSpell() {
 			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				tickBase := calculatedDotTick(target)
+				tickBase := calculatedDotTick(sim, target)
 				dot.Snapshot(target, tickBase)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -80,7 +79,7 @@ func (fire *FireMage) registerCombustionSpell() {
 			},
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			tickBase := calculatedDotTick(target)
+			tickBase := calculatedDotTick(sim, target)
 			result := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			critChance := spell.SpellCritChance(target)
