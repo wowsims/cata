@@ -367,6 +367,13 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 	}
 
+	// Timeless Isle trinkets are all ilvl 496 and does not have a source listed.
+	if item.Sources == nil {
+		if item.Type == proto.ItemType_ItemTypeTrinket && ilvl == 496 {
+			return 3
+		}
+	}
+
 	//AtlasLoot‐style source checks
 	for _, src := range item.Sources {
 		//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
