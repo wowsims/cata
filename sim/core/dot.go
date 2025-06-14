@@ -27,6 +27,8 @@ type DotConfig struct {
 	HasteReducesDuration bool // does not gain additional ticks after a certain haste threshold
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+
+	PeriodicDamageMultiplier float64 // Multiplier for periodic damage on top of the spell's damage multiplier
 }
 
 type Dot struct {
@@ -50,6 +52,8 @@ type Dot struct {
 	tmpExtraTicks  int32 // extra ticks that are added during the runtime of the dot
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+
+	PeriodicDamageMultiplier float64 // Multiplier for periodic damage on top of the spell's damage multiplier
 
 	affectedByCastSpeed  bool // tick length are shortened based on casting speed
 	hasteReducesDuration bool // does not gain additional ticks after a haste threshold, HasteAffectsDuration in dbc
@@ -327,6 +331,10 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		return
 	}
 
+	if config.PeriodicDamageMultiplier == 0 {
+		config.PeriodicDamageMultiplier = 1
+	}
+
 	if config.Spell == nil {
 		config.Spell = spell
 	}
@@ -343,6 +351,8 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		isChanneled:          config.Spell.Flags.Matches(SpellFlagChanneled),
 
 		BonusCoefficient: config.BonusCoefficient,
+
+		PeriodicDamageMultiplier: config.PeriodicDamageMultiplier,
 	}
 
 	auraConfig := config.Aura

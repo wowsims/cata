@@ -344,6 +344,10 @@ const (
 	// Used to modify the amount of charges a spell has
 	// Uses: IntValue
 	SpellMod_ModCharges_Flat
+
+	// Will multiply the dot.PeriodicDamageMultiplier. +5% = 0.05
+	// Uses FloatValue
+	SpellMod_DotDamageDone_Pct
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -459,6 +463,10 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_ModCharges_Flat: {
 		Apply:  applyModChargesFlat,
 		Remove: removeModChargesFlat,
+	},
+	SpellMod_DotDamageDone_Pct: {
+		Apply:  applyDotDamageDonePercent,
+		Remove: removeDotDamageDonePercent,
 	},
 }
 
@@ -733,5 +741,31 @@ func removeModChargesFlat(mod *SpellMod, spell *Spell) {
 
 	if spell.charges > spell.MaxCharges {
 		spell.charges = spell.MaxCharges
+	}
+}
+
+func applyDotDamageDonePercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.PeriodicDamageMultiplier *= mod.floatValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.PeriodicDamageMultiplier *= mod.floatValue
+	}
+}
+
+func removeDotDamageDonePercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.PeriodicDamageMultiplier /= mod.floatValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.PeriodicDamageMultiplier /= mod.floatValue
 	}
 }

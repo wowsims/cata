@@ -814,7 +814,8 @@ func registerDevotionAuraCD(agent Agent, numDevotionAuras int32) {
 		return
 	}
 
-	devAura := DevotionAuraAura(agent.GetCharacter(), -1)
+	// TODO: Config for specifying the amount of Holy spec Devotion Auras?
+	devAura := DevotionAuraAura(&agent.GetCharacter().Unit, -1, false)
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -834,31 +835,41 @@ func registerDevotionAuraCD(agent Agent, numDevotionAuras int32) {
 		numDevotionAuras)
 }
 
-func DevotionAuraAura(character *Character, actionTag int32) *Aura {
+func DevotionAuraAura(unit *Unit, actionTag int32, isHoly bool) *Aura {
 	actionID := DevotionAuraActionID.WithTag(actionTag)
 
-	return character.GetOrRegisterAura(Aura{
+	auraConfig := Aura{
 		Label:    "DevotionAura-" + actionID.String(),
 		Tag:      DevotionAuraTag,
 		ActionID: actionID,
 		Duration: DevotionAuraDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.8
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 0.8
-			character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 0.8
-		},
-	})
+	}
+
+	if isHoly {
+		// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
+		// - Devotion Aura cast by a Holy Paladin will now reduce all damage by 20% (was Magical damage only).
+		//   - Developers’ notes: Changing Devotion Aura to reduce all damage makes it beneficial in more situations and aligns with other damage reducing abilities like Power Word: Barrier.
+		auraConfig.AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.DamageTakenMultiplier, 0.8)
+	} else {
+		auraConfig.OnGain = func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.8
+		}
+		auraConfig.OnExpire = func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 0.8
+		}
+	}
+
+	return unit.GetOrRegisterAura(auraConfig)
 }
 
 var HandOfSacrificeAuraTag = "HandOfSacrifice"

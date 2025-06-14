@@ -53,6 +53,7 @@ func (ret *RetributionPaladin) Initialize() {
 	ret.registerArtOfWar()
 	ret.registerDivineStorm()
 	ret.registerExorcism()
+	ret.registerHotfixPassive()
 	ret.registerInquisition()
 	ret.registerJudgmentsOfTheBold()
 	ret.registerSealOfJustice()
