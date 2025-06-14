@@ -751,6 +751,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 130033.04422
+  tps: 900325.36114
+  dtps: 79859.84039
+  hps: 73645.26171
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
   dps: 131882.66818
@@ -766,6 +775,24 @@ dps_results: {
   tps: 901999.72646
   dtps: 80892.5227
   hps: 73799.30249
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 130445.95661
+  tps: 903004.22618
+  dtps: 79974.54259
+  hps: 73586.09384
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 130145.90617
+  tps: 901054.99542
+  dtps: 80882.90124
+  hps: 73674.05594
  }
 }
 dps_results: {

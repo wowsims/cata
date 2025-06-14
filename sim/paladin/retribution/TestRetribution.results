@@ -591,10 +591,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 145634.72461
+  tps: 137218.40402
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-EnchantWeapon-JadeSpirit-4442"
  value: {
   dps: 145696.02105
   tps: 137274.74773
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 145638.74909
+  tps: 137222.42851
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 145643.26392
+  tps: 137226.94334
  }
 }
 dps_results: {

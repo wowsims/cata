@@ -612,6 +612,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
   dps: 57732.98911
@@ -623,6 +630,20 @@ dps_results: {
  value: {
   dps: 54934.52615
   tps: 32759.62519
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
  }
 }
 dps_results: {

@@ -687,7 +687,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 122254.8415
+  tps: 112991.20262
+  hps: 7339.48767
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 122254.8415
+  tps: 112991.20262
+  hps: 7339.48767
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 122254.8415
+  tps: 112991.20262
+  hps: 7339.48767
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EnchantWeapon-SpiritofConquest-5124"
  value: {
   dps: 122254.8415
   tps: 112991.20262

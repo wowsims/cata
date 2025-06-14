@@ -735,19 +735,28 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
  value: {
-  dps: 90702.83029
-  tps: 627847.79992
-  dtps: 53846.88738
-  hps: 24372.9795
+  dps: 90756.89644
+  tps: 628226.21738
+  dtps: 54026.555
+  hps: 24577.09232
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 89287.69965
+  tps: 618190.0285
+  dtps: 53863.33519
+  hps: 24229.73775
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
-  dps: 90846.60964
-  tps: 628854.38813
-  dtps: 53803.10811
-  hps: 24448.15037
+  dps: 90671.91564
+  tps: 627631.01339
+  dtps: 53747.82973
+  hps: 24241.87932
  }
 }
 dps_results: {
@@ -755,6 +764,24 @@ dps_results: {
  value: {
   dps: 89325.35523
   tps: 618247.28015
+  dtps: 54571.70568
+  hps: 24228.77394
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 89221.57214
+  tps: 617727.26246
+  dtps: 54256.18964
+  hps: 24125.09174
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 89287.69965
+  tps: 618190.0285
   dtps: 54571.70568
   hps: 24228.77394
  }
