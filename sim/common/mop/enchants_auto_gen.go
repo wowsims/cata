@@ -13,21 +13,6 @@ func RegisterAllEnchants() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
-	// damage. Your highest stat is always chosen.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:      "Enchant Weapon - Dancing Steel",
-	//	EnchantID: 4444,
-	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   true,
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Permanently enchants a melee weapon to make your damaging melee strikes sometimes activate a Mogu protection
 	// spell, absorbing up to 0 damage.
 	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{

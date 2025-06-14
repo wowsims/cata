@@ -605,6 +605,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 57970.30518
+  tps: 34180.14604
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-EnchantWeapon-JadeSpirit-4442"
  value: {
   dps: 54934.52615

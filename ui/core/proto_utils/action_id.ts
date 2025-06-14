@@ -782,6 +782,7 @@ export class ActionId {
 				name = 'Plate of Winged Triumph - T16 4pc';
 				break;
 			case 'Hurricane':
+			case 'Dancing Steel':
 				if (tag == 1) {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {

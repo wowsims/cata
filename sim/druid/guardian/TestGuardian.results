@@ -733,6 +733,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 90788.58543
+  tps: 628448.09994
+  dtps: 53713.50076
+  hps: 24449.97056
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-EnchantWeapon-JadeSpirit-4442"
  value: {
   dps: 89325.35523

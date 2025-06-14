@@ -102,4 +102,51 @@ func init() {
 		})
 	})
 
+	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
+	// damage. Your highest stat is always chosen.
+	core.NewEnchantEffect(4444, func(agent core.Agent, _ proto.ItemLevelState) {
+		character := agent.GetCharacter()
+		duration := time.Second * 12
+
+		createDancingSteelAuras := func(tag int32) map[stats.Stat]*core.StatBuffAura {
+			labelSuffix := core.Ternary(tag == 1, " Main Hand", " (Off Hand)")
+			auras := make(map[stats.Stat]*core.StatBuffAura, 2)
+			auras[stats.Agility] = character.NewTemporaryStatsAura(
+				"Dancing Steel - Agility"+labelSuffix,
+				core.ActionID{SpellID: 118334}.WithTag(tag),
+				stats.Stats{stats.Agility: 1650},
+				duration,
+			)
+			auras[stats.Strength] = character.NewTemporaryStatsAura(
+				"Dancing Steel - Strength"+labelSuffix,
+				core.ActionID{SpellID: 118335}.WithTag(tag),
+				stats.Stats{stats.Strength: 1650},
+				duration,
+			)
+			return auras
+		}
+
+		mhAuras := createDancingSteelAuras(1)
+		ohAuras := createDancingSteelAuras(2)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Enchant Weapon - Dancing Steel",
+			Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+			Harmful:  true,
+			ActionID: core.ActionID{SpellID: 118333},
+			DPM: character.NewRPPMProcManager(
+				4444,
+				true,
+				core.ProcMaskDirect|core.ProcMaskProc,
+				core.RPPMConfig{
+					PPM: 2.53,
+				},
+			),
+			Outcome: core.OutcomeLanded,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				core.Ternary(spell.IsOH(), ohAuras, mhAuras)[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility})].Activate(sim)
+			},
+		})
+	})
+
 }
