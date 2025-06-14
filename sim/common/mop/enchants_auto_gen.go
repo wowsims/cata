@@ -55,21 +55,6 @@ func RegisterAllEnchants() {
 	//	Harmful:   true,
 	// })
 	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
-	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
-	// damage. Your highest stat is always chosen.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:      "Enchant Weapon - Bloody Dancing Steel",
-	//	EnchantID: 5125,
-	//	Callback:  core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-	//	ProcMask:  core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:   core.OutcomeLanded,
-	//	Harmful:   true,
-	// })
-	
 	// Permanently attaches Lord Blastington's special scope to a ranged weapon, sometimes increasing Agility
 	// by 1800 for 10s when dealing damage with ranged attacks.
 	// 

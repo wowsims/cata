@@ -605,6 +605,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
   dps: 52816.56668

@@ -605,10 +605,17 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 57875.91604
+  tps: 34115.52671
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
-  dps: 57970.30518
-  tps: 34180.14604
+  dps: 57732.98911
+  tps: 33960.49737
  }
 }
 dps_results: {

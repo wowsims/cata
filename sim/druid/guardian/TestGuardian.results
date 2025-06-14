@@ -733,12 +733,21 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 90702.83029
+  tps: 627847.79992
+  dtps: 53846.88738
+  hps: 24372.9795
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
-  dps: 90788.58543
-  tps: 628448.09994
-  dtps: 53713.50076
-  hps: 24449.97056
+  dps: 90846.60964
+  tps: 628854.38813
+  dtps: 53803.10811
+  hps: 24448.15037
  }
 }
 dps_results: {

@@ -783,6 +783,7 @@ export class ActionId {
 				break;
 			case 'Hurricane':
 			case 'Dancing Steel':
+			case 'Bloody Dancing Steel':
 				if (tag == 1) {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
