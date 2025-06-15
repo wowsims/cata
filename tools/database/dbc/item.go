@@ -64,7 +64,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponType:          weaponType,
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
-		SocketBonus:         item.GetGemBonus().ToProtoArray(),
+		SocketBonus:         NullFloat(item.GetGemBonus().ToProtoArray()),
 		NameDescription:     item.NameDescription,
 	}
 
@@ -90,7 +90,8 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 
 	// Amount of upgrade steps is defined in MAX_UPGRADE_LEVELS
 	// In P2 of MoP it is expected to be 2 steps
-	if UPGRADE_SYSTEM_ACTIVE && item.Flags2.Has(CAN_BE_UPGRADED) && item.ItemLevel > 458 {
+	//
+	if item.ItemLevel > 458 && UPGRADE_SYSTEM_ACTIVE && item.Flags2.Has(CAN_BE_UPGRADED) {
 		for _, upgradeLevel := range MAX_UPGRADE_LEVELS {
 			upgradedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(upgradeLevel)
 			upgradeStep := proto.ItemLevelState(upgradeLevel)

@@ -1,7 +1,7 @@
 package sim
 
 import (
-	_ "github.com/wowsims/mop/sim/common"
+	"github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/death_knight/blood"
 	frostDeathKnight "github.com/wowsims/mop/sim/death_knight/frost"
 	"github.com/wowsims/mop/sim/death_knight/unholy"
@@ -91,4 +91,6 @@ func RegisterAll() {
 	brewmaster.RegisterBrewmasterMonk()
 	mistweaver.RegisterMistweaverMonk()
 	windwalker.RegisterWindwalkerMonk()
+
+	common.RegisterAllEffects()
 }

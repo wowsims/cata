@@ -9,25 +9,37 @@ import (
 Fills you with Holy Light, increasing your casting speed by 10%, improving healing spells by 5% and giving melee attacks a chance to heal
 
 -- Glyph of the Battle Healer --
+
 the most wounded member of your party or raid
+
 -- else --
+
 you
+
 ----------
 
 for
 
--- Holy Insight --
-(0.15 * <AP> + 0.15 * <SP>) * 1.25.
+-- Holy --
+
+(0.15 * <AP> + 0.15 * <SP>) * 1.25
+and restore 4% of base mana when striking a target outside of an Arena or Battleground
+
 -- else --
-(0.15 * <AP> + 0.15 * <SP>).
+
+(0.15 * <AP> + 0.15 * <SP>)
+
 ----------
 */
 func (paladin *Paladin) registerSealOfInsight() {
 	hasGlyphOfTheBattleHealer := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer)
+	isHoly := paladin.Spec == proto.Spec_SpecHolyPaladin
+	actionID := core.ActionID{SpellID: 20167}
+	manaMetrics := paladin.NewManaMetrics(actionID)
 
 	// Seal of Insight on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 20167},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
@@ -40,6 +52,12 @@ func (paladin *Paladin) registerSealOfInsight() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			heal := 0.15*spell.SpellPower() + 0.15*spell.MeleeAttackPower()
 			spell.CalcAndDealHealing(sim, target, heal, spell.OutcomeHealing)
+
+			if isHoly {
+				// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
+				// - Seal of Insight now has a chance to restore 4% of the Holy Paladin’s base mana when striking a target in a non-PvP environment. [5.4 Revert].
+				paladin.AddMana(sim, paladin.BaseMana*0.04, manaMetrics)
+			}
 		},
 	})
 
