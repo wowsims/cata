@@ -5,6 +5,12 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+Causes your Blood Boil to refresh your diseases on targets it damages, and your Blood Plague to also afflict enemies with Weakened Blows.
+
+Weakened Blows
+Demoralizes the target, reducing their physical damage dealt by 10% for 30 sec.
+*/
 func (bdk *BloodDeathKnight) registerScarletFever() {
 	weakenedBlowsAuras := bdk.NewEnemyAuraArray(core.WeakenedBlowsAura)
 	bdk.Env.RegisterPreFinalizeEffect(func() {
