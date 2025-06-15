@@ -105,6 +105,7 @@ func init() {
 	}
 
 	newJadeSpiritEnchant("Jade Spirit", 4442, 120033, 104993, 3*time.Second)
+	// TODO: Currently the PVP variant has no ICD, TBD if this is intended.
 	newJadeSpiritEnchant("Spirit of Conquest", 5124, 142536, 142535, 0)
 
 	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
@@ -183,8 +184,7 @@ func init() {
 				true,
 				core.ProcMaskDirect|core.ProcMaskProc,
 				core.RPPMConfig{
-					PPM:         5.5,
-					Coefficient: 1.0,
+					PPM: 5.5,
 				}.WithHasteMod(),
 			),
 			Outcome: core.OutcomeLanded,
