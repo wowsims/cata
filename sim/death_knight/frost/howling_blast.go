@@ -1,25 +1,24 @@
-package death_knight
+package frost
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/death_knight"
 )
 
 var HowlingBlastActionID = core.ActionID{SpellID: 49184}
 
 // Blast the target with a frigid wind, dealing (<mastery> * (573 + 0.848 * <AP>)) Frost damage to that foe, and (0.5 * <mastery> * (573 + 0.848 * <AP>)) Frost damage to all other enemies within 10 yards, infecting all targets with Frost Fever.
-func (dk *DeathKnight) registerHowlingBlastSpell() {
-	if !dk.Talents.HowlingBlast {
-		return
-	}
+func (fdk *FrostDeathKnight) registerHowlingBlast() {
+	results := make([]*core.SpellResult, fdk.Env.GetNumTargets())
 
-	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
-
-	dk.RegisterSpell(core.SpellConfig{
+	fdk.RegisterSpell(core.SpellConfig{
 		ActionID:       HowlingBlastActionID,
-		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DeathKnightSpellHowlingBlast,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
+		ClassSpellMask: death_knight.DeathKnightSpellHowlingBlast,
+
+		MaxRange: 30,
 
 		RuneCost: core.RuneCostOptions{
 			FrostRuneCost:  1,
@@ -28,26 +27,26 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 		},
 
 		DamageMultiplier: 1,
+		CritMultiplier:   fdk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-
-		CritMultiplier: dk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := dk.ClassSpellScaling*1.17499995232 + 0.44*spell.MeleeAttackPower()
+				baseDamage := fdk.CalcScalingSpellDmg(0.46000000834) + 0.848*spell.MeleeAttackPower()
+				damageMultiplier := spell.DamageMultiplier
 
 				if aoeTarget != target {
 					spell.DamageMultiplier *= 0.5
-					results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-					spell.DamageMultiplier /= 0.5
-				} else {
-					results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
+
+				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+				spell.DamageMultiplier = damageMultiplier
 
 				if aoeTarget == target {
 					spell.SpendRefundableCost(sim, results[idx])
@@ -56,6 +55,10 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
+
+				if result.Landed() {
+					fdk.FrostFeverSpell.Cast(sim, result.Target)
+				}
 			}
 		},
 	})
