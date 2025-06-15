@@ -81,5 +81,5 @@ func (ww *WindwalkerMonk) RegisterSpecializationEffects() {
 }
 
 func (ww *WindwalkerMonk) getMasteryPercent() float64 {
-	return (8.0 + ww.GetMasteryPoints()) * 0.025
+	return (8.0 + ww.GetMasteryPoints()) * 0.002
 }

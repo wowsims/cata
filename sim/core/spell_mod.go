@@ -15,18 +15,19 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask    int64
-	Kind         SpellModType
-	School       SpellSchool
-	ProcMask     ProcMask
-	ResourceType proto.ResourceType
-	IntValue     int32
-	TimeValue    time.Duration
-	FloatValue   float64
-	KeyValue     string
-	ApplyCustom  SpellModApply
-	RemoveCustom SpellModRemove
-	ResetCustom  SpellModOnReset
+	ClassMask         int64
+	Kind              SpellModType
+	School            SpellSchool
+	ProcMask          ProcMask
+	ResourceType      proto.ResourceType
+	IntValue          int32
+	TimeValue         time.Duration
+	FloatValue        float64
+	KeyValue          string
+	ApplyCustom       SpellModApply
+	RemoveCustom      SpellModRemove
+	ResetCustom       SpellModOnReset
+	ShouldApplyToPets bool
 }
 
 type SpellMod struct {
@@ -115,6 +116,24 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		unit.RegisterResetEffect(func(s *Simulation) {
 			mod.OnReset(mod)
 		})
+	}
+
+	if config.ShouldApplyToPets {
+		for _, pet := range unit.PetAgents {
+			pet.GetPet().OnSpellRegistered(func(spell *Spell) {
+				if shouldApply(spell, mod) {
+					mod.AffectedSpells = append(mod.AffectedSpells, spell)
+					if mod.IsActive {
+						mod.Apply(mod, spell)
+					}
+				}
+			})
+			if mod.OnReset != nil {
+				pet.GetPet().RegisterResetEffect(func(s *Simulation) {
+					mod.OnReset(mod)
+				})
+			}
+		}
 	}
 
 	return mod

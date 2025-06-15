@@ -415,7 +415,9 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Wind Lash':
 			case 'Stormstrike':
+			case 'Stormblast':
 				if (tag == 0) {
 					name += ' (Cast)';
 				} else if (tag == 1) {
@@ -424,22 +426,41 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Elemental Blast':
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
+			case 'Lava Beam':
 			case 'Lava Burst':
 				if (tag == 6) {
 					name += ' (Overload)';
+				} else if (tag == 7) {
+					name += ' (Echo)';
+				} else if (tag == 8) {
+					name += ' (Echo Overload)';
+				} else if (tag == 9) {
+					name += ' (Mastery)';
+				} else if (tag == 10) {
+					name += ' (Haste)';
+				} else if (tag == 11) {
+					name += ' (Crit)';
+				} else if (tag == 12) {
+					name += ' (Agi)';
 				} else if (tag) {
 					name += ` (${tag} MW)`;
 				}
 				break;
 			case 'Flame Shock':
+			case 'Earth Shock':
+			case 'Frost Shock':
+			case 'Fire Nova':
 				if (tag == 1) {
 					name += ' (DoT)';
+				} else if (tag == 7) {
+					name += ' (Echo)';
 				}
 				break;
 			case 'Fulmination':
-				name += ` (${tag + 3})`;
+				name += ` (${tag + 2})`;
 				break;
 			case 'Lightning Shield':
 				if (tag == 1) {
@@ -866,9 +887,9 @@ export class ActionId {
 			case 'Unstable Affliction':
 			case 'Corruption':
 				if (tag == 1) {
-					name += " (Malefic)"
+					name += ' (Malefic)';
 				}
-
+				break;
 			case 'Holy Prism':
 				if (this.spellId === 114852) {
 					if (tag === 1) {
@@ -1179,6 +1200,8 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),
 	'Greater Earth Elemental': ActionId.fromSpellId(2062),
 	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	'Primal Earth Elemental': ActionId.fromSpellId(2062),
+	'Primal Fire Elemental': ActionId.fromSpellId(2894),
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
 	'Rune Weapon': ActionId.fromSpellId(49028),
@@ -1190,26 +1213,26 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
-	'Felhunter': ActionId.fromSpellId(691),
-	'Imp': ActionId.fromSpellId(688),
-	'Succubus': ActionId.fromSpellId(712),
-	'Voidwalker': ActionId.fromSpellId(697),
-	'Doomguard': ActionId.fromSpellId(18540),
-	'Infernal': ActionId.fromSpellId(1122),
+	Felhunter: ActionId.fromSpellId(691),
+	Imp: ActionId.fromSpellId(688),
+	Succubus: ActionId.fromSpellId(712),
+	Voidwalker: ActionId.fromSpellId(697),
+	Doomguard: ActionId.fromSpellId(18540),
+	Infernal: ActionId.fromSpellId(1122),
 	'Fel Imp': ActionId.fromSpellId(112866),
-	'Shivarra': ActionId.fromSpellId(112868),
-	'Observer': ActionId.fromSpellId(112869),
-	'Voidlord': ActionId.fromSpellId(112867),
-	'Terrorguard': ActionId.fromSpellId(112927),
-	'Abyssal': ActionId.fromSpellId(112921),
+	Shivarra: ActionId.fromSpellId(112868),
+	Observer: ActionId.fromSpellId(112869),
+	Voidlord: ActionId.fromSpellId(112867),
+	Terrorguard: ActionId.fromSpellId(112927),
+	Abyssal: ActionId.fromSpellId(112921),
 	'Grimoire: Imp': ActionId.fromSpellId(111859),
 	'Grimoire: Voidwalker': ActionId.fromSpellId(111895),
 	'Grimoire: Felhunter': ActionId.fromSpellId(111897),
 	'Grimoire: Succubus': ActionId.fromSpellId(111896),
-	'Felguard': ActionId.fromSpellId(30146),
+	Felguard: ActionId.fromSpellId(30146),
 	'Wild Imp': ActionId.fromSpellId(114592),
 	'Grimoire: Felguard': ActionId.fromSpellId(111898),
-	'Wrathguard': ActionId.fromSpellId(112870),
+	Wrathguard: ActionId.fromSpellId(112870),
 	'Xuen, The White Tiger': ActionId.fromSpellId(123904),
 	'Earth Spirit': ActionId.fromSpellId(138121),
 	'Storm Spirit': ActionId.fromSpellId(138122),

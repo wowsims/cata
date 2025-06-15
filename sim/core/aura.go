@@ -317,6 +317,21 @@ func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {
 	return aura
 }
 
+// Adds a handler to be called OnReset, in addition to any current handlers.
+func (aura *Aura) ApplyOnReset(newOnReset OnReset) *Aura {
+	oldOnReset := aura.OnReset
+	if oldOnReset == nil {
+		aura.OnReset = newOnReset
+	} else {
+		aura.OnReset = func(aura *Aura, sim *Simulation) {
+			oldOnReset(aura, sim)
+			newOnReset(aura, sim)
+		}
+	}
+
+	return aura
+}
+
 // Adds a handler to be called OnStacksChange, in addition to any current handlers.
 // We then return the Aura for chaining
 func (aura *Aura) ApplyOnStacksChange(newOnStacksChange OnStacksChange) *Aura {
