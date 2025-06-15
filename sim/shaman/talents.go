@@ -44,7 +44,15 @@ func (shaman *Shaman) ApplyElementalMastery() {
 		Label:    "Elemental Mastery",
 		ActionID: eleMasterActionID,
 		Duration: time.Second * 20,
-	}).AttachMultiplyCastSpeed(1.3)
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyCastSpeed(1.3)
+			shaman.MultiplyAttackSpeed(sim, 1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyCastSpeed(1 / 1.3)
+			shaman.MultiplyAttackSpeed(sim, 1/1.3)
+		},
+	})
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       eleMasterActionID,
