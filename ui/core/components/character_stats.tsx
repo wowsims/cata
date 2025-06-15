@@ -169,6 +169,9 @@ export class CharacterStats extends Component {
 					customBonus = [0, 0];
 					modifier = [0.5, ...modifier];
 					break;
+				case Spec.SpecWindwalkerMonk:
+					customBonus = [3.5, 0];
+					break;
 			}
 
 			const valueElem = (

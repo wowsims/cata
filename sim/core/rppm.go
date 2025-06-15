@@ -261,8 +261,25 @@ func RppmModFromProto(config *proto.RppmMod) (rppmMod, error) {
 			baseIlvl:    config.GetIlvl(),
 		}, nil
 	case nil:
-		return nil, fmt.Errorf("RppmMod: ModType is not set")
+		return nil, fmt.Errorf("rppmMod: ModType is not set")
 	default:
-		return nil, fmt.Errorf("Unknown ModType: %T", modType)
+		return nil, fmt.Errorf("unknown ModType: %T", modType)
 	}
+}
+
+func RppmConfigFromProcEffectProto(effect *proto.ProcEffect) RPPMConfig {
+	config := RPPMConfig{
+		PPM: effect.GetRppm().GetRate(),
+	}
+
+	for _, protoMod := range effect.GetRppm().GetMods() {
+		mod, error := RppmModFromProto(protoMod)
+		if error != nil {
+			panic("Could not parse rrpm mod from proto")
+		}
+
+		config.Mods = append(config.Mods, mod)
+	}
+
+	return config
 }

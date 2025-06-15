@@ -117,7 +117,7 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 
 	checkWeaponType()
 
-	ret.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *core.Simulation, _ proto.ItemSlot) {
+	ret.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(_ *core.Simulation, _ proto.ItemSlot) {
 		checkWeaponType()
 	})
 }

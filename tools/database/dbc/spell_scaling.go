@@ -48,7 +48,12 @@ func (dbc *DBC) LoadSpellScaling() error {
 				proto.Class_ClassWarlock:     parseScalingValue(parts[9]),
 				proto.Class_ClassMonk:        parseScalingValue(parts[10]),
 				proto.Class_ClassDruid:       parseScalingValue(parts[11]),
-				proto.Class_ClassUnknown:     parseScalingValue(parts[12]),
+				proto.Class_ClassExtra1:      parseScalingValue(parts[12]),
+				proto.Class_ClassExtra2:      parseScalingValue(parts[13]),
+				proto.Class_ClassExtra3:      parseScalingValue(parts[14]),
+				proto.Class_ClassExtra4:      parseScalingValue(parts[15]),
+				proto.Class_ClassExtra5:      parseScalingValue(parts[16]),
+				proto.Class_ClassExtra6:      parseScalingValue(parts[17]),
 			},
 		}
 		dbc.SpellScalings[level] = scaling

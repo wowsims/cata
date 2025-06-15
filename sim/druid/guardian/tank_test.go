@@ -3,13 +3,14 @@ package guardian
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common"
+	"github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterGuardianDruid()
+	common.RegisterAllEffects()
 }
 
 func TestGuardian(t *testing.T) {

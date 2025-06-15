@@ -3,7 +3,7 @@ package warrior
 import (
 	"time"
 
-	cata "github.com/wowsims/mop/sim/common/cata"
+	"github.com/wowsims/mop/sim/common/shared"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -334,7 +334,7 @@ func (war *Warrior) registerBloodbath() {
 		Duration: 12 * time.Second,
 	})
 
-	cata.RegisterIgniteEffect(&war.Unit, cata.IgniteConfig{
+	shared.RegisterIgniteEffect(&war.Unit, shared.IgniteConfig{
 		ActionID:       dotActionID,
 		ClassSpellMask: SpellMaskBloodbathDot,
 		DotAuraLabel:   "Bloodbath Dot",

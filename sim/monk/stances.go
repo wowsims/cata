@@ -94,10 +94,16 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 	hitDep := monk.NewDynamicStatDependency(stats.Spirit, stats.HitRating, 0.5)
 	expDep := monk.NewDynamicStatDependency(stats.Spirit, stats.ExpertiseRating, 0.5)
 	hasteDep := monk.NewDynamicMultiplyStat(stats.HasteRating, 1.5)
-	// TODO: This should be a replacement not a dependency.
-	// apDep := monk.NewDynamicStatDependency(stats.SpellPower, stats.AttackPower, 2)
 
 	dmgDone := 0.0
+
+	monk.GetAttackPowerValue = func(spell *core.Spell) float64 {
+		if monk.StanceMatches(WiseSerpent) {
+			return monk.GetStat(stats.SpellPower) * 2
+		}
+
+		return monk.GetStat(stats.AttackPower)
+	}
 
 	eminenceHeal := monk.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -131,13 +137,14 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 	})
 
 	monk.StanceOfTheWiseSerpentAura = monk.GetOrRegisterAura(core.Aura{
-		Label:    "Stance of the Wise Serpent" + monk.Label,
-		ActionID: core.ActionID{SpellID: 136336},
-		Duration: core.NeverExpires,
+		Label:      "Stance of the Wise Serpent" + monk.Label,
+		ActionID:   core.ActionID{SpellID: 136336},
+		Duration:   core.NeverExpires,
+		BuildPhase: core.Ternary(monk.Spec == proto.Spec_SpecMistweaverMonk, core.CharacterBuildPhaseBase, core.CharacterBuildPhaseNone),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			monk.Stance = WiseSerpent
-			// monk.EnableDynamicStatDep(sim, apDep)
 			monk.SetCurrentPowerBar(core.ManaBar)
+
 			eminenceAura.Activate(sim)
 
 			currentChi := monk.GetChi()
@@ -148,7 +155,7 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			eminenceAura.Deactivate(sim)
 			monk.SetCurrentPowerBar(core.EnergyBar)
-			// monk.DisableDynamicStatDep(sim, apDep)
+
 			monk.Stance = StanceNone
 		},
 	}).AttachMultiplicativePseudoStatBuff(

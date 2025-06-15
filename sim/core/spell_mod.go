@@ -15,18 +15,19 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask    int64
-	Kind         SpellModType
-	School       SpellSchool
-	ProcMask     ProcMask
-	ResourceType proto.ResourceType
-	IntValue     int32
-	TimeValue    time.Duration
-	FloatValue   float64
-	KeyValue     string
-	ApplyCustom  SpellModApply
-	RemoveCustom SpellModRemove
-	ResetCustom  SpellModOnReset
+	ClassMask         int64
+	Kind              SpellModType
+	School            SpellSchool
+	ProcMask          ProcMask
+	ResourceType      proto.ResourceType
+	IntValue          int32
+	TimeValue         time.Duration
+	FloatValue        float64
+	KeyValue          string
+	ApplyCustom       SpellModApply
+	RemoveCustom      SpellModRemove
+	ResetCustom       SpellModOnReset
+	ShouldApplyToPets bool
 }
 
 type SpellMod struct {
@@ -115,6 +116,24 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		unit.RegisterResetEffect(func(s *Simulation) {
 			mod.OnReset(mod)
 		})
+	}
+
+	if config.ShouldApplyToPets {
+		for _, pet := range unit.PetAgents {
+			pet.GetPet().OnSpellRegistered(func(spell *Spell) {
+				if shouldApply(spell, mod) {
+					mod.AffectedSpells = append(mod.AffectedSpells, spell)
+					if mod.IsActive {
+						mod.Apply(mod, spell)
+					}
+				}
+			})
+			if mod.OnReset != nil {
+				pet.GetPet().RegisterResetEffect(func(s *Simulation) {
+					mod.OnReset(mod)
+				})
+			}
+		}
 	}
 
 	return mod
@@ -325,6 +344,10 @@ const (
 	// Used to modify the amount of charges a spell has
 	// Uses: IntValue
 	SpellMod_ModCharges_Flat
+
+	// Will multiply the dot.PeriodicDamageMultiplier. +5% = 0.05
+	// Uses FloatValue
+	SpellMod_DotDamageDone_Pct
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -440,6 +463,10 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_ModCharges_Flat: {
 		Apply:  applyModChargesFlat,
 		Remove: removeModChargesFlat,
+	},
+	SpellMod_DotDamageDone_Pct: {
+		Apply:  applyDotDamageDonePercent,
+		Remove: removeDotDamageDonePercent,
 	},
 }
 
@@ -720,5 +747,31 @@ func removeModChargesFlat(mod *SpellMod, spell *Spell) {
 
 	if spell.charges > spell.MaxCharges {
 		spell.charges = spell.MaxCharges
+	}
+}
+
+func applyDotDamageDonePercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.PeriodicDamageMultiplier *= mod.floatValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.PeriodicDamageMultiplier *= mod.floatValue
+	}
+}
+
+func removeDotDamageDonePercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.PeriodicDamageMultiplier /= mod.floatValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.PeriodicDamageMultiplier /= mod.floatValue
 	}
 }

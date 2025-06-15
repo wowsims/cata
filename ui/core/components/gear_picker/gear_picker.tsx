@@ -18,7 +18,7 @@ import { GearData } from './item_list';
 import { addQuickEnchantPopover } from './quick_enchant_popover';
 import { addQuickGemPopover } from './quick_gem_popover';
 import SelectorModal, { SelectorModalTabs } from './selector_modal';
-import { createGemContainer, createHeroicLabel, getEmptySlotIconUrl } from './utils';
+import { createGemContainer, createNameDescriptionLabel, getEmptySlotIconUrl } from './utils';
 
 export default class GearPicker extends Component {
 	// ItemSlot is used as the index
@@ -174,8 +174,8 @@ export class ItemRenderer extends Component {
 			nameSpan.textContent += ' ' + newItem.randomSuffix.name;
 		}
 
-		if (newItem.item.heroic) {
-			this.nameElem.appendChild(createHeroicLabel());
+		if (newItem.item.nameDescription) {
+			this.nameElem.appendChild(createNameDescriptionLabel(newItem.item.nameDescription));
 		}
 
 		this.notice = new ItemNotice(this.player, {
@@ -187,7 +187,7 @@ export class ItemRenderer extends Component {
 			this.nameContainerElem.appendChild(this.notice.rootElem);
 		}
 
-		const reforgeData = newItem.getReforgeData();
+		const reforgeData = newItem.withDynamicStats().getReforgeData();
 		if (reforgeData) {
 			const fromText = shortSecondaryStatNames.get(reforgeData.reforge?.fromStat);
 			const toText = shortSecondaryStatNames.get(reforgeData.reforge?.toStat);
