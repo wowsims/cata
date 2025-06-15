@@ -1,10 +1,11 @@
-package death_knight
+package frost
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/death_knight"
 )
 
 /*
@@ -13,64 +14,55 @@ Icy crystals hang heavy upon the Death Knight's body, providing immunity against
 
 -- Glyph of Pillar of Frost --
 
-and all effects that cause loss of control, but also reducing movement speed by 70% while active
+and all effects that cause loss of control, but also reducing movement speed by 70% while active.
 
 -- else --
 
-such as knockbacks
+such as knockbacks.
 
 ----------
 
-.
 Lasts 20 sec.
 */
-func (dk *DeathKnight) registerPillarOfFrostSpell() {
-	if !dk.Talents.PillarOfFrost {
-		return
-	}
-
+func (fdk *FrostDeathKnight) registerPillarOfFrost() {
 	actionID := core.ActionID{SpellID: 51271}
 
-	strDep := dk.NewDynamicMultiplyStat(stats.Strength, 1.2)
-
-	aura := dk.RegisterAura(core.Aura{
-		Label:    "Pillar of Frost",
+	pillarOfFrostAura := fdk.RegisterAura(core.Aura{
+		Label:    "Pillar of Frost" + fdk.Label,
 		ActionID: actionID,
 		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, strDep)
-		},
+	}).AttachStatDependency(
+		fdk.NewDynamicMultiplyStat(stats.Strength, 1.2),
+	)
 
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, strDep)
-		},
-	})
-
-	spell := dk.RegisterSpell(core.SpellConfig{
+	spell := fdk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
-		ClassSpellMask: DeathKnightSpellPillarOfFrost,
+		ClassSpellMask: death_knight.DeathKnightSpellPillarOfFrost,
 
 		RuneCost: core.RuneCostOptions{
 			FrostRuneCost:  1,
 			RunicPowerGain: 10,
 		},
 		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    dk.NewTimer(),
-				Duration: time.Minute * 1,
-			},
 			DefaultCast: core.Cast{
 				NonEmpty: true,
+			},
+			CD: core.Cooldown{
+				Timer:    fdk.NewTimer(),
+				Duration: time.Minute * 1,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			aura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+
+		RelatedSelfBuff: pillarOfFrostAura,
 	})
 
-	dk.AddMajorCooldown(core.MajorCooldown{
+	fdk.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})
