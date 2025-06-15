@@ -605,6 +605,55 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 57875.91604
+  tps: 34115.52671
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 57732.98911
+  tps: 33960.49737
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 54934.52615
+  tps: 32759.62519
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 55681.98099
+  tps: 33359.68781
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 55016.63332
@@ -1389,6 +1438,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 54864.77127
+  tps: 32747.13418
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-PouchofWhiteAsh-103639"
  value: {
   dps: 50832.68743
@@ -1834,6 +1890,13 @@ dps_results: {
  value: {
   dps: 51892.52304
   tps: 31405.45856
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 56533.69927
+  tps: 33449.76085
  }
 }
 dps_results: {

@@ -273,6 +273,8 @@ func init() {
 	AddBaseStatsCombo(proto.Race_RaceWorgen, proto.Class_ClassHunter)
 	AddBaseStatsCombo(proto.Race_RaceUndead, proto.Class_ClassHunter)
 	AddBaseStatsCombo(proto.Race_RaceHuman, proto.Class_ClassHunter)
+	AddBaseStatsCombo(proto.Race_RaceAlliancePandaren, proto.Class_ClassHunter)
+	AddBaseStatsCombo(proto.Race_RaceHordePandaren, proto.Class_ClassHunter)
 
 	AddBaseStatsCombo(proto.Race_RaceBloodElf, proto.Class_ClassMage)
 	AddBaseStatsCombo(proto.Race_RaceDraenei, proto.Class_ClassMage)
