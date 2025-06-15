@@ -333,12 +333,12 @@ func TryParseProcEffect(parsed *proto.UIItem, instance *dbc.DBC, groupMapProc ma
 }
 
 func TryParseOnUseEffect(parsed *proto.UIItem, groupMap map[string]Group) EffectParseResult {
-	if parsed.ItemEffect.GetOnUse() != nil && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL { // MoP constraints
+	// Effect was already manually implemented
+	if core.HasItemEffect(parsed.Id) {
+		return EffectParseResultSuccess
+	}
 
-		// Effect was already manually implemented
-		if core.HasItemEffect(parsed.Id) {
-			return EffectParseResultSuccess
-		}
+	if parsed.ItemEffect.GetOnUse() != nil && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL { // MoP constraints
 
 		if parsed.ItemEffect.GetOnUse().CooldownMs < 0 && parsed.ItemEffect.GetOnUse().CategoryCooldownMs < 0 {
 			return EffectParseResultUnsupported

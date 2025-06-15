@@ -3,7 +3,6 @@
 // Changes will be overwritten on next database generation
 
 export const MISSING_ITEM_EFFECTS = [
-    75274, // Zen Alchemist Stone
     77530, // Ghost Iron Dragonling
     81136, // Cloak of Hidden Flasks (H)
     81266, // Price of Progress (H)
