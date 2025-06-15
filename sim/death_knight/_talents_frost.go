@@ -52,9 +52,6 @@ func (dk *DeathKnight) ApplyFrostTalents() {
 	if dk.Talents.BrittleBones > 0 {
 		dk.MultiplyStat(stats.Strength, 1.0+0.02*float64(dk.Talents.BrittleBones))
 	}
-
-	// Might of the Frozen Wastes
-	dk.applyMightOfTheFrozenWastes()
 }
 
 const DeathKnightChillOfTheGrave = DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast | DeathKnightSpellObliterate
@@ -231,28 +228,4 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
-}
-
-func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
-	if dk.Talents.MightOfTheFrozenWastes == 0 || dk.Equipment.MainHand().HandType != proto.HandType_HandTypeTwoHand {
-		return
-	}
-
-	dk.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
-		ProcMask:   core.ProcMaskMelee,
-	})
-
-	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 81331})
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:       "Might of the Frozen Wastes",
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskMeleeWhiteHit,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.15 * float64(dk.Talents.MightOfTheFrozenWastes),
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.AddRunicPower(sim, 10, rpMetric)
-		},
-	})
 }
