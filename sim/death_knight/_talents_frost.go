@@ -40,14 +40,6 @@ func (dk *DeathKnight) ApplyFrostTalents() {
 	// Merciless Combat
 	dk.applyMercilessCombat()
 
-	// Rime
-	dk.applyRime()
-
-	// Improved Icy Talons
-	if dk.Talents.ImprovedIcyTalons {
-		dk.PseudoStats.MeleeSpeedMultiplier *= 1.05
-	}
-
 	// Brittle Bones
 	if dk.Talents.BrittleBones > 0 {
 		dk.MultiplyStat(stats.Strength, 1.0+0.02*float64(dk.Talents.BrittleBones))
@@ -113,62 +105,6 @@ func (dk *DeathKnight) applyMercilessCombat() {
 				}
 			}
 		})
-	})
-}
-
-func (dk *DeathKnight) applyRime() {
-	if dk.Talents.Rime == 0 {
-		return
-	}
-
-	rimeMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -100,
-		ClassMask: DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
-	})
-
-	freezingFogAura := dk.GetOrRegisterAura(core.Aura{
-		Label:     "Freezing Fog",
-		ActionID:  core.ActionID{SpellID: 59052},
-		Duration:  time.Second * 15,
-		MaxStacks: 0,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rimeMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rimeMod.Deactivate()
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&(DeathKnightSpellIcyTouch|DeathKnightSpellHowlingBlast) == 0 {
-				return
-			}
-
-			if dk.T13Dps2pc.IsActive() {
-				aura.RemoveStack(sim)
-			} else {
-				aura.Deactivate(sim)
-			}
-		},
-	})
-
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:           "Rime",
-		Callback:       core.CallbackOnSpellHitDealt,
-		ProcMask:       core.ProcMaskMeleeMH,
-		ClassSpellMask: DeathKnightSpellObliterate,
-		Outcome:        core.OutcomeLanded,
-		ProcChance:     0.15 * float64(dk.Talents.Rime),
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			freezingFogAura.Activate(sim)
-
-			// T13 2pc: Rime has a 60% chance to grant 2 charges when triggered instead of 1.
-			freezingFogAura.MaxStacks = core.TernaryInt32(dk.T13Dps2pc.IsActive(), 2, 0)
-			if dk.T13Dps2pc.IsActive() {
-				stacks := core.TernaryInt32(sim.Proc(0.6, "T13 2pc"), 2, 1)
-				freezingFogAura.SetStacks(sim, stacks)
-			}
-		},
 	})
 }
 

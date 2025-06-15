@@ -56,6 +56,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 	fdk.registerMightOfTheFrozenWastes()
 	// fdk.registerObliterateSpell()
 	// fdk.registerPillarOfFrostSpell()
+	fdk.registerRime()
 }
 
 func (fdk *FrostDeathKnight) ApplyTalents() {
