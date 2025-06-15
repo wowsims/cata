@@ -1410,6 +1410,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 162510.89941
+  tps: 153502.34541
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-PlateofWingedTriumph"
  value: {
   dps: 149045.90884
@@ -1862,6 +1869,13 @@ dps_results: {
  value: {
   dps: 156855.71287
   tps: 148566.31539
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 164414.90663
+  tps: 155209.5528
  }
 }
 dps_results: {

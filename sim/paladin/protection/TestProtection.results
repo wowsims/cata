@@ -1804,6 +1804,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 130858.20639
+  tps: 906351.57896
+  dtps: 76042.84278
+  hps: 73952.7761
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-PlateofWingedTriumph"
  value: {
   dps: 135993.97089
@@ -2386,6 +2395,15 @@ dps_results: {
   tps: 900530.80673
   dtps: 76928.64581
   hps: 71966.68263
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 131527.09469
+  tps: 910700.08571
+  dtps: 76107.00605
+  hps: 74658.01667
  }
 }
 dps_results: {

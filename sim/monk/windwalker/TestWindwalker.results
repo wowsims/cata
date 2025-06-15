@@ -1639,6 +1639,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 124274.99634
+  tps: 114619.60566
+  hps: 7537.60231
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-PouchofWhiteAsh-103639"
  value: {
   dps: 117591.32307
@@ -2127,6 +2135,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 125957.96647
+  tps: 116056.01882
+  hps: 7670.75085
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-TerrorintheMists-87167"
  value: {
   dps: 125364.07951
@@ -2465,400 +2481,400 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-Average-Default"
  value: {
-  dps: 124767.16876
-  tps: 115038.44582
-  hps: 7684.74626
+  dps: 126288.93235
+  tps: 116308.19889
+  hps: 7761.03069
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.45119896524e+06
-  tps: 357864.56669
-  hps: 7892.93907
+  dps: 1.46457562238e+06
+  tps: 361456.40306
+  hps: 8056.7349
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 116559.88672
-  tps: 106497.17511
-  hps: 7385.82648
+  dps: 117782.61111
+  tps: 107483.86748
+  hps: 7486.00194
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 158495.30401
-  tps: 128227.52072
-  hps: 8117.79678
+  dps: 160202.01583
+  tps: 129167.01487
+  hps: 8199.64285
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.16755011985e+06
-  tps: 278896.80732
-  hps: 6418.83932
+  dps: 1.17682767516e+06
+  tps: 281211.08955
+  hps: 6544.24782
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 89609.45575
-  tps: 82853.5569
-  hps: 6176.94375
+  dps: 90393.74621
+  tps: 83502.53586
+  hps: 6299.15439
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 103342.48725
-  tps: 86139.66934
-  hps: 7362.16888
+  dps: 104516.15228
+  tps: 86946.08695
+  hps: 7509.50312
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.471476633e+06
-  tps: 364595.92826
-  hps: 8249.51277
+  dps: 1.48560792048e+06
+  tps: 368398.39954
+  hps: 8410.68731
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 124236.5646
-  tps: 114415.20188
-  hps: 7700.55314
+  dps: 125906.64691
+  tps: 115825.68104
+  hps: 7782.43574
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 167351.39688
-  tps: 137626.08549
-  hps: 8558.59514
+  dps: 169254.53001
+  tps: 138682.06805
+  hps: 8507.62333
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.18531770573e+06
-  tps: 284381.2631
-  hps: 6670.92439
+  dps: 1.19469945002e+06
+  tps: 286740.53056
+  hps: 6797.66514
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 94156.51821
-  tps: 87611.7737
-  hps: 6538.64991
+  dps: 94978.48535
+  tps: 88317.97787
+  hps: 6629.2328
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_bis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 107884.76747
-  tps: 91120.83935
-  hps: 7700.56737
+  dps: 108912.64121
+  tps: 91829.34598
+  hps: 7851.23227
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.00137095839e+06
-  tps: 238809.60678
-  hps: 6487.87183
+  dps: 1.01139951717e+06
+  tps: 241182.73197
+  hps: 6648.61503
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 81551.9442
-  tps: 73262.39622
-  hps: 5994.77221
+  dps: 82476.23122
+  tps: 73956.78885
+  hps: 6077.77078
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 115299.03383
-  tps: 90443.09655
-  hps: 7229.15237
+  dps: 117439.75468
+  tps: 91831.60928
+  hps: 7287.97633
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 799140.46144
-  tps: 186796.80821
-  hps: 5220.17261
+  dps: 807337.20105
+  tps: 188742.22653
+  hps: 5361.31014
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 60676.07661
-  tps: 55242.52001
-  hps: 4964.21945
+  dps: 61420.07775
+  tps: 55858.08028
+  hps: 5057.94962
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 74575.6595
-  tps: 60723.81826
-  hps: 5825.27063
+  dps: 75684.74714
+  tps: 61477.31164
+  hps: 5958.27461
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.02193588847e+06
-  tps: 245877.0256
-  hps: 6314.12874
+  dps: 1.03280336412e+06
+  tps: 248658.88565
+  hps: 6407.6973
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 86090.81523
-  tps: 78096.35225
-  hps: 6109.34734
+  dps: 87356.38508
+  tps: 79125.27005
+  hps: 6190.50069
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 122651.49565
-  tps: 98393.82037
-  hps: 7312.10998
+  dps: 124648.79579
+  tps: 99666.00182
+  hps: 7358.67376
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 810065.04977
-  tps: 190144.17054
-  hps: 5273.7367
+  dps: 817913.48153
+  tps: 192014.50466
+  hps: 5412.229
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 64209.38141
-  tps: 59002.5674
-  hps: 5036.71873
+  dps: 65020.92157
+  tps: 59687.51379
+  hps: 5126.37821
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Orc-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 76937.68898
-  tps: 63589.17191
-  hps: 5934.46874
+  dps: 78032.38705
+  tps: 64364.28208
+  hps: 6075.14168
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.427734794e+06
-  tps: 357905.0522
-  hps: 7837.90354
+  dps: 1.44168497092e+06
+  tps: 361799.33483
+  hps: 8001.69938
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 117085.48288
-  tps: 107367.34434
-  hps: 7243.25709
+  dps: 118581.23926
+  tps: 108628.73441
+  hps: 7313.81551
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 158584.43013
-  tps: 129625.72447
+  dps: 160529.77201
+  tps: 130796.75663
   hps: 7345.45519
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.14763995212e+06
-  tps: 278653.80857
-  hps: 6386.30922
+  dps: 1.1570251003e+06
+  tps: 281002.35574
+  hps: 6508.87095
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 89413.563
-  tps: 82776.43791
-  hps: 6048.83028
+  dps: 90370.72288
+  tps: 83593.84444
+  hps: 6141.69738
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 103307.93281
-  tps: 86692.34127
-  hps: 6595.06924
+  dps: 104448.18954
+  tps: 87490.46662
+  hps: 6674.18795
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.44934256765e+06
-  tps: 365923.71443
-  hps: 8171.71249
+  dps: 1.46245262947e+06
+  tps: 369411.92636
+  hps: 8338.13375
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 125232.17881
-  tps: 115596.08531
-  hps: 7536.98396
+  dps: 126592.97788
+  tps: 116698.58808
+  hps: 7617.02263
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 168029.14009
-  tps: 139057.30523
+  dps: 170081.02995
+  tps: 140266.10748
   hps: 7992.96982
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.16924065107e+06
-  tps: 285263.90494
-  hps: 6638.30139
+  dps: 1.17977107679e+06
+  tps: 287839.92839
+  hps: 6788.26169
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 94144.54062
-  tps: 87764.86268
-  hps: 6445.47282
+  dps: 95042.5314
+  tps: 88518.5604
+  hps: 6520.93402
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_bis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 108553.72016
-  tps: 92432.92165
-  hps: 6910.33104
+  dps: 109609.79286
+  tps: 93134.91236
+  hps: 6975.21592
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 985189.45178
-  tps: 238921.34441
-  hps: 6323.37455
+  dps: 996185.3547
+  tps: 241665.73358
+  hps: 6484.11775
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 81435.61719
-  tps: 73297.63357
-  hps: 5793.14492
+  dps: 82525.32422
+  tps: 74140.87079
+  hps: 5873.01832
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 116196.7235
-  tps: 91783.19733
-  hps: 6742.11676
+  dps: 118172.85257
+  tps: 92947.44882
+  hps: 6718.78466
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 786913.43773
-  tps: 187014.04565
-  hps: 5135.14162
+  dps: 795322.30053
+  tps: 188964.96195
+  hps: 5278.28151
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 60426.94436
-  tps: 55101.16235
-  hps: 4858.62804
+  dps: 61226.57034
+  tps: 55784.7433
+  hps: 4951.49265
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 74358.69314
-  tps: 60992.00612
-  hps: 5684.52141
+  dps: 75695.32137
+  tps: 62011.1029
+  hps: 5830.19032
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.01106265342e+06
-  tps: 247734.30275
-  hps: 6535.87342
+  dps: 1.02154265704e+06
+  tps: 250301.10936
+  hps: 6692.67031
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 86525.36034
-  tps: 78722.07084
-  hps: 5973.66518
+  dps: 87819.64483
+  tps: 79762.55697
+  hps: 6043.62947
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 122637.27438
-  tps: 99057.65682
-  hps: 6897.48885
+  dps: 124953.37212
+  tps: 100549.70198
+  hps: 6892.76367
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 801322.2583
-  tps: 191374.78904
-  hps: 5206.20129
+  dps: 809720.36683
+  tps: 193408.68399
+  hps: 5336.15329
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 64590.05884
-  tps: 59483.13551
-  hps: 5010.05479
+  dps: 65462.90339
+  tps: 60217.62871
+  hps: 5093.72399
  }
 }
 dps_results: {
  key: "TestWindwalker-Settings-Troll-p1_prebis_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 77603.88794
-  tps: 64642.20718
-  hps: 5694.79293
+  dps: 78918.76481
+  tps: 65596.87978
+  hps: 5818.98562
  }
 }
 dps_results: {
  key: "TestWindwalker-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 109400.94642
-  tps: 99999.0337
-  hps: 7545.69697
+  dps: 110678.91728
+  tps: 101044.28787
+  hps: 7648.96058
  }
 }
