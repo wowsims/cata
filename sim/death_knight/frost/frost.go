@@ -50,6 +50,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 
 	fdk.registerMastery()
 
+	fdk.registerBrittleBones()
 	// fdk.registerFrostStrikeSpell()
 	// fdk.registerHowlingBlastSpell()
 	fdk.registerIcyTalons()

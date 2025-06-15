@@ -11,101 +11,8 @@ import (
 )
 
 func (dk *DeathKnight) ApplyFrostTalents() {
-	// Nerves Of Cold Steel
-	if dk.Talents.NervesOfColdSteel > 0 && dk.HasMHWeapon() && dk.HasOHWeapon() {
-		dk.AddStat(stats.PhysicalHitPercent, float64(dk.Talents.NervesOfColdSteel))
-
-		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: []float64{0.0, 0.08, 0.16, 0.25}[dk.Talents.NervesOfColdSteel],
-			ProcMask:   core.ProcMaskMeleeOH,
-		})
-	}
-
-	// Annihilation
-	if dk.Talents.Annihilation > 0 {
-		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellObliterate,
-			FloatValue: 0.15 * float64(dk.Talents.Annihilation),
-		})
-	}
-
-	// Chill of the Grave
-	dk.applyChillOfTheGrave()
-
 	// Killing Machine
 	dk.applyKillingMachine()
-
-	// Merciless Combat
-	dk.applyMercilessCombat()
-
-	// Brittle Bones
-	if dk.Talents.BrittleBones > 0 {
-		dk.MultiplyStat(stats.Strength, 1.0+0.02*float64(dk.Talents.BrittleBones))
-	}
-}
-
-const DeathKnightChillOfTheGrave = DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast | DeathKnightSpellObliterate
-
-func (dk *DeathKnight) applyChillOfTheGrave() {
-	if dk.Talents.ChillOfTheGrave == 0 {
-		return
-	}
-
-	rpAmount := 5.0 * float64(dk.Talents.ChillOfTheGrave)
-	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 50115})
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:            "Chill of the Grave",
-		Callback:        core.CallbackOnSpellHitDealt,
-		ClassSpellMask:  DeathKnightChillOfTheGrave,
-		Outcome:         core.OutcomeLanded,
-		ProcMaskExclude: core.ProcMaskMeleeOH, // Dont trigger on Obliterate Off hand
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.AddRunicPower(sim, rpAmount, rpMetric)
-		},
-	})
-}
-
-const DeathKnightSpellMercilessCombat = DeathKnightSpellIcyTouch | DeathKnightSpellObliterate | DeathKnightSpellFrostStrike | DeathKnightSpellHowlingBlast
-
-func (dk *DeathKnight) mercilessCombatMultiplier(sim *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-	if spell.ClassSpellMask&(DeathKnightSpellMercilessCombat) == 0 {
-		return 1.0
-	}
-	return 1.0 + 0.06*float64(dk.Talents.MercilessCombat)
-}
-
-func (dk *DeathKnight) applyMercilessCombat() {
-	if dk.Talents.MercilessCombat == 0 {
-		return
-	}
-
-	debuffs := dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		aura := target.GetOrRegisterAura(core.Aura{
-			Label:    "Merciless Combat" + dk.Label,
-			ActionID: core.ActionID{SpellID: 49538},
-			Duration: core.NeverExpires,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				core.EnableDamageDoneByCaster(DDBC_MercilessCombat, DDBC_Total, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				core.DisableDamageDoneByCaster(DDBC_MercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
-			},
-		})
-		return aura
-	})
-
-	dk.RegisterResetEffect(func(sim *core.Simulation) {
-		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
-			if isExecute == 35 {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					debuffs.Get(aoeTarget).Activate(sim)
-				}
-			}
-		})
-	})
 }
 
 func (dk *DeathKnight) applyKillingMachine() {
@@ -163,5 +70,4 @@ func (dk *DeathKnight) applyKillingMachine() {
 			kmProcSpell.Cast(sim, nil)
 		},
 	})
-
 }
