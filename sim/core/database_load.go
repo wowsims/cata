@@ -81,7 +81,7 @@ func init() {
 
 	for i, itemEffectRpp := range db.ItemEffectRandPropPoints {
 		simDB.ItemEffectRandPropPoints[i] = &proto.ItemEffectRandPropPoints{
-			Id:             itemEffectRpp.Id,
+			Ilvl:           itemEffectRpp.Ilvl,
 			RandPropPoints: itemEffectRpp.RandPropPoints,
 		}
 	}
