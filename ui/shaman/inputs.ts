@@ -6,7 +6,7 @@ import { ShamanImbue, ShamanShield} from '../core/proto/shaman';
 import { ActionId } from '../core/proto_utils/action_id';
 import { ShamanSpecs } from '../core/proto_utils/utils';
 import { Player } from '../core/player';
-import { EventID } from '../core/typed_event';
+import { EventID, TypedEvent } from '../core/typed_event';
 import { buildIconInput } from '../core/components/icon_inputs';
 
 // Configuration for class-specific UI elements on the settings tab.
@@ -53,6 +53,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 				newOptions.feleAutocast!.autocastFireblast = newValue
 				player.setClassOptions(eventID, newOptions);
 			},
+			showWhen: (player: Player<SpecType>) => player.getTalents().primalElementalist,
+			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.talentsChangeEmitter]),
 		});
 
 		const _fireNovaPicker = <SpecType extends ShamanSpecs>() =>
@@ -65,6 +67,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 				newOptions.feleAutocast!.autocastFirenova = newValue
 				player.setClassOptions(eventID, newOptions);
 			},
+			showWhen: (player: Player<SpecType>) => player.getTalents().primalElementalist,
+			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.talentsChangeEmitter]),
 		});
 
 		const _ImmolationPicker = <SpecType extends ShamanSpecs>() =>
@@ -77,6 +81,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 				newOptions.feleAutocast!.autocastImmolate = newValue
 				player.setClassOptions(eventID, newOptions);
 			},
+			showWhen: (player: Player<SpecType>) => player.getTalents().primalElementalist,
+			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.talentsChangeEmitter]),
 		});
 
 		const _EmpowerPicker = <SpecType extends ShamanSpecs>() =>
@@ -89,6 +95,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 				newOptions.feleAutocast!.autocastEmpower = newValue
 				player.setClassOptions(eventID, newOptions);
 			},
+			showWhen: (player: Player<SpecType>) => player.getTalents().primalElementalist,
+			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.talentsChangeEmitter]),
 		});
 
 	buildIconInput(feleAbilities, simUI.player, _fireBlastPicker())

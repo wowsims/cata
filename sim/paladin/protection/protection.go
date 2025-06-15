@@ -61,6 +61,7 @@ func (prot *ProtectionPaladin) Initialize() {
 	prot.registerJudgmentsOfTheWise()
 	prot.registerRighteousFury()
 	prot.registerSanctuary()
+	prot.registerShieldOfTheRighteous()
 
 	// Vengeance
 	prot.RegisterVengeance(84839, nil)

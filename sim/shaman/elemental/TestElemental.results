@@ -2180,6 +2180,762 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 84554.10498
+  tps: 100778.22145
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 29140.53097
+  tps: 135.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 70384.65292
+  tps: 677.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 62002.54235
+  tps: 88661.70764
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 24177.19565
+  tps: 127
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 54523.43431
+  tps: 635
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 43373.22717
+  tps: 20266.91718
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51416.12032
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 78513.69939
+  tps: 790.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 35745.54888
+  tps: 20740.37925
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 43382.4751
+  tps: 777
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 61932.57093
+  tps: 765
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 37527.11146
+  tps: 23073.07431
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 47038.83508
+  tps: 792.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 73785.05142
+  tps: 812.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 30906.64106
+  tps: 23474.27084
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 39934.24527
+  tps: 792
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 57988.79275
+  tps: 782.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 85677.67156
+  tps: 107624.23143
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 25164.9006
+  tps: 126.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 76809.30655
+  tps: 632.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 56551.11218
+  tps: 82299.80764
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 21062.34898
+  tps: 117
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60993.96286
+  tps: 585
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 45143.47137
+  tps: 23502.45008
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51977.80349
+  tps: 901.00813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 88020.45837
+  tps: 850.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 37442.8296
+  tps: 23921.31145
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 43904.76952
+  tps: 899
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 70198.16465
+  tps: 827.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 43053.56488
+  tps: 23612.77993
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51267.34271
+  tps: 807.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 87961.47571
+  tps: 825.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 36077.80175
+  tps: 24055.75193
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 42888.21525
+  tps: 787.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 69463.43198
+  tps: 770
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 188334.14344
+  tps: 114824.61945
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 22175.81138
+  tps: 140.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60820.34439
+  tps: 702.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 155645.34997
+  tps: 123197.38688
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 18667.10921
+  tps: 131
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 48330.74768
+  tps: 655
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 39731.70122
+  tps: 21677.44116
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 48235.34883
+  tps: 896.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 71379.28469
+  tps: 867.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 33053.68747
+  tps: 22111.22248
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 40646.8406
+  tps: 892
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 57524.45536
+  tps: 837.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 42005.68237
+  tps: 22019.55006
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51136.55467
+  tps: 787.00813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 77210.59991
+  tps: 800.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 35076.15797
+  tps: 22438.26426
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 43393.8797
+  tps: 789.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-AlliancePandaren-preraid-TalentsEchoUnleashed-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60833.99699
+  tps: 780
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 84568.15005
+  tps: 100770.59212
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 29144.04264
+  tps: 135.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 70397.76112
+  tps: 677.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 62006.01815
+  tps: 88661.70522
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 24178.52421
+  tps: 127
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 54526.22494
+  tps: 635
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 43375.73488
+  tps: 20266.91193
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51420.95534
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 78527.29912
+  tps: 790.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 35747.59599
+  tps: 20740.37593
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 43384.92036
+  tps: 777
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 61935.80228
+  tps: 765
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 37531.17094
+  tps: 23073.07033
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 47043.41407
+  tps: 792.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 73798.39056
+  tps: 812.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 30908.40179
+  tps: 23474.26617
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 39936.49559
+  tps: 792
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 57991.80128
+  tps: 782.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 85682.91508
+  tps: 107624.22803
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 25169.66595
+  tps: 126.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 76830.22703
+  tps: 632.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 56554.24611
+  tps: 82299.80522
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 21063.47616
+  tps: 117
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60997.0025
+  tps: 585
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 45146.07811
+  tps: 23502.44513
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51984.16227
+  tps: 901.00813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 88042.05477
+  tps: 850.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 37444.95153
+  tps: 23921.30783
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 43907.22665
+  tps: 899
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 70201.75435
+  tps: 827.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 43056.03834
+  tps: 23612.77577
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51273.65247
+  tps: 807.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 87983.04975
+  tps: 825.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 36079.83657
+  tps: 24055.74687
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 42890.6079
+  tps: 787.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEMPrimal-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 69466.97423
+  tps: 770
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 188348.9295
+  tps: 114824.61327
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 22178.92408
+  tps: 140.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60832.92393
+  tps: 702.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 155654.09316
+  tps: 123197.38115
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 18668.12275
+  tps: 131
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 48333.18651
+  tps: 655
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 39735.90395
+  tps: 21677.4359
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 48240.00388
+  tps: 896.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 71392.51039
+  tps: 867.54067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 33055.58027
+  tps: 22111.21734
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 40649.13606
+  tps: 892
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 57527.44833
+  tps: 837.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 42010.00934
+  tps: 22019.54554
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 51141.38054
+  tps: 787.00813
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 77224.13054
+  tps: 800.04067
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 35078.16071
+  tps: 22438.26106
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 43396.33308
+  tps: 789.5
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 60837.17091
+  tps: 780
+ }
+}
+dps_results: {
  key: "TestElemental-Settings-Orc-preraid-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 86425.53726
