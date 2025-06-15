@@ -1155,13 +1155,10 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 
 	// Off-Hand attacks
-	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand
 	[JSON.stringify({ spellId: 49998, tag: 2 }), { spellId: 66188 }], // Death Knight - Death Strike Off-Hand
-	[JSON.stringify({ spellId: 85948, tag: 2 }), { spellId: 86061 }], // Death Knight - Festering Strike Off-Hand
 	[JSON.stringify({ spellId: 49143, tag: 2 }), { spellId: 66196 }], // Death Knight - Frost Strike Off-Hand
 	[JSON.stringify({ spellId: 49020, tag: 2 }), { spellId: 66198 }], // Death Knight - Obliterate Off-Hand
 	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 66216 }], // Death Knight - Plague Strike Off-Hand
-	[JSON.stringify({ spellId: 56815, tag: 2 }), { spellId: 66217 }], // Death Knight - Rune Strike Off-Hand
 	[JSON.stringify({ spellId: 1329, tag: 2 }), { spellId: 27576 }], // Rogue - Mutilate Off-Hand
 	[JSON.stringify({ spellId: 17364, tag: 2 }), { spellId: 32176 }], // Shaman - Stormstrike Off-Hand
 	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand

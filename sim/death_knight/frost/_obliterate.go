@@ -2,7 +2,6 @@ package death_knight
 
 import (
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 )
 
 var obliterateActionID = core.ActionID{SpellID: 49020}
@@ -12,6 +11,27 @@ A brutal instant attack that deals 250% weapon damage.
 Total damage is increased by 12.5% for each of your diseases on the target.
 */
 func (dk *DeathKnight) registerObliterateSpell() {
+	ohSpell := fdk.RegisterSpell(core.SpellConfig{
+		ActionID:       obliterateActionID.WithTag(2), // Actually 66198
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics,
+		ClassSpellMask: DeathKnightSpellObliterate,
+
+		DamageMultiplier: 2.5,
+		CritMultiplier:   dk.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.ClassSpellScaling*0.28900000453 +
+				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			baseDamage *= dk.GetDiseaseMulti(target, 1.0, 0.125)
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+		},
+	})
+
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       obliterateActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -32,7 +52,7 @@ func (dk *DeathKnight) registerObliterateSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1.5,
+		DamageMultiplier: 2.5,
 		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
@@ -45,7 +65,10 @@ func (dk *DeathKnight) registerObliterateSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			spell.SpendRefundableCost(sim, result)
-			dk.ThreatOfThassarianProc(sim, result, ohSpell)
+
+			if result.Landed() {
+				ohSpell.Cast(sim, target)
+			}
 
 			spell.DealDamage(sim, result)
 		},

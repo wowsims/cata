@@ -73,6 +73,11 @@ func (dk *DeathKnight) registerDeathStrike() {
 		},
 	})
 
+	var ohSpell *core.Spell
+	if dk.Spec == proto.Spec_SpecFrostDeathKnight {
+		ohSpell = dk.registerOffHandDeathStrike()
+	}
+
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       DeathStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -109,9 +114,34 @@ func (dk *DeathKnight) registerDeathStrike() {
 				spell.SpendCostAndConvertFrostOrUnholyRune(sim, result, 1)
 			}
 
+			if result.Landed() && ohSpell != nil {
+				ohSpell.Cast(sim, target)
+			}
+
 			spell.DealDamage(sim, result)
 
 			healingSpell.Cast(sim, &dk.Unit)
+		},
+	})
+}
+
+func (dk *DeathKnight) registerOffHandDeathStrike() *core.Spell {
+	return dk.RegisterSpell(core.SpellConfig{
+		ActionID:       DeathStrikeActionID.WithTag(2), // Actually 66188
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		ClassSpellMask: DeathKnightSpellDeathStrike,
+
+		DamageMultiplier: 1.85,
+		CritMultiplier:   dk.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.CalcScalingSpellDmg(0.20000000298) +
+				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
 }

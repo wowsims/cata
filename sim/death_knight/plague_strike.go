@@ -2,6 +2,7 @@ package death_knight
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 var PlagueStrikeActionID = core.ActionID{SpellID: 45462}
@@ -18,6 +19,11 @@ and Frost Fever, a disease dealing Frost damage over time
 .
 */
 func (dk *DeathKnight) registerPlagueStrike() {
+	var ohSpell *core.Spell
+	if dk.Spec == proto.Spec_SpecFrostDeathKnight {
+		ohSpell = dk.registerOffHandPlagueStrike()
+	}
+
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       PlagueStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -50,11 +56,37 @@ func (dk *DeathKnight) registerPlagueStrike() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			spell.SpendRefundableCost(sim, result)
+
 			if result.Landed() {
+				if ohSpell != nil {
+					ohSpell.Cast(sim, target)
+				}
+
 				dk.BloodPlagueSpell.Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)
+		},
+	})
+}
+
+func (dk *DeathKnight) registerOffHandPlagueStrike() *core.Spell {
+	return dk.RegisterSpell(core.SpellConfig{
+		ActionID:       PlagueStrikeActionID.WithTag(2), // Actually 66216
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		ClassSpellMask: DeathKnightSpellPlagueStrike,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   dk.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.CalcScalingSpellDmg(0.18700000644) +
+				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
 }

@@ -481,7 +481,6 @@ func (spell *Spell) OutcomeMeleeSpecialCritOnlyNoHitCounter(sim *Simulation, res
 	spell.outcomeMeleeSpecialCritOnly(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
-
 	if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 		result.applyAttackTableHit(spell, countHits)
 	}
