@@ -87,18 +87,11 @@ func (dk *DeathKnight) GetCharacter() *core.Character {
 func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
-// func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	if dk.Talents.AbominationsMight > 0 {
-// 		raidBuffs.AbominationsMight = true
-// 	}
-
-// 	if dk.Talents.ImprovedIcyTalons {
-// 		raidBuffs.IcyTalons = true
-// 	}
-
-// 	// TODO: Make horn of winter dynamic
-// 	raidBuffs.HornOfWinter = true
-// }
+func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+		raidBuffs.UnholyAura = true
+	}
+}
 
 func (dk *DeathKnight) Initialize() {
 	dk.registerAntiMagicShell()
