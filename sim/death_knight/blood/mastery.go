@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
-// Each time you heal yourself with Death Strike while in Blood Presence, you gain 50% of the amount healed as a Physical damage absorption shield.
+// Each time you heal yourself with Death Strike while in Blood Presence, you gain (50 + (<Mastery Rating>/600)*6.25)% of the amount healed as a Physical damage absorption shield.
 func (bdk *BloodDeathKnight) registerMastery() {
 	shieldAmount := 0.0
 	currentShield := 0.0

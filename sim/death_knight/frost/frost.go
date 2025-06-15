@@ -45,12 +45,10 @@ func (fdk *FrostDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 	return fdk.DeathKnight
 }
 
-func (fdk FrostDeathKnight) getMasteryFrostBonus() float64 {
-	return 0.16 + 0.02*fdk.GetMasteryPoints()
-}
-
 func (fdk *FrostDeathKnight) Initialize() {
 	fdk.DeathKnight.Initialize()
+
+	fdk.registerMastery()
 
 	// fdk.registerFrostStrikeSpell()
 	// fdk.registerHowlingBlastSpell()
@@ -62,27 +60,6 @@ func (fdk *FrostDeathKnight) Initialize() {
 func (fdk *FrostDeathKnight) ApplyTalents() {
 	fdk.DeathKnight.ApplyTalents()
 	fdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86113)
-
-	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: fdk.getMasteryFrostBonus(),
-		School:     core.SpellSchoolFrost,
-	})
-
-	fdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		masteryMod.UpdateFloatValue(fdk.getMasteryFrostBonus())
-	})
-
-	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
-		Label:    "Frozen Heart",
-		ActionID: core.ActionID{SpellID: 77514},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
 
 	// Icy Talons
 	fdk.PseudoStats.MeleeSpeedMultiplier *= 1.2
