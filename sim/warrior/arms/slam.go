@@ -59,7 +59,7 @@ func (war *ArmsWarrior) registerSlam() {
 				sweepingStrikesSlamDamage = result.Damage
 				for _, otherTarget := range sim.Encounter.TargetUnits {
 					if otherTarget != target {
-						sweepingStrikesSlam.Cast(sim, target)
+						sweepingStrikesSlam.Cast(sim, otherTarget)
 					}
 				}
 			}
