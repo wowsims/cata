@@ -228,4 +228,55 @@ func init() {
 			},
 		})
 	})
+
+	// Synapse Springs
+	core.NewEnchantEffect(4898, func(agent core.Agent, _ proto.ItemLevelState) {
+		character := agent.GetCharacter()
+
+		bonus := stats.Stats{}
+		bonus[character.GetHighestStatType([]stats.Stat{
+			stats.Strength, stats.Agility, stats.Intellect,
+		})] = 1900
+
+		core.RegisterTemporaryStatsOnUseCD(character,
+			"Synapse Springs",
+			bonus,
+			10*time.Second,
+			core.SpellConfig{
+				ActionID: core.ActionID{SpellID: 126734},
+				Cast: core.CastConfig{
+					CD: core.Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute,
+					},
+					SharedCD: core.Cooldown{
+						Timer:    character.GetOffensiveTrinketCD(),
+						Duration: 10 * time.Second,
+					},
+				},
+			})
+	})
+
+	// Phase Fingers
+	core.NewEnchantEffect(4697, func(agent core.Agent, _ proto.ItemLevelState) {
+		character := agent.GetCharacter()
+
+		core.RegisterTemporaryStatsOnUseCD(character,
+			"Phase Fingers",
+			stats.Stats{stats.DodgeRating: 2880},
+			10*time.Second,
+			core.SpellConfig{
+				ActionID: core.ActionID{SpellID: 108788},
+				Cast: core.CastConfig{
+					CD: core.Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute,
+					},
+					SharedCD: core.Cooldown{
+						Timer:    character.GetDefensiveTrinketCD(),
+						Duration: 10 * time.Second,
+					},
+				},
+			})
+	})
 }
