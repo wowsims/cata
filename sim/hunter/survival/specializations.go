@@ -24,7 +24,7 @@ func (survival *SurvivalHunter) ApplyMods() {
 // Todo: Should we support precasting freezing/ice trap?
 func (survival *SurvivalHunter) applyLNL() {
 	actionID := core.ActionID{SpellID: 56343}
-	procChance := core.TernaryFloat64(survival.CouldHaveSetBonus(hunter.YaunGolSlayersBattlegear, 3), 0.40, 0.20)
+	procChance := core.TernaryFloat64(survival.CouldHaveSetBonus(hunter.YaunGolSlayersBattlegear, 4), 0.40, 0.20)
 
 	icd := core.Cooldown{
 		Timer:    survival.NewTimer(),
