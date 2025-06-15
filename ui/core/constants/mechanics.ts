@@ -30,7 +30,7 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecProtectionPaladin, 1.0],
 	[Spec.SpecRetributionPaladin, 1.85],
 	[Spec.SpecElementalShaman, 2.0],
-	[Spec.SpecEnhancementShaman, 2.5],
+	[Spec.SpecEnhancementShaman, 2.0],
 	[Spec.SpecRestorationShaman, 3.0],
 	[Spec.SpecBeastMasteryHunter, 1.675],
 	[Spec.SpecMarksmanshipHunter, 2.1],
@@ -47,6 +47,6 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecAfflictionWarlock, 1.625],
 	[Spec.SpecDemonologyWarlock, 2.3],
 	[Spec.SpecDestructionWarlock, 1.35],
-	[Spec.SpecWindwalkerMonk, 2.5],
+	[Spec.SpecWindwalkerMonk, 0.2],
 	[Spec.SpecBrewmasterMonk, 0.625],
 ]);

@@ -56,6 +56,10 @@ var ItemSetWhiteTigerBattlegear = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Increases the damage done by your Templar's Verdict ability by 15%.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			if agent.GetCharacter().Spec != proto.Spec_SpecRetributionPaladin {
+				return
+			}
+
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  SpellMaskTemplarsVerdict,
@@ -201,6 +205,9 @@ var ItemSetBattlegearOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 		// Your Crusader Strike has a 40% chance to make your next Templar's Verdict deal all Holy damage.
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if paladin.Spec != proto.Spec_SpecRetributionPaladin {
+				return
+			}
 
 			templarsVerdictAura := paladin.RegisterAura(core.Aura{
 				Label:    "Templar's Verdict" + paladin.Label,
@@ -425,6 +432,9 @@ var ItemSetPlateOfWingedTriumph = core.NewItemSet(core.ItemSet{
 		// While at 3 or more stacks of Bastion of Glory, your next [Eternal Flame / Word of Glory] will consume no Holy Power and count as if 3 Holy Power were consumed.
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if paladin.Spec != proto.Spec_SpecProtectionPaladin {
+				return
+			}
 
 			paladin.BastionOfPowerAura = paladin.RegisterAura(core.Aura{
 				Label:    "Bastion of Power" + paladin.Label,

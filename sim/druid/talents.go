@@ -106,7 +106,7 @@ func (druid *Druid) registerCenarionWard() {
 
 			OnSnapshot: func(_ *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = baseTickDamage + spSnapshot*1.04
-				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
+				dot.SnapshotAttackerMultiplier = dot.CasterPeriodicHealingMultiplier()
 				dot.SnapshotCritChance = dot.Spell.HealingCritChance()
 			},
 

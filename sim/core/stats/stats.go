@@ -342,7 +342,6 @@ func (stats Stats) ToProtoArray() []float64 {
 	// shared indices between the two.
 	return stats[:ProtoStatsLen]
 }
-
 func (stats Stats) ToProtoMap() map[int32]float64 {
 	m := make(map[int32]float64, ProtoStatsLen)
 	for i := 0; i < int(ProtoStatsLen); i++ {
@@ -396,11 +395,12 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
-	DamageDealtMultiplier       float64            // All damage
-	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
-	DotDamageMultiplierAdditive float64            // All periodic damage
-	HealingDealtMultiplier      float64            // All non-shield healing
-	CritDamageMultiplier        float64            // All multiplicative crit damage
+	DamageDealtMultiplier          float64            // All damage
+	SchoolDamageDealtMultiplier    [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
+	DotDamageMultiplierAdditive    float64            // All periodic damage
+	HealingDealtMultiplier         float64            // All non-shield healing
+	PeriodicHealingDealtMultiplier float64            // All periodic healing (on top of HealingDealtMultiplier)
+	CritDamageMultiplier           float64            // All multiplicative crit damage
 
 	// Important when unit is attacker or target
 	BlockDamageReduction float64
@@ -460,11 +460,12 @@ func NewPseudoStats() PseudoStats {
 
 		ThreatMultiplier: 1,
 
-		DamageDealtMultiplier:       1,
-		SchoolDamageDealtMultiplier: NewSchoolFloatArray(),
-		DotDamageMultiplierAdditive: 1,
-		HealingDealtMultiplier:      1,
-		CritDamageMultiplier:        1,
+		DamageDealtMultiplier:          1,
+		SchoolDamageDealtMultiplier:    NewSchoolFloatArray(),
+		DotDamageMultiplierAdditive:    1,
+		HealingDealtMultiplier:         1,
+		PeriodicHealingDealtMultiplier: 1,
+		CritDamageMultiplier:           1,
 
 		BlockDamageReduction: 0.3,
 

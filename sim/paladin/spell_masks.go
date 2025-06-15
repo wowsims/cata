@@ -48,9 +48,6 @@ const (
 	SpellMaskHolyShockHeal
 	SpellMaskLightOfDawn
 
-	// Talents
-	SpellMaskEternalFlame
-
 	// Glyphs
 	SpellMaskHarshWords
 )

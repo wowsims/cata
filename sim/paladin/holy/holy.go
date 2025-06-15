@@ -52,6 +52,8 @@ func (holy *HolyPaladin) ApplyTalents() {
 
 func (holy *HolyPaladin) Initialize() {
 	holy.Paladin.Initialize()
+
+	holy.registerHotfixPassive()
 }
 
 func (holy *HolyPaladin) Reset(sim *core.Simulation) {

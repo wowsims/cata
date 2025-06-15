@@ -6,6 +6,8 @@ export enum Phase {
 	Phase1 = 1,
 	Phase2,
 	Phase3,
+	Phase4,
+	Phase5,
 }
 
 export const CURRENT_PHASE = Phase.Phase1;
