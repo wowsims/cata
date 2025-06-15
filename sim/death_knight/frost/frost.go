@@ -50,6 +50,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 
 	fdk.registerMastery()
 
+	fdk.registerBloodOfTheNorth()
 	fdk.registerBrittleBones()
 	// fdk.registerFrostStrikeSpell()
 	// fdk.registerHowlingBlastSpell()
@@ -65,14 +66,6 @@ func (fdk *FrostDeathKnight) Initialize() {
 func (fdk *FrostDeathKnight) ApplyTalents() {
 	fdk.DeathKnight.ApplyTalents()
 	fdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86113)
-
-	// Blood of the North
-	permanentDeathRunes := []int8{0, 1}
-	fdk.SetPermanentDeathRunes(permanentDeathRunes)
-	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
-		Label:    "Blood of the North" + fdk.Label,
-		ActionID: core.ActionID{SpellID: 54637},
-	}))
 }
 
 func (fdk *FrostDeathKnight) Reset(sim *core.Simulation) {
