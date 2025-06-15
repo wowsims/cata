@@ -252,6 +252,19 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs_auto_gen.go", TmplStrProc)
 }
 
+func GenerateItemEffectRandomPropPoints(instance *dbc.DBC, db *WowDatabase) {
+	for id, allocMap := range instance.RandomPropertiesByIlvl {
+		ilvl := int32(id)
+		if ilvl < core.MinIlvl || ilvl > core.MaxIlvl {
+			continue
+		}
+		db.ItemEffectRandPropPoints[ilvl] = &proto.ItemEffectRandPropPoints{
+			Id:             ilvl,
+			RandPropPoints: allocMap[proto.ItemQuality_ItemQualityEpic][0],
+		}
+	}
+}
+
 func BuildItemDifficultyPostfix(itemSources map[int][]*proto.DropSource, itemId int, instance *dbc.DBC) string {
 	difficultyPostfix := ""
 	if sources, ok := itemSources[itemId]; ok {

@@ -2668,6 +2668,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 87504.61725
+  tps: 606270.42174
+  dtps: 53849.11674
+  hps: 23028.41959
+ }
+}
+dps_results: {
  key: "TestGuardian-Average-Default"
  value: {
   dps: 89350.50055

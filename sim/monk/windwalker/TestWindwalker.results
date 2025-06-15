@@ -2415,6 +2415,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 117443.01796
+  tps: 108673.29258
+  hps: 7092.32106
+ }
+}
+dps_results: {
  key: "TestWindwalker-Average-Default"
  value: {
   dps: 118733.81361

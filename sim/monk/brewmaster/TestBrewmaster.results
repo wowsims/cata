@@ -2722,6 +2722,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 116461.75054
+  tps: 815232.25376
+  dtps: 43862.34393
+  hps: 6517.09943
+ }
+}
+dps_results: {
  key: "TestBrewmaster-Average-Default"
  value: {
   dps: 117985.12141

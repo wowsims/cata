@@ -230,6 +230,7 @@ func main() {
 	database.GenerateItemEffects(instance, db, dropSources)
 	database.GenerateEnchantEffects(instance, db)
 	database.GenerateMissingEffectsFile()
+	database.GenerateItemEffectRandomPropPoints(instance, db)
 
 	for _, key := range slices.SortedFunc(maps.Keys(db.Enchants), func(l database.EnchantDBKey, r database.EnchantDBKey) int {
 		return int(l.EffectID) - int(r.EffectID)
@@ -346,7 +347,7 @@ func InferPhase(item *proto.UIItem) int32 {
 	}
 
 	//iLvl 600 legendary vs. epic
-	if ilvl == 600 {
+	if ilvl == core.MaxIlvl {
 		if quality == proto.ItemQuality_ItemQualityLegendary {
 			return 5
 		}
@@ -527,7 +528,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if len(item.ScalingOptions) <= 0 {
 			return false
 		}
-		if item.ScalingOptions[0].Ilvl > 600 || item.ScalingOptions[0].Ilvl < 100 {
+		if item.ScalingOptions[0].Ilvl > core.MaxIlvl || item.ScalingOptions[0].Ilvl < core.MinIlvl {
 			return false
 		}
 		for _, pattern := range database.DenyListNameRegexes {

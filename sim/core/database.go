@@ -19,6 +19,7 @@ var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
+var ItemEffectRandPropPointsByID = map[int32]ItemEffectRandPropPoints{}
 var ConsumablesByID = map[int32]Consumable{}
 var SpellEffectsById = map[int32]*proto.SpellEffect{}
 
@@ -59,6 +60,11 @@ func addToDatabase(newDB *proto.SimDatabase) {
 			ReforgeStatsByID[v.Id] = ReforgeStatFromProto(v)
 		}
 	}
+	for _, v := range newDB.ItemEffectRandPropPoints {
+		if _, ok := ItemEffectRandPropPointsByID[v.Id]; !ok {
+			ItemEffectRandPropPointsByID[v.Id] = ItemEffectRandPropPointsFromProto(v)
+		}
+	}
 	for _, v := range newDB.Consumables {
 		if _, ok := ConsumablesByID[v.Id]; !ok {
 			ConsumablesByID[v.Id] = ConsumableFromProto(v)
@@ -95,6 +101,27 @@ func ReforgeStatToProto(stat ReforgeStat) *proto.ReforgeStat {
 		FromStat:   stat.FromStat,
 		ToStat:     stat.ToStat,
 		Multiplier: stat.Multiplier,
+	}
+}
+
+type ItemEffectRandPropPoints struct {
+	ID             int32
+	RandPropPoints int32
+}
+
+// ItemEffectRandPropPointsFromProto converts a protobuf ItemEffectRandPropPoints to a Go ItemEffectRandPropPoints
+func ItemEffectRandPropPointsFromProto(ieRpp *proto.ItemEffectRandPropPoints) ItemEffectRandPropPoints {
+	return ItemEffectRandPropPoints{
+		ID:             ieRpp.GetId(),
+		RandPropPoints: ieRpp.GetRandPropPoints(),
+	}
+}
+
+// ItemEffectRandPropPointsToProto converts a Go ItemEffectRandPropPoints to a protobuf ItemEffectRandPropPoints
+func ItemEffectRandPropPointsToProto(ieRpp ItemEffectRandPropPoints) *proto.ItemEffectRandPropPoints {
+	return &proto.ItemEffectRandPropPoints{
+		Id:             ieRpp.ID,
+		RandPropPoints: ieRpp.RandPropPoints,
 	}
 }
 

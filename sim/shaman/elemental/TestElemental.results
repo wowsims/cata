@@ -2124,6 +2124,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 51765.82937
+  tps: 796.50813
+ }
+}
+dps_results: {
  key: "TestElemental-Average-Default"
  value: {
   dps: 53042.20553
