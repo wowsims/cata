@@ -699,6 +699,13 @@ var ItemDenyList = map[int32]struct{}{
 	100356: {},
 	103055: {},
 	103050: {},
+
+	// MOP
+	87080: {}, // HC Trash Jade Magistrate Figurine - 502
+	87079: {}, // HC Trash Jade Bandit Figurine - 502
+	87082: {}, // HC Trash Jade Charioteer Figurine - 502
+	87081: {}, // HC Trash Jade Courteasan Figurine - 502
+	87083: {}, // HC Trash Jade Warlord Figurine - 502
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
@@ -1058,6 +1065,8 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`DELETED`),
 	regexp.MustCompile(`zOLD`),
 	regexp.MustCompile(`Archaic Spell`),
+	regexp.MustCompile(`Well Repaired`),
+	regexp.MustCompile(`Boss X`),
 	regexp.MustCompile(`Adventurine`),
 	regexp.MustCompile(`Sardonyx`),
 	regexp.MustCompile(`Zyanite`),
@@ -1157,4 +1166,11 @@ var GemDenyList = map[int32]struct{}{
 	77141: {},
 	77138: {},
 	77136: {},
+}
+
+var EnchantDenyList = map[int32]struct{}{
+	4671: {}, // Kyle's Test Enchantment
+	4687: {}, // Enchant Weapon - Ninja (TEST VERSION)
+	4717: {}, // Enchant Weapon - Pandamonium (DNT)
+	5110: {}, // Lightweave Embroidery - Junk
 }

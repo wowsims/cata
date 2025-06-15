@@ -382,3 +382,69 @@ var Classes = []DbcClass{
 	{proto.Class_ClassMonk, 10},
 	{proto.Class_ClassDruid, 11},
 }
+
+// SpecByID maps the ChrSpecialization.DB2 ID to proto.Spec
+var SpecByID = map[int32]proto.Spec{
+	// Death Knight
+	250: proto.Spec_SpecBloodDeathKnight,
+	251: proto.Spec_SpecFrostDeathKnight,
+	252: proto.Spec_SpecUnholyDeathKnight,
+
+	// Druid
+	102: proto.Spec_SpecBalanceDruid,
+	103: proto.Spec_SpecFeralDruid,
+	104: proto.Spec_SpecGuardianDruid,
+	105: proto.Spec_SpecRestorationDruid,
+
+	// Hunter
+	253: proto.Spec_SpecBeastMasteryHunter,
+	254: proto.Spec_SpecMarksmanshipHunter,
+	255: proto.Spec_SpecSurvivalHunter,
+
+	// Mage
+	62: proto.Spec_SpecArcaneMage,
+	63: proto.Spec_SpecFireMage,
+	64: proto.Spec_SpecFrostMage,
+
+	// Paladin
+	65: proto.Spec_SpecHolyPaladin,
+	66: proto.Spec_SpecProtectionPaladin,
+	70: proto.Spec_SpecRetributionPaladin,
+
+	// Priest
+	256: proto.Spec_SpecDisciplinePriest,
+	257: proto.Spec_SpecHolyPriest,
+	258: proto.Spec_SpecShadowPriest,
+
+	// Rogue
+	259: proto.Spec_SpecAssassinationRogue,
+	260: proto.Spec_SpecCombatRogue,
+	261: proto.Spec_SpecSubtletyRogue,
+
+	// Shaman
+	262: proto.Spec_SpecElementalShaman,
+	263: proto.Spec_SpecEnhancementShaman,
+	264: proto.Spec_SpecRestorationShaman,
+
+	// Warlock
+	265: proto.Spec_SpecAfflictionWarlock,
+	266: proto.Spec_SpecDemonologyWarlock,
+	267: proto.Spec_SpecDestructionWarlock,
+
+	// Warrior
+	71: proto.Spec_SpecArmsWarrior,
+	72: proto.Spec_SpecFuryWarrior,
+	73: proto.Spec_SpecProtectionWarrior,
+
+	// Monk
+	268: proto.Spec_SpecBrewmasterMonk,
+	269: proto.Spec_SpecWindwalkerMonk,
+	270: proto.Spec_SpecMistweaverMonk,
+}
+
+func SpecFromID(id int32) proto.Spec {
+	if s, ok := SpecByID[id]; ok {
+		return s
+	}
+	return proto.Spec_SpecUnknown
+}
