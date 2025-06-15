@@ -1775,6 +1775,46 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 111518.81986
+  tps: 103303.43032
+  hps: 6683.67232
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 121931.45757
+  tps: 112265.87808
+  hps: 7491.37742
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 124972.14135
+  tps: 114849.96124
+  hps: 7764.08221
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 125904.18149
+  tps: 115655.59502
+  hps: 7838.19749
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 126657.21587
+  tps: 116286.19369
+  hps: 7906.85342
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-ResolveofNiuzao-103690"
  value: {
   dps: 112830.03366

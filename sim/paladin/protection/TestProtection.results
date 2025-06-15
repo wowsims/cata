@@ -1984,6 +1984,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 127818.3482
+  tps: 885021.13479
+  dtps: 77178.66876
+  hps: 70610.20598
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 128037.61699
+  tps: 886556.01628
+  dtps: 77178.66876
+  hps: 70610.15576
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 128053.49009
+  tps: 886667.12801
+  dtps: 77178.66876
+  hps: 70610.15576
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 128053.49009
+  tps: 886667.12801
+  dtps: 77178.66876
+  hps: 70610.15576
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 128065.99941
+  tps: 886754.69323
+  dtps: 77178.66876
+  hps: 70610.15576
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-ResolveofNiuzao-103690"
  value: {
   dps: 128027.20186

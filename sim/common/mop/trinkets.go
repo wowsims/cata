@@ -51,4 +51,42 @@ func init() {
 		})
 	})
 
+	for _, version := range []core.ItemVersion{core.ItemVersionLFR, core.ItemVersionNormal, core.ItemVersionHeroic, core.ItemVersionThunderforged, core.ItemVersionHeroicThunderforged} {
+		labelSuffix := []string{" (Celestial)", "", " (Heroic)", " (Thunderforged)", " (Heroic Thunderforged)"}[version]
+
+		// Renataki's Soul Charm
+		itemID := []int32{95625, 94512, 96369, 95997, 96741}[version]
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+			character := agent.GetCharacter()
+			label := "Blades of Renataki"
+
+			statValue := core.GetItemEffectScaling(itemID, 0.44999998808, state)
+
+			_, aura := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+				AuraLabel:            label + labelSuffix,
+				ActionID:             core.ActionID{SpellID: 138756},
+				Duration:             time.Second * 20,
+				MaxStacks:            10,
+				TimePerStack:         time.Second * 1,
+				BonusPerStack:        stats.Stats{stats.Agility: statValue},
+				StackingAuraActionID: core.ActionID{SpellID: 138737},
+				StackingAuraLabel:    "Item - Proc Stacking Agility" + labelSuffix,
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:    label,
+				Harmful: true,
+				ICD:     time.Second * 10,
+				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
+					PPM: 1.21000003815,
+				}),
+				Outcome:  core.OutcomeLanded,
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					aura.Activate(sim)
+				},
+			})
+		})
+	}
+
 }

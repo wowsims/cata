@@ -2011,6 +2011,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 114378.4026
+  tps: 800648.81819
+  dtps: 44707.78682
+  hps: 6533.98288
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 119063.44137
+  tps: 833444.08962
+  dtps: 43972.49696
+  hps: 6607.50689
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 120566.88684
+  tps: 843968.20786
+  dtps: 43855.45553
+  hps: 6499.1222
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 120637.85974
+  tps: 844465.01818
+  dtps: 44214.0132
+  hps: 6590.72165
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 121125.93098
+  tps: 847881.51687
+  dtps: 44142.29573
+  hps: 6601.06206
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-ResolveofNiuzao-103690"
  value: {
   dps: 114388.10973
