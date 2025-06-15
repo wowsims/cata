@@ -59,7 +59,7 @@ func (fdk *FrostDeathKnight) registerFrostStrikeSpell() {
 
 			spell.SpendRefundableCost(sim, result)
 
-			if result.Landed() {
+			if result.Landed() && dk.ThreatOfThassarianAura.IsActive() {
 				ohSpell.Cast(sim, target)
 			}
 

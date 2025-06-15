@@ -66,7 +66,7 @@ func (dk *DeathKnight) registerObliterateSpell() {
 
 			spell.SpendRefundableCost(sim, result)
 
-			if result.Landed() {
+			if result.Landed() && dk.ThreatOfThassarianAura.IsActive() {
 				ohSpell.Cast(sim, target)
 			}
 

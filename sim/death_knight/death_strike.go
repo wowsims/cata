@@ -114,7 +114,7 @@ func (dk *DeathKnight) registerDeathStrike() {
 				spell.SpendCostAndConvertFrostOrUnholyRune(sim, result, 1)
 			}
 
-			if result.Landed() && ohSpell != nil {
+			if result.Landed() && dk.ThreatOfThassarianAura.IsActive() {
 				ohSpell.Cast(sim, target)
 			}
 

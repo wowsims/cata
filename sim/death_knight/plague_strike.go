@@ -58,7 +58,7 @@ func (dk *DeathKnight) registerPlagueStrike() {
 			spell.SpendRefundableCost(sim, result)
 
 			if result.Landed() {
-				if ohSpell != nil {
+				if dk.ThreatOfThassarianAura.IsActive() {
 					ohSpell.Cast(sim, target)
 				}
 
