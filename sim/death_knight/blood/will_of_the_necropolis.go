@@ -19,10 +19,6 @@ func (bdk *BloodDeathKnight) registerWillOfTheNecropolis() {
 		Label:    "Will of The Necropolis Rune Tap Cost" + bdk.Label,
 		ActionID: core.ActionID{SpellID: 96171},
 		Duration: time.Second * 8,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: death_knight.DeathKnightSpellRuneTap,
-		IntValue:  -100,
 	}).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: death_knight.DeathKnightSpellRuneTap,
@@ -34,6 +30,10 @@ func (bdk *BloodDeathKnight) registerWillOfTheNecropolis() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			wotnRuneTapCostAura.Deactivate(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: death_knight.DeathKnightSpellRuneTap,
+		IntValue:  -100,
 	})
 
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{

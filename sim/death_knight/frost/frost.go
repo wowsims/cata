@@ -54,6 +54,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 	// fdk.registerFrostStrikeSpell()
 	// fdk.registerHowlingBlastSpell()
 	fdk.registerIcyTalons()
+	fdk.registerKillingMachine()
 	fdk.registerMightOfTheFrozenWastes()
 	// fdk.registerObliterateSpell()
 	fdk.registerPillarOfFrost()
