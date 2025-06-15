@@ -161,18 +161,20 @@ func init() {
 	newDancingSteelEnchant("Bloddy Dancing Steel", 5125, 142531, 142530, 142530)
 
 	// Permanently enchants a melee weapon to make your damaging melee strikes sometimes activate a Mogu protection
-	// spell, absorbing up to 0 damage.
+	// spell, absorbing up to 8000 damage.
 	core.NewEnchantEffect(4445, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
-		shield := character.NewDamageAbsorptionAura(
-			"Colossus",
-			core.ActionID{SpellID: 116631},
-			time.Second*10,
-			func(_ *core.Unit) float64 {
+		shield := character.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+			Aura: core.Aura{
+				Label:    "Colossus" + character.Label,
+				ActionID: core.ActionID{SpellID: 116631},
+				Duration: time.Second * 10,
+			},
+			ShieldStrengthCalculator: func(_ *core.Unit) float64 {
 				return 8000
 			},
-		)
+		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Enchant Weapon - Colossus",
