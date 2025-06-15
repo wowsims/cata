@@ -85,6 +85,8 @@ func (dk *DeathKnight) registerDeathStrike() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellDeathStrike,
 
+		MaxRange: core.MaxMeleeRange,
+
 		RuneCost: core.RuneCostOptions{
 			FrostRuneCost:  1,
 			UnholyRuneCost: 1,

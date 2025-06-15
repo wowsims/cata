@@ -22,6 +22,8 @@ func (bdk *BloodDeathKnight) registerHeartStrike() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: death_knight.DeathKnightSpellHeartStrike,
 
+		MaxRange: core.MaxMeleeRange,
+
 		RuneCost: core.RuneCostOptions{
 			BloodRuneCost:  1,
 			RunicPowerGain: 10,

@@ -17,6 +17,8 @@ func (dk *DeathKnight) registerOutbreak() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellOutbreak,
 
+		MaxRange: 30,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDMin,
