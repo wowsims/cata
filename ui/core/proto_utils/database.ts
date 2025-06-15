@@ -12,7 +12,6 @@ import {
 	PresetEncounter,
 	PresetTarget,
 	ReforgeStat,
-	ScalingItemProperties,
 	Stat,
 } from '../proto/common.js';
 import { Consumable, ItemEffectRandPropPoints, SimDatabase } from '../proto/db';
@@ -131,7 +130,7 @@ export class Database {
 		});
 		db.randomSuffixes.forEach(randomSuffix => this.randomSuffixes.set(randomSuffix.id, randomSuffix));
 		db.reforgeStats.forEach(reforgeStat => this.reforgeStats.set(reforgeStat.id, reforgeStat));
-		db.itemEffectRandPropPoints.forEach(ieRpp => this.itemEffectRandPropPoints.set(ieRpp.id, ieRpp));
+		db.itemEffectRandPropPoints.forEach(ieRpp => this.itemEffectRandPropPoints.set(ieRpp.ilvl, ieRpp));
 		db.enchants.forEach(enchant => {
 			const slots = getEligibleEnchantSlots(enchant);
 			slots.forEach(slot => {
@@ -424,7 +423,7 @@ export class Database {
 			items: distinct(db1.items.concat(db2.items), (a, b) => a.id == b.id),
 			randomSuffixes: distinct(db1.randomSuffixes.concat(db2.randomSuffixes), (a, b) => a.id == b.id),
 			reforgeStats: distinct(db1.reforgeStats.concat(db2.reforgeStats), (a, b) => a.id == b.id),
-			itemEffectRandPropPoints: distinct(db1.itemEffectRandPropPoints.concat(db2.itemEffectRandPropPoints), (a, b) => a.id == b.id),
+			itemEffectRandPropPoints: distinct(db1.itemEffectRandPropPoints.concat(db2.itemEffectRandPropPoints), (a, b) => a.ilvl == b.ilvl),
 			enchants: distinct(db1.enchants.concat(db2.enchants), (a, b) => a.effectId == b.effectId),
 			gems: distinct(db1.gems.concat(db2.gems), (a, b) => a.id == b.id),
 			spellEffects: distinct(db1.spellEffects.concat(db2.spellEffects), (a, b) => a.id == b.id),

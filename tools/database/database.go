@@ -224,6 +224,21 @@ func mapToSlice[T idKeyed](m map[int32]T) []T {
 	return vs
 }
 
+type ilvlKeyed interface {
+	GetIlvl() int32
+}
+
+func mapToSliceByIlvl[T ilvlKeyed](m map[int32]T) []T {
+	vs := make([]T, 0, len(m))
+	for _, v := range m {
+		vs = append(vs, v)
+	}
+	slices.SortFunc(vs, func(a, b T) int {
+		return int(a.GetIlvl() - b.GetIlvl())
+	})
+	return vs
+}
+
 func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 	enchants := make([]*proto.UIEnchant, 0, len(db.Enchants))
 	for _, v := range db.Enchants {
@@ -248,7 +263,7 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		SpellIcons:               mapToSlice(db.SpellIcons),
 		GlyphIds:                 db.GlyphIDs,
 		ReforgeStats:             mapToSlice(db.ReforgeStats),
-		ItemEffectRandPropPoints: mapToSlice(db.ItemEffectRandPropPoints),
+		ItemEffectRandPropPoints: mapToSliceByIlvl(db.ItemEffectRandPropPoints),
 		Consumables:              mapToSlice(db.Consumables),
 		SpellEffects:             mapToSlice(db.Effects),
 	}
@@ -258,6 +273,13 @@ func sliceToMap[T idKeyed](vs []T) map[int32]T {
 	m := make(map[int32]T, len(vs))
 	for _, v := range vs {
 		m[v.GetId()] = v
+	}
+	return m
+}
+func iLvlKeyedSliceToMap[T ilvlKeyed](vs []T) map[int32]T {
+	m := make(map[int32]T, len(vs))
+	for _, v := range vs {
+		m[v.GetIlvl()] = v
 	}
 	return m
 }
@@ -282,7 +304,7 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		ItemIcons:                sliceToMap(dbProto.ItemIcons),
 		SpellIcons:               sliceToMap(dbProto.SpellIcons),
 		ReforgeStats:             sliceToMap(dbProto.ReforgeStats),
-		ItemEffectRandPropPoints: sliceToMap(dbProto.ItemEffectRandPropPoints),
+		ItemEffectRandPropPoints: iLvlKeyedSliceToMap(dbProto.ItemEffectRandPropPoints),
 		Consumables:              sliceToMap(dbProto.Consumables),
 		Effects:                  sliceToMap(dbProto.SpellEffects),
 	}

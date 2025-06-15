@@ -259,7 +259,7 @@ func GenerateItemEffectRandomPropPoints(instance *dbc.DBC, db *WowDatabase) {
 			continue
 		}
 		db.ItemEffectRandPropPoints[ilvl] = &proto.ItemEffectRandPropPoints{
-			Id:             ilvl,
+			Ilvl:           ilvl,
 			RandPropPoints: allocMap[proto.ItemQuality_ItemQualityEpic][0],
 		}
 	}

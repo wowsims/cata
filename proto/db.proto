@@ -61,7 +61,7 @@ message Consumable {
 }
 
 message ItemEffectRandPropPoints {
-	int32 id = 1;
+	int32 ilvl = 1;
 	int32 rand_prop_points =2;
 }
 

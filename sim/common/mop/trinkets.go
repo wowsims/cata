@@ -38,12 +38,13 @@ func init() {
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Zen Alchemist Stone",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Harmful:    true,
 			ActionID:   core.ActionID{SpellID: 105574},
+			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+			Harmful:    true,
 			ICD:        time.Second * 55,
 			ProcChance: 0.25,
 			Outcome:    core.OutcomeLanded,
+			Callback:   core.CallbackOnSpellHitDealt,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				auras[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})].Activate(sim)
 			},
