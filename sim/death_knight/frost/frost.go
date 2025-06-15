@@ -52,6 +52,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 
 	// fdk.registerFrostStrikeSpell()
 	// fdk.registerHowlingBlastSpell()
+	fdk.registerIcyTalons()
 	fdk.registerMightOfTheFrozenWastes()
 	// fdk.registerObliterateSpell()
 	// fdk.registerPillarOfFrostSpell()
@@ -60,13 +61,6 @@ func (fdk *FrostDeathKnight) Initialize() {
 func (fdk *FrostDeathKnight) ApplyTalents() {
 	fdk.DeathKnight.ApplyTalents()
 	fdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86113)
-
-	// Icy Talons
-	fdk.PseudoStats.MeleeSpeedMultiplier *= 1.2
-	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
-		Label:    "Icy Talons" + fdk.Label,
-		ActionID: core.ActionID{SpellID: 50887},
-	}))
 
 	// Blood of the North
 	permanentDeathRunes := []int8{0, 1}
