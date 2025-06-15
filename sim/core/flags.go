@@ -4,6 +4,8 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
+//go:generate stringer -type=ProcMask
+//go:generate stringer -type=AuraCallback
 type ProcMask uint32
 
 // Returns whether there is any overlap between the given masks.
@@ -56,6 +58,8 @@ const (
 	ProcMaskMeleeProc       // Special mask for Melee procs that can trigger things (Can be used together with damage proc mask or alone)
 	ProcMaskRangedProc      // Special mask for Ranged procs that can trigger things (Can be used together with damage proc mask or alone)
 	ProcMaskSpellDamageProc // Mask for procs triggering from spell damage procs like FT weapon and rogue poisons
+
+	ProcMaskLast
 )
 
 const (

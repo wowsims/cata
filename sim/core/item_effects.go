@@ -3,28 +3,22 @@ package core
 import (
 	"fmt"
 	"slices"
-	"strconv"
-	"time"
 
 	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // Function for applying permanent effects to an Agent.
 //
 // Passing Character instead of Agent would work for almost all cases,
 // but there are occasionally class-specific item effects.
-type ApplyEffect func(Agent)
-
-// Function for applying permanent effects to an agent's weapon
-type ApplyWeaponEffect func(Agent, proto.ItemSlot)
+type ApplyEffect func(Agent, proto.ItemLevelState)
 
 var itemEffects = map[int32]ApplyEffect{}
-var weaponEffects = map[int32]ApplyWeaponEffect{}
 var enchantEffects = map[int32]ApplyEffect{}
 
 // IDs of item effects which should be used for tests.
 var itemEffectsForTest []int32
+var enchantEffectsForTest []int32
 
 // This value can be set before adding item effects, to control whether they are included in tests.
 var AddEffectsToTest = true
@@ -35,11 +29,6 @@ func HasItemEffect(id int32) bool {
 }
 func HasItemEffectForTest(id int32) bool {
 	return slices.Contains(itemEffectsForTest, id)
-}
-
-func HasWeaponEffect(id int32) bool {
-	_, ok := weaponEffects[id]
-	return ok
 }
 
 func HasEnchantEffect(id int32) bool {
@@ -80,110 +69,40 @@ func NewEnchantEffect(id int32, enchantEffect ApplyEffect) {
 	}
 
 	enchantEffects[id] = enchantEffect
-}
-
-func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
-	if WITH_DB {
-		if _, ok := EnchantsByEffectID[id]; !ok {
-			panic(fmt.Sprintf("No enchant with ID: %d", id))
-		}
+	if AddEffectsToTest {
+		enchantEffectsForTest = append(enchantEffectsForTest, id)
 	}
-	if HasWeaponEffect(id) {
-		panic(fmt.Sprintf("Cannot add multiple effects for one item: %d, %#v", id, weaponEffect))
-	}
-	weaponEffects[id] = weaponEffect
 }
 
 func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool, includeGemEffects bool) {
-	for slot, eq := range equipment {
+	for _, eq := range equipment {
 		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
-			applyItemEffect(agent)
+			applyItemEffect(agent, eq.GetScalingState())
 			registeredItemEffects[eq.ID] = true
 		}
 
 		if includeGemEffects {
 			for _, g := range eq.Gems {
 				if applyGemEffect, ok := itemEffects[g.ID]; ok {
-					applyGemEffect(agent)
+					applyGemEffect(agent, proto.ItemLevelState_Base)
 				}
 			}
 		}
 
 		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyEnchantEffect(agent)
+			applyEnchantEffect(agent, proto.ItemLevelState_Base)
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
 
 		if applyTinkerEffects, ok := enchantEffects[eq.Tinker.EffectID]; ok && !registeredItemEnchantEffects[eq.Tinker.EffectID] {
-			applyTinkerEffects(agent)
+			applyTinkerEffects(agent, proto.ItemLevelState_Base)
 			registeredItemEnchantEffects[eq.Tinker.EffectID] = true
 		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
-		}
-
 	}
-}
-
-// Helpers for making common types of active item effects.
-
-func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration, sharedCDFunc func(*Character) Cooldown, otherEffects ApplyEffect) {
-	NewItemEffect(itemID, func(agent Agent) {
-		registerCD := MakeTemporaryStatsOnUseCDRegistration(
-			"ItemActive-"+strconv.Itoa(int(itemID)),
-			bonus,
-			duration,
-			SpellConfig{
-				ActionID: ActionID{ItemID: itemID},
-			},
-			func(character *Character) Cooldown {
-				return Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: cooldown,
-				}
-			},
-			sharedCDFunc,
-		)
-
-		registerCD(agent)
-		if otherEffects != nil {
-			otherEffects(agent)
-		}
-	})
-}
-
-// No shared CD
-func NewSimpleStatItemEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration) {
-	NewSimpleStatItemActiveEffect(itemID, bonus, duration, cooldown, func(character *Character) Cooldown {
-		return Cooldown{}
-	}, nil)
-}
-
-func NewSimpleStatOffensiveTrinketEffectWithOtherEffects(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration, otherEffects ApplyEffect) {
-	NewSimpleStatItemActiveEffect(itemID, bonus, duration, cooldown, func(character *Character) Cooldown {
-		return Cooldown{
-			Timer:    character.GetOffensiveTrinketCD(),
-			Duration: duration,
-		}
-	}, otherEffects)
-}
-func NewSimpleStatOffensiveTrinketEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration) {
-	NewSimpleStatOffensiveTrinketEffectWithOtherEffects(itemID, bonus, duration, cooldown, nil)
-}
-
-func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration) {
-	NewSimpleStatItemActiveEffect(itemID, bonus, duration, cooldown, func(character *Character) Cooldown {
-		return Cooldown{
-			Timer:    character.GetDefensiveTrinketCD(),
-			Duration: duration,
-		}
-	}, nil)
 }
 
 // Applies 3% Crit Damage effect
 // https://www.wowhead.com/mop-classic/spell=44797/3-increased-critical-effect
-func ApplyMetaGemCriticalDamageEffect(agent Agent) {
+func ApplyMetaGemCriticalDamageEffect(agent Agent, _ proto.ItemLevelState) {
 	agent.GetCharacter().PseudoStats.CritDamageMultiplier *= 1.03
 }

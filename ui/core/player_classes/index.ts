@@ -14,6 +14,12 @@ import { Warrior } from './warrior';
 
 const protoToPlayerClass: Record<Class, PlayerClass<Class> | undefined> = {
 	[Class.ClassUnknown]: undefined,
+	[Class.ClassExtra1]: undefined,
+	[Class.ClassExtra2]: undefined,
+	[Class.ClassExtra3]: undefined,
+	[Class.ClassExtra4]: undefined,
+	[Class.ClassExtra5]: undefined,
+	[Class.ClassExtra6]: undefined,
 	[Class.ClassDeathKnight]: DeathKnight,
 	[Class.ClassDruid]: Druid,
 	[Class.ClassHunter]: Hunter,
@@ -46,7 +52,7 @@ export const PlayerClasses = {
 		if (protoId == Class.ClassUnknown) {
 			throw new Error('Invalid Class');
 		}
-		
+
 		return protoToPlayerClass[protoId] as PlayerClass<ClassType>;
 	},
 	naturalOrder: [DeathKnight, Druid, Hunter, Mage, Monk, Paladin, Priest, Rogue, Shaman, Warlock, Warrior],

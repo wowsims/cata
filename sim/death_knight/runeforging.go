@@ -11,7 +11,7 @@ import (
 
 func init() {
 	// Rune of the Nerubian Carapace
-	core.NewEnchantEffect(3883, func(agent core.Agent) {
+	core.NewEnchantEffect(3883, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		character.MultiplyStat(stats.Armor, 1.02)
@@ -19,7 +19,7 @@ func init() {
 	})
 
 	// Rune of the Stoneskin Gargoyle
-	core.NewEnchantEffect(3847, func(agent core.Agent) {
+	core.NewEnchantEffect(3847, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		character.MultiplyStat(stats.Armor, 1.04)
@@ -27,21 +27,21 @@ func init() {
 	})
 
 	// Rune of the Swordbreaking
-	core.NewEnchantEffect(3594, func(agent core.Agent) {
+	core.NewEnchantEffect(3594, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.BaseParryChance += 0.02
 	})
 
 	// Rune of Swordshattering
-	core.NewEnchantEffect(3365, func(agent core.Agent) {
+	core.NewEnchantEffect(3365, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.BaseParryChance += 0.04
 	})
 
 	// Rune of the Spellbreaking
-	core.NewEnchantEffect(3595, func(agent core.Agent) {
+	core.NewEnchantEffect(3595, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.98
@@ -53,7 +53,7 @@ func init() {
 	})
 
 	// Rune of Spellshattering
-	core.NewEnchantEffect(3367, func(agent core.Agent) {
+	core.NewEnchantEffect(3367, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.96
@@ -65,7 +65,7 @@ func init() {
 	})
 
 	// Rune of the Fallen Crusader
-	core.NewEnchantEffect(3368, func(agent core.Agent) {
+	core.NewEnchantEffect(3368, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		if character.GetAura("Rune Of The Fallen Crusader") != nil {
@@ -117,7 +117,7 @@ func init() {
 	})
 
 	// Rune of Cinderglacier
-	core.NewEnchantEffect(3369, func(agent core.Agent) {
+	core.NewEnchantEffect(3369, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		if character.GetAura("Rune of Cinderglacier") != nil {
@@ -177,7 +177,7 @@ func init() {
 	})
 
 	// Rune of Razorice
-	core.NewEnchantEffect(3370, func(agent core.Agent) {
+	core.NewEnchantEffect(3370, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		if character.GetAura("Razor Frost") != nil {

@@ -4,7 +4,6 @@ import (
 	"math"
 	"time"
 
-	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -65,7 +64,6 @@ type DeathKnight struct {
 	RunicPowerDecayAura *core.Aura
 
 	// Cached Gurthalak tentacles
-	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
 
 	// T12 spell
 	BurningBloodSpell *core.Spell
@@ -80,16 +78,6 @@ type DeathKnight struct {
 
 	// Modified by T14 Tank 4pc
 	deathStrikeHealingMultiplier float64
-}
-
-func (deathKnight *DeathKnight) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
-	return deathKnight.gurthalakTentacles
-}
-
-func (dk *DeathKnight) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
-	pet := cata.NewTentacleOfTheOldOnesPet(&dk.Character)
-	dk.AddPet(pet)
-	return pet
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -210,14 +198,6 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		OffHand:        dk.WeaponFromOffHand(dk.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
-
-	if mh := dk.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
-		dk.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
-
-		for i := range 10 {
-			dk.gurthalakTentacles[i] = dk.NewTentacleOfTheOldOnesPet()
-		}
-	}
 
 	dk.deathStrikeHealingMultiplier = 0.2
 
