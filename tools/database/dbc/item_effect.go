@@ -66,32 +66,46 @@ func assignTrigger(e *ItemEffect, statsSpellID int, pe *proto.ItemEffect) {
 		}}
 	case ITEM_SPELLTRIGGER_CHANCE_ON_HIT:
 		proc := &proto.ProcEffect{
-			ProcChance: float64(spTop.ProcChance) / 100,
-			IcdMs:      spTop.ProcCategoryRecovery,
-			Ppm:        float64(spTop.SpellProcsPerMinute),
+			IcdMs: spTop.ProcCategoryRecovery,
 		}
 
+		// if we have a PPM value given, that must be RPPM
 		// There is no item with both a Haste and a Crit modifier
-		for _, mod := range spTop.RppmModifiers {
-			switch mod.ModifierType {
-			case RPPMModifierHaste:
-				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Haste{}, Coefficient: mod.Coeff})
-			case RPPMModifierCrit:
-				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Crit{}, Coefficient: mod.Coeff})
-			case RPPMModifierSpec:
-				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Spec{Spec: SpecFromID(mod.Param)}, Coefficient: mod.Coeff})
-			case RPPMModifierClass:
-				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_ClassMask{ClassMask: mod.Param}, Coefficient: mod.Coeff})
-			case RPPMModifierIlevel:
-				proc.Mods = append(proc.Mods, &proto.RppmMod{ModType: &proto.RppmMod_Ilvl{Ilvl: mod.Param}, Coefficient: mod.Coeff})
+		if spTop.SpellProcsPerMinute > 0 {
+			mods := []*proto.RppmMod{}
+			for _, mod := range spTop.RppmModifiers {
+				switch mod.ModifierType {
+				case RPPMModifierHaste:
+					mods = append(mods, &proto.RppmMod{ModType: &proto.RppmMod_Haste{}, Coefficient: mod.Coeff})
+				case RPPMModifierCrit:
+					mods = append(mods, &proto.RppmMod{ModType: &proto.RppmMod_Crit{}, Coefficient: mod.Coeff})
+				case RPPMModifierSpec:
+					mods = append(mods, &proto.RppmMod{ModType: &proto.RppmMod_Spec{Spec: SpecFromID(mod.Param)}, Coefficient: mod.Coeff})
+				case RPPMModifierClass:
+					mods = append(mods, &proto.RppmMod{ModType: &proto.RppmMod_ClassMask{ClassMask: mod.Param}, Coefficient: mod.Coeff})
+				case RPPMModifierIlevel:
+					mods = append(mods, &proto.RppmMod{ModType: &proto.RppmMod_Ilvl{Ilvl: mod.Param}, Coefficient: mod.Coeff})
+				}
+			}
+
+			proc.ProcRate = &proto.ProcEffect_Rppm{
+				Rppm: &proto.RppmProc{
+					Rate: float64(spTop.SpellProcsPerMinute),
+					Mods: mods,
+				},
+			}
+
+			// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
+		} else if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
+			proc.ProcRate = &proto.ProcEffect_Ppm{
+				Ppm: 1,
+			}
+		} else {
+			proc.ProcRate = &proto.ProcEffect_ProcChance{
+				ProcChance: float64(spTop.ProcChance) / 100,
 			}
 		}
 
-		// If proc chance is above 100 something weird is happening so we set ppm to 1 since we cant accurately proc it 100% of the time
-		if spTop.ProcChance == 0 || spTop.ProcChance > 100 {
-			proc.Ppm = 1
-			proc.ProcChance = 0
-		}
 		pe.BuffId = statsSP.ID
 		pe.BuffName = statsSP.NameLang
 		pe.Effect = &proto.ItemEffect_Proc{Proc: proc}
@@ -120,7 +134,7 @@ func resolveStatsSpell(spellID int) int {
 	for _, se := range dbcInstance.SpellEffects[spellID] {
 		switch se.EffectAura {
 		case A_MOD_STAT, A_MOD_RATING, A_MOD_RANGED_ATTACK_POWER, A_MOD_ATTACK_POWER, A_MOD_DAMAGE_DONE, A_MOD_TARGET_RESISTANCE, A_MOD_RESISTANCE, A_MOD_INCREASE_ENERGY,
-			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL, A_MOD_CRIT_PCT:
+			A_MOD_INCREASE_HEALTH_2, A_PERIODIC_TRIGGER_SPELL:
 			return spellID
 		}
 	}

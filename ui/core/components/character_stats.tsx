@@ -151,24 +151,35 @@ export class CharacterStats extends Component {
 
 			const statLinkElemRef = ref<HTMLButtonElement>();
 
-			// Custom "HACK" for Warlock.. they have two different mastery scalings
+			// Custom "HACK" for Warlock/Protection Warrior..
+			// they have two different mastery scalings
 			// And a different base mastery value..
-			let modifier = [this.player.getMasteryPerPointModifier()]
-			let customBonus = [0]
-			if (player.getSpec() == Spec.SpecDestructionWarlock) {
-				customBonus = [1, 0]
-				modifier = [1, ... modifier]
-			} else if (player.getSpec() == Spec.SpecDemonologyWarlock) {
-				customBonus = [0, 0]
-				modifier = [1, ... modifier]
+			let modifier = [this.player.getMasteryPerPointModifier()];
+			let customBonus = [0];
+			switch (player.getSpec()) {
+				case Spec.SpecDestructionWarlock:
+					customBonus = [1, 0];
+					modifier = [1, ...modifier];
+					break;
+				case Spec.SpecDemonologyWarlock:
+					customBonus = [0, 0];
+					modifier = [1, ...modifier];
+					break;
+				case Spec.SpecProtectionWarrior:
+					customBonus = [0, 0];
+					modifier = [0.5, ...modifier];
+					break;
+				case Spec.SpecWindwalkerMonk:
+					customBonus = [3.5, 0];
+					break;
 			}
+
 			const valueElem = (
 				<div className="stat-value-link-container">
 					<button ref={statLinkElemRef} className={clsx('stat-value-link', contextualClass)}>
 						{`${this.statDisplayString(finalStats, unitStat, true)} `}
 					</button>
-					
-					{unitStat.equalsStat(Stat.StatMasteryRating) && (
+					{unitStat.equalsStat(Stat.StatMasteryRating) &&
 						modifier.map((modifier, index) => (
 							<a
 								href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
@@ -176,8 +187,7 @@ export class CharacterStats extends Component {
 								target="_blank">
 								{`${(masteryPoints * modifier + customBonus[index]).toFixed(2)}%`}
 							</a>
-						))
-					)}
+						))}
 				</div>
 			);
 

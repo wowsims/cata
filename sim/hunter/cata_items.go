@@ -55,9 +55,9 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
 			var baMod = hunter.AddDynamicMod(core.SpellModConfig{
-				Kind:      core.SpellMod_PowerCost_Pct,
-				ClassMask: HunterSpellsTierTwelve,
-				IntValue:  -100,
+				Kind:       core.SpellMod_PowerCost_Pct,
+				ClassMask:  HunterSpellsTierTwelve,
+				FloatValue: -0.1,
 			})
 			var burningAdrenaline = hunter.RegisterAura(core.Aura{
 				Label:    "Burning Adrenaline",

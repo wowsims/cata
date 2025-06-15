@@ -9,7 +9,6 @@ import "common.proto";
 message ScalingItemEffectProperties {
 	// keys are the numeric values of proto.common.Stat
 	map<int32, double> stats = 1;
-	double rppm_ilvl_modifier = 2;
 }
   message ItemEffect {
 	int32            buff_id         = 1;
@@ -24,11 +23,18 @@ message ScalingItemEffectProperties {
 	}
   }
 
-  message ProcEffect {
-	double      proc_chance = 1;  // e.g. 0.20 = 20%
-	int32       icd_ms         = 2;  // internal cooldown in milliseconds
-	double 		ppm = 3;
+  message RppmProc {
+	double rate = 1;
 	repeated RppmMod mods = 4;
+  }
+
+  message ProcEffect {
+	int32       icd_ms         = 1;  // internal cooldown in milliseconds
+	oneof procRate {
+		double proc_chance = 2;  // e.g. 0.20 = 20%
+		double ppm = 3;
+		RppmProc rppm = 4;
+	}
   }
 
   message OnUseEffect {

@@ -1065,11 +1065,11 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`DELETED`),
 	regexp.MustCompile(`zOLD`),
 	regexp.MustCompile(`Archaic Spell`),
+	regexp.MustCompile(`Well Repaired`),
+	regexp.MustCompile(`Boss X`),
 	regexp.MustCompile(`Adventurine`),
 	regexp.MustCompile(`Sardonyx`),
 	regexp.MustCompile(`Zyanite`),
-	regexp.MustCompile(`Well Repaired`),
-	regexp.MustCompile(`Boss X`),
 }
 
 // Allows manual overriding for Gem fields in case WowHead is wrong.

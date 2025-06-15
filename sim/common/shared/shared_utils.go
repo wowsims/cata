@@ -147,8 +147,18 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		)
 
 		var dpm *core.DynamicProcManager
-		if proc.Ppm != 0 {
+		if proc.GetRppm() != nil {
 			dpm = character.NewRPPMProcManager(effectID, isEnchant, config.ProcMask, core.RppmConfigFromProcEffectProto(proc))
+		} else if proc.GetPpm() > 0 {
+			if config.ProcMask == core.ProcMaskUnknown {
+				if isEnchant {
+					dpm = character.NewDynamicLegacyProcForEnchant(effectID, proc.GetPpm(), 0)
+				} else {
+					dpm = character.NewDynamicLegacyProcForWeapon(effectID, proc.GetPpm(), 0)
+				}
+			} else {
+				dpm = character.NewLegacyPPMManager(proc.GetPpm(), config.ProcMask)
+			}
 		}
 
 		procAura.CustomProcCondition = config.CustomProcCondition
@@ -181,12 +191,6 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			}
 		}
 
-		// All Weapon Effects are PPM / RPPM based - so actual proc mask is handeled in ProcManager
-		if config.ProcMask.Matches(core.ProcMaskUnknown) &&
-			(core.GetItemByID(config.ItemID).WeaponType > 0 || core.GetItemByID(config.ItemID).RangedWeaponType > 0) {
-			config.ProcMask = core.ProcMaskMeleeOrRanged
-		}
-
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   triggerActionID,
 			Name:       config.Name,
@@ -194,7 +198,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			ProcMask:   config.ProcMask,
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
-			ProcChance: proc.ProcChance,
+			ProcChance: proc.GetProcChance(),
 			DPM:        dpm,
 			ICD:        time.Millisecond * time.Duration(proc.IcdMs),
 			Handler:    handler,
@@ -214,11 +218,20 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 }
 
 func NewProcStatBonusEffectWithVariants(config ProcStatBonusEffect, variants []ItemVariant) {
+	var maxItemID int32
+
+	for _, variant := range variants {
+		maxItemID = max(maxItemID, variant.ItemID)
+	}
+
 	for _, variant := range variants {
 		config.Name = variant.ItemName
 		config.ItemID = variant.ItemID
+		core.AddEffectsToTest = (config.ItemID == maxItemID)
 		NewProcStatBonusEffect(config)
 	}
+
+	core.AddEffectsToTest = true
 }
 
 func NewProcStatBonusEffect(config ProcStatBonusEffect) {
@@ -291,6 +304,7 @@ type StackingStatBonusCD struct {
 	Harmful     bool
 	ProcChance  float64
 	IsDefensive bool
+	Rppm        core.RPPMConfig
 
 	// The stacks will only be granted as long as the trinket is active
 	TrinketLimitsDuration bool
@@ -315,6 +329,11 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 			}
 
 			config.Bonus = stats.FromProtoMap(item.ItemEffect.ScalingOptions[int32(state)].Stats)
+		}
+
+		var dpm *core.DynamicProcManager
+		if config.Rppm.PPM > 0 {
+			dpm = character.NewRPPMProcManager(config.ID, false, config.ProcMask, config.Rppm)
 		}
 
 		duration := core.TernaryDuration(config.TrinketLimitsDuration, core.NeverExpires, config.Duration)
@@ -349,6 +368,7 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
 			ProcChance: config.ProcChance,
+			DPM:        dpm,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				statAura.AddStack(sim)
 			},
@@ -397,6 +417,7 @@ type StackingStatBonusEffect struct {
 	MaxStacks  int32
 	Callback   core.AuraCallback
 	ProcMask   core.ProcMask
+	Rppm       core.RPPMConfig
 	SpellFlags core.SpellFlag
 	Outcome    core.HitOutcome
 	Harmful    bool
@@ -405,7 +426,7 @@ type StackingStatBonusEffect struct {
 }
 
 func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
-	core.NewItemEffect(config.ItemID, func(agent core.Agent, _ proto.ItemLevelState) {
+	core.NewItemEffect(config.ItemID, func(agent core.Agent, state proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
@@ -414,6 +435,22 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 		if auraID.IsEmptyAction() {
 			auraID = core.ActionID{ItemID: config.ItemID}
 		}
+
+		// If we do not get a manual stat, overwrite it with scaling stats
+		if config.Bonus.Equals(stats.Stats{}) {
+			item := core.GetItemByID(config.ItemID)
+			if item == nil || item.ItemEffect == nil {
+				panic("Unsupported Item-/Effect")
+			}
+
+			config.Bonus = stats.FromProtoMap(item.ItemEffect.ScalingOptions[int32(state)].Stats)
+		}
+
+		var dpm *core.DynamicProcManager
+		if config.Rppm.PPM > 0 {
+			dpm = character.NewRPPMProcManager(config.ItemID, false, config.ProcMask, config.Rppm)
+		}
+
 		procAura := core.MakeStackingAura(character, core.StackingStatAura{
 			Aura: core.Aura{
 				Label:     config.Name + " Proc",
@@ -433,6 +470,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			Outcome:    config.Outcome,
 			Harmful:    config.Harmful,
 			ProcChance: config.ProcChance,
+			DPM:        dpm,
 			ICD:        config.Icd,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)

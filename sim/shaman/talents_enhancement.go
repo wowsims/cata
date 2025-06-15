@@ -12,14 +12,14 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 
 	//Mental Quickness (AP -> SP in enhancement.go)
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskShock,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -90,
+		ClassMask:  SpellMaskShock,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.9,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskTotem | SpellMaskInstantSpell,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -75,
+		ClassMask:  SpellMaskTotem | SpellMaskInstantSpell,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.75,
 	})
 	primalWisdomManaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 63375})
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
@@ -146,9 +146,9 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		FloatValue: -0.2,
 	})
 	mwManaCostmod := shaman.AddDynamicMod(core.SpellModConfig{
-		ClassMask: mwAffectedSpells,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -20,
+		ClassMask:  mwAffectedSpells,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.2,
 	})
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",

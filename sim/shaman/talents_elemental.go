@@ -145,9 +145,9 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			aura.RemoveStack(sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: canConsumeSpells,
-		IntValue:  -25,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  canConsumeSpells,
+		FloatValue: -0.25,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,

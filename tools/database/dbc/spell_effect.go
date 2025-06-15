@@ -298,8 +298,6 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 		for _, sub := range dbcInstance.SpellEffects[effect.EffectTriggerSpell] {
 			effectStats.AddInplace(sub.ParseStatEffect(false, 0))
 		}
-	case effect.EffectAura == A_MOD_CRIT_PCT:
-		effectStats.AddInplace(&stats.Stats{stats.CritRating: float64(effect.EffectBasePoints) * core.CritRatingPerCritPercent})
 	}
 
 	return effectStats

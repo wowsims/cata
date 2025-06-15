@@ -96,7 +96,6 @@ func (shaman *Shaman) registerAscendanceSpell() {
 		ClassSpellMask: SpellMaskAscendance,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5.2,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

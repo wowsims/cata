@@ -1048,21 +1048,6 @@ func RegisterAllProcs() {
 		{ItemID: 96781, ItemName: "Bad Juju (Heroic Thunderforged)"},
 	})
 	
-	// Your damaging spells have a chance to grant 100% critical strike chance for 4s. (Approximately 0.58 procs
-	// per minute)
-	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc,
-		Outcome:  core.OutcomeLanded,
-		Harmful:  true,
-	}, []shared.ItemVariant{
-		{ItemID: 94524, ItemName: "Unerring Vision of Lei Shen (N)"},
-		{ItemID: 95814, ItemName: "Unerring Vision of Lei Shen (LFR) (Celestial)"},
-		{ItemID: 96186, ItemName: "Unerring Vision of Lei Shen (Thunderforged)"},
-		{ItemID: 96558, ItemName: "Unerring Vision of Lei Shen (H)"},
-		{ItemID: 96930, ItemName: "Unerring Vision of Lei Shen (Heroic Thunderforged)"},
-	})
-	
 	// When your spells deal critical damage, you have a chance to gain 1926 Intellect for 10s. (Approximately
 	// 0.85 procs per minute)
 	shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{

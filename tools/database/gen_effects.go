@@ -16,6 +16,9 @@ import (
 	"github.com/wowsims/mop/tools/tooltip"
 )
 
+// Sets the minimum itemlevel that should be considered for this expansions
+const MIN_EFFECT_ILVL = 416
+
 type ProcInfo struct {
 	Outcome  core.HitOutcome
 	Callback core.AuraCallback
@@ -47,10 +50,12 @@ var missingEffectsMap = map[string][]Variant{
 	"ItemEffects":    {},
 }
 
+type EffectParseResult byte
+
 const (
-	EffectParseResultInvalid     int = 0 // Returned when the effect is invalid for the current parameters
-	EffectParseResultUnsupported int = 1 // Returned when the effect could be parsed but is not supported for effect generation
-	EffectParseResultSuccess     int = 2 // Returned when the effect was parsed successfuly
+	EffectParseResultInvalid     EffectParseResult = iota // Returned when the effect is invalid for the current parameters
+	EffectParseResultUnsupported                          // Returned when the effect could be parsed but is not supported for effect generation
+	EffectParseResultSuccess                              // Returned when the effect was parsed successfuly
 )
 
 func GenerateEffectsFile(groups []*Group, outFile string, templateString string) error {
@@ -161,17 +166,8 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 			continue
 		}
 
-		if result == EffectParseResultUnsupported {
-			missingEffectsMap["ItemEffects"] = append(missingEffectsMap["ItemEffects"],
-				Variant{
-					ID:   int(parsed.Id),
-					Name: parsed.Name + BuildItemDifficultyPostfix(itemSources, int(parsed.Id), instance),
-				})
-
-			continue
-		}
-
-		if TryParseProcEffect(parsed, instance, groupMapProc) == EffectParseResultUnsupported {
+		if (result == EffectParseResultUnsupported) ||
+			(TryParseProcEffect(parsed, instance, groupMapProc) == EffectParseResultUnsupported) {
 			missingEffectsMap["ItemEffects"] = append(missingEffectsMap["ItemEffects"],
 				Variant{
 					ID:   int(parsed.Id),
@@ -188,7 +184,7 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 
 	// Merge variants
 	var procGroups []*Group
-	var needsStatPostfix map[string]bool = map[string]bool{}
+	needsStatPostfix := map[string]bool{}
 	for _, grp := range groupMapProc {
 		newEntries := []*Entry{}
 		entryGroupings := map[string]*Entry{}
@@ -282,8 +278,8 @@ func BuildItemDifficultyPostfix(itemSources map[int][]*proto.DropSource, itemId 
 	return difficultyPostfix
 }
 
-func TryParseProcEffect(parsed *proto.UIItem, instance *dbc.DBC, groupMapProc map[string]Group) int {
-	if parsed.ItemEffect.GetProc() != nil && parsed.ScalingOptions[0].Ilvl > 416 {
+func TryParseProcEffect(parsed *proto.UIItem, instance *dbc.DBC, groupMapProc map[string]Group) EffectParseResult {
+	if parsed.ItemEffect.GetProc() != nil && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL {
 		// Effect was already manually implemented
 		if core.HasItemEffect(parsed.Id) {
 			return EffectParseResultSuccess
@@ -312,7 +308,7 @@ func TryParseProcEffect(parsed *proto.UIItem, instance *dbc.DBC, groupMapProc ma
 	}
 
 	// check if the item has any kind of proc as we only support stat proc parsing right now
-	if effects, ok := instance.ItemEffectsByParentID[int(parsed.Id)]; ok && parsed.ScalingOptions[0].Ilvl > 416 {
+	if effects, ok := instance.ItemEffectsByParentID[int(parsed.Id)]; ok && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL {
 		for _, effect := range effects {
 			if SpellHasTriggerEffect(effect.SpellID, instance) {
 				return EffectParseResultUnsupported
@@ -323,8 +319,8 @@ func TryParseProcEffect(parsed *proto.UIItem, instance *dbc.DBC, groupMapProc ma
 	return EffectParseResultInvalid
 }
 
-func TryParseOnUseEffect(parsed *proto.UIItem, groupMap map[string]Group) int {
-	if parsed.ItemEffect.GetOnUse() != nil && parsed.ScalingOptions[0].Ilvl > 416 { // MoP constraints
+func TryParseOnUseEffect(parsed *proto.UIItem, groupMap map[string]Group) EffectParseResult {
+	if parsed.ItemEffect.GetOnUse() != nil && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL { // MoP constraints
 
 		// Effect was already manually implemented
 		if core.HasItemEffect(parsed.Id) {
@@ -348,7 +344,7 @@ func TryParseOnUseEffect(parsed *proto.UIItem, groupMap map[string]Group) int {
 	return EffectParseResultInvalid
 }
 
-func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC, enchantSpellEffects map[int]*dbc.SpellEffect) int {
+func TryParseEnchantEffect(enchant *proto.UIEnchant, groupMapProc map[string]Group, instance *dbc.DBC, enchantSpellEffects map[int]*dbc.SpellEffect) EffectParseResult {
 	if (enchant.EnchantEffect.GetProc() != nil || EnchantHasDummyEffect(enchant, instance)) && enchant.EffectId > 4267 {
 
 		// Effect was already manually implemented
@@ -555,15 +551,11 @@ func BuildSpellProcInfo(procSpell *dbc.Spell, tooltip string, itemType proto.Ite
 		info.ProcMask |= core.ProcMaskSpellDamageProc
 	}
 
-	findOutcome := func() core.HitOutcome {
-		if critMatcher.MatchString(tooltip) {
-			return core.OutcomeCrit
-		}
-
-		return core.OutcomeLanded
+	if critMatcher.MatchString(tooltip) {
+		info.Outcome = core.OutcomeCrit
+	} else {
+		info.Outcome = core.OutcomeLanded
 	}
-
-	info.Outcome = findOutcome()
 
 	// check for pure healing spell
 	if pureHealMatcher.MatchString(tooltip) {

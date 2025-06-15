@@ -21,6 +21,9 @@ func (prot *ProtectionPaladin) registerSanctuary() {
 	})).AttachAdditivePseudoStatBuff(
 		&prot.PseudoStats.BaseDodgeChance, 0.02,
 	).AttachMultiplicativePseudoStatBuff(
-		&prot.PseudoStats.DamageTakenMultiplier, 0.85,
+		// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/some-warlords-of-draenor-pre-patch-class-changes-coming-to-mists-of-pandaria-377239
+		// - The damage reduction from Sanctuary has been raised to 20% (was 15%). New
+		// EffectIndex 1 on the Protection specific Hotfix Passive https://wago.tools/db2/SpellEffect?build=5.5.0.61411&filter%5BSpellID%5D=137028&page=1
+		&prot.PseudoStats.DamageTakenMultiplier, 0.8,
 	)
 }

@@ -20,7 +20,6 @@ func (priest *Priest) registerShadowWordPainSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 4.4,
-			PercentModifier: 100,
 		},
 
 		DamageMultiplier:         1,

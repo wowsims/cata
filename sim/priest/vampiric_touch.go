@@ -20,7 +20,6 @@ func (priest *Priest) registerVampiricTouchSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 3,
-			PercentModifier: 100,
 		},
 
 		DamageMultiplier:         1,
