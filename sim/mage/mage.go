@@ -101,6 +101,7 @@ func (mage *Mage) registerSpells() {
 	mage.registerIceLanceSpell()
 	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
+	mage.registerFireBlastSpell()
 	// mage.registerManaGemsCD()
 	mage.registerMirrorImageCD()
 	mage.registerfrostNovaSpell()
@@ -181,6 +182,7 @@ const (
 	MageSpellIcyVeins
 	MageSpellIgnite
 	MageSpellInfernoBlast
+	MageSpellLivingBombApply
 	MageSpellLivingBombExplosion
 	MageSpellLivingBombDot
 	MageSpellMageArmor
@@ -188,6 +190,7 @@ const (
 	MageSpellMirrorImage
 	MageSpellMoltenArmor
 	MageSpellNetherTempest
+	MageSpellNetherTempestApply
 	MageSpellPresenceOfMind
 	MageSpellPyroblast
 	MageSpellPyroblastDot
@@ -213,6 +216,6 @@ const (
 		MageSpellFireBlast | MageSpellArcaneExplosion | MageSpellBlastWave |
 		MageSpellCombustionApplication | MageSpellConeOfCold | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellIceLance | MageSpellManaGems | MageSpellMirrorImage |
-		MageSpellPresenceOfMind | MageSpellLivingBombDot | MageSpellFrostBomb | MageSpellNetherTempest
+		MageSpellPresenceOfMind | MageSpellLivingBombDot | MageSpellFrostBomb | MageSpellNetherTempest | MageSpellNetherTempestApply
 	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
 )

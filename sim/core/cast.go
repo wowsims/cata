@@ -327,3 +327,20 @@ func (spell *Spell) makeCastFuncAutosOrProcs() CastSuccessFunc {
 		return true
 	}
 }
+
+// Procs a spell, circumventing all checks, cooldowns, gcd's and so on
+// Simply logging the cast and applying the effect
+// Can be used for spells that proc off other spells and are the same spell id
+func (spell *Spell) Proc(sim *Simulation, target *Unit) {
+	if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
+		spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
+			spell.ActionID, 0.0, "0s", "0s")
+		spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
+	}
+
+	spell.applyEffects(sim, target)
+
+	if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+		spell.Unit.OnCastComplete(sim, spell)
+	}
+}

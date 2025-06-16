@@ -6,6 +6,12 @@ import (
 	"github.com/wowsims/mop/sim/mage"
 )
 
+const (
+	DDBC_Pyromaniac int = iota
+	DDBC_Total
+	FireSpellIgnitable = mage.MageSpellFireball | mage.MageSpellFrostfireBolt | mage.MageSpellInfernoBlast | mage.MageSpellScorch | mage.MageSpellPyroblast
+)
+
 func RegisterFireMage() {
 	core.RegisterAgentFactory(
 		proto.Player_FireMage{},
@@ -37,12 +43,15 @@ func NewFireMage(character *core.Character, options *proto.Player) *FireMage {
 type FireMage struct {
 	*mage.Mage
 
-	combustion *core.Spell
-	ignite     *core.Spell
-	pyroblast  *core.Spell
+	Combustion   *core.Spell
+	Ignite       *core.Spell
+	Pyroblast    *core.Spell
+	InfernoBlast *core.Spell
 
 	heatingUp     *core.Aura
 	pyroblastAura *core.Aura
+
+	pyromaniacAuras core.AuraArray
 }
 
 func (fireMage *FireMage) GetMage() *mage.Mage {
@@ -64,7 +73,7 @@ func (fireMage *FireMage) registerPassives() {
 	fireMage.registerMastery()
 	fireMage.registerCriticalMass()
 	fireMage.registerHeatingUp()
-	// fireMage.registerPyromaniac()
+	fireMage.registerPyromaniac()
 }
 
 func (fireMage *FireMage) registerSpells() {

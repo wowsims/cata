@@ -8,7 +8,7 @@ import (
 
 func (fire *FireMage) registerMastery() {
 
-	fire.ignite = cata.RegisterIgniteEffect(&fire.Unit, cata.IgniteConfig{
+	fire.Ignite = cata.RegisterIgniteEffect(&fire.Unit, cata.IgniteConfig{
 		ActionID:       core.ActionID{SpellID: 12846},
 		ClassSpellMask: mage.MageSpellIgnite,
 		DotAuraLabel:   "Ignite",
@@ -21,7 +21,7 @@ func (fire *FireMage) registerMastery() {
 			Outcome:  core.OutcomeLanded,
 
 			ExtraCondition: func(_ *core.Simulation, spell *core.Spell, _ *core.SpellResult) bool {
-				return spell.SpellSchool.Matches(core.SpellSchoolFire)
+				return spell.Matches(FireSpellIgnitable)
 			},
 		},
 
@@ -31,7 +31,7 @@ func (fire *FireMage) registerMastery() {
 	})
 
 	// This is needed because we want to listen for the spell "cast" event that refreshes the Dot
-	fire.ignite.Flags ^= core.SpellFlagNoOnCastComplete
+	fire.Ignite.Flags ^= core.SpellFlagNoOnCastComplete
 
 }
 

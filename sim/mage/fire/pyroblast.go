@@ -15,7 +15,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 	pyroblastDotScaling := .36
 	pyroblastDotCoefficient := .36
 
-	fire.pyroblast = fire.RegisterSpell(core.SpellConfig{
+	fire.Pyroblast = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -52,7 +52,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		},
 	})
 
-	fire.pyroblast.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
+	fire.Pyroblast.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

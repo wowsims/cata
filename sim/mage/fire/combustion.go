@@ -4,17 +4,25 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/mage"
 )
 
 func (fire *FireMage) registerCombustionSpell() {
+
+	hasGlyph := fire.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfCombustion)
+
+	combustCD := core.Ternary(hasGlyph, time.Second*90, time.Second*45)
+	combustDamageMultiplier := core.Ternary(hasGlyph, 2.0, 1.0)
+	combustTickCount := core.Ternary(hasGlyph, 20, 10)
+
 	actionID := core.ActionID{SpellID: 11129}
 
 	combustionVariance := 0.17   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "Variance"
 	combustionScaling := 1.0     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "Coefficient"
 	combustionCoefficient := 1.0 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "BonusCoefficient"
 
-	fire.combustion = fire.RegisterSpell(core.SpellConfig{
+	fire.Combustion = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // need to check proc mask for impact damage
@@ -24,26 +32,29 @@ func (fire *FireMage) registerCombustionSpell() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    fire.NewTimer(),
-				Duration: time.Second * 45,
+				Duration: combustCD,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultCritMultiplier(),
-		BonusCoefficient:         combustionCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   fire.DefaultCritMultiplier(),
+		BonusCoefficient: combustionCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			fire.InfernoBlast.CD.Reset()
+			spell.DamageMultiplier *= combustDamageMultiplier
 			baseDamage := fire.CalcAndRollDamageRange(sim, combustionScaling, combustionVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
+			spell.DamageMultiplier /= combustDamageMultiplier
 		},
 	})
 
 	calculatedDotTick := func(sim *core.Simulation, target *core.Unit) float64 {
-		spell := fire.ignite
+		spell := fire.Ignite
 		dot := spell.Dot(target)
 		if !dot.IsActive() {
 			return 0.0
@@ -51,7 +62,7 @@ func (fire *FireMage) registerCombustionSpell() {
 		return dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick).Damage
 	}
 
-	fire.combustion.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
+	fire.Combustion.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
@@ -66,7 +77,7 @@ func (fire *FireMage) registerCombustionSpell() {
 			Aura: core.Aura{
 				Label: "Combustion Dot",
 			},
-			NumberOfTicks:       10,
+			NumberOfTicks:       int32(combustTickCount),
 			TickLength:          time.Second,
 			AffectedByCastSpeed: true,
 
@@ -92,4 +103,5 @@ func (fire *FireMage) registerCombustionSpell() {
 			spell.Dot(target).Apply(sim)
 		},
 	})
+
 }

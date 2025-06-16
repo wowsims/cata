@@ -39,7 +39,7 @@ func (mage *Mage) registerNetherTempest() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellNetherTempest,
+		ClassSpellMask: MageSpellNetherTempestApply,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1.5,
@@ -49,6 +49,24 @@ func (mage *Mage) registerNetherTempest() {
 				GCD: core.GCDDefault,
 			},
 		},
+
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+			if result.Landed() {
+				spell.RelatedDotSpell.Cast(sim, target)
+			}
+			spell.DealOutcome(sim, result)
+		},
+	})
+
+	mage.NetherTempest.RelatedDotSpell = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 114923}.WithTag(1),
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MageSpellNetherTempest,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultCritMultiplier(),
@@ -74,11 +92,7 @@ func (mage *Mage) registerNetherTempest() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-			}
+			spell.Dot(target).Apply(sim)
 		},
 	})
-
 }
