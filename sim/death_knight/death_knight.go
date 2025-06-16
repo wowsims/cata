@@ -204,7 +204,8 @@ type DeathKnightAgent interface {
 
 const (
 	DeathKnightSpellFlagNone      int64 = 0
-	DeathKnightSpellArmyOfTheDead int64 = 1 << iota
+	DeathKnightSpellAntiMagicZone int64 = 1 << iota
+	DeathKnightSpellArmyOfTheDead
 	DeathKnightSpellBloodBoil
 	DeathKnightSpellBloodPlague
 	DeathKnightSpellBloodPresence

@@ -253,7 +253,7 @@ func (dk *DeathKnight) registerAntiMagicZone() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
-		ClassSpellMask: DeathKnightSpellUnholyBlight,
+		ClassSpellMask: DeathKnightSpellAntiMagicZone,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
