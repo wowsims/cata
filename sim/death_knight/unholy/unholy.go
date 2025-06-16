@@ -70,18 +70,12 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.registerSuddenDoom()
 	uhdk.registerSummonGargoyle()
 	// uhdk.registerUnholyFrenzy()
+	uhdk.registerUnholyMight()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
 	uhdk.DeathKnight.ApplyTalents()
 	uhdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86536)
-
-	// Unholy Might
-	uhdk.MultiplyStat(stats.Strength, 1.25)
-	core.MakePermanent(uhdk.GetOrRegisterAura(core.Aura{
-		Label:    "Unholy Might",
-		ActionID: core.ActionID{SpellID: 91107},
-	}))
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {
