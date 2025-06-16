@@ -113,7 +113,7 @@ func (dk *DeathKnight) registerDeathStrike() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialNoParry)
 
 			if hasBloodRites {
-				spell.SpendCostAndConvertFrostOrUnholyRune(sim, result, 1)
+				spell.SpendCostAndConvertFrostOrUnholyRune(sim, result.Landed())
 			}
 
 			if result.Landed() && dk.ThreatOfThassarianAura.IsActive() {

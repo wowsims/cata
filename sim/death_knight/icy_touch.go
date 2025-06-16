@@ -2,6 +2,7 @@ package death_knight
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 var IcyTouchActionID = core.ActionID{SpellID: 45477}
@@ -18,6 +19,8 @@ Chills the target for (<560-607> + 0.319 * <AP>) Frost damage
 and infects them with Frost Fever, a disease that deals periodic frost damage for 30 sec.
 */
 func (dk *DeathKnight) registerIcyTouch() {
+	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
+
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       IcyTouchActionID,
 		Flags:          core.SpellFlagAPL,
@@ -46,7 +49,12 @@ func (dk *DeathKnight) registerIcyTouch() {
 			baseDamage := dk.CalcAndRollDamageRange(sim, 0.46799999475, 0.08299999684) + spell.MeleeAttackPower()*0.319
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.SpendRefundableCost(sim, result)
+
+			if hasReaping {
+				spell.SpendRefundableCostAndConvertFrostRune(sim, result.Landed())
+			} else {
+				spell.SpendRefundableCost(sim, result)
+			}
 
 			if result.Landed() {
 				dk.FrostFeverSpell.Cast(sim, target)

@@ -47,12 +47,7 @@ func (dk *DeathKnight) registerFesteringStrike() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			if hasReaping {
-				spell.SpendRefundableCostAndConvertBloodOrFrostRune(sim, result, 1)
-			} else {
-				spell.SpendRefundableCost(sim, result)
-			}
-			dk.ThreatOfThassarianProc(sim, result, ohSpell)
+			spell.SpendRefundableCostAndConvertBloodOrFrostRune(sim, result.Landed())
 
 			if result.Landed() {
 				if dk.FrostFeverSpell.Dot(target).IsActive() {

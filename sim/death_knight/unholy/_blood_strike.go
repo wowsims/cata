@@ -45,12 +45,7 @@ func (dk *DeathKnight) registerBloodStrike() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			if hasReaping {
-				spell.SpendRefundableCostAndConvertBloodRune(sim, result, 1)
-			} else {
-				spell.SpendRefundableCost(sim, result)
-			}
-			dk.ThreatOfThassarianProc(sim, result, ohSpell)
+			spell.SpendRefundableCostAndConvertBloodRune(sim, result.Landed())
 
 			spell.DealDamage(sim, result)
 		},

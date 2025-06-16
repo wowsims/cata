@@ -43,7 +43,7 @@ func (dk *DeathKnight) registerPestilence() {
 
 				if aoeTarget == target {
 					if hasReaping {
-						spell.SpendRefundableCostAndConvertBloodRune(sim, result, 1)
+						spell.SpendRefundableCostAndConvertBloodRune(sim, result.Landed())
 					} else {
 						spell.SpendRefundableCost(sim, result)
 					}

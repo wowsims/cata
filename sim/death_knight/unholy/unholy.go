@@ -66,6 +66,7 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.registerImprovedUnholyPresence()
 	uhdk.registerMasterOfGhouls()
 	// uhdk.registerScourgeStrike()
+	uhdk.registerReaping()
 	uhdk.registerShadowInfusion()
 	uhdk.registerSuddenDoom()
 	uhdk.registerSummonGargoyle()
