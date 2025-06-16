@@ -77,6 +77,7 @@ func init() {
 	})
 
 	// Renataki's Soul Charm
+	// Your attacks  have a chance to grant Blades of Renataki, granting 1592 Agility every 1 sec for 10 sec.  (Approximately 1.21 procs per
 	shared.ItemVersionMap{
 		shared.ItemVersionLFR:                 95625,
 		shared.ItemVersionNormal:              94512,
@@ -84,9 +85,10 @@ func init() {
 		shared.ItemVersionThunderforged:       95997,
 		shared.ItemVersionHeroicThunderforged: 96741,
 	}.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+		label := "Blades of Renataki"
+
 		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
 			character := agent.GetCharacter()
-			label := "Blades of Renataki"
 
 			statValue := core.GetItemEffectScaling(itemID, 0.44999998808, state)
 
@@ -112,6 +114,42 @@ func init() {
 				Callback: core.CallbackOnSpellHitDealt,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					aura.Activate(sim)
+				},
+			})
+		})
+	})
+
+	// Delicate Vial of the Sanguinaire
+	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
+	shared.ItemVersionMap{
+		shared.ItemVersionLFR:                 95779,
+		shared.ItemVersionNormal:              94518,
+		shared.ItemVersionHeroic:              96523,
+		shared.ItemVersionThunderforged:       96151,
+		shared.ItemVersionHeroicThunderforged: 96895,
+	}.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+		label := "Delicate Vial of the Sanguinaire"
+
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+			character := agent.GetCharacter()
+			statValue := core.GetItemEffectScaling(itemID, 2.97000002861, state)
+
+			aura, _ := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+				Duration:             time.Second * 20,
+				MaxStacks:            3,
+				BonusPerStack:        stats.Stats{stats.MasteryRating: statValue},
+				StackingAuraActionID: core.ActionID{SpellID: 138864},
+				StackingAuraLabel:    fmt.Sprintf("Blood of Power %s", versionLabel),
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       label,
+				ProcChance: 0.04,
+				Outcome:    core.OutcomeDodge,
+				Callback:   core.CallbackOnSpellHitTaken,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					aura.Activate(sim)
+					aura.AddStack(sim)
 				},
 			})
 		})

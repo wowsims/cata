@@ -32,6 +32,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				aura.Activate(sim)
+				aura.AddStack(sim)
 			},
 		})
 	})

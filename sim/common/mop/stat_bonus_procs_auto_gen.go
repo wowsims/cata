@@ -13,38 +13,6 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// You gain an additional 375 critical strike for 10s. This effect stacks up to 3 times.
-	// shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-	//	Name:     "The Gloaming Blade",
-	//	ItemID:   88149,
-	//	Callback: core.CallbackEmpty,
-	//	ProcMask: core.ProcMaskEmpty,
-	//	Outcome:  core.OutcomeEmpty,
-	//	Harmful:  true
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
-	// When you dodge, you have a 4% chance to gain 963 mastery for 20s. This effect can stack up to 3 times.
-	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-	//	Callback: core.CallbackOnSpellHitTaken,
-	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial,
-	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  true,
-	// }, []shared.ItemVariant{
-	//	{ItemID: 94518, ItemName: "Delicate Vial of the Sanguinaire (N)"},
-	//	{ItemID: 95779, ItemName: "Delicate Vial of the Sanguinaire (LFR) (Celestial)"},
-	//	{ItemID: 96151, ItemName: "Delicate Vial of the Sanguinaire (Thunderforged)"},
-	//	{ItemID: 96523, ItemName: "Delicate Vial of the Sanguinaire (H)"},
-	//	{ItemID: 96895, ItemName: "Delicate Vial of the Sanguinaire (Heroic Thunderforged)"},
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately
 	// 3.50 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{

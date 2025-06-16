@@ -9,7 +9,6 @@ export const MISSING_ITEM_EFFECTS = [
     84835, // Malevolent Gladiator's Dreadplate Gauntlets (LFR) (Season 12)
     85028, // Malevolent Gladiator's Dreadplate Gauntlets (Season 12 Elite)
     86518, // Yaungol Fire Carrier
-    88149, // The Gloaming Blade
     88585, // Dislodged Stinger
     91149, // Tyrannical Gladiator's Dreadplate Gauntlets (LFR) (Season 13) (Alliance)
     91150, // Tyrannical Gladiator's Dreadplate Gauntlets (Season 13 Elite)
@@ -19,7 +18,6 @@ export const MISSING_ITEM_EFFECTS = [
     94513, // Wushoolay's Final Choice (N)
     94514, // Horridon's Last Gasp (N)
     94515, // Fabled Feather of Ji-Kun (N)
-    94518, // Delicate Vial of the Sanguinaire (N)
     94519, // Primordius' Talisman of Rage (N)
     94520, // Inscribed Bag of Hydra-Spawn (N)
     94522, // Talisman of Bloodlust (N)
@@ -35,7 +33,6 @@ export const MISSING_ITEM_EFFECTS = [
     95748, // Talisman of Bloodlust (LFR) (Celestial)
     95757, // Primordius' Talisman of Rage (LFR) (Celestial)
     95763, // Stolen Relic of Zuldazar (LFR) (Celestial)
-    95779, // Delicate Vial of the Sanguinaire (LFR) (Celestial)
     95799, // Gaze of the Twins (LFR) (Celestial)
     95814, // Unerring Vision of Lei Shen (LFR) (Celestial)
     96013, // Horridon's Last Gasp (Thunderforged)
@@ -46,7 +43,6 @@ export const MISSING_ITEM_EFFECTS = [
     96120, // Talisman of Bloodlust (Thunderforged)
     96129, // Primordius' Talisman of Rage (Thunderforged)
     96135, // Stolen Relic of Zuldazar (Thunderforged)
-    96151, // Delicate Vial of the Sanguinaire (Thunderforged)
     96171, // Gaze of the Twins (Thunderforged)
     96186, // Unerring Vision of Lei Shen (Thunderforged)
     96385, // Horridon's Last Gasp (H)
@@ -57,7 +53,6 @@ export const MISSING_ITEM_EFFECTS = [
     96492, // Talisman of Bloodlust (H)
     96501, // Primordius' Talisman of Rage (H)
     96507, // Stolen Relic of Zuldazar (H)
-    96523, // Delicate Vial of the Sanguinaire (H)
     96543, // Gaze of the Twins (H)
     96558, // Unerring Vision of Lei Shen (H)
     96757, // Horridon's Last Gasp (Heroic Thunderforged)
@@ -68,7 +63,6 @@ export const MISSING_ITEM_EFFECTS = [
     96864, // Talisman of Bloodlust (Heroic Thunderforged)
     96873, // Primordius' Talisman of Rage (Heroic Thunderforged)
     96879, // Stolen Relic of Zuldazar (Heroic Thunderforged)
-    96895, // Delicate Vial of the Sanguinaire (Heroic Thunderforged)
     96915, // Gaze of the Twins (Heroic Thunderforged)
     96930, // Unerring Vision of Lei Shen (Heroic Thunderforged)
     98785, // Crafted Malevolent Gladiator's Dreadplate Gauntlets
