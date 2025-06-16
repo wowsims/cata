@@ -1,42 +1,42 @@
-package death_knight
+package unholy
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/death_knight"
 )
 
 // Incites a friendly party or raid member into a killing frenzy for 30 sec, increasing the target's melee and ranged haste by 20%, but causing them to lose health equal to 2% of their maximum health every 3 sec.
-func (dk *DeathKnight) registerUnholyFrenzy() {
-	if !dk.Talents.UnholyFrenzy {
-		return
-	}
+func (uhdk *UnholyDeathKnight) registerUnholyFrenzy() {
+	actionID := core.ActionID{SpellID: 49016, Tag: uhdk.Index}
 
-	actionID := core.ActionID{SpellID: 49016, Tag: dk.Index}
-
-	unholyFrenzyAuras := dk.NewAllyAuraArray(func(u *core.Unit) *core.Aura {
+	unholyFrenzyAuras := uhdk.NewAllyAuraArray(func(u *core.Unit) *core.Aura {
 		if u.Type == core.PetUnit {
 			return nil
 		}
 		return core.UnholyFrenzyAura(u, actionID.Tag)
 	})
-	unholyFrenzyTarget := dk.GetUnit(dk.Inputs.UnholyFrenzyTarget)
+	unholyFrenzyTarget := uhdk.GetUnit(uhdk.Inputs.UnholyFrenzyTarget)
 	if unholyFrenzyTarget == nil {
-		unholyFrenzyTarget = &dk.Unit
+		unholyFrenzyTarget = &uhdk.Unit
 	}
 
 	if unholyFrenzyTarget == nil {
 		return
 	}
 
-	unholyFrenzy := dk.Character.RegisterSpell(core.SpellConfig{
+	unholyFrenzy := uhdk.Character.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
-		ClassSpellMask: DeathKnightSpellUnholyFrenzy,
+		ClassSpellMask: death_knight.DeathKnightSpellUnholyFrenzy,
 
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
-				Timer:    dk.NewTimer(),
+				Timer:    uhdk.NewTimer(),
 				Duration: time.Minute * 3,
 			},
 		},
@@ -50,7 +50,7 @@ func (dk *DeathKnight) registerUnholyFrenzy() {
 		},
 	})
 
-	dk.AddMajorCooldown(core.MajorCooldown{
+	uhdk.AddMajorCooldown(core.MajorCooldown{
 		Spell:    unholyFrenzy,
 		Priority: core.CooldownPriorityBloodlust,
 		Type:     core.CooldownTypeDPS,

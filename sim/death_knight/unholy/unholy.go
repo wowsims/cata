@@ -70,7 +70,7 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.registerShadowInfusion()
 	uhdk.registerSuddenDoom()
 	uhdk.registerSummonGargoyle()
-	// uhdk.registerUnholyFrenzy()
+	uhdk.registerUnholyFrenzy()
 	uhdk.registerUnholyMight()
 }
 
