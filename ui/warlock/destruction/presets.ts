@@ -11,24 +11,14 @@ import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P3Gear from './gear_sets/p3.gear.json';
-import P4Gear from './gear_sets/p4.gear.json';
-import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
-import PreraidGear from './gear_sets/preraid.gear.json';
+import P1PreBisGear from './gear_sets/p1-prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
-
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+export const P1_PREBIS_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS', P1PreBisGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
-export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
-export const P4_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4Gear);
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4);
-
 export const DEFAULT_APL = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
@@ -39,8 +29,8 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatSpellPower]: 1,
 		[Stat.StatHitRating]: 0.87,
 		[Stat.StatCritRating]: 0.48,
-		[Stat.StatHasteRating]: 0.55,
-		[Stat.StatMasteryRating]: 0.47,
+		[Stat.StatHasteRating]: 0.47,
+		[Stat.StatMasteryRating]: 0.55,
 	}),
 );
 
@@ -50,11 +40,8 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DestructionTalents = {
 	name: 'Destruction',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '221231',
 		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfHealthstone,
-			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),
 	}),
 };
@@ -67,24 +54,29 @@ export const DefaultOptions = WarlockOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, //Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({});
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	blessingOfKings: true,
+	leaderOfThePack: true,
+	blessingOfMight: true,
+	bloodlust: true,
+	moonkinAura: true,
+	skullBannerCount: 2,
+	stormlashTotemCount: 4,
+});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	// bloodFrenzy: true,
-	// sunderArmor: true,
-	// ebonPlaguebringer: true,
-	// mangle: true,
-	// criticalMass: false,
-	// demoralizingShout: true,
-	// frostFever: true,
+	curseOfElements: true,
+	weakenedArmor: true,
+	physicalVulnerability: true,
 });
 
 export const OtherDefaults = {

@@ -43,7 +43,7 @@ func (dk *DeathKnight) registerAntiMagicShell() {
 			// TODO: RP return
 		},
 		ShouldApplyToResult: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) bool {
-			return spell.SpellSchool.Matches(core.SpellSchoolMagic)
+			return !spell.SpellSchool.Matches(core.SpellSchoolPhysical)
 		},
 		ShieldStrengthCalculator: func(unit *core.Unit) float64 {
 			return currentShield

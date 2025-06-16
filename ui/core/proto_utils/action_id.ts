@@ -653,6 +653,11 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Immolation Aura':
+				if (tag == 2) {
+					name += ' (Tick)';
+				}
+				break;
 			case 'Frozen Blows':
 			case 'Opportunity Strike':
 				break;
@@ -887,6 +892,13 @@ export class ActionId {
 					name += ' (Bounce)';
 				}
 
+				break;
+			case 'Agony':
+			case 'Unstable Affliction':
+			case 'Corruption':
+				if (tag == 1) {
+					name += ' (Malefic)';
+				}
 				break;
 			case 'Holy Prism':
 				if (this.spellId === 114852) {
@@ -1179,6 +1191,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 124081, tag: 3 }), { spellId: 124098 }],
 	[JSON.stringify({ spellId: 124081, tag: 4 }), { spellId: 124101 }],
 	[JSON.stringify({ spellId: 124081, tag: 5 }), { spellId: 125033 }],
+
+	// Warlock - Immolation Aura
+	[JSON.stringify({ spellId: 104025, tag: 2 }), { spellId: 129476 }],
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
@@ -1206,6 +1221,26 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
+	Felhunter: ActionId.fromSpellId(691),
+	Imp: ActionId.fromSpellId(688),
+	Succubus: ActionId.fromSpellId(712),
+	Voidwalker: ActionId.fromSpellId(697),
+	Doomguard: ActionId.fromSpellId(18540),
+	Infernal: ActionId.fromSpellId(1122),
+	'Fel Imp': ActionId.fromSpellId(112866),
+	Shivarra: ActionId.fromSpellId(112868),
+	Observer: ActionId.fromSpellId(112869),
+	Voidlord: ActionId.fromSpellId(112867),
+	Terrorguard: ActionId.fromSpellId(112927),
+	Abyssal: ActionId.fromSpellId(112921),
+	'Grimoire: Imp': ActionId.fromSpellId(111859),
+	'Grimoire: Voidwalker': ActionId.fromSpellId(111895),
+	'Grimoire: Felhunter': ActionId.fromSpellId(111897),
+	'Grimoire: Succubus': ActionId.fromSpellId(111896),
+	Felguard: ActionId.fromSpellId(30146),
+	'Wild Imp': ActionId.fromSpellId(114592),
+	'Grimoire: Felguard': ActionId.fromSpellId(111898),
+	Wrathguard: ActionId.fromSpellId(112870),
 	'Xuen, The White Tiger': ActionId.fromSpellId(123904),
 	'Earth Spirit': ActionId.fromSpellId(138121),
 	'Storm Spirit': ActionId.fromSpellId(138122),

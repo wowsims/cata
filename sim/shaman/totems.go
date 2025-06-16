@@ -13,7 +13,6 @@ func (shaman *Shaman) newTotemSpellConfig(baseCostPercent int32, spellID int32) 
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: float64(baseCostPercent),
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
