@@ -430,6 +430,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 153753.13289
+  tps: 145607.39743
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 153753.13289
+  tps: 145607.39743
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 153753.13289
+  tps: 145607.39743
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 153753.13289
+  tps: 145607.39743
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 153753.13289
+  tps: 145607.39743
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-DestructivePrimalDiamond"
  value: {
   dps: 161715.34859
@@ -742,6 +777,41 @@ dps_results: {
  value: {
   dps: 158215.99166
   tps: 150070.2562
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 163596.70331
+  tps: 154761.17042
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 162150.47524
+  tps: 153434.27734
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 164030.88319
+  tps: 155134.55109
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 164622.22271
+  tps: 155703.32628
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 165791.64154
+  tps: 156766.96906
  }
 }
 dps_results: {
@@ -1445,6 +1515,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 153756.18961
+  tps: 145610.45415
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 154023.2424
@@ -1550,6 +1627,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 163441.27786
+  tps: 154577.23469
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 161809.25016
+  tps: 153086.8448
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 164155.6842
+  tps: 155258.02879
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 164766.32589
+  tps: 155812.79589
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 165521.64272
+  tps: 156528.4067
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 153753.13289
@@ -1596,6 +1708,41 @@ dps_results: {
  value: {
   dps: 153798.51674
   tps: 145648.21301
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 154187.70581
+  tps: 145999.39785
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 154118.76631
+  tps: 145937.90796
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 154195.47776
+  tps: 146007.1698
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 154212.93593
+  tps: 146024.62798
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 154263.61614
+  tps: 146067.85857
  }
 }
 dps_results: {
@@ -1876,6 +2023,41 @@ dps_results: {
  value: {
   dps: 164414.90663
   tps: 155209.5528
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 156438.66706
+  tps: 148052.5826
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 155769.72773
+  tps: 147422.24325
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 157788.09858
+  tps: 149362.12269
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 157832.71648
+  tps: 149342.60061
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 157831.69816
+  tps: 149351.95048
  }
 }
 dps_results: {
@@ -2205,6 +2387,13 @@ dps_results: {
  value: {
   dps: 160603.63048
   tps: 151677.23278
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 161949.1658
+  tps: 153258.17878
  }
 }
 dps_results: {

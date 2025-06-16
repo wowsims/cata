@@ -166,7 +166,6 @@ func (character *Character) NewRPPMProcManager(effectID int32, isEnchant bool, p
 	} else {
 		slotList = character.ItemSwap.EligibleSlotsForItem(effectID)
 	}
-
 	builder := func() DynamicProcManager {
 		manager := DynamicProcManager{
 			procMasks:   []ProcMask{},
