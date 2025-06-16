@@ -306,7 +306,7 @@ func init() {
 					},
 				})
 
-				RegisterReadinessCooldownReduction(character, itemID, versionLabel, state)
+				RegisterReadinessCooldownReduction(character, itemID, versionLabel, stat, state)
 			})
 		})
 	}
@@ -358,53 +358,57 @@ func init() {
 	)
 }
 
-func RegisterReadinessCooldownReduction(character *core.Character, itemID int32, versionLabel string, state proto.ItemLevelState) {
+func RegisterReadinessCooldownReduction(character *core.Character, itemID int32, versionLabel string, stat stats.Stat, state proto.ItemLevelState) {
 	cdr := core.GetItemEffectScaling(itemID, 0.00989999995, state)
-	auraID := map[proto.Spec]int32{
-		// Death Knight
-		// Missing: Outbreak, Blood Rites,
-		proto.Spec_SpecBloodDeathKnight:  145958,
-		proto.Spec_SpecFrostDeathKnight:  145959,
-		proto.Spec_SpecUnholyDeathKnight: 145960,
-		// Druid
-		// Missing: Bear Hug, Ironbark, Nature's Swiftness
-		proto.Spec_SpecFeralDruid:       145961,
-		proto.Spec_SpecGuardianDruid:    145962,
-		proto.Spec_SpecRestorationDruid: 145963,
-		// Hunter
-		// Missing: Bestial Wrath
-		proto.Spec_SpecBeastMasteryHunter: 145964,
-		proto.Spec_SpecMarksmanshipHunter: 145965,
-		proto.Spec_SpecSurvivalHunter:     145966,
-		// Paladin
-		// Missing: Divine Plea, Hand Of Protection, Divine Shield, Hand Of Purity
-		proto.Spec_SpecHolyPaladin:        145978,
-		proto.Spec_SpecProtectionPaladin:  145976,
-		proto.Spec_SpecRetributionPaladin: 145975,
-		// Priest
-		// Missing: Divine Hymn, Guardian Spirit, Hymn of Hope, Inner Focus, Pain Suppression, Power Word: Barrier, Void Shift
-		proto.Spec_SpecDisciplinePriest: 145981,
-		proto.Spec_SpecHolyPriest:       145982,
-		// Rogue
-		// Missing: Cloak of Shadows, Evasion, JuJu Escape, Shadow Blades
-		proto.Spec_SpecAssassinationRogue: 145983,
-		proto.Spec_SpecCombatRogue:        145984,
-		proto.Spec_SpecSubtletyRogue:      145985,
-		// Shaman
-		// Missing: Mana Tide Totem, Spirit Link Totem
-		proto.Spec_SpecEnhancementShaman: 145986,
-		proto.Spec_SpecRestorationShaman: 145988,
-		// Warrior
-		// Missing: Avatar, Bladestorm, Bloodbath, Die by the Sword, Dragon Roar, Heroic Leap, Recklessness, Shockwave, Storm Bolt, Demoralizing Shout, Last Stand, Mocking Banner, Shield Wall
-		proto.Spec_SpecArmsWarrior:       145990,
-		proto.Spec_SpecFuryWarrior:       145991,
-		proto.Spec_SpecProtectionWarrior: 145992,
-		// Monk
-		// Missing: Zen Meditation, Life Cocoon, Revival, Thunder Focus Tea, Flying Serpent Kick
-		proto.Spec_SpecBrewmasterMonk: 145967,
-		proto.Spec_SpecMistweaverMonk: 145968,
-		proto.Spec_SpecWindwalkerMonk: 145969,
-	}[character.Spec]
+	auraID := map[stats.Stat]map[proto.Spec]int32{
+		stats.Agility: {
+			// Druid
+			// Missing: Bear Hug, Ironbark, Nature's Swiftness
+			proto.Spec_SpecFeralDruid:       145961,
+			proto.Spec_SpecGuardianDruid:    145962,
+			proto.Spec_SpecRestorationDruid: 145963,
+			// Hunter
+			// Missing: Bestial Wrath
+			proto.Spec_SpecBeastMasteryHunter: 145964,
+			proto.Spec_SpecMarksmanshipHunter: 145965,
+			proto.Spec_SpecSurvivalHunter:     145966,
+			// Rogue
+			// Missing: Cloak of Shadows, Evasion, JuJu Escape, Shadow Blades
+			proto.Spec_SpecAssassinationRogue: 145983,
+			proto.Spec_SpecCombatRogue:        145984,
+			proto.Spec_SpecSubtletyRogue:      145985,
+			// Priest - NOTE: Priests seem to have a Aura for this
+			// Missing: Divine Hymn, Guardian Spirit, Hymn of Hope, Inner Focus, Pain Suppression, Power Word: Barrier, Void Shift
+			// proto.Spec_SpecDisciplinePriest: 145981,
+			// proto.Spec_SpecHolyPriest:       145982,
+			// Shaman
+			// Missing: Mana Tide Totem, Spirit Link Totem
+			proto.Spec_SpecEnhancementShaman: 145986,
+			proto.Spec_SpecRestorationShaman: 145988,
+			// Monk
+			// Missing: Zen Meditation, Life Cocoon, Revival, Thunder Focus Tea, Flying Serpent Kick
+			proto.Spec_SpecBrewmasterMonk: 145967,
+			proto.Spec_SpecMistweaverMonk: 145968,
+			proto.Spec_SpecWindwalkerMonk: 145969,
+		},
+		stats.Strength: {
+			// Death Knight
+			// Missing: Outbreak, Blood Rites,
+			proto.Spec_SpecBloodDeathKnight:  145958,
+			proto.Spec_SpecFrostDeathKnight:  145959,
+			proto.Spec_SpecUnholyDeathKnight: 145960,
+			// Paladin
+			// Missing: Divine Plea, Hand Of Protection, Divine Shield, Hand Of Purity
+			proto.Spec_SpecHolyPaladin:        145978,
+			proto.Spec_SpecProtectionPaladin:  145976,
+			proto.Spec_SpecRetributionPaladin: 145975,
+			// Warrior
+			// Missing: Avatar, Bladestorm, Bloodbath, Die by the Sword, Dragon Roar, Heroic Leap, Recklessness, Shockwave, Storm Bolt, Demoralizing Shout, Last Stand, Mocking Banner, Shield Wall
+			proto.Spec_SpecArmsWarrior:       145990,
+			proto.Spec_SpecFuryWarrior:       145991,
+			proto.Spec_SpecProtectionWarrior: 145992,
+		},
+	}[stat][character.Spec]
 
 	core.MakePermanent(character.RegisterAura(core.Aura{
 		Label:    fmt.Sprintf("Readiness %s", versionLabel),
