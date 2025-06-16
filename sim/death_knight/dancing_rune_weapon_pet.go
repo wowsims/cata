@@ -46,7 +46,7 @@ func (runeWeapon *RuneWeaponPet) Initialize() {
 	runeWeapon.dkOwner.registerDrwFrostFever()
 	runeWeapon.dkOwner.registerDrwBloodPlague()
 	runeWeapon.AddCopySpell(BloodBoilActionID, runeWeapon.dkOwner.registerDrwBloodBoil())
-	// runeWeapon.AddCopySpell(DeathCoilActionID, runeWeapon.dkOwner.registerDrwDeathCoil())
+	runeWeapon.AddCopySpell(DeathCoilActionID, runeWeapon.dkOwner.registerDrwDeathCoil())
 	runeWeapon.AddCopySpell(DeathStrikeActionID, runeWeapon.dkOwner.registerDrwDeathStrike())
 	runeWeapon.AddCopySpell(IcyTouchActionID, runeWeapon.dkOwner.registerDrwIcyTouch())
 	runeWeapon.AddCopySpell(OutbreakActionID, runeWeapon.dkOwner.registerDrwOutbreak())

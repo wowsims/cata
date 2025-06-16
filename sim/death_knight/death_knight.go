@@ -100,7 +100,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerBloodBoil()
 	dk.registerBloodPlague()
 	dk.registerDeathAndDecay()
-	// dk.registerDeathCoil()
+	dk.registerDeathCoil()
 	dk.registerDeathStrike()
 	dk.registerEmpowerRuneWeapon()
 	dk.registerFrostFever()
