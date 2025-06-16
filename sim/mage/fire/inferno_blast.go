@@ -1,7 +1,6 @@
 package fire
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -49,13 +48,14 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 			dotRefs := []**core.Spell{&fire.Pyroblast.RelatedDotSpell, &fire.Combustion.RelatedDotSpell, &fire.Ignite}
 
 			for _, spellRef := range dotRefs {
-				fmt.Println(*spellRef)
 				dot := (*spellRef).Dot(target)
 				if dot.IsActive() {
-					fmt.Println(dot.SaveState(sim))
 					debuffState[dot.ActionID.SpellID] = dot.SaveState(sim)
 				}
 			}
+
+			baseDamage := fire.CalcAndRollDamageRange(sim, infernoBlastScaling, infernoBlastVariance)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			currTarget := target
 			for range min(extraTargets, len(sim.Encounter.TargetUnits)-1) {
@@ -67,14 +67,10 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 						// not stored, was not active
 						continue
 					}
-
 					(*spellRef).Proc(sim, currTarget)
 					dot.RestoreState(state, sim)
 				}
 			}
-
-			baseDamage := fire.CalcAndRollDamageRange(sim, infernoBlastScaling, infernoBlastVariance)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

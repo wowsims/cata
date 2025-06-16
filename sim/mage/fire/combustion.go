@@ -59,13 +59,13 @@ func (fire *FireMage) registerCombustionSpell() {
 		if !dot.IsActive() {
 			return 0.0
 		}
-		return dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick).Damage
+		return dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick).Damage * .5
 	}
 
 	fire.Combustion.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskEmpty,
+		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellCombustion,
 		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
