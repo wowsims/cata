@@ -1164,6 +1164,9 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 47897, tag: 1 }), { spellId: 47960 }], // Shadowflame Dot
 	[JSON.stringify({ spellId: 55090, tag: 2 }), { spellId: 70890 }], // Death Knight - Scourge Strike (Shadow)
+	[JSON.stringify({ spellId: 114867, tag: 1 }), { spellId: 114866 }], // Death Knight - Soul Reaper (Blood)
+	[JSON.stringify({ spellId: 114867, tag: 2 }), { spellId: 130735 }], // Death Knight - Soul Reaper (Frost)
+	[JSON.stringify({ spellId: 114867, tag: 3 }), { spellId: 130736 }], // Death Knight - Soul Reaper (Unholy)
 	[JSON.stringify({ spellId: 12294, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Mortal Strike
 	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Raging Blow
 	[JSON.stringify({ spellId: 23922, tag: 3 }), { spellId: 99240 }], // Warrior - T12 2P Combust - Shield Slam

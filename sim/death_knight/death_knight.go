@@ -111,6 +111,7 @@ func (dk *DeathKnight) Initialize() {
 		dk.registerRaiseDead()
 	}
 	dk.registerRunicPowerDecay()
+	dk.registerSoulReaper()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -243,6 +244,7 @@ const (
 	DeathKnightSpellRuneTap
 	DeathKnightSpellScourgeStrike
 	DeathKnightSpellScourgeStrikeShadow
+	DeathKnightSpellSoulReaper
 	DeathKnightSpellSummonGargoyle
 	DeathKnightSpellUnholyBlight
 	DeathKnightSpellUnholyFrenzy
