@@ -386,13 +386,17 @@ func InferPhase(item *proto.UIItem) int32 {
 
 	//AtlasLoot‐style source checks
 	for _, src := range item.Sources {
-		//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
 		if rep := src.GetRep(); rep != nil {
+			//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
 			if rep.RepFactionId == proto.RepFaction_RepFactionShadoPanAssault {
 				return 3
 			}
 			if rep.RepFactionId == proto.RepFaction_RepFactionOperationShieldwall || rep.RepFactionId == proto.RepFaction_RepFactionDominanceOffensive {
 				return 2
+			}
+			//- All items with Reputation requirements of "Emperor Shaohao" are 5.4
+			if rep.RepFactionId == proto.RepFaction_RepFactionEmperorShaohao {
+				return 3
 			}
 		}
 		if craft := src.GetCrafted(); craft != nil {
