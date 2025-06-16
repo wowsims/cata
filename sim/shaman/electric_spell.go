@@ -46,7 +46,6 @@ func (shaman *Shaman) newElectricSpellConfig(config ShamSpellConfig) core.SpellC
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: core.TernaryFloat64(config.IsElementalOverload, 0, config.BaseCostPercent),
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

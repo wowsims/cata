@@ -28,7 +28,6 @@ func (shaman *Shaman) registerStormlashCD() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5.9,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

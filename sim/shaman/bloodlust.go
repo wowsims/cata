@@ -28,7 +28,7 @@ func (shaman *Shaman) registerBloodlustCD() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 21.5,
-			PercentModifier: 100,
+			PercentModifier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

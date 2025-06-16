@@ -20,7 +20,6 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		ClassSpellMask: SpellMaskSearingTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5.9,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -81,7 +80,6 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		ClassSpellMask: SpellMaskMagmaTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 21.1,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

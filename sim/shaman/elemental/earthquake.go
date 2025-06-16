@@ -33,7 +33,6 @@ func (elemental *ElementalShaman) registerEarthquakeSpell() {
 		Flags:    shaman.SpellFlagShamanSpell | core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 70.3,
-			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{
