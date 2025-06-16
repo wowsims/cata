@@ -48,7 +48,6 @@ func TestDemonology(t *testing.T) {
 		Race:             proto.Race_RaceOrc,
 		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
 		GearSet:          core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "preraid"),
-		ItemSwapSet:      core.GetItemSwapGearSet("../../../ui/warlock/demonology/gear_sets", "p1"),
 		Talents:          "231211",
 		Glyphs:           &proto.Glyphs{},
 		Consumables:      fullConsumesSpec,
