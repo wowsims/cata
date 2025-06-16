@@ -13,25 +13,6 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Your attacks have a chance to grant you 963 Strength for 10s. This effect can stack up to 5 times. (Approximately
-	// 3.50 procs per minute)
-	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-	//	Callback: core.CallbackOnSpellHitDealt,
-	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  true,
-	// }, []shared.ItemVariant{
-	//	{ItemID: 94519, ItemName: "Primordius' Talisman of Rage (N)"},
-	//	{ItemID: 95757, ItemName: "Primordius' Talisman of Rage (LFR) (Celestial)"},
-	//	{ItemID: 96129, ItemName: "Primordius' Talisman of Rage (Thunderforged)"},
-	//	{ItemID: 96501, ItemName: "Primordius' Talisman of Rage (H)"},
-	//	{ItemID: 96873, ItemName: "Primordius' Talisman of Rage (Heroic Thunderforged)"},
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately
 	// 3.50 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
