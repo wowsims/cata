@@ -605,6 +605,55 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 55177.80195
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 53737.97562
+  tps: 789.00813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-EnigmaticPrimalDiamond"
  value: {
   dps: 53124.47291

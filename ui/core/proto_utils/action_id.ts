@@ -743,6 +743,7 @@ export class ActionId {
 					name += ' (Heal)';
 				}
 				break;
+
 			case 'Item - Paladin T11 Retribution 4P Bonus':
 				name = 'Reinforced Sapphirium Battleplate - T11 4pc';
 				break;
@@ -786,6 +787,8 @@ export class ActionId {
 				name = 'Plate of Winged Triumph - T16 4pc';
 				break;
 			case 'Hurricane':
+			case 'Dancing Steel':
+			case 'Bloody Dancing Steel':
 				if (tag == 1) {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
@@ -799,6 +802,13 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
+				}
+				break;
+			case 'Jade Spirit':
+				if (tag == 1) {
+					name += ' (Intellect)';
+				} else if (tag == 2) {
+					name += ' (Spirit)';
 				}
 				break;
 
