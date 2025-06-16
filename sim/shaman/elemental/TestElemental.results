@@ -451,6 +451,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 46764.41924
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 46764.41924
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 46764.41924
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 46764.41924
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 46764.41924
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-DestructivePrimalDiamond"
  value: {
   dps: 109773.80536
@@ -756,6 +791,41 @@ dps_results: {
  value: {
   dps: 105224.31179
   tps: 1321.24508
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 47408.8696
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 47287.13546
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 47509.75194
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 47594.22608
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 47637.28045
+  tps: 785.50813
  }
 }
 dps_results: {
@@ -1445,6 +1515,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 49452.03227
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 104127.07096
@@ -1550,6 +1627,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 47674.08729
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 47525.54185
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 47717.03662
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 47772.31741
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 47858.28988
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 103919.26568
@@ -1603,6 +1715,41 @@ dps_results: {
  value: {
   dps: 103919.26568
   tps: 1293.33571
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 47050.84612
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 47002.79087
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 47068.90022
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 47089.77688
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 47116.21977
+  tps: 785.50813
  }
 }
 dps_results: {
@@ -1886,10 +2033,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 47901.66207
+  tps: 819.00813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 47864.07452
+  tps: 812.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 48191.82848
+  tps: 819.00813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 48147.14871
+  tps: 816.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 48345.81949
+  tps: 819.00813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-TerrorintheMists-87167"
  value: {
   dps: 106424.29529
   tps: 1288.02649
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 52816.56668
+  tps: 785.50813
  }
 }
 dps_results: {
@@ -2177,6 +2366,13 @@ dps_results: {
  value: {
   dps: 114667.99602
   tps: 1283.35497
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 51480.84703
+  tps: 796.50813
  }
 }
 dps_results: {
