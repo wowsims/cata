@@ -69,55 +69,55 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-102292"
  value: {
-  dps: 21631.10962
-  tps: 145321.97371
-  dtps: 85367.21374
-  hps: 7491.50426
+  dps: 86731.27766
+  tps: 600970.21425
+  dtps: 59888.99742
+  hps: 21630.83821
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-104476"
  value: {
-  dps: 21657.11147
-  tps: 145456.89346
-  dtps: 86163.483
-  hps: 7474.71517
+  dps: 86858.2032
+  tps: 601812.64544
+  dtps: 59624.55446
+  hps: 21618.05186
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-104725"
  value: {
-  dps: 21461.41716
-  tps: 144175.56447
-  dtps: 84950.27243
-  hps: 7455.7828
+  dps: 86593.1967
+  tps: 600044.27431
+  dtps: 59948.1643
+  hps: 21615.20745
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-104974"
  value: {
-  dps: 21946.22052
-  tps: 147604.04283
-  dtps: 84429.53408
-  hps: 7473.64353
+  dps: 86450.9155
+  tps: 599082.01289
+  dtps: 59904.98145
+  hps: 21623.92641
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-105223"
  value: {
-  dps: 21621.15982
-  tps: 145230.93404
-  dtps: 86052.6013
-  hps: 7487.93211
+  dps: 86787.71795
+  tps: 601344.70276
+  dtps: 59657.27598
+  hps: 21617.31514
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 20846.07254
-  tps: 139726.95284
-  dtps: 86608.52359
-  hps: 7478.28732
+  dps: 86923.60344
+  tps: 602218.85124
+  dtps: 59611.73071
+  hps: 21797.40387
  }
 }
 dps_results: {
@@ -924,55 +924,55 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-EvilEyeofGalakras-102298"
  value: {
-  dps: 21154.50573
-  tps: 142206.85147
-  dtps: 85727.92532
-  hps: 7460.7838
+  dps: 85795.74822
+  tps: 594563.36174
+  dtps: 60582.33861
+  hps: 22324.8251
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EvilEyeofGalakras-104495"
  value: {
-  dps: 21164.40374
-  tps: 142255.51653
-  dtps: 86586.67472
-  hps: 7435.77878
+  dps: 85845.40458
+  tps: 594890.0098
+  dtps: 60580.58478
+  hps: 22331.48145
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EvilEyeofGalakras-104744"
  value: {
-  dps: 21079.65177
-  tps: 141700.76435
-  dtps: 85399.59327
-  hps: 7421.4902
+  dps: 85751.83306
+  tps: 594274.4803
+  dtps: 60583.88994
+  hps: 22318.93836
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EvilEyeofGalakras-104993"
  value: {
-  dps: 21637.50158
-  tps: 145621.37122
-  dtps: 84834.98758
-  hps: 7460.7838
+  dps: 85715.67356
+  tps: 594036.61691
+  dtps: 60585.16678
+  hps: 22314.09124
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EvilEyeofGalakras-105242"
  value: {
-  dps: 21120.41667
-  tps: 141958.67115
-  dtps: 86504.67211
-  hps: 7460.7838
+  dps: 85817.90725
+  tps: 594709.12761
+  dtps: 60581.55661
+  hps: 22327.79548
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 20289.68376
-  tps: 136121.77343
-  dtps: 87058.79357
-  hps: 7439.35093
+  dps: 85870.48457
+  tps: 595054.99025
+  dtps: 60579.69894
+  hps: 22334.84337
  }
 }
 dps_results: {
