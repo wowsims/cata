@@ -215,7 +215,7 @@ func init() {
 			aura, _ := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
 				Duration:             time.Second * 10,
 				MaxStacks:            5,
-				BonusPerStack:        stats.Stats{stats.Strength: statValue},
+				BonusPerStack:        stats.Stats{stats.HasteRating: statValue},
 				StackingAuraActionID: core.ActionID{SpellID: 138895},
 				StackingAuraLabel:    fmt.Sprintf("Frenzy %s", versionLabel),
 			})
