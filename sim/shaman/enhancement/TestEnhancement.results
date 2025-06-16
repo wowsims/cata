@@ -451,6 +451,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 50832.68743
+  tps: 30883.18751
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 50832.68743
+  tps: 30883.18751
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 50832.68743
+  tps: 30883.18751
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 50832.68743
+  tps: 30883.18751
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 50832.68743
+  tps: 30883.18751
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-DestructivePrimalDiamond"
  value: {
   dps: 55016.63332

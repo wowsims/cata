@@ -430,6 +430,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 68490.31923
+  tps: 42998.15301
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 68490.31923
+  tps: 42998.15301
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 68490.31923
+  tps: 42998.15301
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 68490.31923
+  tps: 42998.15301
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 68490.31923
+  tps: 42998.15301
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-DestructivePrimalDiamond"
  value: {
   dps: 71680.75144

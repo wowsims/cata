@@ -571,6 +571,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 115390.48513
+  tps: 807733.39588
+  dtps: 42961.08996
+  hps: 6757.5076
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 115499.01412
+  tps: 808493.09885
+  dtps: 42957.23943
+  hps: 6751.67128
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 115361.59749
+  tps: 807531.18246
+  dtps: 42895.42611
+  hps: 6754.01796
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 115356.0568
+  tps: 807492.39758
+  dtps: 42969.86584
+  hps: 6704.57756
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 115162.17821
+  tps: 806135.2475
+  dtps: 43103.58261
+  hps: 6705.86074
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-DestructivePrimalDiamond"
  value: {
   dps: 117644.55156
