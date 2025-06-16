@@ -207,7 +207,7 @@ func newFocusCost(spell *Spell, options FocusCostOptions) *SpellCost {
 	return &SpellCost{
 		spell:           spell,
 		BaseCost:        options.Cost,
-		PercentModifier: 100,
+		PercentModifier: 1,
 		ResourceCostImpl: &FocusCost{
 			Refund:          options.Refund,
 			RefundMetrics:   options.RefundMetrics,

@@ -18,7 +18,6 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: baseCostPercent,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

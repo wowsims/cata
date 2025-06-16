@@ -1,6 +1,10 @@
 package warlock
 
 import (
+	"fmt"
+	"math"
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -11,37 +15,35 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	BaneOfAgony          *core.Spell
-	BaneOfDoom           *core.Spell
-	BurningEmbers        *core.Spell
 	Corruption           *core.Spell
 	CurseOfElementsAuras core.AuraArray
-	CurseOfTonguesAuras  core.AuraArray
-	CurseOfWeaknessAuras core.AuraArray
-	HauntDebuffAuras     core.AuraArray
 	Immolate             *core.Spell
 	Metamorphosis        *core.Spell
 	Seed                 *core.Spell
 	ShadowEmbraceAuras   core.AuraArray
 	Shadowburn           *core.Spell
-	UnstableAffliction   *core.Spell
+	Hellfire             *core.Spell
+	DrainLife            *core.Spell
 
-	// ActivePet *WarlockPet
-	// Felhunter *WarlockPet
+	ActivePet *WarlockPet
+	Felhunter *WarlockPet
 	// Felguard  *WarlockPet
-	// Imp       *WarlockPet
-	// Succubus  *WarlockPet
+	Imp        *WarlockPet
+	Succubus   *WarlockPet
+	Voidwalker *WarlockPet
 
-	// Doomguard *DoomguardPet
-	// Infernal  *InfernalPet
+	Doomguard *DoomguardPet
+	Infernal  *InfernalPet
 	// EbonImp   *EbonImpPet
-	// FieryImp  *FieryImpPet
+	FieryImp *FieryImpPet
 
-	SoulShards   *core.Aura
-	SoulBurnAura *core.Aura
+	serviceTimer *core.Timer
 
 	// Item sets
-	T13_4pc *core.Aura
+	T13_4pc      *core.Aura
+	T15_2pc      *core.Aura
+	T15_4pc      *core.Aura
+	T16_2pc_buff *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -53,69 +55,33 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) ApplyTalents() {
-	warlock.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 86091)
-
-	// warlock.ApplyAfflictionTalents()
-	// warlock.ApplyDemonologyTalents()
-	// warlock.ApplyDestructionTalents()
-
-	// warlock.ApplyGlyphs()
+	warlock.registerHarvestLife()
+	warlock.registerArchimondesDarkness()
+	warlock.registerKilJaedensCunning()
+	warlock.registerMannarothsFury()
+	warlock.registerGrimoireOfSupremacy()
+	warlock.registerGrimoireOfSacrifice()
 }
 
 func (warlock *Warlock) Initialize() {
-	// warlock.registerBaneOfAgony()
-	// warlock.registerBaneOfDoom()
-	// warlock.registerCorruption()
-	// warlock.registerCurseOfElements()
-	// warlock.registerCurseOfTongues()
-	// warlock.registerCurseOfWeakness()
-	// warlock.registerDemonSoul()
-	// warlock.registerDrainLife()
-	// warlock.registerDrainSoul()
-	// warlock.registerFelFlame()
-	// warlock.registerImmolate()
-	// warlock.registerIncinerate()
-	// warlock.registerLifeTap()
-	warlock.registerSearingPain()
-	// warlock.registerSeed()
-	// warlock.registerShadowBolt()
-	warlock.registerShadowflame()
-	// warlock.registerSoulFire()
-	warlock.registerSoulHarvest()
-	warlock.registerSoulburn()
-	// warlock.registerSummonDemon()
 
-	// doomguardInfernalTimer := warlock.NewTimer()
-	// warlock.registerSummonDoomguard(doomguardInfernalTimer)
-	// warlock.registerSummonInfernal(doomguardInfernalTimer)
+	warlock.registerCurseOfElements()
+	doomguardInfernalTimer := warlock.NewTimer()
+	warlock.registerSummonDoomguard(doomguardInfernalTimer)
+	warlock.registerSummonInfernal(doomguardInfernalTimer)
+	warlock.registerLifeTap()
 
-	// TODO: vile hack to make the APLs work for now ...
-	// if !warlock.CouldHaveSetBonus(ItemSetMaleficRaiment, 4) {
-	// 	warlock.RegisterAura(core.Aura{
-	// 		Label:    "Fel Spark",
-	// 		ActionID: core.ActionID{SpellID: 89937},
-	// 	})
-	// }
-
+	// Fel Armor 10% Stamina
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
 			Label:    "Fel Armor",
-			ActionID: core.ActionID{SpellID: 28176},
+			ActionID: core.ActionID{SpellID: 104938},
 		}))
+	warlock.MultiplyStat(stats.Stamina, 1.1)
+	warlock.MultiplyStat(stats.Health, 1.1)
 
-	warlock.SoulShards = core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:     "Soul Shards",
-			ActionID:  core.ActionID{ItemID: 6265},
-			MaxStacks: 3,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.SetStacks(sim, 3)
-			},
-		}))
-
-	// warlock.registerPetAbilities()
-
-	// warlock.registerBlackBook()
+	// 5% int passive
+	warlock.MultiplyStat(stats.Intellect, 1.05)
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
@@ -133,18 +99,16 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString)
 	warlock.EnableManaBar()
-
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
-	// Add Fel Armor SP by default
-	warlock.AddStat(stats.SpellPower, 638)
-
 	// warlock.EbonImp = warlock.NewEbonImp()
-	// warlock.Infernal = warlock.NewInfernalPet()
-	// warlock.Doomguard = warlock.NewDoomguardPet()
-	// warlock.FieryImp = warlock.NewFieryImp()
+	warlock.Infernal = warlock.NewInfernalPet()
+	warlock.Doomguard = warlock.NewDoomguardPet()
+	warlock.FieryImp = warlock.NewFieryImp()
 
-	// warlock.registerPets()
+	warlock.serviceTimer = character.NewTimer()
+	warlock.registerPets()
+	warlock.registerGrimoireOfService()
 
 	return warlock
 }
@@ -165,11 +129,13 @@ func (warlock *Warlock) HasMinorGlyph(glyph proto.WarlockMinorGlyph) bool {
 const (
 	WarlockSpellFlagNone    int64 = 0
 	WarlockSpellConflagrate int64 = 1 << iota
+	WarlockSpellFaBConflagrate
 	WarlockSpellShadowBolt
 	WarlockSpellChaosBolt
 	WarlockSpellImmolate
 	WarlockSpellImmolateDot
 	WarlockSpellIncinerate
+	WarlockSpellFaBIncinerate
 	WarlockSpellSoulFire
 	WarlockSpellShadowBurn
 	WarlockSpellLifeTap
@@ -177,16 +143,14 @@ const (
 	WarlockSpellHaunt
 	WarlockSpellUnstableAffliction
 	WarlockSpellCurseOfElements
-	WarlockSpellCurseOfWeakness
-	WarlockSpellCurseOfTongues
-	WarlockSpellBaneOfAgony
-	WarlockSpellBaneOfDoom
+	WarlockSpellAgony
 	WarlockSpellDrainSoul
 	WarlockSpellDrainLife
 	WarlockSpellMetamorphosis
 	WarlockSpellSeedOfCorruption
 	WarlockSpellSeedOfCorruptionExposion
 	WarlockSpellHandOfGuldan
+	WarlockSpellHellfire
 	WarlockSpellImmolationAura
 	WarlockSpellSearingPain
 	WarlockSpellSummonDoomguard
@@ -200,6 +164,7 @@ const (
 	WarlockSpellFelHunterShadowBite
 	WarlockSpellSummonSuccubus
 	WarlockSpellSuccubusLashOfPain
+	WarlockSpellVoidwalkerTorment
 	WarlockSpellSummonInfernal
 	WarlockSpellDemonSoul
 	WarlockSpellShadowflame
@@ -207,27 +172,108 @@ const (
 	WarlockSpellSoulBurn
 	WarlockSpellFelFlame
 	WarlockSpellBurningEmbers
+	WarlockSpellEmberTap
+	WarlockSpellRainOfFire
+	WarlockSpellFireAndBrimstone
+	WarlockSpellDarkSoulInsanity
+	WarlockSpellDarkSoulKnowledge
+	WarlockSpellDarkSoulMisery
+	WarlockSpellMaleficGrasp
+	WarlockSpellDemonicSlash
+	WarlockSpellTouchOfChaos
+	WarlockSpellChaosWave
+	WarlockSpellCarrionSwarm
+	WarlockSpellDoom
+	WarlockSpellVoidray
+	WarlockSpellAll int64 = 1<<iota - 1
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
-		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
+		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellAgony |
 		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan |
 		WarlockSpellShadowflame | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn
 
 	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
+		WarlockSpellDrainLife | WarlockSpellAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
-		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
-		WarlockSpellShadowflameDot | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn
+		WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
+		WarlockSpellShadowflameDot | WarlockSpellFelFlame | WarlockSpellChaosBolt | WarlockSpellShadowBurn | WarlockSpellFaBConflagrate |
+		WarlockSpellFaBIncinerate
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
+		WarlockSpellDrainLife | WarlockSpellAgony | WarlockSpellImmolateDot |
 		WarlockSpellShadowflameDot | WarlockSpellBurningEmbers
 
 	WarlockSummonSpells = WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter |
 		WarlockSpellSummonFelguard
+
+	WarlockDarkSoulSpell             = WarlockSpellDarkSoulInsanity | WarlockSpellDarkSoulKnowledge | WarlockSpellDarkSoulMisery
+	WarlockAllSummons                = WarlockSummonSpells | WarlockSpellSummonInfernal | WarlockSpellSummonDoomguard
+	WarlockSpellsChaoticEnergyDestro = WarlockSpellAll &^ WarlockAllSummons &^ WarlockSpellDrainLife
 )
 
-const (
-	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
-)
+// Pandemic - For now a Warlock only ability. Might be moved into core support in late expansions
+func (warlock *Warlock) ApplyDotWithPandemic(dot *core.Dot, sim *core.Simulation) {
+
+	// if DoT was not active before, there is nothing we need to do for pandemic
+	if !dot.IsActive() {
+		dot.Apply(sim)
+		return
+	}
+
+	// MoP Pandemic is a warlock only ability
+	// It allows for the extension of up to 50% of the unhasted base duration
+	// So we need to determine which is shorter base + remaining or base + maxExtend
+	remaining := dot.RemainingDuration(sim)
+	extend := time.Duration(math.Min(
+		float64(dot.BaseDuration()+remaining),
+		float64(dot.BaseDuration()+dot.BaseDuration()/2),
+	))
+
+	// First do usual dot carry over
+	dot.Apply(sim)
+	for dot.RemainingDuration(sim)-dot.TimeUntilNextTick(sim)+dot.TickPeriod() <= extend {
+		dot.AddTick()
+	}
+}
+
+// Called to handle custom resources
+type WarlockSpellCastedCallback func(resultList []core.SpellResult, spell *core.Spell, sim *core.Simulation)
+
+type SecondaryResourceCost struct {
+	SecondaryCost int
+	Name          string
+}
+
+// CostFailureReason implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) CostFailureReason(_ *core.Simulation, spell *core.Spell) string {
+	return fmt.Sprintf(
+		"Not enough %s (Current %s = %0.03f, %s Cost = %0.03f)",
+		s.Name,
+		s.Name,
+		spell.Unit.GetSecondaryResourceBar(),
+		s.Name,
+		spell.CurCast.Cost,
+	)
+}
+
+// IssueRefund implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) IssueRefund(sim *core.Simulation, spell *core.Spell) {
+	curCost := spell.Cost.PercentModifier * float64(s.SecondaryCost)
+	spell.Unit.GetSecondaryResourceBar().Gain(sim, int32(curCost), spell.ActionID)
+}
+
+// MeetsRequirement implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) MeetsRequirement(_ *core.Simulation, spell *core.Spell) bool {
+	spell.CurCast.Cost = spell.Cost.PercentModifier * float64(s.SecondaryCost)
+	return spell.Unit.GetSecondaryResourceBar().CanSpend(int32(spell.CurCast.Cost))
+}
+
+// SpendCost implements core.ResourceCostImpl.
+func (s *SecondaryResourceCost) SpendCost(sim *core.Simulation, spell *core.Spell) {
+
+	// during some hard casts resourc might tick down, make sure spells don't execute on exhaustion
+	if spell.Unit.GetSecondaryResourceBar().CanSpend(int32(spell.CurCast.Cost)) {
+		spell.Unit.GetSecondaryResourceBar().Spend(sim, int32(spell.CurCast.Cost), spell.ActionID)
+	}
+}

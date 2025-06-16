@@ -1,6 +1,8 @@
 package affliction
 
 import (
+	"math"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/warlock"
@@ -34,10 +36,18 @@ func NewAfflictionWarlock(character *core.Character, options *proto.Player) *Aff
 
 type AfflictionWarlock struct {
 	*warlock.Warlock
+
+	SoulShards         core.SecondaryResourceBar
+	Agony              *core.Spell
+	UnstableAffliction *core.Spell
+	SoulBurnAura       *core.Aura
+	HauntDebuffAuras   core.AuraArray
+	LastCorruption     *core.Dot // Tracks the last corruption we've applied
+	ProcMaleficEffect  func(target *core.Unit, coeff float64, sim *core.Simulation)
 }
 
 func (affliction AfflictionWarlock) getMasteryBonus() float64 {
-	return 0.13 + 0.01625*affliction.GetMasteryPoints()
+	return (8 + affliction.GetMasteryPoints()) * 3.1
 }
 
 func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
@@ -47,34 +57,42 @@ func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
 func (affliction *AfflictionWarlock) Initialize() {
 	affliction.Warlock.Initialize()
 
-	// affliction.registerHaunt()
-	// affliction.registerUnstableAffliction()
+	affliction.SoulShards = affliction.RegisterNewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+		Type:    proto.SecondaryResourceType_SecondaryResourceTypeSoulShards,
+		Max:     4,
+		Default: 4,
+	})
+
+	affliction.registerPotentAffliction()
+	affliction.registerHaunt()
+	affliction.RegisterCorruption(func(resultList []core.SpellResult, spell *core.Spell, sim *core.Simulation) {
+		if resultList[0].Landed() {
+			affliction.LastCorruption = spell.Dot(resultList[0].Target)
+		}
+	})
+	affliction.registerAgony()
+	affliction.registerNightfall()
+	affliction.registerUnstableAffliction()
+	affliction.registerMaleficEffect()
+	affliction.registerMaleficGrasp()
+	affliction.registerDrainSoul()
+	affliction.registerDarkSoulMisery()
+	affliction.registerSoulburn()
+	affliction.registerSeed()
+	affliction.registerSoulSwap()
 }
 
 func (affliction *AfflictionWarlock) ApplyTalents() {
 	affliction.Warlock.ApplyTalents()
-
-	// Mastery: Potent Afflictions
-	masteryMod := affliction.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: warlock.WarlockPeriodicShadowDamage,
-	})
-
-	affliction.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
-	})
-
-	masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
-	masteryMod.Activate()
-
-	// Shadow Mastery
-	affliction.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		School:     core.SpellSchoolShadow,
-		FloatValue: 0.30,
-	})
 }
 
 func (affliction *AfflictionWarlock) Reset(sim *core.Simulation) {
 	affliction.Warlock.Reset(sim)
+
+	affliction.LastCorruption = nil
+}
+
+func calculateDoTBaseTickDamage(dot *core.Dot) float64 {
+	stacks := math.Max(float64(dot.Aura.GetStacks()), 1)
+	return dot.SnapshotBaseDamage * dot.SnapshotAttackerMultiplier * stacks
 }
