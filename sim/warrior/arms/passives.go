@@ -62,24 +62,36 @@ func (war *ArmsWarrior) registerSeasonedSoldier() {
 }
 
 func (war *ArmsWarrior) registerSuddenDeath() {
+
+	SuddenDeathAura := war.RegisterAura(core.Aura{
+		Label:    "Sudden Death",
+		ActionID: core.ActionID{SpellID: 52437},
+		Duration: 2 * time.Second,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			war.ColossusSmash.CD.Reset()
+		},
+	})
+
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
-		Name:     "Sudden Death",
+		Name:     "Sudden Death - Trigger",
 		ActionID: core.ActionID{SpellID: 29725},
 		ProcMask: core.ProcMaskMelee,
 		Outcome:  core.OutcomeLanded,
 		Callback: core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && spell.ActionID.SpellID != StrikesOfOpportunityHitID {
 				return
 			}
 
 			if sim.Proc(0.1, "Sudden Death") {
-				war.ColossusSmash.CD.Reset()
+
+				SuddenDeathAura.Activate(sim)
 			}
 		},
 	})
 
-	aura := war.RegisterAura(core.Aura{
+	executeAura := war.RegisterAura(core.Aura{
 		Label:    "Sudden Execute",
 		ActionID: core.ActionID{SpellID: 139958},
 		Duration: 10 * time.Second,
@@ -95,7 +107,7 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		Outcome:        core.OutcomeLanded,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			aura.Activate(sim)
+			executeAura.Activate(sim)
 		},
 	})
 }

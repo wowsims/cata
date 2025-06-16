@@ -106,16 +106,14 @@ type Warrior struct {
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
-	EnrageAura          *core.Aura
-	BerserkerRageAura   *core.Aura
-	TasteForBloodAura   *core.Aura
-	SweepingStrikesAura *core.Aura
-	ShieldBlockAura     *core.Aura
-	LastStandAura       *core.Aura
-	RallyingCryAura     *core.Aura
-	VictoryRushAura     *core.Aura
-	SwordAndBoardAura   *core.Aura
-	ShieldBarrierAura   *core.DamageAbsorptionAura
+	EnrageAura        *core.Aura
+	BerserkerRageAura *core.Aura
+	ShieldBlockAura   *core.Aura
+	LastStandAura     *core.Aura
+	RallyingCryAura   *core.Aura
+	VictoryRushAura   *core.Aura
+	SwordAndBoardAura *core.Aura
+	ShieldBarrierAura *core.DamageAbsorptionAura
 
 	SkullBannerAura         *core.Aura
 	DemoralizingBannerAuras core.AuraArray
