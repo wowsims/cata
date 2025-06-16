@@ -35,7 +35,6 @@ func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) co
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: core.TernaryFloat64(isElementalOverload, 0, 7.7),
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

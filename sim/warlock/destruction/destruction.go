@@ -29,17 +29,31 @@ func NewDestructionWarlock(character *core.Character, options *proto.Player) *De
 		Warlock: warlock.NewWarlock(character, options, destroOptions.ClassOptions),
 	}
 
+	destruction.BurningEmbers = destruction.RegisterNewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+		Type:    proto.SecondaryResourceType_SecondaryResourceTypeBurningEmbers,
+		Max:     40,
+		Default: 10,
+	})
+
 	return destruction
 }
 
 type DestructionWarlock struct {
 	*warlock.Warlock
 
-	Conflagrate *core.Spell
+	Conflagrate    *core.Spell
+	BurningEmbers  core.SecondaryResourceBar
+	FABAura        *core.Aura
+	FABImmolate    *core.Spell
+	FABConflagrate *core.Spell
 }
 
-func (destruction DestructionWarlock) getMasteryBonus() float64 {
-	return 0.108 + 0.0135*destruction.GetMasteryPoints()
+func (destruction DestructionWarlock) getGeneratorMasteryBonus() float64 {
+	return 0.09 + 0.01*destruction.GetMasteryPoints()
+}
+
+func (destruction DestructionWarlock) getSpenderMasteryBonus() float64 {
+	return 0.24 + 0.03*destruction.GetMasteryPoints()
 }
 
 func (destruction *DestructionWarlock) GetWarlock() *warlock.Warlock {
@@ -49,34 +63,31 @@ func (destruction *DestructionWarlock) GetWarlock() *warlock.Warlock {
 func (destruction *DestructionWarlock) Initialize() {
 	destruction.Warlock.Initialize()
 
-	// destruction.registerChaosBolt()
+	destruction.registerDarkSoulInstability()
+	destruction.ApplyChaoticEnergy()
+	destruction.ApplyMastery()
+	destruction.registerIncinerate()
 	destruction.registerConflagrate()
+	destruction.registerImmolate()
+	destruction.registerBackdraft()
+	destruction.registerFelflame()
+	destruction.registerChaosBolt()
+	destruction.registerShadowBurnSpell()
+	destruction.registerRainOfFire()
+	destruction.registerEmberTap()
+	destruction.registerFireAndBrimstone()
+	destruction.RegisterDrainLife(nil) // no extra callback needed
 }
 
 func (destruction *DestructionWarlock) ApplyTalents() {
 	destruction.Warlock.ApplyTalents()
-
-	// Mastery: Fiery Apocalypse
-	masteryMod := destruction.AddDynamicMod(core.SpellModConfig{
-		Kind:   core.SpellMod_DamageDone_Pct,
-		School: core.SpellSchoolFire,
-	})
-
-	destruction.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
-	})
-
-	masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
-	masteryMod.Activate()
-
-	// Cataclysm
-	destruction.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		School:     core.SpellSchoolFire,
-		FloatValue: 0.25,
-	})
 }
 
 func (destruction *DestructionWarlock) Reset(sim *core.Simulation) {
 	destruction.Warlock.Reset(sim)
 }
+
+var SpellMaskCinderSpender = warlock.WarlockSpellChaosBolt | warlock.WarlockSpellEmberTap | warlock.WarlockSpellShadowBurn
+var SpellMaskCinderGenerator = warlock.WarlockSpellImmolate | warlock.WarlockSpellImmolateDot |
+	warlock.WarlockSpellIncinerate | warlock.WarlockSpellFelFlame | warlock.WarlockSpellConflagrate |
+	warlock.WarlockSpellFaBIncinerate | warlock.WarlockSpellFaBConflagrate

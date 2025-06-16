@@ -97,7 +97,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		},
 		[WarlockMajorGlyph.GlyphOfEternalResolve]: {
 			name: "Glyph of Eternal Resolve",
-			description: "Unending Resolve can no longer be activated, but passively provides 10% damage reduction from all sources.",
+			description: "Outside of Battlegrounds and Arenas:\u000D\u000A Increases the duration of Unstable Affliction, Corruption, Doom, and Agony by 50%, and reduces their damage by 20%.\u000D\u000A\u000D\u000A Inside of Battlegrounds and Arenas:\u000D\u000A Unending Resolve can no longer be activated, but passively provides 10% damage reduction from all sources.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonictactics.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfSupernova]: {

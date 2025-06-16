@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"maps"
 	"os"
 	"slices"
 	"strings"
@@ -148,7 +149,6 @@ func main() {
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 	instance.LoadSpellScaling()
-
 	database.GenerateProtos(instance, db)
 
 	processItems(instance, iconsMap, names, dropSources, craftingSources, repSources, db)
@@ -163,6 +163,7 @@ func main() {
 
 	for _, enchant := range instance.Enchants {
 		parsed := enchant.ToProto()
+
 		if parsed.Icon == "" {
 			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, enchant.FDID))
 		}
@@ -225,7 +226,16 @@ func main() {
 	ApplyNonSimmableFilters(leftovers)
 	leftovers.WriteBinaryAndJson(fmt.Sprintf("%s/leftover_db.bin", dbDir), fmt.Sprintf("%s/leftover_db.json", dbDir))
 	ApplySimmableFilters(db)
-	for _, enchant := range db.Enchants {
+
+	database.GenerateItemEffects(instance, db, dropSources)
+	database.GenerateEnchantEffects(instance, db)
+	database.GenerateMissingEffectsFile()
+	database.GenerateItemEffectRandomPropPoints(instance, db)
+
+	for _, key := range slices.SortedFunc(maps.Keys(db.Enchants), func(l database.EnchantDBKey, r database.EnchantDBKey) int {
+		return int(l.EffectID) - int(r.EffectID)
+	}) {
+		enchant := db.Enchants[key]
 		if enchant.ItemId != 0 {
 			db.AddItemIcon(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
@@ -337,7 +347,7 @@ func InferPhase(item *proto.UIItem) int32 {
 	}
 
 	//iLvl 600 legendary vs. epic
-	if ilvl == 600 {
+	if ilvl == core.MaxIlvl {
 		if quality == proto.ItemQuality_ItemQualityLegendary {
 			return 5
 		}
@@ -367,15 +377,26 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 	}
 
+	// Timeless Isle trinkets are all ilvl 496 and does not have a source listed.
+	if item.Sources == nil {
+		if item.Type == proto.ItemType_ItemTypeTrinket && ilvl == 496 {
+			return 3
+		}
+	}
+
 	//AtlasLoot‐style source checks
 	for _, src := range item.Sources {
-		//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
 		if rep := src.GetRep(); rep != nil {
+			//- All items with Reputation requirements of "Shado-Pan Assault" are 5.2
 			if rep.RepFactionId == proto.RepFaction_RepFactionShadoPanAssault {
 				return 3
 			}
 			if rep.RepFactionId == proto.RepFaction_RepFactionOperationShieldwall || rep.RepFactionId == proto.RepFaction_RepFactionDominanceOffensive {
 				return 2
+			}
+			//- All items with Reputation requirements of "Emperor Shaohao" are 5.4
+			if rep.RepFactionId == proto.RepFaction_RepFactionEmperorShaohao {
+				return 3
 			}
 		}
 		if craft := src.GetCrafted(); craft != nil {
@@ -511,7 +532,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if len(item.ScalingOptions) <= 0 {
 			return false
 		}
-		if item.ScalingOptions[0].Ilvl > 600 || item.ScalingOptions[0].Ilvl < 100 {
+		if item.ScalingOptions[0].Ilvl > core.MaxIlvl || item.ScalingOptions[0].Ilvl < core.MinIlvl {
 			return false
 		}
 		for _, pattern := range database.DenyListNameRegexes {
@@ -613,6 +634,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 				return false
 			}
 		}
+
+		if _, ok := database.EnchantDenyList[enchant.EffectId]; ok {
+			return false
+		}
+
 		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 

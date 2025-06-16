@@ -27,6 +27,28 @@ type Enchant struct {
 	EffectName         string
 }
 
+func (enchant *Enchant) HasEnchantEffect() bool {
+	for idx, effect := range enchant.Effects {
+		if effect == ITEM_ENCHANTMENT_COMBAT_SPELL {
+			return true
+		}
+
+		// We apply a buff here, check if it's a trigger
+		if effect == ITEM_ENCHANTMENT_EQUIP_SPELL {
+			spellId := enchant.EffectArgs[idx]
+			spellEffects := dbcInstance.SpellEffects[spellId]
+			for _, spellEffect := range spellEffects {
+				if spellEffect.EffectAura == A_PROC_TRIGGER_SPELL ||
+					spellEffect.EffectAura == A_PROC_TRIGGER_SPELL_WITH_VALUE {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
+}
+
 func (enchant *Enchant) ToProto() *proto.UIEnchant {
 	uiEnchant := &proto.UIEnchant{
 		Name:               enchant.Name,
@@ -39,6 +61,18 @@ func (enchant *Enchant) ToProto() *proto.UIEnchant {
 		Quality:            enchant.Quality.ToProto(),
 		RequiredProfession: GetProfession(enchant.RequiredProfession),
 	}
+
+	if enchant.HasEnchantEffect() {
+		eff := ItemEffect{TriggerType: 2, SpellID: enchant.SpellId}
+		parsedEffect, hasStats := eff.ToProto(0, 0)
+		if hasStats {
+			uiEnchant.EnchantEffect = parsedEffect
+		}
+		if uiEnchant.EnchantEffect.GetOnUse() == nil && uiEnchant.EnchantEffect.GetProc() == nil {
+			uiEnchant.EnchantEffect = nil
+		}
+	}
+
 	if enchant.FDID == 0 {
 		uiEnchant.Icon = "trade_engraving"
 	}

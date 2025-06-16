@@ -719,9 +719,9 @@ type ResourceCostImpl interface {
 }
 
 type SpellCost struct {
-	BaseCost        int32 // The base power cost before all modifiers.
-	FlatModifier    int32 // Flat value added to base cost before pct mods
-	PercentModifier int32 // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
+	BaseCost        int32   // The base power cost before all modifiers.
+	FlatModifier    int32   // Flat value added to base cost before pct mods
+	PercentModifier float64 // Multiplier for cost, as of MoP a float
 	spell           *Spell
 	ResourceCostImpl
 }
@@ -730,8 +730,7 @@ func (sc *SpellCost) ApplyCostModifiers(cost int32) float64 {
 	spell := sc.spell
 	cost = max(0, cost+sc.FlatModifier)
 	cost = max(0, cost*spell.Unit.PseudoStats.SpellCostPercentModifier/100)
-	cost = max(0, cost*sc.PercentModifier/100)
-	return float64(cost)
+	return max(0, float64(cost)*sc.PercentModifier)
 }
 
 // Get power cost after all modifiers.

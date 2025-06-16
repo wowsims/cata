@@ -196,7 +196,7 @@ func newRageCost(spell *Spell, options RageCostOptions) *SpellCost {
 	return &SpellCost{
 		spell:           spell,
 		BaseCost:        options.Cost,
-		PercentModifier: 100,
+		PercentModifier: 1,
 		ResourceCostImpl: &RageCost{
 			Refund:          options.Refund,
 			RefundMetrics:   options.RefundMetrics,
