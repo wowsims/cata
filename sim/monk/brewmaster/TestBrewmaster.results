@@ -2065,6 +2065,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 118110.72679
+  tps: 826775.08751
+  dtps: 43730.1707
+  hps: 6841.86183
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 117535.51403
+  tps: 822748.59822
+  dtps: 44083.84982
+  hps: 6795.79347
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 118306.74111
+  tps: 828147.18776
+  dtps: 43723.84226
+  hps: 6782.26055
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 118591.03357
+  tps: 830137.23501
+  dtps: 43766.0709
+  hps: 6779.586
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 118797.20807
+  tps: 831580.45651
+  dtps: 43435.35286
+  hps: 6849.60522
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 115782.29799

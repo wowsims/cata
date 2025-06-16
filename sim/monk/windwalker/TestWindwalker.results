@@ -1831,6 +1831,46 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 122143.42386
+  tps: 112760.81684
+  hps: 7549.21725
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 121306.40833
+  tps: 111994.86062
+  hps: 7474.96052
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 122370.57927
+  tps: 112964.25758
+  hps: 7566.45223
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 122655.71073
+  tps: 113221.56671
+  hps: 7627.5659
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 122912.13952
+  tps: 113451.81244
+  hps: 7654.60826
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 117591.32307

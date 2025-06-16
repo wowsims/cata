@@ -1606,6 +1606,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 54481.31329
+  tps: 32535.27604
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 54030.2769
+  tps: 32243.54788
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 54648.77804
+  tps: 32610.62079
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 54834.20339
+  tps: 32751.73713
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 55111.93467
+  tps: 32890.76254
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 50832.68743
