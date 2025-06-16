@@ -13,25 +13,6 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up
-	// to 3 times. (Approximately 0.72 procs per minute)
-	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-	//	Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:  core.OutcomeCrit,
-	//	Harmful:  true,
-	// }, []shared.ItemVariant{
-	//	{ItemID: 94529, ItemName: "Gaze of the Twins (N)"},
-	//	{ItemID: 95799, ItemName: "Gaze of the Twins (LFR) (Celestial)"},
-	//	{ItemID: 96171, ItemName: "Gaze of the Twins (Thunderforged)"},
-	//	{ItemID: 96543, ItemName: "Gaze of the Twins (H)"},
-	//	{ItemID: 96915, ItemName: "Gaze of the Twins (Heroic Thunderforged)"},
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based
 	// damage roles only.
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{

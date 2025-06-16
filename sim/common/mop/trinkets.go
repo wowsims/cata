@@ -237,4 +237,45 @@ func init() {
 		})
 	})
 
+	// Gaze of the Twins
+	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up
+	// to 3 times. (Approximately 0.72 procs per minute)
+	shared.ItemVersionMap{
+		shared.ItemVersionLFR:                 95799,
+		shared.ItemVersionNormal:              94529,
+		shared.ItemVersionHeroic:              96543,
+		shared.ItemVersionThunderforged:       96171,
+		shared.ItemVersionHeroicThunderforged: 96915,
+	}.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+		label := "Gaze of the Twins"
+
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+			character := agent.GetCharacter()
+			statValue := core.GetItemEffectScaling(itemID, 0.96799999475, state)
+
+			aura, _ := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+				Duration:             time.Second * 20,
+				MaxStacks:            3,
+				BonusPerStack:        stats.Stats{stats.CritRating: statValue},
+				StackingAuraActionID: core.ActionID{SpellID: 139170},
+				StackingAuraLabel:    fmt.Sprintf("Eye of Brutality %s", versionLabel),
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:    label,
+				Harmful: true,
+				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
+					PPM: 0.72000002861,
+				}.WithCritMod()),
+				ICD:      time.Second * 10,
+				Outcome:  core.OutcomeCrit,
+				Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+				},
+			})
+		})
+	})
+
 }
