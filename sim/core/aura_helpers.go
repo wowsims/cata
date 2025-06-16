@@ -278,16 +278,49 @@ func MakePermanent(aura *Aura) *Aura {
 	return aura
 }
 
-func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, actionID ActionID, bonusPerStack stats.Stats, maxStacks int32, duration time.Duration) *StatBuffAura {
-	return MakeStackingAura(character, StackingStatAura{
+type TemporaryStatBuffWithStacksConfig struct {
+	StackingAuraLabel    string
+	StackingAuraActionID ActionID
+	AuraLabel            string
+	ActionID             ActionID
+	BonusPerStack        stats.Stats
+	MaxStacks            int32
+	TimePerStack         time.Duration
+	Duration             time.Duration
+}
+
+func (character *Character) NewTemporaryStatBuffWithStacks(config TemporaryStatBuffWithStacksConfig) (*StatBuffAura, *Aura) {
+	stackingAura := MakeStackingAura(character, StackingStatAura{
 		Aura: Aura{
-			Label:     auraLabel,
-			ActionID:  actionID,
-			Duration:  duration,
-			MaxStacks: maxStacks,
+			Label:     Ternary(config.StackingAuraLabel != "", config.StackingAuraLabel, config.AuraLabel),
+			ActionID:  Ternary(!config.StackingAuraActionID.IsEmptyAction(), config.StackingAuraActionID, config.ActionID),
+			Duration:  config.Duration,
+			MaxStacks: config.MaxStacks,
 		},
-		BonusPerStack: bonusPerStack,
+		BonusPerStack: config.BonusPerStack,
 	})
+
+	if config.TimePerStack > 0 {
+		aura := character.RegisterAura(Aura{
+			Label:    config.AuraLabel,
+			ActionID: config.ActionID,
+			Duration: config.Duration,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				stackingAura.Activate(sim)
+				StartPeriodicAction(sim, PeriodicActionOptions{
+					Period:   config.TimePerStack,
+					NumTicks: 10,
+					OnAction: func(sim *Simulation) {
+						stackingAura.AddStack(sim)
+					},
+				})
+			},
+		})
+		return stackingAura, aura
+	}
+
+	return stackingAura, nil
+
 }
 
 // Helper for the common case of making an aura that adds stats.

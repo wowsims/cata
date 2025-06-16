@@ -739,3 +739,45 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 
 	return igniteSpell
 }
+
+type ItemVersion byte
+
+const (
+	ItemVersionLFR = iota
+	ItemVersionNormal
+	ItemVersionHeroic
+	ItemVersionThunderforged
+	ItemVersionHeroicThunderforged
+	ItemVersionWarforged
+	ItemVersionHeroicWarforged
+	ItemVersionFlexible
+)
+
+type ItemVersionMap map[ItemVersion]int32
+type ItemVersionFactory func(version ItemVersion, id int32, versionLabel string)
+
+func (version ItemVersion) GetLabel() string {
+	switch version {
+	case ItemVersionLFR:
+		return "(Celestial)"
+	case ItemVersionHeroic:
+		return "(Heroic)"
+	case ItemVersionThunderforged:
+		return "(Thunderforged)"
+	case ItemVersionHeroicThunderforged:
+		return "(Heroic Thunderforged)"
+	case ItemVersionWarforged:
+		return "(Warforged)"
+	case ItemVersionHeroicWarforged:
+		return "(Heroic Warforged)"
+	case ItemVersionFlexible:
+		return "(Flex)"
+	}
+	return ""
+}
+
+func (versions ItemVersionMap) RegisterAll(fac ItemVersionFactory) {
+	for version, id := range versions {
+		fac(version, id, version.GetLabel())
+	}
+}

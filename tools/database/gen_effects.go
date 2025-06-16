@@ -252,6 +252,19 @@ func GenerateItemEffects(instance *dbc.DBC, db *WowDatabase, itemSources map[int
 	GenerateEffectsFile(procGroups, "sim/common/mop/stat_bonus_procs_auto_gen.go", TmplStrProc)
 }
 
+func GenerateItemEffectRandomPropPoints(instance *dbc.DBC, db *WowDatabase) {
+	for id, allocMap := range instance.RandomPropertiesByIlvl {
+		ilvl := int32(id)
+		if ilvl < core.MinIlvl || ilvl > core.MaxIlvl {
+			continue
+		}
+		db.ItemEffectRandPropPoints[ilvl] = &proto.ItemEffectRandPropPoints{
+			Ilvl:           ilvl,
+			RandPropPoints: allocMap[proto.ItemQuality_ItemQualityEpic][0],
+		}
+	}
+}
+
 func BuildItemDifficultyPostfix(itemSources map[int][]*proto.DropSource, itemId int, instance *dbc.DBC) string {
 	difficultyPostfix := ""
 	if sources, ok := itemSources[itemId]; ok {
@@ -320,12 +333,12 @@ func TryParseProcEffect(parsed *proto.UIItem, instance *dbc.DBC, groupMapProc ma
 }
 
 func TryParseOnUseEffect(parsed *proto.UIItem, groupMap map[string]Group) EffectParseResult {
-	if parsed.ItemEffect.GetOnUse() != nil && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL { // MoP constraints
+	// Effect was already manually implemented
+	if core.HasItemEffect(parsed.Id) {
+		return EffectParseResultSuccess
+	}
 
-		// Effect was already manually implemented
-		if core.HasItemEffect(parsed.Id) {
-			return EffectParseResultSuccess
-		}
+	if parsed.ItemEffect.GetOnUse() != nil && parsed.ScalingOptions[0].Ilvl > MIN_EFFECT_ILVL { // MoP constraints
 
 		if parsed.ItemEffect.GetOnUse().CooldownMs < 0 && parsed.ItemEffect.GetOnUse().CategoryCooldownMs < 0 {
 			return EffectParseResultUnsupported

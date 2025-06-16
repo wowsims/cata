@@ -27,6 +27,7 @@ message UIDatabase {
 
 	repeated GlyphID glyph_ids = 7;
 	repeated ReforgeStat reforge_stats = 12;
+	repeated ItemEffectRandPropPoints item_effect_rand_prop_points = 15;
 
 	repeated Consumable consumables = 13;
 	repeated SpellEffect spell_effects = 14;
