@@ -63,7 +63,7 @@ func (war *ArmsWarrior) registerSeasonedSoldier() {
 
 func (war *ArmsWarrior) registerSuddenDeath() {
 
-	SuddenDeathAura := war.RegisterAura(core.Aura{
+	suddenDeathAura := war.RegisterAura(core.Aura{
 		Label:    "Sudden Death",
 		ActionID: core.ActionID{SpellID: 52437},
 		Duration: 2 * time.Second,
@@ -79,14 +79,12 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		Outcome:  core.OutcomeLanded,
 		Callback: core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && spell.ActionID.SpellID != StrikesOfOpportunityHitID {
 				return
 			}
 
 			if sim.Proc(0.1, "Sudden Death") {
-
-				SuddenDeathAura.Activate(sim)
+				suddenDeathAura.Activate(sim)
 			}
 		},
 	})
