@@ -16,33 +16,20 @@ type GhoulPet struct {
 }
 
 func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
-	ghoulPet := &GhoulPet{
-		Pet: core.NewPet(core.PetConfig{
-			Name:                            "Army of the Dead",
-			Owner:                           &dk.Character,
-			BaseStats:                       stats.Stats{stats.AttackPower: -20},
-			StatInheritance:                 dk.ghoulStatInheritance(0.5),
-			EnabledOnStart:                  false,
-			IsGuardian:                      true,
-			HasDynamicMeleeSpeedInheritance: true,
-		}),
-		dkOwner: dk,
-	}
-
-	ghoulPet.PseudoStats.DamageTakenMultiplier *= 0.1
-
-	dk.SetupGhoul(ghoulPet, 0.5)
-
-	return ghoulPet
+	return dk.newGhoulPetInternal("Army of the Dead", false, 0.5)
 }
 
 func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
+	return dk.newGhoulPetInternal("Ghoul", permanent, 0.8)
+}
+
+func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingCoef float64) *GhoulPet {
 	ghoulPet := &GhoulPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:                            "Ghoul",
+			Name:                            name,
 			Owner:                           &dk.Character,
 			BaseStats:                       stats.Stats{stats.AttackPower: -20},
-			StatInheritance:                 dk.ghoulStatInheritance(0.8),
+			StatInheritance:                 dk.ghoulStatInheritance(scalingCoef),
 			EnabledOnStart:                  permanent,
 			IsGuardian:                      !permanent,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -50,7 +37,9 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 		dkOwner: dk,
 	}
 
-	dk.SetupGhoul(ghoulPet, 0.8)
+	ghoulPet.PseudoStats.DamageTakenMultiplier *= 0.1
+
+	dk.SetupGhoul(ghoulPet, scalingCoef)
 
 	return ghoulPet
 }
