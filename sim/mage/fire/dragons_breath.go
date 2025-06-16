@@ -31,10 +31,10 @@ func (fire *FireMage) registerDragonsBreathSpell() {
 				Duration: time.Second * 20,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultCritMultiplier(),
-		BonusCoefficient:         dragonsBreathCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   fire.DefaultCritMultiplier(),
+		BonusCoefficient: dragonsBreathCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {

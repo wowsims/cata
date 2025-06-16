@@ -37,11 +37,11 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultCritMultiplier(),
-		BonusCoefficient:         infernoBlastCoefficient,
-		ThreatMultiplier:         1,
-		BonusCritPercent:         100,
+		DamageMultiplier: 1,
+		CritMultiplier:   fire.DefaultCritMultiplier(),
+		BonusCoefficient: infernoBlastCoefficient,
+		ThreatMultiplier: 1,
+		BonusCritPercent: 100,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			debuffState := map[int32]core.DotState{}

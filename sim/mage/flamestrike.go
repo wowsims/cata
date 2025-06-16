@@ -78,9 +78,5 @@ func (mage *Mage) registerFlamestrikeSpell() {
 				}
 			},
 		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
-		},
 	})
 }
