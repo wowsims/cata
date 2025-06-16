@@ -40,12 +40,12 @@ func (druid *Druid) applyOmenOfClarity() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.Cost.PercentModifier -= 100
+				spell.Cost.PercentModifier *= -1
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.Cost.PercentModifier += 100
+				spell.Cost.PercentModifier /= -1
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

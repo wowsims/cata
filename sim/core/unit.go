@@ -132,6 +132,7 @@ type Unit struct {
 	DynamicStatsPets      []*Pet
 	DynamicMeleeSpeedPets []*Pet
 	DynamicCastSpeedPets  []*Pet
+	RegenInheritancePets  []*Pet
 
 	// AutoAttacks is the manager for auto attack swings.
 	// Must be enabled to use, with "EnableAutoAttacks()".
@@ -572,6 +573,10 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 		unit.MultiplyFocusRegenSpeed(sim, amount)
 	} else if unit.HasEnergyBar() {
 		unit.MultiplyEnergyRegenSpeed(sim, amount)
+	}
+
+	for _, pet := range unit.RegenInheritancePets {
+		pet.MultiplyResourceRegenSpeed(sim, amount)
 	}
 }
 

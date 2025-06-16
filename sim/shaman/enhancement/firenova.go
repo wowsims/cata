@@ -41,7 +41,6 @@ func (enh *EnhancementShaman) registerFireNovaSpell() {
 		ClassSpellMask: shaman.SpellMaskFireNova,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 13.7,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

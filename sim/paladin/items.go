@@ -121,9 +121,9 @@ var ItemSetWhiteTigerVestments = core.NewItemSet(core.ItemSet{
 			}
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_PowerCost_Pct,
-				ClassMask: SpellMaskHolyRadiance,
-				IntValue:  -10,
+				Kind:       core.SpellMod_PowerCost_Pct,
+				ClassMask:  SpellMaskHolyRadiance,
+				FloatValue: -0.1,
 			}).ExposeToAPL(123102)
 		},
 		// Reduces the cooldown of your Holy Shock spell by 1 sec.
