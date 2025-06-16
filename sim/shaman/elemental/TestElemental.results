@@ -766,6 +766,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Gladiator'sEarthshaker"
+ value: {
+  dps: 79611.13072
+  tps: 935.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-GrievousGladiator'sBadgeofConquest-100195"
  value: {
   dps: 104087.24464

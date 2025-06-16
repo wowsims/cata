@@ -9,10 +9,6 @@ import (
 	"github.com/wowsims/mop/sim/shaman"
 )
 
-func (enh *EnhancementShaman) getSearingFlamesMultiplier() float64 {
-	return enh.SearingFlamesMultiplier + core.TernaryFloat64(enh.T12Enh2pc.IsActive(), 0.05, 0)
-}
-
 func (enh *EnhancementShaman) registerLavaLashSpell() {
 	damageMultiplier := 3.0
 	if enh.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
