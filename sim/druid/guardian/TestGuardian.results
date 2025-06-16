@@ -67,6 +67,60 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-AssuranceofConsequence-102292"
+ value: {
+  dps: 21631.10962
+  tps: 145321.97371
+  dtps: 85367.21374
+  hps: 7491.50426
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-AssuranceofConsequence-104476"
+ value: {
+  dps: 21657.11147
+  tps: 145456.89346
+  dtps: 86163.483
+  hps: 7474.71517
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-AssuranceofConsequence-104725"
+ value: {
+  dps: 21461.41716
+  tps: 144175.56447
+  dtps: 84950.27243
+  hps: 7455.7828
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-AssuranceofConsequence-104974"
+ value: {
+  dps: 21946.22052
+  tps: 147604.04283
+  dtps: 84429.53408
+  hps: 7473.64353
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-AssuranceofConsequence-105223"
+ value: {
+  dps: 21621.15982
+  tps: 145230.93404
+  dtps: 86052.6013
+  hps: 7487.93211
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 20846.07254
+  tps: 139726.95284
+  dtps: 86608.52359
+  hps: 7478.28732
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-AusterePrimalDiamond"
  value: {
   dps: 89287.69965
@@ -865,6 +919,60 @@ dps_results: {
   tps: 617415.24625
   dtps: 55140.46453
   hps: 24006.70757
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EvilEyeofGalakras-102298"
+ value: {
+  dps: 21154.50573
+  tps: 142206.85147
+  dtps: 85727.92532
+  hps: 7460.7838
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EvilEyeofGalakras-104495"
+ value: {
+  dps: 21164.40374
+  tps: 142255.51653
+  dtps: 86586.67472
+  hps: 7435.77878
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EvilEyeofGalakras-104744"
+ value: {
+  dps: 21079.65177
+  tps: 141700.76435
+  dtps: 85399.59327
+  hps: 7421.4902
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EvilEyeofGalakras-104993"
+ value: {
+  dps: 21637.50158
+  tps: 145621.37122
+  dtps: 84834.98758
+  hps: 7460.7838
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EvilEyeofGalakras-105242"
+ value: {
+  dps: 21120.41667
+  tps: 141958.67115
+  dtps: 86504.67211
+  hps: 7460.7838
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 20289.68376
+  tps: 136121.77343
+  dtps: 87058.79357
+  hps: 7439.35093
  }
 }
 dps_results: {

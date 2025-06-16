@@ -79,6 +79,54 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-102292"
+ value: {
+  dps: 76603.6195
+  tps: 70768.91538
+  hps: 776.2534
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-104476"
+ value: {
+  dps: 76810.71419
+  tps: 70918.30118
+  hps: 784.49526
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-104725"
+ value: {
+  dps: 76846.13646
+  tps: 71062.69269
+  hps: 766.76186
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-104974"
+ value: {
+  dps: 76108.83269
+  tps: 70363.12331
+  hps: 760.76019
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-105223"
+ value: {
+  dps: 76624.48364
+  tps: 70763.46515
+  hps: 779.93131
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 77435.16416
+  tps: 71515.79037
+  hps: 788.65798
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-AusterePrimalDiamond"
  value: {
   dps: 122632.87411
@@ -788,6 +836,54 @@ dps_results: {
   dps: 122632.87411
   tps: 113091.32739
   hps: 7407.43429
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-102298"
+ value: {
+  dps: 74953.85493
+  tps: 69441.44216
+  hps: 727.79704
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-104495"
+ value: {
+  dps: 75082.13035
+  tps: 69553.80975
+  hps: 730.08352
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-104744"
+ value: {
+  dps: 75403.40447
+  tps: 69905.06029
+  hps: 725.77491
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-104993"
+ value: {
+  dps: 74866.96767
+  tps: 69380.20749
+  hps: 724.1099
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-105242"
+ value: {
+  dps: 74915.42937
+  tps: 69395.91778
+  hps: 728.81738
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 75406.92013
+  tps: 69870.56495
+  hps: 731.23836
  }
 }
 dps_results: {
