@@ -34,6 +34,8 @@ func (affliction *AfflictionWarlock) registerMaleficEffect() {
 		uaProc:         &affliction.UnstableAffliction,
 	}
 
+	// used to iterate over the map in constant order
+	procKeys := []*core.Spell{corruptionProc, agonyProc, uaProc}
 	affliction.ProcMaleficEffect = func(target *core.Unit, coeff float64, sim *core.Simulation) {
 
 		// I don't like it but if sac is specced the damage replciation effect specifically is increased by 20%
@@ -50,7 +52,8 @@ func (affliction *AfflictionWarlock) registerMaleficEffect() {
 			coeff *= 1.2
 		}
 
-		for proc, source := range procTable {
+		for _, proc := range procKeys {
+			source := procTable[proc]
 			dot := (*source).Dot(target)
 			if !dot.IsActive() {
 				return
