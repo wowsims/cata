@@ -46,12 +46,45 @@ func (runeWeapon *RuneWeaponPet) Initialize() {
 	runeWeapon.dkOwner.registerDrwFrostFever()
 	runeWeapon.dkOwner.registerDrwBloodPlague()
 	runeWeapon.AddCopySpell(BloodBoilActionID, runeWeapon.dkOwner.registerDrwBloodBoil())
-	// runeWeapon.AddCopySpell(DeathCoilActionID, runeWeapon.dkOwner.registerDrwDeathCoilSpell())
+	// runeWeapon.AddCopySpell(DeathCoilActionID, runeWeapon.dkOwner.registerDrwDeathCoil())
 	runeWeapon.AddCopySpell(DeathStrikeActionID, runeWeapon.dkOwner.registerDrwDeathStrike())
 	runeWeapon.AddCopySpell(IcyTouchActionID, runeWeapon.dkOwner.registerDrwIcyTouch())
 	runeWeapon.AddCopySpell(OutbreakActionID, runeWeapon.dkOwner.registerDrwOutbreak())
 	runeWeapon.AddCopySpell(PestilenceActionID, runeWeapon.dkOwner.registerDrwPestilence())
 	runeWeapon.AddCopySpell(PlagueStrikeActionID, runeWeapon.dkOwner.registerDrwPlagueStrike())
+
+	runeWeapon.registerFirstHitDamageAura()
+}
+
+// The absolute first white hit doesn't get the -50% modifier.
+// Trying to abuse it by macroing e.g. DS and DRW together doesn't seem to work.
+func (runeWeapon *RuneWeaponPet) registerFirstHitDamageAura() {
+	var damageMultiplier float64
+	var firstHitAura *core.Aura
+	firstHitAura = runeWeapon.RegisterAura(core.Aura{
+		Label:    "First Hit Penalty Bypass" + runeWeapon.Label,
+		Duration: core.SpellBatchWindow,
+
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback: core.CallbackOnApplyEffects,
+		ProcMask: core.ProcMaskWhiteHit,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			damageMultiplier = spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
+			spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 0.5
+		},
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback: core.CallbackOnCastComplete,
+		ProcMask: core.ProcMaskWhiteHit,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] = damageMultiplier
+			firstHitAura.Deactivate(sim)
+		},
+	})
 }
 
 func (runeWeapon *RuneWeaponPet) DiseasesAreActive(target *core.Unit) bool {
@@ -153,26 +186,25 @@ func (runeWeapon *RuneWeaponPet) ExecuteCustomRotation(_ *core.Simulation) {
 }
 
 func (runeWeapon *RuneWeaponPet) enable(sim *core.Simulation) {
-	runeWeapon.drwDmgSnapshot = runeWeapon.dkOwner.PseudoStats.DamageDealtMultiplier * 0.5
+	runeWeapon.drwDmgSnapshot = runeWeapon.dkOwner.PseudoStats.DamageDealtMultiplier
 	runeWeapon.drwSchoolDmgSnapshot = runeWeapon.dkOwner.PseudoStats.SchoolDamageDealtMultiplier
 
-	// Tiny delay to have the absolute first attack not be modified by any % modifier from the owner
-	// And not have the -50% dmg penalty
-	core.StartDelayedAction(sim, core.DelayedActionOptions{
-		DoAt: sim.CurrentTime + core.SpellBatchWindow,
-		OnAction: func(sim *core.Simulation) {
-			runeWeapon.PseudoStats.DamageDealtMultiplier *= runeWeapon.drwDmgSnapshot
-			for i := range stats.SchoolLen {
-				runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] *= runeWeapon.drwSchoolDmgSnapshot[i]
-			}
-		},
-	})
+	runeWeapon.PseudoStats.DamageDealtMultiplier *= runeWeapon.drwDmgSnapshot
+	for i := range stats.SchoolLen {
+		runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] *= runeWeapon.drwSchoolDmgSnapshot[i]
+		if i == stats.SchoolIndexPhysical {
+			runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] *= 0.5
+		}
+	}
 }
 
 func (runeWeapon *RuneWeaponPet) disable(sim *core.Simulation) {
 	// Clear snapshot damage multipliers
 	runeWeapon.PseudoStats.DamageDealtMultiplier /= runeWeapon.drwDmgSnapshot
 	for i := range stats.SchoolLen {
+		if i == stats.SchoolIndexPhysical {
+			runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] /= 0.5
+		}
 		runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] /= runeWeapon.drwSchoolDmgSnapshot[i]
 	}
 	runeWeapon.drwSchoolDmgSnapshot = stats.NewSchoolFloatArray()
