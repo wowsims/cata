@@ -2005,6 +2005,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 96106.92385
+  tps: 74521.81255
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 96106.92385
+  tps: 74521.81255
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 96106.92385
+  tps: 74521.81255
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 96106.92385
+  tps: 74521.81255
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 96106.92385
+  tps: 74521.81255
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-TerrorintheMists-87167"
  value: {
   dps: 99422.81609

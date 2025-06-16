@@ -2578,6 +2578,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 119302.9042
+  tps: 835120.32942
+  dtps: 44263.99376
+  hps: 6802.52275
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 118627.97081
+  tps: 830395.79567
+  dtps: 44171.89193
+  hps: 6807.07036
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 119609.14602
+  tps: 837264.02215
+  dtps: 44184.89518
+  hps: 6815.91781
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 119657.85145
+  tps: 837604.96015
+  dtps: 44086.16192
+  hps: 6924.40154
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 119934.8011
+  tps: 839543.60771
+  dtps: 44006.21863
+  hps: 6937.84226
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-Thousand-YearPickledEgg-87573"
  value: {
   dps: 115982.65711

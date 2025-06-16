@@ -2271,6 +2271,46 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 125175.03732
+  tps: 115304.95477
+  hps: 7872.60155
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 123892.1123
+  tps: 114171.3716
+  hps: 7749.73551
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 125535.35293
+  tps: 115613.59253
+  hps: 7911.68111
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 126161.36694
+  tps: 116176.68723
+  hps: 7966.57711
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 126625.00299
+  tps: 116582.81092
+  hps: 8013.26074
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-TerrorintheMists-87167"
  value: {
   dps: 125364.07951
