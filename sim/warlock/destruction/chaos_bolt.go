@@ -56,13 +56,17 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 			spell.DamageMultiplier *= (1 + destro.GetStat(stats.SpellCritPercent)/100)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DamageMultiplier /= (1 + destro.GetStat(stats.SpellCritPercent)/100)
+
+			// check again we can actually spend as Dark Soul might have run out before the cast finishes
+			if result.Landed() && destro.BurningEmbers.CanSpend(core.TernaryInt32(destro.T15_2pc.IsActive(), 8, 10)) {
+				destro.BurningEmbers.Spend(sim, core.TernaryInt32(destro.T15_2pc.IsActive(), 8, 10), spell.ActionID)
+			} else {
+				return
+			}
+
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
-
-			if result.Landed() {
-				destro.BurningEmbers.Spend(sim, core.TernaryInt32(destro.T15_2pc.IsActive(), 8, 10), spell.ActionID)
-			}
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

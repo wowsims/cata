@@ -29,6 +29,12 @@ func NewDestructionWarlock(character *core.Character, options *proto.Player) *De
 		Warlock: warlock.NewWarlock(character, options, destroOptions.ClassOptions),
 	}
 
+	destruction.BurningEmbers = destruction.RegisterNewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+		Type:    proto.SecondaryResourceType_SecondaryResourceTypeBurningEmbers,
+		Max:     40,
+		Default: 10,
+	})
+
 	return destruction
 }
 
@@ -56,12 +62,6 @@ func (destruction *DestructionWarlock) GetWarlock() *warlock.Warlock {
 
 func (destruction *DestructionWarlock) Initialize() {
 	destruction.Warlock.Initialize()
-
-	destruction.BurningEmbers = destruction.RegisterNewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
-		Type:    proto.SecondaryResourceType_SecondaryResourceTypeBurningEmbers,
-		Max:     40,
-		Default: 10,
-	})
 
 	destruction.registerDarkSoulInstability()
 	destruction.ApplyChaoticEnergy()
