@@ -196,4 +196,45 @@ func init() {
 		})
 	})
 
+	// Talisman of Bloodlust
+	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately
+	// 3.50 procs per minute)
+	shared.ItemVersionMap{
+		shared.ItemVersionLFR:                 95748,
+		shared.ItemVersionNormal:              94522,
+		shared.ItemVersionHeroic:              96492,
+		shared.ItemVersionThunderforged:       96120,
+		shared.ItemVersionHeroicThunderforged: 96864,
+	}.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+		label := "Talisman of Bloodlust"
+
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+			character := agent.GetCharacter()
+			statValue := core.GetItemEffectScaling(itemID, 0.5189999938, state)
+
+			aura, _ := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+				Duration:             time.Second * 10,
+				MaxStacks:            5,
+				BonusPerStack:        stats.Stats{stats.Strength: statValue},
+				StackingAuraActionID: core.ActionID{SpellID: 138895},
+				StackingAuraLabel:    fmt.Sprintf("Frenzy %s", versionLabel),
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:    label,
+				Harmful: true,
+				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
+					PPM: 3.5,
+				}),
+				ICD:      time.Second * 5,
+				Outcome:  core.OutcomeLanded,
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+				},
+			})
+		})
+	})
+
 }

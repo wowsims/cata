@@ -13,25 +13,6 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Your attacks have a chance to grant you 963 haste for 10s. This effect can stack up to 5 times. (Approximately
-	// 3.50 procs per minute)
-	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-	//	Callback: core.CallbackOnSpellHitDealt,
-	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  true,
-	// }, []shared.ItemVariant{
-	//	{ItemID: 94522, ItemName: "Talisman of Bloodlust (N)"},
-	//	{ItemID: 95748, ItemName: "Talisman of Bloodlust (LFR) (Celestial)"},
-	//	{ItemID: 96120, ItemName: "Talisman of Bloodlust (Thunderforged)"},
-	//	{ItemID: 96492, ItemName: "Talisman of Bloodlust (H)"},
-	//	{ItemID: 96864, ItemName: "Talisman of Bloodlust (Heroic Thunderforged)"},
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Your critical attacks have a chance to grant you 963 Critical Strike for 20s. This effect can stack up
 	// to 3 times. (Approximately 0.72 procs per minute)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
