@@ -501,7 +501,7 @@ func (dk *DeathKnight) registerDeathSiphon() {
 
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       DeathSiphonActionID,
-		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolShadow,
+		SpellSchool:    core.SpellSchoolShadowFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellDeathSiphon,
@@ -543,7 +543,7 @@ func (dk *DeathKnight) registerDeathSiphon() {
 func (dk *DeathKnight) registerDrwDeathSiphon() *core.Spell {
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    DeathSiphonActionID,
-		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolShadow,
+		SpellSchool: core.SpellSchoolShadowFrost,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 

@@ -210,6 +210,7 @@ const (
 	SpellSchoolShadow
 	SpellSchoolChaos       SpellSchool = 1<<iota - 3
 	SpellSchoolShadowFlame SpellSchool = SpellSchoolFire | SpellSchoolShadow
+	SpellSchoolShadowFrost SpellSchool = SpellSchoolFrost | SpellSchoolShadow
 )
 
 // Returns whether there is any overlap between the given masks.
