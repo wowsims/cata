@@ -1849,6 +1849,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 119872.11844
+  tps: 839104.82908
+  dtps: 43471.82458
+  hps: 6286.85164
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-PouchofWhiteAsh-103639"
  value: {
   dps: 115782.29799
@@ -2413,6 +2422,15 @@ dps_results: {
   tps: 817262.39969
   dtps: 43443.43743
   hps: 6512.58506
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 119872.11844
+  tps: 839104.82908
+  dtps: 43471.82458
+  hps: 6286.85164
  }
 }
 dps_results: {

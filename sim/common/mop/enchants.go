@@ -105,6 +105,7 @@ func init() {
 	}
 
 	newJadeSpiritEnchant("Jade Spirit", 4442, 120033, 104993, 3*time.Second)
+	// TODO: Currently the PVP variant has no ICD, TBD if this is intended.
 	newJadeSpiritEnchant("Spirit of Conquest", 5124, 142536, 142535, 0)
 
 	// Permanently enchants a melee weapon to sometimes increase your Strength or Agility by 0 when dealing melee
@@ -183,8 +184,7 @@ func init() {
 				true,
 				core.ProcMaskDirect|core.ProcMaskProc,
 				core.RPPMConfig{
-					PPM:         5.5,
-					Coefficient: 1.0,
+					PPM: 5.5,
 				}.WithHasteMod(),
 			),
 			Outcome: core.OutcomeLanded,
@@ -227,5 +227,56 @@ func init() {
 				aura.Activate(sim)
 			},
 		})
+	})
+
+	// Synapse Springs
+	core.NewEnchantEffect(4898, func(agent core.Agent, _ proto.ItemLevelState) {
+		character := agent.GetCharacter()
+
+		bonus := stats.Stats{}
+		bonus[character.GetHighestStatType([]stats.Stat{
+			stats.Strength, stats.Agility, stats.Intellect,
+		})] = 1900
+
+		core.RegisterTemporaryStatsOnUseCD(character,
+			"Synapse Springs",
+			bonus,
+			10*time.Second,
+			core.SpellConfig{
+				ActionID: core.ActionID{SpellID: 126734},
+				Cast: core.CastConfig{
+					CD: core.Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute,
+					},
+					SharedCD: core.Cooldown{
+						Timer:    character.GetOffensiveTrinketCD(),
+						Duration: 10 * time.Second,
+					},
+				},
+			})
+	})
+
+	// Phase Fingers
+	core.NewEnchantEffect(4697, func(agent core.Agent, _ proto.ItemLevelState) {
+		character := agent.GetCharacter()
+
+		core.RegisterTemporaryStatsOnUseCD(character,
+			"Phase Fingers",
+			stats.Stats{stats.DodgeRating: 2880},
+			10*time.Second,
+			core.SpellConfig{
+				ActionID: core.ActionID{SpellID: 108788},
+				Cast: core.CastConfig{
+					CD: core.Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute,
+					},
+					SharedCD: core.Cooldown{
+						Timer:    character.GetDefensiveTrinketCD(),
+						Duration: 10 * time.Second,
+					},
+				},
+			})
 	})
 }

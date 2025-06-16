@@ -1438,6 +1438,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 54864.77127
+  tps: 32895.44456
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-PouchofWhiteAsh-103639"
  value: {
   dps: 50832.68743
@@ -1883,6 +1890,13 @@ dps_results: {
  value: {
   dps: 51892.52304
   tps: 31541.70385
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 56533.69927
+  tps: 33596.35637
  }
 }
 dps_results: {
