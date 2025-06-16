@@ -125,8 +125,8 @@ func (shaman *Shaman) ApplyElementalTalents() {
 	var triggeringSpell *core.Spell
 	var triggerTime time.Duration
 
-	canConsumeSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskShock | SpellMaskElementalBlast | SpellMaskUnleashElements | SpellMaskEarthquake | SpellMaskLavaBeam
-	canTriggerSpells := canConsumeSpells | SpellMaskThunderstorm & ^SpellMaskEarthquake
+	canConsumeSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | (SpellMaskShock & ^SpellMaskFlameShockDot) | SpellMaskElementalBlast | SpellMaskUnleashElements | SpellMaskEarthquake | SpellMaskLavaBeam
+	canTriggerSpells := (canConsumeSpells | SpellMaskThunderstorm) & ^SpellMaskEarthquake
 
 	maxStacks := int32(2)
 
