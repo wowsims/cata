@@ -53,6 +53,29 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(81266, func(agent core.Agent, state proto.ItemLevelState) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 126467}
+		manaMetrics := character.NewManaMetrics(actionID)
+
+		mana := core.GetItemEffectScaling(81266, 2.97199988365, state)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Price of Progress (Heroic)",
+			ActionID:   actionID,
+			ProcMask:   core.ProcMaskSpellHealing,
+			Harmful:    true,
+			ICD:        time.Second * 55,
+			ProcChance: 0.10,
+			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicHealDealt,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				if character.HasManaBar() {
+					character.AddMana(sim, mana, manaMetrics)
+				}
+			},
+		})
+	})
+
 	// Renataki's Soul Charm
 	shared.ItemVersionMap{
 		shared.ItemVersionLFR:                 95625,
