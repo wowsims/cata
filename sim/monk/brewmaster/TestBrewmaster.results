@@ -1876,6 +1876,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 115782.29799

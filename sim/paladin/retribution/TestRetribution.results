@@ -1445,6 +1445,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 153756.18961
+  tps: 145610.45415
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 154023.2424

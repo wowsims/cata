@@ -1438,6 +1438,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 100047.51379
+  tps: 77582.74539
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 96106.92385

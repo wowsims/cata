@@ -1438,6 +1438,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 71275.08727
+  tps: 44755.98449
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 68490.31923

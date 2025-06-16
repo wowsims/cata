@@ -1431,6 +1431,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 83971.65554
+  tps: 79104.4297
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 80941.54422
@@ -1918,6 +1925,13 @@ dps_results: {
  value: {
   dps: 82884.10961
   tps: 77827.33593
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 81956.6191
+  tps: 77193.07118
  }
 }
 dps_results: {

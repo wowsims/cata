@@ -1459,6 +1459,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 50883.19361
+  tps: 30899.79357
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 57733.26546
@@ -1939,6 +1946,13 @@ dps_results: {
  value: {
   dps: 57231.91737
   tps: 33950.12481
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 54864.77127
+  tps: 32895.44456
  }
 }
 dps_results: {

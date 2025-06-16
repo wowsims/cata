@@ -1452,6 +1452,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 49452.03227
+  tps: 785.50813
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 46998.32952
@@ -1931,6 +1938,13 @@ dps_results: {
  key: "TestElemental-AllItems-TerrorintheMists-87167"
  value: {
   dps: 48009.73767
+  tps: 785.50813
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 52816.56668
   tps: 785.50813
  }
 }
