@@ -48,7 +48,7 @@ func (bm *BrewmasterMonk) registerGuard() {
 
 	bm.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          monk.SpellFlagSpender | core.SpellFlagAPL,
+		Flags:          monk.SpellFlagSpender | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: monk.MonkSpellGuard,
 
 		Cast: core.CastConfig{

@@ -53,7 +53,7 @@ func (paladin *Paladin) registerDivineProtection() {
 
 	divineProtection := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskDivineProtection,
 
 		ManaCost: core.ManaCostOptions{

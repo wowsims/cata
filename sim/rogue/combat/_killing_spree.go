@@ -86,7 +86,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 	})
 	comRogue.KillingSpree = comRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 51690},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: rogue.RogueSpellKillingSpree,
 
 		Cast: core.CastConfig{

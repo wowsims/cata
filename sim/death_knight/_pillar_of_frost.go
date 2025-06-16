@@ -31,7 +31,7 @@ func (dk *DeathKnight) registerPillarOfFrostSpell() {
 
 	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: DeathKnightSpellPillarOfFrost,
 
 		RuneCost: core.RuneCostOptions{

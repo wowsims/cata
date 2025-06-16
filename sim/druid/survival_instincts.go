@@ -14,7 +14,7 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 	druid.SurvivalInstinctsAura = druid.RegisterAura(core.Aura{
 		Label:    "Survival Instincts",
 		ActionID: actionID,
-		Duration: core.TernaryDuration(isGlyphed, time.Second * 6, time.Second * 12),
+		Duration: core.TernaryDuration(isGlyphed, time.Second*6, time.Second*12),
 
 		OnGain: func(aura *core.Aura, _ *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.5
@@ -27,11 +27,12 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 
 	druid.SurvivalInstincts = druid.RegisterSpell(Cat|Bear, core.SpellConfig{
 		ActionID: actionID,
+		Flags:    core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: core.TernaryDuration(isGlyphed, time.Minute * 2, time.Minute * 3),
+				Duration: core.TernaryDuration(isGlyphed, time.Minute*2, time.Minute*3),
 			},
 		},
 

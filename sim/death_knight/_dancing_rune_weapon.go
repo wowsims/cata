@@ -80,7 +80,7 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 
 	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 49028},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: DeathKnightSpellDancingRuneWeapon,
 
 		RuneCost: core.RuneCostOptions{

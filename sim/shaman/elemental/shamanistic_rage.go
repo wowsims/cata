@@ -22,6 +22,7 @@ func (ele *ElementalShaman) registerShamanisticRageSpell() {
 	spell := ele.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: shaman.SpellMaskShamanisticRage,
+		Flags:          core.SpellFlagReadinessTrinket,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

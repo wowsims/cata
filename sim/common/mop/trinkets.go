@@ -278,4 +278,141 @@ func init() {
 		})
 	})
 
+	newReadinessTrinket := func(itemVersionMap shared.ItemVersionMap, label string, buffAuraLabel string, buffAuraID int32, stat stats.Stat, duration time.Duration, cooldown time.Duration) {
+		itemVersionMap.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+			core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+				character := agent.GetCharacter()
+
+				stats := stats.Stats{}
+				stats[stat] = core.GetItemEffectScaling(itemID, 0.96799999475, state)
+
+				aura := character.NewTemporaryStatsAura(
+					fmt.Sprintf("%s %s", buffAuraLabel, versionLabel),
+					core.ActionID{SpellID: buffAuraID},
+					stats,
+					duration,
+				)
+
+				core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+					Name:       label,
+					Harmful:    true,
+					ProcChance: 0.15,
+					ICD:        cooldown,
+					ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+					Outcome:    core.OutcomeLanded,
+					Callback:   core.CallbackOnSpellHitDealt,
+					Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+						aura.Activate(sim)
+					},
+				})
+
+				RegisterReadinessCooldownReduction(character, itemID, versionLabel, state)
+			})
+		})
+	}
+
+	// Assurance of Consequence
+	// Increases the cooldown recovery rate of six of your major abilities by 47%.
+	// Effective for Agility-based damage roles only.
+	//
+	// Your attacks have a chance to grant you 14039 Agility for 20 sec.
+	// (15% chance, 115 sec cooldown) (Proc chance: 15%, 1.917m cooldown)
+	newReadinessTrinket(
+		shared.ItemVersionMap{
+			shared.ItemVersionLFR:             104974,
+			shared.ItemVersionNormal:          102292,
+			shared.ItemVersionHeroic:          104476,
+			shared.ItemVersionWarforged:       105223,
+			shared.ItemVersionHeroicWarforged: 105472,
+			shared.ItemVersionFlexible:        104725,
+		},
+		"Assurance of Consequence",
+		"Dextrous",
+		146308,
+		stats.Agility,
+		time.Second*20,
+		time.Second*115,
+	)
+
+	// Evil Eye of Galakras
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based
+	// damage roles only.
+	//
+	// Your attacks have a chance to grant you 11761 Strength for 10 sec.
+	// (15% chance, 55 sec cooldown) (Proc chance: 15%, 55s cooldown)
+	newReadinessTrinket(
+		shared.ItemVersionMap{
+			shared.ItemVersionLFR:             104993,
+			shared.ItemVersionNormal:          102298,
+			shared.ItemVersionHeroic:          104495,
+			shared.ItemVersionWarforged:       105242,
+			shared.ItemVersionHeroicWarforged: 105491,
+			shared.ItemVersionFlexible:        104744,
+		},
+		"Evil Eye of Galakras",
+		"Outrage",
+		146245,
+		stats.Strength,
+		time.Second*10,
+		time.Second*55,
+	)
+}
+
+func RegisterReadinessCooldownReduction(character *core.Character, itemID int32, versionLabel string, state proto.ItemLevelState) {
+	cdr := core.GetItemEffectScaling(itemID, 0.00989999995, state)
+	auraID := map[proto.Spec]int32{
+		// Death Knight
+		// Missing: Outbreak, Blood Rites,
+		proto.Spec_SpecBloodDeathKnight:  145958,
+		proto.Spec_SpecFrostDeathKnight:  145959,
+		proto.Spec_SpecUnholyDeathKnight: 145960,
+		// Druid
+		// Missing: Bear Hug, Ironbark, Nature's Swiftness
+		proto.Spec_SpecFeralDruid:       145961,
+		proto.Spec_SpecGuardianDruid:    145962,
+		proto.Spec_SpecRestorationDruid: 145963,
+		// Hunter
+		// Missing: Bestial Wrath
+		proto.Spec_SpecBeastMasteryHunter: 145964,
+		proto.Spec_SpecMarksmanshipHunter: 145965,
+		proto.Spec_SpecSurvivalHunter:     145966,
+		// Paladin
+		// Missing: Divine Plea, Hand Of Protection, Divine Shield, Hand Of Purity
+		proto.Spec_SpecHolyPaladin:        145978,
+		proto.Spec_SpecProtectionPaladin:  145976,
+		proto.Spec_SpecRetributionPaladin: 145975,
+		// Priest
+		// Missing: Divine Hymn, Guardian Spirit, Hymn of Hope, Inner Focus, Pain Suppression, Power Word: Barrier, Void Shift
+		proto.Spec_SpecDisciplinePriest: 145981,
+		proto.Spec_SpecHolyPriest:       145982,
+		// Rogue
+		// Missing: Cloak of Shadows, Evasion, JuJu Escape, Shadow Blades
+		proto.Spec_SpecAssassinationRogue: 145983,
+		proto.Spec_SpecCombatRogue:        145984,
+		proto.Spec_SpecSubtletyRogue:      145985,
+		// Shaman
+		// Missing: Mana Tide Totem, Spirit Link Totem
+		proto.Spec_SpecEnhancementShaman: 145986,
+		proto.Spec_SpecRestorationShaman: 145988,
+		// Warrior
+		// Missing: Avatar, Bladestorm, Bloodbath, Die by the Sword, Dragon Roar, Heroic Leap, Recklessness, Shockwave, Storm Bolt, Demoralizing Shout, Last Stand, Mocking Banner, Shield Wall
+		proto.Spec_SpecArmsWarrior:       145990,
+		proto.Spec_SpecFuryWarrior:       145991,
+		proto.Spec_SpecProtectionWarrior: 145992,
+		// Monk
+		// Missing: Zen Meditation, Life Cocoon, Revival, Thunder Focus Tea, Flying Serpent Kick
+		proto.Spec_SpecBrewmasterMonk: 145967,
+		proto.Spec_SpecMistweaverMonk: 145968,
+		proto.Spec_SpecWindwalkerMonk: 145969,
+	}[character.Spec]
+
+	core.MakePermanent(character.RegisterAura(core.Aura{
+		Label:    fmt.Sprintf("Readiness %s", versionLabel),
+		ActionID: core.ActionID{SpellID: auraID},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+		SpellFlag:  core.SpellFlagReadinessTrinket,
+		FloatValue: cdr,
+	}))
+
 }

@@ -19,6 +19,7 @@ type SpellModConfig struct {
 	Kind              SpellModType
 	School            SpellSchool
 	ProcMask          ProcMask
+	SpellFlag         SpellFlag
 	ResourceType      proto.ResourceType
 	IntValue          int32
 	TimeValue         time.Duration

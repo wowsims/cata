@@ -44,6 +44,7 @@ func (dk *DeathKnight) registerVampiricBloodSpell() {
 	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: DeathKnightSpellVampiricBlood,
+		Flags:          core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

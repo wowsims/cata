@@ -19,7 +19,7 @@ func (dk *DeathKnight) registerAntiMagicShellSpell() {
 		ActionID:    actionID,
 		ProcMask:    core.ProcMaskSpellHealing,
 		SpellSchool: core.SpellSchoolShadow,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
