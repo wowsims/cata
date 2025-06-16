@@ -1599,6 +1599,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 96377.45888
+  tps: 74659.42605
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 96377.45888
+  tps: 74659.42605
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 96377.45888
+  tps: 74659.42605
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 96377.45888
+  tps: 74659.42605
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 96377.45888
+  tps: 74659.42605
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-ResolveofNiuzao-103690"
  value: {
   dps: 97933.52261
@@ -2184,6 +2219,13 @@ dps_results: {
  value: {
   dps: 108702.47783
   tps: 84599.90955
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 103472.9252
+  tps: 80464.04944
  }
 }
 dps_results: {

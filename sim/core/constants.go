@@ -27,16 +27,6 @@ const EnemyAutoAttackAPCoefficient = 1.0 / (14.0 * 177.0)
 // IDs for items used in core
 // const ()
 
-type ItemVersion int32
-
-const (
-	ItemVersionLFR ItemVersion = iota
-	ItemVersionNormal
-	ItemVersionHeroic
-	ItemVersionThunderforged
-	ItemVersionHeroicThunderforged
-)
-
 type Hand bool
 
 const MainHand Hand = true
