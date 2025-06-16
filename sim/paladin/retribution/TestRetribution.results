@@ -780,6 +780,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 163596.70331
+  tps: 154761.17042
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 162150.47524
+  tps: 153434.27734
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 164030.88319
+  tps: 155134.55109
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 164622.22271
+  tps: 155703.32628
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 165791.64154
+  tps: 156766.96906
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-Gerp'sPerfectArrow-87495"
  value: {
   dps: 155492.63356

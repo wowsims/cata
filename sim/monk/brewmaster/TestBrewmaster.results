@@ -1039,6 +1039,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 118297.3092
+  tps: 828081.16443
+  dtps: 44129.9936
+  hps: 6586.73684
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 117517.1831
+  tps: 822620.28167
+  dtps: 44041.09561
+  hps: 6513.31006
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 117934.30373
+  tps: 825540.12614
+  dtps: 44279.66276
+  hps: 6478.5404
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 118149.73537
+  tps: 827048.14761
+  dtps: 44241.0758
+  hps: 6568.04708
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 118509.7079
+  tps: 829567.95529
+  dtps: 44210.50283
+  hps: 6500.78236
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-Gerp'sPerfectArrow-87495"
  value: {
   dps: 116689.96789

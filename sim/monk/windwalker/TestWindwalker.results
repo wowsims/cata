@@ -919,6 +919,46 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 121987.58901
+  tps: 112590.98637
+  hps: 7536.78914
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 121174.40387
+  tps: 111840.33077
+  hps: 7476.01787
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 122280.51657
+  tps: 112833.3037
+  hps: 7554.18734
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 122516.20481
+  tps: 113048.74418
+  hps: 7590.50098
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 122655.9948
+  tps: 113162.19484
+  hps: 7588.253
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-Gerp'sPerfectArrow-87495"
  value: {
   dps: 121707.54778

@@ -994,6 +994,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 133359.21598
+  tps: 923391.07494
+  dtps: 75994.63688
+  hps: 72924.11481
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 132641.47645
+  tps: 918416.86254
+  dtps: 76004.53492
+  hps: 72652.65515
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 133625.93495
+  tps: 925124.80305
+  dtps: 75772.67005
+  hps: 73081.54217
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 134418.46777
+  tps: 930652.90028
+  dtps: 75557.4434
+  hps: 73292.21745
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 134498.90094
+  tps: 931073.95557
+  dtps: 75513.51374
+  hps: 73415.49535
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-Gerp'sPerfectArrow-87495"
  value: {
   dps: 130310.4596

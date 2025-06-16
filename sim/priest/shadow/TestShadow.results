@@ -766,6 +766,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 82099.02748
+  tps: 77208.60353
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 81734.40065
+  tps: 76889.77149
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 82191.26404
+  tps: 77298.43394
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 82531.90461
+  tps: 77603.74803
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 82571.19314
+  tps: 77599.54259
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-Gerp'sPerfectArrow-87495"
  value: {
   dps: 81654.96194
