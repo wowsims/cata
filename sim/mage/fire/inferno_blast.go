@@ -15,7 +15,7 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 	infernoBlastCoefficient := .60 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=108853 Field: "BonusCoefficient"
 
 	hasGlyph := fire.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfInfernoBlast)
-	extraTargets := core.Ternary(hasGlyph, 4, 5)
+	extraTargets := core.Ternary(hasGlyph, 4, 3)
 
 	fire.InfernoBlast = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 108853},
@@ -58,6 +58,7 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			currTarget := target
+
 			for range min(extraTargets, len(sim.Encounter.TargetUnits)-1) {
 				currTarget = fire.Env.NextTargetUnit(currTarget)
 				for _, spellRef := range dotRefs {
