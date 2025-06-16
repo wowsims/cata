@@ -27,6 +27,6 @@ func (bdk *BloodDeathKnight) registerImprovedBloodPresence() {
 			&bdk.PseudoStats.ReducedCritTakenChance, 0.06,
 		)
 
-		bdk.BloodPresenceAura.AttachDependentAura(impBloodPresenceAura)
+		bdk.BloodPresenceSpell.RelatedSelfBuff.AttachDependentAura(impBloodPresenceAura)
 	})
 }

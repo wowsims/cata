@@ -50,7 +50,7 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 		DPM:      uhdk.NewStaticLegacyPPMManager(3.0, core.ProcMaskMeleeMHAuto),
 
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-			return uhdk.UnholyPresenceAura.IsActive()
+			return uhdk.UnholyPresenceSpell.RelatedSelfBuff.IsActive()
 		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

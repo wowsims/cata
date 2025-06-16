@@ -41,14 +41,9 @@ type DeathKnight struct {
 	RuneWeapon *RuneWeaponPet
 	Bloodworm  []*BloodwormPet
 
-	BloodPresenceSpell *core.Spell
-	BloodPresenceAura  *core.Aura
-
-	FrostPresenceSpell *core.Spell
-	FrostPresenceAura  *core.Aura
-
+	BloodPresenceSpell  *core.Spell
+	FrostPresenceSpell  *core.Spell
 	UnholyPresenceSpell *core.Spell
-	UnholyPresenceAura  *core.Aura
 
 	PestilenceSpell *core.Spell
 	RuneTapSpell    *core.Spell
@@ -110,7 +105,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerOutbreak()
 	dk.registerPestilence()
 	dk.registerPlagueStrike()
-	// dk.registerPresences()
+	dk.registerPresences()
 	// If talented as permanent pet skip this spell
 	if dk.Inputs.Spec != proto.Spec_SpecUnholyDeathKnight {
 		dk.registerRaiseDead()

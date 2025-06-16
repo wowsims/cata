@@ -21,6 +21,6 @@ func (fdk *FrostDeathKnight) registerImprovedFrostPresence() {
 			IntValue:  -15,
 		})
 
-		fdk.FrostPresenceAura.AttachDependentAura(impFrostPresenceAura)
+		fdk.FrostPresenceSpell.RelatedSelfBuff.AttachDependentAura(impFrostPresenceAura)
 	})
 }
