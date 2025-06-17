@@ -23,7 +23,7 @@ func TestFrost(t *testing.T) {
 		Glyphs:      FrostDefaultGlyphs,
 		Consumables: DefaultConsumables,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-		Rotation:    core.GetAplRotation("../../../ui/mage/frost/apls", "default"),
+		Rotation:    core.GetAplRotation("../../../ui/mage/frost/apls", "frost"),
 
 		IsTank:          true,
 		InFrontOfTarget: true,
@@ -32,7 +32,7 @@ func TestFrost(t *testing.T) {
 	}))
 }
 
-var FrostTalents = "111121"
+var FrostTalents = "311122"
 var FrostDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.MageMajorGlyph_GlyphOfIcyVeins),
 	Major2: int32(proto.MageMajorGlyph_GlyphOfSplittingIce),
@@ -51,7 +51,6 @@ var DefaultConsumables = &proto.ConsumesSpec{
 	FoodId:   74650, // Mogu Fish Stew
 	PotId:    76093, // Potion of the Jade Serpent
 	PrepotId: 76093, // Potion of the Jade Serpent
-	TinkerId: 82174, // Synapse Springs
 }
 
 var ItemFilter = core.ItemFilter{

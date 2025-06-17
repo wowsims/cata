@@ -20,6 +20,7 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frost.iceLanceFrozenCritBuffMod.UpdateFloatValue(frost.GetFrozenCritPercentage())
 			frost.iceLanceFrozenCritBuffMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -34,20 +35,4 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		FloatValue: 0.25,
 		ClassMask:  mage.MageSpellIceLance,
 	})
-
-	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
-		Name:           "Fingers of Frost - Trigger",
-		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellBlizzard,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(mage.MageSpellFrostbolt|mage.MageSpellFrostfireBolt) && sim.Proc(0.15, "FingersOfFrostProc") {
-				frost.FingersOfFrostAura.Activate(sim)
-				frost.FingersOfFrostAura.AddStack(sim)
-			} else if sim.Proc(0.05, "FingersOfFrostBlizzardProc") {
-				frost.FingersOfFrostAura.Activate(sim)
-				frost.FingersOfFrostAura.AddStack(sim)
-			}
-		},
-	})
-
 }

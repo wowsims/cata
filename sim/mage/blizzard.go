@@ -26,8 +26,15 @@ func (mage *Mage) registerBlizzardSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := mage.CalcAndRollDamageRange(sim, blizzardScaling, blizzardVariance)
+			anyLanded := false
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					anyLanded = true
+				}
+			}
+			if anyLanded {
+				mage.ProcFingersOfFrost(sim, spell)
 			}
 		},
 	})
