@@ -47,6 +47,9 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 			for range numberOfBolts {
 				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				if result.Landed() {
+					frostMage.ProcFingersOfFrost(sim, spell)
+				}
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 					if result.Landed() {

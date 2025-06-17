@@ -35,23 +35,4 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		FloatValue: 0.25,
 		ClassMask:  mage.MageSpellIceLance,
 	})
-
-	core.MakeProcTriggerAura(&frost.Unit, core.ProcTrigger{
-		Name:           "Fingers of Frost - Trigger",
-		ClassSpellMask: mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellBlizzard,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt) {
-				if sim.Proc(0.15, "FingersOfFrostProc") {
-					frost.FingersOfFrostAura.Activate(sim)
-					frost.FingersOfFrostAura.AddStack(sim)
-				}
-			} else if spell.Matches(mage.MageSpellBlizzard) {
-				if sim.Proc(0.05, "FingersOfFrostBlizzardProc") {
-					frost.FingersOfFrostAura.Activate(sim)
-					frost.FingersOfFrostAura.AddStack(sim)
-				}
-			}
-		},
-	})
 }

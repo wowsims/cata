@@ -81,6 +81,23 @@ func (mage *Mage) GetFrostMasteryBonus() float64 {
 	return (.16 + 0.02*mage.GetMasteryPoints())
 }
 
+func (mage *Mage) ProcFingersOfFrost(sim *core.Simulation, spell *core.Spell) {
+	if mage.FingersOfFrostAura == nil {
+		return
+	}
+	if spell.Matches(MageSpellFrostbolt | MageSpellFrostfireBolt) {
+		if sim.Proc(0.15, "FingersOfFrostProc") {
+			mage.FingersOfFrostAura.Activate(sim)
+			mage.FingersOfFrostAura.AddStack(sim)
+		}
+	} else if spell.Matches(MageSpellBlizzard) {
+		if sim.Proc(0.05, "FingersOfFrostBlizzardProc") {
+			mage.FingersOfFrostAura.Activate(sim)
+			mage.FingersOfFrostAura.AddStack(sim)
+		}
+	}
+}
+
 func (mage *Mage) Initialize() {
 	mage.registerGlyphs()
 	mage.registerPassives()

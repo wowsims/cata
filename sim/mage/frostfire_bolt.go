@@ -43,12 +43,21 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			hasSplitBolts := mage.IcyVeinsAura.IsActive() && hasGlyph
 			numberOfBolts := core.TernaryInt32(hasSplitBolts, 3, 1)
 			damageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)
+			results := make([]*core.SpellResult, numberOfBolts)
 
 			spell.DamageMultiplier *= damageMultiplier
-			for range numberOfBolts {
+			for idx := range numberOfBolts {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
-				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-				mage.BrainFreezeAura.Deactivate(sim)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+
+			spell.DamageMultiplier /= damageMultiplier
+			mage.BrainFreezeAura.Deactivate(sim)
+
+			for _, result := range results {
+				if result.Landed() {
+					mage.ProcFingersOfFrost(sim, spell)
+				}
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 					if result.Landed() {
@@ -56,7 +65,6 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 					}
 				})
 			}
-			spell.DamageMultiplier /= damageMultiplier
 		},
 	})
 }

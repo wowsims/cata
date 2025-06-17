@@ -24,7 +24,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
-		Stat.StatExpertiseRating,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -37,7 +36,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			Stat.StatIntellect,
 			Stat.StatSpirit,
 			Stat.StatSpellPower,
-			Stat.StatExpertiseRating,
 			Stat.StatMasteryRating,
 		],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],

@@ -74,7 +74,7 @@ func (frostMage *FrostMage) registerSpells() {
 }
 
 func (frostMage *FrostMage) GetFrozenCritPercentage() float64 {
-	return frostMage.GetStat(stats.SpellCritPercent)*2 + 50
+	return frostMage.GetStat(stats.SpellCritPercent) + 50
 }
 
 func (frostMage *FrostMage) registerMastery() {
