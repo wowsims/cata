@@ -1,13 +1,11 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
-import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { UnitStat } from '../../core/proto_utils/stats.js';
 import * as ShamanInputs from '../inputs.js';
-import * as RestorationInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
@@ -67,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 			OtherInputs.InputDelay,
 		],
 	},
-	customSections: [ShamanInputs.TotemsSection],
+	customSections: [],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

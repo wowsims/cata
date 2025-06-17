@@ -1,5 +1,5 @@
-import { EquipmentSpec, GemColor, HandType, ItemSlot, ItemSpec, ItemSwap, Profession, SimEnchant, SimGem } from '../proto/common.js';
-import { SimDatabase, SimItem } from '../proto/db';
+import { EquipmentSpec, GemColor, HandType, ItemSlot, ItemSpec, ItemSwap, Profession } from '../proto/common.js';
+import { ItemEffectRandPropPoints, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/db';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
@@ -135,6 +135,9 @@ abstract class BaseGear {
 			items: distinct(equippedItems.map(ei => BaseGear.itemToDB(ei.item))),
 			randomSuffixes: distinct(equippedItems.filter(ei => ei.randomSuffix).map(ei => ei.randomSuffix!)),
 			reforgeStats: distinct(equippedItems.filter(ei => ei.reforge).map(ei => db.getReforgeById(ei.reforge!.id) ?? {})),
+			itemEffectRandPropPoints: distinct(
+				equippedItems.flatMap(ei => db.getItemEffectRandPropPoints(ei.ilvl)).filter((ieRpp): ieRpp is ItemEffectRandPropPoints => !!ieRpp),
+			),
 			enchants: distinct(
 				equippedItems.flatMap(ei => {
 					const out: ReturnType<typeof BaseGear.enchantToDB>[] = [];

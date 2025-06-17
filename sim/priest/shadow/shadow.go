@@ -40,8 +40,9 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 	}
 
 	spriest.ShadowOrbs = spriest.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
-		Type: proto.SecondaryResourceType_SecondaryResourceTypeShadowOrbs,
-		Max:  3,
+		Type:    proto.SecondaryResourceType_SecondaryResourceTypeShadowOrbs,
+		Default: 3, // We now generate 1 orb every 6 seconds out of combat, so should pretty much start with 3 always
+		Max:     3,
 	})
 	spriest.RegisterSecondaryResourceBar(spriest.ShadowOrbs)
 	return spriest
@@ -87,7 +88,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 
 	// apply shadow spec specific auras
 	spriest.AddStaticMod(core.SpellModConfig{
-		FloatValue: 0.25,
+		FloatValue: 0.3,
 		School:     core.SpellSchoolShadow,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})

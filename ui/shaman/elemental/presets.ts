@@ -1,27 +1,20 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, Race, Stat } from '../../core/proto/common.js';
 import {
-	AirTotem,
-	CallTotem,
-	EarthTotem,
 	ElementalShaman_Options as ElementalShamanOptions,
-	FireTotem,
+	FeleAutocastSettings,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
 	ShamanShield,
-	ShamanTotems,
-	TotemSet,
-	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import AoEApl from './apls/aoe.apl.json';
-import DefaultApl from './apls/default.apl.json';
+import CleaveApl from './apls/cleave.apl.json';
+import PEApl from './apls/pe.apl.json';
+import UFApl from './apls/uf.apl.json';
+import EBApl from './apls/eb.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P3GearDefault from './gear_sets/p3.default.gear.json';
-import ItemSwapP3 from './gear_sets/p3_item_swap.gear.json';
-import P4GearDefault from './gear_sets/p4.default.gear.json';
-import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -30,64 +23,58 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
-export const P3_PRESET = PresetUtils.makePresetGear('P3 - Default', P3GearDefault);
-export const P4_PRESET = PresetUtils.makePresetGear('P4', P4GearDefault);
 
-export const P3_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P3 - Item Swap', ItemSwapP3);
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap', ItemSwapP4);
-
-export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
-export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE', AoEApl);
+export const ROTATION_PRESET_UF = PresetUtils.makePresetAPLRotation('Default', UFApl);
+export const ROTATION_PRESET_EB = PresetUtils.makePresetAPLRotation('Elemental Blast', EBApl);
+export const ROTATION_PRESET_PE = PresetUtils.makePresetAPLRotation('Primal Elementalist', PEApl);
+export const ROTATION_PRESET_CLEAVE = PresetUtils.makePresetAPLRotation('Cleave', CleaveApl);
+export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE (3+)', AoEApl);
 
 // Preset options for EP weights
 export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.24,
-		[Stat.StatSpellPower]: 1,
-		[Stat.StatCritRating]: 0.34,
-		[Stat.StatHasteRating]: 0.57,
-		[Stat.StatHitRating]: 0.59,
-		[Stat.StatSpirit]: 0.59,
-		[Stat.StatMasteryRating]: 0.49,
+		[Stat.StatIntellect]: 1.00,
+		[Stat.StatSpellPower]: 0.80,
+		[Stat.StatCritRating]: 0.20,
+		[Stat.StatHasteRating]: 0.40,
+		[Stat.StatHitRating]: 0.60,
+		[Stat.StatSpirit]: 0.60,
+		[Stat.StatMasteryRating]: 0.30,
 	}),
 );
 
-export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
-	'Cleave/AoE',
+export const EP_PRESET_AOE = PresetUtils.makePresetEpWeights(
+	'AoE (4+)',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.33,
-		[Stat.StatSpellPower]: 1,
-		[Stat.StatCritRating]: 0.54,
-		[Stat.StatHasteRating]: 0.57,
-		[Stat.StatHitRating]: 1.09,
-		[Stat.StatSpirit]: 1.09,
-		[Stat.StatMasteryRating]: 1,
+		[Stat.StatIntellect]: 1.00,
+		[Stat.StatSpellPower]: 0.80,
+		[Stat.StatCritRating]: 0.30,
+		[Stat.StatHasteRating]: 0.20,
+		[Stat.StatHitRating]: 0.60,
+		[Stat.StatSpirit]: 0.60,
+		[Stat.StatMasteryRating]: 0.40,
 	}),
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/mop-classic/talent-calc and copy the numbers in the url.
-export const TalentsTotemDuration = {
-	name: 'Totem Duration',
+export const StandardTalents = {
+	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '333121',
 		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfLightningShield,
-			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
+			major1: ShamanMajorGlyph.GlyphOfSpiritwalkersGrace,
 		}),
 	}),
 };
 
-export const TalentsImprovedShields = {
-	name: 'Improved Shields',
+export const TalentsCleave = {
+	name: 'Cleave',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '333322',
 		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfLightningShield,
-			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
+			...StandardTalents.data.glyphs,
 		}),
 	}),
 };
@@ -95,9 +82,9 @@ export const TalentsImprovedShields = {
 export const TalentsAoE = {
 	name: 'AoE (4+)',
 	data: SavedTalents.create({
-		...TalentsTotemDuration.data,
+		...TalentsCleave.data,
 		glyphs: Glyphs.create({
-			...TalentsTotemDuration.data.glyphs,
+			...StandardTalents.data.glyphs,
 			major2: ShamanMajorGlyph.GlyphOfChainLightning,
 		}),
 	}),
@@ -106,29 +93,12 @@ export const TalentsAoE = {
 export const DefaultOptions = ElementalShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
-		call: CallTotem.Elements,
-		totems: ShamanTotems.create({
-			elements: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.FlametongueTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			ancestors: TotemSet.create({
-				earth: EarthTotem.EarthElementalTotem,
-				fire: FireTotem.FireElementalTotem,
-			}),
-			spirits: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			earth: EarthTotem.StrengthOfEarthTotem,
-			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.SearingTotem,
-			water: WaterTotem.ManaSpringTotem,
-		}),
+		feleAutocast: FeleAutocastSettings.create({
+					autocastFireblast: true,
+					autocastFirenova: true,
+					autocastImmolate: true,
+					autocastEmpower: false,
+				}),
 	},
 });
 
@@ -139,41 +109,44 @@ export const OtherDefaults = {
 };
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 });
 
 const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(
 	'Single Target Dummy',
-	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgVzrO5MHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcABeZKLc=',
+	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV5rP5MHIyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YGz1hLFj1mbGKOygxM0UhJLEoPbVEIVaCXWsDI8MgAgccbjggcX0s5s5xRFcD9uWDEwqOMxkhHr9pD1PjAAAuwChz',
 );
 
 const ENCOUNTER_CLEAVE = PresetUtils.makePresetEncounter(
 	'Cleave',
-	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV7rG4sHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcRoMDJTgATH8+LA==',
+	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV2pj8WDkZACBA0UOgmAGg5+D5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjZ4wFqz6zFjFHZSYmaIQkliUnlqiECvBrrWBkWEQgQMONxyQuD4Wc+c4oqsB+/LBCQXHmYwQj9+0h6lxGGhvBrQ4EKOMUm8CACyAPro=',
 );
 
 const ENCOUNTER_AOE = PresetUtils.makePresetEncounter(
-	'AOE (4+)',
-	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV/rC4cHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOo8ExGhwMo8GBAPiCAwDGf2iQ',
+	'AOE (5+)',
+	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV7rC7sHIyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YGz1hLFj1mbGKOygxM0UhJLEoPbVEIVaCXWsDI8MgAgccbjggcX0s5s5xRFcD9uWDEwqOMxkhHr9pD1PjMNDeDGhxIEbZqDfhYNSbDgAivWvH',
 );
 
-export const P3_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('Default', {
-	talents: TalentsTotemDuration,
-	rotation: ROTATION_PRESET_DEFAULT,
+export const P1_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('Default', {
+	talents: StandardTalents,
+	rotation: ROTATION_PRESET_UF,
 	encounter: ENCOUNTER_SINGLE_TARGET,
+	epWeights: EP_PRESET_DEFAULT,
 });
 
-export const P3_PRESET_BUILD_CLEAVE = PresetUtils.makePresetBuild('Cleave', {
-	talents: TalentsTotemDuration,
-	rotation: ROTATION_PRESET_AOE,
+export const P1_PRESET_BUILD_CLEAVE = PresetUtils.makePresetBuild('Cleave', {
+	talents: TalentsCleave,
+	rotation: ROTATION_PRESET_CLEAVE,
 	encounter: ENCOUNTER_CLEAVE,
+	epWeights: EP_PRESET_DEFAULT,
 });
 
-export const P3_PRESET_BUILD_AOE = PresetUtils.makePresetBuild('AoE (4+)', {
+export const P1_PRESET_BUILD_AOE = PresetUtils.makePresetBuild('AoE (4+)', {
 	talents: TalentsAoE,
 	rotation: ROTATION_PRESET_AOE,
 	encounter: ENCOUNTER_AOE,
+	epWeights: EP_PRESET_AOE,
 });

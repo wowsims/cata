@@ -4,8 +4,8 @@ import { PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph, PriestO
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import PreRaidGear from './gear_sets/pre_raid.gear.json';
 import P1Gear from './gear_sets/p1.gear.json';
+import PreRaidGear from './gear_sets/pre_raid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -124,10 +124,10 @@ export const DefaultOptions = Options.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, //Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

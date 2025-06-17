@@ -932,7 +932,7 @@ func newRuneCost(spell *Spell, options RuneCostOptions) *SpellCost {
 	return &SpellCost{
 		spell:           spell,
 		BaseCost:        int32(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, 0)),
-		PercentModifier: 100,
+		PercentModifier: 1,
 		ResourceCostImpl: &RuneCostImpl{
 			BloodRuneCost:  options.BloodRuneCost,
 			FrostRuneCost:  options.FrostRuneCost,

@@ -24,6 +24,8 @@ const (
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
 	CallbackOnApplyEffects
+
+	CallbackLast
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -32,6 +34,7 @@ type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcTrigger struct {
 	Name              string
 	ActionID          ActionID
+	MetricsActionID   ActionID
 	Duration          time.Duration
 	Callback          AuraCallback
 	ProcMask          ProcMask
@@ -185,6 +188,7 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 		Label:           config.Name,
 		ActionIDForProc: config.ActionID,
 		Duration:        config.Duration,
+		ActionID:        config.MetricsActionID,
 	}
 	if config.Duration == 0 {
 		aura.Duration = NeverExpires
@@ -274,16 +278,49 @@ func MakePermanent(aura *Aura) *Aura {
 	return aura
 }
 
-func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, actionID ActionID, bonusPerStack stats.Stats, maxStacks int32, duration time.Duration) *StatBuffAura {
-	return MakeStackingAura(character, StackingStatAura{
+type TemporaryStatBuffWithStacksConfig struct {
+	StackingAuraLabel    string
+	StackingAuraActionID ActionID
+	AuraLabel            string
+	ActionID             ActionID
+	BonusPerStack        stats.Stats
+	MaxStacks            int32
+	TimePerStack         time.Duration
+	Duration             time.Duration
+}
+
+func (character *Character) NewTemporaryStatBuffWithStacks(config TemporaryStatBuffWithStacksConfig) (*StatBuffAura, *Aura) {
+	stackingAura := MakeStackingAura(character, StackingStatAura{
 		Aura: Aura{
-			Label:     auraLabel,
-			ActionID:  actionID,
-			Duration:  duration,
-			MaxStacks: maxStacks,
+			Label:     Ternary(config.StackingAuraLabel != "", config.StackingAuraLabel, config.AuraLabel),
+			ActionID:  Ternary(!config.StackingAuraActionID.IsEmptyAction(), config.StackingAuraActionID, config.ActionID),
+			Duration:  config.Duration,
+			MaxStacks: config.MaxStacks,
 		},
-		BonusPerStack: bonusPerStack,
+		BonusPerStack: config.BonusPerStack,
 	})
+
+	if config.TimePerStack > 0 {
+		aura := character.RegisterAura(Aura{
+			Label:    config.AuraLabel,
+			ActionID: config.ActionID,
+			Duration: config.Duration,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				stackingAura.Activate(sim)
+				StartPeriodicAction(sim, PeriodicActionOptions{
+					Period:   config.TimePerStack,
+					NumTicks: 10,
+					OnAction: func(sim *Simulation) {
+						stackingAura.AddStack(sim)
+					},
+				})
+			},
+		})
+		return stackingAura, aura
+	}
+
+	return stackingAura, nil
+
 }
 
 // Helper for the common case of making an aura that adds stats.
@@ -484,6 +521,24 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 
 	if parentAura.IsActive() {
 		parentAura.Unit.MultiplyCastSpeed(multiplier)
+	}
+
+	return parentAura
+}
+
+// Attaches a Damage Done By Caster buff to a parent Aura
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*AttackTable, handler DynamicDamageDoneByCaster) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, _ *Simulation) {
+		DisableDamageDoneByCaster(index, (*attackTables)[parentAura.Unit.UnitIndex])
+	})
+
+	if parentAura.IsActive() {
+		EnableDamageDoneByCaster(index, maxIndex, (*attackTables)[parentAura.Unit.UnitIndex], handler)
 	}
 
 	return parentAura

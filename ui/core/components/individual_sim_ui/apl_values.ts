@@ -80,7 +80,6 @@ import {
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
-	APLValueShamanCanSnapshotStrongerFireElemental,
 	APLValueShamanFireElementalDuration,
 	APLValueSpellCanCast,
 	APLValueSpellCastTime,
@@ -1333,14 +1332,6 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueTotemRemainingTime.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
 		fields: [totemTypeFieldConfig('totemType')],
-	}),
-	shamanCanSnapshotStrongerFireElemental: inputBuilder({
-		label: 'Can snapshot stronger Fire Elemental',
-		submenu: ['Shaman'],
-		shortDescription: 'Returns true if a new Fire Elemental would be stronger than the current.',
-		newValue: APLValueShamanCanSnapshotStrongerFireElemental.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
-		fields: [],
 	}),
 	shamanFireElementalDuration: inputBuilder({
 		label: 'Fire Elemental Total Duration',

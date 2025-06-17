@@ -63,7 +63,7 @@ export class Entity {
 	//   'Target 1' if a target,
 	//   'PlayerName (#1)' if a player, or
 	//   'PlayerName (#1) - PetName' if a pet.
-	static parseRegex = /\[(Target (\d+))|(([a-zA-Z0-9]+) \(#(\d+)\) - ([a-zA-Z0-9\s,]+))|(([a-zA-Z0-9\s]+) \(#(\d+)\))\]/g;
+	static parseRegex = /\[(Target (\d+))|(([a-zA-Z0-9]+) \(#(\d+)\) - ([a-zA-Z0-9\s:,]+))|(([a-zA-Z0-9\s]+) \(#(\d+)\))\]/g;
 	static parseAll(str: string): Array<Entity> {
 		return Array.from(str.matchAll(Entity.parseRegex)).map(match => {
 			if (match[1]) {

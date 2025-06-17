@@ -3,13 +3,14 @@ package protection
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/common" // imported to get item effects included.
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterProtectionPaladin()
+	common.RegisterAllEffects()
 }
 
 func TestProtection(t *testing.T) {

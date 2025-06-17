@@ -31,12 +31,14 @@ type energyBar struct {
 
 	ownerClass              proto.Class
 	comboPointsResourceName string // "chi" or "combo points"
+	hasNoRegen              bool   // some units have an energy bar but do not require regen ticks
 }
 type EnergyBarOptions struct {
 	StartingComboPoints int32
 	MaxComboPoints      int32
 	MaxEnergy           float64
 	UnitClass           proto.Class
+	HasNoRegen          bool
 }
 
 func (unit *Unit) EnableEnergyBar(options EnergyBarOptions) {
@@ -44,7 +46,7 @@ func (unit *Unit) EnableEnergyBar(options EnergyBarOptions) {
 
 	unit.energyBar = energyBar{
 		unit:                    unit,
-		maxEnergy:               max(100, options.MaxEnergy),
+		maxEnergy:               max(10, options.MaxEnergy),
 		maxComboPoints:          options.MaxComboPoints,
 		EnergyTickDuration:      unit.ReactionTime,
 		EnergyPerTick:           10.0 * unit.ReactionTime.Seconds(),
@@ -55,6 +57,7 @@ func (unit *Unit) EnableEnergyBar(options EnergyBarOptions) {
 		startingComboPoints:     max(0, min(int32(options.StartingComboPoints), 5)),
 		ownerClass:              options.UnitClass,
 		comboPointsResourceName: Ternary(options.UnitClass == proto.Class_ClassMonk, "chi", "combo points"),
+		hasNoRegen:              options.HasNoRegen,
 	}
 }
 
@@ -145,7 +148,7 @@ func (eb *energyBar) IsReset(sim *Simulation) bool {
 }
 
 func (eb *energyBar) IsTicking(sim *Simulation) bool {
-	return eb.IsReset(sim) && (sim.CurrentTime <= eb.nextEnergyTick)
+	return eb.IsReset(sim) && (sim.CurrentTime <= eb.nextEnergyTick) && !eb.hasNoRegen
 }
 
 // Gives an immediate partial energy tick and restarts the tick timer.
@@ -249,6 +252,10 @@ func (eb *energyBar) reset(sim *Simulation) {
 }
 
 func (eb *energyBar) enable(sim *Simulation, startAt time.Duration) {
+	if eb.hasNoRegen {
+		return
+	}
+
 	sim.AddTask(eb)
 	eb.nextEnergyTick = startAt + time.Duration(sim.RandomFloat("Energy Tick")*float64(eb.EnergyTickDuration))
 	sim.RescheduleTask(eb.nextEnergyTick)
@@ -280,7 +287,7 @@ func newEnergyCost(spell *Spell, options EnergyCostOptions, energyBar *energyBar
 	return &SpellCost{
 		spell:           spell,
 		BaseCost:        options.Cost,
-		PercentModifier: 100,
+		PercentModifier: 1,
 		ResourceCostImpl: &EnergyCost{
 			Refund:            options.Refund,
 			RefundMetrics:     options.RefundMetrics,

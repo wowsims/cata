@@ -66,15 +66,15 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 		ClassMask:  paladin.SpellMaskFlashOfLight,
 		FloatValue: 1.0,
 	}).AttachSpellMod(core.SpellModConfig{
-		// Not in tooltip: Crusader Strike costs 40% less mana
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: paladin.SpellMaskCrusaderStrike,
-		IntValue:  -80,
+		// Not in tooltip: Crusader Strike costs 80% less mana
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  paladin.SpellMaskCrusaderStrike,
+		FloatValue: -0.8,
 	}).AttachSpellMod(core.SpellModConfig{
 		// Not in tooltip: Judgment costs 40% less mana
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: paladin.SpellMaskJudgment,
-		IntValue:  -40,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  paladin.SpellMaskJudgment,
+		FloatValue: -0.4,
 	}).AttachSpellMod(core.SpellModConfig{
 		// Not in tooltip: Cooldown of Avenging Wrath is reduced by 1 minute
 		Kind:      core.SpellMod_Cooldown_Flat,
@@ -117,7 +117,7 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 
 	checkWeaponType()
 
-	ret.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *core.Simulation, _ proto.ItemSlot) {
+	ret.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(_ *core.Simulation, _ proto.ItemSlot) {
 		checkWeaponType()
 	})
 }

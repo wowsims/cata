@@ -187,7 +187,7 @@ export class ItemRenderer extends Component {
 			this.nameContainerElem.appendChild(this.notice.rootElem);
 		}
 
-		const reforgeData = newItem.getReforgeData();
+		const reforgeData = newItem.withDynamicStats().getReforgeData();
 		if (reforgeData) {
 			const fromText = shortSecondaryStatNames.get(reforgeData.reforge?.fromStat);
 			const toText = shortSecondaryStatNames.get(reforgeData.reforge?.toStat);

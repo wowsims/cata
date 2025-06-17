@@ -113,7 +113,7 @@ func registerPotionCD(agent Agent, consumes *proto.ConsumesSpec) {
 	}
 }
 
-var AlchStoneItemIDs = []int32{80508, 96252, 96253, 96254, 44322, 44323, 44324}
+var AlchStoneItemIDs = []int32{136197, 80508, 96252, 96253, 96254, 44322, 44323, 44324}
 
 func (character *Character) HasAlchStone() bool {
 	alchStoneEquipped := false
