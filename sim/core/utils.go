@@ -270,6 +270,17 @@ func ApplyVarianceMinMax(avgEffect float64, variance float64) (float64, float64)
 	return min, max
 }
 
+func GetItemEffectScaling(itemID int32, coeff float64, state proto.ItemLevelState) float64 {
+	return math.Round(GetItemEffectRandomPropPointsForItem(itemID, state) * coeff)
+}
+func GetItemEffectRandomPropPointsForItem(itemID int32, state proto.ItemLevelState) float64 {
+	return float64(GetItemByID(itemID).GetItemEffectRandomPropPoints(state))
+}
+
+func (item *Item) GetItemEffectRandomPropPoints(state proto.ItemLevelState) float64 {
+	return float64(ItemEffectRandPropPointsByIlvl[item.ScalingOptions[int32(state)].Ilvl].RandPropPoints)
+}
+
 type aggregator struct {
 	n     int
 	sum   float64
