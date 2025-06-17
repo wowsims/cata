@@ -36,7 +36,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FrostDefaultTalents = {
 	name: 'Default Frost',
 	data: SavedTalents.create({
-		talentsString: '111121',
+		talentsString: '111122',
 		glyphs: Glyphs.create({
 			major1: MageMajorGlyph.GlyphOfSplittingIce,
 			major2: MageMajorGlyph.GlyphOfIcyVeins,
