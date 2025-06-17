@@ -17,6 +17,7 @@ func (frost *FrostMage) registerBrainFreeze() {
 		Duration:  time.Second * 15,
 		MaxStacks: 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frost.frostfireFrozenCritBuffMod.UpdateFloatValue(frost.GetFrozenCritPercentage())
 			frost.frostfireFrozenCritBuffMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

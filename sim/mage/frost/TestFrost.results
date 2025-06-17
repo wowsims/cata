@@ -217,40 +217,40 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-GazeoftheTwins-94529"
  value: {
-  dps: 84627.84797
-  tps: 59867.37837
+  dps: 84566.21733
+  tps: 59812.94604
   dtps: 257498.9098
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-GazeoftheTwins-95799"
  value: {
-  dps: 84380.20479
-  tps: 59694.84312
+  dps: 84343.78389
+  tps: 59666.97109
   dtps: 257498.9098
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-GazeoftheTwins-96171"
  value: {
-  dps: 84650.8359
-  tps: 59877.69627
+  dps: 84623.91255
+  tps: 59864.84283
   dtps: 257498.9098
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-GazeoftheTwins-96543"
  value: {
-  dps: 84724.2885
-  tps: 59913.28823
+  dps: 84698.0841
+  tps: 59898.53022
   dtps: 257498.9098
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-GazeoftheTwins-96915"
  value: {
-  dps: 84853.61138
-  tps: 60002.70688
+  dps: 84775.41962
+  tps: 59943.89247
   dtps: 257498.9098
  }
 }
@@ -561,24 +561,24 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Troll-p1_frost_prebis-Basic-frost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 138564.0479
-  tps: 74835.94792
+  dps: 138569.44897
+  tps: 74841.34899
   dtps: 5.74368482099e+06
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Troll-p1_frost_prebis-Basic-frost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 62915.3339
-  tps: 46508.05885
+  dps: 62918.93662
+  tps: 46511.66157
   dtps: 286109.89978
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Troll-p1_frost_prebis-Basic-frost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 66988.71576
-  tps: 49346.55131
+  dps: 67006.72938
+  tps: 49364.56493
   dtps: 293417.68687
  }
 }

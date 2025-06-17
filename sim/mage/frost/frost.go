@@ -73,30 +73,27 @@ func (frostMage *FrostMage) registerSpells() {
 	frostMage.registerFrozenOrbSpell()
 }
 
-func (frostMage *FrostMage) registerMastery() {
-	getFrozenCritPercentage := func() float64 {
-		return frostMage.GetStat(stats.SpellCritPercent)*2 + 50
-	}
+func (frostMage *FrostMage) GetFrozenCritPercentage() float64 {
+	return frostMage.GetStat(stats.SpellCritPercent)*2 + 50
+}
 
+func (frostMage *FrostMage) registerMastery() {
 	/*
 		Shatter doubles the crit chance of spells against frozen targets and then adds an additional 50%, hence critChance * 2 + 50
 		https://www.wowhead.com/mop-classic/spell=12982/shatter for more information.
 	*/
-	frozenCritPercentage := getFrozenCritPercentage()
 	frostMage.frostfireFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
-		FloatValue: frozenCritPercentage,
-		ClassMask:  mage.MageSpellFrostfireBolt,
-		Kind:       core.SpellMod_BonusCrit_Percent,
+		ClassMask: mage.MageSpellFrostfireBolt,
+		Kind:      core.SpellMod_BonusCrit_Percent,
 	})
 
 	frostMage.iceLanceFrozenCritBuffMod = frostMage.Mage.AddDynamicMod(core.SpellModConfig{
-		FloatValue: frozenCritPercentage,
-		ClassMask:  mage.MageSpellIceLance,
-		Kind:       core.SpellMod_BonusCrit_Percent,
+		ClassMask: mage.MageSpellIceLance,
+		Kind:      core.SpellMod_BonusCrit_Percent,
 	})
 
 	frostMage.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, statsChangeWithoutDeps stats.Stats) {
-		frozenCritPercentage := getFrozenCritPercentage()
+		frozenCritPercentage := frostMage.GetFrozenCritPercentage()
 		frostMage.frostfireFrozenCritBuffMod.UpdateFloatValue(frozenCritPercentage)
 		frostMage.iceLanceFrozenCritBuffMod.UpdateFloatValue(frozenCritPercentage)
 	})

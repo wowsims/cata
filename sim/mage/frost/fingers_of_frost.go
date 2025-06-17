@@ -20,6 +20,7 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frost.iceLanceFrozenCritBuffMod.UpdateFloatValue(frost.GetFrozenCritPercentage())
 			frost.iceLanceFrozenCritBuffMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
