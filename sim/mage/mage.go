@@ -40,6 +40,7 @@ type Mage struct {
 	IcyVeinsAura       *core.Aura
 	IceFloesAura       *core.Aura
 	IciclesAura        *core.Aura
+	ArcaneChargesAura  *core.Aura
 
 	arcaneMissileCritSnapshot float64
 	baseHotStreakProcChance   float64
