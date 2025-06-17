@@ -1,65 +1,74 @@
 package paladin
 
 import (
-	"math"
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
+/*
+Fills you with Holy Light, increasing your casting speed by 10%, improving healing spells by 5% and giving melee attacks a chance to heal
+
+-- Glyph of the Battle Healer --
+
+the most wounded member of your party or raid
+
+-- else --
+
+you
+
+----------
+
+for
+
+-- Holy --
+
+(0.15 * <AP> + 0.15 * <SP>) * 1.25
+and restore 4% of base mana when striking a target outside of an Arena or Battleground
+
+-- else --
+
+(0.15 * <AP> + 0.15 * <SP>)
+
+----------
+*/
 func (paladin *Paladin) registerSealOfInsight() {
-	// Judgement of Insight cast on Judgement
-	paladin.JudgementOfInsight = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 54158},
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
-		ClassSpellMask: SpellMaskJudgementOfInsight,
-
-		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1 +
-				0.25*spell.SpellPower() +
-				0.15999999642*spell.MeleeAttackPower()
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
-		},
-	})
-
+	hasGlyphOfTheBattleHealer := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheBattleHealer)
+	isHoly := paladin.Spec == proto.Spec_SpecHolyPaladin
 	actionID := core.ActionID{SpellID: 20167}
-	healthMetrics := paladin.NewHealthMetrics(actionID)
 	manaMetrics := paladin.NewManaMetrics(actionID)
-	// It's 4% of base mana per tick.
-	manaPerTick := math.Round(0.04 * paladin.BaseMana)
 
 	// Seal of Insight on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags: core.SpellFlagHelpful |
-			core.SpellFlagNoLogs |
-			core.SpellFlagNoMetrics |
-			core.SpellFlagNoOnCastComplete,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealOfInsight,
 
+		DamageMultiplier: 1,
+		CritMultiplier:   0,
+		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			heal := 0.15*spell.SpellPower() +
-				0.15*spell.MeleeAttackPower()
-			paladin.GainHealth(sim, heal, healthMetrics)
-			paladin.AddMana(sim, manaPerTick, manaMetrics)
+			heal := 0.15*spell.SpellPower() + 0.15*spell.MeleeAttackPower()
+			spell.CalcAndDealHealing(sim, target, heal, spell.OutcomeHealing)
+
+			if isHoly {
+				// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
+				// - Seal of Insight now has a chance to restore 4% of the Holy Paladin’s base mana when striking a target in a non-PvP environment. [5.4 Revert].
+				// Beta changes 2025-06-16: https://www.wowhead.com/mop-classic/news/blood-death-knights-buffed-and-even-more-class-balance-adjustments-mists-of-377292
+				// - Seal of Insight’s Base Mana restoration increased to 6% of base mana (was 4%). [New]
+				paladin.AddMana(sim, paladin.BaseMana*0.06, manaMetrics)
+			}
 		},
 	})
 
-	dpm := paladin.AutoAttacks.NewPPMManager(15, core.ProcMaskMeleeMH)
+	dpm := paladin.NewLegacyPPMManager(15, core.ProcMaskMeleeMH)
 	paladin.SealOfInsightAura = paladin.RegisterAura(core.Aura{
 		Label:    "Seal of Insight" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 20165},
-		Duration: time.Minute * 30,
+		Duration: core.NeverExpires,
 		Dpm:      dpm,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -68,19 +77,26 @@ func (paladin *Paladin) registerSealOfInsight() {
 				return
 			}
 
-			// SoJ only procs on white hits, CS, TV and HoW
+			// SoI only procs on white hits, CS, HoW, ShotR and TV
 			if (spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
-				spell.ClassSpellMask&SpellMaskCanTriggerSealOfInsight == 0) ||
+				!spell.Matches(SpellMaskCanTriggerSealOfInsight)) ||
 				!dpm.Proc(sim, spell.ProcMask, "Seal of Insight"+paladin.Label) {
 				return
 			}
 
-			onSpecialOrSwingProc.Cast(sim, result.Target)
+			if hasGlyphOfTheBattleHealer {
+				onSpecialOrSwingProc.Cast(sim, sim.Raid.GetLowestHealthAllyUnit())
+			} else {
+				onSpecialOrSwingProc.Cast(sim, &paladin.Unit)
+			}
 		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskModifiedBySealOfInsight,
+		FloatValue: 0.05,
+	}).AttachMultiplyCastSpeed(1.1)
 
 	// Seal of Insight self-buff.
-	aura := paladin.SealOfInsightAura
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20165},
 		SpellSchool: core.SpellSchoolHoly,
@@ -88,13 +104,13 @@ func (paladin *Paladin) registerSealOfInsight() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 14,
-			PercentModifier: 100,
+			BaseCostPercent: 16.4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
+			IgnoreHaste: true,
 		},
 
 		ThreatMultiplier: 0,
@@ -103,8 +119,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 			if paladin.CurrentSeal != nil {
 				paladin.CurrentSeal.Deactivate(sim)
 			}
-			paladin.CurrentSeal = aura
-			paladin.CurrentJudgement = paladin.JudgementOfInsight
+			paladin.CurrentSeal = paladin.SealOfInsightAura
 			paladin.CurrentSeal.Activate(sim)
 		},
 	})

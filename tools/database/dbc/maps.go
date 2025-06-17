@@ -6,16 +6,6 @@ func MapResistanceToStat(index int) (proto.Stat, bool) {
 	switch index {
 	case 0:
 		return proto.Stat_StatBonusArmor, true
-	case 2:
-		return proto.Stat_StatFireResistance, true
-	case 3:
-		return proto.Stat_StatNatureResistance, true
-	case 4:
-		return proto.Stat_StatFrostResistance, true
-	case 5:
-		return proto.Stat_StatShadowResistance, true
-	case 6:
-		return proto.Stat_StatArcaneResistance, true
 	}
 	return proto.Stat_StatBonusArmor, false
 }
@@ -81,20 +71,10 @@ func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 		return proto.Stat_StatRangedAttackPower, true
 	case 41, 42, 45: // SpellHealing, SpellDamage, or SpellPower
 		return proto.Stat_StatSpellPower, true
-	case 47: // SpellPenetration
-		return proto.Stat_StatSpellPenetration, true
+	case 57: // PvPPowerRating
+		return proto.Stat_StatPvpPowerRating, true
 	case 35: // ResilienceRating
-		return proto.Stat_StatResilienceRating, true
-	case 56: // ArcaneResistance
-		return proto.Stat_StatArcaneResistance, true
-	case 51: // FireResistance
-		return proto.Stat_StatFireResistance, true
-	case 52: // FrostResistance
-		return proto.Stat_StatFrostResistance, true
-	case 55: // NatureResistance
-		return proto.Stat_StatNatureResistance, true
-	case 54: // ShadowResistance
-		return proto.Stat_StatShadowResistance, true
+		return proto.Stat_StatPvpResilienceRating, true
 	case 50: // ExtraArmor maps to BonusArmor (green armor)
 		return proto.Stat_StatBonusArmor, true
 	case 43: // ManaRegeneration
@@ -239,11 +219,11 @@ type EnchantMetaType struct {
 }
 
 var SpellSchoolToStat = map[SpellSchool]proto.Stat{
-	FIRE:     proto.Stat_StatFireResistance,
-	ARCANE:   proto.Stat_StatArcaneResistance,
-	NATURE:   proto.Stat_StatNatureResistance,
-	FROST:    proto.Stat_StatFrostResistance,
-	SHADOW:   proto.Stat_StatShadowResistance,
+	FIRE:     -1,
+	ARCANE:   -1,
+	NATURE:   -1,
+	FROST:    -1,
+	SHADOW:   -1,
 	PHYSICAL: proto.Stat_StatArmor,
 }
 var MapInventoryTypeToEnchantMetaType = map[InventoryTypeFlag]EnchantMetaType{
@@ -369,7 +349,7 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_MULTISTRIKE:  -1,
 	RATING_MOD_READINESS:    -1,
 	RATING_MOD_SPEED:        -1,
-	RATING_MOD_RESILIENCE:   proto.Stat_StatResilienceRating,
+	RATING_MOD_RESILIENCE:   proto.Stat_StatPvpResilienceRating,
 	RATING_MOD_LEECH:        -1,
 	RATING_MOD_HASTE_MELEE:  proto.Stat_StatHasteRating,
 	RATING_MOD_HASTE_RANGED: proto.Stat_StatHasteRating,
@@ -377,7 +357,7 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_AVOIDANCE:    -1,
 	RATING_MOD_EXPERTISE:    proto.Stat_StatExpertiseRating,
 	RATING_MOD_MASTERY:      proto.Stat_StatMasteryRating,
-	RATING_MOD_PVP_POWER:    -1,
+	RATING_MOD_PVP_POWER:    proto.Stat_StatPvpPowerRating,
 
 	RATING_MOD_VERS_DAMAGE: -1,
 	RATING_MOD_VERS_HEAL:   -1,
@@ -401,4 +381,70 @@ var Classes = []DbcClass{
 	{proto.Class_ClassWarlock, 9},
 	{proto.Class_ClassMonk, 10},
 	{proto.Class_ClassDruid, 11},
+}
+
+// SpecByID maps the ChrSpecialization.DB2 ID to proto.Spec
+var SpecByID = map[int32]proto.Spec{
+	// Death Knight
+	250: proto.Spec_SpecBloodDeathKnight,
+	251: proto.Spec_SpecFrostDeathKnight,
+	252: proto.Spec_SpecUnholyDeathKnight,
+
+	// Druid
+	102: proto.Spec_SpecBalanceDruid,
+	103: proto.Spec_SpecFeralDruid,
+	104: proto.Spec_SpecGuardianDruid,
+	105: proto.Spec_SpecRestorationDruid,
+
+	// Hunter
+	253: proto.Spec_SpecBeastMasteryHunter,
+	254: proto.Spec_SpecMarksmanshipHunter,
+	255: proto.Spec_SpecSurvivalHunter,
+
+	// Mage
+	62: proto.Spec_SpecArcaneMage,
+	63: proto.Spec_SpecFireMage,
+	64: proto.Spec_SpecFrostMage,
+
+	// Paladin
+	65: proto.Spec_SpecHolyPaladin,
+	66: proto.Spec_SpecProtectionPaladin,
+	70: proto.Spec_SpecRetributionPaladin,
+
+	// Priest
+	256: proto.Spec_SpecDisciplinePriest,
+	257: proto.Spec_SpecHolyPriest,
+	258: proto.Spec_SpecShadowPriest,
+
+	// Rogue
+	259: proto.Spec_SpecAssassinationRogue,
+	260: proto.Spec_SpecCombatRogue,
+	261: proto.Spec_SpecSubtletyRogue,
+
+	// Shaman
+	262: proto.Spec_SpecElementalShaman,
+	263: proto.Spec_SpecEnhancementShaman,
+	264: proto.Spec_SpecRestorationShaman,
+
+	// Warlock
+	265: proto.Spec_SpecAfflictionWarlock,
+	266: proto.Spec_SpecDemonologyWarlock,
+	267: proto.Spec_SpecDestructionWarlock,
+
+	// Warrior
+	71: proto.Spec_SpecArmsWarrior,
+	72: proto.Spec_SpecFuryWarrior,
+	73: proto.Spec_SpecProtectionWarrior,
+
+	// Monk
+	268: proto.Spec_SpecBrewmasterMonk,
+	269: proto.Spec_SpecWindwalkerMonk,
+	270: proto.Spec_SpecMistweaverMonk,
+}
+
+func SpecFromID(id int32) proto.Spec {
+	if s, ok := SpecByID[id]; ok {
+		return s
+	}
+	return proto.Spec_SpecUnknown
 }

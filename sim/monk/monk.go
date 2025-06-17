@@ -11,6 +11,14 @@ const (
 	SpellFlagSpender = core.SpellFlagAgentReserved3
 )
 
+// Damage Done By Caster setup
+// Used by Windwalker Monk and SEF
+const (
+	DDBC_RisingSunKick int = iota
+
+	DDBC_Total
+)
+
 type OnStanceChanged func(sim *core.Simulation, newStance Stance)
 type OnChiSpent func(sim *core.Simulation, chiSpent int32)
 type OnNewBrewStacks func(sim *core.Simulation, stacksToAdd int32)
@@ -30,9 +38,29 @@ type Monk struct {
 
 	Stance Stance
 
+	onStanceChanged OnStanceChanged
+	onChiSpent      OnChiSpent
+	onNewBrewStacks OnNewBrewStacks
+
+	MHAutoSpell *core.Spell
+	OHAutoSpell *core.Spell
+
+	AdditiveEnergyRegenBonus float64
+
 	StanceOfTheSturdyOx    *core.Spell
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
+
+	SummonHealingSphere func(sim *core.Simulation)
+
+	// Brewmaster
+	ElusiveBrewAura   *core.Aura
+	ElusiveBrewStacks int32
+
+	SefController *StormEarthAndFireController
+
+	XuenAura *core.Aura
+	XuenPet  *Xuen
 
 	StanceOfTheFierceTigerAura *core.Aura
 	StanceOfTheSturdyOxAura    *core.Aura
@@ -42,12 +70,18 @@ type Monk struct {
 	ComboBreakerTigerPalmAura    *core.Aura
 
 	ChiSphereAura          *core.Aura
+	DampenHarmAura         *core.Aura
+	FortifyingBrewAura     *core.Aura
 	PowerStrikesAura       *core.Aura
 	PowerStrikesChiMetrics *core.ResourceMetrics
 
-	onStanceChanged OnStanceChanged
-	onChiSpent      OnChiSpent
-	onNewBrewStacks OnNewBrewStacks
+	// Set Bonuses
+	T14Brewmaster4P *core.Aura
+	T15Windwalker4P *core.Aura
+	T15Brewmaster2P *core.Aura
+	T15Brewmaster4P *core.Aura
+	T16Windwalker4P *core.Aura
+	T16Brewmaster4P *core.Aura
 }
 
 func (monk *Monk) ChangeStance(sim *core.Simulation, newStance Stance) {
@@ -89,6 +123,14 @@ func (monk *Monk) SpendChi(sim *core.Simulation, chiToSpend int32, metrics *core
 	}
 }
 
+func (monk *Monk) GetChi() int32 {
+	return monk.ComboPoints()
+}
+
+func (monk *Monk) GetMaxChi() int32 {
+	return monk.MaxComboPoints()
+}
+
 func (monk *Monk) RegisterOnChiSpent(onChiSpent OnChiSpent) {
 	monk.onChiSpent = onChiSpent
 }
@@ -111,8 +153,7 @@ func (monk *Monk) GetMonk() *Monk {
 }
 
 func (monk *Monk) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.LegacyOfTheEmperor = true
-	// raidBuffs.LegacyOfTheWhiteTiger = true
+	raidBuffs.LegacyOfTheEmperor = true
 }
 
 func (monk *Monk) AddPartyBuffs(_ *proto.PartyBuffs) {}
@@ -125,28 +166,58 @@ func (monk *Monk) HasMinorGlyph(glyph proto.MonkMinorGlyph) bool {
 }
 
 func (monk *Monk) Initialize() {
-	monk.AutoAttacks.MHConfig().CritMultiplier = monk.DefaultCritMultiplier()
-	monk.AutoAttacks.OHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+	monk.Env.RegisterPostFinalizeEffect(func() {
+		monk.MHAutoSpell = monk.AutoAttacks.MHAuto()
+		monk.OHAutoSpell = monk.AutoAttacks.OHAuto()
+	})
 
 	monk.registerStances()
 	monk.applyGlyphs()
+	monk.registerPassives()
 	monk.registerSpells()
-	monk.registerWayOfTheMonk()
-	monk.registerSwiftReflexes()
+}
+
+func (monk *Monk) registerPassives() {
+	// Windwalker
+	// Required to be registered on monk so it can interact with SEF
+	monk.registerCombatConditioning()
+	monk.registerTigerStrikes()
 }
 
 func (monk *Monk) registerSpells() {
-	monk.registerBlackoutKick()
+	monk.registerHealingSphere()
 	monk.registerExpelHarm()
+	monk.registerBlackoutKick()
 	monk.registerJab()
 	monk.registerSpinningCraneKick()
 	monk.registerTigerPalm()
-	monk.registerCracklingJadeLightning()
 	monk.registerFortifyingBrew()
+	monk.registerTouchOfDeath()
+	monk.registerCracklingJadeLightning()
+	monk.registerStormEarthAndFire()
+
+	// Windwalker
+	// Required to be registered on monk so it can interact with SEF
+	monk.registerRisingSunKick()
+	monk.registerFistsOfFury()
+	monk.registerSpinningFireBlossom()
+
+}
+
+func (monk *Monk) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
+	oldBonus := monk.AdditiveEnergyRegenBonus
+	newBonus := oldBonus + increment
+	monk.AdditiveEnergyRegenBonus = newBonus
+	monk.MultiplyEnergyRegenSpeed(sim, (1.0+newBonus)/(1.0+oldBonus))
 }
 
 func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
+	if monk.SefController != nil {
+		monk.SefController.Reset(sim)
+	}
+	monk.MultiplyEnergyRegenSpeed(sim, 1.0+monk.AdditiveEnergyRegenBonus)
+	monk.ElusiveBrewStacks = 0
 }
 
 func (monk *Monk) GetHandType() proto.HandType {
@@ -157,13 +228,6 @@ func (monk *Monk) GetHandType() proto.HandType {
 
 	}
 	return proto.HandType_HandTypeOneHand
-}
-
-func (monk *Monk) GetAttackPowerPerDPS() float64 {
-	if monk.Spec == proto.Spec_SpecBrewmasterMonk {
-		return 1.0 / 11.0
-	}
-	return 1.0 / core.DefaultAttackPowerPerDPS
 }
 
 func NewMonk(character *core.Character, options *proto.MonkOptions, talents string) *Monk {
@@ -177,6 +241,9 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents)
 
 	monk.PseudoStats.CanParry = true
+	monk.PseudoStats.BaseParryChance += 0.03
+	monk.PseudoStats.BaseDodgeChance += 0.03
+	monk.XuenPet = monk.NewXuen()
 
 	monk.EnableEnergyBar(core.EnergyBarOptions{
 		MaxComboPoints: 4,
@@ -198,6 +265,14 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 		monk.HandType = monk.GetHandType()
 	})
 
+	monk.AutoAttacks.MHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+	monk.AutoAttacks.OHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+
+	// These need to be registered during Monk creation
+	// to count towards Base stats
+	monk.registerWayOfTheMonk()
+	monk.registerSwiftReflexes()
+
 	return monk
 }
 
@@ -214,6 +289,8 @@ const (
 	MonkSpellTigerPalm
 	MonkSpellCracklingJadeLightning
 	MonkSpellFortifyingBrew
+	MonkSpellHealingSphere
+	MonkSpellTouchOfDeath
 
 	// -- Talents
 	// Level 15
@@ -238,6 +315,7 @@ const (
 	//Level 90
 	MonkSpellRushingJadeWind
 	MonkSpellInvokeXuenTheWhiteTiger
+	MonkSpellInvokeXuenTheWhiteTigerPet
 	MonkSpellChiTorpedo
 	// -- Talents
 
@@ -248,9 +326,20 @@ const (
 	MonkSpellTigereyeBrew
 	MonkSpellTigerStrikes
 	MonkSpellSpinningFireBlossom
+	MonkSpellStormEarthAndFire
 
 	// Brewmaster
+	MonkSpellElusiveBrew
+	MonkSpellDizzyingHaze
+	MonkSpellDizzyingHazeProjectile
+
+	MonkSpellBreathOfFire
+	MonkSpellKegSmash
 	MonkSpellGuard
+	MonkSpellStagger
+	MonkSpellAvertHarm
+	MonkSpellPurifyingBrew
+	MonkSpellGiftOfTheOx
 
 	MonkSpellLast
 	MonkSpellsAll = MonkSpellLast<<1 - 1

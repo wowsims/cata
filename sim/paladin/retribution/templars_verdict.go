@@ -5,11 +5,12 @@ import (
 	"github.com/wowsims/mop/sim/paladin"
 )
 
-func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
-	actionId := core.ActionID{SpellID: 85256}
+// A powerful weapon strike that consumes 3 charges of Holy Power to deal 275% weapon damage plus 628.
+func (ret *RetributionPaladin) registerTemplarsVerdict() {
+	actionID := core.ActionID{SpellID: 85256}
 
-	retPaladin.TemplarsVerdict = retPaladin.RegisterSpell(core.SpellConfig{
-		ActionID:       actionId,
+	ret.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -22,29 +23,29 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return retPaladin.HolyPower.CanSpend(1)
+			return ret.HolyPower.CanSpend(3)
 		},
 
-		DamageMultiplier: 1,
-		CritMultiplier:   retPaladin.DefaultCritMultiplier(),
+		DamageMultiplier: 2.75,
+		CritMultiplier:   ret.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			holyPower := int32(retPaladin.HolyPower.Value())
-
-			multiplier := []float64{0, 0.3, 0.9, 2.35}[holyPower]
-
-			spell.DamageMultiplier *= multiplier
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.DamageMultiplier /= multiplier
-
-			if result.Landed() {
-				retPaladin.HolyPower.SpendUpTo(3, actionId, sim)
+			if ret.T15Ret4pc.IsActive() {
+				ret.T15Ret4pcTemplarsVerdict.Cast(sim, target)
+				spell.SpellMetrics[target.UnitIndex].Casts--
+				return
 			}
 
-			spell.DealOutcome(sim, result)
+			baseDamage := ret.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + ret.CalcScalingSpellDmg(0.55000001192)
+
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			if result.Landed() {
+				ret.HolyPower.Spend(sim, 3, actionID)
+			}
+
+			spell.DealDamage(sim, result)
 		},
 	})
 }

@@ -107,7 +107,7 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		},
 		[PriestMajorGlyph.GlyphOfPrayerOfMending]: {
 			name: "Glyph of Prayer of Mending",
-			description: "The first charge of your Prayer of Mending heals for an additional 100% but your Prayer of Mending has 1 fewer 0: charges;.",
+			description: "The first charge of your Prayer of Mending heals for an additional 60% but your Prayer of Mending has 1 fewer charge.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofmendingtga.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfLevitate]: {

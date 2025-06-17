@@ -16,12 +16,14 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
-	// eclipseEnergyBar
+
 	Talents *proto.DruidTalents
 
 	ClassSpellScaling float64
 
 	StartingForm DruidForm
+
+	Treants TreantAgents
 
 	EclipseEnergyMap EclipseEnergyMap
 
@@ -33,13 +35,9 @@ type Druid struct {
 
 	MHAutoSpell *core.Spell
 
-	HotWCatDep  *stats.StatDependency
-	HotWBearDep *stats.StatDependency
-
 	Barkskin              *DruidSpell
 	Berserk               *DruidSpell
 	CatCharge             *DruidSpell
-	DemoralizingRoar      *DruidSpell
 	FaerieFire            *DruidSpell
 	FerociousBite         *DruidSpell
 	ForceOfNature         *DruidSpell
@@ -47,15 +45,13 @@ type Druid struct {
 	Hurricane             *DruidSpell
 	HurricaneTickSpell    *DruidSpell
 	InsectSwarm           *DruidSpell
-	GiftOfTheWild         *DruidSpell
 	Lacerate              *DruidSpell
-	Languish              *DruidSpell
 	MangleBear            *DruidSpell
 	MangleCat             *DruidSpell
 	Maul                  *DruidSpell
-	MaulQueueSpell        *DruidSpell
+	MightOfUrsoc          *DruidSpell
 	Moonfire              *DruidSpell
-	Pulverize             *DruidSpell
+	Prowl                 *DruidSpell
 	Rebirth               *DruidSpell
 	Rake                  *DruidSpell
 	Ravage                *DruidSpell
@@ -70,7 +66,8 @@ type Druid struct {
 	SwipeBear             *DruidSpell
 	SwipeCat              *DruidSpell
 	TigersFury            *DruidSpell
-	Thrash                *DruidSpell
+	ThrashBear            *DruidSpell
+	ThrashCat             *DruidSpell
 	Typhoon               *DruidSpell
 	Wrath                 *DruidSpell
 	WildMushrooms         *DruidSpell
@@ -80,56 +77,36 @@ type Druid struct {
 	BearForm *DruidSpell
 
 	BarkskinAura             *core.Aura
-	BlazeOfGloryAura         *core.Aura
 	BearFormAura             *core.Aura
-	BerserkAura              *core.Aura
-	BerserkProcAura          *core.Aura
+	BerserkBearAura          *core.Aura
+	BerserkCatAura           *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
-	DemoralizingRoarAuras    core.AuraArray
+	WeakenedBlowsAuras       core.AuraArray
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	LunarEclipseProcAura     *core.Aura
-	MaulQueueAura            *core.Aura
-	MoonkinT84PCAura         *core.Aura
+	MightOfUrsocAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	OwlkinFrenzyAura         *core.Aura
-	PredatoryInstinctsAura   *core.Aura
-	PrimalMadnessAura        *core.Aura
-	PulverizeAura            *core.Aura
-	SavageDefenseAura        *core.DamageAbsorptionAura
-	SavageRoarAura           *core.Aura
-	SmokescreenAura          *core.Aura
+	ProwlAura                *core.Aura
 	SolarEclipseProcAura     *core.Aura
-	StampedeCatAura          *core.Aura
-	StampedeBearAura         *core.Aura
-	StrengthOfThePantherAura *core.Aura
 	SurvivalInstinctsAura    *core.Aura
-	// TigersFuryAura           *core.Aura
 
-	BleedCategories core.ExclusiveCategoryArray
-
-	PrimalMadnessRageMetrics       *core.ResourceMetrics
-	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
-	SavageRoarDurationTable        [6]time.Duration
+	SavageRoarDurationTable [6]time.Duration
 
 	ProcOoc func(sim *core.Simulation)
 
 	ExtendingMoonfireStacks int
 
-	Treants       *Treants
-	BurningTreant *BurningTreant
-
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
 
-	// Leather specialization tracker
-	LeatherSpec *core.Aura
+	// Guardian leather specialization is form-specific
+	GuardianLeatherSpecTracker *core.Aura
+	GuardianLeatherSpecDep     *stats.StatDependency
 
 	// Item sets
-	T11Feral2pBonus *core.Aura
-	T11Feral4pBonus *core.Aura
-	T12Feral4pBonus *core.Aura
 	T13Feral4pBonus *core.Aura
 }
 
@@ -230,10 +207,6 @@ func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
 
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
-
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
 	prevModify := config.Cast.ModifyCast
@@ -266,11 +239,9 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 
 func (druid *Druid) Initialize() {
 	druid.form = druid.StartingForm
-	//druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	druid.Env.RegisterPostFinalizeEffect(func() {
 		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()
-		druid.BlazeOfGloryAura = druid.GetAura("Blaze of Glory")
 	})
 
 	druid.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
@@ -282,11 +253,14 @@ func (druid *Druid) Initialize() {
 		}
 	})
 
-	// druid.registerFaerieFireSpell()
+	druid.WeakenedBlowsAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return core.WeakenedBlowsAura(target)
+	})
+
+	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	druid.registerTranquilityCD()
-	druid.applyOmenOfClarity()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
@@ -305,55 +279,39 @@ func (druid *Druid) RegisterBalanceSpells() {
 
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBearFormSpell()
-	// druid.registerBerserkCD()
+	druid.registerBerserkCD()
 	// druid.registerCatCharge()
 	druid.registerCatFormSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFerociousBiteSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerMangleBearSpell()
-	// druid.registerMangleCatSpell()
-	// druid.registerMaulSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRavageSpell()
-	// druid.registerRipSpell()
+	druid.registerFerociousBiteSpell()
+	druid.registerLacerateSpell()
+	druid.registerMangleBearSpell()
+	druid.registerMangleCatSpell()
+	druid.registerMaulSpell()
+	druid.registerProwlSpell()
+	druid.registerRakeSpell()
+	druid.registerRavageSpell()
+	druid.registerRipSpell()
 	// druid.registerSavageRoarSpell()
 	// druid.registerShredSpell()
 	druid.registerSwipeBearSpell()
 	druid.registerSwipeCatSpell()
-	// druid.registerThrashBearSpell()
+	druid.registerThrashBearSpell()
+	druid.registerThrashCatSpell()
 	// druid.registerTigersFurySpell()
 }
 
 func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerBarkskinCD()
 	druid.registerBearFormSpell()
-	// druid.registerBerserkCD()
-	druid.registerDemoralizingRoarSpell()
-	// druid.registerEnrageSpell()
-	druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerPulverizeSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
-	druid.registerSavageDefensePassive()
-	// druid.registerSurvivalInstinctsCD()
+	druid.registerBerserkCD()
+	druid.registerFrenziedRegenerationSpell()
+	druid.registerMangleBearSpell()
+	druid.registerMaulSpell()
+	druid.registerMightOfUrsocCD()
+	druid.registerLacerateSpell()
+	druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
-	// druid.registerThrashBearSpell()
-}
-
-func (druid *Druid) RegisterLeatherSpecialization() {
-	// Druid armor spec behaves differently from other classes because the boosted stats are linked to form rather
-	// than talents. For this reason, we modify the default tracker Aura to activate at BuildPhaseGear rather than
-	// BuildPhaseTalents, and also add custom handlers for the cat Agi bonus and the bear Stam bonus in forms.go (the
-	// Int bonus applies in all forms).
-	druid.LeatherSpec = druid.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeLeather, 87505)
-
-	if druid.LeatherSpec.BuildPhase == core.CharacterBuildPhaseTalents {
-		druid.LeatherSpec.BuildPhase = core.CharacterBuildPhaseGear
-	}
+	druid.registerThrashBearSpell()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
@@ -387,20 +345,6 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodgeChance += 0.03
-
-	druid.RegisterLeatherSpecialization()
-
-	// if druid.Talents.ForceOfNature {
-	// 	druid.Treants = &Treants{
-	// 		Treant1: druid.NewTreant(),
-	// 		Treant2: druid.NewTreant(),
-	// 		Treant3: druid.NewTreant(),
-	// 	}
-	// }
-
-	// if druid.CouldHaveSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
-	// 	druid.BurningTreant = druid.NewBurningTreant()
-	// }
 
 	return druid
 }
@@ -438,11 +382,6 @@ func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
 
 func (druid *Druid) UpdateBleedPower(bleedSpell *DruidSpell, sim *core.Simulation, target *core.Unit, updateCurrent bool, updateNew bool) {
 	snapshotPower := bleedSpell.ExpectedTickDamage(sim, target)
-
-	// Assume that Mangle will be up soon if not currently active.
-	if !druid.BleedCategories.Get(target).AnyActive() {
-		snapshotPower *= 1.3
-	}
 
 	if updateCurrent {
 		bleedSpell.CurrentSnapshotPower = snapshotPower

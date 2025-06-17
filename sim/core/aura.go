@@ -134,6 +134,10 @@ func (aura *Aura) reset(sim *Simulation) {
 	if aura.OnReset != nil {
 		aura.OnReset(aura, sim)
 	}
+
+	if aura.Dpm != nil {
+		aura.Dpm.Reset()
+	}
 }
 
 func (aura *Aura) doneIteration(sim *Simulation) {
@@ -253,8 +257,24 @@ func (aura *Aura) ExpiresAt() time.Duration {
 	return aura.expires
 }
 
+// Adds a handler to be called OnInit, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnInit(newOnInit OnInit) *Aura {
+	oldOnInit := aura.OnInit
+	if oldOnInit == nil {
+		aura.OnInit = newOnInit
+	} else {
+		aura.OnInit = func(aura *Aura, sim *Simulation) {
+			oldOnInit(aura, sim)
+			newOnInit(aura, sim)
+		}
+	}
+
+	return aura
+}
+
 // Adds a handler to be called OnGain, in addition to any current handlers.
-func (aura *Aura) ApplyOnGain(newOnGain OnGain) {
+func (aura *Aura) ApplyOnGain(newOnGain OnGain) *Aura {
 	oldOnGain := aura.OnGain
 	if oldOnGain == nil {
 		aura.OnGain = newOnGain
@@ -264,10 +284,26 @@ func (aura *Aura) ApplyOnGain(newOnGain OnGain) {
 			newOnGain(aura, sim)
 		}
 	}
+
+	return aura
+}
+
+func (aura *Aura) AttachDependentAura(sibling *Aura) *Aura {
+	return aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		sibling.Activate(sim)
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		sibling.Deactivate(sim)
+	}).ApplyOnStacksChange(func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+		if sibling.MaxStacks == 0 {
+			return
+		}
+
+		sibling.SetStacks(sim, newStacks)
+	})
 }
 
 // Adds a handler to be called OnExpire, in addition to any current handlers.
-func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) {
+func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {
 	oldOnExpire := aura.OnExpire
 	if oldOnExpire == nil {
 		aura.OnExpire = newOnExpire
@@ -277,6 +313,39 @@ func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) {
 			newOnExpire(aura, sim)
 		}
 	}
+
+	return aura
+}
+
+// Adds a handler to be called OnReset, in addition to any current handlers.
+func (aura *Aura) ApplyOnReset(newOnReset OnReset) *Aura {
+	oldOnReset := aura.OnReset
+	if oldOnReset == nil {
+		aura.OnReset = newOnReset
+	} else {
+		aura.OnReset = func(aura *Aura, sim *Simulation) {
+			oldOnReset(aura, sim)
+			newOnReset(aura, sim)
+		}
+	}
+
+	return aura
+}
+
+// Adds a handler to be called OnStacksChange, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnStacksChange(newOnStacksChange OnStacksChange) *Aura {
+	oldOnStacksChange := aura.OnStacksChange
+	if oldOnStacksChange == nil {
+		aura.OnStacksChange = newOnStacksChange
+	} else {
+		aura.OnStacksChange = func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			oldOnStacksChange(aura, sim, oldStacks, newStacks)
+			newOnStacksChange(aura, sim, oldStacks, newStacks)
+		}
+	}
+
+	return aura
 }
 
 type AuraFactory func(*Simulation) *Aura
@@ -969,4 +1038,31 @@ func (auraArrays LabeledAuraArrays) Append(auras AuraArray) LabeledAuraArrays {
 
 	auraArrays[auras.FindLabel()] = auras
 	return auraArrays
+}
+
+type AuraState struct {
+	RemainingDuration time.Duration
+	Stacks            int32
+}
+
+func (aura *Aura) SaveState(sim *Simulation) AuraState {
+	if !aura.active {
+		return AuraState{}
+	}
+
+	return AuraState{
+		RemainingDuration: aura.expires - sim.CurrentTime,
+		Stacks:            aura.stacks,
+	}
+}
+
+func (aura *Aura) RestoreState(state AuraState, sim *Simulation) {
+	if !aura.active {
+		aura.Activate(sim)
+	}
+
+	aura.UpdateExpires(state.RemainingDuration + sim.CurrentTime)
+	if aura.MaxStacks > 0 {
+		aura.SetStacks(sim, state.Stacks)
+	}
 }

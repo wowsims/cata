@@ -4,54 +4,57 @@ import { MonkMajorGlyph, MonkMinorGlyph, MonkOptions } from '../../core/proto/mo
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import Default2HGear from './gear_sets/2h.gear.json';
-import DefaultDWGear from './gear_sets/dw.gear.json';
+import DefaultP1Bis2HGear from './gear_sets/p1_bis_2h.gear.json';
+import DefaultP1BisDWGear from './gear_sets/p1_bis_dw.gear.json';
+import DefaultP1Prebis2HGear from './gear_sets/p1_prebis_2h.gear.json';
+import DefaultP1PrebisDWGear from './gear_sets/p1_prebis_dw.gear.json';
 
-export const PREPATCH_2H_GEAR_PRESET = PresetUtils.makePresetGear('2H', Default2HGear);
-export const PREPATCH_DW_GEAR_PRESET = PresetUtils.makePresetGear('DW', DefaultDWGear);
+export const P1_PREBIS_2H_GEAR_PRESET = PresetUtils.makePresetGear('Pre-BIS - 2H', DefaultP1Prebis2HGear);
+export const P1_PREBIS_DW_GEAR_PRESET = PresetUtils.makePresetGear('Pre-BIS - DW', DefaultP1PrebisDWGear);
 
-export const PREPATCH_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const P1_BIS_2H_GEAR_PRESET = PresetUtils.makePresetGear('BIS - 2H', DefaultP1Bis2HGear);
+export const P1_BIS_DW_GEAR_PRESET = PresetUtils.makePresetGear('BIS - DW', DefaultP1BisDWGear);
+
+export const ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const PREPATCH_2H_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'2H',
+export const P1_PREBIS_2H_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Default - 2H',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAgility]: 2.92,
-			[Stat.StatHitRating]: 3.0,
-			[Stat.StatCritRating]: 1.28,
-			[Stat.StatHasteRating]: 1.68,
-			[Stat.StatExpertiseRating]: 2.99,
-			[Stat.StatMasteryRating]: 0.68,
-			[Stat.StatAttackPower]: 1,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatHitRating]: 1.11,
+			[Stat.StatCritRating]: 0.33,
+			[Stat.StatHasteRating]: 0.43,
+			[Stat.StatExpertiseRating]: 1.02	,
+			[Stat.StatMasteryRating]: 0.27,
+			[Stat.StatAttackPower]: 0.37,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 9.22,
+			[PseudoStat.PseudoStatMainHandDps]: 3.02,
 			[PseudoStat.PseudoStatOffHandDps]: 0,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 360.07,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 378.01,
 		},
 	),
 );
 
 // Preset options for EP weights
-export const PREPATCH_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'DW',
+export const P1_PREBIS_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Default - DW',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAgility]: 2.94,
-			[Stat.StatHitRating]: 3.21,
-			[Stat.StatCritRating]: 1.34,
-			[Stat.StatHasteRating]: 1.7,
-			[Stat.StatExpertiseRating]: 3.2,
-			[Stat.StatMasteryRating]: 0.68,
-			[Stat.StatAttackPower]: 1,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatHitRating]: 1.09,
+			[Stat.StatCritRating]: 0.42,
+			[Stat.StatHasteRating]: 0.47,
+			[Stat.StatExpertiseRating]: 0.99,
+			[Stat.StatMasteryRating]: 0.26,
+			[Stat.StatAttackPower]: 0.37,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 7.59,
-			[PseudoStat.PseudoStatOffHandDps]: 3.8,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 385.2,
+			[PseudoStat.PseudoStatMainHandDps]: 2.55,
+			[PseudoStat.PseudoStatOffHandDps]: 1.27,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 370.12,
 		},
 	),
 );
@@ -62,14 +65,11 @@ export const PREPATCH_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '213322',
 		glyphs: Glyphs.create({
 			major1: MonkMajorGlyph.GlyphOfSpinningCraneKick,
 			major2: MonkMajorGlyph.GlyphOfTouchOfKarma,
-			major3: MonkMajorGlyph.GlyphOfZenMeditation,
 			minor1: MonkMinorGlyph.GlyphOfBlackoutKick,
-			minor2: MonkMinorGlyph.GlyphOfJab,
-			minor3: MonkMinorGlyph.GlyphOfWaterRoll,
 		}),
 	}),
 };
@@ -79,16 +79,15 @@ export const DefaultOptions = MonkOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
-	tinkerId: 82174, // Synapse Springs
+	flaskId: 76084, // Flask of Spring Blossoms
+	foodId: 74648, // Sea Mist Rice Noodles
+	potId: 76089, // Virmen's Bite
+	prepotId: 76089, // Virmen's Bite
 });
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Blacksmithing,
+	profession2: Profession.Tailoring,
 	distanceFromTarget: 5,
 	iterationCount: 25000,
 };

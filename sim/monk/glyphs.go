@@ -1,6 +1,8 @@
 package monk
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -10,17 +12,12 @@ func (monk *Monk) applyGlyphs() {
 		monk.registerGlyphOfFistsOfFury()
 	}
 
-	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfTargetedExpulsion) {
-		monk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			ClassMask:  MonkSpellExpelHarm,
-			FloatValue: -0.5,
-		})
+	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfFortuitousSpheres) {
+		monk.registerGlyphOfFortuitousSpheres()
 	}
 }
 
 func (monk *Monk) registerGlyphOfFistsOfFury() {
-
 	parryBuff := monk.RegisterAura(core.Aura{
 		Label:    "Glyph of Fists of Fury" + monk.Label,
 		ActionID: core.ActionID{SpellID: 125671},
@@ -35,6 +32,20 @@ func (monk *Monk) registerGlyphOfFistsOfFury() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			parryBuff.Duration = spell.AOEDot().RemainingDuration(sim)
 			parryBuff.Activate(sim)
+		},
+	})
+}
+
+func (monk *Monk) registerGlyphOfFortuitousSpheres() {
+	core.MakeProcTriggerAura(&monk.Unit, core.ProcTrigger{
+		Name:     "Glyph of Fortuitous Spheres" + monk.Label,
+		ICD:      30 * time.Second,
+		Outcome:  core.OutcomeHit,
+		Callback: core.CallbackOnSpellHitTaken,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Target.CurrentHealthPercent() < 0.25 {
+				monk.SummonHealingSphere(sim)
+			}
 		},
 	})
 }

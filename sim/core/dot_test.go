@@ -55,7 +55,7 @@ func NewFakeElementalShaman(char *Character, _ *proto.Player) Agent {
 			ActionID:    ActionID{SpellID: 42},
 			SpellSchool: SpellSchoolShadow,
 			ProcMask:    ProcMaskSpellDamage,
-			Flags:       SpellFlagIgnoreResists,
+			Flags:       SpellFlagIgnoreArmor,
 			Cast:        CastConfig{},
 
 			BonusCritPercent: 3,

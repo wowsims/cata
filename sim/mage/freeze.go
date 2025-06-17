@@ -12,7 +12,7 @@ func (mage *Mage) registerFreezeSpell() {
 		ActionID:       core.ActionID{SpellID: 33395},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFreeze,
 
 		Cast: core.CastConfig{
@@ -33,7 +33,6 @@ func (mage *Mage) registerFreezeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := 0.409 * mage.ClassSpellScaling
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 

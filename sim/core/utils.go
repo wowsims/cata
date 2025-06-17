@@ -232,6 +232,10 @@ func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
 	return masteryRating / MasteryRatingPerMasteryPoint
 }
 
+func Clamp(val float64, min float64, max float64) float64 {
+	return math.Max(min, math.Min(val, max))
+}
+
 // Gets the spell scaling coefficient associated with a given class
 // Retrieved from https://wago.tools/api/casc/1391660?download&branch=wow_classic_beta
 func GetClassSpellScalingCoefficient(class proto.Class) float64 {
@@ -264,6 +268,17 @@ func ApplyVarianceMinMax(avgEffect float64, variance float64) (float64, float64)
 	min := avgEffect * (1 - variance/2.0)
 	max := avgEffect * (1 + variance/2.0)
 	return min, max
+}
+
+func GetItemEffectScaling(itemID int32, coeff float64, state proto.ItemLevelState) float64 {
+	return math.Round(GetItemEffectRandomPropPointsForItem(itemID, state) * coeff)
+}
+func GetItemEffectRandomPropPointsForItem(itemID int32, state proto.ItemLevelState) float64 {
+	return float64(GetItemByID(itemID).GetItemEffectRandomPropPoints(state))
+}
+
+func (item *Item) GetItemEffectRandomPropPoints(state proto.ItemLevelState) float64 {
+	return float64(ItemEffectRandPropPointsByIlvl[item.ScalingOptions[int32(state)].Ilvl].RandPropPoints)
 }
 
 type aggregator struct {

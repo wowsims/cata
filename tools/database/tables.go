@@ -29,10 +29,35 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	var statValue string
 	var socketTypes string
 	var statPercentEditor string
-	err := rows.Scan(&raw.Id, &raw.Name, &raw.InventoryType, &raw.ItemDelay, &raw.OverallQuality, &raw.DmgVariance,
+	err := rows.Scan(
+		&raw.Id,
+		&raw.Name,
+		&raw.InventoryType,
+		&raw.ItemDelay,
+		&raw.OverallQuality,
+		&raw.DmgVariance,
 		&raw.ItemLevel,
-		&statValue, &bonusStatString,
-		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.Flags1, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
+		&statValue,
+		&bonusStatString,
+		&statPercentEditor,
+		&socketTypes,
+		&raw.SocketEnchantmentId,
+		&raw.Flags0,
+		&raw.Flags1,
+		&raw.Flags2,
+		&raw.FDID,
+		&raw.ItemSetName,
+		&raw.ItemSetId,
+		&raw.ClassMask,
+		&raw.RaceMask,
+		&raw.QualityModifier,
+		&randomSuffixOptions,
+		&statPercentageOfSocket,
+		&bonusAmountCalculated,
+		&raw.ItemClass,
+		&raw.ItemSubClass,
+		&raw.NameDescription,
+	)
 	if err != nil {
 		panic(err)
 	}
@@ -85,10 +110,11 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 			s.SocketType as SocketTypes,
 			s.Field_1_15_7_59706_036 as SocketEnchantmentId,
 			s.Flags_0 as Flags_0,
+			s.Flags_1 as Flags_1,
+			s.Flags_2 as Flags_2,
 			i.IconFileDataId as FDID,
 			COALESCE(itemset.Name_lang, '') as ItemSetName,
 			COALESCE(itemset.ID, 0) as ItemSetID,
-			s.Flags_1 as Flags_1,
 			s.AllowableClass as ClassMask,
 			s.AllowableRace as RaceMask,
 			s.QualityModifier,
@@ -100,7 +126,8 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 			 s.StatPercentageOfSocket,
 			 s.StatModifier_bonusAmount,
 			 i.ClassID,
-			 i.SubClassID
+			 i.SubClassID,
+			 COALESCE(ind.Description_lang, '')
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
@@ -109,6 +136,7 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
 		LEFT JOIN ItemSet itemset ON s.ItemSet = itemset.ID
 		LEFT JOIN ItemArmorQuality iaq ON s.ItemLevel = iaq.ID
+		LEFT JOIN ItemNameDescription as ind ON i.ID = ind.Field_5_5_0_61000_002
 		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
 		`
 
@@ -370,7 +398,7 @@ func LoadAndWriteRawGems(dbHelper *DBHelper, inputsDir string) ([]dbc.Gem, error
 		JOIN Item i ON s.ID = i.ID
 		JOIN GemProperties gp ON s.Field_1_15_7_59706_035  = gp.ID
 		JOIN SpellItemEnchantment sie ON gp.Enchant_ID = sie.ID
-		WHERE i.ClassID = 3`
+		WHERE i.ClassID = 3 AND s.ItemLevel > 85 AND s.OverallQualityId > 2`
 	items, err := LoadRows(dbHelper.db, query, ScanGemTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
@@ -426,10 +454,23 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 	query := `SELECT DISTINCT
 		sie.ID as effectId,
 		CASE
-		    WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
-		    ELSE sn.Name_lang
+		WHEN s.NameSubtext_lang IS NOT NULL
+			AND TRIM(s.NameSubtext_lang) <> ''
+		THEN
+			(CASE
+			WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+			ELSE sn.Name_lang
+			END)
+			|| ' (' || s.NameSubtext_lang || ')'
+		WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+		ELSE sn.Name_lang
 		END AS name,
-		se.SpellID as spellId,
+		CASE
+			WHEN sie.Effect_0 IN (1, 3) THEN sie.EffectArg_0
+			WHEN sie.Effect_1 IN (1, 3) THEN sie.EffectArg_1
+			WHEN sie.Effect_2 IN (1, 3) THEN sie.EffectArg_2
+			ELSE se.SpellID
+		END AS spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,
 		sie.Field_1_15_3_55112_014 as professionId,
 		sie.Effect as Effect,
@@ -448,6 +489,7 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		COALESCE(sie.Name_lang, "")
 		FROM SpellEffect se
 		JOIN Spell s ON se.SpellID = s.ID
+		LEFT JOIN SpellScaling ss ON se.SpellID = ss.SpellID
 		JOIN SpellName sn ON se.SpellID = sn.ID
 		JOIN SpellItemEnchantment sie ON se.EffectMiscValue_0 = sie.ID
 		LEFT JOIN ItemEffect ie ON se.SpellID = ie.SpellID
@@ -455,7 +497,19 @@ func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchan
 		LEFT JOIN SkillLineAbility sla ON se.SpellID = sla.Spell
 		LEFT JOIN Item it ON ie.ParentItemId = it.ID
 		LEFT JOIN ItemSparse isp ON ie.ParentItemId = isp.ID
-		WHERE se.Effect = 53 GROUP BY sn.Name_lang, sie.ID`
+WHERE se.Effect = 53
+  AND (ss.MaxScalingLevel > 84 or ss.MaxScalingLevel is null)
+  AND (
+       ( sie.Field_1_15_3_55112_014 > 0
+         AND sla.ID               IS NOT NULL
+         AND sie.Field_1_15_3_55112_015 IS NOT NULL
+       )
+    OR
+       sie.Field_1_15_3_55112_014 = 0
+    OR
+       sie.Field_1_15_3_55112_014 = 773
+  )
+		GROUP BY name `
 	items, err := LoadRows(dbHelper.db, query, ScanEnchantsTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
@@ -740,7 +794,7 @@ func LoadAndWriteRawRandomSuffixes(dbHelper *DBHelper, inputsDir string) ([]dbc.
 	LEFT JOIN SpellItemEnchantment sie1 ON irs.Enchantment_1 = sie1.ID
 	LEFT JOIN SpellItemEnchantment sie2 ON irs.Enchantment_2 = sie2.ID
 	LEFT JOIN SpellItemEnchantment sie3 ON irs.Enchantment_3 = sie3.ID
-	LEFT JOIN SpellItemEnchantment sie4 ON irs.Enchantment_4 = sie4.ID;
+	LEFT JOIN SpellItemEnchantment sie4 ON irs.Enchantment_4 = sie4.ID
 `
 	// Use your generic LoadRows function to scan each row into a RawRandomSuffix.
 	items, err := LoadRows(dbHelper.db, query, ScanRawRandomSuffix)
@@ -820,6 +874,7 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 					WHERE ie2.ParentItemID = i.ID
 				) AS ItemEffects,
 				CASE
+					WHEN sp.Description_lang LIKE '%Counts as both a Battle%' THEN 0
 					WHEN sp.Description_lang LIKE '%Guardian Elixir%' THEN 1
 					WHEN sp.Description_lang LIKE '%Battle Elixir%' THEN 2
 					ELSE 0
@@ -832,7 +887,7 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
 			LEFT JOIN SpellMisc sm ON ie.SpellId = sm.SpellID
 			LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 70 OR i.ID = 22788 OR i.ID = 13442)
+			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 85 OR i.ID = 22788 OR i.ID = 13442)
 			AND s.Display_lang != ''
 			AND s.Display_lang NOT LIKE '%Test%'
 			AND s.Display_lang NOT LIKE 'QA%'
@@ -993,7 +1048,7 @@ SELECT
 FROM Talent t
 JOIN SpellName sn ON sn.ID = t.SpellID
 WHERE sn.Name_lang IS NOT "Dummy 5.0 Talent"
-ORDER BY t.ClassID;
+ORDER BY t.ClassID
 `
 
 	talents, err := LoadRows(dbHelper.db, query, ScanTalent)
@@ -1045,7 +1100,7 @@ func LoadSpellIcons(dbHelper *DBHelper) (map[int]SpellIcon, error) {
   sn.Name_lang
 FROM SpellMisc sm
 LEFT JOIN Spell ss ON ss.ID = sm.SpellID
-LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
+LEFT JOIN SpellName sn ON sn.ID = sm.SpellID
 `
 
 	talents, err := LoadRows(dbHelper.db, query, ScanSpellIcon)
@@ -1072,7 +1127,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	var stringChannelInterruptFlags string // 2
 	var stringShapeShift string            //2
 	var iconId int                         //
-
+	var rppmModsJSON string
 	err := rows.Scan(
 		&spell.NameLang,
 		&spell.ID,
@@ -1117,6 +1172,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		&spell.MaxCumulativeStacks,
 		&spell.MaxTargets,
 		&iconId,
+		&rppmModsJSON,
 	)
 	if err != nil {
 		return spell, fmt.Errorf("scanning spell data: %w", err)
@@ -1147,7 +1203,12 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	if err != nil {
 		return spell, fmt.Errorf("parsing stringShapeShift args for spell %d (%s): %w", spell.ID, stringShapeShift, err)
 	}
-
+	if err := json.Unmarshal([]byte(rppmModsJSON), &spell.RppmModifiers); err != nil {
+		return spell, fmt.Errorf(
+			"parsing RPPM modifiers for spell %d (%s): %w",
+			spell.ID, rppmModsJSON, err,
+		)
+	}
 	spell.IconPath = iconsMap[iconId]
 	return spell, nil
 }
@@ -1155,73 +1216,137 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, error) {
 	query := `
 	SELECT DISTINCT
-		sn.Name_lang,
-		sn.ID,
-		sm.SchoolMask,
-		sm.Speed,
-		sm.LaunchDelay,
-		sm.MinDuration,
-		COALESCE(ss.MaxScalingLevel, 0),
-		COALESCE(ss.MinScalingLevel, 0),
-		COALESCE(ss.ScalesFromItemLevel, 0),
-		COALESCE(sl.SpellLevel, 0),
-		COALESCE(sl.BaseLevel, 0),
-		COALESCE(sl.MaxLevel, 0),
-		COALESCE(sl.MaxPassiveAuraLevel, 0),
-		COALESCE(sc.RecoveryTime, 0),
-		COALESCE(sc.StartRecoveryTime, 0),
-		COALESCE(sr.RangeMin_0, 0.0),
-		COALESCE(sr.RangeMax_0, 0.0),
-		COALESCE(sm."Attributes", ""),
-		COALESCE(ssc.Flags, 0),
-		COALESCE(ssc.MaxCharges, 0),
-		COALESCE(ssc.ChargeRecoveryTime, 0),
-		COALESCE(ssc.TypeMask, 0),
-		COALESCE(scs.Category,0),
-		COALESCE(sd.Duration,0),
-		COALESCE(sao.ProcChance,0),
-		COALESCE(sao.ProcCharges,0),
-		COALESCE(sao.ProcTypeMask, ""),
-		COALESCE(sao.ProcCategoryRecovery, 0),
-		COALESCE(spm.BaseProcRate, 0),
-		COALESCE(sei.EquippedItemClass, 0),
-		COALESCE(sei.EquippedItemInvTypes, 0),
-		COALESCE(sei.EquippedItemSubclass,0),
-		COALESCE(ss.CastTimeMin, 0),
-		COALESCE(sco.SpellClassMask, ""),
-		COALESCE(sco.SpellClassSet, 0),
-		COALESCE(si.AuraInterruptFlags, ""),
-		COALESCE(si.ChannelInterruptFlags, ""),
-		COALESCE(ssp.ShapeshiftMask, ""),
-		COALESCE(s.Description_lang, ""),
-		COALESCE(sdv.Variables, ""),
-		COALESCE(sao.CumulativeAura, 0),
-		COALESCE(str.MaxTargets, 0),
-		COALESCE(sm.SpellIconFileDataID, 0)
-		FROM Spell s
-		LEFT JOIN SpellName sn ON s.ID = sn.ID
-		LEFT JOIN SpellEffect se ON s.ID = se.SpellID
-		LEFT JOIN SpellMisc sm ON s.ID = sm.SpellID
-		LEFT JOIN SpellLevels sl ON s.ID = sl.SpellID
-		LEFT JOIN SpellCooldowns sc ON s.ID = sc.SpellID
-		LEFT JOIN SpellScaling ss ON s.ID = ss.SpellID
-		LEFT JOIN SpellLabel slb ON s.ID = slb.SpellID
-		LEFT JOIN SpellCategories scs ON s.ID = scs.SpellID
-		LEFT JOIN SpellCategory ssc ON ssc.ID = scs.Category
-		LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-		LEFT JOIN SpellPower sp ON sp.SpellID = s.ID
-		LEFT JOIN SpellInterrupts si ON si.SpellID = s.ID
-		LEFT JOIN SpellEquippedItems sei ON sei.SpellID = s.ID
-		LEFT JOIN SpellAuraOptions sao ON sao.SpellID = s.ID
-		LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
-		LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
-		LEFT JOIN SpellXDescriptionVariables sxd ON s.ID = sxd.SpellID
-		LEFT JOIN SpellDescriptionVariables sdv ON sdv.ID = sxd.SpellDescriptionVariablesID
-		LEFT JOIN SpellTargetRestrictions str ON s.ID = str.SpellID
-		LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
-		LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
-		WHERE sco.SpellClassSet is not null
-		GROUP BY s.ID
+	sn.Name_lang,
+	sn.ID,
+	COALESCE(sm.SchoolMask, 0),
+	COALESCE(sm.Speed, 0),
+	COALESCE(sm.LaunchDelay, 0),
+	COALESCE(sm.MinDuration, 0),
+	COALESCE(ss.MaxScalingLevel, 0),
+	COALESCE(ss.MinScalingLevel, 0),
+	COALESCE(ss.ScalesFromItemLevel, 0),
+	COALESCE(sl.SpellLevel, 0),
+	COALESCE(sl.BaseLevel, 0),
+	COALESCE(sl.MaxLevel, 0),
+	COALESCE(sl.MaxPassiveAuraLevel, 0),
+	COALESCE(sc.RecoveryTime, 0),
+	COALESCE(sc.StartRecoveryTime, 0),
+	COALESCE(sr.RangeMin_0, 0.0),
+	COALESCE(sr.RangeMax_0, 0.0),
+	COALESCE(sm."Attributes", ""),
+	COALESCE(ssc.Flags, 0),
+	COALESCE(ssc.MaxCharges, 0),
+	COALESCE(ssc.ChargeRecoveryTime, 0),
+	COALESCE(ssc.TypeMask, 0),
+	COALESCE(scs.Category, 0),
+	COALESCE(sd.Duration, 0),
+	COALESCE(sao.ProcChance, 0),
+	COALESCE(sao.ProcCharges, 0),
+	COALESCE(sao.ProcTypeMask, ""),
+	COALESCE(sao.ProcCategoryRecovery, 0),
+	COALESCE(spm.BaseProcRate, 0),
+	COALESCE(sei.EquippedItemClass, 0),
+	COALESCE(sei.EquippedItemInvTypes, 0),
+	COALESCE(sei.EquippedItemSubclass, 0),
+	COALESCE(ss.CastTimeMin, 0),
+	COALESCE(sco.SpellClassMask, ""),
+	COALESCE(sco.SpellClassSet, 0),
+	COALESCE(si.AuraInterruptFlags, ""),
+	COALESCE(si.ChannelInterruptFlags, ""),
+	COALESCE(ssp.ShapeshiftMask, ""),
+	COALESCE(s.Description_lang, ""),
+	COALESCE(sdv.Variables, ""),
+	COALESCE(sao.CumulativeAura, 0),
+	COALESCE(str.MaxTargets, 0),
+	COALESCE(sm.SpellIconFileDataID, 0),
+	COALESCE(
+		json_group_array (
+			json_object (
+				'ModifierType',
+				sppmm.Type,
+				'Coeff',
+				sppmm.Coeff,
+				'Param',
+				sppmm.Param
+			)
+		),
+		'[]'
+	) AS RppmModifiersJson
+FROM
+    Spell as s
+	LEFT JOIN SpellName sn ON s.ID = sn.ID
+	LEFT JOIN SpellEffect se ON s.ID = se.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellMisc
+		GROUP BY
+			SpellID
+	) sm ON s.ID = sm.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellLevels
+		GROUP BY
+			SpellID
+	) sl ON s.ID = sl.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellCooldowns
+		GROUP BY
+			SpellID
+	) sc ON s.ID = sc.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellScaling
+		GROUP BY
+			SpellID
+	) ss ON s.ID = ss.SpellID
+	LEFT JOIN SpellLabel slb ON s.ID = slb.SpellID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellCategories
+		GROUP BY
+			SpellID
+	) scs ON s.ID = scs.SpellID
+	LEFT JOIN SpellCategory ssc ON ssc.ID = scs.Category
+	LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
+	LEFT JOIN SpellPower sp ON sp.SpellID = s.ID
+	LEFT JOIN SpellInterrupts si ON si.SpellID = s.ID
+	LEFT JOIN SpellEquippedItems sei ON sei.SpellID = s.ID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellAuraOptions
+		GROUP BY
+			SpellID
+	) sao ON sao.SpellID = s.ID
+	LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
+	LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
+	LEFT JOIN SpellXDescriptionVariables sxd ON s.ID = sxd.SpellID
+	LEFT JOIN SpellDescriptionVariables sdv ON sdv.ID = sxd.SpellDescriptionVariablesID
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			SpellTargetRestrictions
+		GROUP BY
+			SpellID
+	) str ON s.ID = str.SpellID
+	LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
+	LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
+	LEFT JOIN SpellProcsPerMinuteMod sppmm ON sppmm.SpellProcsPerMinuteID = sao.SpellProcsPerMinuteID
+	GROUP BY s.ID
+	ORDER BY s.ID asc
 `
 
 	spells, err := LoadRows(dbHelper.db, query, ScanSpells)
@@ -1268,9 +1393,10 @@ func LoadAndWriteEnchantDescriptions(outputPath string, db *WowDatabase, instanc
 
 func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName string, err error) {
 	var (
-		mask       int
-		dropSource proto.DropSource
-		jiName     string
+		mask         int
+		dropSource   proto.DropSource
+		jiName       string
+		instanceType int
 	)
 	err = rows.Scan(
 		&itemID,
@@ -1279,10 +1405,13 @@ func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName
 		&dropSource.ZoneId,
 		&dropSource.OtherName,
 		&jiName,
+		&instanceType,
 	)
 	if err != nil {
 		return 0, nil, "", fmt.Errorf("scanning drop row: %w", err)
 	}
+
+	dropSource.Difficulty = parseDungeonDifficultyMask(mask, instanceType == 2)
 	return itemID, &dropSource, jiName, nil
 }
 
@@ -1301,7 +1430,8 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 			at.ID
 		), 0)                                AS ZoneId,
 		je.Name_lang                     AS OtherName,
-		ji.Name_lang
+		ji.Name_lang,
+		Map.InstanceType
 		FROM JournalEncounterItem AS jei
 		INNER JOIN JournalEncounter AS je
 		ON je.ID = jei.JournalEncounterID
@@ -1312,6 +1442,7 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 			at.ZoneName       = ji.Name_lang
 			OR at.AreaName_lang  = ji.Name_lang
 		)
+		LEFT JOIN Map ON Map.ID = ji.MapID
 		GROUP BY jei.ItemID
     `
 
@@ -1340,4 +1471,100 @@ func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
 		log.Fatalf("Error writing file: %v", err)
 	}
 	return sourcesByItem, namesByZone, nil
+}
+
+func ScanCraftedItems(rows *sql.Rows) (itemID int, ds *proto.CraftedSource, err error) {
+	var (
+		profId  int
+		crafted proto.CraftedSource
+	)
+
+	err = rows.Scan(
+		&itemID,
+		&profId,
+		&crafted.SpellId,
+	)
+	crafted.Profession = dbc.GetProfession(profId)
+	if err != nil {
+		return 0, nil, fmt.Errorf("scanning drop row: %w", err)
+	}
+	return itemID, &crafted, nil
+}
+
+func LoadCraftedItems(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.CraftedSource,
+) {
+	const query = `
+		SELECT se.EffectItemType, sla.SkillLine, sla.Spell FROM SkillLineAbility sla
+		LEFT JOIN SpellEffect se ON sla.Spell == se.SpellID
+		WHERE se.Effect = 24
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.CraftedSource)
+
+	for rows.Next() {
+		itemID, ds, scanErr := ScanCraftedItems(rows)
+		if scanErr != nil {
+			return nil
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+	}
+	if err = rows.Err(); err != nil {
+		return nil
+	}
+
+	return sourcesByItem
+}
+
+func ScanRepItems(rows *sql.Rows) (itemID int, ds *proto.RepSource, err error) {
+	var (
+		rep proto.RepSource
+	)
+
+	err = rows.Scan(
+		&itemID,
+		&rep.RepFactionId,
+		&rep.RepLevel,
+	)
+	if err != nil {
+		return 0, nil, fmt.Errorf("scanning rep row: %w", err)
+	}
+	return itemID, &rep, nil
+}
+
+func LoadRepItems(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.RepSource,
+) {
+	const query = `
+		SELECT isp.ID, fa.ID, isp.MinReputation FROM ItemSparse isp
+		LEFT JOIN Faction fa on fa.ID = isp.MinFactionID
+		WHERE fa.ParentFactionID=1245
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.RepSource)
+
+	for rows.Next() {
+		itemID, ds, scanErr := ScanRepItems(rows)
+		if scanErr != nil {
+			return nil
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+	}
+	if err = rows.Err(); err != nil {
+		return nil
+	}
+	fmt.Println("Loaded rep items", len(sourcesByItem))
+	return sourcesByItem
 }

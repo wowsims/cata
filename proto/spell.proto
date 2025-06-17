@@ -5,6 +5,46 @@ option go_package = "./proto";
 
 import "common.proto";
 
+
+message ScalingItemEffectProperties {
+	// keys are the numeric values of proto.common.Stat
+	map<int32, double> stats = 1;
+}
+  message ItemEffect {
+	int32            buff_id         = 1;
+	string buff_name = 6;
+	int32            effect_duration_ms = 2;  // milliseconds
+	// Keyed to itemlevelstate
+	map<int32, ScalingItemEffectProperties> scaling_options        = 3;
+
+	oneof effect {
+	  ProcEffect  proc   = 4;
+	  OnUseEffect on_use = 5;
+	}
+  }
+
+  message RppmProc {
+	double rate = 1;
+	repeated RppmMod mods = 4;
+  }
+
+  message ProcEffect {
+	int32       icd_ms         = 1;  // internal cooldown in milliseconds
+	oneof procRate {
+		double proc_chance = 2;  // e.g. 0.20 = 20%
+		double ppm = 3;
+		RppmProc rppm = 4;
+	}
+  }
+
+  message OnUseEffect {
+	int32 cooldown_ms = 1;  // milliseconds between uses
+
+	int32 category_id = 11;
+
+	int32 category_cooldown_ms = 8;  // category cooldown in milliseconds
+  }
+
 message SpellEffect {
     int32 id = 1;
     int32 spell_id = 2;
@@ -52,4 +92,15 @@ enum SecondaryResourceType {
 	SecondaryResourceTypeBurningEmbers  = 108647;
 	SecondaryResourceTypeSoulShards     = 117198;
 	SecondaryResourceTypeHolyPower      = 138248;
+}
+
+message RppmMod {
+    double coefficient = 1;
+    oneof mod_type {
+        bool haste = 2;
+        bool crit = 3;
+        Spec spec = 4;
+        int32 class_mask = 5;
+		int32 ilvl = 6;
+    }
 }

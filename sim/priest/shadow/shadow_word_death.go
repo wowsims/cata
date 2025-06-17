@@ -51,7 +51,7 @@ func (shadow *ShadowPriest) registerShadowWordDeathSpell() {
 				return
 			}
 
-			shadow.ShadowOrbs.Gain(1, actionId, sim)
+			shadow.ShadowOrbs.Gain(sim, 1, actionId)
 			swdAura.Activate(sim)
 			spell.CD.Reset()
 		},

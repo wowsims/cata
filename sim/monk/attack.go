@@ -27,53 +27,46 @@ $offhigh=$?!s124146[${$MWB/2/$mws}][${$OWB/2/$ows}]
 $low=${$<stnc>*($<bm>*$<dwm>*(($mwb)/($MWS)+$<offm>*$<offlow>)+$<apc>-1)}
 $high=${$<stnc>*($<bm>*$<dwm>*(($MWB)/($MWS)+$<offm>*$<offhigh>)+$<apc>+1)}
 */
+var DualWieldModifier = 0.898882275
+
 func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Spell) float64 {
 	totalDamage := 0.0
 	ap := spell.MeleeAttackPower()
 
 	staffOrPolearm := false
-	hasMainHand := false
 	mh := monk.MainHand()
 	mhw := monk.WeaponFromMainHand(monk.DefaultCritMultiplier())
 	if mh != nil && mh.WeaponType != proto.WeaponType_WeaponTypeUnknown {
 		staffOrPolearm = mh.WeaponType == proto.WeaponType_WeaponTypeStaff || mh.WeaponType == proto.WeaponType_WeaponTypePolearm
 		dmg := mhw.BaseDamage(sim) / mhw.SwingSpeed
 		totalDamage += dmg
-		hasMainHand = true
 
 		if sim.Log != nil {
 			monk.Log(sim, "[DEBUG] main hand weapon damage portion for %s: td=%0.3f, wd=%0.3f, ws=%0.3f",
-				spell.ActionID, totalDamage, dmg, mhw.SwingSpeed, ap)
+				spell.ActionID, totalDamage, dmg, mhw.SwingSpeed)
 		}
 	}
 
-	hasOffHand := false
 	oh := monk.OffHand()
 	if oh != nil && oh.WeaponType != proto.WeaponType_WeaponTypeUnknown {
 		ohw := monk.WeaponFromOffHand(monk.DefaultCritMultiplier())
 		dmg := ohw.BaseDamage(sim) / ohw.SwingSpeed * 0.5
 		totalDamage += dmg
-		hasOffHand = true
 
 		if sim.Log != nil {
 			monk.Log(sim, "[DEBUG] off hand weapon damage portion for %s: td=%0.3f, wd=%0.3f, ws=%0.3f",
-				spell.ActionID, totalDamage, dmg, ohw.SwingSpeed, ap)
+				spell.ActionID, totalDamage, dmg, ohw.SwingSpeed)
 		}
 	}
 
-	// When not wielding a staff or polearm, total damage is multiplied by 0.898882275.
+	// When not wielding a staff or polearm, total damage is multiplied by DualWieldModifier.
 	if !staffOrPolearm {
-		totalDamage *= 0.898882275
+		totalDamage *= DualWieldModifier
 	}
 
-	apMod := monk.GetAttackPowerPerDPS()
+	apMod := 1.0 / core.DefaultAttackPowerPerDPS
 
-	if !hasMainHand && !hasOffHand {
-		// Unarmed
-		totalDamage += mhw.CalculateWeaponDamage(sim, ap)
-	} else {
-		totalDamage += apMod * ap
-	}
+	totalDamage += apMod * ap
 
 	if sim.Log != nil {
 		monk.Log(sim, "[DEBUG] total weapon damage for %s: td=%0.3f, apmod=%0.3f, ap=%0.3f",

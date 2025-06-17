@@ -33,13 +33,8 @@ const (
 	AttackPower
 	RangedAttackPower
 	SpellPower
-	SpellPenetration
-	ResilienceRating
-	ArcaneResistance
-	FireResistance
-	FrostResistance
-	NatureResistance
-	ShadowResistance
+	PvpResilienceRating
+	PvpPowerRating
 	Armor
 	BonusArmor
 	Health
@@ -140,20 +135,10 @@ func (s Stat) StatName() string {
 		return "RangedAttackPower"
 	case SpellPower:
 		return "SpellPower"
-	case SpellPenetration:
-		return "SpellPenetration"
-	case ResilienceRating:
-		return "ResilienceRating"
-	case ArcaneResistance:
-		return "ArcaneResistance"
-	case FireResistance:
-		return "FireResistance"
-	case FrostResistance:
-		return "FrostResistance"
-	case NatureResistance:
-		return "NatureResistance"
-	case ShadowResistance:
-		return "ShadowResistance"
+	case PvpResilienceRating:
+		return "PvpResilienceRating"
+	case PvpPowerRating:
+		return "PvpPowerRating"
 	case Armor:
 		return "Armor"
 	case BonusArmor:
@@ -357,7 +342,6 @@ func (stats Stats) ToProtoArray() []float64 {
 	// shared indices between the two.
 	return stats[:ProtoStatsLen]
 }
-
 func (stats Stats) ToProtoMap() map[int32]float64 {
 	m := make(map[int32]float64, ProtoStatsLen)
 	for i := 0; i < int(ProtoStatsLen); i++ {
@@ -387,6 +371,7 @@ type PseudoStats struct {
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64
 	RangedSpeedMultiplier float64
+	AttackSpeedMultiplier float64 // Used for real haste effects like Bloodlust that modify resoruce regen and are used for RPPM effects
 
 	SpiritRegenRateCombat float64 // percentage of spirit regen allowed during combat
 
@@ -410,11 +395,12 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
-	DamageDealtMultiplier       float64            // All damage
-	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
-	DotDamageMultiplierAdditive float64            // All periodic damage
-	HealingDealtMultiplier      float64            // All non-shield healing
-	CritDamageMultiplier        float64            // All multiplicative crit damage
+	DamageDealtMultiplier          float64            // All damage
+	SchoolDamageDealtMultiplier    [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
+	DotDamageMultiplierAdditive    float64            // All periodic damage
+	HealingDealtMultiplier         float64            // All non-shield healing
+	PeriodicHealingDealtMultiplier float64            // All periodic healing (on top of HealingDealtMultiplier)
+	CritDamageMultiplier           float64            // All multiplicative crit damage
 
 	// Important when unit is attacker or target
 	BlockDamageReduction float64
@@ -436,7 +422,7 @@ type PseudoStats struct {
 	// probabilities (between 0 and 1).
 	BaseDodgeChance float64
 	BaseParryChance float64
-	//BaseMiss is not needed, this is always 5%
+	BaseBlockChance float64
 
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
@@ -469,15 +455,17 @@ func NewPseudoStats() PseudoStats {
 		CastSpeedMultiplier:   1,
 		MeleeSpeedMultiplier:  1,
 		RangedSpeedMultiplier: 1,
+		AttackSpeedMultiplier: 1,
 		SpiritRegenMultiplier: 1,
 
 		ThreatMultiplier: 1,
 
-		DamageDealtMultiplier:       1,
-		SchoolDamageDealtMultiplier: NewSchoolFloatArray(),
-		DotDamageMultiplierAdditive: 1,
-		HealingDealtMultiplier:      1,
-		CritDamageMultiplier:        1,
+		DamageDealtMultiplier:          1,
+		SchoolDamageDealtMultiplier:    NewSchoolFloatArray(),
+		DotDamageMultiplierAdditive:    1,
+		HealingDealtMultiplier:         1,
+		PeriodicHealingDealtMultiplier: 1,
+		CritDamageMultiplier:           1,
 
 		BlockDamageReduction: 0.3,
 

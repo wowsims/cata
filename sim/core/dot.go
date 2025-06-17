@@ -27,6 +27,8 @@ type DotConfig struct {
 	HasteReducesDuration bool // does not gain additional ticks after a certain haste threshold
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+
+	PeriodicDamageMultiplier float64 // Multiplier for periodic damage on top of the spell's damage multiplier
 }
 
 type Dot struct {
@@ -50,6 +52,8 @@ type Dot struct {
 	tmpExtraTicks  int32 // extra ticks that are added during the runtime of the dot
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
+
+	PeriodicDamageMultiplier float64 // Multiplier for periodic damage on top of the spell's damage multiplier
 
 	affectedByCastSpeed  bool // tick length are shortened based on casting speed
 	hasteReducesDuration bool // does not gain additional ticks after a haste threshold, HasteAffectsDuration in dbc
@@ -139,7 +143,7 @@ func (dot *Dot) TimeUntilNextTick(sim *Simulation) time.Duration {
 }
 
 func (dot *Dot) calculateHastedTickCount(baseDuration time.Duration, tickPeriod time.Duration) int32 {
-	return int32(math.Round(float64(baseDuration) / float64(tickPeriod)))
+	return int32(math.RoundToEven(float64(baseDuration) / float64(tickPeriod)))
 }
 
 // Returns the total amount of ticks with the snapshotted haste
@@ -270,8 +274,11 @@ func (dot *Dot) periodicTick(sim *Simulation) {
 		}
 	}
 
-	dot.tickAction.NextActionAt = sim.CurrentTime + dot.tickPeriod
-	sim.AddPendingAction(dot.tickAction)
+	// Dot might have been disabled in tick
+	if dot.IsActive() {
+		dot.tickAction.NextActionAt = sim.CurrentTime + dot.tickPeriod
+		sim.AddPendingAction(dot.tickAction)
+	}
 }
 
 func newDot(config Dot) *Dot {
@@ -327,6 +334,10 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		return
 	}
 
+	if config.PeriodicDamageMultiplier == 0 {
+		config.PeriodicDamageMultiplier = 1
+	}
+
 	if config.Spell == nil {
 		config.Spell = spell
 	}
@@ -343,6 +354,8 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		isChanneled:          config.Spell.Flags.Matches(SpellFlagChanneled),
 
 		BonusCoefficient: config.BonusCoefficient,
+
+		PeriodicDamageMultiplier: config.PeriodicDamageMultiplier,
 	}
 
 	auraConfig := config.Aura
@@ -366,4 +379,48 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 			}
 		}
 	}
+}
+
+type DotState struct {
+	AuraState
+
+	SnapshotBaseDamage         float64
+	SnapshotAttackerMultiplier float64
+	SnapshotCritChance         float64
+	TicksRemaining             int32
+	ExtraTicks                 int32
+	TickPeriod                 time.Duration
+	NextTickIn                 time.Duration
+}
+
+func (dot *Dot) SaveState(sim *Simulation) DotState {
+	aura := dot.Aura.SaveState(sim)
+	return DotState{
+		AuraState:                  aura,
+		SnapshotBaseDamage:         dot.SnapshotBaseDamage,
+		SnapshotAttackerMultiplier: dot.SnapshotAttackerMultiplier,
+		SnapshotCritChance:         dot.SnapshotCritChance,
+		TicksRemaining:             dot.remainingTicks,
+		ExtraTicks:                 dot.tmpExtraTicks,
+		TickPeriod:                 dot.tickPeriod,
+		NextTickIn:                 dot.NextTickAt() - sim.CurrentTime,
+	}
+}
+
+func (dot *Dot) RestoreState(state DotState, sim *Simulation) {
+	dot.tickPeriod = state.TickPeriod
+	dot.remainingTicks = state.TicksRemaining
+	dot.tmpExtraTicks = state.ExtraTicks
+	dot.Aura.RestoreState(state.AuraState, sim)
+
+	// recreate with new period, resetting the next tick.
+	if dot.tickAction != nil {
+		dot.tickAction.Cancel(sim)
+	}
+	pa := &PendingAction{
+		NextActionAt: sim.CurrentTime + state.NextTickIn,
+		OnAction:     dot.periodicTick,
+	}
+	dot.tickAction = pa
+	sim.AddPendingAction(dot.tickAction)
 }

@@ -118,6 +118,7 @@ type SettingsCombos struct {
 	ItemSwapSets      []ItemSwapSetCombo
 	SimOptions        *proto.SimOptions
 	IsHealer          bool
+	IsTank            bool
 	StartingDistances []float64
 	Cooldowns         *proto.Cooldowns
 }
@@ -214,6 +215,9 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	if combos.IsHealer {
 		rsr.Raid.TargetDummies = 1
 	}
+	if combos.IsTank {
+		rsr.Raid.Tanks = append(rsr.Raid.Tanks, &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0})
+	}
 
 	return strings.Join(testNameParts, "-"), nil, nil, rsr
 }
@@ -232,6 +236,9 @@ type ItemFilter struct {
 
 	// Item IDs to ignore.
 	IDBlacklist []int32
+
+	// Effect IDs to ignore.
+	EnchantBlacklist []int32
 }
 
 // Returns whether the given item matches the conditions of this filter.
@@ -314,6 +321,22 @@ func (filter *ItemFilter) FindAllMetaGems() []Gem {
 	return filteredGems
 }
 
+func (filter *ItemFilter) FindAllEnchants() []Enchant {
+	filteredEnchantIDs := FilterSlice(enchantEffectsForTest, func(id int32) bool {
+		return !slices.Contains(filter.EnchantBlacklist, id)
+	})
+
+	return MapSlice(filteredEnchantIDs, func(id int32) Enchant {
+		enchant, ok := EnchantsByEffectID[id]
+
+		if !ok {
+			panic(fmt.Sprintf("No DB data for enchant with id: %d", id))
+		}
+
+		return enchant
+	})
+}
+
 type ItemsTestGenerator struct {
 	// Fields describing the base API request.
 	Player     *proto.Player
@@ -323,6 +346,7 @@ type ItemsTestGenerator struct {
 	Encounter  *proto.Encounter
 	SimOptions *proto.SimOptions
 	IsHealer   bool
+	IsTank     bool
 
 	// Some fields are populated automatically.
 	ItemFilter ItemFilter
@@ -333,6 +357,7 @@ type ItemsTestGenerator struct {
 	sets  []*ItemSet
 
 	metagems []Gem
+	enchants []Enchant
 
 	metaSocketIdx int
 }
@@ -349,10 +374,15 @@ func (generator *ItemsTestGenerator) init() {
 	}
 	for _, itemSpec := range generator.Player.Equipment.Items {
 		generator.ItemFilter.IDBlacklist = append(generator.ItemFilter.IDBlacklist, itemSpec.Id)
+
+		if itemSpec.Enchant != 0 {
+			generator.ItemFilter.EnchantBlacklist = append(generator.ItemFilter.EnchantBlacklist, itemSpec.Enchant)
+		}
 	}
 
 	generator.items = generator.ItemFilter.FindAllItems()
 	generator.sets = generator.ItemFilter.FindAllSets()
+	generator.enchants = generator.ItemFilter.FindAllEnchants()
 
 	baseEquipment := ProtoToEquipment(generator.Player.Equipment)
 	generator.metaSocketIdx = -1
@@ -370,7 +400,7 @@ func (generator *ItemsTestGenerator) init() {
 
 func (generator *ItemsTestGenerator) NumTests() int {
 	generator.init()
-	return len(generator.items) + len(generator.sets) + len(generator.metagems)
+	return len(generator.items) + len(generator.sets) + len(generator.metagems) + len(generator.enchants)
 }
 
 func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -389,7 +419,7 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 			equipment.EquipItem(setItem)
 		}
 		label = strings.ReplaceAll(testSet.Name, " ", "")
-	} else {
+	} else if testIdx < len(generator.items)+len(generator.sets)+len(generator.metagems) {
 		testMetaGem := generator.metagems[testIdx-len(generator.items)-len(generator.sets)]
 		headItem := &equipment[proto.ItemSlot_ItemSlotHead]
 		for len(headItem.Gems) <= generator.metaSocketIdx {
@@ -397,6 +427,10 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 		}
 		headItem.Gems[generator.metaSocketIdx] = testMetaGem
 		label = strings.ReplaceAll(testMetaGem.Name, " ", "")
+	} else {
+		testEnchant := generator.enchants[testIdx-len(generator.items)-len(generator.sets)-len(generator.metagems)]
+		equipment.EquipEnchant(testEnchant)
+		label = fmt.Sprintf("%s-%d", strings.ReplaceAll(testEnchant.Name, " ", ""), testEnchant.EffectID)
 	}
 	playerCopy.Equipment = equipment.ToEquipmentSpecProto()
 
@@ -411,6 +445,9 @@ func (generator *ItemsTestGenerator) GetTest(testIdx int) (string, *proto.Comput
 	}
 	if generator.IsHealer {
 		rsr.Raid.TargetDummies = 1
+	}
+	if generator.IsTank {
+		rsr.Raid.Tanks = append(rsr.Raid.Tanks, &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0})
 	}
 
 	return label, nil, nil, rsr
@@ -559,6 +596,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 						},
 					},
 					IsHealer:          config.IsHealer,
+					IsTank:            config.IsTank,
 					Encounters:        MakeDefaultEncounterCombos(),
 					SimOptions:        DefaultSimTestOptions,
 					Cooldowns:         config.Cooldowns,
@@ -576,6 +614,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 					SimOptions: DefaultSimTestOptions,
 					ItemFilter: config.ItemFilter,
 					IsHealer:   config.IsHealer,
+					IsTank:     config.IsTank,
 				},
 			},
 		},

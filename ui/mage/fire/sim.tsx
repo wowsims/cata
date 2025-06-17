@@ -223,7 +223,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 				enableBreakpointLimits: true,
 				updateSoftCaps: softCaps => {
 					const raidBuffs = player.getRaid()?.getBuffs();
-					const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
+					const hasBL = !!raidBuffs?.bloodlust;
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
 					const modifyHaste = (oldHastePercent: number, modifier: number) =>
@@ -259,7 +259,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 				additionalSoftCapTooltipInformation: {
 					[Stat.StatHasteRating]: () => {
 						const raidBuffs = player.getRaid()?.getBuffs();
-						const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
+						const hasBL = !!raidBuffs?.bloodlust;
 						const hasBerserking = player.getRace() === Race.RaceTroll;
 
 						return (

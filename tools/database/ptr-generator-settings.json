@@ -1,6 +1,6 @@
 {
 	"Settings": {
-		"BaseDir": "/mnt/c/Program Files/World of Warcraft",
+		"BaseDir": "/mnt/c/Program Files (x86)/World of Warcraft",
 		"BuildConfig": "buildConfig",
 		"CDNConfig": "cdnConfig",
 		"Region": "us",
@@ -22,6 +22,7 @@
 	"Tables": [
 		"Spell",
 		"Item",
+		"Faction",
 		"GemProperties",
 		"ItemSet",
 		"ItemSetSpell",
@@ -70,6 +71,7 @@
 		"SpellReagents",
 		"SpellInterrupts",
 		"SpellItemEnchantment",
+		"SpellProcsPerMinuteMod",
 		"SpellCategories",
 		"SpellShapeshift",
 		"SpellEffect",

@@ -23,7 +23,6 @@ func (shadow *ShadowPriest) registerMindSpike() {
 		CritMultiplier:           shadow.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1,
-			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

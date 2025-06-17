@@ -10,7 +10,7 @@ import (
 //  3. Modify the damage if necessary.
 type OutcomeApplier func(sim *Simulation, result *SpellResult, attackTable *AttackTable)
 
-func (spell *Spell) OutcomeAlwaysHit(_ *Simulation, result *SpellResult, _ *AttackTable) {
+func (spell *Spell) OutcomeAlwaysHit(sim *Simulation, result *SpellResult, _ *AttackTable) {
 	result.Outcome = OutcomeHit
 	spell.SpellMetrics[result.Target.UnitIndex].Hits++
 }
@@ -30,7 +30,15 @@ func (dot *Dot) OutcomeTick(_ *Simulation, result *SpellResult, _ *AttackTable) 
 	result.Outcome = OutcomeHit
 	dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 }
-
+func (dot *Dot) OutcomeTickPhysicalHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.PhysicalHitCheck(sim, attackTable) {
+		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+	} else {
+		result.Outcome = OutcomeMiss
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
 func (dot *Dot) OutcomeTickPhysicalCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if dot.Spell.PhysicalCritCheck(sim, attackTable) {
 		result.Outcome = OutcomeCrit
@@ -50,6 +58,23 @@ func (dot *Dot) OutcomeTickMagicCrit(sim *Simulation, result *SpellResult, attac
 	} else {
 		result.Outcome = OutcomeHit
 		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+	}
+}
+
+func (dot *Dot) OutcomeTickMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.MagicHitCheck(sim, attackTable) {
+		if dot.Spell.MagicCritCheck(sim, result.Target) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= dot.Spell.CritDamageMultiplier()
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++
 	}
 }
 
@@ -198,6 +223,23 @@ func (spell *Spell) OutcomeTickMagicHit(sim *Simulation, result *SpellResult, at
 	}
 }
 
+func (spell *Spell) OutcomeTickMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if spell.MagicHitCheck(sim, attackTable) {
+		if spell.MagicCritCheck(sim, result.Target) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= spell.CritDamageMultiplier()
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+		spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
+
 func (spell *Spell) OutcomeMagicHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMagicHit(sim, result, attackTable, true)
 }
@@ -227,7 +269,6 @@ func (spell *Spell) outcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 	unit := spell.Unit
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0
-
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
@@ -253,7 +294,6 @@ func (spell *Spell) OutcomeMeleeWhiteNoGlance(sim *Simulation, result *SpellResu
 	unit := spell.Unit
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0
-
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
@@ -418,6 +458,7 @@ func (spell *Spell) OutcomeMeleeSpecialCritOnlyNoHitCounter(sim *Simulation, res
 	spell.outcomeMeleeSpecialCritOnly(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
+
 	if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 		result.applyAttackTableHit(spell, countHits)
 	}
@@ -430,6 +471,7 @@ func (spell *Spell) OutcomeMeleeSpecialBlockAndCritNoHitCounter(sim *Simulation,
 	spell.outcomeMeleeSpecialBlockAndCrit(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMeleeSpecialBlockAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
+
 	if spell.Unit.PseudoStats.InFrontOfTarget {
 		if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 			result.applyAttackTableBlock(sim, spell, attackTable)
@@ -589,7 +631,14 @@ func (result *SpellResult) applyAttackTableBlock(sim *Simulation, spell *Spell, 
 	if sim.RandomFloat("Block Roll") < chance {
 		result.Outcome |= OutcomeBlock
 		if result.DidCrit() {
+			// Subtract Crits because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Crits--
 			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
+		} else if result.DidGlance() {
+			// Subtract Glances because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Glances--
+			spell.SpellMetrics[result.Target.UnitIndex].GlanceBlocks++
+
 		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
 		}
@@ -719,7 +768,13 @@ func (result *SpellResult) applyEnemyAttackTableBlock(sim *Simulation, spell *Sp
 	if sim.RandomFloat("Player Block") < chance {
 		result.Outcome |= OutcomeBlock
 		if result.DidCrit() {
+			// Subtract Crits because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Crits--
 			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
+		} else if result.DidGlance() {
+			// Subtract Glances because they happen before Blocks
+			spell.SpellMetrics[result.Target.UnitIndex].Glances--
+			spell.SpellMetrics[result.Target.UnitIndex].GlanceBlocks++
 		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
 		}

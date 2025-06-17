@@ -3,6 +3,7 @@ import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
 import { CURRENT_API_VERSION } from './constants/other';
 import { SimSettingCategories } from './constants/sim_settings';
+import { IndividualSimUIConfig } from './individual_sim_ui';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
 import { PlayerSpec } from './player_spec';
@@ -270,6 +271,7 @@ export class Player<SpecType extends Spec> {
 	private enchantEPCache = new Map<number, number>();
 	private upgradeEPCache = new Map<string, number>();
 	private talents: SpecTalents<SpecType> | null = null;
+	private specConfig: IndividualSimUIConfig<SpecType>;
 
 	readonly specTypeFunctions: SpecTypeFunctions<SpecType>;
 
@@ -323,17 +325,16 @@ export class Player<SpecType extends Spec> {
 		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = getSpecConfig<SpecType>(this.getSpec());
+		this.specConfig = getSpecConfig<SpecType>(this.getSpec()) as IndividualSimUIConfig<SpecType>;
+		this.secondaryResource = this.specConfig.secondaryResource;
 
-		this.secondaryResource = specConfig.secondaryResource;
-
-		this.autoRotationGenerator = specConfig.autoRotation;
-		if (specConfig.simpleRotation) {
-			this.simpleRotationGenerator = specConfig.simpleRotation;
+		this.autoRotationGenerator = this.specConfig.autoRotation;
+		if (this.specConfig.simpleRotation) {
+			this.simpleRotationGenerator = this.specConfig.simpleRotation;
 		} else {
 			this.simpleRotationGenerator = null;
 		}
-		this.hiddenMCDs = specConfig.hiddenMCDs || new Array<number>();
+		this.hiddenMCDs = this.specConfig.hiddenMCDs || new Array<number>();
 
 		for (let i = 0; i < ItemSlot.ItemSlotOffHand + 1; ++i) {
 			this.itemEPCache[i] = new Map();
@@ -402,12 +403,12 @@ export class Player<SpecType extends Spec> {
 	}
 
 	canEnableTargetDummies(): boolean {
-		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman];
+		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman, Class.ClassMonk];
 		return healingSpellClasses.includes(this.getClass());
 	}
 
 	shouldEnableTargetDummies(): boolean {
-		if (this.getPlayerSpec().isHealingSpec) {
+		if (this.getPlayerSpec().isHealingSpec || this.getPlayerSpec().isTankSpec) {
 			return true;
 		}
 
@@ -502,6 +503,12 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getEnchants(slot).filter(enchant => canEquipEnchant(enchant, this.playerSpec));
 	}
 
+	// Returns all tinkers that this player can wear in the given slot.
+	// For the purpose of this function, they are all enchants still, however we split them since you can have both on the same item.
+	getTinkers(slot: ItemSlot): Array<Enchant> {
+		return this.sim.db.getEnchants(slot).filter(enchant => enchant.requiredProfession == Profession.Engineering);
+	}
+
 	// Returns all gems that this player can wear of the given color.
 	getGems(socketColor?: GemColor): Array<Gem> {
 		return this.sim.db.getGems(socketColor);
@@ -567,6 +574,7 @@ export class Player<SpecType extends Spec> {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
 		}
+
 		return defaultRatios;
 	}
 
@@ -1215,11 +1223,11 @@ export class Player<SpecType extends Spec> {
 	async setWowheadData(equippedItem: EquippedItem, elem: HTMLElement) {
 		const isBlacksmithing = this.hasProfession(Profession.Blacksmithing);
 		const gemIds = equippedItem.gems.length ? equippedItem.curGems(isBlacksmithing).map(gem => (gem ? gem.id : 0)) : [];
-
+		const enchantIds = [equippedItem.enchant?.effectId, equippedItem.tinker?.effectId].filter((id): id is number => id !== undefined);
 		equippedItem.asActionId().setWowheadDataset(elem, {
 			gemIds,
 			itemLevel: Number(equippedItem.ilvl),
-			enchantId: equippedItem.enchant?.effectId,
+			enchantIds: enchantIds,
 			reforgeId: equippedItem.reforge?.id,
 			randomEnchantmentId: equippedItem.randomSuffix?.id,
 			setPieceIds: this.gear
@@ -1379,7 +1387,7 @@ export class Player<SpecType extends Spec> {
 				if (!filters.weaponTypes.includes(item.weaponType) && item.handType > HandType.HandTypeUnknown) {
 					return false;
 				}
-				
+
 				if (!filters.oneHandedWeapons && item.handType != HandType.HandTypeTwoHand) {
 					return false;
 				}
@@ -1445,7 +1453,14 @@ export class Player<SpecType extends Spec> {
 				return false;
 			}
 
-			return true;
+			// This is not exactly a player selected filter, just a general filter to remove any gems with stats that is not in use for the player.
+			// i.e dead gems.
+			const statsFilter = this.specConfig.gemStats ?? this.specConfig.epStats;
+			const positiveStatIds = gem.stats.map((value, statId) => (value > 0 ? statId : -1)).filter(statId => statId >= 0);
+			if (!positiveStatIds.length) {
+				return false;
+			}
+			return !positiveStatIds.some(statId => !statsFilter.includes(statId));
 		});
 	}
 

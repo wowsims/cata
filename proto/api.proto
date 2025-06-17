@@ -180,76 +180,82 @@ message ActionMetrics {
 // Metrics for a specific action, when cast at a particular target.
 message TargetedActionMetrics {
 	// Raid/Target Index of the unit these metrics are targeted at.
-	int32 unit_index = 12;
+	int32 unit_index = 1;
 
 	// # of times this action was used by the agent.
-	int32 casts = 1;
+	int32 casts = 2;
 
 	// # of times this action hit a target. For cleave spells this can be larger than casts.
-	int32 hits = 2;
+	int32 hits = 3;
 
 	// # of times this action was a critical strike.
-	int32 crits = 3;
+	int32 crits = 4;
 
 	// # of times this action ticked on a target.
-	int32 ticks = 21;
+	int32 ticks = 5;
 
 	// # of times this action was a critical tick on a target.
-	int32 crit_ticks = 22;
+	int32 crit_ticks = 6;
 
-	// # of times this action was a Miss or Resist.
-	int32 misses = 4;
+	// # of times this action was a Miss.
+	int32 misses = 7;
 
 	// # of times this action was a Dodge.
-	int32 dodges = 5;
+	int32 dodges = 8;
 
 	// # of times this action was a Parry.
-	int32 parries = 6;
+	int32 parries = 9;
 
 	// # of times this action was a Block.
-	int32 blocks = 7;
+	int32 blocks = 10;
 
 	// # of times this action was a Critical Block.
-	int32 crit_blocks = 20;
+	int32 crit_blocks = 11;
 
 	// # of times this action was a Glance.
-	int32 glances = 8;
+	int32 glances = 12;
+
+	// # of times this action was a Glancing Block.
+	int32 glance_blocks = 13;
 
 	// Total damage done to this target by this action.
-	double damage = 9;
+	double damage = 14;
 
 	// Total critical damage done to this target by this action.
 	double crit_damage = 15;
 
 	// Total tick damage done to this target by this action.
-	double tick_damage = 23;
+	double tick_damage = 16;
 
 	// Total critical tick damage done to this target by this action.
-	double crit_tick_damage = 24;
+	double crit_tick_damage = 17;
 
 	// Total glancing damage done to this target by this action.
-	double glance_damage = 17;
+	double glance_damage = 18;
+
+	// Total glancing damage done to this target by this action.
+	double glance_block_damage = 19;
 
 	// Total block damage done to this target by this action.
-	double block_damage = 18;
+	double block_damage = 20;
 
 	// Total critical block damage done to this target by this action.
-	double crit_block_damage = 19;
+	double crit_block_damage = 21;
 
 	// Total threat done to this target by this action.
-	double threat = 10;
+	double threat = 22;
 
 	// Total healing done to this target by this action.
-	double healing = 11;
+	double healing = 23;
 
 	// Total critical healing done to this target by this action.
-	double crit_healing = 16;
+	double crit_healing = 24;
 
 	// Total shielding done to this target by this action.
-	double shielding = 13;
+	double shielding = 25;
 
 	// Total time spent casting this action, in milliseconds, either from hard casts, GCD, or channeling.
-	double cast_time_ms = 14;
+	double cast_time_ms = 26;
 }
 
 message AggregatorData {

@@ -14,13 +14,14 @@ func init() {
 	WITH_DB = true
 
 	simDB := &proto.SimDatabase{
-		Items:          make([]*proto.SimItem, len(db.Items)),
-		Enchants:       make([]*proto.SimEnchant, len(db.Enchants)),
-		Gems:           make([]*proto.SimGem, len(db.Gems)),
-		ReforgeStats:   make([]*proto.ReforgeStat, len(db.ReforgeStats)),
-		RandomSuffixes: make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
-		Consumables:    make([]*proto.Consumable, len(db.Consumables)),
-		SpellEffects:   make([]*proto.SpellEffect, len(db.SpellEffects)),
+		Items:                    make([]*proto.SimItem, len(db.Items)),
+		Enchants:                 make([]*proto.SimEnchant, len(db.Enchants)),
+		Gems:                     make([]*proto.SimGem, len(db.Gems)),
+		ReforgeStats:             make([]*proto.ReforgeStat, len(db.ReforgeStats)),
+		ItemEffectRandPropPoints: make([]*proto.ItemEffectRandPropPoints, len(db.ItemEffectRandPropPoints)),
+		RandomSuffixes:           make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
+		Consumables:              make([]*proto.Consumable, len(db.Consumables)),
+		SpellEffects:             make([]*proto.SpellEffect, len(db.SpellEffects)),
 	}
 
 	for i, item := range db.Items {
@@ -38,6 +39,7 @@ func init() {
 			SetName:          item.SetName,
 			SetId:            item.SetId,
 			ScalingOptions:   item.ScalingOptions,
+			ItemEffect:       item.ItemEffect,
 		}
 	}
 
@@ -51,8 +53,11 @@ func init() {
 
 	for i, enchant := range db.Enchants {
 		simDB.Enchants[i] = &proto.SimEnchant{
-			EffectId: enchant.EffectId,
-			Stats:    enchant.Stats,
+			EffectId:      enchant.EffectId,
+			Stats:         enchant.Stats,
+			EnchantEffect: enchant.EnchantEffect,
+			Name:          enchant.Name,
+			Type:          enchant.Type,
 		}
 	}
 
@@ -71,6 +76,13 @@ func init() {
 			FromStat:   reforgeStat.FromStat,
 			ToStat:     reforgeStat.ToStat,
 			Multiplier: reforgeStat.Multiplier,
+		}
+	}
+
+	for i, itemEffectRpp := range db.ItemEffectRandPropPoints {
+		simDB.ItemEffectRandPropPoints[i] = &proto.ItemEffectRandPropPoints{
+			Ilvl:           itemEffectRpp.Ilvl,
+			RandPropPoints: itemEffectRpp.RandPropPoints,
 		}
 	}
 

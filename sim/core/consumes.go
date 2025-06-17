@@ -57,13 +57,18 @@ func applyConsumeEffects(agent Agent) {
 	}
 	if consumables.FoodId != 0 {
 		food := ConsumablesByID[consumables.FoodId]
-
+		isPanda := character.Race == proto.Race_RaceHordePandaren || character.Race == proto.Race_RaceAlliancePandaren
 		var foodBuffStats stats.Stats
 		if food.BuffsMainStat {
-			buffAmount := food.Stats[stats.Stamina]
+			buffAmount := TernaryFloat64(isPanda, food.Stats[stats.Stamina]*2, food.Stats[stats.Stamina])
 			foodBuffStats[stats.Stamina] = buffAmount
 			foodBuffStats[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})] = buffAmount
 		} else {
+			if isPanda {
+				for stat, amount := range food.Stats {
+					food.Stats[stat] = amount * 2
+				}
+			}
 			foodBuffStats = food.Stats
 		}
 		character.AddStats(foodBuffStats)
@@ -72,7 +77,6 @@ func applyConsumeEffects(agent Agent) {
 	registerPotionCD(agent, consumables)
 	registerConjuredCD(agent, consumables)
 	registerExplosivesCD(agent, consumables)
-	registerTinkerHandsCD(agent, consumables)
 }
 
 var PotionAuraTag = "Potion"
@@ -109,7 +113,7 @@ func registerPotionCD(agent Agent, consumes *proto.ConsumesSpec) {
 	}
 }
 
-var AlchStoneItemIDs = []int32{80508, 96252, 96253, 96254, 44322, 44323, 44324}
+var AlchStoneItemIDs = []int32{136197, 80508, 96252, 96253, 96254, 44322, 44323, 44324}
 
 func (character *Character) HasAlchStone() bool {
 	alchStoneEquipped := false
@@ -324,6 +328,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 			ActionID:    BigDaddyActionID,
 			SpellSchool: SpellSchoolFire,
 			ProcMask:    ProcMaskEmpty,
+			Flags:       SpellFlagAoE,
 
 			Cast: CastConfig{
 				CD: Cooldown{
@@ -348,9 +353,8 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-				baseDamage := 5006 * sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, aoeTarget, 5006, spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		})
@@ -402,220 +406,5 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 				return false // Intentionally not automatically used
 			},
 		})
-	}
-}
-
-func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
-	if consumes.TinkerId == 0 {
-		return
-	}
-	character := agent.GetCharacter()
-	if !character.HasProfession(proto.Profession_Engineering) {
-		return
-	}
-	//Todo: Get them dynamically from dbc data
-	// We switch on spell id apparently
-	switch consumes.TinkerId {
-	case 82174:
-		// Enchant: 4179, Spell: 82174 - Synapse Springs
-		statType := character.GetHighestStatType([]stats.Stat{stats.Intellect, stats.Strength, stats.Agility})
-
-		var actionID ActionID
-		var highestStat stats.Stats
-		var label string
-		switch statType {
-		case stats.Intellect:
-			actionID = ActionID{SpellID: 96230}
-			highestStat = stats.Stats{stats.Intellect: 480}
-			label = "Synapse Springs - Int"
-		case stats.Agility:
-			actionID = ActionID{SpellID: 96228}
-			highestStat = stats.Stats{stats.Agility: 480}
-			label = "Synapse Springs - Agi"
-		case stats.Strength:
-			actionID = ActionID{SpellID: 96229}
-			highestStat = stats.Stats{stats.Strength: 480}
-			label = "Synapse Springs - Str"
-		default:
-			panic("Stat type doesn't match any defined case")
-		}
-
-		aura := character.NewTemporaryStatsAura(
-			label,
-			actionID,
-			highestStat,
-			time.Second*10,
-		)
-
-		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    ActionID{SpellID: 82174},
-			SpellSchool: SpellSchoolPhysical,
-			Flags:       SpellFlagNoOnCastComplete,
-
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-				SharedCD: Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: time.Second * 10,
-				},
-			},
-
-			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				aura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(MajorCooldown{
-			Spell:    spell,
-			Priority: CooldownPriorityLow,
-			Type:     CooldownTypeDPS,
-		})
-		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case 82176:
-		// Enchant: 4180, Spell: 82176 - Quickflip Deflection Plates
-		actionID := ActionID{SpellID: 82176}
-		statAura := character.NewTemporaryStatsAura(
-			"Quickflip Deflection Plates Buff",
-			actionID,
-			stats.Stats{stats.Armor: 1500},
-			time.Second*12,
-		)
-
-		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: SpellSchoolPhysical,
-			Flags:       SpellFlagNoOnCastComplete,
-
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				statAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(MajorCooldown{
-			Spell:    spell,
-			Priority: CooldownPriorityLow,
-			Type:     CooldownTypeSurvival,
-		})
-		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case 82180:
-		// Enchant: 4181, Spell: 82180 - Tazik Shocker
-		actionID := ActionID{SpellID: 82179}
-		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: SpellSchoolNature,
-			Flags:       SpellFlagNoOnCastComplete,
-
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 120,
-				},
-			},
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
-				// Benerfits from enhancement mastery
-				// Ele crit dmg multi
-				// Moonkin eclipse, so basically everything
-				spell.CalcAndDealDamage(sim, unit, sim.Roll(4320, 961), spell.OutcomeMagicHitAndCrit)
-			},
-		})
-		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-
-		character.AddMajorCooldown(MajorCooldown{
-			Spell:    spell,
-			Priority: CooldownPriorityLow,
-			Type:     CooldownTypeDPS,
-		})
-	case 82184:
-		// Enchant: 4182, Spell: 82184 - Spinal Healing Injector
-		actionID := ActionID{SpellID: 82184}
-		healthMetric := character.NewHealthMetrics(actionID)
-		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: SpellSchoolPhysical,
-			Flags:       SpellFlagNoOnCastComplete | SpellFlagCombatPotion,
-
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-				SharedCD: Cooldown{
-					Timer:    character.GetPotionCD(),
-					Duration: time.Minute * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
-				result := sim.Roll(27000, 33000)
-				if character.HasAlchStone() {
-					result *= 1.4
-				}
-
-				character.GainHealth(sim, result, healthMetric)
-			},
-		})
-
-		character.AddMajorCooldown(MajorCooldown{
-			Spell:    spell,
-			Priority: CooldownPriorityLow,
-			Type:     CooldownTypeSurvival,
-		})
-		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case 4183:
-		// Enchant: 4183, Spell: 82186 - Z50 Mana Gulper
-		actionId := ActionID{SpellID: 82186}
-		manaMetric := character.NewManaMetrics(actionId)
-		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    actionId,
-			SpellSchool: SpellSchoolPhysical,
-			Flags:       SpellFlagNoOnCastComplete | SpellFlagPotion,
-
-			// TODO: In theory those ingi on-use enchants share a CD with potions
-			// The potion CD timer is not available right now
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-				SharedCD: Cooldown{
-					Timer:    character.GetPotionCD(),
-					Duration: time.Minute * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
-				mana := sim.Roll(10730, 12470)
-				if character.HasAlchStone() {
-					mana *= 1.4
-				}
-
-				character.AddMana(sim, mana, manaMetric)
-			},
-		})
-
-		character.AddMajorCooldown(MajorCooldown{
-			ShouldActivate: func(s *Simulation, c *Character) bool {
-				return c.HasManaBar() && (c.MaxMana()-c.CurrentMana()) > 10730
-			},
-			Spell:    spell,
-			Priority: CooldownPriorityLow,
-			Type:     CooldownTypeMana,
-		})
-		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
 	}
 }

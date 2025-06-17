@@ -6,8 +6,8 @@ import { ref } from 'tsx-vanilla';
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ErrorOutcomeType, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, ItemRandomSuffix, ItemSlot, ItemSpec, ReforgeStat, SimEnchant, SimGem, Spec } from '../../proto/common';
-import { SimDatabase, SimItem } from '../../proto/db';
+import { GemColor, ItemRandomSuffix, ItemSlot, ItemSpec, ReforgeStat, Spec } from '../../proto/common';
+import { ItemEffectRandPropPoints, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/db';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
@@ -298,6 +298,12 @@ export class BulkTab extends SimTab {
 				throw new Error(`item with ID ${is.id} not found in database`);
 			}
 			itemsDb.items.push(SimItem.fromJson(UIItem.toJson(item.item), { ignoreUnknownFields: true }));
+
+			const ieRpp = this.simUI.sim.db.getItemEffectRandPropPoints(item.ilvl);
+			if (ieRpp) {
+				itemsDb.itemEffectRandPropPoints.push(ItemEffectRandPropPoints.create(this.simUI.sim.db.getItemEffectRandPropPoints(item.ilvl)));
+			}
+
 			if (item.enchant) {
 				itemsDb.enchants.push(
 					SimEnchant.fromJson(UIEnchant.toJson(item.enchant), {

@@ -19,27 +19,35 @@ Melee attack speed increased by 40%.
 */
 func (monk *Monk) registerWayOfTheMonk() {
 	aura := core.MakePermanent(monk.RegisterAura(core.Aura{
-		Label:    "Way of the Monk" + monk.Label,
-		ActionID: core.ActionID{SpellID: 120277},
+		Label:      "Way of the Monk" + monk.Label,
+		ActionID:   core.ActionID{SpellID: 120277},
+		BuildPhase: core.CharacterBuildPhaseBase,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1.4)
 			} else {
-				monk.AutoAttacks.MHConfig().DamageMultiplier *= 1.4
-				monk.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
+				if monk.MHAutoSpell != nil {
+					monk.MHAutoSpell.DamageMultiplier *= 1.4
+				}
+				if monk.OHAutoSpell != nil {
+					monk.OHAutoSpell.DamageMultiplier *= 1.4
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if monk.HandType == proto.HandType_HandTypeTwoHand {
 				monk.MultiplyMeleeSpeed(sim, 1/1.4)
 			} else {
-				monk.AutoAttacks.MHConfig().DamageMultiplier *= 1 / 1.4
-				monk.AutoAttacks.OHConfig().DamageMultiplier *= 1 / 1.4
+				if monk.MHAutoSpell != nil {
+					monk.MHAutoSpell.DamageMultiplier /= 1.4
+				}
+				if monk.OHAutoSpell != nil {
+					monk.OHAutoSpell.DamageMultiplier /= 1.4
+				}
 			}
 		},
 	}))
 
-	// re-configure poisons when performing an item swap
 	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		aura.Deactivate(sim)
 		aura.Activate(sim)
@@ -74,19 +82,16 @@ func (monk *Monk) registerSwiftReflexes() {
 		},
 	})
 
-	icd := &core.Cooldown{
-		Duration: time.Second,
-		Timer:    monk.NewTimer(),
-	}
-
-	core.MakePermanent(monk.RegisterAura(core.Aura{
-		Label:    "Swift Reflexes" + monk.Label,
+	aura := core.MakeProcTriggerAura(&monk.Unit, core.ProcTrigger{
+		Name:     "Swift Reflexes" + monk.Label,
 		ActionID: core.ActionID{SpellID: 124334},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if icd.IsReady(sim) && result.Outcome.Matches(core.OutcomeParry) {
-				icd.Use(sim)
-				swiftReflexesAttack.Cast(sim, result.Target)
-			}
+		Outcome:  core.OutcomeParry,
+		Callback: core.CallbackOnSpellHitTaken,
+		ICD:      time.Second,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			swiftReflexesAttack.Cast(sim, spell.Unit)
 		},
-	}).AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 0.05))
+	})
+	aura.BuildPhase = core.CharacterBuildPhaseBase
+	aura.AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 0.05)
 }

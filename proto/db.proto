@@ -11,10 +11,19 @@ message SimDatabase {
 	repeated SimEnchant enchants = 2;
 	repeated SimGem gems = 3;
 	repeated ReforgeStat reforge_stats = 6;
+	repeated ItemEffectRandPropPoints item_effect_rand_prop_points = 9;
 
 	repeated Consumable consumables = 7;
 	repeated SpellEffect spell_effects = 8;
+}
 
+// Contains only the Enchant info needed by the sim.
+message SimEnchant {
+	int32 effect_id = 1;
+	string name = 2; // Only needed for unit tests.
+	ItemType type = 3; // Only needed for unit tests.
+	repeated double stats = 4;
+	ItemEffect enchant_effect = 5;
 }
 
 // Contains only the Item info needed by the sim.
@@ -36,6 +45,7 @@ message SimItem {
 	int32 set_id = 12;
 
 	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ItemLevelState variants that this item could potentially have
+	ItemEffect item_effect = 14;
 }
 
 message Consumable {
@@ -48,4 +58,17 @@ message Consumable {
 	//In seconds
 	int32 buff_duration = 7;
 	repeated int32 effect_ids = 8;
+}
+
+message ItemEffectRandPropPoints {
+	int32 ilvl = 1;
+	int32 rand_prop_points =2;
+}
+
+// Contains only the Gem info needed by the sim.
+message SimGem {
+	int32 id = 1;
+	string name = 2;
+	GemColor color = 3;
+	repeated double stats = 4;
 }

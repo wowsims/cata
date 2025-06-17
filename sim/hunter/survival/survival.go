@@ -27,9 +27,8 @@ func RegisterSurvivalHunter() {
 func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
-
-	// hunter.registerExplosiveShotSpell()
-	// hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
+	hunter.registerExplosiveShotSpell()
+	hunter.registerBlackArrowSpell()
 	// Apply SV Hunter mastery
 	schoolsAffectedBySurvivalMastery := []stats.SchoolIndex{
 		stats.SchoolIndexNature,
@@ -39,6 +38,7 @@ func (hunter *SurvivalHunter) Initialize() {
 		stats.SchoolIndexShadow,
 	}
 	baseMasteryRating := hunter.GetStat(stats.MasteryRating)
+
 	for _, school := range schoolsAffectedBySurvivalMastery {
 		hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(baseMasteryRating)
 	}
@@ -51,7 +51,7 @@ func (hunter *SurvivalHunter) Initialize() {
 	})
 
 	// Survival Spec Bonus
-	hunter.MultiplyStat(stats.Agility, 1.1)
+	//hunter.MultiplyStat(stats.Agility, 1.1)
 }
 func (hunter *SurvivalHunter) getMasteryBonus(masteryRating float64) float64 {
 	return 1.08 + ((masteryRating / core.MasteryRatingPerMasteryPoint) * 0.01)
@@ -65,7 +65,6 @@ func NewSurvivalHunter(character *core.Character, options *proto.Player) *Surviv
 	}
 
 	svHunter.SurvivalOptions = survivalOptions
-	// Todo: Is there a better way to do this?
 
 	return svHunter
 }

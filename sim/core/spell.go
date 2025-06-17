@@ -484,6 +484,18 @@ func (spell *Spell) reset(sim *Simulation) {
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {
 	spell.SpellMetrics = spell.splitSpellMetrics[splitIdx]
 	spell.ActionID.Tag = splitIdx
+
+	// Also set the tag on any dots to have them line up in the timeline
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil && dot.ActionID.SameActionIgnoreTag(spell.ActionID) {
+				dot.ActionID.Tag = splitIdx
+			}
+		}
+	}
+	if spell.aoeDot != nil && spell.aoeDot.ActionID.SameActionIgnoreTag(spell.ActionID) {
+		spell.aoeDot.ActionID.Tag = splitIdx
+	}
 }
 
 func (spell *Spell) GetMetricSplitCount() int {
@@ -642,11 +654,6 @@ func (spell *Spell) ApplyAOEThreat(threatAmount float64) {
 }
 
 func (spell *Spell) finalizeExpectedDamage(result *SpellResult) {
-	if !spell.SpellSchool.Matches(SpellSchoolPhysical) {
-		result.Damage /= result.ResistanceMultiplier
-		result.Damage *= AverageMagicPartialResistMultiplier
-		result.ResistanceMultiplier = AverageMagicPartialResistMultiplier
-	}
 	result.inUse = false
 }
 func (spell *Spell) ExpectedInitialDamage(sim *Simulation, target *Unit) float64 {
@@ -712,9 +719,9 @@ type ResourceCostImpl interface {
 }
 
 type SpellCost struct {
-	BaseCost        int32 // The base power cost before all modifiers.
-	FlatModifier    int32 // Flat value added to base cost before pct mods
-	PercentModifier int32 // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
+	BaseCost        int32   // The base power cost before all modifiers.
+	FlatModifier    int32   // Flat value added to base cost before pct mods
+	PercentModifier float64 // Multiplier for cost, as of MoP a float
 	spell           *Spell
 	ResourceCostImpl
 }
@@ -723,8 +730,7 @@ func (sc *SpellCost) ApplyCostModifiers(cost int32) float64 {
 	spell := sc.spell
 	cost = max(0, cost+sc.FlatModifier)
 	cost = max(0, cost*spell.Unit.PseudoStats.SpellCostPercentModifier/100)
-	cost = max(0, cost*sc.PercentModifier/100)
-	return float64(cost)
+	return max(0, float64(cost)*sc.PercentModifier)
 }
 
 // Get power cost after all modifiers.
@@ -759,6 +765,7 @@ func (spell *Spell) scheduleRechargeAction(sim *Simulation) {
 		Priority:     ActionPriorityAuto,
 		OnAction: func(sim *Simulation) {
 			spell.RefreshCharge(sim)
+			spell.rechargeTimer = nil
 			if spell.charges < spell.MaxCharges {
 				spell.scheduleRechargeAction(sim)
 			}

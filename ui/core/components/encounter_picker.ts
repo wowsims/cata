@@ -344,11 +344,12 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			id: 'target-picker-level',
 			label: 'Level',
 			values: [
-				{ name: '85', value: 85 },
 				{ name: '93', value: 93 },
 				{ name: '92', value: 92 },
 				{ name: '91', value: 91 },
 				{ name: '90', value: 90 },
+				{ name: '88', value: 88 },
+
 			],
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().level,
@@ -802,11 +803,6 @@ function equalTargetsIgnoreInputs(target1: TargetProto | undefined, target2: Tar
 const ALL_TARGET_STATS: Array<{ stat: Stat; tooltip: string; extraCssClasses: Array<string> }> = [
 	{ stat: Stat.StatHealth, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatArmor, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatArcaneResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatFireResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatFrostResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatNatureResistance, tooltip: '', extraCssClasses: [] },
-	{ stat: Stat.StatShadowResistance, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatAttackPower, tooltip: '', extraCssClasses: ['threat-metrics'] },
 ];
 

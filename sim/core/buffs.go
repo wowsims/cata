@@ -200,17 +200,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		if raidBuffs.Bloodlust {
 			registerBloodlustCD(agent, 2825)
 		}
-		if raidBuffs.Heroism {
-			registerBloodlustCD(agent, 32182)
-		}
-
-		if raidBuffs.TimeWarp {
-			registerBloodlustCD(agent, 80353)
-		}
 
 		// Other individual CDs
 		registerUnholyFrenzyCD(agent, individual.UnholyFrenzyCount)
 		registerTricksOfTheTradeCD(agent, individual.TricksOfTheTrade)
+		registerDevotionAuraCD(agent, individual.DevotionAuraCount)
 		registerHandOfSacrificeCD(agent, individual.HandOfSacrificeCount)
 		registerPainSuppressionCD(agent, individual.PainSuppressionCount)
 		registerGuardianSpiritCD(agent, individual.GuardianSpiritCount)
@@ -359,10 +353,12 @@ func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 func registerExclusiveMeleeHaste(aura *Aura, value float64) {
 	aura.NewExclusiveEffect("AttackSpeed%", false, ExclusiveEffect{
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.MultiplyAttackSpeed(s, value)
+			ee.Aura.Unit.MultiplyMeleeSpeed(s, value)
+			ee.Aura.Unit.MultiplyRangedSpeed(s, value)
 		},
 		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.MultiplyAttackSpeed(s, 1/value)
+			ee.Aura.Unit.MultiplyMeleeSpeed(s, 1/value)
+			ee.Aura.Unit.MultiplyRangedSpeed(s, 1/value)
 		},
 	})
 }
@@ -677,14 +673,13 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		Duration: BloodlustDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1.3)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.3)
 			sated.Activate(sim)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.3)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.3)
 		},
 	})
+
 	multiplyCastSpeedEffect(aura, 1.3)
 	return aura
 }
@@ -792,11 +787,9 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 		Duration: UnholyFrenzyDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1.2)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.2)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.2)
-			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.2)
 		},
 	})
 
@@ -807,6 +800,77 @@ func RegisterPercentDamageModifierEffect(aura *Aura, percentDamageModifier float
 	return aura.NewExclusiveEffect("PercentDamageModifier", true, ExclusiveEffect{
 		Priority: percentDamageModifier,
 	})
+}
+
+var DevotionAuraTag = "DevotionAura"
+
+var DevotionAuraActionID = ActionID{SpellID: 31821}
+
+const DevotionAuraDuration = time.Second * 6
+const DevotionAuraCD = time.Minute * 3
+
+func registerDevotionAuraCD(agent Agent, numDevotionAuras int32) {
+	if numDevotionAuras == 0 {
+		return
+	}
+
+	// TODO: Config for specifying the amount of Holy spec Devotion Auras?
+	devAura := DevotionAuraAura(&agent.GetCharacter().Unit, -1, false)
+
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         DevotionAuraActionID.WithTag(-1),
+			AuraTag:          DevotionAuraTag,
+			CooldownPriority: CooldownPriorityLow,
+			AuraDuration:     DevotionAuraDuration,
+			AuraCD:           DevotionAuraCD,
+			Type:             CooldownTypeSurvival,
+
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return true
+			},
+			AddAura: func(sim *Simulation, character *Character) { devAura.Activate(sim) },
+		},
+		numDevotionAuras)
+}
+
+func DevotionAuraAura(unit *Unit, actionTag int32, isHoly bool) *Aura {
+	actionID := DevotionAuraActionID.WithTag(actionTag)
+
+	auraConfig := Aura{
+		Label:    "DevotionAura-" + actionID.String(),
+		Tag:      DevotionAuraTag,
+		ActionID: actionID,
+		Duration: DevotionAuraDuration,
+	}
+
+	if isHoly {
+		// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
+		// - Devotion Aura cast by a Holy Paladin will now reduce all damage by 20% (was Magical damage only).
+		//   - Developers’ notes: Changing Devotion Aura to reduce all damage makes it beneficial in more situations and aligns with other damage reducing abilities like Power Word: Barrier.
+		// EffectIndex 2 on the Holy specific Hotfix Passive https://wago.tools/db2/SpellEffect?build=5.5.0.61496&filter%5BSpellID%5D=137029&page=1
+		auraConfig.AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.DamageTakenMultiplier, 0.8)
+	} else {
+		auraConfig.OnGain = func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.8
+		}
+		auraConfig.OnExpire = func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 0.8
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 0.8
+		}
+	}
+
+	return unit.GetOrRegisterAura(auraConfig)
 }
 
 var HandOfSacrificeAuraTag = "HandOfSacrifice"
@@ -909,7 +973,7 @@ func registerGuardianSpiritCD(agent Agent, numGuardianSpirits int32) {
 	gsAura := GuardianSpiritAura(character, -1)
 	healthMetrics := character.NewHealthMetrics(ActionID{SpellID: 47788})
 
-	character.AddDynamicDamageTakenModifier(func(sim *Simulation, _ *Spell, result *SpellResult) {
+	character.AddDynamicDamageTakenModifier(func(sim *Simulation, _ *Spell, result *SpellResult, isPeriodic bool) {
 		if (result.Damage >= character.CurrentHealth()) && gsAura.IsActive() {
 			result.Damage = character.CurrentHealth()
 			character.GainHealth(sim, 0.5*character.MaxHealth(), healthMetrics)
@@ -1160,7 +1224,7 @@ func registerStormLashCD(agent Agent, numStormLashes int32) {
 
 var StormLashSpellExceptions = map[int32]float64{
 	1120:   2.0, // Drain Soul
-	45284:  2.0, // Lightning Bolt
+	403:    2.0, // Lightning Bolt
 	51505:  2.0, // Lava Burst
 	103103: 2.0, // Malefic Grasp
 	15407:  1.0, // Mind Flay
@@ -1169,6 +1233,7 @@ var StormLashSpellExceptions = map[int32]float64{
 
 // Source: https://www.wowhead.com/mop-classic/spell=120668/stormlash-totem#comments
 func StormLashAura(character *Character, actionTag int32) *Aura {
+	actionId := ActionID{SpellID: 120687, Tag: actionTag}
 	for _, pet := range character.Pets {
 		if !pet.IsGuardian() {
 			StormLashAura(&pet.Character, actionTag)
@@ -1178,7 +1243,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 	damage := 0.0
 
 	stormlashSpell := character.RegisterSpell(SpellConfig{
-		ActionID:    ActionID{SpellID: 120687, Tag: actionTag},
+		ActionID:    actionId,
 		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
@@ -1201,7 +1266,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		}
 
 		baseMultiplierExtension := getStormLashSpellOverride(spell)
-		ap := Ternary(spell.IsMelee(), stormlashSpell.MeleeAttackPower(), stormlashSpell.RangedAttackPower())
+		ap := Ternary(spell.IsRanged(), stormlashSpell.RangedAttackPower(), stormlashSpell.MeleeAttackPower())
 		sp := stormlashSpell.SpellPower()
 		scaledAP := ap * 0.2
 		scaledSP := sp * 0.3
@@ -1258,8 +1323,8 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		aura.Icd.Use(sim)
 	}
 
-	return character.RegisterAura(Aura{
-		Label:    "Stormlash Totem",
+	return character.GetOrRegisterAura(Aura{
+		Label:    "Stormlash Totem-" + actionId.String(),
 		Tag:      StormLashAuraTag,
 		ActionID: ActionID{SpellID: 120668, Tag: actionTag},
 		Duration: StormLashDuration,

@@ -30,6 +30,7 @@ message ProtoVersion {
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
 }
+
 enum ItemLevelState {
     Base = 0;
     ChallengeMode = -1;
@@ -38,6 +39,7 @@ enum ItemLevelState {
     UpgradeStepThree = 3;
     UpgradeStepFour = 4;
 }
+
 message ScalingItemProperties {
     int32 rand_prop_points = 1;
     double weapon_damage_min = 2;
@@ -45,6 +47,7 @@ message ScalingItemProperties {
     map<int32, double> stats = 4; // for compactness
 	int32 ilvl = 6;
 }
+
 enum Spec {
 	SpecUnknown = 0;
 
@@ -118,19 +121,27 @@ enum Faction {
 	Horde = 2;
 }
 
+// Should aways be in order of dbc class file to properly match class masks
+// Found at https://wago.tools/db2/ChrClasses?build=5.5.0.61217&sort%5BID%5D=asc
 enum Class {
 	ClassUnknown = 0;
-	ClassDruid = 1;
-	ClassHunter = 2;
-	ClassMage = 3;
-	ClassPaladin = 4;
+	ClassWarrior = 1;
+	ClassPaladin = 2;
+	ClassHunter = 3;
+	ClassRogue = 4;
 	ClassPriest = 5;
-	ClassRogue = 6;
+	ClassDeathKnight = 6;
 	ClassShaman = 7;
-	ClassWarlock = 8;
-	ClassWarrior = 9;
-	ClassDeathKnight = 10;
-	ClassMonk = 11;
+	ClassMage = 8;
+	ClassWarlock = 9;
+	ClassMonk = 10;
+	ClassDruid = 11;
+	ClassExtra1 = 12;
+	ClassExtra2 = 13;
+	ClassExtra3 = 14;
+	ClassExtra4 = 15;
+	ClassExtra5 = 16;
+	ClassExtra6 = 17;
 }
 
 enum Profession {
@@ -188,7 +199,7 @@ enum Profession {
 // the Go Stats array to be larger than the size of the Stat enum proto, but the
 // shared indices between the two must exactly match.
 //
-// NextIndex: 27;
+// NextIndex: 22;
 enum Stat {
 	// Primary attributes ("main stat")
 	StatStrength = 0;
@@ -210,22 +221,17 @@ enum Stat {
 	StatAttackPower = 12;
 	StatRangedAttackPower = 13;
 	StatSpellPower = 14;
-	StatSpellPenetration = 15;
-	StatResilienceRating = 16;
-	StatArcaneResistance = 17;
-	StatFireResistance = 18;
-	StatFrostResistance = 19;
-	StatNatureResistance = 20;
-	StatShadowResistance = 21;
-	StatArmor = 22; // "white armor" that fully scales with all multipliers
-	StatBonusArmor = 23; // "green armor" that does not scale
+	StatPvpResilienceRating = 15;
+	StatPvpPowerRating = 16;
+	StatArmor = 17; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 18; // "green armor" that does not scale
 
 	// Composite stats that are built up from the above gear stats + buffs.
 	// These still belong in the Stat enum because they can be present on
 	// some enchants and because the base values need to be stored for NPCs.
-	StatHealth = 24;
-	StatMana = 25;
-	StatMP5 = 26;
+	StatHealth = 19;
+	StatMana = 20;
+	StatMP5 = 21;
 
 	// DO NOT add new stats here without discussing it first; new stats come
 	// with a performance penalty.
@@ -482,13 +488,11 @@ message RaidBuffs {
 
 	// Major Haste
 	bool bloodlust                = 32;
-	bool heroism                  = 33;
-	bool time_warp                = 34;
 
 	// Raid Cooldowns
-	int32 mana_tide_totem_count   = 35;
-	int32 stormlash_totem_count = 36;
-	int32 skull_banner_count = 37;
+	int32 mana_tide_totem_count   = 33;
+	int32 stormlash_totem_count = 34;
+	int32 skull_banner_count = 35;
   }
 
 // Buffs that affect a single party.
@@ -508,7 +512,7 @@ message IndividualBuffs {
 	// Other Buffs
 	int32 unholy_frenzy_count = 12;
 	TristateEffect tricks_of_the_trade = 101; // "Regular" = Glyphed, "Improved" = un-Glyphed
-	int32 divine_guardian_count = 23;
+	int32 devotion_aura_count = 23;
 	int32 pain_suppression_count = 24;
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;
@@ -560,8 +564,6 @@ message ConsumesSpec {
 	int32 food_id = 6;
 	int32 explosive_id = 7;
 	int32 conjured_id = 9;
-
-	int32 tinker_id = 10;
 }
 
 enum MobType {
@@ -683,6 +685,7 @@ message ItemSpec {
 	int32 reforging = 5; //reforging id
 	ItemLevelState upgrade_step = 7;
 	bool challenge_mode = 8;
+	int32 tinker = 9;
 }
 
 
@@ -713,20 +716,6 @@ enum EnchantType {
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
 	EnchantTypeOffHand = 5;
-}
-
-// Contains only the Enchant info needed by the sim.
-message SimEnchant {
-	int32 effect_id = 1;
-	repeated double stats = 2;
-}
-
-// Contains only the Gem info needed by the sim.
-message SimGem {
-	int32 id = 1;
-	string name = 2;
-	GemColor color = 3;
-	repeated double stats = 4;
 }
 
 message UnitReference {

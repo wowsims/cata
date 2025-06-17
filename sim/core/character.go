@@ -78,10 +78,8 @@ type Character struct {
 	// This character's index within its party [0-4].
 	PartyIndex int
 
-	defensiveTrinketCD *Timer
-	offensiveTrinketCD *Timer
-	conjuredCD         *Timer
-	potionCD           *Timer
+	// This stores a timer on spell category ID so that we can track on use effects.
+	spellCategoryTimers map[int32]*Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 }
@@ -589,12 +587,32 @@ func (character *Character) getCurrentProcMaskFor(pred func(item *Item) bool) Pr
 	}
 
 	if pred(character.MainHand()) {
-		mask |= ProcMaskMeleeMH
+		if character.MainHand().RangedWeaponType > 0 {
+			mask |= ProcMaskRanged
+		} else {
+			mask |= ProcMaskMeleeMH
+		}
 	}
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
 	}
 	return mask
+}
+
+func (character *Character) GetProcMaskForWeaponSlot(slot proto.ItemSlot) ProcMask {
+	item := character.GetItemBySlot(slot)
+	switch slot {
+	case proto.ItemSlot_ItemSlotMainHand:
+		if item.RangedWeaponType > 0 {
+			return ProcMaskRanged
+		} else {
+			return ProcMaskMeleeMH
+		}
+	case proto.ItemSlot_ItemSlotOffHand:
+		return ProcMaskMeleeOH
+	}
+
+	return ProcMaskEmpty
 }
 
 func (character *Character) doneIteration(sim *Simulation) {
@@ -615,17 +633,17 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatOffHandDps:  character.AutoAttacks.OH().DPS(),
 		proto.PseudoStat_PseudoStatRangedDps:   character.AutoAttacks.Ranged().DPS(),
 
-		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
+		// Base values are modified by Enemy attackTables, but we display for LVL 90 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodgePercent: (character.PseudoStats.BaseDodgeChance + character.GetDiminishedDodgeChance()) * 100,
-		proto.PseudoStat_PseudoStatParryPercent: (character.PseudoStats.BaseParryChance + character.GetDiminishedParryChance()) * 100,
-		proto.PseudoStat_PseudoStatBlockPercent: 5 + character.GetStat(stats.BlockPercent),
+		proto.PseudoStat_PseudoStatParryPercent: Ternary(character.PseudoStats.CanParry, (character.PseudoStats.BaseParryChance+character.GetDiminishedParryChance())*100, 0),
+		proto.PseudoStat_PseudoStatBlockPercent: Ternary(character.PseudoStats.CanBlock, (character.PseudoStats.BaseBlockChance+character.GetDiminishedBlockChance())*100, 0),
 
 		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
-		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
-		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
+		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier * character.PseudoStats.AttackSpeedMultiplier,
+		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier * character.PseudoStats.AttackSpeedMultiplier,
 		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
-		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.SwingSpeed() - 1) * 100,
-		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.RangedSwingSpeed() - 1) * 100,
+		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.TotalMeleeHasteMultiplier() - 1) * 100,
+		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.TotalRangedHasteMultiplier() - 1) * 100,
 		proto.PseudoStat_PseudoStatSpellHastePercent:     (character.TotalSpellHasteMultiplier() - 1) * 100,
 
 		// School-specific fully buffed Hit/Crit are represented as proper Stats in the back-end so
@@ -654,16 +672,16 @@ func (character *Character) GetMetricsProto() *proto.UnitMetrics {
 }
 
 func (character *Character) GetDefensiveTrinketCD() *Timer {
-	return character.GetOrInitTimer(&character.defensiveTrinketCD)
+	return character.GetOrInitSpellCategoryTimer(1190)
 }
 func (character *Character) GetOffensiveTrinketCD() *Timer {
-	return character.GetOrInitTimer(&character.offensiveTrinketCD)
+	return character.GetOrInitSpellCategoryTimer(1141)
 }
 func (character *Character) GetConjuredCD() *Timer {
-	return character.GetOrInitTimer(&character.conjuredCD)
+	return character.GetOrInitSpellCategoryTimer(30)
 }
 func (character *Character) GetPotionCD() *Timer {
-	return character.GetOrInitTimer(&character.potionCD)
+	return character.GetOrInitSpellCategoryTimer(4)
 }
 
 func (character *Character) AddStatProcBuff(effectID int32, procAura *StatBuffAura, isEnchant bool, eligibleSlots []proto.ItemSlot) {
@@ -686,10 +704,7 @@ func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.St
 }
 
 // Uses proto reflection to set fields in a talents proto (e.g. MageTalents,
-// WarriorTalents) based on a talentsStr. treeSizes should contain the number
-// of talents in each tree, usually around 30. This is needed because talent
-// strings truncate 0's at the end of each tree, so we can't infer the start index
-// of the tree from the string.
+// WarriorTalents) based on a talentsStr.
 func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 	fieldDescriptors := data.Descriptor().Fields()
 
@@ -709,9 +724,9 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	for _, itemSlot := range ArmorSpecializationSlots() {
 		item := character.Equipment[itemSlot]
-		// if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
-		// 	continue
-		// }
+		if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
+			continue
+		}
 		if item.ArmorType != armorType {
 			return false
 		}
@@ -720,8 +735,7 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
-	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+func (character *Character) RegisterArmorSpecializationTracker(armorType proto.ArmorType, spellID int32) *Aura {
 	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
 
 	aura := character.RegisterAura(Aura{
@@ -730,8 +744,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		BuildPhase: Ternary(isEnabled, CharacterBuildPhaseTalents, CharacterBuildPhaseNone),
 		Duration:   NeverExpires,
 	})
-
-	aura.AttachStatDependency(armorSpecializationDependency)
 
 	if isEnabled {
 		aura = MakePermanent(aura)
@@ -749,4 +761,11 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		})
 
 	return aura
+}
+
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
+	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	trackerAura := character.RegisterArmorSpecializationTracker(armorType, spellID)
+	trackerAura.AttachStatDependency(armorSpecializationDependency)
+	return trackerAura
 }

@@ -52,7 +52,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfBlindingLight]: {
 			name: "Glyph of Blinding Light",
-			description: "Your Blinding Light now knocks down targets for 0ms instead of Blinding them.",
+			description: "Your Blinding Light now knocks down targets for 3s instead of Blinding them.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_paladin_blindinglight.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfFinalWrath]: {
@@ -221,11 +221,6 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 			name: "Glyph of Bladed Judgment",
 			description: "Your Judgment spell depicts an axe or sword instead of a hammer, if you have an axe or sword equipped.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_axe_1h_cataclysm_c_01.jpg",
-		},
-		[PaladinMinorGlyph.GlyphOfRighteousRetreat]: {
-			name: "Glyph of Righteous Retreat",
-			description: "During Divine Shield, you can invoke your Hearthstone 50% faster.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/achievement_guildperk_hastyhearth.jpg",
 		},
 		[PaladinMinorGlyph.GlyphOfTheExorcist]: {
 			name: "Glyph of the Exorcist",
