@@ -41,6 +41,7 @@ func (moonkin *BalanceDruid) newTreant() *BalanceTreant {
 		}),
 	}
 
+	treant.PseudoStats.DamageDealtMultiplier *= 1.091
 	moonkin.AddPet(treant)
 
 	return treant
