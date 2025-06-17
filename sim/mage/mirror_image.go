@@ -254,9 +254,9 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := mi.AddDynamicMod(core.SpellModConfig{
-		ClassMask: MageMirrorImageSpellArcaneBlast,
-		IntValue:  150,
-		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask:  MageMirrorImageSpellArcaneBlast,
+		FloatValue: 1.5,
+		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
 	mi.arcaneChargesAura = mi.GetOrRegisterAura(core.Aura{
