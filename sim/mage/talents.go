@@ -55,11 +55,11 @@ func (mage *Mage) registerPresenceOfMind() {
 			return mage.GCD.IsReady(sim)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.presenceOfMindAura.Activate(sim)
+			mage.PresenceOfMindAura.Activate(sim)
 		},
 	})
 
-	mage.presenceOfMindAura = mage.RegisterAura(core.Aura{
+	mage.PresenceOfMindAura = mage.RegisterAura(core.Aura{
 		Label:    "Presence of Mind",
 		ActionID: core.ActionID{SpellID: 12043},
 		Duration: time.Hour,
@@ -112,11 +112,11 @@ func (mage *Mage) registerIceFloes() {
 			return mage.GCD.IsReady(sim)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.presenceOfMindAura.Activate(sim)
+			mage.PresenceOfMindAura.Activate(sim)
 		},
 	})
 
-	mage.iceFloesfAura = mage.RegisterAura(core.Aura{
+	mage.IceFloesAura = mage.RegisterAura(core.Aura{
 		Label:    "Ice Floes",
 		ActionID: core.ActionID{SpellID: 108839},
 		Duration: time.Second * 15,
@@ -157,7 +157,7 @@ func (mage *Mage) registerInvocation() {
 		Kind:      core.SpellMod_DotTickLength_Flat,
 	})
 
-	mage.invocationAura = mage.RegisterAura(core.Aura{
+	mage.InvocationAura = mage.RegisterAura(core.Aura{
 		Label:    "Invocation Aura",
 		ActionID: core.ActionID{SpellID: 116257},
 		Duration: time.Minute,
@@ -180,7 +180,7 @@ func (mage *Mage) registerRuneOfPower() {
 		return
 	}
 
-	mage.runeOfPowerAura = mage.RegisterAura(core.Aura{
+	mage.RuneOfPowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Rune of Power",
 		ActionID: core.ActionID{SpellID: 116011},
 		Duration: time.Minute,
@@ -210,7 +210,7 @@ func (mage *Mage) registerRuneOfPower() {
 			return mage.GCD.IsReady(sim)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.runeOfPowerAura.Activate(sim)
+			mage.RuneOfPowerAura.Activate(sim)
 		},
 	})
 }

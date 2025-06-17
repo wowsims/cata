@@ -37,7 +37,7 @@ func (mage *Mage) registerEvocation() {
 			Aura: core.Aura{
 				Label: "Evocation",
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mage.invocationAura.Activate(sim)
+					mage.InvocationAura.Activate(sim)
 				},
 			},
 			NumberOfTicks:        3,
@@ -46,7 +46,11 @@ func (mage *Mage) registerEvocation() {
 			HasteReducesDuration: true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				mage.AddMana(sim, manaPerTick, manaMetrics)
+				manaRegenMulti := mage.TotalSpellHasteMultiplier()
+				if mage.RuneOfPowerAura.IsActive() {
+					manaRegenMulti *= 1.75
+				}
+				mage.AddMana(sim, manaPerTick*manaRegenMulti, manaMetrics)
 			},
 		},
 
@@ -61,10 +65,10 @@ func (mage *Mage) registerEvocation() {
 		Spell: evocation,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			if mage.invocationAura.TimeActive(sim) >= time.Duration(time.Second*55) {
+			if mage.InvocationAura.TimeActive(sim) >= time.Duration(time.Second*55) {
 				return true
 			}
-			return !mage.invocationAura.IsActive()
+			return !mage.InvocationAura.IsActive()
 		},
 	})
 }

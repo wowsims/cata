@@ -32,13 +32,13 @@ type Mage struct {
 	IcyVeins             *core.Spell
 	Icicle               *core.Spell
 
-	invocationAura     *core.Aura
-	runeOfPowerAura    *core.Aura
-	presenceOfMindAura *core.Aura
+	InvocationAura     *core.Aura
+	RuneOfPowerAura    *core.Aura
+	PresenceOfMindAura *core.Aura
 	FingersOfFrostAura *core.Aura
 	BrainFreezeAura    *core.Aura
 	IcyVeinsAura       *core.Aura
-	iceFloesfAura      *core.Aura
+	IceFloesAura       *core.Aura
 	IciclesAura        *core.Aura
 
 	arcaneMissileCritSnapshot float64
