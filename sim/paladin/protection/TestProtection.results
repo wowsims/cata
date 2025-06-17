@@ -2589,10 +2589,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 131527.09469
-  tps: 910785.88571
-  dtps: 76107.00605
-  hps: 74658.01667
+  dps: 131534.0348
+  tps: 910830.6075
+  dtps: 76107.04359
+  hps: 74664.09857
  }
 }
 dps_results: {
