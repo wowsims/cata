@@ -25,9 +25,9 @@ func (war *ProtectionWarrior) registerUnwaveringSentinel() {
 	).AttachAdditivePseudoStatBuff(
 		&war.PseudoStats.ReducedCritTakenChance, 0.06,
 	).AttachSpellMod(core.SpellModConfig{
-		ClassMask: warrior.SpellMaskThunderClap,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -100,
+		ClassMask:  warrior.SpellMaskThunderClap,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2,
 	}))
 }
 
@@ -81,9 +81,9 @@ func (war *ProtectionWarrior) registerRiposte() {
 			war.AddStatDynamic(sim, stats.CritRating, -critRating)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -100,
+		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
 		Kind:       core.SpellMod_BonusCrit_Percent,

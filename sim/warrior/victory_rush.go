@@ -14,9 +14,9 @@ func (war *Warrior) registerVictoryRush() {
 		ActionID: core.ActionID{SpellID: 32216},
 		Duration: 20 * time.Second,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: SpellMaskImpendingVictory,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -100,
+		ClassMask:  SpellMaskImpendingVictory,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2,
 	})
 
 	if war.Talents.ImpendingVictory {

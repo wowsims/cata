@@ -94,9 +94,9 @@ func (war *ArmsWarrior) registerSuddenDeath() {
 		ActionID: core.ActionID{SpellID: 139958},
 		Duration: 10 * time.Second,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: warrior.SpellMaskOverpower,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -100,
+		ClassMask:  warrior.SpellMaskOverpower,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2,
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{

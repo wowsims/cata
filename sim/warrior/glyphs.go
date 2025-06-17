@@ -74,9 +74,9 @@ func (war *Warrior) applyMajorGlyphs() {
 			Duration:  10 * time.Second,
 			MaxStacks: 3,
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask: SpellMaskHeroicStrike | SpellMaskCleave,
-			Kind:      core.SpellMod_PowerCost_Pct,
-			IntValue:  -100,
+			ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
+			Kind:       core.SpellMod_PowerCost_Pct,
+			FloatValue: -2,
 		})
 
 		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
