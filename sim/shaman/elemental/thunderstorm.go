@@ -38,6 +38,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   elemental.DefaultCritMultiplier(),
 		BonusCoefficient: 0.57099997997,
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			elemental.AddMana(sim, elemental.MaxMana()*manaRestore, manaMetrics)
 

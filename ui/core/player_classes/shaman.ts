@@ -15,9 +15,9 @@ export class Shaman extends PlayerClass<Class.ClassShaman> {
 	};
 	static races: Race[] = [
 		// [H]
+		Race.RaceTroll,
 		Race.RaceOrc,
 		Race.RaceTauren,
-		Race.RaceTroll,
 		Race.RaceGoblin,
 		Race.RaceHordePandaren,
 		// [A]

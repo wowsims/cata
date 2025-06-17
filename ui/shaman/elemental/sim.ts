@@ -44,12 +44,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			blessingOfKings: true,
+			leaderOfThePack: true,
+			bloodlust: true,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// curseOfElements: true,
-			// shadowAndFlame: true,
+			curseOfElements: true,
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -82,19 +85,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	presets: {
-		epWeights: [Presets.EP_PRESET_DEFAULT],
+		epWeights: [Presets.EP_PRESET_DEFAULT, Presets.EP_PRESET_AOE],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents, Presets.StandardTalents],
+		talents: [Presets.StandardTalents, Presets.TalentsAoE],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_UF, Presets.ROTATION_PRESET_AOE, Presets.ROTATION_PRESET_CLEAVE],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 
-		builds: [Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE],
+		builds: [Presets.P1_PRESET_BUILD_DEFAULT, Presets.P1_PRESET_BUILD_CLEAVE, Presets.P1_PRESET_BUILD_AOE],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecElementalShaman>): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		const numTargets = _player.sim.encounter.targets.length;
+
+		if (numTargets>2) return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+		if (numTargets==2) return Presets.ROTATION_PRESET_CLEAVE.rotation.rotation!;
+	
+		const talents = _player.getTalents()
+
+		if(talents.unleashedFury) return Presets.ROTATION_PRESET_UF.rotation.rotation!;
+		if(talents.elementalBlast) return Presets.ROTATION_PRESET_EB.rotation.rotation!;
+
+		return Presets.ROTATION_PRESET_PE.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -106,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceDraenei,
-				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
