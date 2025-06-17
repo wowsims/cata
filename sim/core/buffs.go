@@ -849,6 +849,7 @@ func DevotionAuraAura(unit *Unit, actionTag int32, isHoly bool) *Aura {
 		// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
 		// - Devotion Aura cast by a Holy Paladin will now reduce all damage by 20% (was Magical damage only).
 		//   - Developers’ notes: Changing Devotion Aura to reduce all damage makes it beneficial in more situations and aligns with other damage reducing abilities like Power Word: Barrier.
+		// EffectIndex 2 on the Holy specific Hotfix Passive https://wago.tools/db2/SpellEffect?build=5.5.0.61496&filter%5BSpellID%5D=137029&page=1
 		auraConfig.AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.DamageTakenMultiplier, 0.8)
 	} else {
 		auraConfig.OnGain = func(aura *Aura, sim *Simulation) {
