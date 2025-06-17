@@ -43,7 +43,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FROST_P1_PRESET.gear,
+		gear: Presets.P1_BIS.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		statCaps: (() => {
@@ -89,19 +89,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	presets: {
 		epWeights: [Presets.P1_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FrostDefaultTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FROST_P1_PRESET],
+		gear: [Presets.P1_PREBIS,Presets.P1_BIS],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostMage>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
-			return Presets.FROST_ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
-			return Presets.FROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -120,10 +120,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.FROST_P1_PRESET.gear,
+					1: Presets.P1_PREBIS.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.FROST_P1_PRESET.gear,
+					1: Presets.P1_PREBIS.gear,
 				},
 			},
 		},
