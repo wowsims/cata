@@ -409,8 +409,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 85502.99434
-  tps: 59819.73332
+  dps: 85521.84395
+  tps: 59832.39213
   dtps: 257498.9098
  }
 }

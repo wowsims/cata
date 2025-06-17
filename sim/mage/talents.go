@@ -157,22 +157,20 @@ func (mage *Mage) registerInvocation() {
 		Kind:      core.SpellMod_DotTickLength_Flat,
 	})
 
-	invocationDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: 0.15,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
 	mage.invocationAura = mage.RegisterAura(core.Aura{
 		Label:    "Invocation Aura",
 		ActionID: core.ActionID{SpellID: 116257},
 		Duration: time.Minute,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			invocationDamageMod.Activate()
+			mage.MultiplyManaRegenSpeed(sim, 0.5)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			invocationDamageMod.Deactivate()
+			mage.MultiplyManaRegenSpeed(sim, 1/0.5)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAllDamaging,
+		FloatValue: 0.15,
+		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
 }
