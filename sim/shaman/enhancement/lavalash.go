@@ -12,7 +12,11 @@ import (
 func (enh *EnhancementShaman) registerLavaLashSpell() {
 	damageMultiplier := 3.0
 	if enh.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
-		damageMultiplier *= 1.4
+		enh.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  shaman.SpellMaskLavaLash,
+			FloatValue: 0.4,
+		})
 	}
 
 	enh.LavaLash = enh.RegisterSpell(core.SpellConfig{
@@ -34,9 +38,10 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 				Duration: time.Second * 10,
 			},
 		},
-		DamageMultiplier: damageMultiplier,
-		CritMultiplier:   enh.DefaultCritMultiplier(),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         damageMultiplier,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           enh.DefaultCritMultiplier(),
+		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			searingFlamesBonus := 1.0

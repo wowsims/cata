@@ -72,7 +72,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 	})
 	llmod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLavaLash,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.2,
 	})
 
