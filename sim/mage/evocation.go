@@ -16,6 +16,7 @@ func (mage *Mage) registerEvocation() {
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
 	manaPercent := core.Ternary(mage.Spec == proto.Spec_SpecArcaneMage, .10, .15)
+	manaRegenMulti := 1.0
 
 	evocation := mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -37,7 +38,10 @@ func (mage *Mage) registerEvocation() {
 			Aura: core.Aura{
 				Label: "Evocation",
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mage.invocationAura.Activate(sim)
+					mage.InvocationAura.Activate(sim)
+					if mage.ArcaneChargesAura != nil && mage.ArcaneChargesAura.IsActive() {
+						mage.ArcaneChargesAura.Deactivate(sim)
+					}
 				},
 			},
 			NumberOfTicks:        3,
@@ -46,12 +50,19 @@ func (mage *Mage) registerEvocation() {
 			HasteReducesDuration: true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				mage.AddMana(sim, manaPerTick, manaMetrics)
+				mage.AddMana(sim, manaPerTick*manaRegenMulti, manaMetrics)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			manaPerTick = mage.MaxMana() * manaPercent
+			manaRegenMulti = mage.TotalSpellHasteMultiplier()
+			if mage.RuneOfPowerAura.IsActive() {
+				manaRegenMulti *= 1.75
+			}
+			if mage.ArcaneChargesAura != nil && mage.ArcaneChargesAura.IsActive() {
+				manaRegenMulti *= 1 + float64(mage.ArcaneChargesAura.GetStacks())*0.25
+			}
 			spell.SelfHot().Apply(sim)
 			spell.SelfHot().TickOnce(sim)
 		},
@@ -61,10 +72,10 @@ func (mage *Mage) registerEvocation() {
 		Spell: evocation,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			if mage.invocationAura.TimeActive(sim) >= time.Duration(time.Second*55) {
+			if mage.InvocationAura.TimeActive(sim) >= time.Duration(time.Second*55) {
 				return true
 			}
-			return !mage.invocationAura.IsActive()
+			return !mage.InvocationAura.IsActive()
 		},
 	})
 }

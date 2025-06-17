@@ -40,8 +40,8 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 			baseDamage := arcane.CalcAndRollDamageRange(sim, arcaneBlastScaling, arcaneBlastVariance)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				arcane.arcaneChargesAura.Activate(sim)
-				arcane.arcaneChargesAura.AddStack(sim)
+				arcane.ArcaneChargesAura.Activate(sim)
+				arcane.ArcaneChargesAura.AddStack(sim)
 			}
 		},
 	})

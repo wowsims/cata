@@ -69,6 +69,10 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "ArcaneMissiles",
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					arcane.ArcaneChargesAura.Activate(sim)
+					arcane.ArcaneChargesAura.AddStack(sim)
+				},
 			},
 			NumberOfTicks:        5,
 			TickLength:           time.Millisecond * 400,
@@ -76,10 +80,6 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			AffectedByCastSpeed:  true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				arcane.arcaneMissilesTickSpell.Cast(sim, target)
-				if dot.RemainingTicks() == 0 {
-					arcane.arcaneChargesAura.Activate(sim)
-					arcane.arcaneChargesAura.AddStack(sim)
-				}
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

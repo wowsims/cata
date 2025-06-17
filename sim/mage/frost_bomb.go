@@ -85,6 +85,7 @@ func (mage *Mage) registerFrostBomb() {
 			dot := spell.Dot(target)
 			if result.Landed() {
 				dot.Apply(sim)
+				spell.CD.Set(sim.CurrentTime + mage.ApplyCastSpeedForSpell(spell.CD.Duration, spell))
 			}
 		},
 	})

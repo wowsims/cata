@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
-const doomScale = 0.9375
-const doomCoeff = 0.9375
+const doomScale = 0.9375 * 1.33
+const doomCoeff = 0.9375 * 1.33
 
 func (demonology *DemonologyWarlock) registerDoom() {
 	demonology.RegisterSpell(core.SpellConfig{

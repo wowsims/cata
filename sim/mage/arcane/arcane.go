@@ -28,7 +28,6 @@ type ArcaneMage struct {
 
 	Options *proto.ArcaneMage_Options
 
-	arcaneChargesAura      *core.Aura
 	arcaneMissilesProcAura *core.Aura
 	arcanePowerAura        *core.Aura
 

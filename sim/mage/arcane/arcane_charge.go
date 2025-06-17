@@ -10,16 +10,16 @@ import (
 func (arcane *ArcaneMage) registerArcaneCharges() {
 	abDamageMod := arcane.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellArcaneBlast | mage.MageSpellArcaneBarrage | mage.MageSpellArcaneMissilesTick,
-		FloatValue: .5,
+		FloatValue: 0.5,
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := arcane.AddDynamicMod(core.SpellModConfig{
-		ClassMask: mage.MageSpellArcaneBlast,
-		IntValue:  150,
-		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask:  mage.MageSpellArcaneBlast,
+		FloatValue: 1.5,
+		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
-	arcane.arcaneChargesAura = arcane.GetOrRegisterAura(core.Aura{
+	arcane.ArcaneChargesAura = arcane.GetOrRegisterAura(core.Aura{
 		Label:     "Arcane Charges Aura",
 		ActionID:  core.ActionID{SpellID: 36032},
 		Duration:  time.Second * 10,
@@ -49,10 +49,9 @@ func (arcane *ArcaneMage) registerArcaneCharges() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			arcane.arcaneChargesAura.Refresh(sim)
+			arcane.ArcaneChargesAura.Activate(sim)
 			if sim.Proc(.3, "ArcaneChargesProc") {
-				arcane.arcaneChargesAura.Activate(sim)
-				arcane.arcaneChargesAura.AddStack(sim)
+				arcane.ArcaneChargesAura.AddStack(sim)
 			}
 		},
 	})

@@ -236,7 +236,7 @@ func init() {
 		bonus := stats.Stats{}
 		bonus[character.GetHighestStatType([]stats.Stat{
 			stats.Strength, stats.Agility, stats.Intellect,
-		})] = 1900
+		})] = 1920
 
 		core.RegisterTemporaryStatsOnUseCD(character,
 			"Synapse Springs",
