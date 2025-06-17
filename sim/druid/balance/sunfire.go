@@ -80,7 +80,6 @@ func (moonkin *BalanceDruid) registerSunfireImpactSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 9,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

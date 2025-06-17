@@ -25,7 +25,6 @@ func (druid *Druid) registerHealingTouchSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 28.9,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -166,7 +166,7 @@ func (moonkin *BalanceDruid) registerLunarShower() {
 			lunarShowerDmgMod.UpdateFloatValue(float64(aura.GetStacks()) * 0.45)
 			lunarShowerDmgMod.Activate()
 
-			lunarShowerResourceMod.UpdateIntValue(aura.GetStacks() * -30)
+			lunarShowerResourceMod.UpdateFloatValue(float64(aura.GetStacks()) * -0.3)
 			lunarShowerResourceMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

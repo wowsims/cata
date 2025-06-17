@@ -25,7 +25,6 @@ func (moonkin *BalanceDruid) registerStarfireSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 15.5,
-			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

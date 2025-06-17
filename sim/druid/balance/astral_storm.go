@@ -43,7 +43,6 @@ func (moonkin *BalanceDruid) registerAstralStormSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 50.3,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -25,7 +25,6 @@ func (druid *Druid) registerWrathSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 8.8,
-			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{
