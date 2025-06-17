@@ -121,5 +121,4 @@ func (frostMage *FrostMage) registerMastery() {
 			frostMasteryMod.Deactivate()
 		},
 	}))
-
 }

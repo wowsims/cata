@@ -54,23 +54,23 @@ type FrozenOrb struct {
 	TickCount int64
 }
 
-func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
+func createFrozenOrbInheritance() core.PetStatInheritance {
+	return func(ownerStats stats.Stats) stats.Stats {
 
-	createFrozenOrbInheritance := func() func(stats.Stats) stats.Stats {
-		return func(ownerStats stats.Stats) stats.Stats {
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combinedHitExp := (hitRating + expertiseRating) * 0.5
 
-			hitRating := ownerStats[stats.HitRating]
-			expertiseRating := ownerStats[stats.ExpertiseRating]
-			combinedHitExp := (hitRating + expertiseRating) * 0.5
-
-			return stats.Stats{
-				stats.HitRating:        combinedHitExp,
-				stats.ExpertiseRating:  combinedHitExp,
-				stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-				stats.SpellPower:       ownerStats[stats.SpellPower],
-			}
+		return stats.Stats{
+			stats.HitRating:        combinedHitExp,
+			stats.ExpertiseRating:  combinedHitExp,
+			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+			stats.SpellPower:       ownerStats[stats.SpellPower],
 		}
 	}
+}
+
+func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 
 	frozenOrbBaseStats := stats.Stats{}
 	frozenOrb := &FrozenOrb{
@@ -95,11 +95,7 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 
 func (frozenOrb *FrozenOrb) enable(sim *core.Simulation) {
 	frozenOrb.TickCount = 0
-	frozenOrb.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			stats.SpellPower: ownerStats[stats.SpellPower],
-		}
-	})
+	frozenOrb.EnableDynamicStats(createFrozenOrbInheritance())
 }
 
 func (frozenOrb *FrozenOrb) GetPet() *core.Pet {
@@ -155,10 +151,14 @@ func (frozenOrb *FrozenOrb) registerFrozenOrbTickSpell() {
 				}
 			}
 			if anyLanded && sim.Proc(0.15, "FingersOfFrostProc") {
-				frozenOrb.mageOwner.Mage.FingersOfFrostAura.Activate(sim)
-				frozenOrb.mageOwner.Mage.FingersOfFrostAura.AddStack(sim)
+				frozenOrb.mageOwner.FingersOfFrostAura.Activate(sim)
+				frozenOrb.mageOwner.FingersOfFrostAura.AddStack(sim)
 			}
 			frozenOrb.TickCount += 1
+
+			if frozenOrb.TickCount >= 10 {
+				frozenOrb.Disable(sim)
+			}
 		},
 	})
 }
