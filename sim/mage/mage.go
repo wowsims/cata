@@ -124,6 +124,7 @@ func (mage *Mage) registerMastery() {
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 	mage.arcaneMissileCritSnapshot = 0.0
+	mage.Icicles = make([]float64, 0)
 }
 
 func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
