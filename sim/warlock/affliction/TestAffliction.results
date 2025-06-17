@@ -430,6 +430,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 66619.23522
+  tps: 44416.48289
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 66619.23522
+  tps: 44416.48289
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 66619.23522
+  tps: 44416.48289
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 66619.23522
+  tps: 44416.48289
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 66619.23522
+  tps: 44416.48289
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-DestructivePrimalDiamond"
  value: {
   dps: 69742.81401
@@ -742,6 +777,41 @@ dps_results: {
  value: {
   dps: 68770.89604
   tps: 46168.99663
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 67410.50726
+  tps: 44843.41702
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 67430.02326
+  tps: 44849.30286
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 67549.90078
+  tps: 44916.68919
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 67584.36684
+  tps: 44939.24165
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 67541.77245
+  tps: 44897.46299
  }
 }
 dps_results: {
@@ -1438,6 +1508,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 69278.93666
+  tps: 46209.30883
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
   dps: 66582.84122
@@ -1543,6 +1620,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 67876.30571
+  tps: 45130.69267
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 67661.46764
+  tps: 45011.95835
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 67956.98254
+  tps: 45175.98319
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 68064.20689
+  tps: 45227.52103
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 68156.20719
+  tps: 45266.57879
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 66731.72206
@@ -1596,6 +1708,41 @@ dps_results: {
  value: {
   dps: 66619.23522
   tps: 44416.48289
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 66952.01101
+  tps: 44693.71513
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 66952.01101
+  tps: 44693.71513
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 66952.01101
+  tps: 44693.71513
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 66952.01101
+  tps: 44693.71513
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 66952.01101
+  tps: 44693.71513
  }
 }
 dps_results: {
@@ -1893,6 +2040,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 68791.43032
+  tps: 45893.26458
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 68737.38828
+  tps: 45894.84757
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 68965.91315
+  tps: 45946.90223
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 69141.39203
+  tps: 45975.62413
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 69310.31806
+  tps: 46256.6114
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-TerrorintheMists-87167"
  value: {
   dps: 68412.96246
@@ -2184,6 +2366,13 @@ dps_results: {
  value: {
   dps: 74146.14847
   tps: 49090.91943
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 71394.25936
+  tps: 47546.70014
  }
 }
 dps_results: {
