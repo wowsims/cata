@@ -396,7 +396,7 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecShadowPriest, 'Shadow Orb Power'],
 	[Spec.SpecAfflictionWarlock, 'Potent Afflictions'],
 	[Spec.SpecDemonologyWarlock, 'Master Demonologist'],
-	[Spec.SpecDestructionWarlock, 'Fiery Apocalypse'],
+	[Spec.SpecDestructionWarlock, 'Emberstorm'],
 	[Spec.SpecBrewmasterMonk, 'Elusive Brawler'],
 	[Spec.SpecMistweaverMonk, 'Gift of the Serpent'],
 	[Spec.SpecWindwalkerMonk, 'Bottled Fury'],

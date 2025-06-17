@@ -79,6 +79,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			totalDamage := (shaman.CalcScalingSpellDmg(0.56499999762) + 0.38800001144*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 1)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
@@ -125,8 +126,8 @@ func (shaman *Shaman) ApplyElementalTalents() {
 	var triggeringSpell *core.Spell
 	var triggerTime time.Duration
 
-	canConsumeSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskShock | SpellMaskElementalBlast | SpellMaskUnleashElements | SpellMaskEarthquake | SpellMaskLavaBeam
-	canTriggerSpells := canConsumeSpells | SpellMaskThunderstorm & ^SpellMaskEarthquake
+	canConsumeSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | (SpellMaskShock & ^SpellMaskFlameShockDot) | SpellMaskElementalBlast | SpellMaskUnleashElements | SpellMaskEarthquake | SpellMaskLavaBeam
+	canTriggerSpells := (canConsumeSpells | SpellMaskThunderstorm) & ^SpellMaskEarthquake
 
 	maxStacks := int32(2)
 
@@ -145,9 +146,9 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			aura.RemoveStack(sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: canConsumeSpells,
-		IntValue:  -25,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  canConsumeSpells,
+		FloatValue: -0.25,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,

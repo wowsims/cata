@@ -12,14 +12,14 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 
 	//Mental Quickness (AP -> SP in enhancement.go)
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskShock,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -90,
+		ClassMask:  SpellMaskShock,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.9,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskTotem | SpellMaskInstantSpell,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -75,
+		ClassMask:  SpellMaskTotem | SpellMaskInstantSpell,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.75,
 	})
 	primalWisdomManaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 63375})
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
@@ -72,7 +72,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 	})
 	llmod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLavaLash,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.2,
 	})
 
@@ -146,9 +146,9 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		FloatValue: -0.2,
 	})
 	mwManaCostmod := shaman.AddDynamicMod(core.SpellModConfig{
-		ClassMask: mwAffectedSpells,
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -20,
+		ClassMask:  mwAffectedSpells,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -0.2,
 	})
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
@@ -158,7 +158,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			mwCastTimemod.UpdateFloatValue(float64(newStacks) * -0.2)
 			mwCastTimemod.Activate()
-			mwManaCostmod.UpdateIntValue(newStacks * -20)
+			mwManaCostmod.UpdateFloatValue(core.TernaryFloat64(newStacks == 5, -2.0, float64(newStacks)*-0.2))
 			mwManaCostmod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -178,7 +178,9 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	dpm := shaman.NewLegacyPPMManager(10.0, core.ProcMaskMeleeOrMeleeProc)
+	ppm := core.TernaryFloat64(shaman.S12Enh2pc.IsActive(), 12.0, 10.0)
+
+	dpm := shaman.NewLegacyPPMManager(ppm, core.ProcMaskMeleeOrMeleeProc)
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{

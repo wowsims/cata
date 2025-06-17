@@ -47,14 +47,14 @@ func (prot *ProtectionPaladin) registerGuardedByTheLight() {
 		&prot.PseudoStats.ReducedCritTakenChance, 0.06,
 	).AttachSpellMod(core.SpellModConfig{
 		// Not in tooltip: Crusader Strike costs 80% less mana
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: paladin.SpellMaskCrusaderStrike,
-		IntValue:  -80,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  paladin.SpellMaskCrusaderStrike,
+		FloatValue: -0.80,
 	}).AttachSpellMod(core.SpellModConfig{
 		// Not in tooltip: Judgmentcosts 40% less mana
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: paladin.SpellMaskJudgment,
-		IntValue:  -40,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  paladin.SpellMaskJudgment,
+		FloatValue: -0.4,
 	})
 
 	manaMetrics := prot.NewManaMetrics(actionID)

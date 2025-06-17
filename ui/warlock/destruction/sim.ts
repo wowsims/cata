@@ -1,14 +1,33 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import { HASTE_RATING_PER_HASTE_PERCENT } from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { TypedEvent } from '../../core/typed_event';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
+
+const modifyDisplayStats = (player: Player<Spec.SpecDestructionWarlock>) => {
+	let stats = new Stats();
+
+	TypedEvent.freezeAllAndDo(() => {
+		const currentStats = player.getCurrentStats().finalStats?.stats;
+		if (currentStats === undefined) {
+			return {};
+		}
+
+		stats = stats.addStat(Stat.StatMP5, (currentStats[Stat.StatMP5] * currentStats[Stat.StatHasteRating]) / HASTE_RATING_PER_HASTE_PERCENT / 100);
+	});
+
+	return {
+		talents: stats,
+	};
+};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	cssClass: 'destruction-warlock-sim-ui',
@@ -17,7 +36,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -25,16 +44,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatMP5],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-
+	modifyDisplayStats,
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
+		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -60,26 +79,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	playerIconInputs: [WarlockInputs.PetInput()],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [BuffDebuffInputs.AttackSpeedBuff, BuffDebuffInputs.PhysicalDamageDebuff, BuffDebuffInputs.MajorArmorDebuff],
 	excludeBuffDebuffInputs: [],
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			WarlockInputs.DetonateSeed(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
 		],
 	},
-	itemSwapSlots: [
-		ItemSlot.ItemSlotHands,
-		ItemSlot.ItemSlotMainHand,
-		ItemSlot.ItemSlotOffHand,
-		ItemSlot.ItemSlotTrinket1,
-		ItemSlot.ItemSlotTrinket2,
-	],
+	itemSwapSlots: [ItemSlot.ItemSlotHands, ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -93,8 +105,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		rotations: [Presets.DEFAULT_APL],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		itemSwaps: [Presets.P4_ITEM_SWAP],
+		gear: [Presets.P1_PREBIS_PRESET, Presets.P1_PRESET],
+		itemSwaps: [],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDestructionWarlock>): APLRotation => {
@@ -115,14 +127,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PRERAID_PRESET.gear,
-					2: Presets.P1_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
+					1: Presets.P1_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PRERAID_PRESET.gear,
-					2: Presets.P1_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
+					1: Presets.P1_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

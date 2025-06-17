@@ -28,7 +28,6 @@ func (shaman *Shaman) registerStormlashCD() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5.9,
-			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -38,6 +37,9 @@ func (shaman *Shaman) registerStormlashCD() {
 				Timer:    shaman.NewTimer(),
 				Duration: core.StormLashCD,
 			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !shaman.HasActiveAuraWithTag("StormLash")
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {

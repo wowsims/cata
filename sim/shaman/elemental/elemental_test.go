@@ -3,22 +3,23 @@ package elemental
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common"
+	"github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterElementalShaman()
+	common.RegisterAllEffects()
 }
 
 func TestElemental(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassShaman,
 		Race:       proto.Race_RaceTroll,
-		OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceDraenei, proto.Race_RaceAlliancePandaren},
 
-		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "preraid"),
+		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
 		Talents: TalentsASEB,
 		Glyphs:  StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{
@@ -35,10 +36,10 @@ func TestElemental(t *testing.T) {
 		},
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsFireElemental},
-		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
+		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "eb"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
-			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
+			core.GetAplRotation("../../../ui/shaman/elemental/apls", "uf"),
 		},
 
 		ItemFilter: core.ItemFilter{

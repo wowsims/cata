@@ -21,6 +21,7 @@ export const PetInput = <SpecType extends WarlockSpecs>() =>
 			},
 			{ actionId: ActionId.fromSpellId(688), value: Summon.Imp },
 			{ actionId: ActionId.fromSpellId(712), value: Summon.Succubus },
+			{ actionId: ActionId.fromSpellId(697), value: Summon.Voidwalker },
 		],
 		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
 	});

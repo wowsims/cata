@@ -101,7 +101,7 @@ func (consumable *Consumable) GetStatModifiers() *stats.Stats {
 		if effect.ID != 0 {
 			if spellEffects, ok := dbcInstance.SpellEffects[effect.SpellID]; ok {
 				for _, spellEffect := range spellEffects {
-					stat := spellEffect.ParseStatEffect()
+					stat := spellEffect.ParseStatEffect(false, 0)
 					stats.AddInplace(stat)
 				}
 			}

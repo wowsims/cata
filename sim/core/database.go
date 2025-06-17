@@ -19,6 +19,7 @@ var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
+var ItemEffectRandPropPointsByIlvl = map[int32]ItemEffectRandPropPoints{}
 var ConsumablesByID = map[int32]Consumable{}
 var SpellEffectsById = map[int32]*proto.SpellEffect{}
 
@@ -59,6 +60,11 @@ func addToDatabase(newDB *proto.SimDatabase) {
 			ReforgeStatsByID[v.Id] = ReforgeStatFromProto(v)
 		}
 	}
+	for _, v := range newDB.ItemEffectRandPropPoints {
+		if _, ok := ItemEffectRandPropPointsByIlvl[v.Ilvl]; !ok {
+			ItemEffectRandPropPointsByIlvl[v.Ilvl] = ItemEffectRandPropPointsFromProto(v)
+		}
+	}
 	for _, v := range newDB.Consumables {
 		if _, ok := ConsumablesByID[v.Id]; !ok {
 			ConsumablesByID[v.Id] = ConsumableFromProto(v)
@@ -95,6 +101,27 @@ func ReforgeStatToProto(stat ReforgeStat) *proto.ReforgeStat {
 		FromStat:   stat.FromStat,
 		ToStat:     stat.ToStat,
 		Multiplier: stat.Multiplier,
+	}
+}
+
+type ItemEffectRandPropPoints struct {
+	Ilvl           int32
+	RandPropPoints int32
+}
+
+// ItemEffectRandPropPointsFromProto converts a protobuf ItemEffectRandPropPoints to a Go ItemEffectRandPropPoints
+func ItemEffectRandPropPointsFromProto(ieRpp *proto.ItemEffectRandPropPoints) ItemEffectRandPropPoints {
+	return ItemEffectRandPropPoints{
+		Ilvl:           ieRpp.GetIlvl(),
+		RandPropPoints: ieRpp.GetRandPropPoints(),
+	}
+}
+
+// ItemEffectRandPropPointsToProto converts a Go ItemEffectRandPropPoints to a protobuf ItemEffectRandPropPoints
+func ItemEffectRandPropPointsToProto(ieRpp ItemEffectRandPropPoints) *proto.ItemEffectRandPropPoints {
+	return &proto.ItemEffectRandPropPoints{
+		Ilvl:           ieRpp.Ilvl,
+		RandPropPoints: ieRpp.RandPropPoints,
 	}
 }
 
@@ -153,6 +180,7 @@ type Item struct {
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	RandPropPoints int32
 	UpgradeStep    proto.ItemLevelState
+	ItemEffect     *proto.ItemEffect
 	ChallengeMode  bool
 }
 
@@ -171,6 +199,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		ScalingOptions:   pData.ScalingOptions,
+		ItemEffect:       pData.ItemEffect,
 	}
 }
 
@@ -210,14 +239,20 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 }
 
 type Enchant struct {
-	EffectID int32 // Used by UI to apply effect to tooltip
-	Stats    stats.Stats
+	EffectID      int32 // Used by UI to apply effect to tooltip
+	Stats         stats.Stats
+	EnchantEffect *proto.ItemEffect
+	Name          string         // Only needed for unit tests
+	Type          proto.ItemType // Only needed for unit tests
 }
 
 func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 	return Enchant{
-		EffectID: pData.EffectId,
-		Stats:    stats.FromProtoArray(pData.Stats),
+		EffectID:      pData.EffectId,
+		Stats:         stats.FromProtoArray(pData.Stats),
+		EnchantEffect: pData.EnchantEffect,
+		Name:          pData.Name,
+		Type:          pData.Type,
 	}
 }
 
@@ -363,6 +398,16 @@ func (equipment *Equipment) EquipItem(item Item) {
 	}
 }
 
+func (equipment *Equipment) EquipEnchant(enchant Enchant) {
+	// Some shield enchants parse as ItemTypeUnknown, so default those to
+	// the OH slot to ensure they still get tested.
+	if enchant.Type == proto.ItemType_ItemTypeUnknown {
+		equipment.OffHand().Enchant = enchant
+	} else {
+		equipment[ItemTypeToSlot(enchant.Type)].Enchant = enchant
+	}
+}
+
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
 	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID) || (equipment[slot].Tinker.EffectID == effectID)
 }
@@ -377,6 +422,13 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
 		return equipment[slot].ID == itemID
 	})
+}
+
+func GetEnchantByEffectID(effectID int32) *Enchant {
+	if enchant, ok := EnchantsByEffectID[effectID]; ok {
+		return &enchant
+	}
+	return nil
 }
 
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {

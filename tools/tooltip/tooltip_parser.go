@@ -1015,7 +1015,7 @@ func ParseTooltip(tooltip string, dataProvider TooltipDataProvider, spellId int6
 		"pctH":         1,
 		"PL":           dataProvider.GetPlayerLevel(),
 		"pl":           dataProvider.GetPlayerLevel(),
-		"proccooldown": dataProvider.GetSpellProcChance(spellId),
+		"proccooldown": dataProvider.GetSpellProcCooldown(spellId).Seconds(),
 		"procrppm":     dataProvider.GetSpellPPM(spellId),
 	}
 

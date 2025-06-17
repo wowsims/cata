@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -129,19 +128,6 @@ type Warrior struct {
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
 	ColossusSmashAuras     core.AuraArray
-
-	// Cached Gurthalak tentacles
-	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
-}
-
-func (warrior *Warrior) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
-	return warrior.gurthalakTentacles
-}
-
-func (warrior *Warrior) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
-	pet := cata.NewTentacleOfTheOldOnesPet(&warrior.Character)
-	warrior.AddPet(pet)
-	return pet
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {
@@ -215,14 +201,6 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.PseudoStats.BaseDodgeChance += 0.03664
 	warrior.PseudoStats.BaseParryChance += 0.05
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
-
-	if mh, oh := warrior.MainHand(), warrior.OffHand(); mh.Name == "Gurthalak, Voice of the Deeps" || oh.Name == "Gurthalak, Voice of the Deeps" {
-		warrior.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
-
-		for i := 0; i < 10; i++ {
-			warrior.gurthalakTentacles[i] = warrior.NewTentacleOfTheOldOnesPet()
-		}
-	}
 
 	return warrior
 }

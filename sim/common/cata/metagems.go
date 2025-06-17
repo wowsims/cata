@@ -1,5 +1,0 @@
-package cata
-
-func init() {
-
-}

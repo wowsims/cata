@@ -27,6 +27,7 @@ message UIDatabase {
 
 	repeated GlyphID glyph_ids = 7;
 	repeated ReforgeStat reforge_stats = 12;
+	repeated ItemEffectRandPropPoints item_effect_rand_prop_points = 15;
 
 	repeated Consumable consumables = 13;
 	repeated SpellEffect spell_effects = 14;
@@ -96,6 +97,7 @@ message UIItem {
 
 	FactionRestriction faction_restriction = 25;
 	map<int32, ScalingItemProperties> scaling_options = 29; // keys are the other ilvl variants that this item could potentially have
+	ItemEffect item_effect = 30;
 }
 
 enum Expansion {
@@ -228,6 +230,7 @@ message UIEnchant {
 	// Classes that are allowed to use the enchant. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 11;
 	Profession required_profession = 12;
+	ItemEffect enchant_effect = 14;
 }
 
 message UIGem {
