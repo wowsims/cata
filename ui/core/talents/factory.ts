@@ -17,6 +17,12 @@ import { warriorGlyphsConfig, warriorTalentsConfig } from './warrior.js';
 
 export const classTalentsConfig: Record<Class, TalentsConfig<any> | null> = {
 	[Class.ClassUnknown]: null,
+	[Class.ClassExtra1]: null,
+	[Class.ClassExtra2]: null,
+	[Class.ClassExtra3]: null,
+	[Class.ClassExtra4]: null,
+	[Class.ClassExtra5]: null,
+	[Class.ClassExtra6]: null,
 	[Class.ClassDeathKnight]: deathKnightTalentsConfig,
 	[Class.ClassDruid]: druidTalentsConfig,
 	[Class.ClassShaman]: shamanTalentsConfig,
@@ -32,6 +38,12 @@ export const classTalentsConfig: Record<Class, TalentsConfig<any> | null> = {
 
 export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
 	[Class.ClassUnknown]: { majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassExtra1]: { majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassExtra2]: { majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassExtra3]: { majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassExtra4]: { majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassExtra5]: { majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassExtra6]: { majorGlyphs: [], minorGlyphs: [] },
 	[Class.ClassDeathKnight]: deathKnightGlyphsConfig,
 	[Class.ClassDruid]: druidGlyphsConfig,
 	[Class.ClassShaman]: shamanGlyphsConfig,

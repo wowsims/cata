@@ -27,19 +27,17 @@
 		cursor: pointer;
 	}
 
-	.icon-dropdown-option {
-		.icon-picker-label {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			text-align: center;
-			background: var(--bs-black-alpha-50);
-			color: var(--bs-success);
-			font-size: 0.625rem;
-			font-weight: bold;
-			white-space: nowrap;
-		}
+	.icon-picker-label {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		text-align: center;
+		background: var(--bs-black-alpha-50);
+		color: var(--bs-success);
+		font-size: 0.625rem;
+		font-weight: bold;
+		white-space: nowrap;
 	}
 
 	.icon-input-level-container {

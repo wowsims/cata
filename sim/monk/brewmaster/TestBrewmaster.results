@@ -33,3438 +33,3456 @@ character_stats_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-AgilePrimalDiamond"
  value: {
-  dps: 113114.52359
-  tps: 791801.66513
-  dtps: 46482.72865
-  hps: 6587.92076
+  dps: 119323.90452
+  tps: 835267.33167
+  dtps: 43767.24784
+  hps: 6457.08317
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-AgonyandTorment"
+ key: "TestBrewmaster-AllItems-AlacrityofXuen-103989"
  value: {
-  dps: 122218.41653
-  tps: 855528.91572
-  dtps: 37852.03992
-  hps: 5467.08826
+  dps: 120606.48401
+  tps: 844245.38808
+  dtps: 41965.48629
+  hps: 6513.51149
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-AncientPetrifiedSeed-69001"
+ key: "TestBrewmaster-AllItems-ArcaneBadgeoftheShieldwall-93347"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46365.3115
-  hps: 6503.72051
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Anhuur'sHymnal-55889"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Anhuur'sHymnal-56407"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ApparatusofKhaz'goroth-68972"
- value: {
-  dps: 112026.48976
-  tps: 784185.42831
-  dtps: 46746.47188
-  hps: 6509.94688
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ApparatusofKhaz'goroth-69113"
- value: {
-  dps: 112053.86441
-  tps: 784377.05087
-  dtps: 46745.33362
-  hps: 6511.53934
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-ArmorofSevenSacredSeals"
  value: {
-  dps: 111468.84041
-  tps: 780281.88285
-  dtps: 48612.33689
-  hps: 5937.56808
+  dps: 116649.40631
+  tps: 816545.8442
+  dtps: 44962.27703
+  hps: 6304.66032
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-ArmoroftheRedCrane"
  value: {
-  dps: 104633.31298
-  tps: 732433.19083
-  dtps: 47754.03134
-  hps: 5638.80034
+  dps: 109009.20321
+  tps: 763064.42245
+  dtps: 44674.10272
+  hps: 6114.56083
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ArrowofTime-72897"
+ key: "TestBrewmaster-AllItems-ArrowflightMedallion-93258"
  value: {
-  dps: 114444.89676
-  tps: 801114.2773
-  dtps: 45943.17756
-  hps: 5634.95287
+  dps: 117748.06176
+  tps: 824236.4323
+  dtps: 44202.6145
+  hps: 6755.66136
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-AusterePrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46483.33209
-  hps: 6521.59915
+  dps: 117059.26622
+  tps: 819414.86351
+  dtps: 43628.50292
+  hps: 6451.3734
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-BadJuju-96781"
+ value: {
+  dps: 119031.41831
+  tps: 833219.92814
+  dtps: 42080.28427
+  hps: 6757.01739
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-BadgeofKypariZar-84079"
+ value: {
+  dps: 116756.42906
+  tps: 817295.00342
+  dtps: 43305.90094
+  hps: 6574.53422
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-BattlegearofSevenSacredSeals"
  value: {
-  dps: 106212.13794
-  tps: 743484.96556
-  dtps: 43059.2053
-  hps: 6392.69312
+  dps: 110939.70575
+  tps: 776577.94027
+  dtps: 40737.32698
+  hps: 6394.41371
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-BattlegearoftheRedCrane"
  value: {
-  dps: 104965.61819
-  tps: 734759.32733
-  dtps: 49266.07412
-  hps: 6400.5605
+  dps: 110275.43153
+  tps: 771928.02071
+  dtps: 47428.1758
+  hps: 6681.56843
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-BedrockTalisman-58182"
+ key: "TestBrewmaster-AllItems-BlossomofPureSnow-89081"
  value: {
-  dps: 112055.86898
-  tps: 784391.08289
-  dtps: 46733.33377
-  hps: 6397.49998
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-BellofEnragingResonance-59326"
+ key: "TestBrewmaster-AllItems-BottleofInfiniteStars-87057"
  value: {
-  dps: 112073.40752
-  tps: 784513.85266
-  dtps: 46755.64771
-  hps: 6497.35757
+  dps: 117958.85888
+  tps: 825712.01217
+  dtps: 43354.56612
+  hps: 6737.0888
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-BellofEnragingResonance-65053"
+ key: "TestBrewmaster-AllItems-BraidofTenSongs-84072"
  value: {
-  dps: 112029.74709
-  tps: 784208.22963
-  dtps: 46563.22901
-  hps: 6499.01285
+  dps: 117444.4446
+  tps: 822111.11217
+  dtps: 45288.62629
+  hps: 5454.58605
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-BindingPromise-67037"
+ key: "TestBrewmaster-AllItems-Brawler'sStatue-87571"
  value: {
-  dps: 111728.709
-  tps: 782100.96299
-  dtps: 46577.56696
-  hps: 6513.4782
+  dps: 115658.74254
+  tps: 809611.1978
+  dtps: 43691.76846
+  hps: 6717.02335
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Blood-SoakedAleMug-63843"
+ key: "TestBrewmaster-AllItems-BreathoftheHydra-96827"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46532.25724
-  hps: 6497.74866
+  dps: 118580.65687
+  tps: 830064.59807
+  dtps: 43944.15802
+  hps: 5740.29746
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-BloodofIsiset-55995"
+ key: "TestBrewmaster-AllItems-BroochofMunificentDeeds-87500"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46498.6645
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-BloodofIsiset-56414"
+ key: "TestBrewmaster-AllItems-BrutalTalismanoftheShado-PanAssault-94508"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46465.07176
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
- value: {
-  dps: 112229.66772
-  tps: 785607.67406
-  dtps: 46722.63339
-  hps: 6515.57996
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
- value: {
-  dps: 111962.98057
-  tps: 783740.86398
-  dtps: 46749.11262
-  hps: 6506.25238
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
- value: {
-  dps: 112160.6982
-  tps: 785124.88743
-  dtps: 46592.81187
-  hps: 6472.71237
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46483.39507
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
- value: {
-  dps: 112596.74806
-  tps: 788177.23639
-  dtps: 46662.32932
-  hps: 6498.77929
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
- value: {
-  dps: 112134.84476
-  tps: 784943.91329
-  dtps: 46743.92219
-  hps: 6522.02818
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Bone-LinkFetish-77210"
- value: {
-  dps: 116147.52491
-  tps: 813032.67434
-  dtps: 46744.7645
-  hps: 6512.33556
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Bone-LinkFetish-77982"
- value: {
-  dps: 115827.09559
-  tps: 810789.6691
-  dtps: 46745.94828
-  hps: 6510.67941
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Bone-LinkFetish-78002"
- value: {
-  dps: 116659.1167
-  tps: 816613.81691
-  dtps: 46743.42136
-  hps: 6514.21466
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BottledLightning-66879"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-BottledWishes-77114"
- value: {
-  dps: 113677.91445
-  tps: 795745.40118
-  dtps: 44906.48889
-  hps: 6194.02008
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Brawler'sTrophy-232015"
- value: {
-  dps: 111784.29617
-  tps: 782490.07321
-  dtps: 46578.18173
-  hps: 6514.41008
+  dps: 116760.25434
+  tps: 817321.78035
+  dtps: 44526.62561
+  hps: 6655.3023
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 112862.18996
-  tps: 790035.3297
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 118987.77557
+  tps: 832914.42899
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-CapacitivePrimalDiamond"
  value: {
-  dps: 111883.14414
-  tps: 783182.009
-  dtps: 45285.77296
-  hps: 6621.00656
+  dps: 117406.35955
+  tps: 821844.51683
+  dtps: 44042.49727
+  hps: 6442.79983
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ key: "TestBrewmaster-AllItems-CarbonicCarbuncle-81138"
  value: {
-  dps: 112528.47546
-  tps: 787699.32825
-  dtps: 46713.93145
-  hps: 6499.1784
+  dps: 117254.73457
+  tps: 820783.14196
+  dtps: 43934.59388
+  hps: 6654.89484
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ key: "TestBrewmaster-AllItems-Cha-Ye'sEssenceofBrilliance-96888"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117720.73183
+  tps: 824045.12279
+  dtps: 43468.79017
+  hps: 6781.93359
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ key: "TestBrewmaster-AllItems-CharmofTenSongs-84071"
  value: {
-  dps: 112051.67444
-  tps: 784361.72107
-  dtps: 46745.42468
-  hps: 6511.41194
+  dps: 118219.30467
+  tps: 827535.13267
+  dtps: 45011.41854
+  hps: 5637.98712
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ key: "TestBrewmaster-AllItems-CommunalIdolofDestruction-101168"
  value: {
-  dps: 113083.21154
-  tps: 791582.48078
-  dtps: 46416.40056
-  hps: 6608.88397
+  dps: 116612.87923
+  tps: 816290.15462
+  dtps: 43441.1572
+  hps: 6656.62487
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ key: "TestBrewmaster-AllItems-CommunalStoneofDestruction-101171"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115791.12382
+  tps: 810537.86676
+  dtps: 43402.38391
+  hps: 6604.00435
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ key: "TestBrewmaster-AllItems-CommunalStoneofWisdom-101183"
  value: {
-  dps: 112345.46239
-  tps: 786418.23671
-  dtps: 46737.16097
-  hps: 6528.35025
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Coren'sChilledChromiumCoaster-232012"
+ key: "TestBrewmaster-AllItems-ContemplationofChi-Ji-103688"
  value: {
-  dps: 112513.12516
-  tps: 787591.8761
-  dtps: 46663.95402
-  hps: 6497.73263
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CoreofRipeness-58184"
+ key: "TestBrewmaster-AllItems-ContemplationofChi-Ji-103988"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Coren'sColdChromiumCoaster-87574"
+ value: {
+  dps: 117872.02328
+  tps: 825104.16296
+  dtps: 44169.40924
+  hps: 6810.38411
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CoreofDecency-87497"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-CourageousPrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CrecheoftheFinalDragon-77205"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sBadgeofConquest-93419"
  value: {
-  dps: 113152.39259
-  tps: 792066.74814
-  dtps: 45639.22225
-  hps: 6363.0677
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CrecheoftheFinalDragon-77972"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sBadgeofDominance-93600"
  value: {
-  dps: 112821.36398
-  tps: 789749.54785
-  dtps: 45660.5247
-  hps: 6575.6926
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CrecheoftheFinalDragon-77992"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sBadgeofVictory-93606"
  value: {
-  dps: 113311.33828
-  tps: 793179.36798
-  dtps: 46097.94395
-  hps: 6438.34752
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CrushingWeight-59506"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sEmblemofCruelty-93485"
  value: {
-  dps: 113604.1568
-  tps: 795229.0976
-  dtps: 45772.91818
-  hps: 6145.67973
+  dps: 116696.56848
+  tps: 816875.97936
+  dtps: 44210.10699
+  hps: 6741.43503
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CrushingWeight-65118"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sEmblemofMeditation-93487"
  value: {
-  dps: 113073.57593
-  tps: 791515.03149
-  dtps: 45251.75054
-  hps: 6617.85813
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CunningoftheCruel-77208"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sEmblemofTenacity-93486"
  value: {
-  dps: 111904.98103
-  tps: 783334.86724
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CunningoftheCruel-77980"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sInsigniaofConquest-93424"
  value: {
-  dps: 111886.92379
-  tps: 783208.46652
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117575.26202
+  tps: 823026.83413
+  dtps: 44429.85091
+  hps: 6748.97933
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-CunningoftheCruel-78000"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sInsigniaofDominance-93601"
  value: {
-  dps: 111912.2996
-  tps: 783386.09722
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkmoonCard:Earthquake-62048"
+ key: "TestBrewmaster-AllItems-CraftedDreadfulGladiator'sInsigniaofVictory-93611"
  value: {
-  dps: 111784.29617
-  tps: 782490.07321
-  dtps: 46578.18173
-  hps: 6514.41008
+  dps: 116377.74767
+  tps: 814644.23367
+  dtps: 44585.01758
+  hps: 6622.79051
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkmoonCard:Hurricane-62049"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sBadgeofConquest-98755"
  value: {
-  dps: 113305.54574
-  tps: 793138.8202
-  dtps: 46231.03605
-  hps: 6445.17575
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkmoonCard:Hurricane-62051"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sBadgeofDominance-98910"
  value: {
-  dps: 113864.1358
-  tps: 797048.95063
-  dtps: 45879.72948
-  hps: 6392.33111
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkmoonCard:Tsunami-62050"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sBadgeofVictory-98912"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkmoonCard:Volcano-62047"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sEmblemofCruelty-98811"
  value: {
-  dps: 111830.8518
-  tps: 782815.96262
-  dtps: 46428.42513
-  hps: 6503.72051
+  dps: 116488.53725
+  tps: 815419.76075
+  dtps: 44419.42821
+  hps: 6784.30614
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkwalkerIdolofRage-92118"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sEmblemofMeditation-98813"
  value: {
-  dps: 112299.77396
-  tps: 786098.41773
-  dtps: 46197.11003
-  hps: 6570.67863
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DarkwalkerStoneofRage-92117"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sEmblemofTenacity-98812"
  value: {
-  dps: 112308.12167
-  tps: 786156.8517
-  dtps: 46291.43844
-  hps: 6516.29996
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DelivererIdolofDestruction-92113"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sInsigniaofConquest-98760"
  value: {
-  dps: 112300.72155
-  tps: 786105.05085
-  dtps: 45834.60273
-  hps: 6259.24577
+  dps: 117921.55245
+  tps: 825450.86712
+  dtps: 44271.0042
+  hps: 6629.9534
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DelivererStoneofDestruction-92151"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sInsigniaofDominance-98911"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46397.21083
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-DelivererStoneofWisdom-92115"
+ key: "TestBrewmaster-AllItems-CraftedMalevolentGladiator'sInsigniaofVictory-98917"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116514.95143
+  tps: 815604.65998
+  dtps: 44581.65708
+  hps: 6627.68169
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CurseofHubris-102307"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CurseofHubris-104649"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CurseofHubris-104898"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CurseofHubris-105147"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CurseofHubris-105396"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CurseofHubris-105645"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-CutstitcherMedallion-93255"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Daelo'sFinalWords-87496"
+ value: {
+  dps: 115759.07365
+  tps: 810313.51557
+  dtps: 44610.85537
+  hps: 6584.85436
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 119654.20595
+  tps: 837579.44168
+  dtps: 43810.67458
+  hps: 6453.67295
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DarkmistVortex-87172"
+ value: {
+  dps: 119118.261
+  tps: 833827.82703
+  dtps: 44727.74487
+  hps: 6077.72993
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DeadeyeBadgeoftheShieldwall-93346"
+ value: {
+  dps: 117143.13106
+  tps: 820001.91739
+  dtps: 44570.84257
+  hps: 6642.85333
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 115390.48513
+  tps: 807733.39588
+  dtps: 42961.08996
+  hps: 6757.5076
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 115499.01412
+  tps: 808493.09885
+  dtps: 42957.23943
+  hps: 6751.67128
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 115361.59749
+  tps: 807531.18246
+  dtps: 42895.42611
+  hps: 6754.01796
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 115356.0568
+  tps: 807492.39758
+  dtps: 42969.86584
+  hps: 6704.57756
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 115162.17821
+  tps: 806135.2475
+  dtps: 43103.58261
+  hps: 6705.86074
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-DestructivePrimalDiamond"
  value: {
-  dps: 112114.49733
-  tps: 784801.48133
-  dtps: 45342.85509
-  hps: 6504.66213
+  dps: 117644.55156
+  tps: 823511.86091
+  dtps: 43941.46105
+  hps: 6457.10914
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ key: "TestBrewmaster-AllItems-DisciplineofXuen-103986"
  value: {
-  dps: 123133.33163
-  tps: 861933.32139
-  dtps: 37699.39345
-  hps: 5383.54188
+  dps: 118470.40805
+  tps: 829292.85634
+  dtps: 42272.04066
+  hps: 6908.11342
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Dwyer'sCaber-70141"
+ key: "TestBrewmaster-AllItems-Dominator'sArcaneBadge-93342"
  value: {
-  dps: 112626.61212
-  tps: 788386.28486
-  dtps: 46330.02611
-  hps: 6499.77285
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Dominator'sDeadeyeBadge-93341"
+ value: {
+  dps: 117143.13106
+  tps: 820001.91739
+  dtps: 44570.84257
+  hps: 6642.85333
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Dominator'sDurableBadge-93345"
+ value: {
+  dps: 115672.08511
+  tps: 809704.59578
+  dtps: 44054.45972
+  hps: 6682.732
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Dominator'sKnightlyBadge-93344"
+ value: {
+  dps: 116237.886
+  tps: 813665.20197
+  dtps: 44584.69584
+  hps: 6612.96697
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Dominator'sMendingBadge-93343"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sBadgeofConquest-84344"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sBadgeofDominance-84488"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sBadgeofVictory-84490"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sEmblemofCruelty-84399"
+ value: {
+  dps: 116696.56848
+  tps: 816875.97936
+  dtps: 44210.10699
+  hps: 6741.43503
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sEmblemofMeditation-84401"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sEmblemofTenacity-84400"
+ value: {
+  dps: 115791.67599
+  tps: 810541.73193
+  dtps: 43814.84801
+  hps: 6605.0561
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sInsigniaofConquest-84349"
+ value: {
+  dps: 117541.98625
+  tps: 822793.90377
+  dtps: 44203.45079
+  hps: 6736.74973
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sInsigniaofDominance-84489"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DreadfulGladiator'sInsigniaofVictory-84495"
+ value: {
+  dps: 116379.85404
+  tps: 814658.97828
+  dtps: 44586.10006
+  hps: 6624.82256
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-DurableBadgeoftheShieldwall-93350"
+ value: {
+  dps: 115672.08511
+  tps: 809704.59578
+  dtps: 44054.45972
+  hps: 6682.732
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-EffulgentPrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ElectrosparkHeartstarter-67118"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-EmberPrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EmblemofKypariZar-84077"
+ value: {
+  dps: 118620.6629
+  tps: 830344.64028
+  dtps: 44480.20133
+  hps: 5600.98194
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EmblemoftheCatacombs-83733"
+ value: {
+  dps: 117368.1896
+  tps: 821577.32718
+  dtps: 45108.26124
+  hps: 5075.11161
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EmptyFruitBarrel-81133"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 119467.27278
+  tps: 836270.90944
+  dtps: 43781.75334
+  hps: 6476.82712
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43359.61547
+  hps: 6378.51062
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 117936.8902
+  tps: 825558.23138
+  dtps: 43381.80603
+  hps: 6238.44813
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 119597.03216
+  tps: 837179.22515
+  dtps: 43640.40343
+  hps: 5770.65552
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-EnigmaticPrimalDiamond"
  value: {
-  dps: 112114.49733
-  tps: 784801.48133
-  dtps: 45342.85509
-  hps: 6504.66213
+  dps: 117644.55156
+  tps: 823511.86091
+  dtps: 43941.46105
+  hps: 6457.10914
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-EnlightenedIdolofDestruction-92144"
+ key: "TestBrewmaster-AllItems-EssenceofTerror-87175"
  value: {
-  dps: 113151.31378
-  tps: 792059.19644
-  dtps: 45692.34104
-  hps: 6093.42832
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-EnlightenedStoneofDestruction-92143"
- value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46373.45349
-  hps: 6504.02386
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-EssenceoftheCyclone-59473"
- value: {
-  dps: 113180.44451
-  tps: 792263.1116
-  dtps: 45767.73498
-  hps: 6618.92522
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-EssenceoftheCyclone-65140"
- value: {
-  dps: 113466.42482
-  tps: 794264.97374
-  dtps: 46155.40907
-  hps: 6400.75282
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-EssenceoftheEternalFlame-69002"
- value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46365.3115
-  hps: 6503.72051
+  dps: 116771.92356
+  tps: 817403.46494
+  dtps: 44840.76115
+  hps: 6132.6411
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-EternalPrimalDiamond"
  value: {
-  dps: 111247.92009
-  tps: 778735.44062
-  dtps: 46312.69141
-  hps: 6555.18728
+  dps: 117067.62922
+  tps: 819473.40451
+  dtps: 43731.75674
+  hps: 6417.19813
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-EyeofUnmaking-77200"
+ key: "TestBrewmaster-AllItems-FearwurmBadge-84074"
  value: {
-  dps: 112294.29815
-  tps: 786060.08706
-  dtps: 46735.15765
-  hps: 6525.77589
+  dps: 118825.03284
+  tps: 831775.22986
+  dtps: 44297.88428
+  hps: 5564.11642
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-EyeofUnmaking-77977"
+ key: "TestBrewmaster-AllItems-FearwurmRelic-84070"
  value: {
-  dps: 112240.03699
-  tps: 785680.25893
-  dtps: 46737.43415
-  hps: 6522.59098
+  dps: 117731.3463
+  tps: 824119.42408
+  dtps: 44335.8682
+  hps: 6315.11452
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-EyeofUnmaking-77997"
+ key: "TestBrewmaster-AllItems-FelsoulIdolofDestruction-101263"
  value: {
-  dps: 112357.13566
-  tps: 786499.94959
-  dtps: 46732.65349
-  hps: 6535.27973
+  dps: 116682.81447
+  tps: 816779.70128
+  dtps: 43607.45141
+  hps: 6444.76159
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-FallofMortality-59500"
+ key: "TestBrewmaster-AllItems-FelsoulStoneofDestruction-101266"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-FallofMortality-65124"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-FieryQuintessence-69000"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Figurine-DemonPanther-52199"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Figurine-DreamOwl-52354"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Figurine-EarthenGuardian-52352"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Figurine-JeweledSerpent-52353"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Figurine-KingofBoars-52351"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46465.07176
-  hps: 6497.74866
+  dps: 115788.83235
+  tps: 810521.82642
+  dtps: 43431.27377
+  hps: 6599.63963
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-Fire-CharmArmor"
  value: {
-  dps: 111984.06317
-  tps: 783888.44219
-  dtps: 43551.96956
-  hps: 6351.35747
+  dps: 117534.71476
+  tps: 822743.00333
+  dtps: 41549.87924
+  hps: 6718.68809
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-Fire-CharmBattlegear"
  value: {
-  dps: 111590.66493
-  tps: 781134.65449
-  dtps: 46439.48183
-  hps: 6615.47378
+  dps: 116540.62009
+  tps: 815784.3406
+  dtps: 45383.51794
+  hps: 6374.98003
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-FireoftheDeep-77117"
+ key: "TestBrewmaster-AllItems-FlashfrozenResinGlobule-100951"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46288.96436
-  hps: 6503.72051
+  dps: 115759.07365
+  tps: 810313.51557
+  dtps: 44610.85537
+  hps: 6584.85436
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-FlashfrozenResinGlobule-81263"
+ value: {
+  dps: 115759.07365
+  tps: 810313.51557
+  dtps: 44610.85537
+  hps: 6584.85436
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-FlashingSteelTalisman-81265"
+ value: {
+  dps: 115759.07365
+  tps: 810313.51557
+  dtps: 44610.85537
+  hps: 6584.85436
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-FleetPrimalDiamond"
  value: {
-  dps: 111157.19391
-  tps: 778100.35734
-  dtps: 46284.0336
-  hps: 6534.09857
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-FluidDeath-58181"
- value: {
-  dps: 112451.05533
-  tps: 787157.38729
-  dtps: 46778.3326
-  hps: 6494.72976
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ForestwalkerIdolofRage-92142"
- value: {
-  dps: 112332.71827
-  tps: 786329.02792
-  dtps: 46060.53549
-  hps: 6535.03567
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ForestwalkerStoneofRage-92141"
- value: {
-  dps: 112311.42588
-  tps: 786179.98117
-  dtps: 46301.91517
-  hps: 6522.59369
+  dps: 117059.26622
+  tps: 819414.86351
+  dtps: 43441.49484
+  hps: 6451.3734
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-ForlornPrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-FoulGiftoftheDemonLord-72898"
+ key: "TestBrewmaster-AllItems-FortitudeoftheZandalari-94516"
  value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46547.48434
-  hps: 6504.02386
+  dps: 115801.22722
+  tps: 810608.59052
+  dtps: 43173.46336
+  hps: 6623.24891
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-FuryofAngerforge-59461"
+ key: "TestBrewmaster-AllItems-FortitudeoftheZandalari-95677"
  value: {
-  dps: 112073.40752
-  tps: 784513.85266
-  dtps: 46755.64771
-  hps: 6497.35757
+  dps: 115798.22803
+  tps: 810587.59624
+  dtps: 43416.17579
+  hps: 6617.53618
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-GaleofShadows-56138"
+ key: "TestBrewmaster-AllItems-FortitudeoftheZandalari-96049"
  value: {
-  dps: 112427.94805
-  tps: 786995.63632
-  dtps: 46319.8426
-  hps: 5969.46084
+  dps: 115801.22722
+  tps: 810608.59052
+  dtps: 43090.60972
+  hps: 6623.24891
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-GaleofShadows-56462"
+ key: "TestBrewmaster-AllItems-FortitudeoftheZandalari-96421"
  value: {
-  dps: 114051.13664
-  tps: 798357.9565
-  dtps: 45662.66246
-  hps: 5285.42155
+  dps: 115803.97544
+  tps: 810627.82809
+  dtps: 42988.2611
+  hps: 6628.48363
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-GearDetector-61462"
+ key: "TestBrewmaster-AllItems-FortitudeoftheZandalari-96793"
  value: {
-  dps: 114391.22471
-  tps: 800738.57295
-  dtps: 46416.0493
-  hps: 5272.13087
+  dps: 115803.97544
+  tps: 810627.82809
+  dtps: 42895.65998
+  hps: 6628.48363
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-GraceoftheHerald-55266"
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-94529"
  value: {
-  dps: 112424.06253
-  tps: 786968.43768
-  dtps: 46420.9785
-  hps: 6509.2558
+  dps: 118297.3092
+  tps: 828081.16443
+  dtps: 44129.9936
+  hps: 6586.73684
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-GraceoftheHerald-56295"
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-95799"
  value: {
-  dps: 112522.2606
-  tps: 787655.82423
-  dtps: 46064.45939
-  hps: 6684.1649
+  dps: 117517.1831
+  tps: 822620.28167
+  dtps: 44041.09561
+  hps: 6513.31006
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Gurthalak,VoiceoftheDeeps-77191"
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-96171"
  value: {
-  dps: 124236.04203
-  tps: 869652.29423
-  dtps: 37054.25827
-  hps: 6929.16162
+  dps: 117934.30373
+  tps: 825540.12614
+  dtps: 44279.66276
+  hps: 6478.5404
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Gurthalak,VoiceoftheDeeps-78478"
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-96543"
  value: {
-  dps: 125059.3899
-  tps: 875415.72931
-  dtps: 37052.70759
-  hps: 6984.02554
+  dps: 118149.73537
+  tps: 827048.14761
+  dtps: 44241.0758
+  hps: 6568.04708
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Gurthalak,VoiceoftheDeeps-78487"
+ key: "TestBrewmaster-AllItems-GazeoftheTwins-96915"
  value: {
-  dps: 123509.68698
-  tps: 864567.80888
-  dtps: 37055.62379
-  hps: 6885.77888
+  dps: 118509.7079
+  tps: 829567.95529
+  dtps: 44210.50283
+  hps: 6500.78236
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HarmlightToken-63839"
+ key: "TestBrewmaster-AllItems-Gerp'sPerfectArrow-87495"
  value: {
-  dps: 111867.14478
-  tps: 783070.01349
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116689.96789
+  tps: 816829.7752
+  dtps: 44367.49581
+  hps: 6636.30625
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Harrison'sInsigniaofPanache-65803"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofConquest-100195"
  value: {
-  dps: 111944.9133
-  tps: 783614.39309
-  dtps: 46573.12263
-  hps: 6505.20136
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofIgnacious-59514"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofConquest-100603"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofIgnacious-65110"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofConquest-102856"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofRage-59224"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofConquest-103145"
  value: {
-  dps: 112023.40554
-  tps: 784163.83876
-  dtps: 46751.5371
-  hps: 6513.59844
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofRage-65072"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofDominance-100490"
  value: {
-  dps: 112052.87813
-  tps: 784370.14688
-  dtps: 46747.75355
-  hps: 6514.01615
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofSolace-55868"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofDominance-100576"
  value: {
-  dps: 112592.97975
-  tps: 788150.85825
-  dtps: 46315.82685
-  hps: 5981.29243
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofSolace-56393"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofDominance-102830"
  value: {
-  dps: 114239.56106
-  tps: 799676.92745
-  dtps: 45659.41844
-  hps: 5298.02895
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofThunder-55845"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofDominance-103308"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartofThunder-56370"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofVictory-100500"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-HeartoftheVile-66969"
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofVictory-100579"
  value: {
-  dps: 112315.48726
-  tps: 786208.41083
-  dtps: 46195.00965
-  hps: 6610.66072
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofVictory-102833"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sBadgeofVictory-103314"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofCruelty-100305"
+ value: {
+  dps: 117214.25451
+  tps: 820499.78157
+  dtps: 43759.93145
+  hps: 6781.38204
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofCruelty-100626"
+ value: {
+  dps: 117214.25451
+  tps: 820499.78157
+  dtps: 43759.93145
+  hps: 6781.38204
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofCruelty-102877"
+ value: {
+  dps: 117214.25451
+  tps: 820499.78157
+  dtps: 43759.93145
+  hps: 6781.38204
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofCruelty-103210"
+ value: {
+  dps: 117214.25451
+  tps: 820499.78157
+  dtps: 43759.93145
+  hps: 6781.38204
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofMeditation-100307"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofMeditation-100559"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofMeditation-102813"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofMeditation-103212"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofTenacity-100306"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofTenacity-100652"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofTenacity-102903"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sEmblemofTenacity-103211"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sInsigniaofConquest-103150"
+ value: {
+  dps: 118892.25248
+  tps: 832245.76733
+  dtps: 44362.70182
+  hps: 6632.96477
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sInsigniaofDominance-103309"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-GrievousGladiator'sInsigniaofVictory-103319"
+ value: {
+  dps: 116891.95115
+  tps: 818243.65803
+  dtps: 44570.01466
+  hps: 6646.6478
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Hawkmaster'sTalon-89082"
+ value: {
+  dps: 117776.7485
+  tps: 824437.2395
+  dtps: 44307.00962
+  hps: 6692.98991
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Heart-LesionDefenderIdol-100999"
+ value: {
+  dps: 114827.6536
+  tps: 803793.57519
+  dtps: 44087.67657
+  hps: 6712.24777
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Heart-LesionDefenderStone-101002"
+ value: {
+  dps: 115785.52472
+  tps: 810498.67303
+  dtps: 43463.08578
+  hps: 6593.33939
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Heart-LesionIdolofBattle-100991"
+ value: {
+  dps: 117226.12871
+  tps: 820582.901
+  dtps: 44266.70582
+  hps: 6857.93872
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Heart-LesionStoneofBattle-100990"
+ value: {
+  dps: 116360.45348
+  tps: 814523.17435
+  dtps: 43353.42825
+  hps: 6625.77773
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-HeartofFire-81181"
+ value: {
+  dps: 115791.67599
+  tps: 810541.73193
+  dtps: 43777.80756
+  hps: 6605.0561
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-HeartwarmerMedallion-93260"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-HelmbreakerMedallion-93261"
+ value: {
+  dps: 116434.22806
+  tps: 815039.59642
+  dtps: 44576.75729
+  hps: 6629.95501
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-ImpassivePrimalDiamond"
  value: {
-  dps: 112114.49733
-  tps: 784801.48133
-  dtps: 45342.85509
-  hps: 6504.66213
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ImpatienceofYouth-62464"
- value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46428.42513
-  hps: 6503.72051
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ImpatienceofYouth-62469"
- value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46428.42513
-  hps: 6503.72051
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ImpetuousQuery-55881"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46498.6645
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ImpetuousQuery-56406"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46465.07176
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-IndomitablePride-77211"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46217.64921
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-IndomitablePride-77983"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46292.90505
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-IndomitablePride-78003"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46153.14421
-  hps: 6497.74866
+  dps: 117644.55156
+  tps: 823511.86091
+  dtps: 43941.46105
+  hps: 6457.10914
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-IndomitablePrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-InsigniaofDiplomacy-61433"
+ key: "TestBrewmaster-AllItems-InsigniaofKypariZar-84078"
  value: {
-  dps: 111825.68355
-  tps: 782779.78486
-  dtps: 46746.80977
-  hps: 6481.59372
+  dps: 115689.48539
+  tps: 809826.39773
+  dtps: 43872.60919
+  hps: 6746.54098
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-InsigniaoftheCorruptedMind-77203"
+ key: "TestBrewmaster-AllItems-IronBellyWok-89083"
  value: {
-  dps: 114196.07367
-  tps: 799372.51571
-  dtps: 45338.53564
-  hps: 5703.60826
+  dps: 116393.11703
+  tps: 814751.81923
+  dtps: 44578.44683
+  hps: 6627.62721
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-InsigniaoftheCorruptedMind-77971"
+ key: "TestBrewmaster-AllItems-IronProtectorTalisman-85181"
  value: {
-  dps: 113432.09204
-  tps: 794024.64428
-  dtps: 44996.9979
-  hps: 6745.38941
+  dps: 114844.0813
+  tps: 803908.56909
+  dtps: 44152.59134
+  hps: 6896.58298
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-InsigniaoftheCorruptedMind-77991"
+ key: "TestBrewmaster-AllItems-JadeBanditFigurine-86043"
  value: {
-  dps: 114454.48327
-  tps: 801181.3829
-  dtps: 45552.09926
-  hps: 5757.74475
+  dps: 117776.7485
+  tps: 824437.2395
+  dtps: 44307.00962
+  hps: 6692.98991
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-InsigniaoftheEarthenLord-61429"
+ key: "TestBrewmaster-AllItems-JadeBanditFigurine-86772"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46557.70629
-  hps: 6497.74866
+  dps: 117377.87126
+  tps: 821645.09885
+  dtps: 44612.93436
+  hps: 6680.80442
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-JarofAncientRemedies-59354"
+ key: "TestBrewmaster-AllItems-JadeCharioteerFigurine-86042"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116393.11703
+  tps: 814751.81923
+  dtps: 44578.44683
+  hps: 6627.62721
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-JarofAncientRemedies-65029"
+ key: "TestBrewmaster-AllItems-JadeCharioteerFigurine-86771"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116323.84777
+  tps: 814266.93439
+  dtps: 44581.2936
+  hps: 6623.70503
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-JawsofDefeat-68926"
+ key: "TestBrewmaster-AllItems-JadeCourtesanFigurine-86045"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-JawsofDefeat-69111"
+ key: "TestBrewmaster-AllItems-JadeCourtesanFigurine-86774"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-JujuofNimbleness-63840"
+ key: "TestBrewmaster-AllItems-JadeMagistrateFigurine-86044"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46532.25724
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-KeytotheEndlessChamber-55795"
+ key: "TestBrewmaster-AllItems-JadeMagistrateFigurine-86773"
  value: {
-  dps: 112150.02678
-  tps: 785050.18749
-  dtps: 46828.91211
-  hps: 6585.80005
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-KeytotheEndlessChamber-56328"
+ key: "TestBrewmaster-AllItems-JadeWarlordFigurine-86046"
  value: {
-  dps: 112298.9775
-  tps: 786092.8425
-  dtps: 46865.90243
-  hps: 6476.46082
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Kiril,FuryofBeasts-77194"
+ key: "TestBrewmaster-AllItems-JadeWarlordFigurine-86775"
  value: {
-  dps: 125278.0597
-  tps: 876946.41789
-  dtps: 36371.29948
-  hps: 7335.5106
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Kiril,FuryofBeasts-78473"
+ key: "TestBrewmaster-AllItems-KnightlyBadgeoftheShieldwall-93349"
  value: {
-  dps: 126358.18381
-  tps: 884507.28666
-  dtps: 36482.51376
-  hps: 7275.08205
+  dps: 116237.886
+  tps: 813665.20197
+  dtps: 44584.69584
+  hps: 6612.96697
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Kiril,FuryofBeasts-78482"
+ key: "TestBrewmaster-AllItems-KnotofTenSongs-84073"
  value: {
-  dps: 124573.31339
-  tps: 872013.19376
-  dtps: 36469.8088
-  hps: 7251.55756
+  dps: 115641.62226
+  tps: 809491.35579
+  dtps: 44133.6415
+  hps: 6680.26942
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-KiroptyricSigil-77113"
+ key: "TestBrewmaster-AllItems-Kor'kronBookofHurting-92785"
  value: {
-  dps: 113677.91445
-  tps: 795745.40118
-  dtps: 44906.48889
-  hps: 6194.02008
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-KvaldirBattleStandard-59685"
+ key: "TestBrewmaster-AllItems-Lao-Chin'sLiquidCourage-89079"
  value: {
-  dps: 113553.44325
-  tps: 794874.10276
-  dtps: 46539.8807
-  hps: 5806.67884
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-KvaldirBattleStandard-59689"
+ key: "TestBrewmaster-AllItems-LeiShen'sFinalOrders-87072"
  value: {
-  dps: 113553.44325
-  tps: 794874.10276
-  dtps: 46539.8807
-  hps: 5806.67884
+  dps: 118050.49252
+  tps: 826353.44767
+  dtps: 44305.38645
+  hps: 6092.53972
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-LadyLa-La'sSingingShell-67152"
+ key: "TestBrewmaster-AllItems-LessonsoftheDarkmaster-81268"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-LeadenDespair-55816"
+ key: "TestBrewmaster-AllItems-LightdrinkerIdolofRage-101200"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46341.21015
-  hps: 6503.72051
+  dps: 117767.98405
+  tps: 824375.88832
+  dtps: 42717.6294
+  hps: 6718.37224
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-LeadenDespair-56347"
+ key: "TestBrewmaster-AllItems-LightdrinkerStoneofRage-101203"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46212.1653
-  hps: 6503.72051
+  dps: 117483.55044
+  tps: 822384.85307
+  dtps: 43434.77144
+  hps: 6684.95857
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-LeftEyeofRajh-56102"
+ key: "TestBrewmaster-AllItems-LightoftheCosmos-87065"
  value: {
-  dps: 112409.27778
-  tps: 786864.94447
-  dtps: 46413.39205
-  hps: 6522.38537
+  dps: 117270.34974
+  tps: 820892.44818
+  dtps: 44322.0186
+  hps: 6062.97005
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-LeftEyeofRajh-56427"
+ key: "TestBrewmaster-AllItems-LightweaveEmbroidery(Rank3)-4892"
  value: {
-  dps: 112696.23559
-  tps: 788873.64913
-  dtps: 46416.09524
-  hps: 6590.98327
+  dps: 119654.16375
+  tps: 837579.14628
+  dtps: 43810.67458
+  hps: 6453.67295
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-LicensetoSlay-58180"
+ key: "TestBrewmaster-AllItems-LordBlastington'sScopeofDoom-4699"
  value: {
-  dps: 112022.99234
-  tps: 784160.94641
-  dtps: 46746.54017
-  hps: 6509.85133
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MagnetiteMirror-55814"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MagnetiteMirror-56345"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofConquest-91452"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MandalaofStirringPatterns-62467"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofDominance-84940"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MandalaofStirringPatterns-62472"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofDominance-91753"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MarkofKhardros-56132"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofVictory-84942"
  value: {
-  dps: 111954.76817
-  tps: 783683.37721
-  dtps: 46749.4541
-  hps: 6505.77464
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MarkofKhardros-56458"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sBadgeofVictory-91763"
  value: {
-  dps: 111972.83544
-  tps: 783809.8481
-  dtps: 46748.70285
-  hps: 6506.82567
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MartialDefenderIdol-92127"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sEmblemofCruelty-84936"
  value: {
-  dps: 111932.93694
-  tps: 783530.5586
-  dtps: 46953.9214
-  hps: 6523.24264
+  dps: 116584.60887
+  tps: 816092.26208
+  dtps: 44287.61097
+  hps: 6823.49749
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MartialDefenderStone-92126"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sEmblemofCruelty-91562"
  value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46372.5926
-  hps: 6504.02386
+  dps: 116488.53725
+  tps: 815419.76075
+  dtps: 44419.42821
+  hps: 6784.30614
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MartialIdolofBattle-92128"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sEmblemofMeditation-84939"
  value: {
-  dps: 112225.04968
-  tps: 785575.34777
-  dtps: 46753.45544
-  hps: 6504.72632
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MartialStoneofBattle-92129"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sEmblemofMeditation-91564"
  value: {
-  dps: 111995.84454
-  tps: 783970.91175
-  dtps: 46369.89265
-  hps: 6514.2567
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MatrixRestabilizer-68994"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sEmblemofTenacity-84938"
  value: {
-  dps: 113484.53454
-  tps: 794391.74176
-  dtps: 45256.3929
-  hps: 6617.26634
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MatrixRestabilizer-69150"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sEmblemofTenacity-91563"
  value: {
-  dps: 113612.49087
-  tps: 795287.43606
-  dtps: 45306.51318
-  hps: 6753.59125
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MightoftheOcean-55251"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sInsigniaofConquest-91457"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117874.28306
+  tps: 825119.98143
+  dtps: 44571.12498
+  hps: 6635.88356
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MightoftheOcean-56285"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sInsigniaofDominance-91754"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MithrilStopwatch-232013"
+ key: "TestBrewmaster-AllItems-MalevolentGladiator'sInsigniaofVictory-91768"
  value: {
-  dps: 112189.35939
-  tps: 785325.51576
-  dtps: 46670.41496
-  hps: 6474.79793
+  dps: 116514.80894
+  tps: 815603.66259
+  dtps: 44581.65708
+  hps: 6628.97815
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MoonwellChalice-70142"
+ key: "TestBrewmaster-AllItems-MarkoftheCatacombs-83731"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116501.12602
+  tps: 815507.88215
+  dtps: 43898.89083
+  hps: 6681.65735
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-MoonwellPhial-70143"
+ key: "TestBrewmaster-AllItems-MarkoftheHardenedGrunt-92783"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NaturalistIdolofDestruction-92137"
+ key: "TestBrewmaster-AllItems-MedallionofMystifyingVapors-93257"
  value: {
-  dps: 112975.69905
-  tps: 790829.89332
-  dtps: 46052.60916
-  hps: 6104.71141
+  dps: 115568.4127
+  tps: 808978.8889
+  dtps: 43685.094
+  hps: 6757.56692
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NaturalistIdolofRage-92133"
+ key: "TestBrewmaster-AllItems-MedallionoftheCatacombs-83734"
  value: {
-  dps: 112350.59374
-  tps: 786454.15616
-  dtps: 46109.77037
-  hps: 6537.56185
+  dps: 115750.65471
+  tps: 810254.58296
+  dtps: 43563.97082
+  hps: 6755.29741
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NaturalistStoneofDestruction-92136"
+ key: "TestBrewmaster-AllItems-MendingBadgeoftheShieldwall-93348"
  value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46387.66082
-  hps: 6504.02386
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NaturalistStoneofRage-92138"
+ key: "TestBrewmaster-AllItems-MirrorScope-4700"
  value: {
-  dps: 112310.87963
-  tps: 786176.15739
-  dtps: 46297.2068
-  hps: 6521.55321
+  dps: 118337.86052
+  tps: 828365.02364
+  dtps: 43727.28854
+  hps: 6378.51062
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NaturalistStoneofWisdom-92139"
+ key: "TestBrewmaster-AllItems-MistdancerDefenderIdol-101089"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 114946.03896
+  tps: 804622.27273
+  dtps: 43491.25478
+  hps: 6669.91529
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NecromanticFocus-68982"
+ key: "TestBrewmaster-AllItems-MistdancerDefenderStone-101087"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115788.3756
+  tps: 810518.62919
+  dtps: 43394.66787
+  hps: 6598.76964
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-NecromanticFocus-69139"
+ key: "TestBrewmaster-AllItems-MistdancerIdolofRage-101113"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117681.71597
+  tps: 823772.01179
+  dtps: 43293.90905
+  hps: 6684.8843
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-No'Kaled,theElementsofDeath-77188"
+ key: "TestBrewmaster-AllItems-MistdancerStoneofRage-101117"
  value: {
-  dps: 123625.29685
-  tps: 865377.07796
-  dtps: 37036.24837
-  hps: 6458.12314
+  dps: 117489.66153
+  tps: 822427.63069
+  dtps: 43410.32254
+  hps: 6696.59874
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-No'Kaled,theElementsofDeath-78472"
+ key: "TestBrewmaster-AllItems-MistdancerStoneofWisdom-101107"
  value: {
-  dps: 124301.15299
-  tps: 870108.07092
-  dtps: 37034.928
-  hps: 6492.69177
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-No'Kaled,theElementsofDeath-78481"
+ key: "TestBrewmaster-AllItems-MithrilWristwatch-87572"
  value: {
-  dps: 123026.68792
-  tps: 861186.81547
-  dtps: 37037.38663
-  hps: 6427.55911
+  dps: 116800.75844
+  tps: 817605.30911
+  dtps: 44220.36827
+  hps: 6744.9882
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Oremantle'sFavor-61448"
+ key: "TestBrewmaster-AllItems-MountainsageIdolofDestruction-101069"
  value: {
-  dps: 111923.01358
-  tps: 783461.09504
-  dtps: 46750.77447
-  hps: 6503.92739
+  dps: 116667.1816
+  tps: 816670.27121
+  dtps: 43438.7019
+  hps: 6493.75363
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PartisanDefenderIdol-92147"
+ key: "TestBrewmaster-AllItems-MountainsageStoneofDestruction-101072"
  value: {
-  dps: 112094.981
-  tps: 784664.867
-  dtps: 46755.09157
-  hps: 6448.2522
+  dps: 115788.57417
+  tps: 810520.0192
+  dtps: 43415.31515
+  hps: 6599.14787
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PartisanDefenderStone-92114"
+ key: "TestBrewmaster-AllItems-OathswornDefenderIdol-101303"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46374.44857
-  hps: 6497.74866
+  dps: 114528.81603
+  tps: 801701.71219
+  dtps: 44536.79975
+  hps: 6810.7021
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PartisanIdolofBattle-92148"
+ key: "TestBrewmaster-AllItems-OathswornDefenderStone-101306"
  value: {
-  dps: 112224.14089
-  tps: 785568.98622
-  dtps: 46752.3593
-  hps: 6504.56875
+  dps: 115791.91296
+  tps: 810543.39074
+  dtps: 43411.66636
+  hps: 6605.50748
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PartisanStoneofBattle-92149"
+ key: "TestBrewmaster-AllItems-OathswornIdolofBattle-101295"
  value: {
-  dps: 111992.54519
-  tps: 783947.81634
-  dtps: 46374.31782
-  hps: 6507.97223
+  dps: 117236.56324
+  tps: 820655.94267
+  dtps: 44264.38303
+  hps: 6858.32173
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PartisanStoneofWisdom-92145"
+ key: "TestBrewmaster-AllItems-OathswornStoneofBattle-101294"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116366.67973
+  tps: 814566.75808
+  dtps: 43424.55508
+  hps: 6637.63725
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PetrifiedPickledEgg-232014"
+ key: "TestBrewmaster-AllItems-PhaseFingers-4697"
  value: {
-  dps: 112262.59336
-  tps: 785838.15353
-  dtps: 46456.86327
-  hps: 6371.03156
+  dps: 119872.11844
+  tps: 839104.82908
+  dtps: 43471.82458
+  hps: 6286.85164
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-PorcelainCrab-55237"
+ key: "TestBrewmaster-AllItems-PouchofWhiteAsh-103639"
  value: {
-  dps: 111784.29617
-  tps: 782490.07321
-  dtps: 46395.45569
-  hps: 6514.41008
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-PorcelainCrab-56280"
- value: {
-  dps: 111787.59065
-  tps: 782513.13455
-  dtps: 46233.16454
-  hps: 6520.68527
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-PowerfulPrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Prestor'sTalismanofMachination-59441"
+ key: "TestBrewmaster-AllItems-PriceofProgress-81266"
  value: {
-  dps: 113923.6118
-  tps: 797465.28259
-  dtps: 45361.60791
-  hps: 6138.67173
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Prestor'sTalismanofMachination-65026"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofConquest-102659"
  value: {
-  dps: 114402.70091
-  tps: 800818.90639
-  dtps: 44786.01696
-  hps: 6283.08745
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Rainsong-55854"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofConquest-103342"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Rainsong-56377"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofDominance-102633"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ReflectionoftheLight-77115"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofDominance-103505"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ResolveofUndying-77201"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofVictory-102636"
  value: {
-  dps: 112059.65745
-  tps: 784417.60216
-  dtps: 46286.08019
-  hps: 6547.03154
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ResolveofUndying-77978"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sBadgeofVictory-103511"
  value: {
-  dps: 112079.39382
-  tps: 784555.75677
-  dtps: 46298.36025
-  hps: 6437.19489
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ResolveofUndying-77998"
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sEmblemofCruelty-102680"
  value: {
-  dps: 112207.77677
-  tps: 785454.43738
-  dtps: 46035.94063
-  hps: 6536.3461
+  dps: 118319.37104
+  tps: 828235.59729
+  dtps: 42967.73951
+  hps: 6718.60787
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sEmblemofCruelty-103407"
+ value: {
+  dps: 118319.37104
+  tps: 828235.59729
+  dtps: 42967.73951
+  hps: 6718.60787
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sEmblemofMeditation-102616"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sEmblemofMeditation-103409"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sEmblemofTenacity-102706"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sEmblemofTenacity-103408"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sInsigniaofConquest-103347"
+ value: {
+  dps: 120080.38218
+  tps: 840562.67523
+  dtps: 44258.89444
+  hps: 6610.2037
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sInsigniaofDominance-103506"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-PridefulGladiator'sInsigniaofVictory-103516"
+ value: {
+  dps: 117220.58277
+  tps: 820544.07939
+  dtps: 44562.59439
+  hps: 6658.32945
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 118110.72679
+  tps: 826775.08751
+  dtps: 43730.1707
+  hps: 6841.86183
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 117535.51403
+  tps: 822748.59822
+  dtps: 44083.84982
+  hps: 6795.79347
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 118306.74111
+  tps: 828147.18776
+  dtps: 43723.84226
+  hps: 6782.26055
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 118591.03357
+  tps: 830137.23501
+  dtps: 43766.0709
+  hps: 6779.586
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 118797.20807
+  tps: 831580.45651
+  dtps: 43435.35286
+  hps: 6849.60522
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Qin-xi'sPolarizingSeal-87075"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-RelicofChi-Ji-79330"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-RelicofKypariZar-84075"
+ value: {
+  dps: 117427.25694
+  tps: 821990.79859
+  dtps: 45719.18859
+  hps: 5274.51485
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-RelicofNiuzao-79329"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-RelicofXuen-79327"
+ value: {
+  dps: 116828.82011
+  tps: 817801.74078
+  dtps: 44572.10563
+  hps: 6646.66331
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-RelicofXuen-79328"
+ value: {
+  dps: 118824.06147
+  tps: 831768.4303
+  dtps: 44220.7782
+  hps: 6665.92046
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-RelicofYu'lon-79331"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 121785.95433
+  tps: 852501.68028
+  dtps: 43993.73707
+  hps: 6696.48149
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 120424.3859
+  tps: 842970.70132
+  dtps: 44293.51938
+  hps: 6603.63997
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 122031.64264
+  tps: 854221.49845
+  dtps: 44035.41883
+  hps: 6691.92899
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 122246.31827
+  tps: 855724.22791
+  dtps: 44186.32376
+  hps: 6668.98163
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 122715.72065
+  tps: 859010.04456
+  dtps: 44154.23677
+  hps: 6706.55841
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-ResolveofNiuzao-103690"
+ value: {
+  dps: 115794.98362
+  tps: 810564.88532
+  dtps: 43480.5092
+  hps: 6611.35634
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-ResolveofNiuzao-103990"
+ value: {
+  dps: 115803.97544
+  tps: 810627.82809
+  dtps: 42988.2611
+  hps: 6628.48363
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-ReverberatingPrimalDiamond"
  value: {
-  dps: 112980.83087
-  tps: 790865.81606
-  dtps: 46718.93011
-  hps: 6528.45777
+  dps: 119115.18547
+  tps: 833806.29828
+  dtps: 43850.81724
+  hps: 6458.09897
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 112862.18996
-  tps: 790035.3297
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 118987.77557
+  tps: 832914.42899
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Ricket'sMagneticFireball-70144"
+ key: "TestBrewmaster-AllItems-SI:7Operative'sManual-92784"
  value: {
-  dps: 112375.03599
-  tps: 786625.25193
-  dtps: 46780.1538
-  hps: 6492.19184
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RightEyeofRajh-56100"
+ key: "TestBrewmaster-AllItems-ScrollofReveredAncestors-89080"
  value: {
-  dps: 111976.03523
-  tps: 783832.2466
-  dtps: 46750.60146
-  hps: 6511.07921
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RightEyeofRajh-56431"
+ key: "TestBrewmaster-AllItems-SearingWords-81267"
  value: {
-  dps: 111998.4377
-  tps: 783989.06391
-  dtps: 46749.35166
-  hps: 6512.00194
+  dps: 118725.96091
+  tps: 831081.7264
+  dtps: 43447.32724
+  hps: 6841.55594
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RosaryofLight-72901"
+ key: "TestBrewmaster-AllItems-Shock-ChargerMedallion-93259"
  value: {
-  dps: 112835.28226
-  tps: 789846.97581
-  dtps: 46731.43708
-  hps: 6494.38567
+  dps: 117753.14584
+  tps: 824272.0209
+  dtps: 45437.00645
+  hps: 5158.59997
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RottingSkull-77116"
+ key: "TestBrewmaster-AllItems-SigilofCompassion-83736"
  value: {
-  dps: 112302.57723
-  tps: 786118.04062
-  dtps: 46517.49764
-  hps: 6526.74291
+  dps: 115785.46228
+  tps: 810498.23596
+  dtps: 44001.99976
+  hps: 6593.22046
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RuneofZeth-68998"
+ key: "TestBrewmaster-AllItems-SigilofDevotion-83740"
  value: {
-  dps: 112185.57401
-  tps: 785299.01809
-  dtps: 46480.4347
-  hps: 6504.12834
+  dps: 116494.57398
+  tps: 815462.01785
+  dtps: 43538.80612
+  hps: 6669.17727
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ key: "TestBrewmaster-AllItems-SigilofFidelity-83737"
  value: {
-  dps: 112405.78557
-  tps: 786840.49899
-  dtps: 46779.28873
-  hps: 6493.39736
+  dps: 117968.53481
+  tps: 825779.74366
+  dtps: 45773.48286
+  hps: 5056.58669
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ key: "TestBrewmaster-AllItems-SigilofGrace-83738"
  value: {
-  dps: 112454.7652
-  tps: 787183.35639
-  dtps: 46778.3326
-  hps: 6494.72976
+  dps: 117597.43022
+  tps: 823182.01154
+  dtps: 45069.04696
+  hps: 5424.83563
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ key: "TestBrewmaster-AllItems-SigilofKypariZar-84076"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116564.57561
+  tps: 815952.02926
+  dtps: 43621.94312
+  hps: 6666.40429
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ key: "TestBrewmaster-AllItems-SigilofPatience-83739"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116050.63766
+  tps: 812354.46364
+  dtps: 43304.58569
+  hps: 6606.40511
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ key: "TestBrewmaster-AllItems-SigiloftheCatacombs-83732"
  value: {
-  dps: 112013.34993
-  tps: 784093.44949
-  dtps: 46747.01824
-  hps: 6509.1825
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
- value: {
-  dps: 112024.84728
-  tps: 784173.93096
-  dtps: 46746.54017
-  hps: 6509.85133
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
- value: {
-  dps: 113072.05338
-  tps: 791504.37365
-  dtps: 46577.2081
-  hps: 6501.01795
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
- value: {
-  dps: 113200.88262
-  tps: 792406.17831
-  dtps: 46456.98316
-  hps: 6567.26936
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
- value: {
-  dps: 112256.31264
-  tps: 785794.18846
-  dtps: 46740.54841
-  hps: 6522.14841
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
- value: {
-  dps: 112288.12429
-  tps: 786016.87005
-  dtps: 46738.2389
-  hps: 6523.60132
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ScalesofLife-68915"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ScalesofLife-69109"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Schnottz'sMedallionofCommand-65805"
- value: {
-  dps: 112224.81779
-  tps: 785573.72452
-  dtps: 46516.04244
-  hps: 6510.75679
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ScourgeheartDefenderIdol-92135"
- value: {
-  dps: 112046.69195
-  tps: 784326.84366
-  dtps: 46794.39838
-  hps: 6446.80699
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ScourgeheartDefenderStone-92134"
- value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46379.64437
-  hps: 6504.02386
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ScourgeheartIdolofBattle-92167"
- value: {
-  dps: 112225.17204
-  tps: 785576.20431
-  dtps: 46753.45544
-  hps: 6505.06
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ScourgeheartStoneofBattle-92168"
- value: {
-  dps: 111992.54519
-  tps: 783947.81634
-  dtps: 46372.35456
-  hps: 6507.97223
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-SeaStar-55256"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-SeaStar-56290"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-SealoftheSevenSigns-77204"
- value: {
-  dps: 112040.89107
-  tps: 784286.23752
-  dtps: 46519.15164
-  hps: 6771.41858
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-SealoftheSevenSigns-77969"
- value: {
-  dps: 112688.58501
-  tps: 788820.09504
-  dtps: 47019.56416
-  hps: 6235.84066
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-SealoftheSevenSigns-77989"
- value: {
-  dps: 112623.44926
-  tps: 788364.14482
-  dtps: 46853.87186
-  hps: 6278.39182
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ShardofWoe-60233"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Shrine-CleansingPurifier-63838"
- value: {
-  dps: 113442.91989
-  tps: 794100.43921
-  dtps: 45384.28594
-  hps: 6043.64845
+  dps: 118542.30311
+  tps: 829796.12177
+  dtps: 45260.64113
+  hps: 5233.86528
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-SinisterPrimalDiamond"
  value: {
-  dps: 111883.14414
-  tps: 783182.009
-  dtps: 45285.77296
-  hps: 6621.00656
+  dps: 117406.35955
+  tps: 821844.51683
+  dtps: 44042.49727
+  hps: 6442.79983
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Skardyn'sGrace-56115"
+ key: "TestBrewmaster-AllItems-SkullrenderMedallion-93256"
  value: {
-  dps: 112206.09654
-  tps: 785442.67576
-  dtps: 46723.31634
-  hps: 6514.62448
+  dps: 116434.22806
+  tps: 815039.59642
+  dtps: 44576.75729
+  hps: 6629.95501
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Skardyn'sGrace-56440"
+ key: "TestBrewmaster-AllItems-SpiritsoftheSun-87163"
  value: {
-  dps: 112260.53482
-  tps: 785823.74374
-  dtps: 46681.19722
-  hps: 6514.00682
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Sorrowsong-55879"
+ key: "TestBrewmaster-AllItems-SpringrainIdolofDestruction-101023"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46498.6645
-  hps: 6497.74866
+  dps: 116388.17253
+  tps: 814717.20774
+  dtps: 43906.94412
+  hps: 6267.31013
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Sorrowsong-56400"
+ key: "TestBrewmaster-AllItems-SpringrainIdolofRage-101009"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46465.07176
-  hps: 6497.74866
+  dps: 117677.41019
+  tps: 823741.87131
+  dtps: 43373.25938
+  hps: 6709.97212
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Soul'sAnguish-66994"
+ key: "TestBrewmaster-AllItems-SpringrainStoneofDestruction-101026"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 43403.46173
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SoulCasket-58183"
+ key: "TestBrewmaster-AllItems-SpringrainStoneofRage-101012"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46428.42513
-  hps: 6503.72051
+  dps: 117486.88902
+  tps: 822408.22314
+  dtps: 43360.44264
+  hps: 6691.31777
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Souldrinker-77193"
+ key: "TestBrewmaster-AllItems-SpringrainStoneofWisdom-101041"
  value: {
-  dps: 123635.22733
-  tps: 865446.59131
-  dtps: 37146.43803
-  hps: 7641.66139
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Souldrinker-78479"
+ key: "TestBrewmaster-AllItems-Static-Caster'sMedallion-93254"
  value: {
-  dps: 124300.10955
-  tps: 870100.76687
-  dtps: 37145.77784
-  hps: 7774.95932
+  dps: 117753.14584
+  tps: 824272.0209
+  dtps: 45437.00645
+  hps: 5158.59997
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Souldrinker-78488"
+ key: "TestBrewmaster-AllItems-SteadfastFootman'sMedallion-92782"
  value: {
-  dps: 123012.42317
-  tps: 861086.96218
-  dtps: 37147.00715
-  hps: 7426.03892
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SoulseizerIdolofDestruction-92125"
+ key: "TestBrewmaster-AllItems-SteadfastTalismanoftheShado-PanAssault-94507"
  value: {
-  dps: 112739.94764
-  tps: 789179.63345
-  dtps: 46902.71647
-  hps: 6040.83998
+  dps: 115801.22722
+  tps: 810608.59052
+  dtps: 43173.46336
+  hps: 6623.24891
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SoulseizerStoneofDestruction-92124"
+ key: "TestBrewmaster-AllItems-StreamtalkerIdolofDestruction-101222"
  value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46383.35558
-  hps: 6504.02386
+  dps: 116783.60355
+  tps: 817485.22486
+  dtps: 43894.16982
+  hps: 6358.86732
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SoulshifterVortex-77206"
+ key: "TestBrewmaster-AllItems-StreamtalkerIdolofRage-101217"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46189.51357
-  hps: 6497.74866
+  dps: 117787.69545
+  tps: 824513.86817
+  dtps: 42971.11754
+  hps: 6711.0359
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SoulshifterVortex-77970"
+ key: "TestBrewmaster-AllItems-StreamtalkerStoneofDestruction-101225"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46261.04091
-  hps: 6497.74866
+  dps: 115788.65781
+  tps: 810520.60468
+  dtps: 43492.72444
+  hps: 6599.30719
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SoulshifterVortex-77990"
+ key: "TestBrewmaster-AllItems-StreamtalkerStoneofRage-101220"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46109.56255
-  hps: 6497.74866
+  dps: 117486.54995
+  tps: 822405.84967
+  dtps: 43412.51596
+  hps: 6690.67193
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SpidersilkSpindle-68981"
+ key: "TestBrewmaster-AllItems-StreamtalkerStoneofWisdom-101250"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46221.26832
-  hps: 6503.72051
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SpidersilkSpindle-69138"
+ key: "TestBrewmaster-AllItems-StuffofNightmares-87160"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46152.10143
-  hps: 6503.72051
+  dps: 115305.81996
+  tps: 807140.73975
+  dtps: 42253.14544
+  hps: 6776.13178
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-StarcatcherCompass-77202"
+ key: "TestBrewmaster-AllItems-SunsoulDefenderIdol-101160"
  value: {
-  dps: 114999.64679
-  tps: 804997.52755
-  dtps: 45270.86582
-  hps: 5958.29338
+  dps: 114617.03593
+  tps: 802319.25152
+  dtps: 43759.13265
+  hps: 6771.20339
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-StarcatcherCompass-77973"
+ key: "TestBrewmaster-AllItems-SunsoulDefenderStone-101163"
  value: {
-  dps: 113547.93584
-  tps: 794835.55091
-  dtps: 45039.03712
-  hps: 6610.87709
+  dps: 115785.52472
+  tps: 810498.67303
+  dtps: 43421.68868
+  hps: 6593.33939
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-StarcatcherCompass-77993"
+ key: "TestBrewmaster-AllItems-SunsoulIdolofBattle-101152"
  value: {
-  dps: 114277.54737
-  tps: 799942.83161
-  dtps: 45779.02411
-  hps: 6586.28456
+  dps: 117245.28439
+  tps: 820716.99072
+  dtps: 44267.86722
+  hps: 6863.04055
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-StayofExecution-68996"
+ key: "TestBrewmaster-AllItems-SunsoulStoneofBattle-101151"
  value: {
-  dps: 111882.02951
-  tps: 783174.20657
-  dtps: 46487.33363
-  hps: 6530.77432
+  dps: 116363.77658
+  tps: 814546.43608
+  dtps: 43385.84724
+  hps: 6632.10745
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Stonemother'sKiss-61411"
+ key: "TestBrewmaster-AllItems-SunsoulStoneofWisdom-101138"
  value: {
-  dps: 111895.72061
-  tps: 783270.04424
-  dtps: 46862.5227
-  hps: 6471.54833
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-StumpofTime-62465"
+ key: "TestBrewmaster-AllItems-SwordguardEmbroidery(Rank3)-4894"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 120233.93165
+  tps: 841637.52152
+  dtps: 43788.99358
+  hps: 6490.74295
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-StumpofTime-62470"
+ key: "TestBrewmaster-AllItems-SymboloftheCatacombs-83735"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116751.77138
+  tps: 817262.39969
+  dtps: 43443.43743
+  hps: 6512.58506
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SymbioticWorm-59332"
+ key: "TestBrewmaster-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46495.98133
-  hps: 6503.72051
+  dps: 119872.11844
+  tps: 839104.82908
+  dtps: 43471.82458
+  hps: 6286.85164
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-SymbioticWorm-65048"
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-94522"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46462.06606
-  hps: 6503.72051
+  dps: 121692.27467
+  tps: 851845.92269
+  dtps: 43637.67702
+  hps: 6094.7218
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TalismanofSinisterOrder-65804"
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-95748"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46666.07318
-  hps: 6497.74866
+  dps: 120572.31711
+  tps: 844006.21977
+  dtps: 44359.90641
+  hps: 6007.55745
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Tank-CommanderInsignia-63841"
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-96120"
  value: {
-  dps: 112795.36175
-  tps: 789567.53224
-  dtps: 47495.60329
-  hps: 5968.64291
+  dps: 121980.3134
+  tps: 853862.19381
+  dtps: 43387.77619
+  hps: 5942.61502
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TearofBlood-55819"
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-96492"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 122720.79179
+  tps: 859045.5425
+  dtps: 43459.47073
+  hps: 5911.86846
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TearofBlood-56351"
+ key: "TestBrewmaster-AllItems-TalismanofBloodlust-96864"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 122343.26127
+  tps: 856402.8289
+  dtps: 43347.24332
+  hps: 5995.16366
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TendrilsofBurrowingDark-55810"
+ key: "TestBrewmaster-AllItems-Thousand-YearPickledEgg-87573"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46536.32909
-  hps: 6497.74866
+  dps: 115982.65711
+  tps: 811878.59975
+  dtps: 44661.55236
+  hps: 6591.73111
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TendrilsofBurrowingDark-56339"
+ key: "TestBrewmaster-AllItems-TrailseekerIdolofRage-101054"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46465.07176
-  hps: 6497.74866
+  dps: 117714.31205
+  tps: 824000.18432
+  dtps: 43372.9603
+  hps: 6666.39914
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TheHungerer-68927"
+ key: "TestBrewmaster-AllItems-TrailseekerStoneofRage-101057"
  value: {
-  dps: 114300.37284
-  tps: 800102.60988
-  dtps: 45641.40758
-  hps: 5724.6337
+  dps: 117483.55044
+  tps: 822384.85307
+  dtps: 43445.97387
+  hps: 6684.95857
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-TheHungerer-69112"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofConquest-100043"
  value: {
-  dps: 113796.70537
-  tps: 796576.9376
-  dtps: 44196.78542
-  hps: 6708.52572
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Theralion'sMirror-59519"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofConquest-91099"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46662.89509
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Theralion'sMirror-65105"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofConquest-94373"
  value: {
-  dps: 111820.02425
-  tps: 782740.16974
-  dtps: 46630.14263
-  hps: 6503.89022
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Throngus'sFinger-56121"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofConquest-99772"
  value: {
-  dps: 112412.92241
-  tps: 786890.45686
-  dtps: 46545.25737
-  hps: 6428.11616
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Throngus'sFinger-56449"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofDominance-100016"
  value: {
-  dps: 112421.29151
-  tps: 786949.04058
-  dtps: 46512.92758
-  hps: 6425.62818
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ThundercallerIdolofDestruction-92120"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofDominance-91400"
  value: {
-  dps: 112524.65917
-  tps: 787672.61416
-  dtps: 45899.93727
-  hps: 6034.65565
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ThundercallerIdolofRage-92116"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofDominance-94346"
  value: {
-  dps: 112419.38241
-  tps: 786935.67688
-  dtps: 46270.92637
-  hps: 6485.69697
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ThundercallerStoneofDestruction-92119"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofDominance-99937"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46373.08862
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ThundercallerStoneofRage-92121"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofVictory-100019"
  value: {
-  dps: 112311.42588
-  tps: 786179.98117
-  dtps: 46302.13639
-  hps: 6522.59369
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-ThundercallerStoneofWisdom-92122"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofVictory-91410"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Ti'tahk,theStepsofTime-77190"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofVictory-94349"
  value: {
-  dps: 119448.17619
-  tps: 836137.23333
-  dtps: 36567.22363
-  hps: 7187.85924
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Ti'tahk,theStepsofTime-78477"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sBadgeofVictory-99943"
  value: {
-  dps: 119831.75296
-  tps: 838822.27074
-  dtps: 36567.22363
-  hps: 7212.56061
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Ti'tahk,theStepsofTime-78486"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofCruelty-100066"
  value: {
-  dps: 119107.33906
-  tps: 833751.37344
-  dtps: 36567.22363
-  hps: 7165.90989
+  dps: 116768.3019
+  tps: 817378.11333
+  dtps: 44119.69322
+  hps: 6757.24853
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Tia'sGrace-55874"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofCruelty-91209"
  value: {
-  dps: 112285.31273
-  tps: 785997.18912
-  dtps: 46424.29561
-  hps: 6520.95147
+  dps: 116768.3019
+  tps: 817378.11333
+  dtps: 44119.69322
+  hps: 6757.24853
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Tia'sGrace-56394"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofCruelty-94396"
  value: {
-  dps: 112374.86216
-  tps: 786624.0351
-  dtps: 46489.80391
-  hps: 6498.18333
+  dps: 116768.3019
+  tps: 817378.11333
+  dtps: 44119.69322
+  hps: 6757.24853
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Tyrande'sFavoriteDoll-64645"
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofCruelty-99838"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 116768.3019
+  tps: 817378.11333
+  dtps: 44119.69322
+  hps: 6757.24853
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofMeditation-91211"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofMeditation-94329"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofMeditation-99840"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofMeditation-99990"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofTenacity-100092"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofTenacity-91210"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofTenacity-94422"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sEmblemofTenacity-99839"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sInsigniaofConquest-100026"
+ value: {
+  dps: 118193.20805
+  tps: 827352.45637
+  dtps: 44157.60104
+  hps: 6738.55149
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sInsigniaofDominance-100152"
+ value: {
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-TyrannicalGladiator'sInsigniaofVictory-100085"
+ value: {
+  dps: 116640.28442
+  tps: 816481.99091
+  dtps: 44575.6509
+  hps: 6636.40548
  }
 }
 dps_results: {
  key: "TestBrewmaster-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 111150.63171
-  tps: 778054.42198
-  dtps: 46723.84736
-  hps: 6521.59915
+  dps: 117056.13974
+  tps: 819392.97818
+  dtps: 43855.89839
+  hps: 6445.41821
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-UnheededWarning-59520"
+ key: "TestBrewmaster-AllItems-VaporshieldMedallion-93262"
  value: {
-  dps: 112506.3455
-  tps: 787544.41853
-  dtps: 46674.68641
-  hps: 6532.27774
+  dps: 115568.4127
+  tps: 808978.8889
+  dtps: 43685.094
+  hps: 6757.56692
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-UnquenchableFlame-67101"
+ key: "TestBrewmaster-AllItems-VialofDragon'sBlood-87063"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 114832.70524
+  tps: 803828.93665
+  dtps: 42369.44007
+  hps: 6684.87044
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-UnsolvableRiddle-62463"
+ key: "TestBrewmaster-AllItems-VialofIchorousBlood-100963"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46428.42513
-  hps: 6503.72051
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-UnsolvableRiddle-62468"
+ key: "TestBrewmaster-AllItems-VialofIchorousBlood-81264"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46428.42513
-  hps: 6503.72051
+  dps: 115782.29799
+  tps: 810476.08591
+  dtps: 44603.41971
+  hps: 6587.19324
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-UnsolvableRiddle-68709"
+ key: "TestBrewmaster-AllItems-ViciousTalismanoftheShado-PanAssault-94511"
  value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46428.42513
-  hps: 6503.72051
+  dps: 119110.28679
+  tps: 833772.0075
+  dtps: 44371.06765
+  hps: 6647.30812
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-VariablePulseLightningCapacitor-68925"
+ key: "TestBrewmaster-AllItems-VisionofthePredator-81192"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 115879.29396
+  tps: 811155.05772
+  dtps: 44642.47742
+  hps: 6644.97367
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-VariablePulseLightningCapacitor-69110"
+ key: "TestBrewmaster-AllItems-VolatileTalismanoftheShado-PanAssault-94510"
  value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117024.90563
+  tps: 819174.33939
+  dtps: 44224.70647
+  hps: 6296.83258
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-Varo'then'sBrooch-72899"
+ key: "TestBrewmaster-AllItems-WoundripperMedallion-93253"
  value: {
-  dps: 112026.48976
-  tps: 784185.42831
-  dtps: 46299.28649
-  hps: 6509.94688
+  dps: 117748.06176
+  tps: 824236.4323
+  dtps: 44202.6145
+  hps: 6755.66136
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-VeilofLies-72900"
+ key: "TestBrewmaster-AllItems-Yu'lon'sBite-103987"
  value: {
-  dps: 112072.10467
-  tps: 784504.73269
-  dtps: 46225.0098
-  hps: 6597.96584
+  dps: 116624.09925
+  tps: 816368.69472
+  dtps: 44494.19915
+  hps: 6580.40846
  }
 }
 dps_results: {
- key: "TestBrewmaster-AllItems-VesselofAcceleration-68995"
+ key: "TestBrewmaster-AllItems-ZenAlchemistStone-75274"
  value: {
-  dps: 112422.90873
-  tps: 786960.36109
-  dtps: 46471.19209
-  hps: 6517.04736
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-VesselofAcceleration-69167"
- value: {
-  dps: 112562.69568
-  tps: 787938.86976
-  dtps: 46480.97848
-  hps: 6541.85875
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-VialofShadows-77207"
- value: {
-  dps: 117438.28557
-  tps: 822067.999
-  dtps: 46712.61107
-  hps: 6507.01668
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-VialofShadows-77979"
- value: {
-  dps: 116792.6627
-  tps: 817548.63891
-  dtps: 46777.14882
-  hps: 6496.37941
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-VialofShadows-77999"
- value: {
-  dps: 118262.25325
-  tps: 827835.77272
-  dtps: 46709.9248
-  hps: 6510.76352
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-VialofStolenMemories-59515"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-VialofStolenMemories-65109"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sBadgeofConquest-61033"
- value: {
-  dps: 112286.19366
-  tps: 786003.35565
-  dtps: 46680.46874
-  hps: 6515.026
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sBadgeofConquest-70517"
- value: {
-  dps: 112305.92887
-  tps: 786141.50209
-  dtps: 46679.64919
-  hps: 6516.17256
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sBadgeofDominance-61035"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sBadgeofDominance-70518"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sBadgeofVictory-61034"
- value: {
-  dps: 111981.59533
-  tps: 783871.16732
-  dtps: 46748.33861
-  hps: 6507.33525
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sBadgeofVictory-70519"
- value: {
-  dps: 111991.45021
-  tps: 783940.15144
-  dtps: 46747.92884
-  hps: 6507.90854
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
- value: {
-  dps: 113603.17248
-  tps: 795222.20737
-  dtps: 46276.79482
-  hps: 5659.503
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
- value: {
-  dps: 112186.60795
-  tps: 785306.25566
-  dtps: 46670.41496
-  hps: 6474.79793
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sEmblemofProwess-61029"
- value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46448.78437
-  hps: 6503.72051
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
- value: {
-  dps: 111819.93515
-  tps: 782739.54604
-  dtps: 46448.78437
-  hps: 6503.72051
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
- value: {
-  dps: 112794.77775
-  tps: 789563.44425
-  dtps: 46344.23573
-  hps: 6552.58713
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
- value: {
-  dps: 112815.2898
-  tps: 789707.02858
-  dtps: 46605.82304
-  hps: 6507.0524
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
- value: {
-  dps: 112175.50023
-  tps: 785228.50161
-  dtps: 46741.76179
-  hps: 6517.82762
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
- value: {
-  dps: 112207.65885
-  tps: 785453.61197
-  dtps: 46740.98208
-  hps: 6519.41493
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Vishanka,JawsoftheEarth-78359"
- value: {
-  dps: 81506.41467
-  tps: 570544.90268
-  dtps: 53793.90103
-  hps: 4089.08428
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Vishanka,JawsoftheEarth-78471"
- value: {
-  dps: 81992.16967
-  tps: 573945.18772
-  dtps: 53791.25725
-  hps: 4092.92258
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Vishanka,JawsoftheEarth-78480"
- value: {
-  dps: 81103.90034
-  tps: 567727.30237
-  dtps: 53796.22914
-  hps: 4085.70429
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WaterdancerDefenderIdol-92399"
- value: {
-  dps: 112062.66229
-  tps: 784438.63602
-  dtps: 46677.13368
-  hps: 6509.07924
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WaterdancerDefenderStone-92398"
- value: {
-  dps: 111820.09441
-  tps: 782740.66086
-  dtps: 46388.02635
-  hps: 6504.02386
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WaterdancerIdolofRage-92401"
- value: {
-  dps: 112330.43628
-  tps: 786313.05399
-  dtps: 46060.53549
-  hps: 6534.59076
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WaterdancerStoneofRage-92400"
- value: {
-  dps: 112308.12167
-  tps: 786156.8517
-  dtps: 46299.84442
-  hps: 6516.29996
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WaterdancerStoneofWisdom-92402"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WillofUnbinding-77198"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WillofUnbinding-77975"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WillofUnbinding-77995"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WitchingHourglass-55787"
- value: {
-  dps: 111711.48297
-  tps: 781980.38082
-  dtps: 46309.08729
-  hps: 6700.65125
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WitchingHourglass-56320"
- value: {
-  dps: 112863.30562
-  tps: 790043.13937
-  dtps: 46042.77629
-  hps: 6328.13245
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-World-QuellerFocus-63842"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46532.25724
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WrathofUnchaining-77197"
- value: {
-  dps: 113202.54096
-  tps: 792417.78671
-  dtps: 46476.76337
-  hps: 6588.99492
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WrathofUnchaining-77974"
- value: {
-  dps: 113033.91705
-  tps: 791237.41935
-  dtps: 46444.92122
-  hps: 6559.79031
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-WrathofUnchaining-77994"
- value: {
-  dps: 113463.0309
-  tps: 794241.2163
-  dtps: 46101.67377
-  hps: 6640.62601
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Za'brox'sLuckyTooth-63742"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
- }
-}
-dps_results: {
- key: "TestBrewmaster-AllItems-Za'brox'sLuckyTooth-63745"
- value: {
-  dps: 111816.79993
-  tps: 782717.59951
-  dtps: 46755.19089
-  hps: 6497.74866
+  dps: 117934.63347
+  tps: 825542.43432
+  dtps: 43321.15618
+  hps: 6588.65886
  }
 }
 dps_results: {
  key: "TestBrewmaster-Average-Default"
  value: {
-  dps: 113828.695
-  tps: 796800.865
-  dtps: 45244.47092
-  hps: 6705.42101
+  dps: 119388.08924
+  tps: 835716.62469
+  dtps: 43301.25609
+  hps: 6474.79496
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 2.42775429279e+06
-  tps: 1.699428004952e+07
-  dtps: 1.41034724388e+06
-  hps: 34915.18908
+  dps: 2.6072722095e+06
+  tps: 1.825090546649e+07
+  dtps: 1.21680001699e+06
+  hps: 33993.34564
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 115640.36904
-  tps: 809482.58327
-  dtps: 46482.91381
-  hps: 6587.66496
+  dps: 121997.23634
+  tps: 853980.6544
+  dtps: 43767.43603
+  hps: 6456.8343
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 112629.79221
-  tps: 788408.54547
-  dtps: 44657.87075
-  hps: 3720.1486
+  dps: 122124.49461
+  tps: 854871.46225
+  dtps: 39054.12579
+  hps: 3445.17465
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.85016454124e+06
-  tps: 1.295115178871e+07
-  dtps: 1.69425643086e+06
-  hps: 30059.74331
+  dps: 1.98462058419e+06
+  tps: 1.389234408936e+07
+  dtps: 1.6481245478e+06
+  hps: 28986.26581
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 93502.06481
-  tps: 654514.45369
-  dtps: 59176.28634
-  hps: 5722.53902
+  dps: 97906.9584
+  tps: 685348.70879
+  dtps: 57650.88805
+  hps: 6081.61071
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 88957.51438
-  tps: 622702.60064
-  dtps: 54545.38863
-  hps: 3391.20541
+  dps: 95492.56798
+  tps: 668447.97588
+  dtps: 51794.33807
+  hps: 3257.70221
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 2.48430133168e+06
-  tps: 1.739010932176e+07
-  dtps: 1.43980280911e+06
-  hps: 32413.06072
+  dps: 2.60841000044e+06
+  tps: 1.825887000305e+07
+  dtps: 1.37656794482e+06
+  hps: 33667.87411
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 122267.28666
-  tps: 855871.00665
-  dtps: 48241.0665
-  hps: 5248.07906
+  dps: 129103.37881
+  tps: 903723.65164
+  dtps: 44196.30497
+  hps: 6068.0953
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 119904.9394
-  tps: 839334.57577
-  dtps: 45228.92162
-  hps: 1712.02735
+  dps: 128098.7617
+  tps: 896691.33187
+  dtps: 41577.12443
+  hps: 4325.01016
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.86962001116e+06
-  tps: 1.308734007812e+07
-  dtps: 1.75154662683e+06
-  hps: 29079.55489
+  dps: 1.98813983872e+06
+  tps: 1.391697887106e+07
+  dtps: 1.68042388857e+06
+  hps: 29397.24501
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 97546.83519
-  tps: 682827.84631
-  dtps: 60667.05286
-  hps: 5078.85401
+  dps: 103520.87913
+  tps: 724646.15388
+  dtps: 58466.097
+  hps: 5324.66586
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_bis_balanced_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 93135.36682
-  tps: 651947.56776
-  dtps: 59816.63807
-  hps: 1515.18367
+  dps: 99327.61451
+  tps: 695293.30156
+  dtps: 54398.83882
+  hps: 3590.3901
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_poor-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.75403276798e+06
-  tps: 1.227822937588e+07
-  dtps: 1.63218165596e+06
-  hps: 24258.40803
+  dps: 1.79540067096e+06
+  tps: 1.25678046967e+07
+  dtps: 1.67334132509e+06
+  hps: 26535.48272
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_poor-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 95484.65081
-  tps: 668392.5557
-  dtps: 55602.31171
-  hps: 5001.62017
+  dps: 100834.94134
+  tps: 705844.58937
+  dtps: 55078.41209
+  hps: 4872.6009
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_poor-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 91807.61934
-  tps: 642653.33539
-  dtps: 55228.06221
-  hps: 1532.2674
+  dps: 97360.12971
+  tps: 681520.90799
+  dtps: 51006.11002
+  hps: 3241.54293
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_poor-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.32665904193e+06
-  tps: 9.28661329354e+06
-  dtps: 1.99219672344e+06
-  hps: 21176.25136
+  dps: 1.37132174693e+06
+  tps: 9.59925222848e+06
+  dtps: 1.94818184581e+06
+  hps: 22797.14383
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_poor-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 75804.55891
-  tps: 530631.91237
-  dtps: 69868.27454
-  hps: 4355.91272
+  dps: 79058.04244
+  tps: 553406.29711
+  dtps: 67772.75146
+  hps: 4701.7145
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_poor-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 71494.04079
-  tps: 500458.28552
-  dtps: 66331.45115
-  hps: 1239.95777
+  dps: 75708.90671
+  tps: 529962.34699
+  dtps: 62864.25647
+  hps: 2765.72219
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_rich-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.80882754494e+06
-  tps: 1.266179281457e+07
-  dtps: 1.58530970077e+06
-  hps: 27881.64687
+  dps: 1.94833635818e+06
+  tps: 1.363835450725e+07
+  dtps: 1.53955229728e+06
+  hps: 27769.28521
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_rich-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 100843.91535
-  tps: 705907.40747
-  dtps: 51931.87759
-  hps: 5779.94064
+  dps: 107033.66373
+  tps: 749235.64613
+  dtps: 52123.04261
+  hps: 5441.6304
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_rich-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 96238.41307
-  tps: 673668.89152
-  dtps: 48348.62513
-  hps: 3219.80661
+  dps: 103045.31008
+  tps: 721317.17056
+  dtps: 49077.24872
+  hps: 3357.5214
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_rich-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.41206389847e+06
-  tps: 9.88444728929e+06
-  dtps: 1.86802526622e+06
-  hps: 22985.04045
+  dps: 1.49418318635e+06
+  tps: 1.045928230443e+07
+  dtps: 1.89481376567e+06
+  hps: 23761.91787
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_rich-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 79849.58252
-  tps: 558947.07765
-  dtps: 65352.83348
-  hps: 4962.52101
+  dps: 84336.66438
+  tps: 590356.65063
+  dtps: 65710.77471
+  hps: 4959.44323
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Orc-p1_prebis_rich-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 75311.28763
-  tps: 527179.01342
-  dtps: 60270.29317
-  hps: 2855.21144
+  dps: 79434.34174
+  tps: 556040.39216
+  dtps: 61191.52524
+  hps: 2825.65481
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_2h-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 2.42774982316e+06
-  tps: 1.699424876214e+07
-  dtps: 1.41034727835e+06
-  hps: 34914.61881
+  dps: 2.60726465892e+06
+  tps: 1.825085261245e+07
+  dtps: 1.21680005146e+06
+  hps: 33992.7915
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_2h-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 115644.86271
-  tps: 809514.03898
-  dtps: 46482.72865
-  hps: 6587.92076
+  dps: 122001.94611
+  tps: 854013.6228
+  dtps: 43767.24784
+  hps: 6457.08317
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_2h-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 112634.43637
-  tps: 788441.05456
-  dtps: 44657.6431
-  hps: 3720.30837
+  dps: 122129.49085
+  tps: 854906.43594
+  dtps: 39053.89814
+  hps: 3445.32211
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_2h-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.85025438745e+06
-  tps: 1.295178071217e+07
-  dtps: 1.69334439634e+06
-  hps: 30056.83978
+  dps: 1.98463776401e+06
+  tps: 1.389246434809e+07
+  dtps: 1.64812455411e+06
+  hps: 28985.81461
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_2h-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 93510.52513
-  tps: 654573.67594
-  dtps: 59176.13457
-  hps: 5722.75861
+  dps: 97910.68562
+  tps: 685374.79933
+  dtps: 57650.70593
+  hps: 6081.84143
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_2h-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 88961.16858
-  tps: 622728.18006
-  dtps: 54545.11269
-  hps: 3391.35276
+  dps: 95496.462
+  tps: 668475.234
+  dtps: 51794.10352
+  hps: 3257.84256
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_dw-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 2.48427013355e+06
-  tps: 1.738989093483e+07
-  dtps: 1.43980283209e+06
-  hps: 32412.52572
+  dps: 2.60850620607e+06
+  tps: 1.825954344248e+07
+  dtps: 1.37656797546e+06
+  hps: 33667.32104
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_dw-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 122361.10122
-  tps: 856527.70851
-  dtps: 48313.15731
-  hps: 5253.52557
+  dps: 129108.43407
+  tps: 903759.03849
+  dtps: 44196.12892
+  hps: 6068.32815
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_dw-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 119909.99612
-  tps: 839369.97282
-  dtps: 45228.92162
-  hps: 1712.10435
+  dps: 128104.0726
+  tps: 896728.50823
+  dtps: 41576.86642
+  hps: 4325.18841
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_dw-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.86961787411e+06
-  tps: 1.308732511876e+07
-  dtps: 1.75154662683e+06
-  hps: 29079.09729
+  dps: 1.9881295275e+06
+  tps: 1.391690669253e+07
+  dtps: 1.6804239138e+06
+  hps: 29396.78429
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_dw-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 97553.01243
-  tps: 682871.08703
-  dtps: 60666.97008
-  hps: 5079.04805
+  dps: 103524.87819
+  tps: 724674.14735
+  dtps: 58465.94524
+  hps: 5324.86725
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_bis_balanced_dw-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 93139.28194
-  tps: 651974.97358
-  dtps: 59816.63807
-  hps: 1515.25367
+  dps: 99331.72923
+  tps: 695322.1046
+  dtps: 54398.60428
+  hps: 3590.5392
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_poor-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.75442259952e+06
-  tps: 1.228095819665e+07
-  dtps: 1.62935733197e+06
-  hps: 24214.85456
+  dps: 1.79544160659e+06
+  tps: 1.25680912461e+07
+  dtps: 1.67334135573e+06
+  hps: 26534.91916
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_poor-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 95489.07433
-  tps: 668423.52032
-  dtps: 55602.17512
-  hps: 5001.84671
+  dps: 100841.96011
+  tps: 705893.72077
+  dtps: 55078.26943
+  hps: 4872.81635
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_poor-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 91812.17795
-  tps: 642685.24562
-  dtps: 55228.04703
-  hps: 1532.3494
+  dps: 97364.80514
+  tps: 681553.63599
+  dtps: 51005.85202
+  hps: 3241.7004
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_poor-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.32666674476e+06
-  tps: 9.28666721331e+06
-  dtps: 1.99219672626e+06
-  hps: 21175.86365
+  dps: 1.37132821762e+06
+  tps: 9.59929752331e+06
+  dtps: 1.94818187689e+06
+  hps: 22796.73031
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_poor-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 75808.0559
-  tps: 530656.39133
-  dtps: 69868.1752
-  hps: 4356.10872
+  dps: 79066.24039
+  tps: 553463.68273
+  dtps: 67770.49496
+  hps: 4701.92219
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_poor-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 71497.62583
-  tps: 500483.3808
-  dtps: 66331.45115
-  hps: 1240.02777
+  dps: 75712.59631
+  tps: 529988.17416
+  dtps: 62864.03572
+  hps: 2765.86079
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_rich-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.80882070189e+06
-  tps: 1.266174491321e+07
-  dtps: 1.58530973012e+06
-  hps: 27881.0195
+  dps: 1.94836243469e+06
+  tps: 1.363853704281e+07
+  dtps: 1.53955235177e+06
+  hps: 27768.66635
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_rich-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 100854.43182
-  tps: 705981.02273
-  dtps: 51931.65298
-  hps: 5780.19328
+  dps: 107040.93255
+  tps: 749286.52786
+  dtps: 52122.87567
+  hps: 5441.86217
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_rich-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 96242.98891
-  tps: 673700.92239
-  dtps: 48348.33678
-  hps: 3219.96369
+  dps: 103050.06508
+  tps: 721350.45558
+  dtps: 49076.99072
+  hps: 3357.67964
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_rich-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 1.41208006603e+06
-  tps: 9.88456046219e+06
-  dtps: 1.868025286e+06
-  hps: 22984.63697
+  dps: 1.49419099134e+06
+  tps: 1.045933693941e+07
+  dtps: 1.89481377415e+06
+  hps: 23761.50507
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_rich-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 79855.32669
-  tps: 558987.28686
-  dtps: 65352.67068
-  hps: 4962.73654
+  dps: 84340.30012
+  tps: 590382.10081
+  dtps: 65710.62294
+  hps: 4959.65302
  }
 }
 dps_results: {
  key: "TestBrewmaster-Settings-Troll-p1_prebis_rich-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 75314.89889
-  tps: 527204.29226
-  dtps: 60270.03103
-  hps: 2855.35424
+  dps: 79438.04257
+  tps: 556066.29798
+  dtps: 61191.30449
+  hps: 2825.79096
  }
 }
 dps_results: {
  key: "TestBrewmaster-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 115644.86271
-  tps: 809514.03898
-  dtps: 46482.72865
-  hps: 6587.92076
+  dps: 122001.94611
+  tps: 854013.6228
+  dtps: 43767.24784
+  hps: 6457.08317
  }
 }

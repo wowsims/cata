@@ -1060,3 +1060,91 @@ const (
 	BANDAGE
 	OTHER
 )
+
+type RPPMModifierType int
+
+const (
+	RPPMModifierHaste     RPPMModifierType = iota + 1 // 1
+	RPPMModifierCrit                                  // 2
+	RPPMModifierClass                                 // 3
+	RPPMModifierSpec                                  // 4
+	RPPMModifierRace                                  // 5
+	RPPMModifierIlevel                                // 6
+	RPPMModifierUnkAdjust                             // 7
+)
+
+const (
+	PROC_FLAG_NONE int = 0
+
+	PROC_FLAG_HEARTBEAT int = 0x00000001 // 00 Heartbeat
+	PROC_FLAG_KILL      int = 0x00000002 // 01 Kill target (in most cases need XP/Honor reward)
+
+	PROC_FLAG_DEAL_MELEE_SWING int = 0x00000004 // 02 Done melee auto attack
+	PROC_FLAG_TAKE_MELEE_SWING int = 0x00000008 // 03 Taken melee auto attack
+
+	PROC_FLAG_DEAL_MELEE_ABILITY int = 0x00000010 // 04 Done attack by Spell that has dmg class melee
+	PROC_FLAG_TAKE_MELEE_ABILITY int = 0x00000020 // 05 Taken attack by Spell that has dmg class melee
+
+	PROC_FLAG_DEAL_RANGED_ATTACK int = 0x00000040 // 06 Done ranged auto attack
+	PROC_FLAG_TAKE_RANGED_ATTACK int = 0x00000080 // 07 Taken ranged auto attack
+
+	PROC_FLAG_DEAL_RANGED_ABILITY int = 0x00000100 // 08 Done attack by Spell that has dmg class ranged
+	PROC_FLAG_TAKE_RANGED_ABILITY int = 0x00000200 // 09 Taken attack by Spell that has dmg class ranged
+
+	PROC_FLAG_DEAL_HELPFUL_ABILITY int = 0x00000400 // 10 Done positive spell that has dmg class none
+	PROC_FLAG_TAKE_HELPFUL_ABILITY int = 0x00000800 // 11 Taken positive spell that has dmg class none
+
+	PROC_FLAG_DEAL_HARMFUL_ABILITY int = 0x00001000 // 12 Done negative spell that has dmg class none
+	PROC_FLAG_TAKE_HARMFUL_ABILITY int = 0x00002000 // 13 Taken negative spell that has dmg class none
+
+	PROC_FLAG_DEAL_HELPFUL_SPELL int = 0x00004000 // 14 Done positive spell that has dmg class magic
+	PROC_FLAG_TAKE_HELPFUL_SPELL int = 0x00008000 // 15 Taken positive spell that has dmg class magic
+
+	PROC_FLAG_DEAL_HARMFUL_SPELL int = 0x00010000 // 16 Done negative spell that has dmg class magic
+	PROC_FLAG_TAKE_HARMFUL_SPELL int = 0x00020000 // 17 Taken negative spell that has dmg class magic
+
+	PROC_FLAG_DEAL_HARMFUL_PERIODIC int = 0x00040000 // 18 Successful do periodic (damage)
+	PROC_FLAG_TAKE_HARMFUL_PERIODIC int = 0x00080000 // 19 Taken spell periodic (damage)
+
+	PROC_FLAG_TAKE_ANY_DAMAGE int = 0x00100000 // 20 Taken any damage
+
+	PROC_FLAG_DEAL_HELPFUL_PERIODIC int = 0x00200000 // 21
+
+	PROC_FLAG_MAIN_HAND_WEAPON_SWING int = 0x00400000 // 22 Done main-hand melee attacks (spell and autoattack)
+	PROC_FLAG_OFF_HAND_WEAPON_SWING  int = 0x00800000 // 23 Done off-hand melee attacks (spell and autoattack)
+
+	PROC_FLAG_ANY_DIRECT_TAKEN int = PROC_FLAG_TAKE_MELEE_SWING |
+		PROC_FLAG_TAKE_MELEE_ABILITY |
+		PROC_FLAG_TAKE_RANGED_ABILITY |
+		PROC_FLAG_TAKE_HARMFUL_ABILITY |
+		PROC_FLAG_TAKE_RANGED_ATTACK |
+		PROC_FLAG_TAKE_HELPFUL_SPELL |
+		PROC_FLAG_TAKE_HELPFUL_ABILITY |
+		PROC_FLAG_TAKE_ANY_DAMAGE |
+		PROC_FLAG_TAKE_HARMFUL_SPELL
+	PROC_FLAG_ANY_DIRECT_DEALT int = PROC_FLAG_DEAL_MELEE_SWING |
+		PROC_FLAG_DEAL_MELEE_ABILITY |
+		PROC_FLAG_DEAL_RANGED_ATTACK |
+		PROC_FLAG_DEAL_RANGED_ABILITY |
+		PROC_FLAG_DEAL_HARMFUL_ABILITY |
+		PROC_FLAG_DEAL_HARMFUL_SPELL
+	PROC_FLAG_ANY_HEAL int = PROC_FLAG_DEAL_HELPFUL_PERIODIC |
+		PROC_FLAG_DEAL_HELPFUL_ABILITY |
+		PROC_FLAG_DEAL_HELPFUL_SPELL
+)
+
+const (
+	ATTR_EX_3_CAN_PROC_FROM_PROCS int = 0x4000000
+)
+
+const (
+	NORMAL_DUNGEON = 1 << iota
+	HEROIC_DUNGEON
+	NORMAL_RAID_10_MAN
+	NORMAL_RAID_25_MAN
+	HEROIC_RAID_10_MAN
+	HEROIC_RAID_25_MAN
+	LOOKING_FOR_RAID
+	CHALLENGE_MODE
+	NORMAL_RAID_40_MAN
+)

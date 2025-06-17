@@ -24,7 +24,6 @@ func (shadow *ShadowPriest) registerMindBlastSpell() {
 		CritMultiplier:           shadow.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 3,
-			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

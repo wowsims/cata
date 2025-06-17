@@ -262,8 +262,9 @@ const (
 	// Uses FloatValue
 	SpellMod_DamageDone_Flat
 
-	// Will reduce spell.Cost.PercentModifier by % amount. -5% = -5
-	// Uses IntValue
+	// Will reduce spell.Cost.PercentModifier by % amount. -5% = -0.05
+	// For 0 Mana cost use -2
+	// Uses FloatValue
 	SpellMod_PowerCost_Pct
 
 	// Increases or decreases spell.Cost.FlatModifier by flat amount. -5 Mana = -5
@@ -344,6 +345,10 @@ const (
 	// Used to modify the amount of charges a spell has
 	// Uses: IntValue
 	SpellMod_ModCharges_Flat
+
+	// Will multiply the dot.PeriodicDamageMultiplier. +5% = 0.05
+	// Uses FloatValue
+	SpellMod_DotDamageDone_Pct
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -460,6 +465,10 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Apply:  applyModChargesFlat,
 		Remove: removeModChargesFlat,
 	},
+	SpellMod_DotDamageDone_Pct: {
+		Apply:  applyDotDamageDonePercent,
+		Remove: removeDotDamageDonePercent,
+	},
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
@@ -488,13 +497,13 @@ func onResetDamageDoneAdd(mod *SpellMod) {
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.PercentModifier += mod.intValue
+		spell.Cost.PercentModifier *= (1 + mod.floatValue)
 	}
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.PercentModifier -= mod.intValue
+		spell.Cost.PercentModifier /= (1 + mod.floatValue)
 	}
 }
 
@@ -733,5 +742,31 @@ func removeModChargesFlat(mod *SpellMod, spell *Spell) {
 
 	if spell.charges > spell.MaxCharges {
 		spell.charges = spell.MaxCharges
+	}
+}
+
+func applyDotDamageDonePercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.PeriodicDamageMultiplier *= mod.floatValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.PeriodicDamageMultiplier *= mod.floatValue
+	}
+}
+
+func removeDotDamageDonePercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.PeriodicDamageMultiplier /= mod.floatValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.PeriodicDamageMultiplier /= mod.floatValue
 	}
 }

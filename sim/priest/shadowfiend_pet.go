@@ -28,9 +28,6 @@ var baseStats = stats.Stats{
 	// stats.AttackPower: 896, // Level 85
 	stats.AttackPower: 1077, // Level 90
 	stats.Mana:        12295,
-
-	// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
-	stats.PhysicalCritPercent: 8,
 }
 
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
@@ -110,7 +107,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{ //still need to nail down shadow fiend crit scaling, but removing owner crit scaling after further investigation
+		return stats.Stats{
 			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
 			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.3,
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.75,

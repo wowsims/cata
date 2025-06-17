@@ -38,8 +38,35 @@ public static class SqliteDataInserter
 		using (var command = connection.CreateCommand())
 		{
 			command.Transaction = transaction;
+
+			// create indexes
+			foreach (var col in columnNames)
+			{
+				var colDef = versionDef.definitions.FirstOrDefault(d => d.name == col);
+				if (colDef.isRelation)
+				{
+					command.CommandText = $"CREATE INDEX IF NOT EXISTS idx_{col.ToLower()} ON {tableName} ({col});";
+					try
+					{
+						command.ExecuteNonQuery();
+					}
+					catch (SqliteException se)
+					{
+						Console.WriteLine("Error executing command:");
+						Console.WriteLine(command.CommandText);
+						foreach (SqliteParameter param in command.Parameters)
+							Console.WriteLine($"{param.ParameterName} = {param.Value}");
+						Console.WriteLine("Exception: " + se.Message);
+						throw;
+					}
+				}
+			}
+
+
 			command.CommandText = upsertSql;
 
+			// store a list of all relations to create indexes for those columns for faster lookups
+			var indexList = new HashSet<string>();
 			foreach (var kvp in storage.Values)
 			{
 				command.Parameters.Clear();
@@ -49,7 +76,6 @@ public static class SqliteDataInserter
 					var value = kvp[col] ?? DBNull.Value;
 					var colDef = versionDef.definitions.FirstOrDefault(d => d.name == col);
 					if (colDef.isRelation && value == (object)0) value = DBNull.Value;
-
 					if (colDef.arrLength > 0)
 						if (value is Array arr)
 							value = JsonSerializer.Serialize(arr);

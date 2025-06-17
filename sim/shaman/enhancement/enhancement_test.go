@@ -3,20 +3,21 @@ package enhancement
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/common" // imported to get item effects included.
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterEnhancementShaman()
+	common.RegisterAllEffects()
 }
 
 func TestEnhancement(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassShaman,
 		Race:       proto.Race_RaceDwarf,
-		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll},
+		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceDraenei, proto.Race_RaceAlliancePandaren},
 
 		// The above line is the actual line for the ring but it is causing an error in the test
 		GearSet: core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "preraid"),

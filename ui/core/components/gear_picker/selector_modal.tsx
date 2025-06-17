@@ -626,16 +626,18 @@ export default class SelectorModal extends BaseModal {
 				const isItemChange = Item.is(item.item);
 				const newItem = gearData.getEquippedItem() || null;
 				const isRandomSuffixChange = prevItem?._randomSuffix?.id !== newItem?.randomSuffix?.id;
+				const isUpgradeChange = prevItem?.upgrade !== newItem?.upgrade;
 
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
-				if (isItemChange || isRandomSuffixChange) {
+				if (isItemChange || isRandomSuffixChange || isUpgradeChange) {
 					if (!isRandomSuffixChange) {
 						this.removeTabs(SelectorModalTabs.RandomSuffixes);
 						this.addRandomSuffixTab(newItem, gearData);
 					}
-
-					this.removeTabs(SelectorModalTabs.Upgrades);
-					this.addUpgradesTab(newItem, gearData);
+					if (!isUpgradeChange) {
+						this.removeTabs(SelectorModalTabs.Upgrades);
+						this.addUpgradesTab(newItem, gearData);
+					}
 
 					this.removeTabs(SelectorModalTabs.Reforging);
 					this.addReforgingTab(newItem, gearData);

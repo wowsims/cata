@@ -15,8 +15,8 @@ func (ele *ElementalShaman) registerShamanisticRageSpell() {
 		ActionID: actionID,
 		Duration: time.Second * 15,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:     core.SpellMod_PowerCost_Pct,
-		IntValue: -100,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2,
 	})
 
 	spell := ele.RegisterSpell(core.SpellConfig{
