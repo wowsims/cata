@@ -22,6 +22,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStrength,
+		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatExpertiseRating,
 		Stat.StatHitRating,
