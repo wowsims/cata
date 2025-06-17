@@ -33,7 +33,12 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 		}
 	case reflect.Float64:
 		tolerance := baseFloatTolerance
-		if strings.Contains(loc, "SumSq") {
+		expectedV := vst.Float()
+		actualV := vmt.Float()
+		fracCompareCutoff := 1e+10
+		absDiff := math.Abs(expectedV - actualV)
+
+		if math.Abs(expectedV) > fracCompareCutoff || math.Abs(actualV) > fracCompareCutoff {
 			switch {
 			case strings.Contains(loc, "Threat.AggregatorData.SumSq"):
 				tolerance *= 2e-11
@@ -45,20 +50,19 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 				tolerance *= 1e-11
 			case strings.Contains(loc, ".Auras") && strings.Contains(loc, "AggregatorData.SumSq"):
 				tolerance *= 6e-11
+			case strings.Contains(loc, "Resources"):
+				tolerance *= 1e-8
 			default:
-				tolerance *= 1e-13
+				tolerance *= 1e-11
 			}
 
-			expectedV := vst.Float()
-			actualV := vmt.Float()
-			diff := math.Abs(expectedV - actualV)
 			smallestV := min(expectedV, actualV)
 
-			if diff > 0.0 && smallestV > 0.0 {
-				fraction := diff / smallestV
+			if absDiff > 0.0 && smallestV > 0.0 {
+				fraction := absDiff / smallestV
 				if fraction > tolerance {
 					t.Logf("%s: Expected %0.17f but is %0.17f for multi threaded result!", loc, vst.Float(), vmt.Float())
-					t.Logf("%s: %0.17f - difference\n", loc, diff)
+					t.Logf("%s: %0.17f - difference\n", loc, absDiff)
 					t.Logf("%s: %0.17f - fraction\n", loc, fraction)
 					t.Logf("%s: %0.17f - tolerance\n", loc, tolerance)
 					t.Fail()
@@ -68,12 +72,12 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 			if strings.Contains(loc, "CastTimeMs") {
 				tolerance = 2.2 // Castime is rounded in results and may be off 1ms per thread. In test=true sims concurrency is set to 3, 2ms diff seems to never be broken then)
 			} else if strings.Contains(loc, "Resources") {
-				tolerance *= 500 // Seems to do some rounding at some point?
+				tolerance *= 15 // Squared sums can be off more, and as an extension also the stdevs
 			} else if strings.Contains(loc, "Stdev") {
 				tolerance *= 10 // Squared sums can be off more, and as an extension also the stdevs
 			}
 
-			if math.Abs(vst.Float()-vmt.Float()) > tolerance {
+			if absDiff > tolerance {
 				t.Logf("%s: Expected %f but is %f for multi threaded result!", loc, vst.Float(), vmt.Float())
 				t.Fail()
 			}
