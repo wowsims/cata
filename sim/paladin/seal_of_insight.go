@@ -56,7 +56,9 @@ func (paladin *Paladin) registerSealOfInsight() {
 			if isHoly {
 				// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
 				// - Seal of Insight now has a chance to restore 4% of the Holy Paladin’s base mana when striking a target in a non-PvP environment. [5.4 Revert].
-				paladin.AddMana(sim, paladin.BaseMana*0.04, manaMetrics)
+				// Beta changes 2025-06-16: https://www.wowhead.com/mop-classic/news/blood-death-knights-buffed-and-even-more-class-balance-adjustments-mists-of-377292
+				// - Seal of Insight’s Base Mana restoration increased to 6% of base mana (was 4%). [New]
+				paladin.AddMana(sim, paladin.BaseMana*0.06, manaMetrics)
 			}
 		},
 	})
