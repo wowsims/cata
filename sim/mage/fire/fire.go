@@ -9,7 +9,6 @@ import (
 const (
 	DDBC_Pyromaniac int = iota
 	DDBC_Total
-	FireSpellIgnitable = mage.MageSpellFireball | mage.MageSpellFrostfireBolt | mage.MageSpellInfernoBlast | mage.MageSpellScorch | mage.MageSpellPyroblast
 )
 
 func RegisterFireMage() {

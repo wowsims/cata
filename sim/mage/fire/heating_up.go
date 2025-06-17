@@ -20,9 +20,9 @@ func (fire *FireMage) registerHeatingUp() {
 		ActionID: core.ActionID{SpellID: 48108},
 		Duration: time.Second * 15,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		IntValue:  -100,
-		ClassMask: mage.MageSpellPyroblast,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2.0,
+		ClassMask:  mage.MageSpellPyroblast,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1,
@@ -47,9 +47,7 @@ func (fire *FireMage) registerHeatingUp() {
 					fire.heatingUp.Activate(sim)
 				}
 			} else {
-				if fire.heatingUp.IsActive() {
-					fire.heatingUp.Deactivate(sim)
-				}
+				fire.heatingUp.Deactivate(sim)
 			}
 
 		},

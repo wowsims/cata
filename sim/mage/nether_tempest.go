@@ -17,7 +17,7 @@ func (mage *Mage) registerNetherTempest() {
 		ActionID:       core.ActionID{SpellID: 114954},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: MageSpellNetherTempest,
+		ClassSpellMask: MageSpellNetherTempestDot,
 		MissileSpeed:   .85,
 
 		DamageMultiplier: 1,
@@ -39,7 +39,7 @@ func (mage *Mage) registerNetherTempest() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellNetherTempestApply,
+		ClassSpellMask: MageSpellNetherTempest,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1.5,
@@ -66,7 +66,7 @@ func (mage *Mage) registerNetherTempest() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: MageSpellNetherTempest,
+		ClassSpellMask: MageSpellNetherTempestDot,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultCritMultiplier(),

@@ -23,7 +23,7 @@ func (fire *FireMage) registerMastery() {
 			Outcome:  core.OutcomeLanded,
 
 			ExtraCondition: func(_ *core.Simulation, spell *core.Spell, _ *core.SpellResult) bool {
-				return spell.Matches(FireSpellIgnitable)
+				return spell.Matches(mage.FireSpellIgnitable)
 			},
 		},
 

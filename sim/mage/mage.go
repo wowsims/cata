@@ -209,7 +209,7 @@ const (
 	MageSpellMirrorImage
 	MageSpellMoltenArmor
 	MageSpellNetherTempest
-	MageSpellNetherTempestApply
+	MageSpellNetherTempestDot
 	MageSpellPresenceOfMind
 	MageSpellPyroblast
 	MageSpellPyroblastDot
@@ -235,6 +235,7 @@ const (
 		MageSpellFireBlast | MageSpellArcaneExplosion | MageSpellBlastWave |
 		MageSpellCombustionApplication | MageSpellConeOfCold | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellIceLance | MageSpellManaGems | MageSpellMirrorImage |
-		MageSpellPresenceOfMind | MageSpellLivingBombDot | MageSpellFrostBomb | MageSpellNetherTempest | MageSpellNetherTempestApply
+		MageSpellPresenceOfMind | MageSpellLivingBombDot | MageSpellFrostBomb | MageSpellNetherTempest | MageSpellNetherTempestDot
 	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
+	FireSpellIgnitable   = MageSpellFireball | MageSpellFrostfireBolt | MageSpellInfernoBlast | MageSpellScorch | MageSpellPyroblast
 )

@@ -44,9 +44,8 @@ func (fire *FireMage) registerCombustionSpell() {
 			fire.InfernoBlast.CD.Reset()
 			spell.DamageMultiplier *= combustDamageMultiplier
 			baseDamage := fire.CalcAndRollDamageRange(sim, combustionScaling, combustionVariance)
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
 			spell.DamageMultiplier /= combustDamageMultiplier
