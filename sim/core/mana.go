@@ -124,8 +124,6 @@ func (mb *manaBar) doneIteration(sim *Simulation) {
 		return
 	}
 
-	mb.manaRegenMultiplier = 1.0
-
 	if mb.waitingForMana != 0 {
 		mb.unit.Metrics.AddOOMTime(sim, sim.CurrentTime-mb.waitingForManaStartTime)
 	}
@@ -300,6 +298,9 @@ func (mb *manaBar) reset() {
 	}
 
 	mb.currentMana = mb.unit.MaxMana()
+
+	mb.manaRegenMultiplier = 1.0
+
 	mb.waitingForMana = 0
 	mb.waitingForManaStartTime = 0
 }
