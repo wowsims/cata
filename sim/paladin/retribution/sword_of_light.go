@@ -66,7 +66,7 @@ func (ret *RetributionPaladin) registerSwordOfLight() {
 		ClassMask:  paladin.SpellMaskFlashOfLight,
 		FloatValue: 1.0,
 	}).AttachSpellMod(core.SpellModConfig{
-		// Not in tooltip: Crusader Strike costs 40% less mana
+		// Not in tooltip: Crusader Strike costs 80% less mana
 		Kind:       core.SpellMod_PowerCost_Pct,
 		ClassMask:  paladin.SpellMaskCrusaderStrike,
 		FloatValue: -0.8,
