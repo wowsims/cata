@@ -183,12 +183,10 @@ type Shaman struct {
 	VolcanicRegalia4PT12Aura *core.Aura
 
 	// Item sets
-	DungeonSet3 *core.Aura
-	T12Enh2pc   *core.Aura
-	T12Ele4pc   *core.Aura
-	T14Ele4pc   *core.Aura
-	T14Enh4pc   *core.Aura
-	T15Enh2pc   *core.Aura
+	T14Ele4pc *core.Aura
+	T14Enh4pc *core.Aura
+	T15Enh2pc *core.Aura
+	S12Enh2pc *core.Aura
 }
 
 // Implemented by each Shaman spec.

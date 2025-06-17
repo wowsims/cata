@@ -58,6 +58,7 @@ func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) cor
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: 2.11199998856,
+		ThreatMultiplier: 1,
 	}
 
 	if isElementalOverload {

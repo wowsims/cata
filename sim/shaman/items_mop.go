@@ -257,5 +257,19 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// S12 enh
+// (2) Set: Increases the chance to trigger your Maelstrom Weapon talent by 20%.
+// (4) Set: While your weapon is imbued with Flametongue Weapon, your attacks also slow the target's movement speed by 50% for 3 sec.
+var ItemSetGladiatorsEarthshaker = core.NewItemSet(core.ItemSet{
+	Name: "Gladiator's Earthshaker",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.S12Enh2pc = setBonusAura
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {},
+	},
+})
+
 func init() {
 }
