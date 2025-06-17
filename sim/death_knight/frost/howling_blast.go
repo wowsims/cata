@@ -41,7 +41,9 @@ func (fdk *FrostDeathKnight) registerHowlingBlast() {
 				damageMultiplier := spell.DamageMultiplier
 
 				if aoeTarget != target {
-					spell.DamageMultiplier *= 0.5
+					// Beta changes 2025-06-16: https://www.wowhead.com/mop-classic/news/blood-death-knights-buffed-and-even-more-class-balance-adjustments-mists-of-377292
+					// - Howling Blast’s damage to targets around the primary target has been increased to 65% of the damage dealt (was 50%). [5.2 Revert]
+					spell.DamageMultiplier *= 0.35
 				}
 
 				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
