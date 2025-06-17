@@ -1,9 +1,6 @@
 {
   "type": "TypeAPL",
   "prepullActions": [
-    {"action":{"castSpell":{"spellId":{"spellId":8092}}},"doAtValue":{"const":{"val":"-40s"}}},
-    {"action":{"castSpell":{"spellId":{"spellId":8092}}},"doAtValue":{"const":{"val":"-30s"}}},
-    {"action":{"castSpell":{"spellId":{"spellId":8092}}},"doAtValue":{"const":{"val":"-20s"}}},
     {"action":{"activateAura":{"auraId":{"spellId":123254}}},"doAtValue":{"const":{"val":"-2.5s"}}},
     {"action":{"castSpell":{"spellId":{"spellId":120696}}},"doAtValue":{"const":{"val":"-2.5s"}}},
     {"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-1s"}}},

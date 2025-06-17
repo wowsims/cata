@@ -21,5 +21,4 @@ func (ret *RetributionPaladin) registerHotfixPassive() {
 		ClassMask:  paladin.SpellMaskTemplarsVerdict,
 		FloatValue: 0.2,
 	})
-
 }

@@ -65,11 +65,15 @@ func (affliction *AfflictionWarlock) Initialize() {
 
 	affliction.registerPotentAffliction()
 	affliction.registerHaunt()
-	affliction.RegisterCorruption(func(resultList []core.SpellResult, spell *core.Spell, sim *core.Simulation) {
+	corruption := affliction.RegisterCorruption(func(resultList []core.SpellResult, spell *core.Spell, sim *core.Simulation) {
 		if resultList[0].Landed() {
 			affliction.LastCorruption = spell.Dot(resultList[0].Target)
 		}
 	})
+
+	// June 16th Beta Changes +33% for affliction
+	corruption.DamageMultiplier *= 1.33
+
 	affliction.registerAgony()
 	affliction.registerNightfall()
 	affliction.registerUnstableAffliction()

@@ -31,28 +31,28 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Death Knight
 	[Spec.SpecBloodDeathKnight]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecFrostDeathKnight]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecUnholyDeathKnight]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecFeralDruid]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecGuardianDruid]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecRestorationDruid]: {
 		phase: Phase.Phase1,
@@ -61,20 +61,20 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecMarksmanshipHunter]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecSurvivalHunter]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	// Mage
 	[Spec.SpecArcaneMage]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecFireMage]: {
 		phase: Phase.Phase1,
@@ -126,15 +126,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Rogue
 	[Spec.SpecAssassinationRogue]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecCombatRogue]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecSubtletyRogue]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Launched,
+		status: LaunchStatus.Unlaunched,
 	},
 	// Shaman
 	[Spec.SpecElementalShaman]: {
@@ -165,15 +165,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Warrior
 	[Spec.SpecArmsWarrior]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecFuryWarrior]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecProtectionWarrior]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Unlaunched,
 	},
 };
 
