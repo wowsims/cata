@@ -333,11 +333,13 @@ func (paladin *Paladin) registerSacredShield() {
 	baseHealing := paladin.CalcScalingSpellDmg(core.TernaryFloat64(isHoly, 0.30000001192, 0.20999999344))
 	spCoef := core.TernaryFloat64(isHoly, 1.17, 0.819)
 	absorbAuras = paladin.NewAllyDamageAbsorptionAuraArray(func(unit *core.Unit) *core.DamageAbsorptionAura {
-		return unit.NewDamageAbsorptionAura(
-			"Sacred Shield (Absorb)",
-			core.ActionID{SpellID: 65148},
-			absorbDuration,
-			func(unit *core.Unit) float64 {
+		return unit.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+			Aura: core.Aura{
+				Label:    "Sacred Shield (Absorb)" + unit.Label,
+				ActionID: core.ActionID{SpellID: 65148},
+				Duration: absorbDuration,
+			},
+			ShieldStrengthCalculator: func(unit *core.Unit) float64 {
 				absorbAmount := baseHealing + sacredShield.SpellPower()*spCoef
 				// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/some-warlords-of-draenor-pre-patch-class-changes-coming-to-mists-of-pandaria-377239
 				// - The shielding on Sacred Shield has been raised by 43%. 5.4 Revert
@@ -348,7 +350,8 @@ func (paladin *Paladin) registerSacredShield() {
 				}
 
 				return absorbAmount
-			})
+			},
+		})
 	})
 }
 
