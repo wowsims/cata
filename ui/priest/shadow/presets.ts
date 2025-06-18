@@ -17,21 +17,15 @@ export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defaul
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
-	Stats.fromMap(
-		{
-			[Stat.StatIntellect]: 1.0,
-			[Stat.StatSpirit]: 0.9,
-			[Stat.StatSpellPower]: 0.79,
-			[Stat.StatHitRating]: 0.85,
-			[Stat.StatExpertiseRating]: 0.85,
-			[Stat.StatCritRating]: 0.42,
-			[Stat.StatHasteRating]: 0.76,
-			[Stat.StatMasteryRating]: 0.48,
-		},
-		{
-			[PseudoStat.PseudoStatSpellHitPercent]: 223.91,
-		},
-	),
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.0,
+		[Stat.StatSpirit]: 0.9,
+		[Stat.StatSpellPower]: 0.79,
+		[Stat.StatHitRating]: 0.85,
+		[Stat.StatCritRating]: 0.42,
+		[Stat.StatHasteRating]: 0.76,
+		[Stat.StatMasteryRating]: 0.48,
+	}),
 );
 
 export const SHADOW_BREAKPOINTS: UnitStatPresets[] = [
