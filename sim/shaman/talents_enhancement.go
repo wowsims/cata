@@ -72,7 +72,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 	})
 	llmod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLavaLash,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.2,
 	})
 
@@ -158,7 +158,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			mwCastTimemod.UpdateFloatValue(float64(newStacks) * -0.2)
 			mwCastTimemod.Activate()
-			mwManaCostmod.UpdateIntValue(newStacks * -20)
+			mwManaCostmod.UpdateFloatValue(core.TernaryFloat64(newStacks == 5, -2.0, float64(newStacks)*-0.2))
 			mwManaCostmod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -178,7 +178,9 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	dpm := shaman.NewLegacyPPMManager(10.0, core.ProcMaskMeleeOrMeleeProc)
+	ppm := core.TernaryFloat64(shaman.S12Enh2pc.IsActive(), 12.0, 10.0)
+
+	dpm := shaman.NewLegacyPPMManager(ppm, core.ProcMaskMeleeOrMeleeProc)
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{

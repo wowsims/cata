@@ -47,6 +47,7 @@ func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) co
 		CritMultiplier:   ele.DefaultCritMultiplier(),
 		BonusCritPercent: 100,
 		BonusCoefficient: 1,
+		ThreatMultiplier: 1,
 	}
 
 	if isElementalOverload {
