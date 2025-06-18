@@ -250,7 +250,7 @@ func init() {
 			stats.Strength, stats.Agility, stats.Intellect,
 		})] = 1920
 
-		aura := core.RegisterTemporaryStatsOnUseCD(character,
+		core.RegisterTemporaryStatsOnUseCD(character,
 			"Synapse Springs",
 			bonus,
 			10*time.Second,
@@ -267,8 +267,6 @@ func init() {
 					},
 				},
 			})
-
-		character.AddStatProcBuff(4898, aura, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
 	})
 
 	// Phase Fingers

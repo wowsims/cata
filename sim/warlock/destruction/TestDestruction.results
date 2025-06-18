@@ -2028,8 +2028,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 95969.07883
-  tps: 72362.08899
+  dps: 96039.21315
+  tps: 72464.70486
  }
 }
 dps_results: {
@@ -2371,8 +2371,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Average-Default"
  value: {
-  dps: 97375.84506
-  tps: 73576.73491
+  dps: 97387.24159
+  tps: 73579.92905
  }
 }
 dps_results: {
@@ -2385,8 +2385,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 95097.73363
-  tps: 72223.89737
+  dps: 95201.50494
+  tps: 72309.1013
  }
 }
 dps_results: {
@@ -2427,8 +2427,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 94316.19691
-  tps: 71449.52815
+  dps: 94386.20017
+  tps: 71548.84163
  }
 }
 dps_results: {
@@ -2469,8 +2469,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 96237.7976
-  tps: 72609.71716
+  dps: 96308.34093
+  tps: 72712.74935
  }
 }
 dps_results: {
@@ -2511,8 +2511,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 96221.50728
-  tps: 72674.49097
+  dps: 96314.20074
+  tps: 72772.37514
  }
 }
 dps_results: {
@@ -2546,7 +2546,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 96237.7976
-  tps: 72609.71716
+  dps: 96308.34093
+  tps: 72712.74935
  }
 }
