@@ -47,5 +47,5 @@ func (bear *GuardianDruid) registerTreants() {
 
 func (treant *GuardianTreant) Enable(sim *core.Simulation) {
 	treant.DefaultTreantImpl.Enable(sim)
-	treant.ExtendGCDUntil(sim, sim.CurrentTime + time.Second * 15)
+	treant.ExtendGCDUntil(sim, sim.CurrentTime+time.Second*15)
 }
