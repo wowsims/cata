@@ -7,11 +7,12 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
+var SoulReaperActionID = core.ActionID{SpellID: 114867}
+
 func (dk *DeathKnight) registerSoulReaper() {
-	actionID := core.ActionID{SpellID: 114867}
 
 	dotTickSpell := dk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       SoulReaperActionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagPassiveSpell,
@@ -63,7 +64,7 @@ func (dk *DeathKnight) registerSoulReaper() {
 		runeCost.UnholyRuneCost = 1
 	}
 	dk.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID.WithTag(tag),
+		ActionID:       SoulReaperActionID.WithTag(tag),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
@@ -91,6 +92,59 @@ func (dk *DeathKnight) registerSoulReaper() {
 			baseDamage := dk.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
+			if result.Landed() {
+				spell.RelatedDotSpell.Cast(sim, target)
+			}
+
+			spell.DealDamage(sim, result)
+		},
+
+		RelatedDotSpell: dotTickSpell,
+	})
+}
+
+func (dk *DeathKnight) registerDrwSoulReaper() *core.Spell {
+	dotTickSpell := dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 114867},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagPassiveSpell,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Soul Reaper",
+			},
+			TickLength:    time.Second * 5,
+			NumberOfTicks: 1,
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				if target.CurrentHealthPercent() >= 0.35 {
+					return
+				}
+
+				baseDamage := dk.CalcAndRollDamageRange(sim, 48, 0.15000000596) +
+					1.20000004768*dot.Spell.MeleeAttackPower()
+				dot.Snapshot(target, baseDamage)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).Apply(sim)
+		},
+	})
+
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 114866},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.RuneWeapon.StrikeWeapon.CalculateWeaponDamage(sim, spell.MeleeAttackPower()) +
+				dk.RuneWeapon.StrikeWeaponDamage
+
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
 				spell.RelatedDotSpell.Cast(sim, target)
 			}

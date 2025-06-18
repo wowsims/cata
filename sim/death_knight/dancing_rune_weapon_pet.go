@@ -22,6 +22,10 @@ func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, targ
 		targetDot.BaseTickCount = sourceDot.BaseTickCount
 		targetDot.BaseTickLength = sourceDot.BaseTickLength
 	}
+
+	if sourceSpell.RelatedDotSpell != nil {
+		CopySpellMultipliers(sourceSpell.RelatedDotSpell, targetSpell.RelatedDotSpell, target)
+	}
 }
 
 type RuneWeaponPet struct {
@@ -52,6 +56,7 @@ func (runeWeapon *RuneWeaponPet) Initialize() {
 	runeWeapon.AddCopySpell(OutbreakActionID, runeWeapon.dkOwner.registerDrwOutbreak())
 	runeWeapon.AddCopySpell(PestilenceActionID, runeWeapon.dkOwner.registerDrwPestilence())
 	runeWeapon.AddCopySpell(PlagueStrikeActionID, runeWeapon.dkOwner.registerDrwPlagueStrike())
+	runeWeapon.AddCopySpell(SoulReaperActionID.WithTag(1), runeWeapon.dkOwner.registerDrwSoulReaper())
 
 	runeWeapon.registerFirstHitDamageAura()
 }
