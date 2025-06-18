@@ -44,7 +44,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
-		Stat.StatExpertiseRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatSpellHitPercent],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
@@ -73,7 +72,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats()
-				.withStat(Stat.StatExpertiseRating, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION)
 				.withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
 		// Default consumes settings.

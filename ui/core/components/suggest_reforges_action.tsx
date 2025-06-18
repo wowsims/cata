@@ -947,7 +947,7 @@ export class ReforgeOptimizer {
 			}
 
 			for (const reforgeData of this.player.getAvailableReforgings(item.withDynamicStats())) {
-				if (!epStats.includes(reforgeData.toStat)) {
+				if (!epStats.includes(reforgeData.toStat) && reforgeData.toStat != Stat.StatExpertiseRating) {
 					continue;
 				}
 
