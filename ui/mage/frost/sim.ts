@@ -151,6 +151,7 @@ export class FrostMageSimUI extends IndividualSimUI<Spec.SpecFrostMage> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: [MAGE_BREAKPOINTS],
+				enableBreakpointLimits: true,
 			});
 		});
 	}
