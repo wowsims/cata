@@ -33,8 +33,9 @@ func (arcane *ArcaneMage) registerArcaneCharges() {
 			abCostMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			abDamageMod.UpdateFloatValue(.5 * float64(newStacks))
-			abCostMod.UpdateIntValue(150 * newStacks)
+			stacks := float64(newStacks)
+			abDamageMod.UpdateFloatValue(.5 * stacks)
+			abCostMod.UpdateFloatValue(1.5 * stacks)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(mage.MageSpellArcaneBarrage | mage.MageSpellEvocation) {

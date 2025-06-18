@@ -73,6 +73,9 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 					arcane.ArcaneChargesAura.Activate(sim)
 					arcane.ArcaneChargesAura.AddStack(sim)
 				},
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					arcane.ArcaneChargesAura.Deactivate(sim)
+				},
 			},
 			NumberOfTicks:        5,
 			TickLength:           time.Millisecond * 400,

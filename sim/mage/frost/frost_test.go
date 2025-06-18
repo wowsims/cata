@@ -18,7 +18,10 @@ func TestFrost(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:     core.GetGearSet("../../../ui/mage/frost/gear_sets", "p1_bis"),
+		GearSet: core.GetGearSet("../../../ui/mage/frost/gear_sets", "p1_bis"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui//mage/frost/gear_sets", "p1_prebis_rich"),
+		},
 		Talents:     FrostTalents,
 		Glyphs:      FrostDefaultGlyphs,
 		Consumables: DefaultConsumables,

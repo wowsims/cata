@@ -1,14 +1,18 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCapType } from '../../core/proto/ui';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { DefaultDebuffs, DefaultRaidBuffs, MAGE_BREAKPOINTS } from '../presets';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
+
+const hasteBreakpoints = MAGE_BREAKPOINTS.presets;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	cssClass: 'frost-mage-sim-ui',
@@ -17,27 +21,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpellPower,
-		Stat.StatHitRating,
-		Stat.StatCritRating,
-		Stat.StatHasteRating,
-		Stat.StatMasteryRating,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
@@ -48,6 +37,31 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
+				breakpoints: [
+					hasteBreakpoints.get('13-tick - Nether Tempest')!,
+					hasteBreakpoints.get('5-tick - Living Bomb')!,
+					hasteBreakpoints.get('14-tick - Nether Tempest')!,
+					hasteBreakpoints.get('15-tick - Nether Tempest')!,
+					hasteBreakpoints.get('16-tick - Nether Tempest')!,
+					hasteBreakpoints.get('17-tick - Nether Tempest')!,
+					hasteBreakpoints.get('6-tick - Living Bomb')!,
+					hasteBreakpoints.get('18-tick - Nether Tempest')!,
+					hasteBreakpoints.get('19-tick - Nether Tempest')!,
+					hasteBreakpoints.get('7-tick - Living Bomb')!,
+					hasteBreakpoints.get('20-tick - Nether Tempest')!,
+					hasteBreakpoints.get('8-tick - Living Bomb')!,
+					hasteBreakpoints.get('21-tick - Nether Tempest')!,
+					hasteBreakpoints.get('22-tick - Nether Tempest')!,
+				],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0.47 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			});
+
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -93,7 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FrostDefaultTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PREBIS,Presets.P1_BIS],
+		gear: [Presets.P1_PREBIS_RICH, Presets.P1_PREBIS_POOR, Presets.P1_BIS],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostMage>): APLRotation => {
@@ -120,10 +134,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PREBIS.gear,
+					1: Presets.P1_PREBIS_RICH.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PREBIS.gear,
+					1: Presets.P1_PREBIS_RICH.gear,
 				},
 			},
 		},
