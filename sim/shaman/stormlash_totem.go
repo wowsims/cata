@@ -38,6 +38,9 @@ func (shaman *Shaman) registerStormlashCD() {
 				Duration: core.StormLashCD,
 			},
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !shaman.HasActiveAuraWithTag("StormLash")
+		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			for _, slAura := range slAuras {

@@ -32,6 +32,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: bonusCoefficient,
+		ThreatMultiplier: 1,
 	}
 }
 
@@ -60,6 +61,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		ClassSpellMask:   SpellMaskFlameShockDot,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

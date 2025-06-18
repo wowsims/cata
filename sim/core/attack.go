@@ -247,6 +247,10 @@ func (aa *AutoAttacks) SetReplaceMHSwing(replaceSwing ReplaceMHSwing) {
 	aa.mh.replaceSwing = replaceSwing
 }
 
+func (aa *AutoAttacks) SetReplaceOHSwing(replaceSwing ReplaceMHSwing) {
+	aa.oh.replaceSwing = replaceSwing
+}
+
 func (aa *AutoAttacks) MHConfig() *SpellConfig {
 	return &aa.mh.config
 }

@@ -19,7 +19,7 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceDraenei, proto.Race_RaceAlliancePandaren},
 
-		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "preraid"),
+		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
 		Talents: TalentsASEB,
 		Glyphs:  StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{
@@ -36,10 +36,10 @@ func TestElemental(t *testing.T) {
 		},
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsFireElemental},
-		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
+		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "eb"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
-			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
+			core.GetAplRotation("../../../ui/shaman/elemental/apls", "uf"),
 		},
 
 		ItemFilter: core.ItemFilter{
