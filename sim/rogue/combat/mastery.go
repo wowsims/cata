@@ -13,7 +13,7 @@ func (comRogue *CombatRogue) applyMastery() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: rogue.RogueSpellMainGauche,
 
-		DamageMultiplier:         1.0,
+		DamageMultiplier:         1.2,
 		DamageMultiplierAdditive: 1.0,
 		CritMultiplier:           comRogue.CritMultiplier(false),
 		ThreatMultiplier:         1.0,

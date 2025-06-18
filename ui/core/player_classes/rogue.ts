@@ -20,12 +20,14 @@ export class Rogue extends PlayerClass<Class.ClassRogue> {
 		Race.RaceNightElf,
 		Race.RaceGnome,
 		Race.RaceWorgen,
+		Race.RaceAlliancePandaren,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,
 		Race.RaceTroll,
 		Race.RaceBloodElf,
 		Race.RaceGoblin,
+		Race.RaceHordePandaren
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [
@@ -35,12 +37,6 @@ export class Rogue extends PlayerClass<Class.ClassRogue> {
 		{ weaponType: WeaponType.WeaponTypeMace },
 		{ weaponType: WeaponType.WeaponTypeOffHand },
 		{ weaponType: WeaponType.WeaponTypeSword },
-	];
-	static rangedWeaponTypes: RangedWeaponType[] = [
-		RangedWeaponType.RangedWeaponTypeBow,
-		RangedWeaponType.RangedWeaponTypeCrossbow,
-		RangedWeaponType.RangedWeaponTypeGun,
-		RangedWeaponType.RangedWeaponTypeThrown,
 	];
 
 	readonly classID = Rogue.classID;
