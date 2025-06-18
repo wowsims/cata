@@ -261,7 +261,7 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 
 	monk.HandType = monk.GetHandType()
 
-	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+	monk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		monk.HandType = monk.GetHandType()
 	})
 

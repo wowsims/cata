@@ -11,7 +11,7 @@ import (
 
 // Currently Imbues are carried over on item swap
 // func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-// 	shaman.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+// 	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 // 		mask := core.ProcMaskUnknown
 // 		if shaman.MainHand().TempEnchant == effectID {
 // 			mask |= core.ProcMaskMeleeMH
@@ -201,7 +201,7 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 		return
 	}
 
-	for _, itemSlot := range core.MeleeWeaponSlots() {
+	for _, itemSlot := range core.AllWeaponSlots() {
 		var weapon *core.Item
 		var triggerProcMask core.ProcMask
 		switch {
