@@ -29,7 +29,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 
 	prot := &ProtectionPaladin{
 		Paladin: paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
-		Options: protOptions.Options,
 	}
 
 	return prot
@@ -37,8 +36,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 
 type ProtectionPaladin struct {
 	*paladin.Paladin
-
-	Options *proto.ProtectionPaladin_Options
 
 	DamageTakenLastGlobal float64
 }
