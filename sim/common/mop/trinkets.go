@@ -51,6 +51,10 @@ func init() {
 				auras[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})].Activate(sim)
 			},
 		})
+
+		for _, aura := range auras {
+			character.AddStatProcBuff(75274, aura, false, core.TrinketSlots())
+		}
 	})
 
 	core.NewItemEffect(81266, func(agent core.Agent, state proto.ItemLevelState) {
@@ -92,7 +96,7 @@ func init() {
 
 			statValue := core.GetItemEffectScaling(itemID, 0.44999998808, state)
 
-			_, aura := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+			statBuffAura, aura := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
 				AuraLabel:            fmt.Sprintf("%s %s", label, versionLabel),
 				ActionID:             core.ActionID{SpellID: 138756},
 				Duration:             time.Second * 20,
@@ -116,6 +120,8 @@ func init() {
 					aura.Activate(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, statBuffAura, false, core.TrinketSlots())
 		})
 	})
 
@@ -152,6 +158,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -193,6 +201,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -234,6 +244,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -275,6 +287,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
