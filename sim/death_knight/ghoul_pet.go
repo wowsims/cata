@@ -8,19 +8,28 @@ import (
 type GhoulPet struct {
 	core.Pet
 
-	dkOwner *DeathKnight
+	dkOwner     *DeathKnight
+	clawSpellID int32
+	summonDelay bool
 
 	DarkTransformationAura *core.Aura
 	ShadowInfusionAura     *core.Aura
 	Claw                   *core.Spell
 }
 
-func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
+func (dk *DeathKnight) NewArmyGhoulPet() *GhoulPet {
 	return dk.newGhoulPetInternal("Army of the Dead", false, 0.5)
 }
 
 func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 	return dk.newGhoulPetInternal("Ghoul", permanent, 0.8)
+}
+
+func (dk *DeathKnight) NewFallenZandalariPet() *GhoulPet {
+	troll := dk.newGhoulPetInternal("Fallen Zandalari", false, 0.8)
+	troll.clawSpellID = 138537
+	troll.summonDelay = false
+	return troll
 }
 
 func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingCoef float64) *GhoulPet {
@@ -34,7 +43,9 @@ func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingC
 			IsGuardian:                      !permanent,
 			HasDynamicMeleeSpeedInheritance: true,
 		}),
-		dkOwner: dk,
+		dkOwner:     dk,
+		clawSpellID: 91776,
+		summonDelay: true,
 	}
 
 	ghoulPet.PseudoStats.DamageTakenMultiplier *= 0.1
@@ -110,7 +121,7 @@ func (dk *DeathKnight) ghoulStatInheritance(apCoef float64) core.PetStatInherita
 
 func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 	return ghoulPet.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 91776},
+		ActionID:       core.ActionID{SpellID: ghoulPet.clawSpellID},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics,
@@ -154,7 +165,7 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 }
 
 func (ghoulPet *GhoulPet) Enable(sim *core.Simulation, petAgent core.PetAgent) {
-	if ghoulPet.IsGuardian() {
+	if ghoulPet.IsGuardian() && !ghoulPet.summonDelay {
 		// The ghoul takes around 4.5s - 5s to from summon to first hit, depending on your distance from the target.
 		randomDelay := core.DurationFromSeconds(sim.RollWithLabel(4.5, 5, "Raise Dead Delay"))
 		ghoulPet.Pet.EnableWithStartAttackDelay(sim, petAgent, randomDelay)

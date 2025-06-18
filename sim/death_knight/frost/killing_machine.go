@@ -8,6 +8,11 @@ import (
 )
 
 func (fdk *FrostDeathKnight) registerKillingMachine() {
+	mask := death_knight.DeathKnightSpellObliterate | death_knight.DeathKnightSpellFrostStrike
+	if fdk.CouldHaveSetBonus(death_knight.ItemSetBattleplateOfTheAllConsumingMaw, 4) {
+		mask |= death_knight.DeathKnightSpellSoulReaper
+	}
+
 	var killingMachineAura *core.Aura
 	killingMachineAura = fdk.RegisterAura(core.Aura{
 		Label:    "Killing Machine" + fdk.Label,
@@ -15,7 +20,7 @@ func (fdk *FrostDeathKnight) registerKillingMachine() {
 		Duration: time.Second * 10,
 	}).AttachProcTrigger(core.ProcTrigger{
 		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: death_knight.DeathKnightSpellObliterate | death_knight.DeathKnightSpellFrostStrike,
+		ClassSpellMask: mask,
 		ProcMask:       core.ProcMaskMeleeMH,
 		Outcome:        core.OutcomeLanded,
 
@@ -24,7 +29,7 @@ func (fdk *FrostDeathKnight) registerKillingMachine() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Percent,
-		ClassMask:  death_knight.DeathKnightSpellObliterate | death_knight.DeathKnightSpellFrostStrike,
+		ClassMask:  mask,
 		FloatValue: 100,
 	})
 

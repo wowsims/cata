@@ -35,11 +35,12 @@ type DeathKnight struct {
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul      *GhoulPet
-	Gargoyle   *GargoylePet
-	ArmyGhoul  []*GhoulPet
-	RuneWeapon *RuneWeaponPet
-	Bloodworm  []*BloodwormPet
+	Ghoul           *GhoulPet
+	Gargoyle        *GargoylePet
+	ArmyGhoul       []*GhoulPet
+	FallenZandalari []*GhoulPet
+	RuneWeapon      *RuneWeaponPet
+	Bloodworm       []*BloodwormPet
 
 	BloodPresenceSpell  *core.Spell
 	FrostPresenceSpell  *core.Spell
@@ -69,12 +70,16 @@ type DeathKnight struct {
 	T13Dps2pc  *core.Aura
 	T13Dps4pc  *core.Aura
 	T14Dps4pc  *core.Aura
+	T15Dps4pc  *core.Aura
 
 	// Used for T13 Tank 4pc
 	VampiricBloodBonusHealth float64
 
 	// Modified by T14 Tank 4pc
 	deathStrikeHealingMultiplier float64
+
+	// Modified by T15 Dps 4pc
+	soulReaperHealthThreshold float64
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -181,7 +186,14 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 
 	dk.ArmyGhoul = make([]*GhoulPet, 8)
 	for i := range 8 {
-		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
+		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet()
+	}
+
+	if dk.CouldHaveSetBonus(ItemSetBattleplateOfTheAllConsumingMaw, 2) {
+		dk.FallenZandalari = make([]*GhoulPet, 10)
+		for i := range 10 {
+			dk.FallenZandalari[i] = dk.NewFallenZandalariPet()
+		}
 	}
 
 	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
@@ -191,6 +203,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	})
 
 	dk.deathStrikeHealingMultiplier = 0.2
+	dk.soulReaperHealthThreshold = 0.35
 
 	return dk
 }
