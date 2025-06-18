@@ -124,3 +124,53 @@ var ItemSetBattleplateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// T15 Tank
+var ItemSetPlateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
+	Name: "Plate of the All-Consuming Maw",
+	ID:   1151,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Reduces the cooldown of your Rune Tap ability by 10 sec and removes its Rune cost.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				ClassMask: DeathKnightSpellRuneTap,
+				TimeValue: time.Second * -10,
+			}).AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Pct,
+				ClassMask:  DeathKnightSpellRuneTap,
+				FloatValue: -2.0,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your Bone Shield ability grants you 15 Runic Power each time one of its charges is consumed.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			rpMetrics := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 138214})
+
+			dk.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(DeathKnightSpellBoneShield) {
+					return
+				}
+
+				dk.BoneShieldAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					if !setBonusAura.IsActive() {
+						return
+					}
+
+					if newStacks < oldStacks {
+						dk.AddRunicPower(sim, 15, rpMetrics)
+					}
+				})
+			})
+		},
+	},
+})

@@ -17,8 +17,7 @@ Lasts 5 min.
 func (bdk *BloodDeathKnight) registerBoneShield() {
 	actionID := core.ActionID{SpellID: 49222}
 
-	var boneShieldAura *core.Aura
-	boneShieldAura = bdk.RegisterAura(core.Aura{
+	bdk.BoneShieldAura = bdk.RegisterAura(core.Aura{
 		Label:     "Bone Shield" + bdk.Label,
 		ActionID:  actionID,
 		Duration:  time.Minute * 5,
@@ -29,7 +28,7 @@ func (bdk *BloodDeathKnight) registerBoneShield() {
 		ICD:      time.Second * 2,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			boneShieldAura.RemoveStack(sim)
+			bdk.BoneShieldAura.RemoveStack(sim)
 		},
 	}).AttachMultiplicativePseudoStatBuff(&bdk.PseudoStats.DamageTakenMultiplier, 0.8)
 
@@ -54,7 +53,7 @@ func (bdk *BloodDeathKnight) registerBoneShield() {
 			spell.RelatedSelfBuff.SetStacks(sim, spell.RelatedSelfBuff.MaxStacks)
 		},
 
-		RelatedSelfBuff: boneShieldAura,
+		RelatedSelfBuff: bdk.BoneShieldAura,
 	})
 
 	if !bdk.Inputs.IsDps {
