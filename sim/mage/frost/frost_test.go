@@ -28,9 +28,6 @@ func TestFrost(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
 		Rotation:    core.GetAplRotation("../../../ui/mage/frost/apls", "frost"),
 
-		IsTank:          true,
-		InFrontOfTarget: true,
-
 		ItemFilter: ItemFilter,
 	}))
 }

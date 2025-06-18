@@ -22,7 +22,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 1.6,
+			BaseCostPercent: 1.66666698456,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
