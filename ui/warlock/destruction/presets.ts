@@ -40,7 +40,7 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DestructionTalents = {
 	name: 'Destruction',
 	data: SavedTalents.create({
-		talentsString: '221231',
+		talentsString: '221211',
 		glyphs: Glyphs.create({
 		}),
 	}),

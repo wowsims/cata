@@ -52,7 +52,7 @@ func TestDestruction(t *testing.T) {
 		Race:             proto.Race_RaceOrc,
 		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
 		GearSet:          core.GetGearSet("../../../ui/warlock/destruction/gear_sets", "p1-prebis"),
-		Talents:          "231211",
+		Talents:          "221211",
 		Glyphs:           &proto.Glyphs{},
 		Consumables:      fullConsumesSpec,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: defaultDestructionWarlock},
