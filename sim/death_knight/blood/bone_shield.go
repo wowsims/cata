@@ -48,7 +48,12 @@ func (bdk *BloodDeathKnight) registerBoneShield() {
 			},
 		},
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return bdk.BoneShieldAura.GetStacks() <= 6+bdk.BoneWallAura.GetStacks()
+		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.RelatedSelfBuff.MaxStacks = 6 + bdk.BoneWallAura.GetStacks()
 			spell.RelatedSelfBuff.Activate(sim)
 			spell.RelatedSelfBuff.SetStacks(sim, spell.RelatedSelfBuff.MaxStacks)
 		},

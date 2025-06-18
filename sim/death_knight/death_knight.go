@@ -52,6 +52,7 @@ type DeathKnight struct {
 	ConversionAura         *core.Aura
 	ThreatOfThassarianAura *core.Aura
 	BoneShieldAura         *core.Aura
+	BoneWallAura           *core.Aura
 	PillarOfFrostAura      *core.Aura
 
 	// Diseases

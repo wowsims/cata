@@ -281,3 +281,79 @@ var ItemSetBattleplateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// T16 Tank
+var ItemSetPlateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
+	Name: "Plate of Cyclopean Dread",
+	ID:   1201,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Every 10 Heart Strikes, Rune Strikes, Death Coils, Soul Reapers, or Blood Boils will add one charge to your next Bone Shield.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			dk.BoneWallAura = dk.RegisterAura(core.Aura{
+				Label:     "Bone Wall" + dk.Label,
+				ActionID:  core.ActionID{SpellID: 144948},
+				Duration:  time.Minute * 2,
+				MaxStacks: 6,
+			}).AttachProcTrigger(core.ProcTrigger{
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellBoneShield,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					dk.BoneWallAura.Deactivate(sim)
+				},
+			})
+
+			boneWallDriver := dk.RegisterAura(core.Aura{
+				Label:     "Bone Wall Driver" + dk.Label,
+				ActionID:  core.ActionID{SpellID: 145719},
+				Duration:  time.Minute * 10,
+				MaxStacks: 10,
+
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					if newStacks == 10 {
+						dk.BoneWallAura.Activate(sim)
+						dk.BoneWallAura.AddStack(sim)
+						aura.SetStacks(sim, 1)
+					}
+				},
+			})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Callback: core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellHeartStrike |
+					DeathKnightSpellRuneStrike |
+					DeathKnightSpellDeathCoil |
+					DeathKnightSpellSoulReaper |
+					DeathKnightSpellBloodBoil,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					boneWallDriver.Activate(sim)
+					boneWallDriver.AddStack(sim)
+				},
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Dancing Rune Weapon will reactivate all Frost and Unholy runes and convert them to Death runes.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			deathRuneMetrics := dk.CurrentTarget.NewDeathRuneMetrics(core.ActionID{SpellID: 144950})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellDancingRuneWeapon,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					dk.RegenAllFrostAndUnholyRunesAsDeath(sim, deathRuneMetrics)
+				},
+			})
+		},
+	},
+})

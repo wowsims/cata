@@ -711,6 +711,26 @@ func (rp *runicPowerBar) RegenAllRunes(sim *Simulation, metrics []*ResourceMetri
 	rp.maybeFireChange(sim, changeType)
 }
 
+func (rp *runicPowerBar) RegenAllFrostAndUnholyRunesAsDeath(sim *Simulation, deathRuneMetrics *ResourceMetrics) {
+	changeType := None
+	for i := 2; i < 6; i++ {
+		if rp.runeStates&isSpents[i] > 0 {
+			rp.regenRuneInternal(sim, sim.CurrentTime, int8(i))
+
+			rp.gainRuneMetrics(sim, deathRuneMetrics, 1)
+
+			changeType = GainRune
+		}
+
+		if rp.runeStates&isDeaths[i] == 0 {
+			rp.ConvertToDeath(sim, int8(i), NeverExpires)
+			changeType |= ConvertToDeath
+		}
+	}
+
+	rp.maybeFireChange(sim, changeType)
+}
+
 func (rp *runicPowerBar) AnyDepletedRunes() bool {
 	for i := range rp.runeMeta {
 		if rp.runeStates&isSpents[i] > 0 && rp.runeMeta[i].regenAt == NeverExpires {
