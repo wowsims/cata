@@ -372,24 +372,32 @@ export class ActionId {
 				break;
 			case 'Envenom':
 			case 'Eviscerate':
-			case 'Expose Armor':
 			case 'Rupture':
 			case 'Slice and Dice':
-			case 'Recuperate':
 				if (tag) name += ` (${tag} CP)`;
 				break;
-			case 'Instant Poison':
-			case 'Wound Poison':
+			case 'Crimson Tempest':
+				if (tag == 7) {
+					name += ' (DoT)';
+				} else if (tag) {
+					name += ` (${tag} CP)`;
+				}
+				break;
+			case 'Deadly Poison':
 				if (tag == 1) {
-					name += ' (Deadly)';
+					name += ' (DoT)';
+				} else {
+					name += ' (Hit)';
+				}
+				break;
+			case 'Shadow Blades':
+				if (tag == 1) {
+					name = 'Shadow Blade'
 				} else if (tag == 2) {
-					name += ' (Shiv)';
-				} else if (tag == 3) {
-					name += ' (Fan of Knives)';
+					name = 'Shadow Blade Off-hand'
 				}
 				break;
 			case 'Bladestorm':
-			case 'Fan of Knives':
 			case 'Killing Spree':
 				if (tag == 1) {
 					name += ' (Main Hand)';
@@ -412,8 +420,10 @@ export class ActionId {
 				}
 				break;
 			case 'Hemorrhage':
-				if (this.spellId == 89775) {
-					name += ' (DoT)';
+				if (tag == 1) {
+					name += ' (Hit)';
+				} else {
+					name += ' (DoT)'
 				}
 				break;
 			case 'Wind Lash':
@@ -1181,6 +1191,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 879, tag: 2 }), { spellId: 122032 }], // Paladin - Glyph of Mass Exorcism
 	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
+	[JSON.stringify({ spellId: 2818, tag: 2 }), { spellId: 113780 }], // Rogue - Deadly Poison - Hit
+	[JSON.stringify({ spellId: 121411, tag: 7 }), { spellId: 122233 }], // Rogue - Crimson Tempest - DoT
+	[JSON.stringify({ spellId: 121471, tag: 1 }), { spellId: 121473 }], // Rogue - Shadow Blade
 
 	// Off-Hand attacks
 	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand
@@ -1191,6 +1204,7 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 66216 }], // Death Knight - Plague Strike Off-Hand
 	[JSON.stringify({ spellId: 56815, tag: 2 }), { spellId: 66217 }], // Death Knight - Rune Strike Off-Hand
 	[JSON.stringify({ spellId: 1329, tag: 2 }), { spellId: 27576 }], // Rogue - Mutilate Off-Hand
+	[JSON.stringify({ spellId: 121471, tag: 2 }), { spellId: 121474 }], // Rogue - Shadow Blade Off-Hand
 	[JSON.stringify({ spellId: 17364, tag: 2 }), { spellId: 32176 }], // Shaman - Stormstrike Off-Hand
 	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 96103 }], // Warrior - Raging Blow Main-Hand
 	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand

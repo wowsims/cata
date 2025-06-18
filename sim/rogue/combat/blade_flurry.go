@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/rogue"
 )
 
@@ -17,7 +16,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 		ActionID:    BladeFlurryHitID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreArmor,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -27,8 +26,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 		},
 	})
 
-	hasGlyph := comRogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfBladeFlurry)
-	energyReduction := core.TernaryFloat64(hasGlyph, -0.15, -0.3)
+	energyReduction := -0.2
 
 	comRogue.BladeFlurryAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
@@ -52,11 +50,16 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 				return
 			}
 
-			// Undo armor reduction to get the raw damage value.
-			curDmg = result.Damage / result.ArmorMultiplier
+			curDmg = result.Damage * 0.4
+			numHits := 0
 
-			bfTarget := comRogue.Env.NextTargetUnit(result.Target)
-			bfHit.Cast(sim, bfTarget)
+			for enemyIndex := 0; enemyIndex < int(comRogue.Env.GetNumTargets()) && numHits < 4; enemyIndex++ {
+				bfTarget := comRogue.Env.GetTargetUnit(int32(enemyIndex))
+				if bfTarget != comRogue.CurrentTarget {
+					numHits++
+					bfHit.Cast(sim, bfTarget)
+				}
+			}
 		},
 	})
 

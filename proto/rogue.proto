@@ -78,20 +78,16 @@ enum RogueMinorGlyph {
 
 message RogueOptions {
 	UnitReference tricks_of_the_trade_target = 1;
-	enum PoisonImbue {
+	enum PoisonOptions {
 		NoPoison = 0;
-		InstantPoison = 1;
-		DeadlyPoison = 2;
-		WoundPoison = 3;
+		DeadlyPoison = 1;
+		WoundPoison = 2;
 	}
-	PoisonImbue mh_imbue = 2;
-	PoisonImbue oh_imbue = 3;
-	PoisonImbue th_imbue = 4;
-	int32 starting_overkill_duration = 5;
-	bool apply_poisons_manually = 6;
-	bool assume_bleed_active = 7;
-	float vanish_break_time = 8;
-	int32 starting_combo_points = 9;
+	PoisonOptions lethal_poison = 2;
+	int32 starting_overkill_duration = 3;
+	bool apply_poisons_manually = 4;
+	float vanish_break_time = 5;
+	int32 starting_combo_points = 6;
 }
 
 message AssassinationRogue {
