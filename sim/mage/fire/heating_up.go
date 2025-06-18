@@ -35,7 +35,7 @@ func (fire *FireMage) registerHeatingUp() {
 
 	core.MakeProcTriggerAura(&fire.Unit, core.ProcTrigger{
 		Name:           "Heating Up/Pyroblast! - Trigger",
-		ClassSpellMask: mage.MageSpellFireball | mage.MageSpellScorch | mage.MageSpellInfernoBlast | mage.MageSpellPyroblast | mage.MageSpellCombustionApplication,
+		ClassSpellMask: mage.MageSpellFireball | mage.MageSpellScorch | mage.MageSpellInfernoBlast | mage.MageSpellPyroblast | mage.MageSpellCombustion,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

@@ -26,7 +26,7 @@ func (fire *FireMage) registerCombustionSpell() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // need to check proc mask for impact damage
-		ClassSpellMask: mage.MageSpellCombustionApplication,
+		ClassSpellMask: mage.MageSpellCombustion,
 		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
@@ -65,7 +65,7 @@ func (fire *FireMage) registerCombustionSpell() {
 		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: mage.MageSpellCombustion,
+		ClassSpellMask: mage.MageSpellCombustionDot,
 		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,

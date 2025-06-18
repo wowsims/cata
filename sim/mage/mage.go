@@ -173,7 +173,6 @@ const (
 	MageSpellArcanePower
 	MageSpellArcaneMissilesCast
 	MageSpellArcaneMissilesTick
-	MageSpellBlastWave
 	MageSpellBlizzard
 	MageSpellConeOfCold
 	MageSpellDeepFreeze
@@ -183,15 +182,11 @@ const (
 	MageSpellFireball
 	MageSpellFlamestrike
 	MageSpellFlamestrikeDot
-	MageSpellFlameOrb
-	MageSpellFocusMagic
-	MageSpellFreeze
 	MageSpellFrostArmor
 	MageSpellFrostbolt
 	MageSpellFrostBomb
 	MageSpellFrostBombExplosion
 	MageSpellFrostfireBolt
-	MageSpellFrostfireOrb
 	MageSpellFrostNova
 	MageSpellFrozenOrb
 	MageSpellFrozenOrbTick
@@ -216,24 +211,22 @@ const (
 	MagespellRuneOfPower
 	MageSpellScorch
 	MageSpellCombustion
-	MageSpellCombustionApplication
+	MageSpellCombustionDot
 	MageMirrorImageSpellArcaneBlast
 	MageWaterElementalSpellWaterBolt
 	MageSpellLast
-	MageSpellsAll        = MageSpellLast<<1 - 1
-	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
-	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellCombustion // Ignite done manually in spell due to unique mechanic
-	MageSpellFire        = MageSpellCombustionApplication | MageSpellDragonsBreath | MageSpellFireball |
+	MageSpellsAll       = MageSpellLast<<1 - 1
+	MageSpellLivingBomb = MageSpellLivingBombDot | MageSpellLivingBombExplosion
+	MageSpellFire       = MageSpellDragonsBreath | MageSpellFireball | MageSpellCombustion |
 		MageSpellFireBlast | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
 		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
-	MageSpellChill        = MageSpellFrostbolt | MageSpellFrostfireBolt
 	MageSpellBrainFreeze  = MageSpellFireball | MageSpellFrostfireBolt
-	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick | MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
-		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFrostbolt | MageSpellFrostfireBolt |
-		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
+	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard | MageSpellDeepFreeze |
+		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFrostbolt | MageSpellFrostfireBolt | MageSpellFrozenOrbTick |
+		MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch | MageSpellInfernoBlast
 	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneMissilesTick |
-		MageSpellFireBlast | MageSpellArcaneExplosion | MageSpellBlastWave |
-		MageSpellCombustionApplication | MageSpellConeOfCold | MageSpellDeepFreeze |
+		MageSpellFireBlast | MageSpellArcaneExplosion | MageSpellInfernoBlast |
+		MageSpellCombustion | MageSpellConeOfCold | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellIceLance | MageSpellManaGems | MageSpellMirrorImage |
 		MageSpellPresenceOfMind | MageSpellLivingBombDot | MageSpellFrostBomb | MageSpellNetherTempest | MageSpellNetherTempestDot
 	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
