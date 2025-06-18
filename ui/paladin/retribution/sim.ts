@@ -8,7 +8,6 @@ import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, UnitStats } from '../../core/proto/common.js';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as PaladinInputs from '../inputs.js';
-import * as RetributionInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const getStatCaps = () => {
@@ -135,7 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [RetributionInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [PaladinInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
