@@ -1,6 +1,8 @@
 package mage
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -41,6 +43,8 @@ type Mage struct {
 	IceFloesAura       *core.Aura
 	IciclesAura        *core.Aura
 	ArcaneChargesAura  *core.Aura
+	HeatingUp          *core.Aura
+	PyroblastAura      *core.Aura
 
 	arcaneMissileCritSnapshot float64
 	ClassSpellScaling         float64
@@ -125,6 +129,7 @@ func (mage *Mage) registerSpells() {
 	mage.registerfrostNovaSpell()
 	mage.registerIceLanceSpell()
 	mage.registerIcyVeinsCD()
+	mage.registerHeatingUp()
 }
 
 func (mage *Mage) registerMastery() {
@@ -166,8 +171,10 @@ type MageAgent interface {
 }
 
 const (
-	MageSpellFlagNone      int64 = 0
-	MageSpellArcaneBarrage int64 = 1 << iota
+	FireSpellMaxTimeUntilResult       = 750 * time.Millisecond
+	HeatingUpDeactivateBuffer         = 250 * time.Millisecond
+	MageSpellFlagNone           int64 = 0
+	MageSpellArcaneBarrage      int64 = 1 << iota
 	MageSpellArcaneBlast
 	MageSpellArcaneExplosion
 	MageSpellArcanePower

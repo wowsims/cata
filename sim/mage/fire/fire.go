@@ -47,9 +47,6 @@ type FireMage struct {
 	Pyroblast    *core.Spell
 	InfernoBlast *core.Spell
 
-	heatingUp     *core.Aura
-	pyroblastAura *core.Aura
-
 	pyromaniacAuras core.AuraArray
 }
 
@@ -71,7 +68,6 @@ func (fireMage *FireMage) Initialize() {
 func (fireMage *FireMage) registerPassives() {
 	fireMage.registerMastery()
 	fireMage.registerCriticalMass()
-	fireMage.registerHeatingUp()
 	fireMage.registerPyromaniac()
 }
 

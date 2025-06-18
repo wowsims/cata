@@ -42,13 +42,26 @@ func (fire *FireMage) registerPyroblastSpell() {
 
 			baseDamage := fire.CalcAndRollDamageRange(sim, pyroblastScaling, pyroblastVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				if result.Landed() {
+
+			if spell.TravelTime() > time.Duration(mage.FireSpellMaxTimeUntilResult) {
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Duration(mage.FireSpellMaxTimeUntilResult),
+					OnAction: func(s *core.Simulation) {
+						fire.PyroblastAura.Deactivate(sim)
+						spell.RelatedDotSpell.Cast(sim, target)
+						spell.DealDamage(sim, result)
+						fire.HandleHeatingUp(sim, spell, result)
+
+					},
+				})
+			} else {
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					fire.PyroblastAura.Deactivate(sim)
 					spell.RelatedDotSpell.Cast(sim, target)
 					spell.DealDamage(sim, result)
-					fire.pyroblastAura.Deactivate(sim)
-				}
-			})
+					fire.HandleHeatingUp(sim, spell, result)
+				})
+			}
 		},
 	})
 

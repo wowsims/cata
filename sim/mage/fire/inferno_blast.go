@@ -56,7 +56,8 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 			}
 
 			baseDamage := fire.CalcAndRollDamageRange(sim, infernoBlastScaling, infernoBlastVariance)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			fire.HandleHeatingUp(sim, spell, result)
 
 			currTarget := target
 
