@@ -15,7 +15,10 @@ func (uhdk *UnholyDeathKnight) registerUnholyFrenzy() {
 		if u.Type == core.PetUnit {
 			return nil
 		}
-		return core.UnholyFrenzyAura(u, actionID.Tag)
+
+		return core.UnholyFrenzyAura(u, actionID.Tag, func() bool {
+			return uhdk.T14Dps4pc.IsActive()
+		})
 	})
 	unholyFrenzyTarget := uhdk.GetUnit(uhdk.Inputs.UnholyFrenzyTarget)
 	if unholyFrenzyTarget == nil {

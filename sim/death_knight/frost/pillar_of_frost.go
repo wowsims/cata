@@ -27,13 +27,20 @@ Lasts 20 sec.
 func (fdk *FrostDeathKnight) registerPillarOfFrost() {
 	actionID := core.ActionID{SpellID: 51271}
 
+	strDep := fdk.NewDynamicMultiplyStat(stats.Strength, 1.2)
 	pillarOfFrostAura := fdk.RegisterAura(core.Aura{
 		Label:    "Pillar of Frost" + fdk.Label,
 		ActionID: actionID,
 		Duration: time.Second * 20,
-	}).AttachStatDependency(
-		fdk.NewDynamicMultiplyStat(stats.Strength, 1.2),
-	)
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			strDep.UpdateValue(core.TernaryFloat64(fdk.T14Dps4pc.IsActive(), 1.25, 1.2))
+			fdk.EnableDynamicStatDep(sim, strDep)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			fdk.DisableDynamicStatDep(sim, strDep)
+		},
+	})
 
 	spell := fdk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
