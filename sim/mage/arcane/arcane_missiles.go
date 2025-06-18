@@ -37,7 +37,7 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		ClassSpellMask: mage.MageSpellArcaneMissilesTick,
 		MissileSpeed:   20,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 / (1 - 0.221),
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: arcaneMissilesCoefficient,

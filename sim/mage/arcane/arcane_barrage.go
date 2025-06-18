@@ -36,7 +36,7 @@ func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 / (1 - 0.161),
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		BonusCoefficient: float64(arcaneBarrageCoefficient),
 		ThreatMultiplier: 1,
