@@ -549,45 +549,7 @@ export class Stats {
 
 	// Takes in a stats array that was generated from an out-of-date proto version, and converts it to an array that is consistent with the current proto version.
 	static migrateStatsArray(oldStats: number[], oldApiVersion: number, fallbackStats?: number[], targetApiVersion?: number): number[] {
-		const conversionMap: ProtoConversionMap<number[]> = new Map([
-			[
-				1,
-				(oldArray: number[]) => {
-					// Revision 1 simply re-orders the stats for clarity.
-					const newIndices = [0, 1, 2, 3, 4, 17, 18, 6, 8, 10, 19, 15, 5, 7, 9, 11, 29, 26, 16, 30, 12, 13, 20, 28, 21, 22, 23, 24, 25, 27, 14];
-					const newArray: number[] = new Array(oldArray.length);
-					oldArray.forEach((value, idx) => {
-						newArray[newIndices[idx]] = value;
-					});
-					return newArray;
-				},
-			],
-			[
-				2,
-				(oldArray: number[]) => {
-					// Revision 2 collapses school-specific Hit/Crit/Haste into generic Rating stats.
-					const newArray: number[] = new Array(oldArray.length - 4).fill(0);
-					newArray[5] = oldArray[5] + oldArray[6]; // MeleeHit + SpellHit --> HitRating
-					newArray[6] = oldArray[7] + oldArray[8]; // MeleeCrit + SpellCrit --> CritRating
-					newArray[7] = oldArray[9] + oldArray[10]; // MeleeHaste + SpellHaste --> HasteRating
-					newArray[26] = oldArray[18]; // MP5 was moved
-
-					// Other entries are simply shifted over
-					// and copied.
-					for (let idx = 0; idx < 5; idx++) {
-						newArray[idx] = oldArray[idx];
-					}
-					for (let idx = 8; idx < 15; idx++) {
-						newArray[idx] = oldArray[idx + 3];
-					}
-					for (let idx = 15; idx < 26; idx++) {
-						newArray[idx] = oldArray[idx + 4];
-					}
-
-					return newArray;
-				},
-			],
-		]);
+		const conversionMap: ProtoConversionMap<number[]> = new Map([]);
 		const migratedProto = migrateOldProto<number[]>(oldStats, oldApiVersion, conversionMap, targetApiVersion);
 
 		// If there is a fallback array, use it if the lengths don't match

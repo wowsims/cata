@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, RaidBuffs, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	AfflictionWarlock_Options as WarlockOptions,
@@ -25,14 +25,20 @@ export const APL_Default = PresetUtils.makePresetAPLRotation('Affliction', Defau
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
-	Stats.fromMap({
-		[Stat.StatIntellect]: 1.26,
-		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatHitRating]: 0.93,
-		[Stat.StatCritRating]: 0.52,
-		[Stat.StatHasteRating]: 0.58,
-		[Stat.StatMasteryRating]: 0.38,
-	}),
+	Stats.fromMap(
+		{
+			[Stat.StatIntellect]: 1.26,
+			[Stat.StatSpellPower]: 1.0,
+			[Stat.StatHitRating]: 0.93,
+			[Stat.StatExpertiseRating]: 0.93,
+			[Stat.StatCritRating]: 0.52,
+			[Stat.StatHasteRating]: 0.58,
+			[Stat.StatMasteryRating]: 0.38,
+		},
+		{
+			[PseudoStat.PseudoStatSpellHitPercent]: 223.91,
+		},
+	),
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on

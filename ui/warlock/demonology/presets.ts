@@ -25,14 +25,20 @@ export const APL_Default = PresetUtils.makePresetAPLRotation('Incinerate', Defau
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
-	Stats.fromMap({
-		[Stat.StatIntellect]: 1.27,
-		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatHitRating]: 0.92,
-		[Stat.StatCritRating]: 0.51,
-		[Stat.StatHasteRating]: 2.75,
-		[Stat.StatMasteryRating]: 0.57,
-	}),
+	Stats.fromMap(
+		{
+			[Stat.StatIntellect]: 1.27,
+			[Stat.StatSpellPower]: 1.0,
+			[Stat.StatHitRating]: 0.92,
+			[Stat.StatExpertiseRating]: 0.92,
+			[Stat.StatCritRating]: 0.51,
+			[Stat.StatHasteRating]: 2.75,
+			[Stat.StatMasteryRating]: 0.57,
+		},
+		{
+			[PseudoStat.PseudoStatSpellHitPercent]: 223.91,
+		},
+	),
 );
 
 export const Mastery_EP_PRESET = PresetUtils.makePresetEpWeights(

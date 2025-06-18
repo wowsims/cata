@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, RaidBuffs, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DestructionWarlock_Options as WarlockOptions,
@@ -24,14 +24,20 @@ export const DEFAULT_APL = PresetUtils.makePresetAPLRotation('Default', DefaultA
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
-	Stats.fromMap({
-		[Stat.StatIntellect]: 1.24,
-		[Stat.StatSpellPower]: 1,
-		[Stat.StatHitRating]: 0.83,
-		[Stat.StatCritRating]: 0.59,
-		[Stat.StatHasteRating]: 0.57,
-		[Stat.StatMasteryRating]: 0.61,
-	}),
+	Stats.fromMap(
+		{
+			[Stat.StatIntellect]: 1.24,
+			[Stat.StatSpellPower]: 1,
+			[Stat.StatHitRating]: 0.83,
+			[Stat.StatExpertiseRating]: 0.83,
+			[Stat.StatCritRating]: 0.59,
+			[Stat.StatHasteRating]: 0.57,
+			[Stat.StatMasteryRating]: 0.61,
+		},
+		{
+			[PseudoStat.PseudoStatSpellHitPercent]: 223.91,
+		},
+	),
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
@@ -41,8 +47,7 @@ export const DestructionTalents = {
 	name: 'Destruction',
 	data: SavedTalents.create({
 		talentsString: '221211',
-		glyphs: Glyphs.create({
-		}),
+		glyphs: Glyphs.create({}),
 	}),
 };
 
