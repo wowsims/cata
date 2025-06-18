@@ -989,13 +989,13 @@ func ScanGlyphs(rows *sql.Rows) (RawGlyph, error) {
 
 func LoadGlyphs(dbHelper *DBHelper) ([]RawGlyph, error) {
 	query := `
-SELECT DISTINCT i.ID, gp.Field_5_5_0_61135_001, is2.Display_lang, glyphSpell.Description_lang, gp.Field_5_5_0_61135_002, i.SubclassID, sm.SpellIconFileDataID
+SELECT DISTINCT i.ID, gp.SpellID, is2.Display_lang, glyphSpell.Description_lang, gp.Field_3_4_0_43659_001, i.SubclassID, sm.SpellIconFileDataID
 FROM Item i
 LEFT JOIN ItemSparse is2 ON i.ID = is2.ID
 LEFT JOIN ItemEffect ie ON ie.ParentItemID  = i.ID
 JOIN SpellEffect se ON se.SpellID = ie.SpellID AND se.Effect=74
-LEFT JOIN GlyphProperties gp ON gp.Field_5_5_0_61135_000 = se.EffectMiscValue_0
-LEFT JOIN Spell glyphSpell ON glyphSpell.ID = gp.Field_5_5_0_61135_001
+LEFT JOIN GlyphProperties gp ON gp.ID = se.EffectMiscValue_0
+LEFT JOIN Spell glyphSpell ON glyphSpell.ID = gp.SpellID
 LEFT JOIN SpellEffect gse ON gse.SpellID = glyphSpell.ID
 LEFT JOIN SpellMisc sm ON sm.SpellID = glyphSpell.ID
 WHERE i.ClassID = 16
