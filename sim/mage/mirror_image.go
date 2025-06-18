@@ -273,8 +273,9 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 			abCostMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			abDamageMod.UpdateFloatValue(.5 * float64(newStacks))
-			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
+			stacks := float64(newStacks)
+			abDamageMod.UpdateFloatValue(0.5 * stacks)
+			abCostMod.UpdateFloatValue(1.5 * stacks)
 		},
 	})
 }

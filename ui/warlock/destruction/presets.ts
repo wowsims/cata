@@ -25,12 +25,12 @@ export const DEFAULT_APL = PresetUtils.makePresetAPLRotation('Default', DefaultA
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.25,
+		[Stat.StatIntellect]: 1.24,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatHitRating]: 0.87,
-		[Stat.StatCritRating]: 0.48,
-		[Stat.StatHasteRating]: 0.47,
-		[Stat.StatMasteryRating]: 0.55,
+		[Stat.StatHitRating]: 0.83,
+		[Stat.StatCritRating]: 0.59,
+		[Stat.StatHasteRating]: 0.57,
+		[Stat.StatMasteryRating]: 0.61,
 	}),
 );
 
@@ -40,7 +40,7 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DestructionTalents = {
 	name: 'Destruction',
 	data: SavedTalents.create({
-		talentsString: '221231',
+		talentsString: '221211',
 		glyphs: Glyphs.create({
 		}),
 	}),

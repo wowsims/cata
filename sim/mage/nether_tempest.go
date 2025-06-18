@@ -49,7 +49,6 @@ func (mage *Mage) registerNetherTempest() {
 				GCD: core.GCDDefault,
 			},
 		},
-
 		CritMultiplier:   mage.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -68,9 +67,9 @@ func (mage *Mage) registerNetherTempest() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellNetherTempestDot,
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

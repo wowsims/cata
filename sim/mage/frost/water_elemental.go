@@ -131,7 +131,7 @@ func (we *WaterElemental) registerWaterboltSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.2, // 2013-09-23 Ice Lance's damage has been increased by 20%
 		CritMultiplier:   we.mageOwner.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: waterboltCoefficient,

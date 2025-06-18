@@ -1,0 +1,634 @@
+character_stats_results: {
+ key: "TestCombat-CharacterStats-Default"
+ value: {
+  final_stats: 222.6
+  final_stats: 15040.305
+  final_stats: 15277.9
+  final_stats: 134.4
+  final_stats: 161.71
+  final_stats: 2570
+  final_stats: 2536
+  final_stats: 4679
+  final_stats: 2550
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4097
+  final_stats: 46913.3434
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 16122
+  final_stats: 0
+  final_stats: 360293.6
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7.55882
+  final_stats: 15.05882
+  final_stats: 20.86792
+  final_stats: 9.22667
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-BarbedAssassinBattlegear"
+ value: {
+  dps: 94891.93432
+  tps: 66738.30353
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-BattlegearoftheThousandfoldBlades"
+ value: {
+  dps: 84923.64844
+  tps: 59686.23471
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-BlackfangBattleweave"
+ value: {
+  dps: 60184.06527
+  tps: 42257.13805
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 79973.33839
+  tps: 56156.40841
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 79509.59373
+  tps: 55825.0873
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 76882.28419
+  tps: 53985.46673
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 76882.28419
+  tps: 53985.46673
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 76882.28419
+  tps: 53985.46673
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 76882.28419
+  tps: 53985.46673
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 76882.28419
+  tps: 53985.46673
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 79640.72304
+  tps: 55918.18912
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 81411.14746
+  tps: 57163.68107
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 78077.02811
+  tps: 54829.32981
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 78077.02811
+  tps: 54829.32981
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 78077.02811
+  tps: 54829.32981
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 78077.02811
+  tps: 54829.32981
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 79076.54962
+  tps: 55579.14307
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 79640.72304
+  tps: 55918.18912
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-FangsoftheFather"
+ value: {
+  dps: 65624.39475
+  tps: 46055.40995
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Fear-77945"
+ value: {
+  dps: 69069.31084
+  tps: 48477.44613
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Felstriker-12590"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 79497.71839
+  tps: 55821.63252
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 80932.12121
+  tps: 56814.27591
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 80332.75199
+  tps: 56397.55973
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 81212.90756
+  tps: 57006.58203
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 81504.44228
+  tps: 57210.01697
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 81829.71098
+  tps: 57437.13602
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Gladiator'sVestments"
+ value: {
+  dps: 97778.58368
+  tps: 68648.81136
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Golad,TwilightofAspects-77949"
+ value: {
+  dps: 70479.92516
+  tps: 49502.84391
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Heartpierce-49982"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Heartpierce-50641"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 79640.72304
+  tps: 55918.18912
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-JawsofRetribution"
+ value: {
+  dps: 61613.51669
+  tps: 43218.01521
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-MawofOblivion"
+ value: {
+  dps: 63275.88336
+  tps: 44392.51245
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Nine-TailBattlegear"
+ value: {
+  dps: 96169.90206
+  tps: 67415.84092
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 80541.1933
+  tps: 56567.85274
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 76882.28419
+  tps: 53985.46673
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 81309.79429
+  tps: 57073.53485
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 80535.78257
+  tps: 56538.38061
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 81563.88787
+  tps: 57252.46905
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 81907.81273
+  tps: 57494.85262
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 82217.98599
+  tps: 57713.42143
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 92205.29008
+  tps: 64511.80976
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 89539.32392
+  tps: 62678.82075
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 93203.95671
+  tps: 65200.47273
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 94398.05608
+  tps: 66023.12637
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 95528.17851
+  tps: 66802.47487
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 80342.35311
+  tps: 56415.11371
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 79973.33839
+  tps: 56156.40841
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RodoftheSunKing-29996"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 79509.59373
+  tps: 55825.0873
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Slayer'sArmor"
+ value: {
+  dps: 41357.24638
+  tps: 29050.89955
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 82623.51041
+  tps: 57986.15047
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 85243.06378
+  tps: 59880.4057
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 83694.59355
+  tps: 58777.52308
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 85941.43652
+  tps: 60379.22212
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 86483.5906
+  tps: 60772.54844
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 86535.63663
+  tps: 60855.72822
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TheSleeper-77947"
+ value: {
+  dps: 69790.32936
+  tps: 48989.97118
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 79136.32112
+  tps: 55564.80213
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-VestmentsoftheDarkPhoenix"
+ value: {
+  dps: 60851.15559
+  tps: 42732.44519
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 83177.84845
+  tps: 58359.1575
+ }
+}
+dps_results: {
+ key: "TestCombat-Average-Default"
+ value: {
+  dps: 80125.2691
+  tps: 56292.62091
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 80897.18951
+  tps: 56805.42288
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 106683.22811
+  tps: 72587.18362
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 52762.88673
+  tps: 37461.64958
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 52762.88673
+  tps: 37461.64958
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 56148.9362
+  tps: 39865.7447
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 82595.89591
+  tps: 57945.97134
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 82595.89591
+  tps: 57945.97134
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 110388.9999
+  tps: 74890.61611
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 53901.81172
+  tps: 38270.28632
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 53901.81172
+  tps: 38270.28632
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 58076.58966
+  tps: 41234.37866
+ }
+}
+dps_results: {
+ key: "TestCombat-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 73598.81958
+  tps: 51674.42401
+ }
+}

@@ -40,7 +40,6 @@ func (mage *Mage) registerFireBlastSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),
 		BonusCoefficient: fireBlastCoefficient,
-		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := mage.CalcAndRollDamageRange(sim, fireBlastScaling, fireBlastVariance)

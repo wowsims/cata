@@ -32,10 +32,10 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           frostMage.DefaultCritMultiplier(),
-		BonusCoefficient:         frostboltCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   frostMage.DefaultCritMultiplier(),
+		BonusCoefficient: frostboltCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 

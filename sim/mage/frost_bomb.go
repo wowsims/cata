@@ -25,10 +25,10 @@ func (mage *Mage) registerFrostBomb() {
 		ClassSpellMask: MageSpellFrostBombExplosion,
 		Flags:          core.SpellFlagAoE,
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		BonusCoefficient:         frostBombExplosionCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		BonusCoefficient: frostBombExplosionCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {

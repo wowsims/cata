@@ -6,12 +6,15 @@ import { Stats } from '../../core/proto_utils/stats';
 import FrostApl from './apls/frost.apl.json';
 import FrostAoeApl from './apls/frost_aoe.apl.json';
 import P1BISGear from './gear_sets/p1_bis.gear.json';
-import P1PreBISGear from './gear_sets/p1_prebis.gear.json';
+import P1PreBISPoorGear from './gear_sets/p1_prebis_poor.gear.json';
+import P1PreBISRichGear from './gear_sets/p1_prebis_rich.gear.json';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_PREBIS = PresetUtils.makePresetGear('P1 - Pre-BIS', P1PreBISGear);
+export const P1_PREBIS_RICH = PresetUtils.makePresetGear('P1 - Pre-BIS 💰', P1PreBISRichGear);
+export const P1_PREBIS_POOR = PresetUtils.makePresetGear('P1 - Pre-BIS 📉', P1PreBISPoorGear);
+
 export const P1_BIS = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Frost', FrostApl);
@@ -21,12 +24,12 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Frost AOE'
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Frost P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.18,
+		[Stat.StatIntellect]: 1.23,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatHitRating]: 0.67,
-		[Stat.StatCritRating]: 0.30,
-		[Stat.StatHasteRating]: 0.44,
-		[Stat.StatMasteryRating]: 0.33,
+		[Stat.StatHitRating]: 1.15,
+		[Stat.StatCritRating]: 0.49,
+		[Stat.StatHasteRating]: 0.60,
+		[Stat.StatMasteryRating]: 0.47,
 	}),
 );
 

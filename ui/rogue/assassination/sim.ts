@@ -7,7 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
+import { RogueOptions_PoisonOptions } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
@@ -23,8 +23,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatAgility,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
 		Stat.StatHitRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
@@ -34,48 +32,37 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
 		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
 	],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
 		],
 	),
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_ASSASSINATION.gear,
+		gear: Presets.P1_MSV_GEARSET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.ASN_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			// Running just under spell cap is typically preferrable to being over.
-			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0, 0, 0, 0, 0, 0],
-			});
-
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [94.15, 0],
+				postCapEPs: [0.21 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			return [meleeHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -85,15 +72,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			blessingOfKings: true,
+			trueshotAura: true,
+			swiftbladesCunning: true,
+			legacyOfTheWhiteTiger: true,
+			blessingOfMight: true,
+			bloodlust: true,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// mangle: true,
-			// faerieFire: true,
-			// earthAndMoon: true,
-			// bloodFrenzy: true,
-			// shadowAndFlame: true,
+			weakenedArmor: true,
+			physicalVulnerability: true,
+			masterPoisoner: true,
 		}),
 	},
 
@@ -101,19 +93,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		inputs: [RogueInputs.ApplyPoisonsManually()],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue(), RogueInputs.ThrownImbue()],
+	playerIconInputs: [RogueInputs.LethalPoison()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.CritBuff, BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.MajorArmorDebuff],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.CritBuff,
+		BuffDebuffInputs.AttackPowerBuff,
+		BuffDebuffInputs.MasteryBuff,
+		BuffDebuffInputs.StatsBuff,
+		BuffDebuffInputs.AttackSpeedBuff,
+
+		BuffDebuffInputs.MajorHasteBuff,
+		BuffDebuffInputs.StormLashTotem,
+		BuffDebuffInputs.Skullbanner,
+		BuffDebuffInputs.ShatteringThrow,
+		BuffDebuffInputs.TricksOfTheTrade,
+
+		BuffDebuffInputs.SpellDamageDebuff,
+		BuffDebuffInputs.MajorArmorDebuff,
+		BuffDebuffInputs.PhysicalDamageDebuff
+	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			// RogueInputs.StartingOverkillDuration(),
-			// RogueInputs.VanishBreakTime(),
-			// RogueInputs.AssumeBleedActive(),
-			// OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
+			RogueInputs.StartingComboPoints(),
 		],
 	},
 	itemSwapSlots: [
@@ -140,27 +145,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P1_EP_EXPERTISE_PRESET, Presets.P4_EP_LEGENDARY_PRESET],
+		epWeights: [Presets.ASN_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_MUTILATE],
+		rotations: [Presets.ROTATION_PRESET_ASSASSINATION],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_PRESET_ASSASSINATION,
-			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P1_PRESET_ASN_EXPERTISE,
-			Presets.P3_PRESET_ASSASSINATION,
-			Presets.P4_PRESET_ASSASSINATION,
+			Presets.PRERAID_GEARSET,
+			Presets.P1_MSV_GEARSET,
+			Presets.P1_T14_GEARSET,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_ASSASSINATION.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_ASSASSINATION.rotation.rotation!;
 		}
 	},
 
@@ -178,10 +181,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET_ASSASSINATION.gear,
+					1: Presets.P1_MSV_GEARSET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET_ASSASSINATION.gear,
+					1: Presets.P1_MSV_GEARSET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -194,54 +197,21 @@ export class AssassinationRogueSimUI extends IndividualSimUI<Spec.SpecAssassinat
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecAssassinationRogue>) => {
-					const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
-					const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
-
-					if (mhWepId == 77949 && ohWepId == 77950) {
-						return Presets.P4_EP_LEGENDARY_PRESET.epWeights;
-					} else {
-						return Presets.P1_EP_PRESET.epWeights;
-					}
-				},
-			});
+			new ReforgeOptimizer(this, {});
 		});
 
 		// Poison selection
 		this.player.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			if (!options.classOptions!.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return;
-				}
-				if (mhWeaponSpeed <= ohWeaponSpeed) {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
-				} else {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-				}
+				options.classOptions!.lethalPoison = RogueOptions_PoisonOptions.DeadlyPoison
 			}
 			this.player.setSpecOptions(c, options);
 		});
 		this.sim.encounter.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			if (!options.classOptions!.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return;
-				}
-				if (mhWeaponSpeed <= ohWeaponSpeed) {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
-				} else {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-				}
+				options.classOptions!.lethalPoison = RogueOptions_PoisonOptions.DeadlyPoison
 			}
 			this.player.setSpecOptions(c, options);
 		});

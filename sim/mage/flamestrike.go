@@ -35,10 +35,10 @@ func (mage *Mage) registerFlamestrikeSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		BonusCoefficient:         flameStrikeCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		BonusCoefficient: flameStrikeCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
