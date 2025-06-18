@@ -52,6 +52,7 @@ type DeathKnight struct {
 	ConversionAura         *core.Aura
 	ThreatOfThassarianAura *core.Aura
 	BoneShieldAura         *core.Aura
+	PillarOfFrostAura      *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -268,6 +269,7 @@ const (
 	DeathKnightSpellVampiricBlood
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
+	DeathKnightSpellSuddenDoom         // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains
 
 	DeathKnightSpellLast

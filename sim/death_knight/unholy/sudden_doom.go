@@ -41,6 +41,26 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 		IntValue:  -100,
 	})
 
+	// Dummy spell to react with triggers
+	sdProcSpell := uhdk.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 81340},
+		Flags:          core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
+		ClassSpellMask: death_knight.DeathKnightSpellSuddenDoom,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.RelatedSelfBuff.Activate(sim)
+
+			// T13 2pc: Sudden Doom has a 20% chance to grant 2 charges when triggered instead of 1.
+			spell.RelatedSelfBuff.MaxStacks = core.TernaryInt32(uhdk.T13Dps2pc.IsActive(), 2, 0)
+			if uhdk.T13Dps2pc.IsActive() {
+				stacks := core.TernaryInt32(sim.Proc(0.2, "T13 2pc"), 2, 1)
+				spell.RelatedSelfBuff.SetStacks(sim, stacks)
+			}
+		},
+
+		RelatedSelfBuff: suddenDoomAura,
+	})
+
 	core.MakeProcTriggerAura(&uhdk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom Trigger" + uhdk.Label,
 		ActionID: core.ActionID{SpellID: 49530},
@@ -54,14 +74,7 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			suddenDoomAura.Activate(sim)
-
-			// T13 2pc: Sudden Doom has a 20% chance to grant 2 charges when triggered instead of 1.
-			suddenDoomAura.MaxStacks = core.TernaryInt32(uhdk.T13Dps2pc.IsActive(), 2, 0)
-			if uhdk.T13Dps2pc.IsActive() {
-				stacks := core.TernaryInt32(sim.Proc(0.2, "T13 2pc"), 2, 1)
-				suddenDoomAura.SetStacks(sim, stacks)
-			}
+			sdProcSpell.Cast(sim, &uhdk.Unit)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_PowerCost_Pct,

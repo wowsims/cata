@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // T14 DPS
@@ -171,6 +172,112 @@ var ItemSetPlateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
 					}
 				})
 			})
+		},
+	},
+})
+
+// T16 DPS
+var ItemSetBattleplateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
+	Name: "Battleplate of Cyclopean Dread",
+	ID:   1200,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Killing Machine and Sudden Doom grant 500 Haste or Mastery, whichever is highest, for [Dark Transformation: 15 / (Hands * 2 + 4)] sec, stacking up to 10 times.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec == proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			var duration time.Duration
+			if dk.Spec == proto.Spec_SpecUnholyDeathKnight {
+				duration = time.Second * 15
+			} else if dk.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+				duration = time.Second * 8
+			} else {
+				duration = time.Second * 6
+			}
+
+			currentStat := stats.HasteRating
+			deathShroudAura := dk.RegisterAura(core.Aura{
+				Label:     "Death Shroud" + dk.Label,
+				ActionID:  core.ActionID{SpellID: 144901},
+				Duration:  duration,
+				MaxStacks: 10,
+
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					newStat := core.Ternary(
+						dk.GetStat(stats.HasteRating) > dk.GetStat(stats.MasteryRating),
+						stats.HasteRating,
+						stats.MasteryRating)
+					if currentStat == newStat {
+						dk.AddStatDynamic(sim, currentStat, 500*float64(newStacks-oldStacks))
+					} else {
+						dk.AddStatDynamic(sim, currentStat, -500*float64(oldStacks))
+						dk.AddStatDynamic(sim, newStat, 500*float64(newStacks))
+						currentStat = newStat
+					}
+				},
+			})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellKillingMachine | DeathKnightSpellSuddenDoom,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					deathShroudAura.Activate(sim)
+					deathShroudAura.AddStack(sim)
+				},
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Death Coil increases the duration of Dark Transformation by 2.0 sec per cast.
+			// Special attacks while Pillar of Frost is active will impale your target with an icy spike.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			if dk.Spec == proto.Spec_SpecUnholyDeathKnight {
+				setBonusAura.AttachProcTrigger(core.ProcTrigger{
+					Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+					ClassSpellMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if dk.Ghoul.DarkTransformationAura.IsActive() {
+							dk.Ghoul.DarkTransformationAura.UpdateExpires(dk.Ghoul.DarkTransformationAura.ExpiresAt() + time.Second*2)
+						}
+					},
+				})
+			} else if dk.Spec == proto.Spec_SpecFrostDeathKnight {
+				frozenPowerSpell := dk.RegisterSpell(core.SpellConfig{
+					ActionID:    core.ActionID{SpellID: 147620},
+					SpellSchool: core.SpellSchoolFrost,
+					Flags:       core.SpellFlagPassiveSpell,
+
+					DamageMultiplier: 1,
+					CritMultiplier:   dk.DefaultCritMultiplier(),
+					ThreatMultiplier: 1,
+
+					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						baseDamage := 500.0 + 0.07999999821*spell.MeleeAttackPower()
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+					},
+				})
+
+				dk.OnSpellRegistered(func(spell *core.Spell) {
+					if !spell.Matches(DeathKnightSpellPillarOfFrost) {
+						return
+					}
+
+					dk.PillarOfFrostAura.AttachProcTrigger(core.ProcTrigger{
+						Callback: core.CallbackOnSpellHitDealt,
+						ProcMask: core.ProcMaskSpecial,
+						Outcome:  core.OutcomeLanded,
+						Harmful:  true,
+
+						Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+							frozenPowerSpell.Cast(sim, result.Target)
+						},
+					})
+				})
+			}
 		},
 	},
 })

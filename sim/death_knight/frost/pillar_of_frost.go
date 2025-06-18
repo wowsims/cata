@@ -28,7 +28,7 @@ func (fdk *FrostDeathKnight) registerPillarOfFrost() {
 	actionID := core.ActionID{SpellID: 51271}
 
 	strDep := fdk.NewDynamicMultiplyStat(stats.Strength, 1.2)
-	pillarOfFrostAura := fdk.RegisterAura(core.Aura{
+	fdk.PillarOfFrostAura = fdk.RegisterAura(core.Aura{
 		Label:    "Pillar of Frost" + fdk.Label,
 		ActionID: actionID,
 		Duration: time.Second * 20,
@@ -66,7 +66,7 @@ func (fdk *FrostDeathKnight) registerPillarOfFrost() {
 			spell.RelatedSelfBuff.Activate(sim)
 		},
 
-		RelatedSelfBuff: pillarOfFrostAura,
+		RelatedSelfBuff: fdk.PillarOfFrostAura,
 	})
 
 	fdk.AddMajorCooldown(core.MajorCooldown{
