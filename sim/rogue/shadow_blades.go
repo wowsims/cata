@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (rogue *Rogue) registerShadowBladesCD() {
@@ -89,6 +90,9 @@ func (rogue *Rogue) makeShadowBladeHit(isMH bool) *core.Spell {
 				baseDamage = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			} else {
 				baseDamage = spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				if rogue.Spec == proto.Spec_SpecCombatRogue {
+					baseDamage *= 1.75
+				}
 			}
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

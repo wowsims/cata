@@ -58,9 +58,9 @@ var Tier15 = core.NewItemSet(core.ItemSet{
 			// Additionally, reduces the GCD of all rogue abilities by 300ms
 			rogue := agent.(RogueAgent).GetRogue()
 			energyMod := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:      core.SpellMod_PowerCost_Pct,
-				ClassMask: RogueSpellsAll,
-				IntValue:  -15,
+				Kind:       core.SpellMod_PowerCost_Pct,
+				ClassMask:  RogueSpellsAll,
+				FloatValue: -0.15,
 			})
 			gcdMod := rogue.AddDynamicMod(core.SpellModConfig{
 				Kind:      core.SpellMod_GlobalCooldown_Flat,

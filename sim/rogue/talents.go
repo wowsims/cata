@@ -39,9 +39,9 @@ func (rogue *Rogue) ApplyTalents() {
 	// Shadow Focus
 	if rogue.Talents.ShadowFocus {
 		rogue.ShadowFocusMod = rogue.AddDynamicMod(core.SpellModConfig{
-			Kind:      core.SpellMod_PowerCost_Pct,
-			ClassMask: RogueSpellsAll,
-			IntValue:  -75,
+			Kind:       core.SpellMod_PowerCost_Pct,
+			ClassMask:  RogueSpellsAll,
+			FloatValue: -0.75,
 		})
 	}
 

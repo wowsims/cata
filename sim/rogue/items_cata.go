@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	cata "github.com/wowsims/mop/sim/common/cata"
+	"github.com/wowsims/mop/sim/common/shared"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -64,7 +64,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Tentatively, this is just Ignite. Testing required to validate behavior.
 			rogue := agent.GetCharacter()
 
-			cata.RegisterIgniteEffect(&rogue.Unit, cata.IgniteConfig{
+			shared.RegisterIgniteEffect(&rogue.Unit, shared.IgniteConfig{
 				ActionID:         core.ActionID{SpellID: 99173},
 				DotAuraLabel:     "Burning Wounds",
 				IncludeAuraDelay: true,

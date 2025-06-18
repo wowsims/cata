@@ -4,12 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func init() {
 	// Felstriker
-	core.NewItemEffect(12590, func(agent core.Agent) {
+	core.NewItemEffect(12590, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.PhysicalCritPercent: 100, stats.PhysicalHitPercent: 100}, time.Second*3)
@@ -28,7 +29,7 @@ func init() {
 	})
 
 	// Rod of the Sun King
-	core.NewItemEffect(29996, func(agent core.Agent) {
+	core.NewItemEffect(29996, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: 29996}
@@ -50,7 +51,7 @@ func init() {
 
 	// Heartpierce
 	// Normal
-	core.NewItemEffect(49982, func(agent core.Agent) {
+	core.NewItemEffect(49982, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: 49982}
 		resourceMetricsEnergy := character.NewEnergyMetrics(actionID)
@@ -81,7 +82,7 @@ func init() {
 	})
 
 	// Heroic
-	core.NewItemEffect(50641, func(agent core.Agent) {
+	core.NewItemEffect(50641, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: 50641}
 		resourceMetricsEnergy := character.NewEnergyMetrics(actionID)

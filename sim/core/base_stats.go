@@ -311,11 +311,13 @@ func init() {
 	AddBaseStatsCombo(proto.Race_RaceGnome, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceHuman, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceNightElf, proto.Class_ClassRogue)
+	AddBaseStatsCombo(proto.Race_RaceAlliancePandaren, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceOrc, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceTroll, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceUndead, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceGoblin, proto.Class_ClassRogue)
 	AddBaseStatsCombo(proto.Race_RaceWorgen, proto.Class_ClassRogue)
+	AddBaseStatsCombo(proto.Race_RaceHordePandaren, proto.Class_ClassRogue)
 
 	AddBaseStatsCombo(proto.Race_RaceDraenei, proto.Class_ClassShaman)
 	AddBaseStatsCombo(proto.Race_RaceOrc, proto.Class_ClassShaman)

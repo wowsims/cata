@@ -25,7 +25,7 @@ func (asnRogue *AssassinationRogue) registerBlindsidePassive() {
 		masteryMod.UpdateFloatValue(asnRogue.GetMasteryBonusFromRating(newMastery))
 	})
 
-	// Assassin's Resolve: +20% Multiplicative all-school damage
+	// Assassin's Resolve: +25% Multiplicative all-school damage
 	// +20 Energy handled in base rogue
 	if asnRogue.HasDagger(core.MainHand) || asnRogue.HasDagger(core.OffHand) {
 		asnRogue.PseudoStats.DamageDealtMultiplier *= 1.25
