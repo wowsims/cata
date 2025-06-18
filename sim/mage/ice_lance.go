@@ -8,8 +8,8 @@ import (
 func (mage *Mage) registerIceLanceSpell() {
 
 	// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=30455
-	iceLanceScaling := 0.34
-	iceLanceCoefficient := 0.34
+	iceLanceScaling := 0.335
+	iceLanceCoefficient := 0.335
 	iceLanceVariance := 0.25
 	hasGlyphIcyVeins := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins)
 	hasGlyphSplittingIce := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfSplittingIce)
@@ -31,10 +31,10 @@ func (mage *Mage) registerIceLanceSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		BonusCoefficient:         iceLanceCoefficient,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1 * 1.2, // 2013-09-23 Ice Lance's damage has been increased by 20%
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		BonusCoefficient: iceLanceCoefficient,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// The target does not entirely appear to be random, but I was unable to determine how to tell which to target. IE: sat in front of 3 dummies it will always hit 2 specific ones.
