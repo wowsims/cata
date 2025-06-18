@@ -7,6 +7,13 @@ import (
 	"github.com/wowsims/mop/sim/rogue"
 )
 
+// Damage Done By Caster setup
+const (
+	DDBC_SanguinaryVein = iota
+
+	DDBC_Total
+)
+
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_SubtletyRogue{},
@@ -27,45 +34,21 @@ func RegisterSubtletyRogue() {
 func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.Rogue.Initialize()
 
-	subRogue.MasteryBaseValue = 0.2
-	subRogue.MasteryMultiplier = .025
+	subRogue.MasteryBaseValue = 0.24
+	subRogue.MasteryMultiplier = .03
 
-	// subRogue.registerHemorrhageSpell()
-	// subRogue.registerSanguinaryVein()
-	// subRogue.registerPremeditation()
-	// subRogue.registerHonorAmongThieves()
+	subRogue.registerBackstabSpell()
+	subRogue.registerHemorrhageSpell()
+	subRogue.registerSanguinaryVein()
+	subRogue.registerPremeditation()
+	subRogue.registerHonorAmongThieves()
 
-	// subRogue.applyInitiative()
-	// subRogue.applyFindWeakness()
+	subRogue.applyFindWeakness()
 
 	subRogue.registerMasterOfSubtletyCD()
-	// subRogue.registerShadowDanceCD()
-	// subRogue.registerPreparationCD()
-	subRogue.registerShadowstepCD()
+	subRogue.registerShadowDanceCD()
 
-	// Apply Mastery
-	masteryMod := subRogue.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  rogue.RogueSpellRupture | rogue.RogueSpellEviscerate,
-		FloatValue: subRogue.GetMasteryBonus(),
-	})
-
-	subRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryMod.UpdateFloatValue(subRogue.GetMasteryBonus())
-	})
-
-	core.MakePermanent(subRogue.GetOrRegisterAura(core.Aura{
-		Label:    "Executioner",
-		ActionID: core.ActionID{SpellID: 76808},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.UpdateFloatValue(subRogue.GetMasteryBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
-
+	subRogue.applyPassives()
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {

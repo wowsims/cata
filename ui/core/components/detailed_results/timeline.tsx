@@ -981,7 +981,11 @@ export class Timeline extends ResultComponent {
 
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
-			.filter(auraUptimeLogs => actionId.equals(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!))
+			.filter(auraUptimeLogs => {
+				return idsToGroupForRotation.includes(actionId.spellId) ?
+				actionId.equalsIgnoringTag(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!) :
+				actionId.equals(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!)
+			})
 			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem, true));
 
 		this.rotationTimeline.appendChild(rowElem);
@@ -1545,12 +1549,13 @@ const idToCategoryMap: Record<number, number> = {
 };
 
 const idsToGroupForRotation: Array<number> = [
-	6774, // Slice and Dice
-	8647, // Expose Armor
-	48668, // Eviscerate
-	48672, // Rupture
-	51690, // Killing Spree
-	57993, // Envenom
+	5171, 	// Rogue - Slice and Dice
+	2098, 	// Rogue - Eviscerate
+	1943, 	// Rogue - Rupture
+	51690, 	// Rogue - Killing Spree
+	32645, 	// Rogue - Envenom
+	16511, 	// Rogue - Hemorrhage
+	121471, // Rogue - Shadow Blades
 ];
 
 const percentageResources: Array<ResourceType> = [ResourceType.ResourceTypeHealth, ResourceType.ResourceTypeMana];
