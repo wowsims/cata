@@ -184,11 +184,11 @@ func (paladin *Paladin) registerSelflessHealer() {
 		FloatValue: castTimePerStack[0],
 	})
 
-	costPerStack := []int32{0, -35, -70, -100}
+	costPerStack := castTimePerStack
 	costMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: classMask,
-		IntValue:  costPerStack[0],
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  classMask,
+		FloatValue: costPerStack[0],
 	})
 
 	paladin.SelflessHealerAura = paladin.RegisterAura(core.Aura{
@@ -202,7 +202,7 @@ func (paladin *Paladin) registerSelflessHealer() {
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			castTimeMod.UpdateFloatValue(castTimePerStack[newStacks])
-			costMod.UpdateIntValue(costPerStack[newStacks])
+			costMod.UpdateFloatValue(costPerStack[newStacks])
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()

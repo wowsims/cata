@@ -64,8 +64,8 @@ func (bear *GuardianDruid) registerToothAndClawPassive() {
 			if bear.Maul.IsEqual(spell) && result.Landed() {
 				debuff := bear.ToothAndClawDebuffs.Get(result.Target)
 				debuff.Activate(sim)
-				addedAbsorbAmount := max((bear.GetStat(stats.AttackPower) - 2 * bear.GetStat(stats.Agility)) * 2.2, bear.GetStat(stats.Stamina) * 2.5) * 0.4
-				debuff.SetStacks(sim, debuff.GetStacks() + int32(math.Round(addedAbsorbAmount)))
+				addedAbsorbAmount := max((bear.GetStat(stats.AttackPower)-2*bear.GetStat(stats.Agility))*2.2, bear.GetStat(stats.Stamina)*2.5) * 0.4
+				debuff.SetStacks(sim, debuff.GetStacks()+int32(math.Round(addedAbsorbAmount)))
 				aura.Deactivate(sim)
 			}
 		},

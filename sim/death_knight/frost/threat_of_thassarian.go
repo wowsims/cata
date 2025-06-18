@@ -29,7 +29,7 @@ func (fdk *FrostDeathKnight) registerThreatOfThassarian() {
 		FloatValue: 0.5,
 	})
 
-	fdk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, _ proto.ItemSlot) {
+	fdk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, _ proto.ItemSlot) {
 		checkWeaponType(sim, fdk.ThreatOfThassarianAura)
 	})
 }

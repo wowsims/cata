@@ -59,7 +59,7 @@ func (druid *Druid) registerFrenziedRegenerationSpell() {
 			} else {
 				const maxRageCost = 60.0
 				rageDumped := min(druid.CurrentRage(), maxRageCost)
-				healthGained := max((druid.GetStat(stats.AttackPower) - 2 * druid.GetStat(stats.Agility)) * 2.2, druid.GetStat(stats.Stamina) * 2.5) * rageDumped / maxRageCost
+				healthGained := max((druid.GetStat(stats.AttackPower)-2*druid.GetStat(stats.Agility))*2.2, druid.GetStat(stats.Stamina)*2.5) * rageDumped / maxRageCost
 				spell.CalcAndDealHealing(sim, spell.Unit, healthGained, spell.OutcomeHealing)
 				druid.SpendRage(sim, rageDumped, rageMetrics)
 			}

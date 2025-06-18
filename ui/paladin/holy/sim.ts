@@ -6,6 +6,7 @@ import { APLRotation } from '../../core/proto/apl.js';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common.js';
 import { UnitStat } from '../../core/proto_utils/stats.js';
 import * as HolyInputs from '../../paladin/holy/inputs.js';
+import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
@@ -52,7 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment],
+		inputs: [PaladinInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

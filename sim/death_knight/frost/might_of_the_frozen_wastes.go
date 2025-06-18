@@ -34,7 +34,7 @@ func (fdk *FrostDeathKnight) registerMightOfTheFrozenWastes() {
 		ClassMask:  death_knight.DeathKnightSpellObliterate,
 	})
 
-	fdk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, _ proto.ItemSlot) {
+	fdk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, _ proto.ItemSlot) {
 		checkWeaponType(sim, mightOfTheFrozenWastesAura)
 	})
 }

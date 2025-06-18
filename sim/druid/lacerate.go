@@ -47,7 +47,7 @@ func (druid *Druid) registerLacerateSpell() {
 					panic("Lacerate cannot roll over snapshots!")
 				}
 
-				dot.SnapshotPhysical(target, 0.0512 * dot.Spell.MeleeAttackPower() * float64(dot.Aura.GetStacks()))
+				dot.SnapshotPhysical(target, 0.0512*dot.Spell.MeleeAttackPower()*float64(dot.Aura.GetStacks()))
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

@@ -36,7 +36,7 @@ func (druid *Druid) registerMightOfUrsocCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: core.TernaryDuration(isGlyphed, time.Minute * 5, time.Minute * 3),
+				Duration: core.TernaryDuration(isGlyphed, time.Minute*5, time.Minute*3),
 			},
 		},
 

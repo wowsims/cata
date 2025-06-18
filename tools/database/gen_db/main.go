@@ -590,7 +590,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 			return false
 		}
 
-		if gem.Quality == proto.ItemQuality_ItemQualityLegendary || gem.Id == 95348 {
+		if gem.Color == proto.GemColor_GemColorMeta && gem.Quality > proto.ItemQuality_ItemQualityRare {
 			gem.Phase = 3
 		} else {
 			gem.Phase = 1
