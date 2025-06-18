@@ -146,10 +146,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FurySMFTalents, Presets.FuryTGTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.FURY_SMF_ROTATION, Presets.FURY_TG_ROTATION],
+		rotations: [Presets.FURY_DEFAULT_ROTATION, Presets.FURY_TG_ROTATION],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.P1_PRERAID_FURY_SMF_PRESET, Presets.P1_PRERAID_FURY_TG_PRESET, Presets.P1_BIS_FURY_SMF_PRESET, Presets.P1_BIS_FURY_TG_PRESET],
-		builds: [Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG, Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG],
+		builds: [Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {

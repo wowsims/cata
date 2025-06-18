@@ -33,7 +33,7 @@ func (war *FuryWarrior) registerRagingBlow() {
 		ClassSpellMask: warrior.SpellMaskRagingBlowOH,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1.9,
+		DamageMultiplier: 1.9 * 1.2, // 2013-09-23	[Bloodthirst]'s damage has been increased by 20%.
 		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -50,7 +50,7 @@ func (war *FuryWarrior) registerRagingBlow() {
 		ClassSpellMask: warrior.SpellMaskRagingBlowMH,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1.9,
+		DamageMultiplier: 1.9 * 1.2, // 2013-09-23	[Bloodthirst]'s damage has been increased by 20%.
 		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

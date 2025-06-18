@@ -2,10 +2,9 @@ import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, HandType, ItemSlot, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior';
+import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
-import SMFFuryApl from './apls/smf.apl.json';
-import TGFuryApl from './apls/tg.apl.json';
+import DefaultFuryApl from './apls/default.apl.json';
 import P1FurySMFGear from './gear_sets/p1_fury_smf.gear.json';
 import P1FuryTGGear from './gear_sets/p1_fury_tg.gear.json';
 import PreraidFurySMFGear from './gear_sets/preraid_fury_smf.gear.json';
@@ -25,11 +24,6 @@ const FURY_SMF_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
 					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for one-handed weapons.',
 				},
-				// {
-				// 	condition: (player: Player<Spec.SpecFuryWarrior>) =>
-				// 		player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand || !player.getTalents().singleMindedFury,
-				// 	message: "Check your talents: You have selected a two-handed spec but don't have [Single-Minded Fury] talented.",
-				// },
 			],
 			player,
 		);
@@ -44,10 +38,6 @@ const FURY_TG_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
 					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for two-handed weapons.',
 				},
-				// {
-				// 	condition: (player: Player<Spec.SpecFuryWarrior>) => !player.getTalents().titansGrip,
-				// 	message: "Check your talents: You have selected a one-handed spec but don't have [Titan's Grip] talented.",
-				// },
 			],
 			player,
 		);
@@ -59,26 +49,25 @@ export const P1_PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid - T
 export const P1_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 - SMF', P1FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 - TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
 
-export const FURY_SMF_ROTATION = PresetUtils.makePresetAPLRotation('SMF', SMFFuryApl, FURY_SMF_PRESET_OPTIONS);
-export const FURY_TG_ROTATION = PresetUtils.makePresetAPLRotation('TG', TGFuryApl, FURY_TG_PRESET_OPTIONS);
+export const FURY_DEFAULT_ROTATION = PresetUtils.makePresetAPLRotation('Default', DefaultFuryApl);
 
 // Preset options for EP weights
 export const P1_FURY_SMF_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1 - SMF',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.2,
-			[Stat.StatAgility]: 1.14,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.46,
-			[Stat.StatHitRating]: 2.35,
-			[Stat.StatCritRating]: 1.48,
-			[Stat.StatHasteRating]: 1.05,
-			[Stat.StatMasteryRating]: 0.95,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatAgility]: 0.06,
+			[Stat.StatAttackPower]: 0.45,
+			[Stat.StatExpertiseRating]: 1.19,
+			[Stat.StatHitRating]: 1.37,
+			[Stat.StatCritRating]: 0.94,
+			[Stat.StatHasteRating]: 0.41,
+			[Stat.StatMasteryRating]: 0.59,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.15,
-			[PseudoStat.PseudoStatOffHandDps]: 1.63,
+			[PseudoStat.PseudoStatMainHandDps]: 2.15,
+			[PseudoStat.PseudoStatOffHandDps]: 1.31,
 		},
 	),
 	FURY_SMF_PRESET_OPTIONS,
@@ -88,18 +77,18 @@ export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1 - TG',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.21,
-			[Stat.StatAgility]: 1.23,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.59,
-			[Stat.StatHitRating]: 2.56,
-			[Stat.StatCritRating]: 1.59,
-			[Stat.StatHasteRating]: 1.15,
-			[Stat.StatMasteryRating]: 1.31,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatAgility]: 0.07,
+			[Stat.StatAttackPower]: 0.45,
+			[Stat.StatExpertiseRating]: 1.42,
+			[Stat.StatHitRating]: 1.62,
+			[Stat.StatCritRating]: 1.07,
+			[Stat.StatHasteRating]: 0.41,
+			[Stat.StatMasteryRating]: 0.7,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.77,
-			[PseudoStat.PseudoStatOffHandDps]: 1.6,
+			[PseudoStat.PseudoStatMainHandDps]: 2.59,
+			[PseudoStat.PseudoStatOffHandDps]: 1.11,
 		},
 	),
 	FURY_TG_PRESET_OPTIONS,
@@ -111,9 +100,11 @@ export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FurySMFTalents = {
 	name: 'SMF',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '133333',
 		glyphs: Glyphs.create({
-			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
+			major1: WarriorMajorGlyph.GlyphOfBullRush,
+			major2: WarriorMajorGlyph.GlyphOfDeathFromAbove,
+			major3: WarriorMajorGlyph.GlyphOfUnendingRage,
 		}),
 	}),
 	...FURY_SMF_PRESET_OPTIONS,
@@ -122,9 +113,11 @@ export const FurySMFTalents = {
 export const FuryTGTalents = {
 	name: 'TG',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '133133',
 		glyphs: Glyphs.create({
-			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
+			major1: WarriorMajorGlyph.GlyphOfBullRush,
+			major2: WarriorMajorGlyph.GlyphOfDeathFromAbove,
+			major3: WarriorMajorGlyph.GlyphOfUnendingRage,
 		}),
 	}),
 	...FURY_TG_PRESET_OPTIONS,
@@ -153,13 +146,11 @@ export const OtherDefaults = {
 export const P1_PRESET_BUILD_SMF = PresetUtils.makePresetBuild('P1 - SMF', {
 	gear: P1_BIS_FURY_SMF_PRESET,
 	talents: FurySMFTalents,
-	rotation: FURY_SMF_ROTATION,
 	epWeights: P1_FURY_SMF_EP_PRESET,
 });
 
 export const P1_PRESET_BUILD_TG = PresetUtils.makePresetBuild('P1 - TG', {
 	gear: P1_BIS_FURY_TG_PRESET,
 	talents: FuryTGTalents,
-	rotation: FURY_TG_ROTATION,
 	epWeights: P1_FURY_TG_EP_PRESET,
 });

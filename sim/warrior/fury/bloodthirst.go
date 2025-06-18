@@ -30,7 +30,7 @@ func (war *FuryWarrior) registerBloodthirst() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 0.9,
+		DamageMultiplier: 0.9 * 1.2, // 2013-09-23	[Bloodthirst]'s damage has been increased by 20%.
 		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
