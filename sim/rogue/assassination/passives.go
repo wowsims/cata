@@ -32,9 +32,9 @@ func (asnRogue *AssassinationRogue) registerBlindsidePassive() {
 	}
 
 	energyMod := asnRogue.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: rogue.RogueSpellDispatch,
-		IntValue:  -100,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  rogue.RogueSpellDispatch,
+		FloatValue: -2,
 	})
 
 	blindsideProc := asnRogue.RegisterAura(core.Aura{

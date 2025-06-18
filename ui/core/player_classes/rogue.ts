@@ -38,6 +38,7 @@ export class Rogue extends PlayerClass<Class.ClassRogue> {
 		{ weaponType: WeaponType.WeaponTypeOffHand },
 		{ weaponType: WeaponType.WeaponTypeSword },
 	];
+	static rangedWeaponTypes: RangedWeaponType[] = [];
 
 	readonly classID = Rogue.classID;
 	readonly friendlyName = Rogue.name;
