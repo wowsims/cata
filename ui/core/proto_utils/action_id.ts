@@ -289,6 +289,8 @@ export class ActionId {
 			case 'Minor Speed':
 				name = 'Minor Run Speed (8%)';
 				break;
+			case 'Arcane Missiles':
+				break;
 			case 'Arcane Blast':
 				if (tag == 1) {
 					name += ' (No Stacks)';
@@ -393,9 +395,9 @@ export class ActionId {
 				break;
 			case 'Shadow Blades':
 				if (tag == 1) {
-					name = 'Shadow Blade'
+					name = 'Shadow Blade';
 				} else if (tag == 2) {
-					name = 'Shadow Blade Off-hand'
+					name = 'Shadow Blade Off-hand';
 				}
 				break;
 			case 'Killing Spree':
@@ -423,7 +425,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (Hit)';
 				} else {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Wind Lash':

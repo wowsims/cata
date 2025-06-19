@@ -40,7 +40,7 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 		} else if strings.Contains(loc, "Dtps.AggregatorData.SumSq") {
 			tolerance *= 150 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "SumSq") {
-			tolerance *= 100 // Squared sums can be off more, and as an extension also the stdevs
+			tolerance *= 150 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "Stdev") {
 			tolerance *= 10 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "Resources") {

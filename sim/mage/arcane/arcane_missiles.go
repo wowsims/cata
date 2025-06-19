@@ -32,7 +32,7 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 	arcaneMissilesCoefficient := 0.22
 	actionID := core.ActionID{SpellID: 7268}
 	arcane.arcaneMissilesTickSpell = arcane.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellArcaneMissilesTick,
@@ -46,18 +46,19 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			baseDamage := arcane.CalcAndRollDamageRange(sim, arcaneMissilesScaling, 0)
 			result := spell.CalcDamage(sim, target, baseDamage, arcane.OutcomeArcaneMissiles)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
+				spell.DealPeriodicDamage(sim, result)
 			})
 			spell.SpellMetrics[result.Target.UnitIndex].Casts--
 		},
 	})
 
 	arcane.arcaneMissiles = arcane.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
-		SpellSchool:    core.SpellSchoolArcane,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
-		ClassSpellMask: mage.MageSpellArcaneMissilesCast,
+		ActionID:         actionID, // Real SpellID: 5143
+		SpellSchool:      core.SpellSchoolArcane,
+		ProcMask:         core.ProcMaskSpellDamage,
+		Flags:            core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask:   mage.MageSpellArcaneMissilesCast,
+		DamageMultiplier: 0,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -88,11 +89,16 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			if arcane.arcaneMissilesProcAura.IsActive() {
+				arcane.arcaneMissilesProcAura.RemoveStack(sim)
+			}
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
 				// Snapshot crit chance
 				arcane.arcaneMissileCritSnapshot = arcane.arcaneMissilesTickSpell.SpellCritChance(target)
 				spell.Dot(target).Apply(sim)
+				arcane.arcaneMissilesTickSpell.SpellMetrics[target.UnitIndex].Hits++
+				arcane.arcaneMissilesTickSpell.SpellMetrics[target.UnitIndex].Casts++
 			}
 		},
 	})
@@ -103,11 +109,6 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		ActionID:  core.ActionID{SpellID: 79683},
 		Duration:  time.Second * 20,
 		MaxStacks: 2,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(mage.MageSpellArcaneMissilesCast) {
-				arcane.arcaneMissilesProcAura.RemoveStack(sim)
-			}
-		},
 	})
 
 	// Listener for procs
