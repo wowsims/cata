@@ -42,6 +42,7 @@ import {
 	APLValueCurrentTime,
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
+	APLValueDotPercentIncrease,
 	APLValueDotRemainingTime,
 	APLValueDotTickFrequency,
 	APLValueEnergyRegenPerSecond,
@@ -1301,6 +1302,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'The time between each tick.',
 		newValue: APLValueDotTickFrequency.create,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
+	}),
+	dotPercentIncrease: inputBuilder({
+		label: 'Dot Damage Increase %',
+		submenu: ['DoT'],
+		shortDescription: 'How much stronger a new DoT would be compared to the old.',
+		newValue: APLValueDotPercentIncrease.create,
+		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'expected_dot_spells', '')],
 	}),
 	sequenceIsComplete: inputBuilder({
 		label: 'Sequence Is Complete',

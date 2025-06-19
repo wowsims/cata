@@ -94,6 +94,15 @@ func (destruction *DestructionWarlock) registerImmolate() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			destruction.ApplyDotWithPandemic(spell.Dot(target), sim)
 		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			if useSnapshot {
+				dot := spell.Dot(target)
+				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+			} else {
+				return spell.CalcPeriodicDamage(sim, target, destruction.CalcScalingSpellDmg(immolateCoeff), spell.OutcomeExpectedMagicCrit)
+			}
+		},
 	})
 }
 

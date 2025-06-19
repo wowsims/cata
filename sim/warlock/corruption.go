@@ -54,7 +54,7 @@ func (warlock *Warlock) RegisterCorruption(callback WarlockSpellCastedCallback) 
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 			} else {
-				return spell.CalcPeriodicDamage(sim, target, 1033/6, spell.OutcomeExpectedMagicCrit)
+				return spell.CalcPeriodicDamage(sim, target, warlock.CalcScalingSpellDmg(corruptionScale), spell.OutcomeExpectedMagicCrit)
 			}
 		},
 	})
