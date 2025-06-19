@@ -50,14 +50,14 @@ func (paladin *Paladin) registerSanctityOfBattle() {
 		ClassMask: gcdMask,
 	})
 
-	updateFloatValue := func(attackSpeed float64) {
-		multiplier := 1 / attackSpeed
+	updateFloatValue := func(meleeHaste float64) {
+		multiplier := 1 / meleeHaste
 		cooldownMod.UpdateFloatValue(multiplier)
 		gcdMod.UpdateTimeValue(-(core.DurationFromSeconds(min(0.5, 1.5-1.5*multiplier)).Round(time.Millisecond)))
 	}
 
-	paladin.AddOnMeleeAttackSpeedChanged(func(_ float64, attackSpeed float64) {
-		updateFloatValue(attackSpeed)
+	paladin.AddOnMeleeAndRangedHasteChanged(func(_ float64, meleeHaste float64) {
+		updateFloatValue(meleeHaste)
 	})
 
 	core.MakePermanent(paladin.GetOrRegisterAura(core.Aura{
@@ -65,7 +65,7 @@ func (paladin *Paladin) registerSanctityOfBattle() {
 		ActionID: core.ActionID{SpellID: 25956},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			updateFloatValue(paladin.TotalMeleeHasteMultiplier())
+			updateFloatValue(paladin.TotalRealHasteMultiplier())
 			cooldownMod.Activate()
 			gcdMod.Activate()
 		},
