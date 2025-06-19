@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -55,7 +56,6 @@ func (shaman *Shaman) NewEarthElemental(isGuardian bool) *EarthElemental {
 
 func (earthElemental *EarthElemental) enable(isGuardian bool) func(*core.Simulation) {
 	return func(sim *core.Simulation) {
-		earthElemental.EnableDynamicStats(earthElemental.shamanOwner.earthElementalStatInheritance(isGuardian))
 	}
 }
 
@@ -114,7 +114,7 @@ func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetSta
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
 		hitExpRating := (ownerHitRating + ownerExpertiseRating) / 2
-		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
+		critPercent := core.TernaryFloat64(math.Abs(ownerPhysicalCritPercent) > math.Abs(ownerSpellCritPercent), ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
 
