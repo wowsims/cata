@@ -40,21 +40,9 @@ func (fire *FireMage) registerFireballSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := fire.CalcAndRollDamageRange(sim, fireBallScaling, fireBallVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if spell.TravelTime() > time.Duration(mage.FireSpellMaxTimeUntilResult) {
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Duration(mage.FireSpellMaxTimeUntilResult),
-					OnAction: func(s *core.Simulation) {
-						spell.DealDamage(sim, result)
-						fire.HandleHeatingUp(sim, spell, result)
-					},
-				})
-			} else {
-				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-					spell.DealDamage(sim, result)
-					fire.HandleHeatingUp(sim, spell, result)
-				})
-			}
-
+			fire.HeatingUpSpellHandler(sim, spell, result, func() {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

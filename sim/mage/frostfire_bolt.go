@@ -58,23 +58,12 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			mage.BrainFreezeAura.Deactivate(sim)
 
 			for _, result := range results {
-				if spell.TravelTime() > time.Duration(FireSpellMaxTimeUntilResult) {
-					core.StartDelayedAction(sim, core.DelayedActionOptions{
-						DoAt: sim.CurrentTime + time.Duration(FireSpellMaxTimeUntilResult),
-						OnAction: func(s *core.Simulation) {
-							spell.DealDamage(sim, result)
-							mage.HandleHeatingUp(sim, spell, result)
-						},
-					})
-				} else {
-					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-						spell.DealDamage(sim, result)
-						if result.Landed() {
-							mage.GainIcicle(sim, target, result.Damage)
-						}
-						mage.HandleHeatingUp(sim, spell, result)
-					})
-				}
+				mage.HeatingUpSpellHandler(sim, spell, result, func() {
+					spell.DealDamage(sim, result)
+					if result.Landed() {
+						mage.GainIcicle(sim, target, result.Damage)
+					}
+				})
 			}
 		},
 	})

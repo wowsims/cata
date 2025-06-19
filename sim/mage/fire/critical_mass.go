@@ -6,20 +6,30 @@ import (
 	"github.com/wowsims/mop/sim/mage"
 )
 
+func (fire *FireMage) GetCriticalMassCritPercentage() float64 {
+	return fire.GetStat(stats.SpellCritPercent) * 1.3
+}
+
 func (fire *FireMage) registerCriticalMass() {
 
-	criticalMassCritBuff := fire.GetStat(stats.SpellCritPercent) * 1.3
-
 	criticalMassCritBuffMod := fire.AddDynamicMod(core.SpellModConfig{
-		FloatValue: criticalMassCritBuff,
-		ClassMask:  mage.MageSpellFireball | mage.MageSpellFrostfireBolt | mage.MageSpellScorch | mage.MageSpellPyroblast,
-		Kind:       core.SpellMod_BonusCrit_Percent,
+		ClassMask: mage.MageSpellFireball | mage.MageSpellFrostfireBolt | mage.MageSpellScorch | mage.MageSpellPyroblast,
+		Kind:      core.SpellMod_BonusCrit_Percent,
 	})
 
 	fire.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, statsChangeWithoutDeps stats.Stats) {
-		criticalMassCritBuffMod.UpdateFloatValue(criticalMassCritBuff)
+		critChance := fire.GetCriticalMassCritPercentage()
+		criticalMassCritBuffMod.UpdateFloatValue(critChance)
 	})
 
-	criticalMassCritBuffMod.Activate()
+	core.MakePermanent(fire.RegisterAura(core.Aura{
+		Label: "Mastery: Icicles - Water Elemental",
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			criticalMassCritBuffMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			criticalMassCritBuffMod.Deactivate()
+		},
+	}))
 
 }

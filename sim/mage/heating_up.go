@@ -36,6 +36,23 @@ func (mage *Mage) registerHeatingUp() {
 
 }
 
+func (mage *Mage) HeatingUpSpellHandler(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, callback func()) {
+	if spell.TravelTime() > time.Duration(FireSpellMaxTimeUntilResult) {
+		core.StartDelayedAction(sim, core.DelayedActionOptions{
+			DoAt: sim.CurrentTime + time.Duration(FireSpellMaxTimeUntilResult),
+			OnAction: func(s *core.Simulation) {
+				callback()
+				mage.HandleHeatingUp(sim, spell, result)
+			},
+		})
+	} else {
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			callback()
+			mage.HandleHeatingUp(sim, spell, result)
+		})
+	}
+}
+
 func (mage *Mage) HandleHeatingUp(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 	if result.DidCrit() {
 		if mage.HeatingUp.IsActive() {
