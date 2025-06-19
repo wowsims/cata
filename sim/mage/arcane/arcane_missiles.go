@@ -13,10 +13,10 @@ func (arcane *ArcaneMage) OutcomeArcaneMissiles(sim *core.Simulation, result *co
 		if sim.RandomFloat("Magical Crit Roll") < arcane.arcaneMissileCritSnapshot {
 			result.Outcome = core.OutcomeCrit
 			result.Damage *= spell.CritMultiplier
-			spell.SpellMetrics[result.Target.UnitIndex].Crits++
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 		} else {
 			result.Outcome = core.OutcomeHit
-			spell.SpellMetrics[result.Target.UnitIndex].Hits++
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 		}
 	} else {
 		result.Outcome = core.OutcomeMiss
@@ -30,8 +30,9 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 	// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A7268
 	arcaneMissilesScaling := 0.22
 	arcaneMissilesCoefficient := 0.22
+	actionID := core.ActionID{SpellID: 7268}
 	arcane.arcaneMissilesTickSpell = arcane.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 7268},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellArcaneMissilesTick,
@@ -47,11 +48,12 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
+			spell.SpellMetrics[result.Target.UnitIndex].Casts--
 		},
 	})
 
 	arcane.arcaneMissiles = arcane.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 7268},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
