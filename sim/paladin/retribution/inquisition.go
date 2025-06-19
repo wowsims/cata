@@ -36,8 +36,8 @@ func (ret *RetributionPaladin) registerInquisition() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.3,
 		School:     core.SpellSchoolHoly,
+		FloatValue: 0.3,
 	})
 
 	// Inquisition self-buff.

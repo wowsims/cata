@@ -1,0 +1,718 @@
+character_stats_results: {
+ key: "TestArms-CharacterStats-Default"
+ value: {
+  final_stats: 18701.7075
+  final_stats: 220.5
+  final_stats: 22420.2
+  final_stats: 121.8
+  final_stats: 149
+  final_stats: 2182
+  final_stats: 11433
+  final_stats: 2272.5
+  final_stats: 2902
+  final_stats: 2e-05
+  final_stats: 17206.43246
+  final_stats: 7274
+  final_stats: 41418.7565
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 34190
+  final_stats: 0
+  final_stats: 460285.8
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6.41765
+  final_stats: 14.95294
+  final_stats: 29.07705
+  final_stats: 24.055
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 135443.43595
+  tps: 91851.65527
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-BattleplateofResoundingRings"
+ value: {
+  dps: 124804.85255
+  tps: 83728.89134
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-BattleplateoftheLastMogu"
+ value: {
+  dps: 129451.62861
+  tps: 93402.13513
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-BattleplateofthePrehistoricMarauder"
+ value: {
+  dps: 128432.9567
+  tps: 93388.11737
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 135369.94045
+  tps: 91899.03241
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 133582.89111
+  tps: 90830.51094
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 132622.86115
+  tps: 90103.41671
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 132622.86115
+  tps: 90103.41671
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 132622.86115
+  tps: 90103.41671
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 132622.86115
+  tps: 90103.41671
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 132622.86115
+  tps: 90103.41671
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 133816.04631
+  tps: 90881.01346
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 135997.85337
+  tps: 92297.25813
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 133118.65656
+  tps: 90374.62089
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 133118.65656
+  tps: 90374.62089
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 133118.65656
+  tps: 90374.62089
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 133118.65656
+  tps: 90374.62089
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 133170.24084
+  tps: 90174.22005
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 133816.04631
+  tps: 90881.01346
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 133465.11776
+  tps: 89854.45356
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 141249.11399
+  tps: 95154.01066
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 140004.99182
+  tps: 94595.9625
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 141480.99663
+  tps: 95396.16765
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 142021.97813
+  tps: 95724.71868
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 142941.37951
+  tps: 96317.62251
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 133816.04631
+  tps: 90881.01346
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 135540.70484
+  tps: 92010.65177
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-PlateofResoundingRings"
+ value: {
+  dps: 110592.26663
+  tps: 78966.45755
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-PlateoftheLastMogu"
+ value: {
+  dps: 117849.72036
+  tps: 84302.26345
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-PlateofthePrehistoricMarauder"
+ value: {
+  dps: 122129.73509
+  tps: 86962.97309
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 132622.86115
+  tps: 90103.41671
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 140822.26224
+  tps: 95565.05779
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 139453.0814
+  tps: 94729.33299
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 141402.00308
+  tps: 95924.20997
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 141984.92
+  tps: 96364.089
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 142570.8802
+  tps: 96511.59224
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 132647.99918
+  tps: 90342.67293
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 132748.34653
+  tps: 90316.67397
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 132655.48574
+  tps: 90350.15949
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 132661.3078
+  tps: 90355.98155
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 132670.18045
+  tps: 90364.8542
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 136171.79062
+  tps: 92423.15808
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 135369.94045
+  tps: 91899.03241
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 133582.89111
+  tps: 90830.51094
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 137382.74224
+  tps: 93125.8536
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 134067.78564
+  tps: 90776.73816
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 133678.54803
+  tps: 90100.32447
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 133981.96027
+  tps: 90657.72263
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 134442.28992
+  tps: 90763.13074
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 134223.87197
+  tps: 90789.54002
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 133208.96391
+  tps: 90404.52704
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 138574.72396
+  tps: 93712.42064
+ }
+}
+dps_results: {
+ key: "TestArms-Average-Default"
+ value: {
+  dps: 137081.76999
+  tps: 92037.93466
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-FullBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 736751.57368
+  tps: 665153.20166
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-FullBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 138013.82802
+  tps: 93538.35991
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-FullBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 161226.24568
+  tps: 108700.7326
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-NoBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 545394.90414
+  tps: 492517.64882
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-NoBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 109064.23915
+  tps: 72974.40302
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-NoBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 113585.61514
+  tps: 77664.03094
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_poor-Basic-arms-FullBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 583303.70672
+  tps: 528204.16698
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_poor-Basic-arms-FullBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 95514.46767
+  tps: 67604.32967
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_poor-Basic-arms-FullBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 112943.16471
+  tps: 81276.59304
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_poor-Basic-arms-NoBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 425841.57175
+  tps: 386735.47908
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_poor-Basic-arms-NoBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 74337.41103
+  tps: 52331.90261
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_poor-Basic-arms-NoBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 80473.29264
+  tps: 57687.47871
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_rich-Basic-arms-FullBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 605879.76563
+  tps: 548491.62024
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_rich-Basic-arms-FullBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 98887.45008
+  tps: 69668.76387
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_rich-Basic-arms-FullBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 116615.57583
+  tps: 83871.04966
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_rich-Basic-arms-NoBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 445402.38791
+  tps: 405097.43846
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_rich-Basic-arms-NoBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 76304.98171
+  tps: 53891.58924
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Orc-p1_prebis_rich-Basic-arms-NoBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 81631.64266
+  tps: 58920.33506
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-FullBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 743792.21262
+  tps: 672582.73788
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-FullBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 138997.17068
+  tps: 94263.22207
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-FullBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 162391.80697
+  tps: 109770.8654
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-NoBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 548678.2048
+  tps: 495415.68745
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-NoBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 109720.1079
+  tps: 73517.41801
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-NoBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 114216.30394
+  tps: 77840.79519
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_poor-Basic-arms-FullBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 588248.43284
+  tps: 532998.53665
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_poor-Basic-arms-FullBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 96639.48905
+  tps: 68321.99777
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_poor-Basic-arms-FullBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 114290.44782
+  tps: 81926.6737
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_poor-Basic-arms-NoBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 428232.13184
+  tps: 389113.85261
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_poor-Basic-arms-NoBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 75029.01291
+  tps: 52843.25254
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_poor-Basic-arms-NoBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 81229.79084
+  tps: 58223.87437
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_rich-Basic-arms-FullBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 612555.84777
+  tps: 554522.89273
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_rich-Basic-arms-FullBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 99653.01534
+  tps: 70373.23683
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_rich-Basic-arms-FullBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 117127.53412
+  tps: 84383.00795
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_rich-Basic-arms-NoBuffs-9.0yards-LongMultiTarget"
+ value: {
+  dps: 450034.60375
+  tps: 409376.0211
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_rich-Basic-arms-NoBuffs-9.0yards-LongSingleTarget"
+ value: {
+  dps: 76587.04879
+  tps: 54223.18895
+ }
+}
+dps_results: {
+ key: "TestArms-Settings-Worgen-p1_prebis_rich-Basic-arms-NoBuffs-9.0yards-ShortSingleTarget"
+ value: {
+  dps: 82374.63223
+  tps: 59418.37424
+ }
+}
+dps_results: {
+ key: "TestArms-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 124440.66544
+  tps: 85292.07141
+ }
+}
