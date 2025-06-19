@@ -28,7 +28,7 @@ func (frost *FrostMage) registerFingersOfFrost() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 4.0,
+		FloatValue: 3.0,
 		ClassMask:  mage.MageSpellIceLance,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
