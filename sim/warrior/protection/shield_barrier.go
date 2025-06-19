@@ -17,14 +17,16 @@ func (war *ProtectionWarrior) registerShieldBarrier() {
 	staminaScaling := 2.50
 	newAbsorb := 0.0
 
-	war.ShieldBarrierAura = war.NewDamageAbsorptionAura(
-		"Shield Barrier",
-		actionID,
-		6*time.Second,
-		func(_ *core.Unit) float64 {
+	war.ShieldBarrierAura = war.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+		Aura: core.Aura{
+			Label:    "Shield Barrier",
+			ActionID: actionID,
+			Duration: 6 * time.Second,
+		},
+		ShieldStrengthCalculator: func(_ *core.Unit) float64 {
 			return newAbsorb
 		},
-	)
+	})
 
 	war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
