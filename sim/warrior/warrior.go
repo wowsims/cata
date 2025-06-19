@@ -12,40 +12,33 @@ type WarriorInputs struct {
 
 const (
 	SpellFlagBleed = core.SpellFlagAgentReserved1
-	ArmsTree       = 0
-	FuryTree       = 1
-	ProtTree       = 2
 )
 
-const SpellMaskNone int64 = 0
 const (
-	SpellMaskSpecialAttack int64 = 1 << iota
-
+	SpellMaskNone int64 = 0
 	// Abilities that don't cost rage and aren't attacks
-	SpellMaskBattleShout
-	SpellMaskBerserkerRage
+	SpellMaskBattleShout int64 = 1 << iota
 	SpellMaskCommandingShout
+	SpellMaskBerserkerRage
+	SpellMaskRallyingCry
 	SpellMaskRecklessness
 	SpellMaskShieldWall
 	SpellMaskLastStand
-	SpellMaskDeadlyCalm
 	SpellMaskCharge
-
-	// Abilities that cost rage but aren't attacks
-	SpellMaskDemoShout
-	SpellMaskInnerRage
-	SpellMaskShieldBlock
-	SpellMaskDeathWish
-	SpellMaskSweepingStrikes
+	SpellMaskSkullBanner
+	SpellMaskDemoralizingBanner
+	SpellMaskAvatar
+	SpellMaskDemoralizingShout
 
 	// Special attacks
+	SpellMaskSweepingStrikes
+	SpellMaskSweepingStrikesHit
 	SpellMaskCleave
 	SpellMaskColossusSmash
 	SpellMaskExecute
 	SpellMaskHeroicStrike
 	SpellMaskHeroicThrow
 	SpellMaskOverpower
-	SpellMaskRend
 	SpellMaskRevenge
 	SpellMaskShatteringThrow
 	SpellMaskSlam
@@ -53,21 +46,33 @@ const (
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
 	SpellMaskWhirlwindOh
+	SpellMaskShieldBarrier
 	SpellMaskShieldSlam
-	SpellMaskConcussionBlow
 	SpellMaskDevastate
-	SpellMaskShockwave
-	SpellMaskVictoryRush
 	SpellMaskBloodthirst
 	SpellMaskRagingBlow
+	SpellMaskRagingBlowMH
+	SpellMaskRagingBlowOH
 	SpellMaskMortalStrike
-	SpellMaskBladestorm
 	SpellMaskHeroicLeap
+	SpellMaskWildStrike
+	SpellMaskShieldBlock
+
+	// Talents
+	SpellMaskImpendingVictory
+	SpellMaskBladestorm
+	SpellMaskBladestormMH
+	SpellMaskBladestormOH
+	SpellMaskDragonRoar
+	SpellMaskBloodbath
+	SpellMaskBloodbathDot
+	SpellMaskStormBolt
+	SpellMaskStormBoltOH
+	SpellMaskShockwave
 
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
 
-const EnableOverpowerTag = "EnableOverpower"
 const EnrageTag = "EnrageEffect"
 
 type Warrior struct {
@@ -80,10 +85,8 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	// Stance                 Stance
-	EnrageEffectMultiplier float64
-	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
-	PrecisionKnown         bool
+	Stance              Stance
+	CriticalBlockChance []float64 // Can be gained as non-prot via certain talents and spells
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -91,93 +94,95 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
-	BerserkerRage     *core.Spell
-	ColossusSmash     *core.Spell
-	DemoralizingShout *core.Spell
-	Execute           *core.Spell
-	Overpower         *core.Spell
-	Rend              *core.Spell
-	Revenge           *core.Spell
-	ShieldBlock       *core.Spell
-	Slam              *core.Spell
-	SunderArmor       *core.Spell
-	ThunderClap       *core.Spell
-	Whirlwind         *core.Spell
-	DeepWounds        *core.Spell
-	Charge            *core.Spell
-	ChargeAura        *core.Aura
+	ColossusSmash *core.Spell
+	MortalStrike  *core.Spell
+	DeepWounds    *core.Spell
+	ShieldSlam    *core.Spell
 
-	shoutsCD                 *core.Timer
-	recklessnessDeadlyCalmCD *core.Timer
-	hsCleaveCD               *core.Timer
-	HeroicStrike             *core.Spell
-	Cleave                   *core.Spell
+	sharedShoutsCD   *core.Timer
+	sharedHSCleaveCD *core.Timer
 
 	BattleStanceAura    *core.Aura
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
+	EnrageAura        *core.Aura
 	BerserkerRageAura *core.Aura
-	BloodsurgeAura    *core.Aura
-	SuddenDeathAura   *core.Aura
 	ShieldBlockAura   *core.Aura
-	ThunderstruckAura *core.Aura
-	InnerRageAura     *core.Aura
+	LastStandAura     *core.Aura
+	RallyingCryAura   *core.Aura
+	VictoryRushAura   *core.Aura
+	SwordAndBoardAura *core.Aura
+	ShieldBarrierAura *core.DamageAbsorptionAura
+
+	SkullBannerAura         *core.Aura
+	DemoralizingBannerAuras core.AuraArray
 
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
 	ColossusSmashAuras     core.AuraArray
+	WeakenedArmorAuras     core.AuraArray
+
+	// Set Bonuses
+	T14Tank2P *core.Aura
+	T15Tank2P *core.Aura
+	T15Tank4P *core.Aura
+	T16Dps4P  *core.Aura
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {
 	return &warrior.Character
 }
 
-// func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	if warrior.Talents.Rampage {
-// 		raidBuffs.Rampage = true
-// 	}
-// }
+func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+
+}
 
 func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	// warrior.registerStances()
-	warrior.EnrageEffectMultiplier = 1.0
-	warrior.hsCleaveCD = warrior.NewTimer()
-	warrior.shoutsCD = warrior.NewTimer()
+	warrior.sharedHSCleaveCD = warrior.NewTimer()
+	warrior.sharedShoutsCD = warrior.NewTimer()
 
-	// warrior.RegisterBerserkerRageSpell()
-	// warrior.RegisterColossusSmash()
-	// warrior.RegisterDemoralizingShoutSpell()
-	// warrior.RegisterExecuteSpell()
-	// warrior.RegisterHeroicStrikeSpell()
-	// warrior.RegisterCleaveSpell()
-	warrior.RegisterHeroicLeap()
-	// warrior.RegisterHeroicThrow()
-	warrior.RegisterInnerRage()
-	// warrior.RegisterOverpowerSpell()
-	warrior.RegisterRecklessnessCD()
-	// warrior.RegisterRendSpell()
-	// warrior.RegisterRevengeSpell()
-	// warrior.RegisterShatteringThrowCD()
-	// warrior.RegisterShieldBlockCD()
-	warrior.RegisterShieldWallCD()
-	// warrior.RegisterShouts()
-	// warrior.RegisterSlamSpell()
-	// warrior.RegisterSunderArmor()
-	// warrior.RegisterThunderClapSpell()
-	// warrior.RegisterWhirlwindSpell()
-	// warrior.RegisterCharge()
+	warrior.WeakenedArmorAuras = warrior.NewEnemyAuraArray(core.WeakenedArmorAura)
+
+	warrior.registerStances()
+	warrior.registerShouts()
+	warrior.registerPassives()
+	warrior.registerBanners()
+	warrior.ApplyGlyphs()
+
+	warrior.registerBerserkerRage()
+	warrior.registerRallyingCry()
+	warrior.registerColossusSmash()
+	warrior.registerExecuteSpell()
+	warrior.registerHeroicStrikeSpell()
+	warrior.registerCleaveSpell()
+	warrior.registerHeroicLeap()
+	warrior.registerHeroicThrow()
+	warrior.registerRecklessness()
+	warrior.registerVictoryRush()
+	warrior.registerShatteringThrow()
+	warrior.registerShieldWall()
+	warrior.registerSunderArmor()
+	warrior.registerThunderClap()
+	warrior.registerWhirlwind()
+	warrior.registerCharge()
+}
+
+func (warrior *Warrior) registerPassives() {
+	warrior.registerEnrage()
+	warrior.registerDeepWounds()
+	warrior.registerBloodAndThunder()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
-	// warrior.Stance = StanceNone
+	warrior.Stance = StanceNone
 }
 
-func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {
+func NewWarrior(character *core.Character, options *proto.WarriorOptions, talents string, inputs WarriorInputs) *Warrior {
 	warrior := &Warrior{
 		Character:         *character,
 		Talents:           &proto.WarriorTalents{},
@@ -186,20 +191,33 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	}
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents)
 
+	warrior.EnableRageBar(core.RageBarOptions{
+		MaxRage:            core.TernaryFloat64(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfUnendingRage), 120, 100),
+		StartingRage:       options.StartingRage,
+		BaseRageMultiplier: 1,
+	})
+
+	warrior.EnableAutoAttacks(warrior, core.AutoAttackOptions{
+		MainHand:       warrior.WeaponFromMainHand(warrior.DefaultCritMultiplier()),
+		OffHand:        warrior.WeaponFromOffHand(warrior.DefaultCritMultiplier()),
+		AutoSwingMelee: true,
+	})
+
 	warrior.PseudoStats.CanParry = true
-	warrior.PrecisionKnown = false
 
 	warrior.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
-	// Dodge no longer granted from agility
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
-	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in mop (4.2 Changed from 25->27 percent)
+	strengthToParryRating := (1 / 951.158596) * core.ParryRatingPerParryPercent
+	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*strengthToParryRating) // Does not apply to base Strength
+	warrior.AddStatDependency(stats.Strength, stats.ParryRating, strengthToParryRating)
+	warrior.AddStatDependency(stats.Agility, stats.DodgeRating, 0.1/10000.0/100.0)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+	warrior.MultiplyStat(stats.HasteRating, 1.5)
 
 	// Base dodge unaffected by Diminishing Returns
-	warrior.PseudoStats.BaseBlockChance += 0.05
-	warrior.PseudoStats.BaseDodgeChance += 0.03664
-	warrior.PseudoStats.BaseParryChance += 0.05
+	warrior.PseudoStats.BaseDodgeChance += 0.03
+	warrior.PseudoStats.BaseParryChance += 0.03
+	warrior.PseudoStats.BaseBlockChance += 0.03
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
 
 	return warrior
@@ -213,13 +231,22 @@ func (warrior *Warrior) HasMinorGlyph(glyph proto.WarriorMinorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
 }
 
-// Shared cooldown for Deadly Calm and Recklessness Activation
-func (warrior *Warrior) RecklessnessDeadlyCalmLock() *core.Timer {
-	return warrior.Character.GetOrInitTimer(&warrior.recklessnessDeadlyCalmCD)
-}
-
 func (warrior *Warrior) GetCriticalBlockChance() float64 {
 	return warrior.CriticalBlockChance[0] + warrior.CriticalBlockChance[1]
+}
+
+// Used for T15 Protection 4P bonus.
+func (warrior *Warrior) GetRageMultiplier(target *core.Unit) float64 {
+	// At the moment only protection warriors use this bonus.
+	if warrior.Spec != proto.Spec_SpecProtectionWarrior {
+		return 1.0
+	}
+
+	if warrior.T15Tank4P != nil && warrior.T15Tank4P.IsActive() && warrior.DemoralizingShoutAuras.Get(target).IsActive() {
+		return 1.5
+	}
+
+	return 1.0
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.
