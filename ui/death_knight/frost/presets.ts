@@ -1,4 +1,3 @@
-import * as Mechanics from '../../core/constants/mechanics';
 import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { makeSpecChangeWarningToast } from '../../core/preset_utils';
@@ -8,12 +7,12 @@ import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, FrostDeathKnight_Options 
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import TwoHandAPL from '../../death_knight/frost/apls/2h.apl.json';
-import DualWieldAPL from '../../death_knight/frost/apls/dw.apl.json';
+// import DualWieldAPL from '../../death_knight/frost/apls/dw.apl.json';
 import MasterFrostAPL from '../../death_knight/frost/apls/masterfrost.apl.json';
 import P12HGear from '../../death_knight/frost/gear_sets/p1.2h.gear.json';
-import P1DWGear from '../../death_knight/frost/gear_sets/p1.dw.gear.json';
+// import P1DWGear from '../../death_knight/frost/gear_sets/p1.dw.gear.json';
 import P1MasterfrostGear from '../../death_knight/frost/gear_sets/p1.masterfrost.gear.json';
-import PreBISGear from '../../death_knight/frost/gear_sets/prebis.gear.json';
+// import PreBISGear from '../../death_knight/frost/gear_sets/prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -50,57 +49,54 @@ const TWOHAND_PRESET_OPTIONS = {
 	},
 };
 
-export const P1_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 DW Obliterate', P1DWGear, DW_PRESET_OPTIONS);
+// export const P1_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 DW Obliterate', P1DWGear, DW_PRESET_OPTIONS);
 export const P1_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 Two Hand', P12HGear, TWOHAND_PRESET_OPTIONS);
 export const P1_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P1 Masterfrost', P1MasterfrostGear, DW_PRESET_OPTIONS);
-export const PREBIS_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis Masterfrost', PreBISGear, DW_PRESET_OPTIONS);
+// export const PREBIS_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis Masterfrost', PreBISGear, DW_PRESET_OPTIONS);
 
-export const DUAL_WIELD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('DW Obliterate', DualWieldAPL, DW_PRESET_OPTIONS);
+// export const DUAL_WIELD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('DW Obliterate', DualWieldAPL, DW_PRESET_OPTIONS);
 export const TWO_HAND_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Two Hand', TwoHandAPL, TWOHAND_PRESET_OPTIONS);
 export const MASTERFROST_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Masterfrost', MasterFrostAPL, DW_PRESET_OPTIONS);
 
-// Preset options for EP weights
-export const P1_DUAL_WIELD_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1 DW Obliterate',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.92,
-			[Stat.StatArmor]: 0.03,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 0.56,
-			[Stat.StatHasteRating]: 1.3,
-			[Stat.StatHitRating]: 1.22,
-			[Stat.StatCritRating]: 1.06,
-			[Stat.StatMasteryRating]: 1.11,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 6.05,
-			[PseudoStat.PseudoStatOffHandDps]: 3.85,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 146.53,
-			[PseudoStat.PseudoStatSpellHitPercent]: 41.91,
-		},
-	),
-	DW_PRESET_OPTIONS,
-);
+// // Preset options for EP weights
+// export const P1_DUAL_WIELD_EP_PRESET = PresetUtils.makePresetEpWeights(
+// 	'P1 DW Obliterate',
+// 	Stats.fromMap(
+// 		{
+// 			[Stat.StatStrength]: 2.92,
+// 			[Stat.StatArmor]: 0.03,
+// 			[Stat.StatAttackPower]: 1,
+// 			[Stat.StatExpertiseRating]: 0.56,
+// 			[Stat.StatHasteRating]: 1.3,
+// 			[Stat.StatHitRating]: 1.22,
+// 			[Stat.StatCritRating]: 1.06,
+// 			[Stat.StatMasteryRating]: 1.11,
+// 		},
+// 		{
+// 			[PseudoStat.PseudoStatMainHandDps]: 6.05,
+// 			[PseudoStat.PseudoStatOffHandDps]: 3.85,
+// 			[PseudoStat.PseudoStatPhysicalHitPercent]: 146.53,
+// 			[PseudoStat.PseudoStatSpellHitPercent]: 41.91,
+// 		},
+// 	),
+// 	DW_PRESET_OPTIONS,
+// );
 
 export const P1_TWOHAND_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1 Two Hand',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.98,
-			[Stat.StatArmor]: 0.03,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.34,
-			[Stat.StatHasteRating]: 1.94,
-			[Stat.StatHitRating]: 1.61,
-			[Stat.StatCritRating]: 1.24,
-			[Stat.StatMasteryRating]: 1.26,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatCritRating]: 0.66,
+			[Stat.StatHasteRating]: 0.57,
+			[Stat.StatHitRating]: 0.55,
+			[Stat.StatExpertiseRating]: 0.55,
+			[Stat.StatAttackPower]: 0.37,
+			[Stat.StatMasteryRating]: 0.27,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 10.08,
+			[PseudoStat.PseudoStatMainHandDps]: 2.53,
 			[PseudoStat.PseudoStatOffHandDps]: 0,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 1.61 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
-			[PseudoStat.PseudoStatSpellHitPercent]: 0,
 		},
 	),
 	TWOHAND_PRESET_OPTIONS,
@@ -110,20 +106,17 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1 Masterfrost',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.86,
-			[Stat.StatArmor]: 0.03,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 0.75,
-			[Stat.StatHasteRating]: 1.38,
-			[Stat.StatHitRating]: 1.67 + 1.4,
-			[Stat.StatCritRating]: 0.64 + 0.43,
-			[Stat.StatMasteryRating]: 1.41,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatHitRating]: 0.66,
+			[Stat.StatExpertiseRating]: 0.66,
+			[Stat.StatCritRating]: 0.54,
+			[Stat.StatMasteryRating]: 0.42,
+			[Stat.StatHasteRating]: 0.37,
+			[Stat.StatAttackPower]: 0.37,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.5,
-			[PseudoStat.PseudoStatOffHandDps]: 2.84,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 1.67 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
-			[PseudoStat.PseudoStatSpellHitPercent]: 1.4 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
+			[PseudoStat.PseudoStatMainHandDps]: 1.03,
+			[PseudoStat.PseudoStatOffHandDps]: 0.51,
 		},
 	),
 	DW_PRESET_OPTIONS,
@@ -156,7 +149,7 @@ export const DefaultOptions = FrostDeathKnight_Options.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Jewelcrafting,
+	profession2: Profession.Enchanting,
 	distanceFromTarget: 5,
 };
 
@@ -167,18 +160,18 @@ export const DefaultConsumables = ConsumesSpec.create({
 	prepotId: 76095, // Potion of Mogu Power
 });
 
-export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P1 - DW Obliterate', {
-	gear: P1_DW_GEAR_PRESET,
-	talents: DefaultTalents,
-	rotationType: APLRotationType.TypeAPL,
-	rotation: DUAL_WIELD_ROTATION_PRESET_DEFAULT,
-	epWeights: P1_DUAL_WIELD_EP_PRESET,
-});
+// export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P1 - DW Obliterate', {
+// 	gear: P1_DW_GEAR_PRESET,
+// 	talents: DefaultTalents,
+// 	rotationType: APLRotationType.TypeAPL,
+// 	rotation: DUAL_WIELD_ROTATION_PRESET_DEFAULT,
+// 	epWeights: P1_DUAL_WIELD_EP_PRESET,
+// });
 
 export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('P1 - Two Hand', {
 	gear: P1_2H_GEAR_PRESET,
 	talents: DefaultTalents,
-	rotationType: APLRotationType.TypeAPL,
+	rotationType: APLRotationType.TypeAuto,
 	rotation: TWO_HAND_ROTATION_PRESET_DEFAULT,
 	epWeights: P1_TWOHAND_EP_PRESET,
 });
@@ -186,15 +179,15 @@ export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('P1 - Two Hand', {
 export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('P1 - Masterfrost', {
 	gear: P1_MASTERFROST_GEAR_PRESET,
 	talents: DefaultTalents,
-	rotationType: APLRotationType.TypeAPL,
+	rotationType: APLRotationType.TypeAuto,
 	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
 	epWeights: P1_MASTERFROST_EP_PRESET,
 });
 
-export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P1 - Pre-bis', {
-	gear: PREBIS_MASTERFROST_GEAR_PRESET,
-	talents: DefaultTalents,
-	rotationType: APLRotationType.TypeAPL,
-	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
-	epWeights: P1_MASTERFROST_EP_PRESET,
-});
+// export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P1 - Pre-bis', {
+// 	gear: PREBIS_MASTERFROST_GEAR_PRESET,
+// 	talents: DefaultTalents,
+// 	rotationType: APLRotationType.TypeAPL,
+// 	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
+// 	epWeights: P1_MASTERFROST_EP_PRESET,
+// });

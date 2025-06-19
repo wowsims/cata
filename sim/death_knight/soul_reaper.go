@@ -26,7 +26,9 @@ func (dk *DeathKnight) registerSoulReaper() {
 			NumberOfTicks: 1,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if target.CurrentHealthPercent() >= 0.35 {
+				// TODO
+				// healthThreshold := core.TernaryFloat64(dk.soulReaper45Percent, 0.45, 0.35)
+				if !sim.IsExecutePhase35() {
 					return
 				}
 
@@ -118,7 +120,9 @@ func (dk *DeathKnight) registerDrwSoulReaper() *core.Spell {
 			NumberOfTicks: 1,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if target.CurrentHealthPercent() >= dk.soulReaperHealthThreshold {
+				// TODO
+				// healthThreshold := core.TernaryFloat64(dk.soulReaper45Percent, 0.45, 0.35)
+				if !sim.IsExecutePhase35() {
 					return
 				}
 

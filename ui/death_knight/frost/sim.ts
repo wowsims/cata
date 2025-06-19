@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DeathKnightInputs from '../inputs';
@@ -21,7 +21,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStrength,
-		Stat.StatArmor,
 		Stat.StatAttackPower,
 		Stat.StatExpertiseRating,
 		Stat.StatHitRating,
@@ -29,14 +28,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatStrength,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatArmor, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
@@ -59,9 +53,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		})(),
 		softCapBreakpoints: (() => {
 			const physicalHitPercentSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [7.5],
+				breakpoints: [7.5, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
+				postCapEPs: [0, 0],
 			});
 
 			const spellHitPercentSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
@@ -109,8 +103,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		rotationType: APLRotation_Type.TypeAPL,
 	},
 
-	autoRotation: (_: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
+		const mainHand = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
+		if (mainHand?.item?.handType === HandType.HandTypeTwoHand) {
+			return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		} else {
+			return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		}
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -146,16 +145,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_MASTERFROST_EP_PRESET, Presets.P1_TWOHAND_EP_PRESET, Presets.P1_DUAL_WIELD_EP_PRESET],
+		epWeights: [Presets.P1_MASTERFROST_EP_PRESET, Presets.P1_TWOHAND_EP_PRESET],
 		talents: [Presets.DefaultTalents],
-		rotations: [Presets.DUAL_WIELD_ROTATION_PRESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
-		gear: [
-			Presets.P1_MASTERFROST_GEAR_PRESET,
-			Presets.P1_DW_GEAR_PRESET,
-			Presets.P1_2H_GEAR_PRESET,
-			Presets.PREBIS_MASTERFROST_GEAR_PRESET,
-		],
-		builds: [Presets.PRESET_BUILD_PREBIS, Presets.PRESET_BUILD_DW, Presets.PRESET_BUILD_2H, Presets.PRESET_BUILD_MASTERFROST],
+		rotations: [Presets.MASTERFROST_ROTATION_PRESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT],
+		gear: [Presets.P1_MASTERFROST_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET],
+		builds: [Presets.PRESET_BUILD_MASTERFROST, Presets.PRESET_BUILD_2H],
 	},
 
 	raidSimPresets: [
@@ -187,7 +181,38 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFrostDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				updateSoftCaps: (softCaps: StatCap[]) => {
+					const mainHand = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
+					if (mainHand?.item?.handType === HandType.HandTypeTwoHand) {
+						const physicalHitCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
+						if (physicalHitCap) {
+							physicalHitCap.breakpoints = [7.5];
+							physicalHitCap.postCapEPs = [0];
+						}
+
+						const spellHitCap = softCaps.findIndex(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
+						if (spellHitCap > -1) {
+							softCaps.splice(spellHitCap, 1);
+						}
+					} else {
+						const physicalHitCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
+						if (physicalHitCap) {
+							physicalHitCap.postCapEPs[0] =
+								(player.getEpWeights().getStat(Stat.StatHitRating) / 2) * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT;
+						}
+					}
+					return softCaps;
+				},
+				getEPDefaults: (player: Player<Spec.SpecFrostDeathKnight>) => {
+					const mainHand = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
+					if (mainHand?.item?.handType === HandType.HandTypeTwoHand) {
+						return Presets.P1_TWOHAND_EP_PRESET.epWeights;
+					} else {
+						return Presets.P1_MASTERFROST_EP_PRESET.epWeights;
+					}
+				},
+			});
 		});
 	}
 }

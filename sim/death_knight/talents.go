@@ -710,16 +710,21 @@ func (dk *DeathKnight) registerRunicEmpowerment() {
 	runicMasteryAura := dk.getRunicMasteryAura()
 
 	// Runic Empowerement refreshes random runes on cd
-	actionId := core.ActionID{SpellID: 81229}
+	actionID := core.ActionID{SpellID: 81229}
 	runeMetrics := []*core.ResourceMetrics{
-		dk.NewBloodRuneMetrics(actionId),
-		dk.NewFrostRuneMetrics(actionId),
-		dk.NewUnholyRuneMetrics(actionId),
-		dk.NewDeathRuneMetrics(actionId),
+		dk.NewBloodRuneMetrics(actionID),
+		dk.NewFrostRuneMetrics(actionID),
+		dk.NewUnholyRuneMetrics(actionID),
+		dk.NewDeathRuneMetrics(actionID),
 	}
 
+	core.MakePermanent(dk.RegisterAura(core.Aura{
+		Label:    "Runic Empowerement" + dk.Label,
+		ActionID: actionID,
+	}))
+
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:           "Runic Empowerement",
+		Name:           "Runic Empowerement Trigger" + dk.Label,
 		Callback:       core.CallbackOnSpellHitDealt,
 		ProcMask:       core.ProcMaskMeleeMH | core.ProcMaskSpellDamage,
 		Outcome:        core.OutcomeLanded,

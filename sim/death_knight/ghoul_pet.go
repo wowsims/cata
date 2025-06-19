@@ -170,7 +170,7 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 }
 
 func (ghoulPet *GhoulPet) Enable(sim *core.Simulation, petAgent core.PetAgent) {
-	if ghoulPet.IsGuardian() && !ghoulPet.summonDelay {
+	if ghoulPet.IsGuardian() && ghoulPet.summonDelay {
 		// The ghoul takes around 4.5s - 5s to from summon to first hit, depending on your distance from the target.
 		randomDelay := core.DurationFromSeconds(sim.RollWithLabel(4.5, 5, "Raise Dead Delay"))
 		ghoulPet.Pet.EnableWithStartAttackDelay(sim, petAgent, randomDelay)

@@ -73,7 +73,6 @@ type DeathKnight struct {
 	T13Dps2pc  *core.Aura
 	T13Dps4pc  *core.Aura
 	T14Dps4pc  *core.Aura
-	T15Dps4pc  *core.Aura
 
 	// Used for T13 Tank 4pc
 	VampiricBloodBonusHealth float64
@@ -82,7 +81,7 @@ type DeathKnight struct {
 	deathStrikeHealingMultiplier float64
 
 	// Modified by T15 Dps 4pc
-	soulReaperHealthThreshold float64
+	soulReaper45Percent bool
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -206,7 +205,6 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	})
 
 	dk.deathStrikeHealingMultiplier = 0.2
-	dk.soulReaperHealthThreshold = 0.35
 
 	return dk
 }

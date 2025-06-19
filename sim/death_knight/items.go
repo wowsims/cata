@@ -119,9 +119,11 @@ var ItemSetBattleplateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 
 			// KM effect handled in sim/death_knight/frost/killing_machine.go
-			dk.T15Dps4pc = setBonusAura.AttachAdditivePseudoStatBuff(
-				&dk.soulReaperHealthThreshold, 0.1,
-			).ExposeToAPL(138347)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				dk.soulReaper45Percent = true
+			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				dk.soulReaper45Percent = false
+			}).ExposeToAPL(138347)
 		},
 	},
 })
