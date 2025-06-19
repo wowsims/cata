@@ -1163,7 +1163,7 @@ export class ActionMetrics {
 			glance: {
 				value: this.avgGlanceDamage,
 				percentage: (this.avgGlanceDamage / this.avgDamage) * 100,
-				average: this.avgGlanceDamage / this.glanceBlocks,
+				average: this.avgGlanceDamage / this.glances,
 			},
 			glanceBlock: {
 				value: this.avgGlanceBlockDamage,
