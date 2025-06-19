@@ -97,7 +97,7 @@ import {
 	APLValueTrinketProcsMaxRemainingICD,
 	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
-	APLValueWarlockShouldRecastDrainSoul,
+	APLValueWarlockHandOfGuldanInFlight,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
@@ -1357,12 +1357,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFeralDruid,
 		fields: [],
 	}),
-	warlockShouldRecastDrainSoul: inputBuilder({
-		label: 'Should Recast Drain Soul',
+	warlockHandOfGuldanInFlight: inputBuilder({
+		label: 'Hand of Guldan in Flight',
 		submenu: ['Warlock'],
-		shortDescription: 'Returns <b>True</b> if the current Drain Soul channel should be immediately recast, to get a better snapshot.',
-		newValue: APLValueWarlockShouldRecastDrainSoul.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		shortDescription: 'Returns <b>True</b> if the impact of Hand of Guldan currenty is in flight.',
+		newValue: APLValueWarlockHandOfGuldanInFlight.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecDemonologyWarlock,
 		fields: [],
 	}),
 	warlockShouldRefreshCorruption: inputBuilder({

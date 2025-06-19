@@ -1,6 +1,8 @@
 package demonology
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/warlock"
@@ -45,8 +47,9 @@ type DemonologyWarlock struct {
 	HandOfGuldan  *core.Spell
 	ChaosWave     *core.Spell
 
-	Felguard *warlock.WarlockPet
-	WildImps []*WildImpPet
+	Felguard               *warlock.WarlockPet
+	WildImps               []*WildImpPet
+	HandOfGuldanImpactTime time.Duration
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
@@ -91,6 +94,8 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
 	demonology.Warlock.Reset(sim)
+
+	demonology.HandOfGuldanImpactTime = 0
 }
 
 func NewDemonicFuryCost(cost int) *warlock.SecondaryResourceCost {

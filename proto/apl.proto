@@ -206,7 +206,7 @@ message APLValue {
         APLValueTotemRemainingTime totem_remaining_time = 49;
         APLValueCatExcessEnergy cat_excess_energy = 52;
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
-        APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
+        APLValueWarlockHandOfGuldanInFlight warlock_hand_of_guldan_in_flight = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
@@ -689,7 +689,7 @@ message APLValueTotemRemainingTime {
 }
 message APLValueCatExcessEnergy {}
 message APLValueCatNewSavageRoarDuration {}
-message APLValueWarlockShouldRecastDrainSoul {}
+message APLValueWarlockHandOfGuldanInFlight {}
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
