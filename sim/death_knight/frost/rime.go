@@ -34,9 +34,9 @@ func (fdk *FrostDeathKnight) registerRime() {
 			}
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: death_knight.DeathKnightSpellIcyTouch | death_knight.DeathKnightSpellHowlingBlast,
-		IntValue:  -100,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  death_knight.DeathKnightSpellIcyTouch | death_knight.DeathKnightSpellHowlingBlast,
+		FloatValue: -2.0,
 	})
 
 	core.MakeProcTriggerAura(&fdk.Unit, core.ProcTrigger{

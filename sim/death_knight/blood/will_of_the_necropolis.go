@@ -31,9 +31,9 @@ func (bdk *BloodDeathKnight) registerWillOfTheNecropolis() {
 			wotnRuneTapCostAura.Deactivate(sim)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: death_knight.DeathKnightSpellRuneTap,
-		IntValue:  -100,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  death_knight.DeathKnightSpellRuneTap,
+		FloatValue: -2.0,
 	})
 
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{

@@ -31,7 +31,7 @@ func (bdk *BloodDeathKnight) registerCrimsonScourge() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		ClassMask:  death_knight.DeathKnightSpellBloodBoil | death_knight.DeathKnightSpellDeathAndDecay,
-		FloatValue: -100,
+		FloatValue: -2.0,
 	})
 
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{

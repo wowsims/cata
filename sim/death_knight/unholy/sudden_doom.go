@@ -36,9 +36,9 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 			}
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
-		IntValue:  -100,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
+		FloatValue: -2.0,
 	})
 
 	// Dummy spell to react with triggers
@@ -77,8 +77,8 @@ func (uhdk *UnholyDeathKnight) registerSuddenDoom() {
 			sdProcSpell.Cast(sim, &uhdk.Unit)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
-		IntValue:  -20,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  death_knight.DeathKnightSpellDeathCoil | death_knight.DeathKnightSpellDeathCoilHeal,
+		FloatValue: -0.2,
 	})
 }
