@@ -7,23 +7,19 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { StatCapType } from '../../core/proto/ui';
-import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as PriestInputs from '../inputs';
 // import * as ShadowPriestInputs from './inputs';
 import * as Presets from './presets';
-
-const hasteBreakpoints = Presets.SHADOW_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
-
-const hasT134 = (player: Player<Spec.SpecShadowPriest>) => {
-	return player.getGear().getItemSetCount('Regalia of Dying Light', 'Regalia of Dying light') >= 4;
-};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Priest),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Some items may display and use stats a litle higher than their original value.', 'Procs from Weapons, Trinkets and other Items are not yet supported'],
+	knownIssues: [
+		'Some items may display and use stats a litle higher than their original value.',
+		'Procs from Weapons, Trinkets and other Items are not yet supported',
+	],
 
 	// All stats for which EP should be calculated.
 	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
@@ -31,7 +27,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	epReferenceStat: Stat.StatIntellect,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpirit,
+			Stat.StatSpellPower,
+			Stat.StatMasteryRating,
+			Stat.StatExpertiseRating,
+		],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
@@ -54,7 +59,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -137,9 +142,6 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.SHADOW_BREAKPOINTS,
-				updateSoftCaps: softCaps => {
-					return softCaps;
-				},
 			});
 		});
 	}

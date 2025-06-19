@@ -226,7 +226,7 @@ func init() {
 
 		dpm := character.NewDynamicLegacyProcForEnchant(3370, 0, 1.0)
 
-		for _, itemSlot := range core.MeleeWeaponSlots() {
+		for _, itemSlot := range core.AllWeaponSlots() {
 			spell := newRazoriceHitSpell(character, itemSlot == proto.ItemSlot_ItemSlotMainHand)
 			procMask := core.ProcMaskUnknown
 			var weapon *core.Item

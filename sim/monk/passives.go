@@ -48,7 +48,7 @@ func (monk *Monk) registerWayOfTheMonk() {
 		},
 	}))
 
-	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+	monk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		aura.Deactivate(sim)
 		aura.Activate(sim)
 	})

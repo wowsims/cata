@@ -110,7 +110,7 @@ func (enh *EnhancementShaman) Initialize() {
 
 	if enh.ItemSwap.IsEnabled() {
 		enh.ApplyFlametongueImbueSwap(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
-		enh.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(_ *core.Simulation, slot proto.ItemSlot) {
+		enh.RegisterItemSwapCallback(core.AllWeaponSlots(), func(_ *core.Simulation, slot proto.ItemSlot) {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
 	}
