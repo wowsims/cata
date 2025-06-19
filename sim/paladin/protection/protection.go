@@ -66,7 +66,7 @@ func (prot *ProtectionPaladin) Initialize() {
 	prot.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  paladin.SpellMaskSealOfTruth | paladin.SpellMaskCensure,
-		FloatValue: 0.2,
+		FloatValue: -0.8,
 	})
 
 	prot.trackDamageTakenLastGlobal()
