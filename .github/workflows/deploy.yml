@@ -59,6 +59,10 @@ jobs:
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@4.1.5
               with:
-                  branch: gh-pages
+                  repository-name: wowsims/pages-deploy
+                  branch: main
                   folder: dist/mop
+                  destination_dir: mop
                   single-commit: true
+                  token: ${{ secrets.DEPLOY_REPO_TOKEN }}
+                  clean: false
