@@ -526,6 +526,18 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 	return parentAura
 }
 
+func (parentAura *Aura) AttachMultiplyMeleeSpeed(multiplier float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyMeleeSpeed(sim, multiplier)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyMeleeSpeed(sim, 1/multiplier)
+	})
+
+	return parentAura
+}
+
 // Attaches a Damage Done By Caster buff to a parent Aura
 // Returns parent aura for chaining
 func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*AttackTable, handler DynamicDamageDoneByCaster) *Aura {

@@ -608,7 +608,7 @@ type IgniteConfig struct {
 	SpellSchool        core.SpellSchool
 	NumberOfTicks      int32
 	TickLength         time.Duration
-	SetBonusAura       *core.Aura
+	ParentAura         *core.Aura
 }
 
 func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
@@ -731,8 +731,8 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		}
 	}
 
-	if config.SetBonusAura != nil {
-		config.SetBonusAura.AttachProcTrigger(procTrigger)
+	if config.ParentAura != nil {
+		config.ParentAura.AttachProcTrigger(procTrigger)
 	} else {
 		core.MakeProcTriggerAura(unit, procTrigger)
 	}

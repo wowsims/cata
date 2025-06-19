@@ -1,51 +1,48 @@
 package fury
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *FuryWarrior) RegisterBloodthirst() {
+func (war *FuryWarrior) registerBloodthirst() {
+	actionID := core.ActionID{SpellID: 23881}
+	rageMetrics := war.NewRageMetrics(actionID)
 	war.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 23881},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskBloodthirst | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskBloodthirst,
 		MaxRange:       core.MaxMeleeRange,
 
-		RageCost: core.RageCostOptions{
-			Cost:   20,
-			Refund: 0.8,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: time.Second * 3,
+				Duration: time.Millisecond * 4500,
 			},
+			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.9 * 1.2, // 2013-09-23	[Bloodthirst]'s damage has been increased by 20%.
 		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			const effectBasePoints = 43
-			const baseLevel = 10
-			const maxLevel = 80
-			const effectRealPointsPerLevel = 0.52899998426
-			multiplier := effectRealPointsPerLevel*(maxLevel-baseLevel) + effectBasePoints
-			baseDamage := math.Floor(multiplier) / 100 * spell.MeleeAttackPower() //multiplier is floored, tooltip is incorrect
+			baseDamage := war.CalcScalingSpellDmg(1) + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			bonusCritPercent := spell.Unit.GetStat(stats.PhysicalCritPercent)
+			spell.BonusCritPercent += bonusCritPercent
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			if !result.Landed() {
-				spell.IssueRefund(sim)
+			spell.BonusCritPercent -= bonusCritPercent
+
+			if result.Landed() {
+				war.AddRage(sim, 10, rageMetrics)
 			}
 		},
 	})

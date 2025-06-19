@@ -77,7 +77,7 @@ func applyRaceEffects(agent Agent) {
 				} else if spell.Unit.HasEnergyBar() {
 					return character.CurrentEnergy() <= character.maxEnergy-15
 				} else if spell.Unit.HasRageBar() {
-					return character.CurrentRage() <= MaxRage-15
+					return character.CurrentRage() <= character.maxRage-15
 				} else if spell.Unit.HasFocusBar() {
 					return character.CurrentFocus() <= character.maxFocus-15
 				}
