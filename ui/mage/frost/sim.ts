@@ -5,7 +5,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { DefaultDebuffs, DefaultRaidBuffs, MAGE_BREAKPOINTS } from '../presets';
@@ -58,10 +58,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 					hasteBreakpoints.get('22-tick - Nether Tempest')!,
 				],
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0.47 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+				postCapEPs: [0.45 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [hasteSoftCapConfig];
+			const critSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellCritPercent, {
+				breakpoints: [25],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.42 * Mechanics.CRIT_RATING_PER_CRIT_PERCENT],
+			});
+
+			return [critSoftCapConfig, hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,

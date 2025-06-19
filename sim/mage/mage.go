@@ -126,7 +126,7 @@ func (mage *Mage) registerSpells() {
 	mage.registerScorchSpell()
 	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
-	// mage.registerManaGemsCD()
+	mage.registerManaGems()
 	mage.registerMirrorImageCD()
 	// mage.registerCombustionSpell()
 	// mage.registerBlastWaveSpell()
