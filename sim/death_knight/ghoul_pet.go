@@ -29,6 +29,11 @@ func (dk *DeathKnight) NewFallenZandalariPet() *GhoulPet {
 	troll := dk.newGhoulPetInternal("Fallen Zandalari", false, 0.8)
 	troll.clawSpellID = 138537
 	troll.summonDelay = false
+	troll.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  GhoulSpellClaw,
+		FloatValue: 0.2,
+	})
 	return troll
 }
 

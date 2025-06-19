@@ -18,10 +18,9 @@ func (uhdk *UnholyDeathKnight) registerDarkTransformation() {
 		Label:    "Dark Transformation" + uhdk.Ghoul.Label,
 		ActionID: actionID,
 		Duration: time.Second * 30,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 1.0,
-	}).AttachSpellMod(core.SpellModConfig{
+	}).AttachMultiplicativePseudoStatBuff(
+		&uhdk.Ghoul.PseudoStats.DamageDealtMultiplier, 2.0,
+	).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  death_knight.GhoulSpellClaw,
 		FloatValue: 0.2,
