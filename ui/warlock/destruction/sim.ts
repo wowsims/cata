@@ -2,6 +2,7 @@ import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import { HASTE_RATING_PER_HASTE_PERCENT } from '../../core/constants/mechanics';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -36,12 +37,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating, Stat.StatExpertiseRating],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatMP5],
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpellPower,
+			Stat.StatMasteryRating,
+			Stat.StatExpertiseRating,
+			Stat.StatMP5,
+		],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 	modifyDisplayStats,
@@ -84,12 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.InputDelay,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.TankAssignment,
-			OtherInputs.ChannelClipDelay,
-		],
+		inputs: [OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotHands, ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
 	encounterPicker: {
