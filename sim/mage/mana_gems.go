@@ -47,7 +47,7 @@ func (mage *Mage) registerManaGems() {
 
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

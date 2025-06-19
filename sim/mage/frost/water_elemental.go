@@ -13,7 +13,7 @@ func (mage *FrostMage) registerSummonWaterElementalSpell() {
 
 	mage.SummonWaterElemental = mage.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 31687},
-		Flags:    core.SpellFlagAPL,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 3,

@@ -109,15 +109,17 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 	})
 
 	// Listener for procs
-	core.MakePermanent(arcane.RegisterAura(core.Aura{
-		Label: "Arcane Missiles Activation",
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(mage.MageSpellsAllDamaging ^ mage.MageSpellArcaneMissilesTick) {
-				if sim.Proc(0.3, "Arcane Missiles!") {
-					arcane.arcaneMissilesProcAura.Activate(sim)
-					arcane.arcaneMissilesProcAura.AddStack(sim)
-				}
-			}
+	core.MakeProcTriggerAura(&arcane.Unit, core.ProcTrigger{
+		Name:              "Arcane Missiles Activation",
+		ActionID:          core.ActionID{SpellID: 79684},
+		ClassSpellMask:    mage.MageSpellsAll ^ mage.MageSpellArcaneMissilesTick,
+		SpellFlagsExclude: core.SpellFlagHelpful,
+		ProcChance:        0.4,
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			arcane.arcaneMissilesProcAura.Activate(sim)
+			arcane.arcaneMissilesProcAura.AddStack(sim)
 		},
-	}))
+	})
 }

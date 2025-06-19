@@ -18,9 +18,9 @@ func TestArcane(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet: core.GetGearSet("../../../ui/mage/arcane/gear_sets", "p1"),
+		GearSet: core.GetGearSet("../../../ui/mage/arcane/gear_sets", "p1_bis"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui//mage/frost/gear_sets", "prebis"),
+			core.GetGearSet("../../../ui/mage/arcane/gear_sets", "prebis"),
 		},
 		Talents:     ArcaneTalents,
 		Glyphs:      ArcaneGlyphs,
