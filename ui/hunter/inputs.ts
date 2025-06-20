@@ -17,19 +17,6 @@ export const PetUptime = <SpecType extends HunterSpecs>() =>
 		percent: true,
 	});
 
-export const AQTierPrepull = <SpecType extends HunterSpecs>() =>
-	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
-		fieldName: 'useAqTier',
-		label: 'Prepull T2.5',
-		labelTooltip: 'Uses T2.5 during prepull',
-	});
-export const NaxxTierPrepull = <SpecType extends HunterSpecs>() =>
-	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
-		fieldName: 'useNaxxTier',
-		label: 'Prepull T3',
-		labelTooltip: 'Use T3 during prepull.',
-	});
-
 export const GlaiveTossChance = <SpecType extends HunterSpecs>() =>
 	InputHelpers.makeClassOptionsNumberInput<SpecType>({
 		fieldName: 'glaiveTossSuccess',

@@ -16,7 +16,7 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 			ActionID:                 core.ActionID{SpellID: spellID},
 			SpellSchool:              core.SpellSchoolPhysical,
 			ProcMask:                 core.ProcMaskRangedSpecial,
-			Flags:                    core.SpellFlagMeleeMetrics,
+			Flags:                    core.SpellFlagMeleeMetrics | core.SpellFlagRanged,
 			MissileSpeed:             18,
 			BonusCritPercent:         0,
 			DamageMultiplierAdditive: 1,

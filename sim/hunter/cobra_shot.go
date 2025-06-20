@@ -14,7 +14,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellCobraShot,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagRanged,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
