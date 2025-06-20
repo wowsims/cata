@@ -76,7 +76,7 @@ func (prot *ProtectionPaladin) registerHolyWrath() {
 
 			for idx := range numTargets {
 				multiplier := spell.DamageMultiplier
-				if hasGlyphOfFinalWrath && target.CurrentHealthPercent() < 0.2 {
+				if hasGlyphOfFinalWrath && sim.IsExecutePhase20() {
 					spell.DamageMultiplier *= 1.5
 				}
 
