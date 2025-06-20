@@ -162,6 +162,8 @@ func (hunter *Hunter) ApplyTalents() {
 
 		hunter.Pet.ApplyTalents()
 	}
+
+	hunter.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail, 86538)
 }
 
 func (hunter *Hunter) RegisterSpells() {
