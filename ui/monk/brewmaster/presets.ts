@@ -31,20 +31,19 @@ export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.85,
-			[Stat.StatStrength]: 1.05,
+			[Stat.StatAgility]: 3.61,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 0.9,
-			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.36,
-			[Stat.StatMasteryRating]: 1.33,
-			[Stat.StatExpertiseRating]: 1.74,
+			[Stat.StatCritRating]: 3.11,
+			[Stat.StatHitRating]: 6.26,
+			[Stat.StatHasteRating]: 3.57,
+			[Stat.StatMasteryRating]: 1.60,
+			[Stat.StatDodgeRating]: 0.24,
+			[Stat.StatParryRating]: 0.36,
+			[Stat.StatExpertiseRating]: 7.02,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.31,
-			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 46,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 220,
+			[PseudoStat.PseudoStatMainHandDps]: 10.66,
+			[PseudoStat.PseudoStatOffHandDps]: 5.28,
 		},
 	),
 );
@@ -55,12 +54,27 @@ export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '123321',
+		talentsString: '213322',
 		glyphs: Glyphs.create({
-			major1: MonkMajorGlyph.GlyphOfSpinningCraneKick,
-			major2: MonkMajorGlyph.GlyphOfFistsOfFury,
-			major3: MonkMajorGlyph.GlyphOfZenMeditation,
-			minor1: MonkMinorGlyph.GlyphOfBlackoutKick,
+			major1: MonkMajorGlyph.GlyphOfFortifyingBrew,
+			major2: MonkMajorGlyph.GlyphOfEnduringHealingSphere,
+			major3: MonkMajorGlyph.GlyphOfFortuitousSpheres,
+			minor1: MonkMinorGlyph.GlyphOfSpiritRoll,
+			minor2: MonkMinorGlyph.GlyphOfJab,
+			minor3: MonkMinorGlyph.GlyphOfWaterRoll,
+		}),
+	}),
+};
+
+export const DungeonTalents = {
+	name: 'Raid',
+	data: SavedTalents.create({
+		talentsString: '213321',
+		glyphs: Glyphs.create({
+			major1: MonkMajorGlyph.GlyphOfFortifyingBrew,
+			major2: MonkMajorGlyph.GlyphOfBreathOfFire,
+			major3: MonkMajorGlyph.GlyphOfRapidRolling,
+			minor1: MonkMinorGlyph.GlyphOfSpiritRoll,
 			minor2: MonkMinorGlyph.GlyphOfJab,
 			minor3: MonkMinorGlyph.GlyphOfWaterRoll,
 		}),
