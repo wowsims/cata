@@ -14,6 +14,7 @@ import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
 import { mod, randomUUID, sanitizeId } from '../../utils';
 import { BaseModal } from '../base_modal';
+import { ChallengeMode } from '../inputs/other_inputs';
 import GearPicker from './gear_picker';
 import ItemList, { GearData, ItemData, ItemListType } from './item_list';
 import { createGemContainer, getEmptySlotIconUrl } from './utils';
@@ -162,9 +163,9 @@ export default class SelectorModal extends BaseModal {
 						onEquip: (eventID, item) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) {
-								gearData.equipItem(eventID, equippedItem.withItem(item));
+								gearData.equipItem(eventID, equippedItem.withItem(item).withChallengeMode(this.player.getChallengeModeEnabled()));
 							} else {
-								gearData.equipItem(eventID, new EquippedItem({ item }));
+								gearData.equipItem(eventID, new EquippedItem({ item, challengeMode: this.player.getChallengeModeEnabled() }));
 							}
 						},
 					};
