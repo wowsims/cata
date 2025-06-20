@@ -81,7 +81,7 @@ func (garg *GargoylePet) ExecuteCustomRotation(sim *core.Simulation) {
 func (garg *GargoylePet) registerGargoyleStrikeSpell() {
 	garg.GargoyleStrike = garg.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51963},
-		SpellSchool: core.SpellSchoolNature | core.SpellSchoolShadow,
+		SpellSchool: core.SpellSchoolPlague,
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		Cast: core.CastConfig{
