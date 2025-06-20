@@ -18,7 +18,7 @@ func TestUnholy(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p4.bis"),
+		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p1"),
 		Talents:     UnholyTalents,
 		Glyphs:      UnholyDefaultGlyphs,
 		Consumables: FullConsumesSpec,
@@ -29,20 +29,18 @@ func TestUnholy(t *testing.T) {
 	}))
 }
 
-var UnholyTalents = "2032-1-13300321230231021231"
+var UnholyTalents = "321111"
 var UnholyDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
-	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
-	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfOutbreak),
 	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathsEmbrace),
-	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
 }
 
 var PlayerOptionsUnholy = &proto.Player_UnholyDeathKnight{
 	UnholyDeathKnight: &proto.UnholyDeathKnight{
 		Options: &proto.UnholyDeathKnight_Options{
 			ClassOptions: &proto.DeathKnightOptions{
-				PetUptime:          1.0,
 				StartingRunicPower: 100,
 			},
 		},
@@ -50,11 +48,10 @@ var PlayerOptionsUnholy = &proto.Player_UnholyDeathKnight{
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  58088, // Flask of Titanic Strength
-	FoodId:   62670, // Beer‑Basted Crocolisk
-	PotId:    58146, // Golemblood Potion
-	PrepotId: 58146, // Golemblood Potion
-
+	FlaskId:  76088, // Flask of Winter's Bite
+	FoodId:   74646, // Black Pepper Ribs and Shrimp
+	PotId:    76095, // Potion of Mogu Power
+	PrepotId: 76095, // Potion of Mogu Power
 }
 
 var ItemFilter = core.ItemFilter{

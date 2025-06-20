@@ -18,16 +18,13 @@ func TestBlood(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet: core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p3-balanced"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p1"),
-		},
+		GearSet: core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p1"),
 
 		Talents:     BloodTalents,
 		Glyphs:      BloodDefaultGlyphs,
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBlood},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/blood/apls", "simple"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/blood/apls", "defensive"),
 
 		InFrontOfTarget: true,
 		IsTank:          true,
@@ -36,14 +33,12 @@ func TestBlood(t *testing.T) {
 	}))
 }
 
-var BloodTalents = "02323203102122111321-3-033"
+var BloodTalents = "131131"
 var BloodDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
-	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
-	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfBoneShield),
-	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathGate),
-	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfPathOfFrost),
-	Minor3: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfFesteringBlood),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfRegenerativeMagic),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfOutbreak),
+	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfTheLongWinter),
 }
 
 var PlayerOptionsBlood = &proto.Player_BloodDeathKnight{
@@ -55,11 +50,10 @@ var PlayerOptionsBlood = &proto.Player_BloodDeathKnight{
 }
 
 var FullConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  58085, // Flask of Steelskin
-	FoodId:   62670, // Beer‑Basted Crocolisk
-	PotId:    58146, // Golemblood Potion
-	PrepotId: 58146, // Golemblood Potion
-
+	FlaskId:  76087, // Flask of the Earth
+	FoodId:   74656, // Chun Tian Spring Rolls
+	PotId:    76095, // Potion of Mogu Power
+	PrepotId: 76095, // Potion of Mogu Power
 }
 
 var ItemFilter = core.ItemFilter{
