@@ -28,61 +28,28 @@ type FuryWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.FuryWarrior_Options
+
+	BloodsurgeAura  *core.Aura
+	MeatCleaverAura *core.Aura
 }
 
 func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarrior {
 	furyOptions := options.GetFuryWarrior().Options
 
 	war := &FuryWarrior{
-		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{
+		Warrior: warrior.NewWarrior(character, furyOptions.ClassOptions, options.TalentsString, warrior.WarriorInputs{
 			StanceSnapshot: furyOptions.StanceSnapshot,
 		}),
 		Options: furyOptions,
 	}
 
-	rbo := core.RageBarOptions{
-		StartingRage:       furyOptions.ClassOptions.StartingRage,
-		BaseRageMultiplier: 1,
-	}
-
-	war.PrecisionKnown = true
-
-	war.EnableRageBar(rbo)
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultCritMultiplier()),
-		OffHand:        war.WeaponFromOffHand(war.DefaultCritMultiplier()),
-		AutoSwingMelee: true,
-	})
+	war.ApplySyncType(furyOptions.SyncType)
 
 	return war
 }
 
-func (war *FuryWarrior) RegisterSpecializationEffects() {
-
-	// Unshackled Fury
-	// The actual effects of Unshackled Fury need to be handled by specific spells
-	// as it modifies the "benefit" of them (e.g. it both increases Raging Blow's damage
-	// and Enrage's damage bonus)
-	war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
-	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
-	})
-
-	// Dual Wield specialization
-	war.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ProcMask:   core.ProcMaskMeleeOH,
-		FloatValue: 0.25,
-	})
-
-	// Precision
-	war.AddStat(stats.PhysicalHitPercent, 3)
-	war.AutoAttacks.MHConfig().DamageMultiplier *= 1.4
-	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
-}
-
-func (war *FuryWarrior) GetMasteryBonusMultiplier(masteryPoints float64) float64 {
-	return 1 + (11.2+5.6*masteryPoints)/100
+func (war *FuryWarrior) GetMasteryBonusMultiplier() float64 {
+	return (8 + 1.4*war.GetMasteryPoints()) / 100
 }
 
 func (war *FuryWarrior) GetWarrior() *warrior.Warrior {
@@ -91,11 +58,22 @@ func (war *FuryWarrior) GetWarrior() *warrior.Warrior {
 
 func (war *FuryWarrior) Initialize() {
 	war.Warrior.Initialize()
-	war.RegisterSpecializationEffects()
-	war.RegisterBloodthirst()
+	war.registerPassives()
+	war.registerBloodthirst()
+	war.registerRagingBlow()
+	war.registerWildStrike()
 }
 
-func (war *FuryWarrior) ApplyTalents() {}
+func (war *FuryWarrior) registerPassives() {
+	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86526)
+
+	war.registerCrazedBerserker()
+	war.registerFlurry()
+	war.registerBloodsurge()
+	war.registerMeatCleaver()
+	war.registerSingleMindedFuryOrTitansGrip()
+	war.registerUnshackledFury()
+}
 
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)

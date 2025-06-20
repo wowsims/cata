@@ -23,7 +23,7 @@ func (character *Character) applyProfessionEffects() {
 		aura := character.NewTemporaryStatsAura(
 			"Lifeblood",
 			actionID,
-			stats.Stats{stats.HasteRating: 480},
+			stats.Stats{stats.HasteRating: 2880},
 			time.Second*20,
 		)
 

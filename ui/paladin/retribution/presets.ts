@@ -6,12 +6,14 @@ import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1_Gear from './gear_sets/p1.gear.json';
+import Preraid_Gear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so it's good to
 // keep them in a separate file.
 
 export const P1_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1_Gear);
+export const PRERAID_GEAR_PRESET = PresetUtils.makePresetGear('Pre-raid', Preraid_Gear);
 
 export const APL_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -20,18 +22,34 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatStrength]: 2.29,
-
-			[Stat.StatCritRating]: 1.0,
-			[Stat.StatHasteRating]: 1.11,
-			[Stat.StatMasteryRating]: 1.05,
-
-			[Stat.StatHitRating]: 1.32,
-			[Stat.StatExpertiseRating]: 1.18,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatHitRating]: 1.0,
+			[Stat.StatExpertiseRating]: 0.87,
+			[Stat.StatHasteRating]: 0.52,
+			[Stat.StatMasteryRating]: 0.51,
+			[Stat.StatCritRating]: 0.5,
+			[Stat.StatAttackPower]: 0.44,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.21,
+			[PseudoStat.PseudoStatMainHandDps]: 1.91,
+		},
+	),
+);
+
+export const PRERAID_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Pre-raid',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatHitRating]: 0.72,
+			[Stat.StatExpertiseRating]: 0.63,
+			[Stat.StatHasteRating]: 0.56,
+			[Stat.StatAttackPower]: 0.44,
+			[Stat.StatMasteryRating]: 0.41,
+			[Stat.StatCritRating]: 0.38,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 1.77,
 		},
 	),
 );
@@ -53,6 +71,13 @@ export const DefaultTalents = {
 export const P1_BUILD_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: P1_GEAR_PRESET,
 	epWeights: P1_EP_PRESET,
+	talents: DefaultTalents,
+	rotationType: APLRotationType.TypeAuto,
+});
+
+export const PRERAID_BUILD_PRESET = PresetUtils.makePresetBuild('Pre-raid', {
+	gear: PRERAID_GEAR_PRESET,
+	epWeights: PRERAID_EP_PRESET,
 	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAuto,
 });
