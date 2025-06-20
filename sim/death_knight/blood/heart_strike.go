@@ -61,7 +61,6 @@ func (bdk *BloodDeathKnight) registerHeartStrike() {
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
-				spell.DamageMultiplier /= 0.5
 			}
 		},
 	})
