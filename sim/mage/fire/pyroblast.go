@@ -33,7 +33,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.12, //https://us.forums.blizzard.com/en/wow/t/feedback-mists-of-pandaria-class-changes/2117387/327
 		CritMultiplier:   fire.DefaultCritMultiplier(),
 		BonusCoefficient: pyroblastCoefficient,
 		ThreatMultiplier: 1,
@@ -56,7 +56,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		ClassSpellMask: mage.MageSpellPyroblastDot,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.12, //https://us.forums.blizzard.com/en/wow/t/feedback-mists-of-pandaria-class-changes/2117387/327
 		CritMultiplier:   fire.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 

@@ -9,7 +9,7 @@ import (
 func (fire *FireMage) registerCriticalMass() {
 
 	getCritPercent := func() float64 {
-		return fire.GetStat(stats.SpellCritPercent) * 1.3
+		return fire.GetStat(stats.SpellCritPercent) * 1.5 // https://us.forums.blizzard.com/en/wow/t/feedback-mists-of-pandaria-class-changes/2117387/327
 	}
 
 	criticalMassCritBuffMod := fire.AddDynamicMod(core.SpellModConfig{
