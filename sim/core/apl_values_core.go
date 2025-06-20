@@ -82,17 +82,20 @@ func (value *APLValueDotTickFrequency) String() string {
 
 type APLValueDotPercentIncrease struct {
 	DefaultAPLValueImpl
-	dot *Dot
+	spell  *Spell
+	target *Unit
 }
 
 func (rot *APLRotation) newValueDotPercentIncrease(config *proto.APLValueDotPercentIncrease, _ *proto.UUID) APLValue {
-	dot := rot.GetAPLDot(rot.GetTargetUnit(config.TargetUnit), config.SpellId)
-	if dot == nil || dot.Spell.expectedTickDamageInternal == nil {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil || spell.expectedTickDamageInternal == nil {
 		return nil
 	}
 
+	target := rot.GetTargetUnit(config.TargetUnit).Get()
 	return &APLValueDotPercentIncrease{
-		dot: dot,
+		spell:  spell,
+		target: target,
 	}
 }
 
@@ -101,23 +104,14 @@ func (value *APLValueDotPercentIncrease) Type() proto.APLValueType {
 }
 
 func (value *APLValueDotPercentIncrease) GetFloat(sim *Simulation) float64 {
-
-	// If DoT is not active expected damage increase is always 100%
-	if !value.dot.IsActive() {
+	expectedDamage := value.spell.ExpectedTickDamageFromCurrentSnapshot(sim, value.target)
+	if expectedDamage == 0 {
 		return 1
 	}
 
-	// calculate haste based increase
-	hasteFactor := 1.0
-	if value.dot.affectedByCastSpeed {
-		tickPeriod := value.dot.Spell.Unit.ApplyCastSpeedForSpell(value.dot.BaseTickLength, value.dot.Spell).Round(time.Millisecond)
-		hasteFactor = float64(value.dot.tickPeriod) / float64(tickPeriod)
-	}
-
-	return hasteFactor*value.dot.Spell.ExpectedTickDamage(sim, value.dot.Unit)/
-		value.dot.Spell.ExpectedTickDamageFromCurrentSnapshot(sim, value.dot.Unit) - 1
+	return value.spell.ExpectedTickDamage(sim, value.target)/expectedDamage - 1
 }
 
 func (value *APLValueDotPercentIncrease) String() string {
-	return fmt.Sprintf("Dot Percent Increase (%s)", value.dot.Spell.ActionID)
+	return fmt.Sprintf("Dot Percent Increase (%s)", value.spell.ActionID)
 }

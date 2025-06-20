@@ -71,16 +71,18 @@ func (affliction *AfflictionWarlock) registerAgony() {
 		},
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			dot := spell.Dot(target)
 
 			// Always compare fully stacked agony damage
 			if useSnapshot {
-				dot := spell.Dot(target)
 				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 				result.Damage *= 10
+				result.Damage /= dot.TickPeriod().Seconds()
 				return result
 			} else {
 				result := spell.CalcPeriodicDamage(sim, target, affliction.CalcScalingSpellDmg(agonyScale), spell.OutcomeExpectedMagicCrit)
 				result.Damage *= 10
+				result.Damage /= affliction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
 				return result
 			}
 		},

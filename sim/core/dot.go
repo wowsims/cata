@@ -318,6 +318,10 @@ func newDot(config Dot) *Dot {
 			// track time metrics for channels
 			dot.Spell.SpellMetrics[aura.Unit.UnitIndex].TotalCastTime += dot.fadeTime - dot.StartedAt()
 		}
+
+		dot.SnapshotAttackerMultiplier = 0
+		dot.SnapshotBaseDamage = 0
+		dot.SnapshotCritChance = 0
 	})
 
 	return dot

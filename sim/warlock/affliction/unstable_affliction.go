@@ -54,11 +54,15 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 		},
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			dot := spell.Dot(target)
 			if useSnapshot {
-				dot := spell.Dot(target)
-				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result.Damage /= dot.TickPeriod().Seconds()
+				return result
 			} else {
-				return spell.CalcPeriodicDamage(sim, target, affliction.CalcScalingSpellDmg(uaScale), spell.OutcomeExpectedMagicCrit)
+				result := spell.CalcPeriodicDamage(sim, target, affliction.CalcScalingSpellDmg(uaScale), spell.OutcomeExpectedMagicCrit)
+				result.Damage /= affliction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				return result
 			}
 		},
 	})
