@@ -15,7 +15,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ClassSpellMask: hunter.HunterSpellExplosiveShot,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagRanged,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       40,

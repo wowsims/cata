@@ -56,6 +56,7 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 		},
 		AutoSwingMelee: true,
 	})
+	stampedePet.ApplyTalents()
 	hunter.AddPet(stampedePet)
 	return stampedePet
 }

@@ -14,7 +14,7 @@ func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
 		ProcMask:    core.ProcMaskRangedSpecial,
 
 		ClassSpellMask: hunter.HunterSpellChimeraShot,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagRanged,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       40,

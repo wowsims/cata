@@ -11,11 +11,11 @@ func (hunter *Hunter) registerPowerShotSpell() {
 		return
 	}
 	hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 19434},
+		ActionID:    core.ActionID{SpellID: 109259},
 		SpellSchool: core.SpellSchoolPhysical,
 		//ClassSpellMask: hunter.HunterSpellAimedShot,
 		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagRanged,
 		MissileSpeed: 40,
 		MinRange:     0,
 		MaxRange:     40,
