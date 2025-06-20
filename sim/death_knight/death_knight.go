@@ -49,11 +49,12 @@ type DeathKnight struct {
 	PestilenceSpell *core.Spell
 	RuneTapSpell    *core.Spell
 
-	ConversionAura         *core.Aura
-	ThreatOfThassarianAura *core.Aura
-	BoneShieldAura         *core.Aura
-	BoneWallAura           *core.Aura
-	PillarOfFrostAura      *core.Aura
+	ConversionAura             *core.Aura
+	MightOfTheFrozenWastesAura *core.Aura
+	ThreatOfThassarianAura     *core.Aura
+	BoneShieldAura             *core.Aura
+	BoneWallAura               *core.Aura
+	PillarOfFrostAura          *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell

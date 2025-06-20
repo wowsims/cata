@@ -38,6 +38,14 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 		}, player.TalentsString, 0),
 	}
 
+	fdk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+		if fdk.HasMHWeapon() && fdk.HasOHWeapon() {
+			fdk.ThreatOfThassarianAura.Activate(sim)
+		} else if mh := fdk.GetMHWeapon(); mh != nil && mh.HandType == proto.HandType_HandTypeTwoHand {
+			fdk.MightOfTheFrozenWastesAura.Activate(sim)
+		}
+	})
+
 	return fdk
 }
 
