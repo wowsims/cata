@@ -9,7 +9,7 @@ import (
 
 func (hunter *Hunter) registerMultiShotSpell() {
 
-	hunter.MultiShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 2643},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,

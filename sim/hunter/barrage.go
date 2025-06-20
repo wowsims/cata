@@ -90,5 +90,5 @@ func (hunter *Hunter) registerBarrageSpell() {
 		return spell.CalcDamage(sim, target, sharedDmg, spell.OutcomeRangedHitAndCrit)
 	}
 
-	hunter.Barrage = hunter.RegisterSpell(config)
+	hunter.RegisterSpell(config)
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
-	mmHunter.ChimeraShot = mmHunter.RegisterSpell(core.SpellConfig{
+	mmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53209},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskRangedSpecial,
