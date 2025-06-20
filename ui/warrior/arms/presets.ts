@@ -1,46 +1,38 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior';
+import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
 import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
-import P1ArmsRealisticBisGear from './gear_sets/p1_arms_realistic_bis.gear.json';
-import P3ArmsBisGear from './gear_sets/p3_arms_bis.gear.json';
-import P4ArmsBisGear from './gear_sets/p4_arms_bis.gear.json';
-import ItemSwapP4Gear from './gear_sets/p4_arms_item_swap.gear.json';
-import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
+import P1PreBisGearPoor from './gear_sets/p1_prebis_poor.gear.json';
+import P1PreBisGearRich from './gear_sets/p1_prebis_rich.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid', PreraidArmsGear);
+export const P1_PREBIS_ARMS_RICH_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 💰', P1PreBisGearRich);
+export const P1_PREBIS_ARMS_POOR_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 📉', P1PreBisGearPoor);
 export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArmsBisGear);
-export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 - Realistic', P1ArmsRealisticBisGear);
-export const P3_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3ArmsBisGear);
-export const P4_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P4', P4ArmsBisGear);
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4Gear);
 
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
 // Preset options for EP weights
-export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.21,
-			[Stat.StatAgility]: 1.12,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.75,
-			[Stat.StatHitRating]: 2.77,
-			[Stat.StatCritRating]: 1.45,
-			[Stat.StatHasteRating]: 0.68,
-			[Stat.StatMasteryRating]: 0.89,
+			[Stat.StatStrength]: 1,
+			[Stat.StatAttackPower]: 0.45,
+			[Stat.StatExpertiseRating]: 1.20,
+			[Stat.StatHitRating]: 1.40,
+			[Stat.StatCritRating]: 0.59,
+			[Stat.StatHasteRating]: 0.32,
+			[Stat.StatMasteryRating]: 0.39,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 9.22,
+			[PseudoStat.PseudoStatMainHandDps]: 3.71,
 			[PseudoStat.PseudoStatOffHandDps]: 0,
 		},
 	),
@@ -52,9 +44,11 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const ArmsTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '113332',
 		glyphs: Glyphs.create({
-			major2: WarriorMajorGlyph.GlyphOfSweepingStrikes,
+			major1: WarriorMajorGlyph.GlyphOfBullRush,
+			major2: WarriorMajorGlyph.GlyphOfUnendingRage,
+			major3: WarriorMajorGlyph.GlyphOfDeathFromAbove,
 		}),
 	}),
 };
@@ -66,10 +60,10 @@ export const DefaultOptions = WarriorOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58088, // Flask of Titanic Strength
-	foodId: 62670, // Beer-Basted Crocolisk
-	potId: 58146, // Golemblood Potion
-	prepotId: 58146, // Golemblood Potion
+	flaskId: 76088, // Flask of Winter's Bite
+	foodId: 74646, // Black Pepper Ribs and Shrimp
+	potId: 76095, // Potion of Mogu Power
+	prepotId: 76095, // Potion of Mogu Power
 });
 
 export const OtherDefaults = {

@@ -608,7 +608,7 @@ type IgniteConfig struct {
 	SpellSchool        core.SpellSchool
 	NumberOfTicks      int32
 	TickLength         time.Duration
-	SetBonusAura       *core.Aura
+	ParentAura         *core.Aura
 }
 
 func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
@@ -731,11 +731,53 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		}
 	}
 
-	if config.SetBonusAura != nil {
-		config.SetBonusAura.AttachProcTrigger(procTrigger)
+	if config.ParentAura != nil {
+		config.ParentAura.AttachProcTrigger(procTrigger)
 	} else {
 		core.MakeProcTriggerAura(unit, procTrigger)
 	}
 
 	return igniteSpell
+}
+
+type ItemVersion byte
+
+const (
+	ItemVersionLFR = iota
+	ItemVersionNormal
+	ItemVersionHeroic
+	ItemVersionThunderforged
+	ItemVersionHeroicThunderforged
+	ItemVersionWarforged
+	ItemVersionHeroicWarforged
+	ItemVersionFlexible
+)
+
+type ItemVersionMap map[ItemVersion]int32
+type ItemVersionFactory func(version ItemVersion, id int32, versionLabel string)
+
+func (version ItemVersion) GetLabel() string {
+	switch version {
+	case ItemVersionLFR:
+		return "(Celestial)"
+	case ItemVersionHeroic:
+		return "(Heroic)"
+	case ItemVersionThunderforged:
+		return "(Thunderforged)"
+	case ItemVersionHeroicThunderforged:
+		return "(Heroic Thunderforged)"
+	case ItemVersionWarforged:
+		return "(Warforged)"
+	case ItemVersionHeroicWarforged:
+		return "(Heroic Warforged)"
+	case ItemVersionFlexible:
+		return "(Flex)"
+	}
+	return ""
+}
+
+func (versions ItemVersionMap) RegisterAll(fac ItemVersionFactory) {
+	for version, id := range versions {
+		fac(version, id, version.GetLabel())
+	}
 }

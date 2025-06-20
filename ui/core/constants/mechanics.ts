@@ -4,8 +4,8 @@ export const CHARACTER_LEVEL = 90;
 export const BOSS_LEVEL = CHARACTER_LEVEL + 3;
 export const MAX_CHALLENGE_MODE_ILVL = 463;
 
-export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 85.000000;
 export const HASTE_RATING_PER_HASTE_PERCENT = 425.000000;
+export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 85.000000;
 export const CRIT_RATING_PER_CRIT_PERCENT = 600.000000;
 export const PHYSICAL_HIT_RATING_PER_HIT_PERCENT = 340.000000;
 export const SPELL_HIT_RATING_PER_HIT_PERCENT = 340.000000;
@@ -36,8 +36,8 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecMarksmanshipHunter, 2.1],
 	[Spec.SpecSurvivalHunter, 1.0],
 	[Spec.SpecArmsWarrior, 2.2],
-	[Spec.SpecFuryWarrior, 5.6],
-	[Spec.SpecProtectionWarrior, 1.5],
+	[Spec.SpecFuryWarrior, 1.4],
+	[Spec.SpecProtectionWarrior, 2.2],
 	[Spec.SpecArcaneMage, 1.5],
 	[Spec.SpecFireMage, 2.8],
 	[Spec.SpecFrostMage, 2.5],

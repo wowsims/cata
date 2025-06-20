@@ -372,23 +372,32 @@ export class ActionId {
 				break;
 			case 'Envenom':
 			case 'Eviscerate':
-			case 'Expose Armor':
 			case 'Rupture':
 			case 'Slice and Dice':
-			case 'Recuperate':
 				if (tag) name += ` (${tag} CP)`;
 				break;
-			case 'Instant Poison':
-			case 'Wound Poison':
-				if (tag == 1) {
-					name += ' (Deadly)';
-				} else if (tag == 2) {
-					name += ' (Shiv)';
-				} else if (tag == 3) {
-					name += ' (Fan of Knives)';
+			case 'Crimson Tempest':
+				if (tag == 7) {
+					name += ' (DoT)';
+				} else if (tag) {
+					name += ` (${tag} CP)`;
 				}
 				break;
-			case 'Fan of Knives':
+			case 'Deadly Poison':
+				if (tag == 1) {
+					name += ' (DoT)';
+				} else {
+					name += ' (Hit)';
+				}
+				break;
+			case 'Shadow Blades':
+				if (tag == 1) {
+					name = 'Shadow Blade'
+				} else if (tag == 2) {
+					name = 'Shadow Blade Off-hand'
+				}
+				break;
+			case 'Bladestorm':
 			case 'Killing Spree':
 				if (tag == 1) {
 					name += ' (Main Hand)';
@@ -411,8 +420,10 @@ export class ActionId {
 				}
 				break;
 			case 'Hemorrhage':
-				if (this.spellId == 89775) {
-					name += ' (DoT)';
+				if (tag == 1) {
+					name += ' (Hit)';
+				} else {
+					name += ' (DoT)'
 				}
 				break;
 			case 'Wind Lash':
@@ -569,8 +580,14 @@ export class ActionId {
 				}
 				break;
 			case 'Raging Blow':
+				if (tag == 2) {
+					name += ' (Main Hand)';
+				} else if (tag == 3) {
+					name += ' (Off Hand)';
+				}
+				break;
 			case 'Whirlwind':
-			case 'Slam':
+			case 'Storm Bolt':
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':
@@ -585,10 +602,6 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
-				}
-				// Warrior - T12 4P proc
-				if (baseName === 'Raging Blow' && tag === 3) {
-					name = 'Fiery attack';
 				}
 				// Death Knight - T12 4P proc
 				if (baseName === 'Obliterate' && tag === 3) {
@@ -677,6 +690,11 @@ export class ActionId {
 			case 'Mortal Strike':
 				if (tag === 3) {
 					name = 'Fiery attack (T12 4P)';
+				}
+				break;
+			case 'Slam':
+				if (tag == 1) {
+					name += ' (Sweeping Strikes)';
 				}
 				break;
 			// Hunter - T12 2P proc
@@ -1164,7 +1182,6 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 47897, tag: 1 }), { spellId: 47960 }], // Shadowflame Dot
 	[JSON.stringify({ spellId: 55090, tag: 1 }), { spellId: 70890 }], // Shadowflame Dot
 	[JSON.stringify({ spellId: 12294, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Mortal Strike
-	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Raging Blow
 	[JSON.stringify({ spellId: 23922, tag: 3 }), { spellId: 99240 }], // Warrior - T12 2P Combust - Shield Slam
 	[JSON.stringify({ spellId: 77767, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Cobra shot
 	[JSON.stringify({ spellId: 56641, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Steady shot
@@ -1174,6 +1191,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 879, tag: 2 }), { spellId: 122032 }], // Paladin - Glyph of Mass Exorcism
 	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
+	[JSON.stringify({ spellId: 2818, tag: 2 }), { spellId: 113780 }], // Rogue - Deadly Poison - Hit
+	[JSON.stringify({ spellId: 121411, tag: 7 }), { spellId: 122233 }], // Rogue - Crimson Tempest - DoT
+	[JSON.stringify({ spellId: 121471, tag: 1 }), { spellId: 121473 }], // Rogue - Shadow Blade
 
 	// Off-Hand attacks
 	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand
@@ -1184,10 +1204,12 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 66216 }], // Death Knight - Plague Strike Off-Hand
 	[JSON.stringify({ spellId: 56815, tag: 2 }), { spellId: 66217 }], // Death Knight - Rune Strike Off-Hand
 	[JSON.stringify({ spellId: 1329, tag: 2 }), { spellId: 27576 }], // Rogue - Mutilate Off-Hand
+	[JSON.stringify({ spellId: 121471, tag: 2 }), { spellId: 121474 }], // Rogue - Shadow Blade Off-Hand
 	[JSON.stringify({ spellId: 17364, tag: 2 }), { spellId: 32176 }], // Shaman - Stormstrike Off-Hand
-	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
-	[JSON.stringify({ spellId: 1464, tag: 2 }), { spellId: 97992 }], // Warrior - Slam Off-Hand
+	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 96103 }], // Warrior - Raging Blow Main-Hand
+	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
 	[JSON.stringify({ spellId: 1680, tag: 2 }), { spellId: 44949 }], // Warrior - Whirlwind Off-Hand
+	[JSON.stringify({ spellId: 107570, tag: 2 }), { spellId: 145585 }], // Warrior - Storm Bolt Off-Hand
 
 	// Monk - Zen Sphere
 	[JSON.stringify({ spellId: 124081, tag: 3 }), { spellId: 124098 }],

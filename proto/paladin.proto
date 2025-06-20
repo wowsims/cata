@@ -95,6 +95,7 @@ enum PaladinSeal {
 }
 
 message PaladinOptions {
+	int32 starting_holy_power = 1;
 	PaladinSeal seal = 2;
 }
 
@@ -103,7 +104,6 @@ message RetributionPaladin {
 
 	message Options {
 		PaladinOptions class_options = 1;
-		int32 starting_holy_power = 2;
 	}
 	Options options = 3;
 }

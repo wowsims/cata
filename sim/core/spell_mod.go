@@ -708,10 +708,16 @@ func removeDebuffDurationFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	if spell.SharedCD.Duration != 0 {
+		spell.SharedCD.Duration += mod.timeValue
+	}
 	spell.RelatedSelfBuff.Duration += mod.timeValue
 }
 
 func removeBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	if spell.SharedCD.Duration != 0 {
+		spell.SharedCD.Duration -= mod.timeValue
+	}
 	spell.RelatedSelfBuff.Duration -= mod.timeValue
 }
 

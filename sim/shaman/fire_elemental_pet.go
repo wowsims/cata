@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -70,7 +71,6 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 
 func (fireElemental *FireElemental) enable(isGuardian bool) func(*core.Simulation) {
 	return func(sim *core.Simulation) {
-		fireElemental.EnableDynamicStats(fireElemental.shamanOwner.fireElementalStatInheritance(isGuardian))
 		if fireElemental.empowerAutocast {
 			if fireElemental.Empower.Cast(sim, &fireElemental.shamanOwner.Unit) {
 				fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt(), false)
@@ -107,7 +107,7 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 
 	if fireElemental.immolateAutocast {
 		for _, target := range sim.Encounter.TargetUnits {
-			if !fireElemental.Immolate.Dot(target).IsActive() && fireElemental.TryCast(sim, target, fireElemental.Immolate) {
+			if fireElemental.Immolate.Dot(target).RemainingDuration(sim) < fireElemental.Immolate.Dot(target).TickPeriod() && fireElemental.TryCast(sim, target, fireElemental.Immolate) {
 				break
 			}
 		}
@@ -152,7 +152,7 @@ func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStat
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
 		hitExpRating := (ownerHitRating + ownerExpertiseRating) / 2
-		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
+		critPercent := core.TernaryFloat64(math.Abs(ownerPhysicalCritPercent) > math.Abs(ownerSpellCritPercent), ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
 

@@ -247,6 +247,10 @@ func (aa *AutoAttacks) SetReplaceMHSwing(replaceSwing ReplaceMHSwing) {
 	aa.mh.replaceSwing = replaceSwing
 }
 
+func (aa *AutoAttacks) SetReplaceOHSwing(replaceSwing ReplaceMHSwing) {
+	aa.oh.replaceSwing = replaceSwing
+}
+
 func (aa *AutoAttacks) MHConfig() *SpellConfig {
 	return &aa.mh.config
 }
@@ -442,7 +446,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
 		SpellSchool:  options.Ranged.GetSpellSchool(),
 		ProcMask:     ProcMaskRangedAuto,
-		Flags:        SpellFlagMeleeMetrics,
+		Flags:        SpellFlagMeleeMetrics | SpellFlagRanged,
 		MissileSpeed: 40,
 
 		DamageMultiplier:         1,

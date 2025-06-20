@@ -278,16 +278,49 @@ func MakePermanent(aura *Aura) *Aura {
 	return aura
 }
 
-func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, actionID ActionID, bonusPerStack stats.Stats, maxStacks int32, duration time.Duration) *StatBuffAura {
-	return MakeStackingAura(character, StackingStatAura{
+type TemporaryStatBuffWithStacksConfig struct {
+	StackingAuraLabel    string
+	StackingAuraActionID ActionID
+	AuraLabel            string
+	ActionID             ActionID
+	BonusPerStack        stats.Stats
+	MaxStacks            int32
+	TimePerStack         time.Duration
+	Duration             time.Duration
+}
+
+func (character *Character) NewTemporaryStatBuffWithStacks(config TemporaryStatBuffWithStacksConfig) (*StatBuffAura, *Aura) {
+	stackingAura := MakeStackingAura(character, StackingStatAura{
 		Aura: Aura{
-			Label:     auraLabel,
-			ActionID:  actionID,
-			Duration:  duration,
-			MaxStacks: maxStacks,
+			Label:     Ternary(config.StackingAuraLabel != "", config.StackingAuraLabel, config.AuraLabel),
+			ActionID:  Ternary(!config.StackingAuraActionID.IsEmptyAction(), config.StackingAuraActionID, config.ActionID),
+			Duration:  config.Duration,
+			MaxStacks: config.MaxStacks,
 		},
-		BonusPerStack: bonusPerStack,
+		BonusPerStack: config.BonusPerStack,
 	})
+
+	if config.TimePerStack > 0 {
+		aura := character.RegisterAura(Aura{
+			Label:    config.AuraLabel,
+			ActionID: config.ActionID,
+			Duration: config.Duration,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				stackingAura.Activate(sim)
+				StartPeriodicAction(sim, PeriodicActionOptions{
+					Period:   config.TimePerStack,
+					NumTicks: 10,
+					OnAction: func(sim *Simulation) {
+						stackingAura.AddStack(sim)
+					},
+				})
+			},
+		})
+		return stackingAura, aura
+	}
+
+	return stackingAura, nil
+
 }
 
 // Helper for the common case of making an aura that adds stats.
@@ -493,6 +526,18 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 	return parentAura
 }
 
+func (parentAura *Aura) AttachMultiplyMeleeSpeed(multiplier float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyMeleeSpeed(sim, multiplier)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyMeleeSpeed(sim, 1/multiplier)
+	})
+
+	return parentAura
+}
+
 // Attaches a Damage Done By Caster buff to a parent Aura
 // Returns parent aura for chaining
 func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*AttackTable, handler DynamicDamageDoneByCaster) *Aura {
@@ -512,58 +557,85 @@ func (parentAura *Aura) AttachDDBC(index int, maxIndex int, attackTables *[]*Att
 }
 
 type ShieldStrengthCalculator func(unit *Unit) float64
+type OnDamageAbsorbedCallback func(sim *Simulation, aura *DamageAbsorptionAura, result *SpellResult, absorbedDamage float64)
+type ShieldShouldApplyCondition func(sim *Simulation, spell *Spell, result *SpellResult, isPeriodic bool) bool
+
+type AbsorptionAuraConfig struct {
+	Aura                     Aura
+	DamageMultiplier         float64
+	ShieldStrengthCalculator ShieldStrengthCalculator
+	OnDamageAbsorbed         OnDamageAbsorbedCallback
+	ShouldApplyToResult      ShieldShouldApplyCondition
+}
 
 type DamageAbsorptionAura struct {
 	*Aura
-	ShieldStrength                float64
-	FreshShieldStrengthCalculator ShieldStrengthCalculator
+	freshShieldStrengthCalculator ShieldStrengthCalculator
+
+	ShieldStrength   float64
+	OnDamageAbsorbed []OnDamageAbsorbedCallback
 }
 
 func (aura *DamageAbsorptionAura) Activate(sim *Simulation) {
 	aura.Aura.Activate(sim)
-	aura.ShieldStrength = aura.FreshShieldStrengthCalculator(aura.Unit)
+	aura.ShieldStrength = aura.freshShieldStrengthCalculator(aura.Unit)
 	stacks := max(1, int32(aura.ShieldStrength))
 	aura.Aura.MaxStacks = stacks
 	aura.Aura.SetStacks(sim, stacks)
 }
 
-func (unit *Unit) NewDamageAbsorptionAura(auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
-	return CreateDamageAbsorptionAura(unit, auraLabel, actionID, duration, calculator, nil)
-}
+func (unit *Unit) NewDamageAbsorptionAura(config AbsorptionAuraConfig) *DamageAbsorptionAura {
+	if config.Aura.Duration == 0 {
+		config.Aura.Duration = NeverExpires
+	}
 
-func (unit *Unit) NewDamageAbsorptionAuraForSchool(auraLabel string, actionID ActionID, duration time.Duration, school SpellSchool, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
-	return CreateDamageAbsorptionAura(unit, auraLabel, actionID, duration, calculator, func(spell *Spell) bool {
-		return spell.SpellSchool.Matches(school)
-	})
-}
-
-func CreateDamageAbsorptionAura(unit *Unit, auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator, extraSpellCheck func(spell *Spell) bool) *DamageAbsorptionAura {
 	aura := &DamageAbsorptionAura{
-		Aura: unit.RegisterAura(Aura{
-			Label:    auraLabel,
-			ActionID: actionID,
-			Duration: duration,
-		}),
-		FreshShieldStrengthCalculator: calculator,
+		Aura:                          unit.RegisterAura(config.Aura),
+		freshShieldStrengthCalculator: config.ShieldStrengthCalculator,
+	}
+
+	if config.OnDamageAbsorbed != nil {
+		aura.OnDamageAbsorbed = append(aura.OnDamageAbsorbed, config.OnDamageAbsorbed)
+	}
+
+	if config.DamageMultiplier == 0 {
+		config.DamageMultiplier = 1
 	}
 
 	aura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
 		aura.ShieldStrength = 0
 	})
 
+	extraSpellCheck := config.ShouldApplyToResult
+
 	unit.AddDynamicDamageTakenModifier(func(sim *Simulation, spell *Spell, result *SpellResult, isPeriodic bool) {
-		if aura.Aura.IsActive() && result.Damage > 0 && (extraSpellCheck == nil || extraSpellCheck(spell)) {
-			absorbedDamage := min(aura.ShieldStrength, result.Damage)
+		if aura.Aura.IsActive() && result.Damage > 0 && (extraSpellCheck == nil || extraSpellCheck(sim, spell, result, isPeriodic)) {
+			absorbedDamage := min(aura.ShieldStrength, result.Damage*config.DamageMultiplier)
 			result.Damage -= absorbedDamage
 			aura.ShieldStrength -= absorbedDamage
 
 			if sim.Log != nil {
-				unit.Log(sim, "%s absorbed %.1f damage, new shield strength: %.1f", auraLabel, absorbedDamage, aura.ShieldStrength)
+				unit.Log(sim, "%s absorbed %.1f damage, new shield strength: %.1f", aura.Label, absorbedDamage, aura.ShieldStrength)
+			}
+
+			for _, callback := range aura.OnDamageAbsorbed {
+				callback(sim, aura, result, absorbedDamage)
+			}
+
+			if aura.ShieldStrength <= 0 {
+				aura.Deactivate(sim)
+				return
 			}
 
 			aura.Aura.SetStacks(sim, int32(aura.ShieldStrength))
 		}
 	})
+
+	return aura
+}
+
+func (aura *DamageAbsorptionAura) AttachOnDamageAbsorbed(callback OnDamageAbsorbedCallback) *DamageAbsorptionAura {
+	aura.OnDamageAbsorbed = append(aura.OnDamageAbsorbed, callback)
 
 	return aura
 }

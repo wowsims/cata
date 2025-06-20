@@ -52,7 +52,8 @@ func (hunter *Hunter) registerBarrageSpell() {
 
 	config := hunter.getBarrageConfig()
 	config.ActionID = core.ActionID{SpellID: 120360}
-	config.Flags = core.SpellFlagChanneled | core.SpellFlagAPL
+	config.ProcMask = core.ProcMaskRangedSpecial
+	config.Flags = core.SpellFlagChanneled | core.SpellFlagAPL | core.SpellFlagRanged
 	config.FocusCost = core.FocusCostOptions{
 		Cost: 30,
 	}
