@@ -7,6 +7,10 @@ import (
 )
 
 func (hunter *Hunter) registerKillShotSpell() {
+	icd := core.Cooldown{
+		Timer:    hunter.NewTimer(),
+		Duration: time.Second * 6,
+	}
 	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 53351},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -39,7 +43,10 @@ func (hunter *Hunter) registerKillShotSpell() {
 			normalizedWeaponDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower())
 
 			result := spell.CalcDamage(sim, target, normalizedWeaponDamage, spell.OutcomeRangedHitAndCrit)
-
+			if icd.IsReady(sim) {
+				icd.Use(sim)
+				spell.CD.Reset()
+			}
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

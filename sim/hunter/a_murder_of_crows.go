@@ -56,18 +56,18 @@ func (hunter *Hunter) registerAMOCSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeRangedHit)
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			if !sim.IsExecutePhase20() {
 				spell.CD.Duration = time.Minute * 2
 			}
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt: sim.CurrentTime + (time.Second * 2),
 				OnAction: func(sim *core.Simulation) {
-					if result.Landed() {
-						spell.Dot(target).Apply(sim)
-					}
 					if sim.IsExecutePhase20() {
 						spell.CD.Duration = time.Second * 30
+					}
+					if result.Landed() {
+						spell.Dot(target).Apply(sim)
 					}
 				},
 			})
