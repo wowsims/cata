@@ -48,7 +48,6 @@ type runicPowerBar struct {
 	// |DS|DS|DS|DS|DS|DS|
 	runeStates int16
 	runeMeta   [6]RuneMeta
-	btSlot     int8
 
 	bloodRuneGainMetrics  *ResourceMetrics
 	frostRuneGainMetrics  *ResourceMetrics
@@ -134,7 +133,6 @@ func (character *Character) EnableRunicPowerBar(startingRunicPower float64, maxR
 		runicRegenMultiplier: 1.0,
 
 		runeStates: baseRuneState,
-		btSlot:     -1,
 
 		onRuneChange:     onRuneChange,
 		onRunicPowerGain: onRunicPowerGain,
@@ -409,15 +407,7 @@ func (rp *runicPowerBar) ConvertToDeath(sim *Simulation, slot int8, revertAt tim
 
 	rp.runeStates |= isDeaths[slot]
 
-	if rp.btSlot != slot {
-		rp.runeMeta[slot].revertAt = NeverExpires
-	} else {
-		if rp.runeMeta[slot].revertAt != NeverExpires {
-			rp.runeMeta[slot].revertAt = max(rp.runeMeta[slot].revertAt, revertAt)
-		} else {
-			rp.runeMeta[slot].revertAt = revertAt
-		}
-	}
+	rp.runeMeta[slot].revertAt = NeverExpires
 
 	// Note we gained
 	metrics := rp.bloodRuneGainMetrics
@@ -431,57 +421,6 @@ func (rp *runicPowerBar) ConvertToDeath(sim *Simulation, slot int8, revertAt tim
 		rp.spendRuneMetrics(sim, metrics, 1)
 		rp.gainRuneMetrics(sim, rp.deathRuneGainMetrics, 1)
 	}
-}
-
-func (rp *runicPowerBar) CancelBloodTap(sim *Simulation) {
-	if rp.btSlot == -1 {
-		return
-	}
-	rp.ConvertFromDeath(sim, rp.btSlot)
-	bloodTapAura := rp.character.GetAura("Kiss of Death")
-	bloodTapAura.Deactivate(sim)
-	rp.btSlot = -1
-
-	rp.maybeFireChange(sim, ConvertFromDeath)
-}
-
-func (rp *runicPowerBar) BloodTapConversion(sim *Simulation, bloodMetrics *ResourceMetrics, deathMetrics *ResourceMetrics) {
-	changeType := None
-
-	// 1. converts a blood rune -> death rune
-	// 2. then convert one inactive blood or death rune -> active
-	if rp.runeStates&isDeaths[0] == 0 {
-		rp.btSlot = 0
-		rp.ConvertToDeath(sim, 0, sim.CurrentTime+time.Second*20)
-		changeType |= ConvertToDeath
-	} else if rp.runeStates&isDeaths[1] == 0 {
-		rp.btSlot = 1
-		rp.ConvertToDeath(sim, 1, sim.CurrentTime+time.Second*20)
-		changeType |= ConvertToDeath
-	}
-
-	if rp.runeStates&isSpents[0] > 0 {
-		rp.regenRuneInternal(sim, sim.CurrentTime, 0)
-		if rp.runeStates&isDeaths[0] > 0 {
-			rp.gainRuneMetrics(sim, deathMetrics, 1)
-		} else {
-			rp.gainRuneMetrics(sim, bloodMetrics, 1)
-		}
-		changeType |= GainRune
-	} else if rp.runeStates&isSpents[1] > 0 {
-		rp.regenRuneInternal(sim, sim.CurrentTime, 1)
-		if rp.runeStates&isDeaths[1] > 0 {
-			rp.gainRuneMetrics(sim, deathMetrics, 1)
-		} else {
-			rp.gainRuneMetrics(sim, bloodMetrics, 1)
-		}
-		changeType |= GainRune
-	}
-
-	// if PA isn't running, make it run 20s from now to disable BT
-	rp.launchPA(sim, sim.CurrentTime+20.0*time.Second)
-
-	rp.maybeFireChange(sim, changeType)
 }
 
 func (rp *runicPowerBar) LeftBloodRuneReady() bool {
@@ -909,9 +848,6 @@ func (rp *runicPowerBar) Advance(sim *Simulation, newTime time.Duration) {
 	if rp.runeStates&allDeath > 0 {
 		for i, rm := range rp.runeMeta {
 			if rm.revertAt <= newTime {
-				if rp.btSlot == int8(i) {
-					rp.btSlot = -1 // this was the BT slot
-				}
 				rp.ConvertFromDeath(sim, int8(i))
 				changeType |= ConvertFromDeath
 			}
@@ -961,7 +897,7 @@ func (rp *runicPowerBar) findReadyRune(slot int8) int8 {
 
 func (rp *runicPowerBar) spendDeathRune(sim *Simulation, order []int8, metrics *ResourceMetrics) int8 {
 	slot := rp.findReadyDeathRune(order)
-	if rp.btSlot != slot && !slices.Contains(rp.permanentDeaths, slot) {
+	if !slices.Contains(rp.permanentDeaths, slot) {
 		rp.runeMeta[slot].revertAt = NeverExpires // disable revert at
 		rp.runeStates ^= isDeaths[slot]           // clear death bit to revert.
 	}
@@ -987,10 +923,6 @@ func (rp *runicPowerBar) findReadyDeathRune(order []int8) int8 {
 		}
 	}
 	panic(fmt.Sprintf("findReadyDeathRune() - no slot found (runeStates = %12b)", rp.runeStates))
-}
-
-func (rp *runicPowerBar) IsBloodTappedRune(slot int8) bool {
-	return slot == rp.btSlot
 }
 
 type RuneCostOptions struct {
@@ -1138,15 +1070,8 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
 	for _, slot := range slots {
 		if slot == 0 || slot == 1 {
-			// If the slot to be converted is already blood-tapped, then we convert the other blood rune
-			if spell.Unit.IsBloodTappedRune(slot) {
-				otherRune := (slot + 1) % 2
-				spell.Unit.ConvertToDeath(sim, otherRune, NeverExpires)
-				changeType |= ConvertToDeath
-			} else {
-				spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
-				changeType |= ConvertToDeath
-			}
+			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+			changeType |= ConvertToDeath
 		}
 	}
 
@@ -1211,15 +1136,8 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simul
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
 	for _, slot := range slots {
 		if slot == 0 || slot == 1 {
-			// If the slot to be converted is already blood-tapped, then we convert the other blood rune
-			if spell.Unit.IsBloodTappedRune(slot) {
-				otherRune := (slot + 1) % 2
-				spell.Unit.ConvertToDeath(sim, otherRune, NeverExpires)
-				changeType |= ConvertToDeath
-			} else {
-				spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
-				changeType |= ConvertToDeath
-			}
+			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+			changeType |= ConvertToDeath
 		}
 		if slot == 2 || slot == 3 {
 			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
