@@ -17,6 +17,7 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 	hasGlyph := fire.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfInfernoBlast)
 	extraTargets := core.Ternary(hasGlyph, 4, 3)
 	numTargets := len(fire.Env.Encounter.TargetUnits) - 1
+	igniteSpellID := int32(12846)
 
 	fire.InfernoBlast = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 108853},
@@ -70,8 +71,13 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 						// not stored, was not active
 						continue
 					}
+					oldDamage := 0.0
+					if dot.ActionID.SpellID == igniteSpellID && dot.IsActive() {
+						oldDamage = dot.SnapshotBaseDamage * float64(dot.BaseTickCount)
+					}
 					(*spellRef).Proc(sim, currTarget)
 					dot.RestoreState(state, sim)
+					dot.SnapshotBaseDamage += oldDamage
 				}
 			}
 		},
