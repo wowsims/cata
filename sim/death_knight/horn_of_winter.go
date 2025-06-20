@@ -14,11 +14,14 @@ Lasts 5 min.
 func (dk *DeathKnight) registerHornOfWinter() {
 	actionID := core.ActionID{SpellID: 57330}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
-
-	rpGain := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfLoudHorn), 20, 10)
+	hasGlyphOfTheLongWinter := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfTheLongWinter)
 
 	hornArray := dk.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
-		return core.HornOfWinterAura(unit, false)
+		aura := core.HornOfWinterAura(unit, false)
+		if hasGlyphOfTheLongWinter {
+			aura.Duration = time.Hour * 1
+		}
+		return aura
 	})
 
 	dk.RegisterSpell(core.SpellConfig{
@@ -41,7 +44,7 @@ func (dk *DeathKnight) registerHornOfWinter() {
 				hornArray.Get(unit).Activate(sim)
 			}
 
-			dk.AddRunicPower(sim, rpGain, rpMetrics)
+			dk.AddRunicPower(sim, 10, rpMetrics)
 		},
 	})
 }

@@ -4,12 +4,30 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 var OutbreakActionID = core.ActionID{SpellID: 77575}
 
 // Instantly applies Blood Plague and Frost Fever to the target enemy.
 func (dk *DeathKnight) registerOutbreak() {
+	hasGlyphOfOutbreak := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfOutbreak)
+	cost := core.RuneCostOptions{}
+	cast := core.CastConfig{
+		DefaultCast: core.Cast{
+			GCD: core.GCDMin,
+		},
+	}
+
+	if hasGlyphOfOutbreak {
+		cost.RunicPowerCost = 30
+	} else {
+		cast.CD = core.Cooldown{
+			Timer:    dk.NewTimer(),
+			Duration: time.Minute,
+		}
+	}
+
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       OutbreakActionID,
 		SpellSchool:    core.SpellSchoolShadow,
@@ -19,15 +37,9 @@ func (dk *DeathKnight) registerOutbreak() {
 
 		MaxRange: 30,
 
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDMin,
-			},
-			CD: core.Cooldown{
-				Timer:    dk.NewTimer(),
-				Duration: time.Minute,
-			},
-		},
+		RuneCost: cost,
+
+		Cast: cast,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
