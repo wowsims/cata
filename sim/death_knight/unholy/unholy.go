@@ -27,8 +27,7 @@ func RegisterUnholyDeathKnight() {
 type UnholyDeathKnight struct {
 	*death_knight.DeathKnight
 
-	lastScourgeStrikeDamage  float64
-	currentMasteryMultiplier float64
+	lastScourgeStrikeDamage float64
 }
 
 func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *UnholyDeathKnight {
@@ -41,7 +40,6 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 			StartingRunicPower: unholyOptions.ClassOptions.StartingRunicPower,
 			IsDps:              true,
 		}, player.TalentsString, 56835),
-		currentMasteryMultiplier: 1.0,
 	}
 
 	uhdk.Gargoyle = uhdk.NewGargoyle()

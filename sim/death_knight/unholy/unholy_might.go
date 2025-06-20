@@ -7,7 +7,8 @@ import (
 
 func (uhdk *UnholyDeathKnight) registerUnholyMight() {
 	core.MakePermanent(uhdk.RegisterAura(core.Aura{
-		Label:    "Unholy Might" + uhdk.Label,
-		ActionID: core.ActionID{SpellID: 91107},
+		Label:      "Unholy Might" + uhdk.Label,
+		ActionID:   core.ActionID{SpellID: 91107},
+		BuildPhase: core.CharacterBuildPhaseTalents,
 	})).AttachStatDependency(uhdk.NewDynamicMultiplyStat(stats.Strength, 1.35))
 }
