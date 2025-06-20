@@ -30,10 +30,16 @@ func (dot *Dot) OutcomeTick(_ *Simulation, result *SpellResult, _ *AttackTable) 
 	result.Outcome = OutcomeHit
 	dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 }
-func (dot *Dot) OutcomeTickPhysicalHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+func (dot *Dot) OutcomeTickPhysicalHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if dot.Spell.PhysicalHitCheck(sim, attackTable) {
-		result.Outcome = OutcomeHit
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		if dot.Spell.PhysicalCritCheck(sim, attackTable) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= dot.Spell.CritDamageMultiplier()
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
 	} else {
 		result.Outcome = OutcomeMiss
 		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++

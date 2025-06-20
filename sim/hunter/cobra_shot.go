@@ -9,7 +9,7 @@ import (
 func (hunter *Hunter) registerCobraShotSpell() {
 
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
-	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77767},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskRangedSpecial,
