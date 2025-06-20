@@ -1,18 +1,17 @@
 import * as PresetUtils from '../../core/preset_utils.js';
+import { APLRotation_Type } from '../../core/proto/apl.js';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
-import DefensiveBloodApl from './apls/defensive.apl.json';
-import SimpleBloodApl from './apls/simple.apl.json';
+import DefaultApl from './apls/defensive.apl.json';
 import P1BloodGear from './gear_sets/p1.gear.json';
-import PreRaidBloodGear from './gear_sets/preraid.gear.json';
+// import PreRaidBloodGear from './gear_sets/preraid.gear.json';
 
-export const PRERAID_BLOOD_PRESET = PresetUtils.makePresetGear('Pre-Raid', PreRaidBloodGear);
+// export const PRERAID_BLOOD_PRESET = PresetUtils.makePresetGear('Pre-Raid', PreRaidBloodGear);
 export const P1_BLOOD_PRESET = PresetUtils.makePresetGear('P1', P1BloodGear);
 
-export const BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Simple', SimpleBloodApl);
-export const BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defensive', DefensiveBloodApl);
+export const BLOOD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defensive', DefaultApl);
 
 // Preset options for EP weights
 export const P1_BLOOD_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -61,6 +60,8 @@ export const BloodTalents = {
 export const P1_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: P1_BLOOD_PRESET,
 	epWeights: P1_BLOOD_EP_PRESET,
+	rotationType: APLRotation_Type.TypeAPL,
+	rotation: BLOOD_ROTATION_PRESET_DEFAULT,
 });
 
 export const DefaultOptions = BloodDeathKnight_Options.create({

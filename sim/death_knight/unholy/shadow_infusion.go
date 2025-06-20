@@ -36,7 +36,7 @@ func (uhdk *UnholyDeathKnight) registerShadowInfusion() {
 	}).AttachDependentAura(uhdk.GetOrRegisterAura(core.Aura{
 		Label:     "Shadow Infusion" + uhdk.Label,
 		ActionID:  actionID,
-		Duration:  time.Second * 30,
+		Duration:  core.NeverExpires,
 		MaxStacks: 5,
 	}))
 

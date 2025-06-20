@@ -4,17 +4,19 @@ import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/p
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
+import CataApl from '../../death_knight/unholy/apls/cata.apl.json';
 import DefaultApl from '../../death_knight/unholy/apls/default.apl.json';
-import P1BISGear from '../../death_knight/unholy/gear_sets/p1.bis.gear.json';
-import PreBISGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
+import P1Gear from '../../death_knight/unholy/gear_sets/p1.gear.json';
+// import PreBISGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-export const PREBIS_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis', PreBISGear);
-export const P1_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1BISGear);
+// export const PREBIS_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis', PreBISGear);
+export const P1_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
 
 export const DEFAULT_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const CATA_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('!OLD! - Cata APL', CataApl);
 
 // Preset options for EP weights
 export const P1_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -42,7 +44,7 @@ export const P1_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '221111',
+		talentsString: '321111',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfPestilence,
@@ -54,21 +56,22 @@ export const DefaultTalents = {
 	}),
 };
 
-export const PREBIS_PRESET = PresetUtils.makePresetBuild('Pre-bis', {
-	gear: PREBIS_GEAR_PRESET,
-	epWeights: P1_UNHOLY_EP_PRESET,
-	rotationType: APLRotationType.TypeAuto,
-});
+// export const PREBIS_PRESET = PresetUtils.makePresetBuild('Pre-bis', {
+// 	gear: PREBIS_GEAR_PRESET,
+// 	epWeights: P1_UNHOLY_EP_PRESET,
+// 	rotationType: APLRotationType.TypeAuto,
+// });
 
 export const P1_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: P1_BIS_GEAR_PRESET,
 	epWeights: P1_UNHOLY_EP_PRESET,
 	rotationType: APLRotationType.TypeAuto,
+	rotation: DEFAULT_ROTATION_PRESET,
 });
 
 export const DefaultOptions = UnholyDeathKnight_Options.create({
 	classOptions: {
-		startingRunicPower: 55,
+		startingRunicPower: 0,
 	},
 });
 

@@ -82,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			weakenedArmor: true,
 			weakenedBlows: true,
 		}),
-		rotationType: APLRotation_Type.TypeAPL,
+		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	autoRotation: (_: Player<Spec.SpecUnholyDeathKnight>): APLRotation => Presets.DEFAULT_ROTATION_PRESET.rotation.rotation!,
@@ -125,10 +125,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.DEFAULT_ROTATION_PRESET],
+		rotations: [Presets.DEFAULT_ROTATION_PRESET, Presets.CATA_ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P1_BIS_GEAR_PRESET],
-		builds: [Presets.PREBIS_PRESET, Presets.P1_PRESET],
+		gear: [Presets.P1_BIS_GEAR_PRESET],
+		builds: [Presets.P1_PRESET],
 	},
 
 	raidSimPresets: [

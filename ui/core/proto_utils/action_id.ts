@@ -570,15 +570,6 @@ export class ActionId {
 					name += ' (Off-target)';
 				}
 				break;
-			case 'Rune Strike':
-				if (tag == 0) {
-					name += ' (Queue)';
-				} else if (tag == 1) {
-					name += ' (Main Hand)';
-				} else if (tag == 2) {
-					name += ' (Off Hand)';
-				}
-				break;
 			case 'Raging Blow':
 				if (tag == 2) {
 					name += ' (Main Hand)';
