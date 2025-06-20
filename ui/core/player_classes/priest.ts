@@ -20,6 +20,7 @@ export class Priest extends PlayerClass<Class.ClassPriest> {
 		Race.RaceTauren,
 		Race.RaceBloodElf,
 		Race.RaceGoblin,
+		Race.RaceHordePandaren,
 		// [A]
 		Race.RaceWorgen,
 		Race.RaceHuman,
@@ -27,6 +28,7 @@ export class Priest extends PlayerClass<Class.ClassPriest> {
 		Race.RaceNightElf,
 		Race.RaceGnome,
 		Race.RaceDraenei,
+		Race.RaceAlliancePandaren,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [
