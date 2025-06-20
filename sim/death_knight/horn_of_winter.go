@@ -26,7 +26,7 @@ func (dk *DeathKnight) registerHornOfWinter() {
 
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: DeathKnightSpellHornOfWinter,
 
 		Cast: core.CastConfig{
