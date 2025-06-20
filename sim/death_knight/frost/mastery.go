@@ -2,15 +2,18 @@ package frost
 
 import (
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // Increases all Frost damage done by (16 + (<Mastery Rating>/600)*2)%.
 func (fdk *FrostDeathKnight) registerMastery() {
+	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFrost,
+		FloatValue: fdk.getMasteryPercent(),
+	})
+
 	fdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		oldMasteryMultiplier := fdk.currentMasteryMultiplier
-		fdk.currentMasteryMultiplier = (1.0 + fdk.getMasteryPercent(newMastery))
-		fdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= fdk.currentMasteryMultiplier / oldMasteryMultiplier
+		masteryMod.UpdateFloatValue(fdk.getMasteryPercent())
 	})
 
 	core.MakePermanent(fdk.RegisterAura(core.Aura{
@@ -18,17 +21,14 @@ func (fdk *FrostDeathKnight) registerMastery() {
 		ActionID: core.ActionID{SpellID: 77514},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			oldMasteryMultiplier := fdk.currentMasteryMultiplier
-			fdk.currentMasteryMultiplier = 1.0 + fdk.getMasteryPercent(fdk.GetStat(stats.MasteryRating))
-			fdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= fdk.currentMasteryMultiplier / oldMasteryMultiplier
+			masteryMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= fdk.currentMasteryMultiplier
-			fdk.currentMasteryMultiplier = 1.0
+			masteryMod.Deactivate()
 		},
 	}))
 }
 
-func (fdk *FrostDeathKnight) getMasteryPercent(masteryRating float64) float64 {
-	return 0.16 + 0.02*core.MasteryRatingToMasteryPoints(masteryRating)
+func (fdk *FrostDeathKnight) getMasteryPercent() float64 {
+	return 0.16 + 0.02*fdk.GetMasteryPoints()
 }

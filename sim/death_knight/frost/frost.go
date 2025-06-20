@@ -26,8 +26,6 @@ func RegisterFrostDeathKnight() {
 
 type FrostDeathKnight struct {
 	*death_knight.DeathKnight
-
-	currentMasteryMultiplier float64
 }
 
 func NewFrostDeathKnight(character *core.Character, player *proto.Player) *FrostDeathKnight {
@@ -38,7 +36,6 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 			StartingRunicPower: frostOptions.ClassOptions.StartingRunicPower,
 			IsDps:              true,
 		}, player.TalentsString, 0),
-		currentMasteryMultiplier: 1.0,
 	}
 
 	return fdk

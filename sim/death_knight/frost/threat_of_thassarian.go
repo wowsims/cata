@@ -15,15 +15,17 @@ func (fdk *FrostDeathKnight) registerThreatOfThassarian() {
 		}
 	}
 
-	fdk.ThreatOfThassarianAura = fdk.RegisterAura(core.Aura{
+	fdk.ThreatOfThassarianAura = core.MakePermanent(fdk.RegisterAura(core.Aura{
 		Label:    "Threat of Thassarian" + fdk.Label,
 		ActionID: core.ActionID{SpellID: 66192},
-		Duration: core.NeverExpires,
 
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			checkWeaponType(sim, aura)
+		},
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			checkWeaponType(sim, aura)
 		},
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  death_knight.DeathKnightSpellFrostStrike,
 		FloatValue: 0.5,
