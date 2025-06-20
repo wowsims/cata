@@ -486,6 +486,7 @@ func NewItem(itemSpec ItemSpec) Item {
 	item.ChallengeMode = itemSpec.ChallengeMode
 	scalingOptions := item.GetEffectiveScalingOptions()
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
+
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
 	item.RandPropPoints = scalingOptions.RandPropPoints
@@ -557,11 +558,18 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 
 func NewEquipmentSet(equipSpec EquipmentSpec) Equipment {
 	equipment := Equipment{}
+	isChallengeMode := false
 	for _, itemSpec := range equipSpec {
 		if itemSpec.ID != 0 {
 			equipment.EquipItem(NewItem(itemSpec))
+			isChallengeMode = itemSpec.ChallengeMode
 		}
 	}
+
+	if isChallengeMode {
+		equipment.ScaleForChallengeMode()
+	}
+
 	return equipment
 }
 
@@ -604,6 +612,47 @@ func (equipment *Equipment) Stats() stats.Stats {
 		equipStats = equipStats.Add(ItemEquipmentStats(item))
 	}
 	return equipStats
+}
+
+func (equipment *Equipment) ScaleForChallengeMode() {
+	statsGained := 0.0
+	divisor := 0.0
+	secondaries := []stats.Stat{stats.CritRating, stats.HasteRating, stats.MasteryRating, stats.DodgeRating, stats.ParryRating}
+
+	for idx := range equipment {
+		item := equipment.GetItemBySlot(proto.ItemSlot(idx))
+		if item.ScalingOptions == nil {
+			continue
+		}
+
+		baseStats := stats.FromProtoMap(item.ScalingOptions[int32(proto.ItemLevelState_Base)].Stats)
+		for _, stat := range []stats.Stat{stats.HitRating, stats.ExpertiseRating} {
+			statsGained += baseStats[stat] - item.Stats[stat]
+		}
+
+		item.Stats[stats.HitRating] = baseStats[stats.HitRating]
+		item.Stats[stats.ExpertiseRating] = baseStats[stats.ExpertiseRating]
+
+		// sum up secondaries
+		for _, stat := range secondaries {
+			divisor += item.Stats[stat]
+		}
+	}
+
+	// scale
+	dividend := divisor - statsGained
+	factor := dividend / divisor
+
+	// apply scaling
+	for idx := range equipment {
+		item := equipment.GetItemBySlot(proto.ItemSlot(idx))
+		if item.ScalingOptions == nil {
+			continue
+		}
+		for _, stat := range secondaries {
+			item.Stats[stat] = math.Round(item.Stats[stat] * factor)
+		}
+	}
 }
 
 func ItemEquipmentStats(item Item) stats.Stats {
