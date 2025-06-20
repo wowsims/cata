@@ -95,49 +95,6 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
-	Name: "Wyrmstalker Battlegear",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			hunter := agent.(HunterAgent).GetHunter()
-
-			// Handled in Cobra and Steady code respectively
-			hunter.T13_2pc = setBonusAura
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			hunter := agent.(HunterAgent).GetHunter()
-			var chronoHunter = hunter.RegisterAura(core.Aura{ // 105919
-				Label:    "Chronohunter",
-				Duration: time.Second * 15,
-				ActionID: core.ActionID{SpellID: 105919},
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MultiplyRangedSpeed(sim, 1.3)
-					if hunter.Pet != nil {
-						hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1.3)
-					}
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MultiplyRangedSpeed(sim, 1/1.3)
-					if hunter.Pet != nil {
-						hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1/1.3)
-					}
-				},
-			})
-
-			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:           "T13 4-set",
-				Callback:       core.CallbackOnCastComplete,
-				ClassSpellMask: HunterSpellArcaneShot,
-				ProcChance:     0.4,
-				ICD:            time.Second * 110,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					chronoHunter.Activate(sim)
-				},
-			})
-		},
-	},
-})
-
 var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Lightning-Charged Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{

@@ -13,7 +13,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	}
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
-	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 56641},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: HunterSpellSteadyShot,
