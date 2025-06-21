@@ -4,11 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/hunter"
 )
 
 func (bmHunter *BeastMasteryHunter) ApplyTalents() {
 	bmHunter.applyFrenzy()
+	bmHunter.applyGoForTheThroat()
 	bmHunter.applyCobraStrikes()
 	bmHunter.Hunter.ApplyTalents()
 }
@@ -48,6 +50,29 @@ func (bmHunter *BeastMasteryHunter) applyFrenzy() {
 				bmHunter.Pet.FrenzyAura.Activate(sim)
 				bmHunter.Pet.FrenzyAura.SetStacks(sim, 1)
 			}
+		},
+	})
+}
+
+func (bmHunter *BeastMasteryHunter) applyGoForTheThroat() {
+	if bmHunter.Pet == nil {
+		return
+	}
+
+	focusMetrics := bmHunter.Pet.NewFocusMetrics(core.ActionID{SpellID: 34953})
+
+	bmHunter.RegisterAura(core.Aura{
+		Label:    "Go for the Throat",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !(spell.OtherID == proto.OtherAction_OtherActionShoot && result.Outcome.Matches(core.OutcomeCrit)) {
+				return
+			}
+
+			bmHunter.Pet.AddFocus(sim, 15, focusMetrics)
 		},
 	})
 }
