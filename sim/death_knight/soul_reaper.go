@@ -26,16 +26,12 @@ func (dk *DeathKnight) registerSoulReaper() {
 			NumberOfTicks: 1,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// TODO
-				// healthThreshold := core.TernaryFloat64(dk.soulReaper45Percent, 0.45, 0.35)
-				if !sim.IsExecutePhase35() {
-					return
+				if sim.IsExecutePhase35() || (dk.soulReaper45Percent && sim.IsExecutePhase45()) {
+					baseDamage := dk.CalcAndRollDamageRange(sim, 48, 0.15000000596) +
+						1.20000004768*dot.Spell.MeleeAttackPower()
+					dot.Snapshot(target, baseDamage)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
 				}
-
-				baseDamage := dk.CalcAndRollDamageRange(sim, 48, 0.15000000596) +
-					1.20000004768*dot.Spell.MeleeAttackPower()
-				dot.Snapshot(target, baseDamage)
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
 			},
 		},
 
@@ -120,16 +116,12 @@ func (dk *DeathKnight) registerDrwSoulReaper() *core.Spell {
 			NumberOfTicks: 1,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// TODO
-				// healthThreshold := core.TernaryFloat64(dk.soulReaper45Percent, 0.45, 0.35)
-				if !sim.IsExecutePhase35() {
-					return
+				if sim.IsExecutePhase35() || (dk.soulReaper45Percent && sim.IsExecutePhase45()) {
+					baseDamage := dk.CalcAndRollDamageRange(sim, 48, 0.15000000596) +
+						1.20000004768*dot.Spell.MeleeAttackPower()
+					dot.Snapshot(target, baseDamage)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
 				}
-
-				baseDamage := dk.CalcAndRollDamageRange(sim, 48, 0.15000000596) +
-					1.20000004768*dot.Spell.MeleeAttackPower()
-				dot.Snapshot(target, baseDamage)
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
 			},
 		},
 

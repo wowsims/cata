@@ -18,6 +18,7 @@ type Encounter struct {
 	ExecuteProportion_20 float64
 	ExecuteProportion_25 float64
 	ExecuteProportion_35 float64
+	ExecuteProportion_45 float64
 	ExecuteProportion_90 float64
 
 	EndFightAtHealth float64
@@ -34,6 +35,7 @@ type Encounter struct {
 func NewEncounter(options *proto.Encounter) Encounter {
 	options.ExecuteProportion_25 = max(options.ExecuteProportion_25, options.ExecuteProportion_20)
 	options.ExecuteProportion_35 = max(options.ExecuteProportion_35, options.ExecuteProportion_25)
+	options.ExecuteProportion_45 = max(options.ExecuteProportion_45, options.ExecuteProportion_35)
 
 	encounter := Encounter{
 		Duration:             DurationFromSeconds(options.Duration),
@@ -41,6 +43,7 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		ExecuteProportion_20: max(options.ExecuteProportion_20, 0),
 		ExecuteProportion_25: max(options.ExecuteProportion_25, 0),
 		ExecuteProportion_35: max(options.ExecuteProportion_35, 0),
+		ExecuteProportion_45: max(options.ExecuteProportion_45, 0),
 		ExecuteProportion_90: max(options.ExecuteProportion_90, 0),
 		Targets:              []*Target{},
 		ActiveTargets:        []*Target{},

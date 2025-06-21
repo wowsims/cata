@@ -135,7 +135,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		ItemSlot.ItemSlotOffHand,
 	],
 	encounterPicker: {
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
