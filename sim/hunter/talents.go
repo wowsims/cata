@@ -15,9 +15,9 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 	procChance := 0.30
 
 	tothMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
+		Kind:       core.SpellMod_PowerCost_Flat,
 		ClassMask:  HunterSpellMultiShot | HunterSpellArcaneShot,
-		FloatValue: -0.5,
+		FloatValue: -20,
 	})
 
 	tothAura := hunter.RegisterAura(core.Aura{
