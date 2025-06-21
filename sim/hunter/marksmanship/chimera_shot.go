@@ -20,7 +20,7 @@ func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
 		MaxRange:       40,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 50,
+			Cost: 45,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

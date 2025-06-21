@@ -671,8 +671,8 @@ func (rp *runicPowerBar) RegenAllFrostAndUnholyRunesAsDeath(sim *Simulation, dea
 }
 
 func (rp *runicPowerBar) AnyDepletedRunes() bool {
-	for i := range rp.runeMeta {
-		if rp.runeStates&isSpents[i] > 0 && rp.runeMeta[i].regenAt == NeverExpires {
+	for slot := int8(0); slot < 6; slot++ {
+		if rp.runeStates&isSpents[slot] > 0 && rp.runeMeta[slot].regenAt == NeverExpires {
 			return true
 		}
 	}
@@ -772,6 +772,10 @@ func (rp *runicPowerBar) MultiplyRuneRegenSpeed(sim *Simulation, multiplier floa
 
 func (rp *runicPowerBar) MultiplyRunicRegen(multiply float64) {
 	rp.runicRegenMultiplier *= multiply
+}
+
+func (rp *runicPowerBar) GetRuneRegenMultiplier() float64 {
+	return rp.runeRegenMultiplier
 }
 
 func (rp *runicPowerBar) getTotalRegenMultiplier() float64 {
