@@ -513,10 +513,11 @@ func (sim *Simulation) Step() bool {
 		return true
 	}
 
+	pa.consumed = true
+
 	if pa.NextActionAt > sim.CurrentTime {
 		sim.advance(pa.NextActionAt)
 	}
-	pa.consumed = true
 
 	if pa.cancelled {
 		return false
