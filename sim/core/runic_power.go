@@ -671,8 +671,8 @@ func (rp *runicPowerBar) RegenAllFrostAndUnholyRunesAsDeath(sim *Simulation, dea
 }
 
 func (rp *runicPowerBar) AnyDepletedRunes() bool {
-	for i := range rp.runeMeta {
-		if rp.runeStates&isSpents[i] > 0 && rp.runeMeta[i].regenAt == NeverExpires {
+	for slot := int8(0); slot < 6; slot++ {
+		if rp.runeStates&isSpents[slot] > 0 && rp.runeMeta[slot].regenAt == NeverExpires {
 			return true
 		}
 	}

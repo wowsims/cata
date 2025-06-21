@@ -62,8 +62,8 @@ func (dk *DeathKnight) registerRoilingBlood() {
 		ICD:            core.SpellBatchWindow,
 
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-			return dk.BloodPlagueSpell.RelatedAuraArrays.AnyActive(result.Target) ||
-				dk.FrostFeverSpell.RelatedAuraArrays.AnyActive(result.Target)
+			return dk.BloodPlagueSpell.Dot(result.Target).IsActive() ||
+				dk.FrostFeverSpell.Dot(result.Target).IsActive()
 		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -106,12 +106,14 @@ func (dk *DeathKnight) registerPlagueLeech() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return dk.BloodPlagueSpell.RelatedAuraArrays.AnyActive(target) &&
-				dk.FrostFeverSpell.RelatedAuraArrays.AnyActive(target) &&
+			return dk.BloodPlagueSpell.Dot(target).IsActive() &&
+				dk.FrostFeverSpell.Dot(target).IsActive() &&
 				dk.AnyDepletedRunes()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dk.BloodPlagueSpell.Dot(target).Deactivate(sim)
+			dk.FrostFeverSpell.Dot(target).Deactivate(sim)
 			dk.RegenRandomDepletedRune(sim, runeMetrics)
 			dk.RegenRandomDepletedRune(sim, runeMetrics)
 		},
