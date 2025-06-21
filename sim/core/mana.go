@@ -84,8 +84,12 @@ func (unit *Unit) CurrentMana() float64 {
 func (unit *Unit) CurrentManaPercent() float64 {
 	return unit.CurrentMana() / unit.MaxMana()
 }
-func (unit *Unit) SetCurrentMana(newMana float64) {
-	unit.currentMana = newMana
+func (unit *Unit) SetCurrentMana(sim *Simulation, newMana float64, metrics *ResourceMetrics) {
+	if manaDiff := unit.currentMana - newMana; manaDiff > 0.0 {
+		unit.AddMana(sim, math.Abs(manaDiff), metrics)
+	} else {
+		unit.SpendMana(sim, math.Abs(manaDiff), metrics)
+	}
 }
 
 func (unit *Unit) AddMana(sim *Simulation, amount float64, metrics *ResourceMetrics) {

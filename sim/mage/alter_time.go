@@ -13,6 +13,8 @@ func (mage *Mage) registerAlterTimeCD() {
 	actionID := core.ActionID{SpellID: 108978}
 	mageCurrentMana := 0.0
 	mageCurrentHitpoints := 0.0
+	manaMetrics := mage.NewManaMetrics(actionID)
+	healthMetrics := mage.NewHealthMetrics(actionID)
 
 	mage.AlterTimeAura = mage.RegisterAura(core.Aura{
 		Label:    "Alter Time",
@@ -26,8 +28,8 @@ func (mage *Mage) registerAlterTimeCD() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.SetCurrentMana(mageCurrentMana)
-			mage.SetCurrentHitPoints(mageCurrentHitpoints)
+			mage.SetCurrentMana(sim, mageCurrentMana, manaMetrics)
+			mage.SetCurrentHealth(sim, mageCurrentHitpoints, healthMetrics)
 			for _, auraRef := range allAuras {
 				aura := auraRef
 				state := auraState[aura.ActionID.SpellID]
@@ -56,7 +58,12 @@ func (mage *Mage) registerAlterTimeCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			mage.AlterTimeAura.Activate(sim)
+			if mage.AlterTimeAura.IsActive() {
+				mage.AlterTimeAura.Deactivate(sim)
+			} else {
+				mage.AlterTimeAura.Activate(sim)
+			}
+
 		},
 	})
 

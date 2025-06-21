@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core/proto"
@@ -45,8 +46,12 @@ func (hb *healthBar) CurrentHealthPercent() float64 {
 	return hb.currentHealth / hb.unit.stats[stats.Health]
 }
 
-func (unit *Unit) SetCurrentHitPoints(newHitpoints float64) {
-	unit.currentHealth = newHitpoints
+func (unit *Unit) SetCurrentHealth(sim *Simulation, newHealth float64, metrics *ResourceMetrics) {
+	if healthDiff := unit.currentHealth - newHealth; healthDiff > 0.0 {
+		unit.GainHealth(sim, math.Abs(healthDiff), metrics)
+	} else {
+		unit.RemoveHealth(sim, math.Abs(healthDiff))
+	}
 }
 
 func (hb *healthBar) GainHealth(sim *Simulation, amount float64, metrics *ResourceMetrics) {
