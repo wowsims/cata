@@ -41,7 +41,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		},
 		BonusCritPercent:         0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         0.66,
+		DamageMultiplier:         0.726,
 		CritMultiplier:           hunter.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 

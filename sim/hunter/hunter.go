@@ -239,6 +239,7 @@ const (
 	HunterSpellBestialWrath
 	HunterPetFocusDump
 	HunterPetDamage
+	HunterSpellBarrage
 	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellMultiShot | HunterSpellAimedShot
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |

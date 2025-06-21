@@ -17,27 +17,5 @@ export const MMRotationConfig = {
 				{ name: 'AOE', value: RotationType.Aoe },
 			],
 		}),
-		InputHelpers.makeRotationEnumInput<Spec.SpecMarksmanshipHunter, HunterStingType>({
-			fieldName: 'sting',
-			label: 'Sting',
-			labelTooltip: 'Maintains the selected Sting on the primary target.',
-			values: [
-				{ name: 'None', value: HunterStingType.NoSting },
-				{ name: 'Scorpid Sting', value: HunterStingType.ScorpidSting },
-				{ name: 'Serpent Sting', value: HunterStingType.SerpentSting },
-			],
-			showWhen: (player: Player<Spec.SpecMarksmanshipHunter>) => player.getSimpleRotation().type == RotationType.SingleTarget,
-		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecMarksmanshipHunter>({
-			fieldName: 'trapWeave',
-			label: 'Trap Weave',
-			labelTooltip: 'Uses Explosive Trap at appropriate times. Note that selecting this will disable Black Arrow because they share a CD.',
-		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecMarksmanshipHunter>({
-			fieldName: 'multiDotSerpentSting',
-			label: 'Multi-Dot Serpent Sting',
-			labelTooltip: 'Casts Serpent Sting on multiple targets',
-			changeEmitter: (player: Player<Spec.SpecMarksmanshipHunter>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
 	],
 };

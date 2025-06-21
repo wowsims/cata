@@ -37,7 +37,7 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / mmHunter.TotalRangedHasteMultiplier())
 			},
 		},
-		DamageMultiplier: 4.5,
+		DamageMultiplier: 4.95,
 		CritMultiplier:   mmHunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 

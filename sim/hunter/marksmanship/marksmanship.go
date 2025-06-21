@@ -81,6 +81,7 @@ func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.registerAimedShotSpell()
 	mmHunter.registerChimeraShotSpell()
 	mmHunter.applyMastery()
+	mmHunter.ApplySpecialization()
 }
 
 type MarksmanshipHunter struct {

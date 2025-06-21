@@ -392,9 +392,9 @@ export class ActionId {
 				break;
 			case 'Shadow Blades':
 				if (tag == 1) {
-					name = 'Shadow Blade'
+					name = 'Shadow Blade';
 				} else if (tag == 2) {
-					name = 'Shadow Blade Off-hand'
+					name = 'Shadow Blade Off-hand';
 				}
 				break;
 			case 'Bladestorm':
@@ -423,7 +423,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (Hit)';
 				} else {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Wind Lash':
@@ -656,7 +656,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (No Orb)';
 				}
-			case 'Improved Steady Shot':
+			case 'Steady Focus':
 				if (tag == 2) {
 					name += ' (pre)';
 				}
