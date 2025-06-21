@@ -341,7 +341,7 @@ func (paladin *Paladin) registerSacredShield() {
 			},
 			ShieldStrengthCalculator: func(unit *core.Unit) float64 {
 				absorbAmount := baseHealing + sacredShield.SpellPower()*spCoef
-				// Beta chans 2025-06-13: https://www.wowhead.com/mop-classic/news/some-warlords-of-draenor-pre-patch-class-changes-coming-to-mists-of-pandaria-377239
+				// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/some-warlords-of-draenor-pre-patch-class-changes-coming-to-mists-of-pandaria-377239
 				// - The shielding on Sacred Shield has been raised by 43%. 5.4 Revert
 				// The tooltip now reads: The shield absorbs up to $?!a137029[${($m1+0.819*$SPH)/0.7} ][${$m1+0.819*$SPH}] damage
 				// 137029 is the Holy specific Hotfix Passive, tested ingame and it applies for Retribution as well
