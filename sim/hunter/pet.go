@@ -14,14 +14,12 @@ type HunterPet struct {
 
 	hunterOwner *Hunter
 
-	CobraStrikesAura     *core.Aura
-	KillCommandAura      *core.Aura
 	FrenzyStacksSnapshot float64
 	FrenzyAura           *core.Aura
 
-	specialAbility *core.Spell
+	SpecialAbility *core.Spell
 	KillCommand    *core.Spell
-	focusDump      *core.Spell
+	FocusDump      *core.Spell
 	exoticAbility  *core.Spell
 	lynxRushSpell  *core.Spell
 
@@ -172,11 +170,11 @@ func (hp *HunterPet) Initialize() {
 	cfg := DefaultPetConfigs[hp.hunterOwner.Options.PetType]
 	// Primary active ability (often a cooldown)
 	if cfg.SpecialAbility != Unknown {
-		hp.specialAbility = hp.NewPetAbility(cfg.SpecialAbility, true)
+		hp.SpecialAbility = hp.NewPetAbility(cfg.SpecialAbility, true)
 	}
 
 	if cfg.FocusDump != Unknown {
-		hp.focusDump = hp.NewPetAbility(cfg.FocusDump, false)
+		hp.FocusDump = hp.NewPetAbility(cfg.FocusDump, false)
 	}
 
 	// Optional exotic ability
@@ -218,23 +216,23 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 		hp.wolverineBite.Cast(sim, target)
 	}
 
-	if hp.focusDump == nil {
-		hp.specialAbility.Cast(sim, target)
+	if hp.FocusDump == nil {
+		hp.SpecialAbility.Cast(sim, target)
 		return
 	}
-	if hp.specialAbility == nil {
-		hp.focusDump.Cast(sim, target)
+	if hp.SpecialAbility == nil {
+		hp.FocusDump.Cast(sim, target)
 		return
 	}
 
 	if hp.config.RandomSelection {
 		if sim.RandomFloat("Hunter Pet Ability") < 0.5 {
-			_ = hp.specialAbility.Cast(sim, target) || hp.focusDump.Cast(sim, target)
+			_ = hp.SpecialAbility.Cast(sim, target) || hp.FocusDump.Cast(sim, target)
 		} else {
-			_ = hp.focusDump.Cast(sim, target) || hp.specialAbility.Cast(sim, target)
+			_ = hp.FocusDump.Cast(sim, target) || hp.SpecialAbility.Cast(sim, target)
 		}
 	} else {
-		_ = hp.specialAbility.Cast(sim, target) || hp.focusDump.Cast(sim, target)
+		_ = hp.SpecialAbility.Cast(sim, target) || hp.FocusDump.Cast(sim, target)
 	}
 }
 

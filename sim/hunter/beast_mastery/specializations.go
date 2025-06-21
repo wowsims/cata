@@ -4,10 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/hunter"
 )
 
 func (bmHunter *BeastMasteryHunter) ApplyTalents() {
 	bmHunter.applyFrenzy()
+	bmHunter.applyCobraStrikes()
 	bmHunter.Hunter.ApplyTalents()
 }
 
@@ -45,6 +47,61 @@ func (bmHunter *BeastMasteryHunter) applyFrenzy() {
 			} else {
 				bmHunter.Pet.FrenzyAura.Activate(sim)
 				bmHunter.Pet.FrenzyAura.SetStacks(sim, 1)
+			}
+		},
+	})
+}
+
+func (bmHunter *BeastMasteryHunter) applyCobraStrikes() {
+	if bmHunter.Pet == nil {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 53260}
+	procChance := 0.15
+	csAura := bmHunter.Pet.RegisterAura(core.Aura{
+		Label:     "Cobra Strikes",
+		ActionID:  actionID,
+		Duration:  time.Second * 15,
+		MaxStacks: 12,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			bmHunter.Pet.FocusDump.BonusCritPercent += 100
+			if bmHunter.Pet.SpecialAbility != nil {
+				bmHunter.Pet.SpecialAbility.BonusCritPercent += 100
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			bmHunter.Pet.FocusDump.BonusCritPercent -= 100
+			if bmHunter.Pet.SpecialAbility != nil {
+				bmHunter.Pet.SpecialAbility.BonusCritPercent -= 100
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+
+	bmHunter.RegisterAura(core.Aura{
+		Label:    "Cobra Strikes",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Matches(hunter.HunterSpellArcaneShot) {
+				return
+			}
+
+			if sim.RandomFloat("Cobra Strikes") < procChance {
+				if csAura.IsActive() {
+					csAura.SetStacks(sim, csAura.GetStacks()+2)
+					csAura.Refresh(sim) // TODO: Confirm how stacking works
+				} else {
+					csAura.Activate(sim)
+					csAura.SetStacks(sim, 2)
+				}
 			}
 		},
 	})
