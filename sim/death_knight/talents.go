@@ -672,7 +672,6 @@ func (dk *DeathKnight) registerBloodTap() {
 			if ok, slot := dk.RegenRandomDepletedRune(sim, runeMetrics); ok {
 				dk.ConvertToDeath(sim, slot, core.NeverExpires)
 				bloodChargeAura.RemoveStacks(sim, 5)
-				dk.AddRunicPower(sim, 10, runeMetrics[4])
 			}
 		},
 	})
