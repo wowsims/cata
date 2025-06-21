@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 102
+// NextIndex: 103
 message APLValue {
 	UUID uuid = 85;
 
@@ -129,7 +129,7 @@ message APLValue {
 		APLValueMaxComboPoints max_combo_points = 93;
 		APLValueMaxEnergy max_energy = 87;
 		APLValueMaxFocus max_focus = 88;
-		APLValueMaxRage max_rage = 101;
+		APLValueMaxRage max_rage = 102;
 		APLValueMaxRunicPower max_runic_power = 86;
 		APLValueEnergyRegenPerSecond energy_regen_per_second = 89;
 		APLValueFocusRegenPerSecond focus_regen_per_second = 90;
