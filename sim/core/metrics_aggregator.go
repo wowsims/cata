@@ -466,7 +466,7 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 				timeToOOM = min(timeToOOM, time.Minute*60)
 
 				if timeToOOM < time.Minute*60 {
-					fmt.Println("Less than 1 hour till oom")
+					fmt.Printf("Time till oom %f\n", timeToOOM.Minutes())
 				}
 			} else {
 				timeToOOM = time.Minute * 60
