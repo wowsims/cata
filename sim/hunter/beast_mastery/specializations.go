@@ -32,6 +32,7 @@ func (bmHunter *BeastMasteryHunter) applyFrenzy() {
 		},
 	})
 
+	procChance := 0.4
 	bmHunter.Pet.RegisterAura(core.Aura{
 		Label:    "FrenzyHandler",
 		Duration: core.NeverExpires,
@@ -40,6 +41,9 @@ func (bmHunter *BeastMasteryHunter) applyFrenzy() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+				return
+			}
+			if sim.RandomFloat("Frenzy") >= procChance {
 				return
 			}
 			if bmHunter.Pet.FrenzyAura.IsActive() {
