@@ -8,7 +8,7 @@ import (
 )
 
 func (fire *FireMage) registerPyroblastSpell() {
-
+	actionID := core.ActionID{SpellID: 11366}
 	pyroblastVariance := 0.24    // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "Variance"
 	pyroblastScaling := 1.98     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "Coefficient"
 	pyroblastCoefficient := 1.98 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2948 Field: "BonusCoefficient"
@@ -16,7 +16,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 	pyroblastDotCoefficient := .36
 
 	fire.Pyroblast = fire.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11366},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -50,7 +50,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 	})
 
 	fire.Pyroblast.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
+		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellPyroblastDot,

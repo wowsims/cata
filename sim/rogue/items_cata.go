@@ -68,7 +68,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 				ActionID:         core.ActionID{SpellID: 99173},
 				DotAuraLabel:     "Burning Wounds",
 				IncludeAuraDelay: true,
-				SetBonusAura:     setBonusAura,
+				ParentAura:       setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:     "Rogue T12 2P Bonus",

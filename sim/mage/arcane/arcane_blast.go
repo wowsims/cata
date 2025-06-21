@@ -22,7 +22,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 1.66666698456,
+			BaseCostPercent: 1.5, // Arcane Blast mana cost lowered by 10% to 1.5% of base mana (was 1.666%) -  https://eu.forums.blizzard.com/en/wow/t/mists-of-pandaria-classic-development-notes-updated-20-june/571162/13
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -31,7 +31,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.29, // Arcane Blast damage increased by 29% -  https://eu.forums.blizzard.com/en/wow/t/mists-of-pandaria-classic-development-notes-updated-20-june/571162/13
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		BonusCoefficient: arcaneBlastCoefficient,
 		ThreatMultiplier: 1,

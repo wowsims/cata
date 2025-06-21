@@ -14,7 +14,7 @@ func (hunter *Hunter) registerKillCommandSpell() {
 
 	actionID := core.ActionID{SpellID: 34026}
 
-	hunter.KillCommand = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMelee,

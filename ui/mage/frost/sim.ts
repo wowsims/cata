@@ -58,10 +58,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 					hasteBreakpoints.get('22-tick - Nether Tempest')!,
 				],
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0.47 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+				postCapEPs: [0.45 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [hasteSoftCapConfig];
+			const critSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellCritPercent, {
+				breakpoints: [25],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.42 * Mechanics.CRIT_RATING_PER_CRIT_PERCENT],
+			});
+
+			return [critSoftCapConfig, hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,

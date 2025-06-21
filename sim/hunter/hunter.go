@@ -29,55 +29,15 @@ type Hunter struct {
 	mayMoveAt time.Duration
 
 	AspectOfTheHawk *core.Spell
-	AspectOfTheFox  *core.Spell
 
 	// Hunter spells
-	KillCommand   *core.Spell
-	ArcaneShot    *core.Spell
-	ExplosiveTrap *core.Spell
-	KillShot      *core.Spell
-	RapidFire     *core.Spell
-	MultiShot     *core.Spell
-	RaptorStrike  *core.Spell
-	SerpentSting  *core.Spell
-	SteadyShot    *core.Spell
-	ScorpidSting  *core.Spell
-	SilencingShot *core.Spell
-	TrapLauncher  *core.Spell
-	GlaiveToss    *core.Spell
-	Barrage       *core.Spell
-	Powershot     *core.Spell
-	AMOC          *core.Spell
-
-	// BM only spells
-
-	// MM only spells
-	AimedShot   *core.Spell
-	ChimeraShot *core.Spell
-
-	// Survival only spells
-	ExplosiveShot *core.Spell
-	BlackArrow    *core.Spell
-	CobraShot     *core.Spell
+	SerpentSting         *core.Spell
+	ExplosiveTrap        *core.Spell
+	ExplosiveShot        *core.Spell
+	ImprovedSerpentSting *core.Spell
 
 	// Fake spells to encapsulate weaving logic.
-	TrapWeaveSpell                *core.Spell
-	ImprovedSerpentSting          *core.Spell
-	AspectOfTheHawkAura           *core.Aura
-	ImprovedSteadyShotAura        *core.Aura
-	ImprovedSteadyShotAuraCounter *core.Aura
-	LockAndLoadAura               *core.Aura
-	RapidFireAura                 *core.Aura
-	ScorpidStingAuras             core.AuraArray
-	KillingStreakCounterAura      *core.Aura
-	KillingStreakAura             *core.Aura
-	MasterMarksmanAura            *core.Aura
-	MasterMarksmanCounterAura     *core.Aura
-	TrapLauncherAura              *core.Aura
-	HuntersMarkAura               core.AuraArray
-	HuntersMarkSpell              *core.Spell
-	// Item sets
-	T13_2pc *core.Aura
+	HuntersMarkSpell *core.Spell
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -162,6 +122,8 @@ func (hunter *Hunter) ApplyTalents() {
 
 		hunter.Pet.ApplyTalents()
 	}
+
+	hunter.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail, 86538)
 }
 
 func (hunter *Hunter) RegisterSpells() {

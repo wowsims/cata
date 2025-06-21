@@ -13,10 +13,10 @@ func (arcane *ArcaneMage) OutcomeArcaneMissiles(sim *core.Simulation, result *co
 		if sim.RandomFloat("Magical Crit Roll") < arcane.arcaneMissileCritSnapshot {
 			result.Outcome = core.OutcomeCrit
 			result.Damage *= spell.CritMultiplier
-			spell.SpellMetrics[result.Target.UnitIndex].Crits++
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 		} else {
 			result.Outcome = core.OutcomeHit
-			spell.SpellMetrics[result.Target.UnitIndex].Hits++
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 		}
 	} else {
 		result.Outcome = core.OutcomeMiss
@@ -30,8 +30,9 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 	// Values found at https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=exact%253A7268
 	arcaneMissilesScaling := 0.22
 	arcaneMissilesCoefficient := 0.22
+	actionID := core.ActionID{SpellID: 7268}
 	arcane.arcaneMissilesTickSpell = arcane.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 7268},
+		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellArcaneMissilesTick,
@@ -45,17 +46,19 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			baseDamage := arcane.CalcAndRollDamageRange(sim, arcaneMissilesScaling, 0)
 			result := spell.CalcDamage(sim, target, baseDamage, arcane.OutcomeArcaneMissiles)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
+				spell.DealPeriodicDamage(sim, result)
 			})
+			spell.SpellMetrics[result.Target.UnitIndex].Casts--
 		},
 	})
 
 	arcane.arcaneMissiles = arcane.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 7268},
-		SpellSchool:    core.SpellSchoolArcane,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
-		ClassSpellMask: mage.MageSpellArcaneMissilesCast,
+		ActionID:         actionID, // Real SpellID: 5143
+		SpellSchool:      core.SpellSchoolArcane,
+		ProcMask:         core.ProcMaskSpellDamage,
+		Flags:            core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask:   mage.MageSpellArcaneMissilesCast,
+		DamageMultiplier: 0,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -86,11 +89,16 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			if arcane.arcaneMissilesProcAura.IsActive() {
+				arcane.arcaneMissilesProcAura.RemoveStack(sim)
+			}
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
 				// Snapshot crit chance
 				arcane.arcaneMissileCritSnapshot = arcane.arcaneMissilesTickSpell.SpellCritChance(target)
 				spell.Dot(target).Apply(sim)
+				arcane.arcaneMissilesTickSpell.SpellMetrics[target.UnitIndex].Hits++
+				arcane.arcaneMissilesTickSpell.SpellMetrics[target.UnitIndex].Casts++
 			}
 		},
 	})
@@ -101,23 +109,20 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		ActionID:  core.ActionID{SpellID: 79683},
 		Duration:  time.Second * 20,
 		MaxStacks: 2,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(mage.MageSpellArcaneMissilesCast) {
-				arcane.arcaneMissilesProcAura.RemoveStack(sim)
-			}
-		},
 	})
 
 	// Listener for procs
-	core.MakePermanent(arcane.RegisterAura(core.Aura{
-		Label: "Arcane Missiles Activation",
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(mage.MageSpellsAllDamaging ^ mage.MageSpellArcaneMissilesTick) {
-				if sim.Proc(0.3, "Arcane Missiles!") {
-					arcane.arcaneMissilesProcAura.Activate(sim)
-					arcane.arcaneMissilesProcAura.AddStack(sim)
-				}
-			}
+	core.MakeProcTriggerAura(&arcane.Unit, core.ProcTrigger{
+		Name:              "Arcane Missiles Activation",
+		ActionID:          core.ActionID{SpellID: 79684},
+		ClassSpellMask:    mage.MageSpellsAll ^ mage.MageSpellArcaneMissilesTick,
+		SpellFlagsExclude: core.SpellFlagHelpful,
+		ProcChance:        0.4,
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			arcane.arcaneMissilesProcAura.Activate(sim)
+			arcane.arcaneMissilesProcAura.AddStack(sim)
 		},
-	}))
+	})
 }

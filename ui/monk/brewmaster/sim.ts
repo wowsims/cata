@@ -31,7 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		Stat.StatParryRating,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -55,18 +55,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			return expCap;
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			return hitCap;
 		})(),
 		softCapBreakpoints: (() => {
-			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [7.5, 27],
+			const expertiseCap = StatCap.fromStat(Stat.StatExpertiseRating, {
+				breakpoints: [7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0],
+				postCapEPs: [6.04, 0],
 			});
 
-			return [meleeHitSoftCapConfig];
+			return [expertiseCap];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -124,7 +124,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	presets: {
 		epWeights: [Presets.PREPATCH_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.DefaultTalents],
+		talents: [Presets.DefaultTalents, Presets.DungeonTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
@@ -198,24 +198,6 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				updateSoftCaps: (softCaps: StatCap[]) => {
-					// Dynamic adjustments to the static Hit soft cap EP
-					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
-					if (meleeSoftCap) {
-						const activeEPWeight = getActiveEPWeight(player, this.sim);
-						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						const mhWep = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
-						const ohWep = player.getEquippedItem(ItemSlot.ItemSlotOffHand);
-						if (mhWep?.item.handType === HandType.HandTypeTwoHand || !ohWep) {
-							meleeSoftCap.breakpoints = [meleeSoftCap.breakpoints[0]];
-							meleeSoftCap.postCapEPs = [0];
-						} else if (ohWep) {
-							meleeSoftCap.postCapEPs = [initialEP / 2, 0];
-						}
-					}
-
-					return softCaps;
-				},
 				getEPDefaults: (player: Player<Spec.SpecBrewmasterMonk>) => {
 					return getActiveEPWeight(player, this.sim);
 				},

@@ -36,7 +36,7 @@ func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 0.19, // Arcane Barrage damage increased by 19%-  https://eu.forums.blizzard.com/en/wow/t/mists-of-pandaria-classic-development-notes-updated-20-june/571162/13
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		BonusCoefficient: float64(arcaneBarrageCoefficient),
 		ThreatMultiplier: 1,

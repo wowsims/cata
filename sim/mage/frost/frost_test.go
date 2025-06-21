@@ -20,7 +20,7 @@ func TestFrost(t *testing.T) {
 
 		GearSet: core.GetGearSet("../../../ui/mage/frost/gear_sets", "p1_bis"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui//mage/frost/gear_sets", "p1_prebis_rich"),
+			core.GetGearSet("../../../ui/mage/frost/gear_sets", "p1_prebis_rich"),
 		},
 		Talents:     FrostTalents,
 		Glyphs:      FrostDefaultGlyphs,

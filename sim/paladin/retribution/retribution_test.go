@@ -18,7 +18,10 @@ func TestRetribution(t *testing.T) {
 		Class: proto.Class_ClassPaladin,
 		Race:  proto.Race_RaceBloodElf,
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p1"),
+		GearSet: core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "preraid"),
+		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumables: FullConsumesSpec,

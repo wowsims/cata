@@ -21,6 +21,7 @@ export class Warrior extends PlayerClass<Class.ClassWarrior> {
 		Race.RaceGnome,
 		Race.RaceDraenei,
 		Race.RaceWorgen,
+		Race.RaceAlliancePandaren,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,
@@ -28,6 +29,7 @@ export class Warrior extends PlayerClass<Class.ClassWarrior> {
 		Race.RaceTroll,
 		Race.RaceBloodElf,
 		Race.RaceGoblin,
+		Race.RaceHordePandaren,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypePlate, ArmorType.ArmorTypeMail, ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

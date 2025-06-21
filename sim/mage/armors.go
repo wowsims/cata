@@ -22,7 +22,7 @@ func (mage *Mage) registerArmorSpells() {
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30482},
 		SpellSchool:    core.SpellSchoolFire,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: MageSpellMoltenArmor,
 
 		Cast: core.CastConfig{
@@ -51,7 +51,7 @@ func (mage *Mage) registerArmorSpells() {
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6117},
 		SpellSchool:    core.SpellSchoolArcane,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: MageSpellMageArmor,
 
 		Cast: core.CastConfig{
@@ -80,7 +80,7 @@ func (mage *Mage) registerArmorSpells() {
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7302},
 		SpellSchool:    core.SpellSchoolFrost,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: MageSpellFrostArmor,
 
 		Cast: core.CastConfig{

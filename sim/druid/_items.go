@@ -114,7 +114,7 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 				ActionID:         core.ActionID{SpellID: 99002},
 				DotAuraLabel:     "Fiery Claws",
 				IncludeAuraDelay: true,
-				SetBonusAura:     setBonusAura,
+				ParentAura:       setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Fiery Claws Trigger",

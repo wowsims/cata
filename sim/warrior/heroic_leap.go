@@ -6,30 +6,24 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (warrior *Warrior) RegisterHeroicLeap() {
-
-	numHits := warrior.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numHits)
+func (warrior *Warrior) registerHeroicLeap() {
+	results := make([]*core.SpellResult, warrior.Env.GetNumTargets())
 
 	warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6544},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskHeroicLeap | SpellMaskSpecialAttack,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskHeroicLeap,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 1,
+				Duration: time.Second * 45,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				if warrior.AutoAttacks.MH().SwingSpeed == warrior.AutoAttacks.OH().SwingSpeed {
-					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)
-				} else {
-					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, false)
-				}
+				warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, warrior.AutoAttacks.MH().SwingSpeed == warrior.AutoAttacks.OH().SwingSpeed)
 			},
 			IgnoreHaste: true,
 		},
@@ -39,17 +33,14 @@ func (warrior *Warrior) RegisterHeroicLeap() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1 + 0.5*spell.MeleeAttackPower()
-			curTarget := target
 
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for i, enemyTarget := range sim.Encounter.TargetUnits {
+				results[i] = spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
-
 		},
 	})
 }
