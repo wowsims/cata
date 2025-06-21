@@ -12,7 +12,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value, baseFloatTolerance float64) {
+func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value, absoluteFloatTolerance float64, relativeFloatTolerance float64) {
 	switch vst.Kind() {
 	case reflect.Pointer, reflect.Interface:
 		if vst.IsNil() && vmt.IsNil() {
@@ -23,31 +23,28 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 			t.Fail()
 			break
 		}
-		compareValue(t, loc, vst.Elem(), vmt.Elem(), baseFloatTolerance)
+		compareValue(t, loc, vst.Elem(), vmt.Elem(), absoluteFloatTolerance, relativeFloatTolerance)
 	case reflect.Struct:
-		compareStruct(t, loc, vst, vmt, baseFloatTolerance)
+		compareStruct(t, loc, vst, vmt, absoluteFloatTolerance, relativeFloatTolerance)
 	case reflect.Int32, reflect.Int, reflect.Int64:
 		if vst.Int() != vmt.Int() {
 			t.Logf("%s: Expected %d but is %d for multi threaded result!", loc, vst.Int(), vmt.Int())
 			t.Fail()
 		}
 	case reflect.Float64:
-		tolerance := baseFloatTolerance
 		if strings.Contains(loc, "CastTimeMs") {
-			tolerance = 2.2 // Castime is rounded in results and may be off 1ms per thread. In test=true sims concurrency is set to 3, 2ms diff seems to never be broken then)
-		} else if strings.Contains(loc, "Threat.AggregatorData.SumSq") {
-			tolerance *= 4500 // Squared sums can be off more, and as an extension also the stdevs
-		} else if strings.Contains(loc, "Dtps.AggregatorData.SumSq") {
-			tolerance *= 150 // Squared sums can be off more, and as an extension also the stdevs
-		} else if strings.Contains(loc, "SumSq") {
-			tolerance *= 150 // Squared sums can be off more, and as an extension also the stdevs
-		} else if strings.Contains(loc, "Stdev") {
-			tolerance *= 10 // Squared sums can be off more, and as an extension also the stdevs
-		} else if strings.Contains(loc, "Resources") {
-			tolerance *= 500 // Seems to do some rounding at some point?
+			absoluteFloatTolerance = 2.2 // Castime is rounded in results and may be off 1ms per thread. In test=true sims concurrency is set to 3, 2ms diff seems to never be broken then)
 		}
-		if math.Abs(vst.Float()-vmt.Float()) > tolerance {
-			t.Logf("%s: Expected %f but is %f for multi threaded result!", loc, vst.Float(), vmt.Float())
+
+		expectedV := vst.Float()
+		actualV := vmt.Float()
+		absDiff := math.Abs(expectedV - actualV)
+		relativeDiff := absDiff / min(math.Abs(expectedV), math.Abs(actualV))
+
+		if (absDiff > absoluteFloatTolerance) && (relativeDiff > relativeFloatTolerance) {
+			t.Logf("%s: Expected %0.17f but is %0.17f for multi threaded result!", loc, expectedV, actualV)
+			t.Logf("%s: absolute difference = %g, absolute tolerance = %g", loc, absDiff, absoluteFloatTolerance)
+			t.Logf("%s: relative difference = %g, relative tolerance = %g", loc, relativeDiff, relativeFloatTolerance)
 			t.Fail()
 		}
 	case reflect.String:
@@ -67,7 +64,7 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 			break
 		}
 		for i := 0; i < vst.Len(); i++ {
-			compareValue(t, fmt.Sprintf("%s[%d]", loc, i), vst.Index(i), vmt.Index(i), baseFloatTolerance)
+			compareValue(t, fmt.Sprintf("%s[%d]", loc, i), vst.Index(i), vmt.Index(i), absoluteFloatTolerance, relativeFloatTolerance)
 		}
 	case reflect.Map:
 		if vst.Len() != vmt.Len() {
@@ -89,7 +86,7 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 				t.Fail()
 				break
 			}
-			compareValue(t, fmt.Sprintf("%s[%s]", loc, keyStr), vst.MapIndex(key), mtVal, baseFloatTolerance)
+			compareValue(t, fmt.Sprintf("%s[%s]", loc, keyStr), vst.MapIndex(key), mtVal, absoluteFloatTolerance, relativeFloatTolerance)
 		}
 	default:
 		t.Logf("%s: Has unhandled kind %s!", loc, vst.Kind().String())
@@ -97,7 +94,7 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 	}
 }
 
-func checkActionMetrics(t *testing.T, loc string, st []*proto.ActionMetrics, mt []*proto.ActionMetrics, baseFloatTolerance float64) {
+func checkActionMetrics(t *testing.T, loc string, st []*proto.ActionMetrics, mt []*proto.ActionMetrics, absoluteFloatTolerance float64, relativeFloatTolerance float64) {
 	actions := map[string]*proto.ActionMetrics{}
 
 	for _, mtAction := range mt {
@@ -136,11 +133,11 @@ func checkActionMetrics(t *testing.T, loc string, st []*proto.ActionMetrics, mt 
 			continue
 		}
 
-		compareValue(t, fmt.Sprintf("%s.Actions[%s]", loc, stAction.Id.String()), reflect.ValueOf(stAction.Targets), reflect.ValueOf(mtAction.Targets), baseFloatTolerance)
+		compareValue(t, fmt.Sprintf("%s.Actions[%s]", loc, stAction.Id.String()), reflect.ValueOf(stAction.Targets), reflect.ValueOf(mtAction.Targets), absoluteFloatTolerance, relativeFloatTolerance)
 	}
 }
 
-func checkResourceMetrics(t *testing.T, loc string, st []*proto.ResourceMetrics, mt []*proto.ResourceMetrics, baseFloatTolerance float64) {
+func checkResourceMetrics(t *testing.T, loc string, st []*proto.ResourceMetrics, mt []*proto.ResourceMetrics, absoluteFloatTolerance float64, relativeFloatTolerance float64) {
 	resources := map[string]*proto.ResourceMetrics{}
 
 	rkey := func(r *proto.ResourceMetrics) string {
@@ -167,11 +164,11 @@ func checkResourceMetrics(t *testing.T, loc string, st []*proto.ResourceMetrics,
 			continue
 		}
 
-		compareValue(t, fmt.Sprintf("%s.Resources[%s]", loc, stKey), reflect.ValueOf(stResource), reflect.ValueOf(mtResource), baseFloatTolerance)
+		compareValue(t, fmt.Sprintf("%s.Resources[%s]", loc, stKey), reflect.ValueOf(stResource), reflect.ValueOf(mtResource), absoluteFloatTolerance, relativeFloatTolerance)
 	}
 }
 
-func compareStruct(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value, baseFloatTolerance float64) {
+func compareStruct(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value, absoluteFloatTolerance float64, relativeFloatTolerance float64) {
 	for i := 0; i < vst.NumField(); i++ {
 		fieldName := vst.Type().Field(i).Name
 		fieldType := vst.Type().Field(i).Type.Name()
@@ -197,21 +194,21 @@ func compareStruct(t *testing.T, loc string, vst reflect.Value, vmt reflect.Valu
 		}
 
 		if fieldName == "Actions" {
-			checkActionMetrics(t, loc, stField.Interface().([]*proto.ActionMetrics), mtField.Interface().([]*proto.ActionMetrics), baseFloatTolerance)
+			checkActionMetrics(t, loc, stField.Interface().([]*proto.ActionMetrics), mtField.Interface().([]*proto.ActionMetrics), absoluteFloatTolerance, relativeFloatTolerance)
 			continue
 		} else if fieldName == "Resources" {
-			checkResourceMetrics(t, loc, stField.Interface().([]*proto.ResourceMetrics), mtField.Interface().([]*proto.ResourceMetrics), baseFloatTolerance)
+			checkResourceMetrics(t, loc, stField.Interface().([]*proto.ResourceMetrics), mtField.Interface().([]*proto.ResourceMetrics), absoluteFloatTolerance, relativeFloatTolerance)
 			continue
 		}
 
-		compareValue(t, fmt.Sprintf("%s.%s", loc, fieldName), stField, mtField, baseFloatTolerance)
+		compareValue(t, fmt.Sprintf("%s.%s", loc, fieldName), stField, mtField, absoluteFloatTolerance, relativeFloatTolerance)
 	}
 }
 
-func CompareConcurrentSimResultsTest(t *testing.T, testName string, singleThreadRes *proto.RaidSimResult, multiThreadRes *proto.RaidSimResult, baseFloatTolerance float64) {
+func CompareConcurrentSimResultsTest(t *testing.T, testName string, singleThreadRes *proto.RaidSimResult, multiThreadRes *proto.RaidSimResult, absoluteFloatTolerance float64, relativeFloatTolerance float64) {
 	vst := reflect.ValueOf(singleThreadRes).Elem()
 	vmt := reflect.ValueOf(multiThreadRes).Elem()
-	compareStruct(t, "RaidSimResult", vst, vmt, baseFloatTolerance)
+	compareStruct(t, "RaidSimResult", vst, vmt, absoluteFloatTolerance, relativeFloatTolerance)
 	if t.Failed() {
 		t.Log("A fail here means that either the combination of results is broken, or there's a state leak between iterations!")
 	}
