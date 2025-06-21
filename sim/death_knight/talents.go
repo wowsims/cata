@@ -751,12 +751,13 @@ func (dk *DeathKnight) registerRunicCorruption() {
 
 	runicMasteryAura := dk.getRunicMasteryAura()
 
+	duration := time.Second * 3
 	multi := 2.0
 	// Runic Corruption gives rune regen speed
 	regenAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Runic Corruption",
 		ActionID: core.ActionID{SpellID: 51460},
-		Duration: time.Second * 3,
+		Duration: duration,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyRuneRegenSpeed(sim, multi)
@@ -775,9 +776,15 @@ func (dk *DeathKnight) registerRunicCorruption() {
 		ProcChance:     0.45,
 
 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			hasteMultiplier := 1.0 + dk.GetStat(stats.HasteRating)/(100*core.HasteRatingPerHastePercent)
 			if regenAura.IsActive() {
-				regenAura.UpdateExpires(regenAura.ExpiresAt() + time.Second*3)
+				totalMultiplier := 1 / (hasteMultiplier * (dk.GetRuneRegenMultiplier() / multi))
+				hastedDuration := core.DurationFromSeconds(duration.Seconds() * totalMultiplier)
+				regenAura.UpdateExpires(regenAura.ExpiresAt() + hastedDuration)
 			} else {
+				totalMultiplier := 1 / (hasteMultiplier * dk.GetRuneRegenMultiplier())
+				hastedDuration := core.DurationFromSeconds(duration.Seconds() * totalMultiplier)
+				regenAura.Duration = hastedDuration
 				regenAura.Activate(sim)
 			}
 
