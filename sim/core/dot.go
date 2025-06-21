@@ -299,6 +299,10 @@ func (dot *Dot) getChannelClipDelay(sim *Simulation) time.Duration {
 		return 0
 	}
 
+	if channelAction, ok := nextAction.impl.(*APLActionChannelSpell); ok && channelAction.spell == channeledDot.Spell {
+		return 0
+	}
+
 	return dot.Spell.Unit.ChannelClipDelay
 }
 
