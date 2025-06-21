@@ -21,6 +21,7 @@ type Mage struct {
 
 	mirrorImages []*MirrorImage
 
+	AlterTime            *core.Spell
 	Combustion           *core.Spell
 	Ignite               *core.Spell
 	LivingBomb           *core.Spell
@@ -36,6 +37,7 @@ type Mage struct {
 	IcyVeins             *core.Spell
 	Icicle               *core.Spell
 
+	AlterTimeAura      *core.Aura
 	InvocationAura     *core.Aura
 	RuneOfPowerAura    *core.Aura
 	PresenceOfMindAura *core.Aura
@@ -175,7 +177,8 @@ const (
 	FireSpellMaxTimeUntilResult       = 750 * time.Millisecond
 	HeatingUpDeactivateBuffer         = 250 * time.Millisecond
 	MageSpellFlagNone           int64 = 0
-	MageSpellArcaneBarrage      int64 = 1 << iota
+	MageSpellAlterTime          int64 = 1 << iota
+	MageSpellArcaneBarrage
 	MageSpellArcaneBlast
 	MageSpellArcaneExplosion
 	MageSpellArcanePower
