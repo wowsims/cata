@@ -169,6 +169,31 @@ func (value *APLValueCurrentRage) String() string {
 	return "Current Rage"
 }
 
+type APLValueMaxRage struct {
+	DefaultAPLValueImpl
+	maxRage float64
+}
+
+func (rot *APLRotation) newValueMaxRage(_ *proto.APLValueMaxRage, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasRageBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Error, "%s does not use Rage", unit.Label)
+		return nil
+	}
+	return &APLValueMaxRage{
+		maxRage: unit.MaximumRage(),
+	}
+}
+func (value *APLValueMaxRage) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueMaxRage) GetFloat(sim *Simulation) float64 {
+	return value.maxRage
+}
+func (value *APLValueMaxRage) String() string {
+	return fmt.Sprintf("Max Rage(%f)", value.maxRage)
+}
+
 type APLValueCurrentFocus struct {
 	DefaultAPLValueImpl
 	unit *Unit

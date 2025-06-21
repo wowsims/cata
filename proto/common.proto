@@ -651,6 +651,9 @@ message Encounter {
 	// Same as execute_proportion but for 35%.
 	double execute_proportion_35 = 4;
 
+	// Same as execute_proportion but for 45%.
+	double execute_proportion_45 = 10;
+
 	// Same as execute_proportion but for > 90%.
 	double execute_proportion_90 = 8;
 

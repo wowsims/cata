@@ -9,8 +9,8 @@ import (
 
 func (affliction *AfflictionWarlock) registerDarkSoulMisery() {
 	buff := affliction.RegisterAura(core.Aura{
-		Label:    "Dark Soul: Knowledge",
-		ActionID: core.ActionID{SpellID: 113858},
+		Label:    "Dark Soul: Misery",
+		ActionID: core.ActionID{SpellID: 113860},
 		Duration: time.Second * 20,
 	}).AttachMultiplyCastSpeed(1.3)
 

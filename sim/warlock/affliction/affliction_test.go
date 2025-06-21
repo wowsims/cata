@@ -16,6 +16,7 @@ func init() {
 }
 
 func TestAffliction(t *testing.T) {
+
 	var defaultAfflictionWarlock = &proto.Player_AfflictionWarlock{
 		AfflictionWarlock: &proto.AfflictionWarlock{
 			Options: &proto.AfflictionWarlock_Options{

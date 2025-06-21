@@ -10,9 +10,16 @@ import (
 const immolateScale = 0.47 * 1.13 // Hotfix
 const immolateCoeff = 0.47 * 1.13
 
+// Damage Done By Caster setup
+const (
+	DDBC_Immolate int = iota
+	DDBC_Total
+)
+
 func (destruction *DestructionWarlock) registerImmolate() {
+	actionID := core.ActionID{SpellID: 348}
 	destruction.Immolate = destruction.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 348},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -62,6 +69,12 @@ func (destruction *DestructionWarlock) registerImmolate() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Immolate (DoT)",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					core.EnableDamageDoneByCaster(DDBC_Immolate, DDBC_Total, destruction.AttackTables[aura.Unit.UnitIndex], immolateDamageDoneByCasterHandler)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					core.DisableDamageDoneByCaster(DDBC_Immolate, destruction.AttackTables[aura.Unit.UnitIndex])
+				},
 			},
 			NumberOfTicks:       5,
 			TickLength:          3 * time.Second,
@@ -81,5 +94,26 @@ func (destruction *DestructionWarlock) registerImmolate() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			destruction.ApplyDotWithPandemic(spell.Dot(target), sim)
 		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			dot := spell.Dot(target)
+			if useSnapshot {
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result.Damage /= dot.TickPeriod().Seconds()
+				return result
+			} else {
+				result := spell.CalcPeriodicDamage(sim, target, destruction.CalcScalingSpellDmg(immolateCoeff), spell.OutcomeExpectedMagicCrit)
+				result.Damage /= destruction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				return result
+			}
+		},
 	})
+}
+
+func immolateDamageDoneByCasterHandler(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+	if spell.Matches(warlock.WarlockSpellRainOfFire) {
+		return 1.5
+	}
+
+	return 1
 }

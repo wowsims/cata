@@ -27,17 +27,26 @@ type ArcaneMage struct {
 	*mage.Mage
 
 	Options *proto.ArcaneMage_Options
+
+	arcaneMissilesProcAura *core.Aura
+	arcanePowerAura        *core.Aura
+
+	arcaneMissiles          *core.Spell
+	arcaneMissilesTickSpell *core.Spell
+	arcanePower             *core.Spell
+
+	arcaneMissileCritSnapshot float64
 }
 
 func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage {
 	arcaneOptions := options.GetArcaneMage().Options
 
-	arcaneMage := &ArcaneMage{
+	arcane := &ArcaneMage{
 		Mage: mage.NewMage(character, options, arcaneOptions.ClassOptions),
 	}
-	arcaneMage.ArcaneOptions = arcaneOptions
+	arcane.ArcaneOptions = arcaneOptions
 
-	return arcaneMage
+	return arcane
 }
 
 func (arcaneMage *ArcaneMage) GetMage() *mage.Mage {
@@ -48,58 +57,21 @@ func (arcaneMage *ArcaneMage) Reset(sim *core.Simulation) {
 	arcaneMage.Mage.Reset(sim)
 }
 
-func (arcaneMage *ArcaneMage) Initialize() {
-	arcaneMage.Mage.Initialize()
+func (arcane *ArcaneMage) Initialize() {
+	arcane.Mage.Initialize()
 
-	arcaneMage.registerArcaneBarrageSpell()
+	arcane.registerPassives()
+	arcane.registerSpells()
 }
 
-func (arcaneMage *ArcaneMage) ApplyTalents() {
-
-	arcaneMage.Mage.ApplyTalents()
-	// Arcane Specialization Bonus
-	arcaneMage.AddStaticMod(core.SpellModConfig{
-		School:     core.SpellSchoolArcane,
-		FloatValue: 0.25,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	// Arcane Mastery
-	arcaneMastery := arcaneMage.AddDynamicMod(core.SpellModConfig{
-		School: core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow,
-		Kind:   core.SpellMod_DamageDone_Pct,
-	})
-
-	arcaneMage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
-	})
-
-	core.MakePermanent(arcaneMage.GetOrRegisterAura(core.Aura{
-		Label: "Mana Adept",
-		//ActionID: core.ActionID{SpellID: 76547},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
-			arcaneMastery.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.Deactivate()
-		},
-	}))
-
-	core.MakeProcTriggerAura(&arcaneMage.Unit, core.ProcTrigger{
-		Name:     "Arcane Mastery Mana Updater",
-		Callback: core.CallbackOnCastComplete,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
-		},
-	})
-
+func (arcane *ArcaneMage) registerPassives() {
+	arcane.registerMastery()
+	arcane.registerArcaneCharges()
 }
 
-func (arcaneMage *ArcaneMage) GetArcaneMasteryBonus() float64 {
-	return (0.12 + 0.015*arcaneMage.GetMasteryPoints())
-}
-
-func (arcaneMage *ArcaneMage) ArcaneMasteryValue() float64 {
-	return arcaneMage.GetArcaneMasteryBonus() * (arcaneMage.CurrentMana() / arcaneMage.MaxMana())
+func (arcane *ArcaneMage) registerSpells() {
+	arcane.registerArcaneBarrageSpell()
+	arcane.registerArcaneBlastSpell()
+	arcane.registerArcaneMissilesSpell()
+	arcane.registerArcanePowerCD()
 }
