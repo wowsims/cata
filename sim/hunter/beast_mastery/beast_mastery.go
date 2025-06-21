@@ -63,7 +63,6 @@ func (bmHunter *BeastMasteryHunter) Initialize() {
 	// BM Hunter Spec Bonus
 	// bmHunter.MultiplyStat(stats.RangedAttackPower, 1.30)
 }
-func (hunter *BeastMasteryHunter) ApplyTalents() {}
 
 func (hunter *BeastMasteryHunter) getMasteryBonus(masteryRating float64) float64 {
 	return 1.16 + ((masteryRating / core.MasteryRatingPerMasteryPoint) * 0.02)
