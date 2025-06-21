@@ -566,8 +566,6 @@ func (dk *DeathKnight) registerConversion() {
 		return
 	}
 
-	// TODO: Handle Scent of Blood
-
 	conversionHealSpell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 119980},
 		SpellSchool: core.SpellSchoolShadow,
