@@ -232,7 +232,7 @@ const (
 		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFrostbolt | MageSpellFrostfireBolt | MageSpellFrozenOrbTick |
 		MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch | MageSpellInfernoBlast
 	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneMissilesTick |
-		MageSpellFireBlast | MageSpellArcaneExplosion | MageSpellInfernoBlast |
+		MageSpellFireBlast | MageSpellArcaneExplosion | MageSpellInfernoBlast | MageSpellPyroblastDot |
 		MageSpellCombustion | MageSpellConeOfCold | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellIceLance | MageSpellManaGems | MageSpellMirrorImage |
 		MageSpellPresenceOfMind | MageSpellLivingBombDot | MageSpellFrostBomb | MageSpellNetherTempest | MageSpellNetherTempestDot
