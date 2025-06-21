@@ -33,574 +33,574 @@ character_stats_results: {
 dps_results: {
  key: "TestArcane-AllItems-AgilePrimalDiamond"
  value: {
-  dps: 89929.06138
-  tps: 88864.51425
+  dps: 81980.1326
+  tps: 80861.42994
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-AusterePrimalDiamond"
  value: {
-  dps: 89405.31273
-  tps: 88345.11999
+  dps: 81558.19525
+  tps: 80443.74024
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 90659.25697
-  tps: 89580.74257
+  dps: 82643.56175
+  tps: 81511.89646
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CapacitivePrimalDiamond"
  value: {
-  dps: 89659.45479
-  tps: 88594.24755
+  dps: 81892.82368
+  tps: 80776.99378
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CourageousPrimalDiamond"
  value: {
-  dps: 90491.91937
-  tps: 89410.0559
+  dps: 82563.20521
+  tps: 81429.3497
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-94518"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78591.1131
+  tps: 77545.64578
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-95779"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78591.1131
+  tps: 77545.64578
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-96151"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78591.1131
+  tps: 77545.64578
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-96523"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78591.1131
+  tps: 77545.64578
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78591.1131
+  tps: 77545.64578
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DestructivePrimalDiamond"
  value: {
-  dps: 89741.25379
-  tps: 88669.91463
+  dps: 81952.19265
+  tps: 80830.77899
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EffulgentPrimalDiamond"
  value: {
-  dps: 89405.31273
-  tps: 88345.11999
+  dps: 81558.19525
+  tps: 80443.74024
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EmberPrimalDiamond"
  value: {
-  dps: 90129.30964
-  tps: 89055.17932
+  dps: 82216.34094
+  tps: 81088.95226
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
  value: {
-  dps: 88056.92576
-  tps: 87041.70947
+  dps: 79997.52832
+  tps: 78904.86422
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnchantWeapon-Colossus-4445"
  value: {
-  dps: 88056.92576
-  tps: 87041.70947
+  dps: 79997.52832
+  tps: 78904.86422
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
-  dps: 88056.92576
-  tps: 87041.70947
+  dps: 79997.52832
+  tps: 78904.86422
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnchantWeapon-River'sSong-4446"
  value: {
-  dps: 88056.92576
-  tps: 87041.70947
+  dps: 79997.52832
+  tps: 78904.86422
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnchantWeapon-SpiritofConquest-5124"
  value: {
-  dps: 88056.92576
-  tps: 87041.70947
+  dps: 79997.52832
+  tps: 78904.86422
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnchantWeapon-Windsong-4441"
  value: {
-  dps: 88117.68956
-  tps: 87018.88993
+  dps: 81035.04926
+  tps: 79929.1188
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnigmaticPrimalDiamond"
  value: {
-  dps: 89741.25379
-  tps: 88669.91463
+  dps: 81952.19265
+  tps: 80830.77899
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EternalPrimalDiamond"
  value: {
-  dps: 89405.31273
-  tps: 88345.11999
+  dps: 81558.19525
+  tps: 80443.74024
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-FleetPrimalDiamond"
  value: {
-  dps: 90051.47465
-  tps: 88985.32467
+  dps: 82183.69596
+  tps: 81063.16509
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ForlornPrimalDiamond"
  value: {
-  dps: 90129.30964
-  tps: 89055.17932
+  dps: 82216.34094
+  tps: 81088.95226
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GazeoftheTwins-94529"
  value: {
-  dps: 87569.18469
-  tps: 86528.27073
+  dps: 79958.08306
+  tps: 78863.96865
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GazeoftheTwins-95799"
  value: {
-  dps: 87200.20553
-  tps: 86165.54305
+  dps: 79762.99412
+  tps: 78677.25639
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GazeoftheTwins-96171"
  value: {
-  dps: 87632.30466
-  tps: 86590.08802
+  dps: 80033.6354
+  tps: 78937.58371
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GazeoftheTwins-96543"
  value: {
-  dps: 87666.87159
-  tps: 86626.11337
+  dps: 80048.82592
+  tps: 78956.41521
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GazeoftheTwins-96915"
  value: {
-  dps: 87859.09683
-  tps: 86810.39588
+  dps: 80148.72132
+  tps: 79052.33125
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpassivePrimalDiamond"
  value: {
-  dps: 89741.25379
-  tps: 88669.91463
+  dps: 81952.19265
+  tps: 80830.77899
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-IndomitablePrimalDiamond"
  value: {
-  dps: 89405.31273
-  tps: 88345.11999
+  dps: 81558.19525
+  tps: 80443.74024
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PhaseFingers-4697"
  value: {
-  dps: 89903.23277
-  tps: 88802.34445
+  dps: 82437.82135
+  tps: 81299.11183
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PowerfulPrimalDiamond"
  value: {
-  dps: 89405.31273
-  tps: 88345.11999
+  dps: 81558.19525
+  tps: 80443.74024
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PriceofProgress-81266"
  value: {
-  dps: 89066.7288
-  tps: 88019.99321
+  dps: 81235.29038
+  tps: 80135.72883
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Primordius'TalismanofRage-94519"
  value: {
-  dps: 87837.72315
-  tps: 86786.95535
+  dps: 80302.68666
+  tps: 79203.61329
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Primordius'TalismanofRage-95757"
  value: {
-  dps: 87501.48636
-  tps: 86460.18449
+  dps: 79990.54642
+  tps: 78900.19305
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Primordius'TalismanofRage-96129"
  value: {
-  dps: 87984.07746
-  tps: 86930.84078
+  dps: 80371.50313
+  tps: 79271.03525
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Primordius'TalismanofRage-96501"
  value: {
-  dps: 88100.48792
-  tps: 87043.17832
+  dps: 80516.72773
+  tps: 79413.52038
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Primordius'TalismanofRage-96873"
  value: {
-  dps: 88217.01326
-  tps: 87155.82291
+  dps: 80562.472
+  tps: 79454.56924
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-RegaliaoftheBurningScroll"
  value: {
-  dps: 79884.16783
-  tps: 78896.88095
+  dps: 73250.81822
+  tps: 72281.9877
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Renataki'sSoulCharm-94512"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78587.15996
+  tps: 77541.3067
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Renataki'sSoulCharm-95625"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78587.15996
+  tps: 77541.3067
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Renataki'sSoulCharm-95997"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78587.15996
+  tps: 77541.3067
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Renataki'sSoulCharm-96369"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78587.15996
+  tps: 77541.3067
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 86066.22682
-  tps: 85074.56242
+  dps: 78587.15996
+  tps: 77541.3067
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ReverberatingPrimalDiamond"
  value: {
-  dps: 89929.06138
-  tps: 88864.51425
+  dps: 81980.1326
+  tps: 80861.42994
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 89929.06138
-  tps: 88864.51425
+  dps: 81980.1326
+  tps: 80861.42994
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SinisterPrimalDiamond"
  value: {
-  dps: 89659.45479
-  tps: 88594.24755
+  dps: 81892.82368
+  tps: 80776.99378
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 92230.85129
-  tps: 91031.70298
+  dps: 84269.77716
+  tps: 83041.28825
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TalismanofBloodlust-94522"
  value: {
-  dps: 87191.69382
-  tps: 86067.96507
+  dps: 80116.85738
+  tps: 78940.97893
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TalismanofBloodlust-95748"
  value: {
-  dps: 86974.27479
-  tps: 85849.37572
+  dps: 80272.96615
+  tps: 79106.97744
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TalismanofBloodlust-96120"
  value: {
-  dps: 87543.59089
-  tps: 86387.61701
+  dps: 80150.24552
+  tps: 78977.75433
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TalismanofBloodlust-96492"
  value: {
-  dps: 87912.73698
-  tps: 86772.17574
+  dps: 80232.69648
+  tps: 79075.51515
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TalismanofBloodlust-96864"
  value: {
-  dps: 86996.67664
-  tps: 85858.63147
+  dps: 80263.64455
+  tps: 79114.33543
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TheGloamingBlade-88149"
  value: {
-  dps: 90659.25697
-  tps: 89580.74257
+  dps: 82643.56175
+  tps: 81511.89646
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 89405.31273
-  tps: 88345.11999
+  dps: 81558.19525
+  tps: 80443.74024
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ZenAlchemistStone-75274"
  value: {
-  dps: 92266.83281
-  tps: 91072.71526
+  dps: 84100.14915
+  tps: 82854.59355
  }
 }
 dps_results: {
  key: "TestArcane-Average-Default"
  value: {
-  dps: 92721.97066
-  tps: 91468.65446
+  dps: 84329.15624
+  tps: 83038.36907
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-p1_bis-Arcane-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 171297.80116
-  tps: 194277.38996
+  dps: 143435.0723
+  tps: 165626.95356
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-p1_bis-Arcane-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 91833.64635
-  tps: 90723.61392
+  dps: 83283.48257
+  tps: 82099.09426
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-p1_bis-Arcane-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 124388.09899
-  tps: 118596.01956
+  dps: 114799.9731
+  tps: 109011.67854
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-p1_bis-Arcane-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 130544.00582
-  tps: 153919.05351
+  dps: 111468.60673
+  tps: 133464.52815
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-p1_bis-Arcane-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 70397.04469
-  tps: 70090.66156
+  dps: 63709.75975
+  tps: 63380.36112
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-p1_bis-Arcane-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 77960.3095
-  tps: 75770.40418
+  dps: 72928.16302
+  tps: 70840.98548
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-prebis-Arcane-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 12134.21087
-  tps: 35114.4694
+  dps: 10661.79025
+  tps: 32612.0503
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-prebis-Arcane-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 6772.15858
-  tps: 7351.44738
+  dps: 6432.44743
+  tps: 7027.77576
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-prebis-Arcane-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 12790.98545
-  tps: 11998.05908
+  dps: 12345.10591
+  tps: 11691.54941
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-prebis-Arcane-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 4395.95861
-  tps: 26657.35757
+  dps: 3994.90526
+  tps: 25399.95846
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-prebis-Arcane-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 2526.82833
-  tps: 3319.53146
+  dps: 2386.09526
+  tps: 3143.17019
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Orc-prebis-Arcane-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 3684.15564
-  tps: 3800.6556
+  dps: 3537.50856
+  tps: 3576.5921
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_bis-Arcane-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 173025.38871
-  tps: 196128.90012
+  dps: 143828.9593
+  tps: 165994.28716
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_bis-Arcane-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 92559.83109
-  tps: 91366.41089
+  dps: 84675.64224
+  tps: 83451.69865
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_bis-Arcane-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 127403.03698
-  tps: 121133.31408
+  dps: 116823.7736
+  tps: 110626.97263
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_bis-Arcane-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 131208.96697
-  tps: 154669.13747
+  dps: 110242.09988
+  tps: 133070.27702
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_bis-Arcane-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 70656.21226
-  tps: 70443.34562
+  dps: 64389.40929
+  tps: 64115.12338
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_bis-Arcane-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 78704.25418
-  tps: 76741.42742
+  dps: 73388.02294
+  tps: 71509.44909
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-prebis-Arcane-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 11614.49987
-  tps: 34335.75566
+  dps: 10032.36356
+  tps: 32098.33471
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-prebis-Arcane-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 6339.62235
-  tps: 7033.81274
+  dps: 5997.95756
+  tps: 6644.13128
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-prebis-Arcane-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 11995.71948
-  tps: 11392.85657
+  dps: 11511.64268
+  tps: 10991.89368
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-prebis-Arcane-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 3766.3459
-  tps: 26325.12257
+  dps: 3323.92593
+  tps: 24871.02847
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-prebis-Arcane-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 2112.47289
-  tps: 2939.90525
+  dps: 1955.4908
+  tps: 2762.39183
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-prebis-Arcane-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 2757.06314
-  tps: 2913.4132
+  dps: 2608.76816
+  tps: 2741.76874
  }
 }
 dps_results: {
  key: "TestArcane-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 92559.83109
-  tps: 91366.41089
+  dps: 84675.64224
+  tps: 83451.69865
  }
 }
