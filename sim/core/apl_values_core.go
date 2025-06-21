@@ -79,3 +79,39 @@ func (value *APLValueDotTickFrequency) GetDuration(_ *Simulation) time.Duration 
 func (value *APLValueDotTickFrequency) String() string {
 	return fmt.Sprintf("Dot Tick Frequency(%s)", value.dot.tickPeriod)
 }
+
+type APLValueDotPercentIncrease struct {
+	DefaultAPLValueImpl
+	spell  *Spell
+	target *Unit
+}
+
+func (rot *APLRotation) newValueDotPercentIncrease(config *proto.APLValueDotPercentIncrease, _ *proto.UUID) APLValue {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil || spell.expectedTickDamageInternal == nil {
+		return nil
+	}
+
+	target := rot.GetTargetUnit(config.TargetUnit).Get()
+	return &APLValueDotPercentIncrease{
+		spell:  spell,
+		target: target,
+	}
+}
+
+func (value *APLValueDotPercentIncrease) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+
+func (value *APLValueDotPercentIncrease) GetFloat(sim *Simulation) float64 {
+	expectedDamage := value.spell.ExpectedTickDamageFromCurrentSnapshot(sim, value.target)
+	if expectedDamage == 0 {
+		return 1
+	}
+
+	return value.spell.ExpectedTickDamage(sim, value.target)/expectedDamage - 1
+}
+
+func (value *APLValueDotPercentIncrease) String() string {
+	return fmt.Sprintf("Dot Percent Increase (%s)", value.spell.ActionID)
+}

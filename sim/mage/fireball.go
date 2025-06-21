@@ -27,10 +27,10 @@ func (mage *Mage) registerFireballSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultCritMultiplier(),
-		BonusCoefficient:         1.236,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		BonusCoefficient: 1.236,
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1.20 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

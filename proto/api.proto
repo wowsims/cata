@@ -436,6 +436,7 @@ message SpellStats {
 	bool encounter_only = 8; // Whether this spell may only be cast during the encounter (not prepull).
 	bool has_cast_time = 9; // Whether this spell has a cast time or not.
 	bool is_friendly = 10; // Whether this spell should be cast on player units
+	bool has_expected_tick = 11; // Whether this spell supports expected damage calculations
 }
 message APLValidation {
 	LogLevel log_level = 1;

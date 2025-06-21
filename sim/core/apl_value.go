@@ -242,6 +242,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueDotRemainingTime(config.GetDotRemainingTime(), config.Uuid)
 	case *proto.APLValue_DotTickFrequency:
 		value = rot.newValueDotTickFrequency(config.GetDotTickFrequency(), config.Uuid)
+	case *proto.APLValue_DotPercentIncrease:
+		value = rot.newValueDotPercentIncrease(config.GetDotPercentIncrease(), config.Uuid)
 
 	// Sequences
 	case *proto.APLValue_SequenceIsComplete:

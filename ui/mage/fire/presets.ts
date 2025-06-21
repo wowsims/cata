@@ -92,18 +92,11 @@ export const DefaultFireOptions = MageOptions.create({
 	classOptions: {},
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({});
-
 export const DefaultFireConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast
 	potId: 58091, // Volcanic Potion
 	prepotId: 58091, // Volcanic Potion
-});
-
-export const DefaultDebuffs = Debuffs.create({
-	// ebonPlaguebringer: true,
-	// shadowAndFlame: true,
 });
 
 export const OtherDefaults = {
@@ -112,47 +105,30 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const FIRE_BREAKPOINTS: UnitStatPresets[] = [
-	{
-		// Picked from Mage Discord
-		// Sources:
-		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
-		// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
-		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
-		presets: new Map([
-			['11-tick - Combust', 4.98689],
-			['5-tick - LvB/Pyro', 12.50704],
-			['12-tick - Combust', 15.00864],
-			['BL - 15-tick - Combust', 20.86054],
-			['13-tick - Combust', 25.07819],
-			['BL - 16-tick - Combust', 29.09891],
-			['14-tick - Combust', 35.04391],
-			['BL - 17-tick - Combust', 37.40041],
-			['6-tick - LvB/Pyro', 37.52006],
-			['15-tick - Combust', 45.03265],
-			['16-tick - Combust', 54.91869],
-			['7-tick - LvB/Pyro', 62.46955],
-			['17-tick - Combust', 64.88049],
-			['18-tick - Combust', 74.97816],
-			['19-tick - Combust', 85.01391],
-			['8-tick - LvB/Pyro', 87.44144],
-			['20-tick - Combust', 95.12199],
-			['21-tick - Combust', 105.12825],
-			// ['9-tick - LvB/Pyro', 112.53987],
-			// ['22-tick - Combust', 114.82282],
-			// ['23-tick - Combust', 124.97193],
-			// ['24-tick - Combust', 135.01768],
-			// ['10-tick - LvB/Pyro', 137.43571],
-			// ['25-tick - Combust', 144.7981],
-			// ['26-tick - Combust', 154.77713],
-			// ['11-tick - LvB/Pyro', 162.58208],
-			// ['27-tick - Combust', 164.90073],
-			// ['28-tick - Combust', 175.10324],
-			// ['29-tick - Combust', 185.30679],
-			// ['12-tick - LvB/Pyro', 187.49404],
-		]),
-	},
-];
+export const FIRE_BREAKPOINTS: UnitStatPresets = {
+	unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+	presets: new Map([
+		['11-tick - Combust', 4.986888],
+		['12-tick - Combust', 15.008639],
+		['13-tick - Combust', 25.07819],
+		['14-tick - Combust', 35.043908],
+		['15-tick - Combust', 45.032653],
+		['16-tick - Combust', 54.918692],
+		['17-tick - Combust', 64.880489],
+		['18-tick - Combust', 74.978158],
+		['19-tick - Combust', 85.01391],
+		['20-tick - Combust', 95.121989],
+		['21-tick - Combust', 105.128247],
+		['22-tick - Combust', 114.822817],
+		['23-tick - Combust', 124.971929],
+		['24-tick - Combust', 135.017682],
+		['25-tick - Combust', 144.798102],
+		['26-tick - Combust', 154.777135],
+		['27-tick - Combust', 164.900732],
+		['28-tick - Combust', 175.103239],
+		['29-tick - Combust', 185.306786],
+	]),
+};
 
 export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
 	race: Race.RaceTroll,

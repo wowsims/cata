@@ -42,6 +42,7 @@ import {
 	APLValueCurrentTime,
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
+	APLValueDotPercentIncrease,
 	APLValueDotRemainingTime,
 	APLValueDotTickFrequency,
 	APLValueEnergyRegenPerSecond,
@@ -98,8 +99,8 @@ import {
 	APLValueTrinketProcsMaxRemainingICD,
 	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
-	APLValueWarlockShouldRecastDrainSoul,
-	APLValueWarlockShouldRefreshCorruption,
+	APLValueWarlockHandOfGuldanInFlight,
+	APLValueWarlockHauntInFlight,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -1315,6 +1316,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueDotTickFrequency.create,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
 	}),
+	dotPercentIncrease: inputBuilder({
+		label: 'Dot Damage Increase %',
+		submenu: ['DoT'],
+		shortDescription: 'How much stronger a new DoT would be compared to the old.',
+		newValue: APLValueDotPercentIncrease.create,
+		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'expected_dot_spells', '')],
+	}),
 	sequenceIsComplete: inputBuilder({
 		label: 'Sequence Is Complete',
 		submenu: ['Sequence'],
@@ -1370,21 +1378,21 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFeralDruid,
 		fields: [],
 	}),
-	warlockShouldRecastDrainSoul: inputBuilder({
-		label: 'Should Recast Drain Soul',
+	warlockHandOfGuldanInFlight: inputBuilder({
+		label: 'Hand of Guldan in Flight',
 		submenu: ['Warlock'],
-		shortDescription: 'Returns <b>True</b> if the current Drain Soul channel should be immediately recast, to get a better snapshot.',
-		newValue: APLValueWarlockShouldRecastDrainSoul.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		shortDescription: 'Returns <b>True</b> if the impact of Hand of Guldan currenty is in flight.',
+		newValue: APLValueWarlockHandOfGuldanInFlight.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecDemonologyWarlock,
 		fields: [],
 	}),
-	warlockShouldRefreshCorruption: inputBuilder({
-		label: 'Should Refresh Corruption',
+	warlockHauntInFlight: inputBuilder({
+		label: 'Haunt In Flight',
 		submenu: ['Warlock'],
-		shortDescription: 'Returns <b>True</b> if the current Corruption has expired, or should be refreshed to get a better snapshot.',
-		newValue: APLValueWarlockShouldRefreshCorruption.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
-		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets')],
+		shortDescription: 'Returns <b>True</b> if Haunt currently is in flight.',
+		newValue: APLValueWarlockHauntInFlight.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecAfflictionWarlock,
+		fields: [],
 	}),
 	mageCurrentCombustionDotEstimate: inputBuilder({
 		label: 'Combustion Dot Value',

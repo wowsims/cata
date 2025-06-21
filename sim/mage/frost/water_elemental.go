@@ -4,39 +4,34 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/mage"
 )
 
-// The numbers in this file are VERY rough approximations based on logs.
+func (mage *FrostMage) registerSummonWaterElementalSpell() {
 
-func (Mage *FrostMage) registerSummonWaterElementalSpell() {
-
-	Mage.SummonWaterElemental = Mage.RegisterSpell(core.SpellConfig{
+	mage.SummonWaterElemental = mage.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 31687},
-		Flags:    core.SpellFlagAPL,
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 16,
+			BaseCostPercent: 3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD:      core.GCDDefault,
+				CastTime: 1500 * time.Millisecond,
 			},
 			CD: core.Cooldown{
-				Timer:    Mage.NewTimer(),
-				Duration: time.Minute * 3,
+				Timer:    mage.NewTimer(),
+				Duration: time.Minute * 1,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			Mage.waterElemental.Enable(sim, Mage.waterElemental)
+			mage.waterElemental.Enable(sim, mage.waterElemental)
 		},
-	})
-
-	Mage.AddMajorCooldown(core.MajorCooldown{
-		Spell:    Mage.SummonWaterElemental,
-		Priority: core.CooldownPriorityDrums + 1000, // Always prefer to cast before drums or lust so the ele gets their benefits.
-		Type:     core.CooldownTypeDPS,
 	})
 }
 
@@ -45,29 +40,50 @@ type WaterElemental struct {
 
 	mageOwner *FrostMage
 
-	// Water Ele almost never just stands still and spams like we want, it sometimes
-	// does its own thing. This controls how much it does that.
-	disobeyChance float64
-
 	Waterbolt *core.Spell
 }
 
-func (Mage *FrostMage) NewWaterElemental(disobeyChance float64) *WaterElemental {
+func (mage *FrostMage) NewWaterElemental() *WaterElemental {
+
+	waterElementalStatInheritance := func(ownerStats stats.Stats) stats.Stats {
+
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combinedHitExp := (hitRating + expertiseRating) * 0.5
+
+		// Water elemental usually has about half the HP of the caster, with glyph this is bumped by an additional 40%
+		return stats.Stats{
+			stats.Stamina:          ownerStats[stats.Stamina] * 0.5,
+			stats.SpellPower:       ownerStats[stats.SpellPower],
+			stats.HasteRating:      ownerStats[stats.HasteRating],
+			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+			stats.HitRating:        combinedHitExp,
+			stats.ExpertiseRating:  combinedHitExp,
+			// this (crit) needs to be tested more thoroughly when pet hit is not bugged
+		}
+	}
+
+	waterElementalBaseStats := stats.Stats{
+		// Mana seems to always be at 300k on beta
+		stats.Mana: 300000,
+	}
+
 	waterElemental := &WaterElemental{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Water Elemental",
-			Owner:           &Mage.Character,
-			BaseStats:       waterElementalBaseStats,
-			StatInheritance: waterElementalStatInheritance,
-			EnabledOnStart:  true,
-			IsGuardian:      true,
+			Name:                           "Water Elemental",
+			Owner:                          &mage.Character,
+			BaseStats:                      waterElementalBaseStats,
+			StatInheritance:                waterElementalStatInheritance,
+			HasDynamicCastSpeedInheritance: true,
+			EnabledOnStart:                 true,
+			IsGuardian:                     true,
 		}),
-		mageOwner:     Mage,
-		disobeyChance: disobeyChance,
+		mageOwner: mage,
 	}
-	waterElemental.EnableManaBarWithModifier(0.333)
+	waterElemental.EnableManaBar()
+	waterElemental.EnableDynamicStats(waterElementalStatInheritance)
 
-	Mage.AddPet(waterElemental)
+	mage.AddPet(waterElemental)
 
 	return waterElemental
 }
@@ -85,46 +101,25 @@ func (we *WaterElemental) Reset(_ *core.Simulation) {
 
 func (we *WaterElemental) ExecuteCustomRotation(sim *core.Simulation) {
 	spell := we.Waterbolt
-
-	if sim.Proc(we.disobeyChance, "Disobey") {
-		// Water ele has decided not to cooperate, so just wait for the cast time
-		// instead of casting.
-		we.WaitUntil(sim, sim.CurrentTime+spell.DefaultCast.CastTime)
-		return
-	}
-
 	spell.Cast(sim, we.CurrentTarget)
 }
 
-// These numbers are just rough guesses based on looking at some logs.
-var waterElementalBaseStats = stats.Stats{
-	// TODO update. taken at level 80 on beta
-	stats.Mana:      16123,
-	stats.Intellect: 369, //unsure on beta
-}
-
-var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
-	// These numbers are just rough guesses based on looking at some logs.
-	return stats.Stats{
-		// TODO Pet stats scale dynamically in combat
-		stats.Stamina:    ownerStats[stats.Stamina] * 0.2,
-		stats.Intellect:  ownerStats[stats.Intellect] * 0.3,
-		stats.SpellPower: ownerStats[stats.SpellPower] * 0.333,
-
-		// TODO test crit chance. It does crit, so figure out how often and if it scales
-		/* Results: owner 5% crit, Waterbolt 13% crit
-		owner 18% crit, waterbolt 18% crit
-		*/
-		stats.HasteRating:      ownerStats[stats.HasteRating],
-		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-	}
-}
-
 func (we *WaterElemental) registerWaterboltSpell() {
+	waterboltVariance := 0.25   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Variance"
+	waterboltScale := 0.5       // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "Coefficient"
+	waterboltCoefficient := 0.5 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=31707 Field: "BonusCoefficient"
+	if we.mageOwner.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental) {
+		we.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_AllowCastWhileMoving,
+			ClassMask: mage.MageWaterElementalSpellWaterBolt,
+		})
+	}
+
 	we.Waterbolt = we.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31707},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ActionID:       core.ActionID{SpellID: 31707},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: mage.MageWaterElementalSpellWaterBolt,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1,
@@ -136,14 +131,17 @@ func (we *WaterElemental) registerWaterboltSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.2, // 2013-09-23 Ice Lance's damage has been increased by 20%
 		CritMultiplier:   we.mageOwner.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.833,
+		BonusCoefficient: waterboltCoefficient,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := .405 * we.mageOwner.ClassSpellScaling
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := we.CalcAndRollDamageRange(sim, waterboltScale, waterboltVariance)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

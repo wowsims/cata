@@ -26,11 +26,10 @@ func (fire *FireMage) registerPyroblastSpell() {
 			},
 		},
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultCritMultiplier(),
-		BonusCoefficient:         1.545,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		CritMultiplier:   fire.DefaultCritMultiplier(),
+		BonusCoefficient: 1.545,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1.5 * fire.ClassSpellScaling
