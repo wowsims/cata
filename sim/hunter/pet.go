@@ -33,12 +33,13 @@ type HunterPet struct {
 
 func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 	conf := core.PetConfig{
-		Name:            "Stampede",
-		Owner:           &hunter.Character,
-		BaseStats:       hunterPetBaseStats,
-		StatInheritance: hunter.makeStatInheritance(),
-		EnabledOnStart:  false,
-		IsGuardian:      false,
+		Name:                            "Stampede",
+		Owner:                           &hunter.Character,
+		BaseStats:                       hunterPetBaseStats,
+		StatInheritance:                 hunter.makeStatInheritance(),
+		EnabledOnStart:                  false,
+		IsGuardian:                      false,
+		HasDynamicMeleeSpeedInheritance: true,
 	}
 	stampedePet := &HunterPet{
 		Pet:         core.NewPet(conf),
@@ -55,6 +56,7 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 			SwingSpeed:     1.8,
 		},
 		AutoSwingMelee: true,
+		ProcMask:       core.ProcMaskEmpty,
 	})
 	stampedePet.ApplyTalents()
 	hunter.AddPet(stampedePet)
@@ -63,12 +65,13 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 
 func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	conf := core.PetConfig{
-		Name:            "Dire Beast Pet",
-		Owner:           &hunter.Character,
-		BaseStats:       hunterPetBaseStats,
-		StatInheritance: hunter.makeStatInheritance(),
-		EnabledOnStart:  false,
-		IsGuardian:      true,
+		Name:                            "Dire Beast Pet",
+		Owner:                           &hunter.Character,
+		BaseStats:                       hunterPetBaseStats,
+		StatInheritance:                 hunter.makeStatInheritance(),
+		EnabledOnStart:                  false,
+		IsGuardian:                      true,
+		HasDynamicMeleeSpeedInheritance: true,
 	}
 	direBeastPet := &HunterPet{
 		Pet:         core.NewPet(conf),
@@ -87,6 +90,7 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 			SwingSpeed:     1.8,
 		},
 		AutoSwingMelee: true,
+		ProcMask:       core.ProcMaskEmpty,
 	})
 	direBeastPet.ApplyTalents()
 	hunter.AddPet(direBeastPet)
@@ -113,12 +117,13 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	}
 	petConfig := DefaultPetConfigs[hunter.Options.PetType]
 	conf := core.PetConfig{
-		Name:            petConfig.Name,
-		Owner:           &hunter.Character,
-		BaseStats:       hunterPetBaseStats,
-		StatInheritance: hunter.makeStatInheritance(),
-		EnabledOnStart:  true,
-		IsGuardian:      false,
+		Name:                            petConfig.Name,
+		Owner:                           &hunter.Character,
+		BaseStats:                       hunterPetBaseStats,
+		StatInheritance:                 hunter.makeStatInheritance(),
+		EnabledOnStart:                  true,
+		IsGuardian:                      false,
+		HasDynamicMeleeSpeedInheritance: true,
 	}
 	hp := &HunterPet{
 		Pet:         core.NewPet(conf),
@@ -142,6 +147,10 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		ProcMask:   core.ProcMaskMeleeMHSpecial,
 		FloatValue: 1,
 	})
+
+	// Active at start
+	WHFocusIncreaseMod.Activate()
+	WHDamageMod.Activate()
 
 	hp.EnableFocusBar(100+(core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
 		if focus >= 50 {
