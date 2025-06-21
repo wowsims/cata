@@ -1,11 +1,11 @@
-package mage
+package fire
 
 import (
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (mage *Mage) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
+func (mage *FireMage) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_MageCurrentCombustionDotEstimate:
 		return mage.newValueCurrentCombustionDotEstimate(config.GetMageCurrentCombustionDotEstimate(), config.Uuid)
@@ -16,12 +16,12 @@ func (mage *Mage) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) cor
 
 type APLValueMageCurrentCombustionDotEstimate struct {
 	core.DefaultAPLValueImpl
-	mage                  *Mage
+	mage                  *FireMage
 	combustionDotEstimate int32
 }
 
-func (mage *Mage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurrentCombustionDotEstimate, _ *proto.UUID) core.APLValue {
-	if !mage.Talents.Combustion {
+func (mage *FireMage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurrentCombustionDotEstimate, _ *proto.UUID) core.APLValue {
+	if mage.Spec != proto.Spec_SpecFireMage {
 		return nil
 	}
 

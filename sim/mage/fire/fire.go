@@ -48,6 +48,8 @@ type FireMage struct {
 	InfernoBlast *core.Spell
 
 	pyromaniacAuras core.AuraArray
+
+	combustionDotEstimate int32
 }
 
 func (fireMage *FireMage) GetMage() *mage.Mage {

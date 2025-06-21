@@ -11,6 +11,8 @@ import (
 type Mage struct {
 	core.Character
 
+	ClassSpellScaling float64
+
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
 	ArcaneOptions *proto.ArcaneMage_Options
@@ -47,7 +49,6 @@ type Mage struct {
 	PyroblastAura      *core.Aura
 
 	arcaneMissileCritSnapshot float64
-	ClassSpellScaling         float64
 
 	Icicles []float64
 
