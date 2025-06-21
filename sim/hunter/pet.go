@@ -14,7 +14,7 @@ type HunterPet struct {
 
 	hunterOwner *Hunter
 
-	FrenzyStacksSnapshot float64
+	FrenzyStacksSnapshot int32
 	FrenzyAura           *core.Aura
 
 	SpecialAbility *core.Spell
