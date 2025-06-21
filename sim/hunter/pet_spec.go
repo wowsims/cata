@@ -11,7 +11,7 @@ func (hp *HunterPet) ApplySpikedCollar() {
 		return
 	}
 	critDep := hp.NewDynamicMultiplyStat(stats.Strength, 1.2)
-	hp.RegisterAura(core.Aura{
+	core.MakePermanent(hp.RegisterAura(core.Aura{
 		Label:    "Spiked Collar",
 		ActionID: core.ActionID{SpellID: 53184},
 		Duration: core.NeverExpires,
@@ -26,11 +26,11 @@ func (hp *HunterPet) ApplySpikedCollar() {
 			hp.PseudoStats.DamageDealtMultiplier /= 1.1
 			hp.MultiplyAttackSpeed(sim, 1/1.1)
 		},
-	})
+	}))
 }
 
 func (hp *HunterPet) ApplyCombatExperience() {
-	hp.RegisterAura(core.Aura{
+	core.MakePermanent(hp.RegisterAura(core.Aura{
 		Label:    "Combat Experience",
 		ActionID: core.ActionID{SpellID: 20782},
 		Duration: core.NeverExpires,
@@ -41,5 +41,5 @@ func (hp *HunterPet) ApplyCombatExperience() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			hp.PseudoStats.DamageDealtMultiplier /= 1.5
 		},
-	})
+	}))
 }

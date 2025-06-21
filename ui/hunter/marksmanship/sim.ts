@@ -105,15 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			HunterInputs.PetUptime(),
-			HunterInputs.AQTierPrepull(),
-			HunterInputs.NaxxTierPrepull(),
-			OtherInputs.InputDelay,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [HunterInputs.PetUptime(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
