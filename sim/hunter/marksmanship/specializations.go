@@ -10,6 +10,7 @@ import (
 func (mm *MarksmanshipHunter) ApplySpecialization() {
 	mm.SteadyFocusAura()
 	mm.PiercingShotsAura()
+	mm.MasterMarksmanAura()
 	// Hotfix only applies to MM
 	mm.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
@@ -21,7 +22,7 @@ func (mm *MarksmanshipHunter) ApplySpecialization() {
 	caCritMod := mm.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Percent,
 		ClassMask:  hunter.HunterSpellAimedShot | hunter.HunterSpellSteadyShot,
-		FloatValue: 0.75,
+		FloatValue: 75,
 	})
 
 	mm.RegisterResetEffect(func(sim *core.Simulation) {
@@ -73,41 +74,17 @@ func (mm *MarksmanshipHunter) ApplySpecialization() {
 		},
 	})
 }
-func (mm *MarksmanshipHunter) MarsterMarksmanAura() {
+func (mm *MarksmanshipHunter) MasterMarksmanAura() {
 	var counter *core.Aura
 	procChance := 0.5
-
-	costMod := mm.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: hunter.HunterSpellAimedShot,
-		IntValue:  -1,
-	})
-	castMod := mm.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_CastTime_Pct,
-		ClassMask: hunter.HunterSpellAimedShot,
-		IntValue:  -1,
-	})
-
 	mmAura := mm.RegisterAura(core.Aura{
 		Label:    "Ready, Set, Aim...",
 		ActionID: core.ActionID{SpellID: 82925},
 		Duration: time.Second * 8,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Activate()
-			castMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Deactivate()
-			castMod.Deactivate()
-
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(hunter.HunterSpellAimedShot) {
-				counter.SetStacks(sim, 0)
-				counter.Activate(sim)
+			if spell.Matches(hunter.HunterSpellAimedShot) && spell.CurCast.Cost == 0 {
 				aura.Deactivate(sim) // Consume effect
 			}
-
 		},
 	})
 
@@ -116,20 +93,27 @@ func (mm *MarksmanshipHunter) MarsterMarksmanAura() {
 		Duration:  time.Second * 30,
 		ActionID:  core.ActionID{SpellID: 34486},
 		MaxStacks: 2,
+	})
+
+	core.MakePermanent(mm.RegisterAura(core.Aura{
+		Label: "Master Marksman Internal",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Matches(hunter.HunterSpellSteadyShot) {
 				return
 			}
 			if procChance == 1 || sim.Proc(procChance, "Master Marksman Proc") {
-				if aura.GetStacks() == 2 {
+				if counter.GetStacks() == 2 {
 					mmAura.Activate(sim)
+					counter.Deactivate(sim)
 				} else {
-					aura.AddStack(sim)
+					if !counter.IsActive() {
+						counter.Activate(sim)
+					}
+					counter.AddStack(sim)
 				}
 			}
 		},
-	})
-
+	}))
 }
 func (mm *MarksmanshipHunter) SteadyFocusAura() {
 	attackspeedMultiplier := 1.15

@@ -26,7 +26,7 @@ export const DefaultTalents = {
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfAnimalBond,
 			major2: MajorGlyph.GlyphOfDeterrence,
-			major3: MajorGlyph.GlyphOfLiberation,
+			major3: MajorGlyph.GlyphOfAimedShot,
 		}),
 	}),
 };
@@ -35,13 +35,13 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatStamina]: 0.5,
+			[Stat.StatStamina]: 0.0,
 			[Stat.StatAgility]: 1,
-			[Stat.StatHitRating]: 0.59,
-			[Stat.StatCritRating]: 0.33,
-			[Stat.StatHasteRating]: 0.25,
-			[Stat.StatMasteryRating]: 0.21,
-			[Stat.StatExpertiseRating]: 0.57,
+			[Stat.StatHitRating]: 0.63,
+			[Stat.StatCritRating]: 0.4,
+			[Stat.StatHasteRating]: 0.35,
+			[Stat.StatMasteryRating]: 0.29,
+			[Stat.StatExpertiseRating]: 0.59,
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 0.62,

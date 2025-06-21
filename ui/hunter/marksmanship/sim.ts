@@ -8,8 +8,9 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLListItem, APLRotation } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { MarksmanshipHunter_Rotation } from '../../core/proto/hunter';
+import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as Inputs from './inputs';
@@ -62,7 +63,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				.withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5)
 				.withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 		})(),
+		softCapBreakpoints: (() => {
+			const hasteSoftCap = StatCap.fromPseudoStat(PseudoStat.PseudoStatRangedHastePercent, {
+				breakpoints: [5.402, 9.092],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.35 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT, 0.29 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			});
 
+			return [hasteSoftCap];
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,

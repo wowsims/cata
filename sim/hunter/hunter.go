@@ -127,7 +127,6 @@ func (hunter *Hunter) ApplyTalents() {
 }
 
 func (hunter *Hunter) RegisterSpells() {
-	hunter.registerSteadyShotSpell()
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
 	hunter.registerHawkSpell()
