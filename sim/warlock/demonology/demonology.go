@@ -50,6 +50,7 @@ type DemonologyWarlock struct {
 	Felguard               *warlock.WarlockPet
 	WildImps               []*WildImpPet
 	HandOfGuldanImpactTime time.Duration
+	ImpSwarm               *core.Spell
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
@@ -82,6 +83,7 @@ func (demonology *DemonologyWarlock) Initialize() {
 	demonology.registerTouchOfChaos()
 	demonology.registerVoidRay()
 	demonology.registerDarksoulKnowledge()
+	demonology.registerImpSwarm()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {
