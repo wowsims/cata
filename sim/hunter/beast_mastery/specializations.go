@@ -8,16 +8,7 @@ import (
 
 func (bmHunter *BeastMasteryHunter) ApplyTalents() {
 	bmHunter.applyFrenzy()
-	bmHunter.ApplyMods()
 	bmHunter.Hunter.ApplyTalents()
-}
-
-func (bmHunter *BeastMasteryHunter) ApplyMods() {
-	// bmHunter.AddStaticMod(core.SpellModConfig{
-	// 	Kind:       core.SpellMod_DamageDone_Pct,
-	// 	ClassMask:  hunter.HunterSpellSerpentSting,
-	// 	FloatValue: 0.5,
-	// })
 }
 
 func (bmHunter *BeastMasteryHunter) applyFrenzy() {

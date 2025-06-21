@@ -59,9 +59,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
 	focusPerSecond := 5.0
 
-	// TODO: Fix this to work with the new talent system.
-	// hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
-	hunter.EnableFocusBar(100, focusPerSecond, true, nil)
+	hunter.EnableFocusBar(100+(core.TernaryFloat64(hunter.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
