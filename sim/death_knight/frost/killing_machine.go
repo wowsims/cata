@@ -47,7 +47,7 @@ func (fdk *FrostDeathKnight) registerKillingMachine() {
 	})
 
 	core.MakeProcTriggerAura(&fdk.Unit, core.ProcTrigger{
-		Name:     "Killing Machine" + fdk.Label,
+		Name:     "Killing Machine Trigger" + fdk.Label,
 		ActionID: core.ActionID{SpellID: 51128},
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeWhiteHit,
