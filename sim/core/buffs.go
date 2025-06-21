@@ -347,10 +347,10 @@ func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 
 // /////////////////////////////////////////////////////////////////////////
 //
-//	Attack Speed
+//	Melee Haste
 //
 // /////////////////////////////////////////////////////////////////////////
-func registerExclusiveAttackSpeed(aura *Aura, value float64) {
+func registerExclusiveMeleeHaste(aura *Aura, value float64) {
 	aura.NewExclusiveEffect("AttackSpeed%", false, ExclusiveEffect{
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
 			ee.Aura.Unit.MultiplyMeleeSpeed(s, value)
@@ -364,27 +364,27 @@ func registerExclusiveAttackSpeed(aura *Aura, value float64) {
 }
 func UnholyAura(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Unholy Aura", ActionID{SpellID: 55610}, nil})
-	registerExclusiveAttackSpeed(aura, 1.10)
+	registerExclusiveMeleeHaste(aura, 1.10)
 	return aura
 }
 func CacklingHowlAura(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Cackling Howl", ActionID{SpellID: 128432}, nil})
-	registerExclusiveAttackSpeed(aura, 1.10)
+	registerExclusiveMeleeHaste(aura, 1.10)
 	return aura
 }
 func SerpentsSwiftnessAura(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Serpent's Swiftness", ActionID{SpellID: 128433}, nil})
-	registerExclusiveAttackSpeed(aura, 1.10)
+	registerExclusiveMeleeHaste(aura, 1.10)
 	return aura
 }
 func SwiftbladesCunningAura(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Swiftblade's Cunning", ActionID{SpellID: 113742}, nil})
-	registerExclusiveAttackSpeed(aura, 1.10)
+	registerExclusiveMeleeHaste(aura, 1.10)
 	return aura
 }
 func UnleashedRageAura(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, nil})
-	registerExclusiveAttackSpeed(aura, 1.10)
+	registerExclusiveMeleeHaste(aura, 1.10)
 	return aura
 }
 
