@@ -38,6 +38,7 @@ func NewBeastMasteryHunter(character *core.Character, options *proto.Player) *Be
 func (bmHunter *BeastMasteryHunter) Initialize() {
 	// Initialize global Hunter spells
 	bmHunter.Hunter.Initialize()
+	bmHunter.registerBestialWrathCD()
 	bmHunter.registerKillCommandSpell()
 	bmHunter.registerFocusFireSpell()
 
