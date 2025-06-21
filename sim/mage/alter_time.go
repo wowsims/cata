@@ -30,8 +30,7 @@ func (mage *Mage) RegisterAlterTimeCD() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			mage.SetCurrentMana(sim, mageCurrentMana, manaMetrics)
 			mage.SetCurrentHealth(sim, mageCurrentHitpoints, healthMetrics)
-			for _, auraRef := range allAuras {
-				aura := auraRef
+			for _, aura := range allAuras {
 				state := auraState[aura.ActionID.SpellID]
 				if state != aura.SaveState(sim) {
 					aura.RestoreState(state, sim)

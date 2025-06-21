@@ -74,5 +74,5 @@ func (arcane *ArcaneMage) registerSpells() {
 	arcane.registerArcaneBlastSpell()
 	arcane.registerArcaneMissilesSpell()
 	arcane.registerArcanePowerCD()
-	arcane.Mage.RegisterAlterTimeCD()
+	arcane.RegisterAlterTimeCD()
 }
