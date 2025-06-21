@@ -58,19 +58,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 				postCapEPs: [0, 0],
 			});
 
-			const spellHitPercentSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [15],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
-			});
-
 			const expertiseRatingSoftCapConfig = StatCap.fromStat(Stat.StatExpertiseRating, {
 				breakpoints: [7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0],
 			});
 
-			return [physicalHitPercentSoftCapConfig, spellHitPercentSoftCapConfig, expertiseRatingSoftCapConfig];
+			return [physicalHitPercentSoftCapConfig, expertiseRatingSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -189,11 +183,6 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 						if (physicalHitCap) {
 							physicalHitCap.breakpoints = [7.5];
 							physicalHitCap.postCapEPs = [0];
-						}
-
-						const spellHitCap = softCaps.findIndex(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
-						if (spellHitCap > -1) {
-							softCaps.splice(spellHitCap, 1);
 						}
 					} else {
 						const physicalHitCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
