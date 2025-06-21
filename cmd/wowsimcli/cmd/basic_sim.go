@@ -30,7 +30,6 @@ func simMain(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to load input json file %q: %v", infile, err)
 	}
 	input := &proto.RaidSimRequest{}
-	input.Raid.Parties[0].Players[0].BonusStats.Stats[proto.Stat_StatAgility] = 100
 	err = protojson.UnmarshalOptions{DiscardUnknown: true}.Unmarshal(data, input)
 	if err != nil {
 		log.Fatalf("failed to load input json file: %s", err)
