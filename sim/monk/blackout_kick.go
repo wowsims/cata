@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 /*
@@ -38,6 +39,7 @@ Kick with a blast of Chi energy, dealing ${7.12*$<low>} to ${7.12*$<high>} Physi
 var blackoutKickActionID = core.ActionID{SpellID: 100784}.WithTag(1)
 
 func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
+	hotfixDamageMultiplier := core.Ternary(monk.Spec == proto.Spec_SpecBrewmasterMonk, 1.25, 1.0) // [Brewmaster] Blackout Kick damage increased by 25%. - https://eu.forums.blizzard.com/en/wow/t/mists-of-pandaria-classic-development-notes-updated-20-june/571162/1
 	config := core.SpellConfig{
 		ActionID:       blackoutKickActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -46,7 +48,7 @@ func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellCo
 		ClassSpellMask: MonkSpellBlackoutKick,
 		MaxRange:       core.MaxMeleeRange,
 
-		DamageMultiplier: 7.12,
+		DamageMultiplier: 7.12 * hotfixDamageMultiplier,
 		ThreatMultiplier: 1,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
@@ -65,6 +67,7 @@ func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellCo
 
 func (monk *Monk) registerBlackoutKick() {
 	chiMetrics := monk.NewChiMetrics(blackoutKickActionID)
+	chiCost := int32(2)
 
 	monk.RegisterSpell(blackoutKickSpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
@@ -75,7 +78,7 @@ func (monk *Monk) registerBlackoutKick() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return monk.GetChi() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()
+			return monk.GetChi() >= chiCost || monk.ComboBreakerBlackoutKickAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -85,9 +88,9 @@ func (monk *Monk) registerBlackoutKick() {
 
 			if result.Landed() {
 				if monk.ComboBreakerBlackoutKickAura.IsActive() {
-					monk.SpendChi(sim, 0, chiMetrics)
+					monk.onChiSpent(sim, chiCost)
 				} else {
-					monk.SpendChi(sim, 2, chiMetrics)
+					monk.SpendChi(sim, chiCost, chiMetrics)
 				}
 			}
 

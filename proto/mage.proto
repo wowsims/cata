@@ -85,8 +85,6 @@ message ArcaneMage {
 
 	message Options {
 		MageOptions class_options = 1;
-		int32 focus_magic_percent_uptime = 2;
-		UnitReference focus_magic_target = 3;
 	}
 	Options options = 1;
 }

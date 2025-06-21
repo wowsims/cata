@@ -162,6 +162,7 @@ export const spellSchoolNames: Map<number, string> = new Map([
 	[SpellSchool.Arcane + SpellSchool.Frost, 'Spellfrost'],
 	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
 	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
+	[SpellSchool.Nature + SpellSchool.Shadow, 'Plague'],
 ]);
 
 export const shortSecondaryStatNames: Map<Stat, string> = new Map([
@@ -390,7 +391,7 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecProtectionWarrior, 'Critical Block'],
 	[Spec.SpecArcaneMage, 'Mana Adept'],
 	[Spec.SpecFireMage, 'Flashburn'],
-	[Spec.SpecFrostMage, 'Frostburn'],
+	[Spec.SpecFrostMage, 'Icicles'],
 	[Spec.SpecDisciplinePriest, 'Shield Discipline'],
 	[Spec.SpecHolyPriest, 'Echo of Light'],
 	[Spec.SpecShadowPriest, 'Shadow Orb Power'],
@@ -436,7 +437,7 @@ export const masterySpellIDs: Map<Spec, number> = new Map([
 	[Spec.SpecDestructionWarlock, 77220],
 	[Spec.SpecBrewmasterMonk, 117906],
 	[Spec.SpecMistweaverMonk, 117907],
-	[Spec.SpecWindwalkerMonk, 115636],
+	[Spec.SpecWindwalkerMonk, 1247280],
 ]);
 export const statCapTypeNames = new Map<StatCapType, string>([
 	[StatCapType.TypeHardCap, 'Hard cap'],

@@ -54,6 +54,12 @@ func (affliction *AfflictionWarlock) registerSoulSwap() {
 		},
 	})
 
+	// used to not allocate a result for every check
+	expectedDamage := &core.SpellResult{}
+
+	// we dont use seed in the expected calculations as it's not applied by exhale
+	expectedDotRefs := []**core.Spell{&affliction.Corruption, &affliction.Agony, &affliction.UnstableAffliction}
+
 	// Inhale
 	affliction.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 86121},
@@ -96,6 +102,25 @@ func (affliction *AfflictionWarlock) registerSoulSwap() {
 			}
 
 			inhaleBuff.Activate(sim)
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			expectedDamage.Damage = 0
+			if useSnapshot {
+				for _, spellRef := range expectedDotRefs {
+					dot := (*spellRef).Dot(target)
+					expectedDamage.Damage += dot.Spell.ExpectedTickDamageFromCurrentSnapshot(sim, target)
+				}
+
+				return expectedDamage
+			}
+
+			for _, spellRef := range expectedDotRefs {
+				dot := (*spellRef).Dot(target)
+				expectedDamage.Damage += dot.Spell.ExpectedTickDamage(sim, target)
+			}
+
+			return expectedDamage
 		},
 	})
 }

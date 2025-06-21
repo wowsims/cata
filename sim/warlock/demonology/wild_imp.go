@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/warlock"
 )
@@ -149,25 +150,54 @@ func (warlock *DemonologyWarlock) SpawnImp(sim *core.Simulation) {
 func (demonology *DemonologyWarlock) registerWildImpPassive() {
 	var trigger *core.Aura
 	trigger = core.MakeProcTriggerAura(&demonology.Unit, core.ProcTrigger{
-		ActionID:       core.ActionID{SpellID: 114925},
-		Name:           "Demonic Calling",
-		Callback:       core.CallbackOnCastComplete,
-		ClassSpellMask: warlock.WarlockSpellShadowBolt | warlock.WarlockSpellSoulFire | warlock.WarlockSpellTouchOfChaos,
+		MetricsActionID: core.ActionID{SpellID: 114925},
+		Name:            "Demonic Calling",
+		Callback:        core.CallbackOnCastComplete,
+		ClassSpellMask:  warlock.WarlockSpellShadowBolt | warlock.WarlockSpellSoulFire | warlock.WarlockSpellTouchOfChaos,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			demonology.SpawnImp(sim)
 			trigger.Deactivate(sim)
-
-			// reactivate based on haste
-			delay := time.Duration(20.0/demonology.TotalSpellHasteMultiplier()) * time.Second
-			sim.AddPendingAction(&core.PendingAction{
-				NextActionAt: sim.CurrentTime + delay,
-				Priority:     core.ActionPriorityAuto,
-				OnAction: func(sim *core.Simulation) {
-					trigger.Activate(sim)
-				},
-			})
 		},
 	})
+
+	getCD := func() time.Duration {
+		return time.Duration(
+			core.TernaryFloat64(
+				demonology.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfImpSwarm), 24, 20)/
+				demonology.TotalSpellHasteMultiplier()) * time.Second
+	}
+
+	var triggerAction *core.PendingAction
+	var controllerImpSpawn func(sim *core.Simulation)
+	controllerImpSpawn = func(sim *core.Simulation) {
+		if demonology.ImpSwarm == nil || demonology.ImpSwarm.CD.IsReady(sim) {
+			trigger.Activate(sim)
+		}
+
+		triggerAction = &core.PendingAction{
+			NextActionAt: sim.CurrentTime + getCD(),
+			Priority:     core.ActionPriorityAuto,
+			OnAction:     controllerImpSpawn,
+		}
+
+		sim.AddPendingAction(triggerAction)
+	}
+
+	core.MakePermanent(demonology.RegisterAura(core.Aura{
+		Label: "Wild Imp - Controller",
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			cd := time.Duration(sim.Roll(float64(time.Second), float64(getCD())))
+
+			// initially do random timer to simulate real world scenario more appropiate
+			triggerAction = &core.PendingAction{
+				NextActionAt: sim.CurrentTime + cd,
+				Priority:     core.ActionPriorityAuto,
+				OnAction:     controllerImpSpawn,
+			}
+
+			sim.AddPendingAction(triggerAction)
+		},
+	}))
 
 	core.MakeProcTriggerAura(&demonology.Unit, core.ProcTrigger{
 		Name:           "Wild Imp - Doom Monitor",

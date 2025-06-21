@@ -5,27 +5,11 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLRotation } from '../../core/proto/apl';
+import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DeathKnightInputs from '../inputs';
 import * as Presets from './presets';
-
-const getEPDefaults = (player: Player<Spec.SpecUnholyDeathKnight>) => {
-	let hasP3Setup = false;
-
-	const items = player.getGear().getEquippedItems();
-
-	for (const item of items) {
-		const phase = item?.item.phase || 0;
-		if (phase > 2) {
-			hasP3Setup = true;
-			break;
-		}
-	}
-
-	return hasP3Setup ? Presets.P3_UNHOLY_EP_PRESET.epWeights : Presets.P2_UNHOLY_EP_PRESET.epWeights;
-};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	cssClass: 'unholy-death-knight-sim-ui',
@@ -60,13 +44,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	),
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_BIS_GEAR_PRESET.gear,
+		gear: Presets.P1_BIS_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_UNHOLY_EP_PRESET.epWeights,
+		epWeights: Presets.P1_UNHOLY_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return hitCap.add(expCap);
 		})(),
@@ -78,10 +62,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			elementalOath: true,
+			powerWordFortitude: true,
+			serpentsSwiftness: true,
+			trueshotAura: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({}),
+		debuffs: Debuffs.create({
+			curseOfElements: true,
+			physicalVulnerability: true,
+			weakenedArmor: true,
+			weakenedBlows: true,
+		}),
+		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	autoRotation: (_: Player<Spec.SpecUnholyDeathKnight>): APLRotation => Presets.DEFAULT_ROTATION_PRESET.rotation.rotation!,
@@ -94,17 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.CastSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			DeathKnightInputs.StartingRunicPower(),
-			// DeathKnightInputs.PetUptime(),
-			// UnholyInputs.SelfUnholyFrenzy,
-			// UnholyInputs.UseAMSInput,
-			// UnholyInputs.AvgAMSSuccessRateInput,
-			// UnholyInputs.AvgAMSHitInput,
-			// OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-			OtherInputs.InputDelay,
-		],
+		inputs: [DeathKnightInputs.StartingRunicPower(), OtherInputs.InFrontOfTarget, OtherInputs.InputDelay],
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotHead,
@@ -126,18 +117,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
-		epWeights: [Presets.P2_UNHOLY_EP_PRESET, Presets.P3_UNHOLY_EP_PRESET],
+		epWeights: [Presets.P1_UNHOLY_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.DEFAULT_ROTATION_PRESET],
+		rotations: [Presets.DEFAULT_ROTATION_PRESET, Presets.CATA_ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P2_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET, Presets.P4_BIS_GEAR_PRESET],
-		builds: [Presets.PREBIS_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		gear: [Presets.P1_BIS_GEAR_PRESET],
+		builds: [Presets.P1_PRESET],
 	},
 
 	raidSimPresets: [
@@ -154,16 +145,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P2_BIS_GEAR_PRESET.gear,
-					2: Presets.P2_BIS_GEAR_PRESET.gear,
-					3: Presets.P3_BIS_GEAR_PRESET.gear,
-					4: Presets.P3_BIS_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P2_BIS_GEAR_PRESET.gear,
-					2: Presets.P2_BIS_GEAR_PRESET.gear,
-					3: Presets.P3_BIS_GEAR_PRESET.gear,
-					4: Presets.P3_BIS_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -176,7 +161,9 @@ export class UnholyDeathKnightSimUI extends IndividualSimUI<Spec.SpecUnholyDeath
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				getEPDefaults,
+				getEPDefaults(_: Player<Spec.SpecUnholyDeathKnight>) {
+					return Presets.P1_UNHOLY_EP_PRESET.epWeights;
+				},
 			});
 		});
 	}

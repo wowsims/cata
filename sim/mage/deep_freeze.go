@@ -19,7 +19,7 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		ClassSpellMask: MageSpellDeepFreeze,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 9,
+			BaseCostPercent: 2,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
