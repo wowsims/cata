@@ -626,8 +626,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-Settings-Orc-p1.2h-Basic-2h-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 307082.96238
-  tps: 296900.86651
+  dps: 358120.97392
+  tps: 347938.87806
   hps: 1942.65948
  }
 }
@@ -650,8 +650,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-Settings-Orc-p1.2h-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 214246.07616
-  tps: 208432.71989
+  dps: 247761.9302
+  tps: 241948.57393
   hps: 1704.43162
  }
 }
@@ -674,8 +674,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-Settings-Worgen-p1.2h-Basic-2h-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 306214.38554
-  tps: 296535.88172
+  dps: 356507.64318
+  tps: 346829.13936
   hps: 1949.43592
  }
 }
@@ -698,8 +698,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-Settings-Worgen-p1.2h-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 212483.92799
-  tps: 206948.4064
+  dps: 245402.15002
+  tps: 239866.62844
   hps: 1707.07517
  }
 }

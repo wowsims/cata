@@ -633,8 +633,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 532577.32827
-  tps: 522008.02165
+  dps: 760901.87213
+  tps: 750332.56551
   hps: 1401.51603
  }
 }
@@ -657,8 +657,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 353651.44132
-  tps: 347871.84634
+  dps: 500952.5469
+  tps: 495172.95191
   hps: 1208.87484
  }
 }
@@ -681,8 +681,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 531756.76843
-  tps: 521607.05122
+  dps: 759725.93678
+  tps: 749576.21957
   hps: 1417.02879
  }
 }
@@ -705,8 +705,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 352494.09142
-  tps: 346968.99971
+  dps: 499231.52519
+  tps: 493706.43348
   hps: 1222.54345
  }
 }
