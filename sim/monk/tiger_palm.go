@@ -118,11 +118,12 @@ func (monk *Monk) registerTigerPalm() {
 
 			if result.Landed() {
 				tigerPowerBuff.Activate(sim)
-
-				if monk.ComboBreakerTigerPalmAura.IsActive() || isBrewmaster {
-					monk.onChiSpent(sim, chiCost)
-				} else {
-					monk.SpendChi(sim, chiCost, chiMetrics)
+				if !isBrewmaster {
+					if monk.ComboBreakerTigerPalmAura.IsActive() {
+						monk.onChiSpent(sim, chiCost)
+					} else {
+						monk.SpendChi(sim, chiCost, chiMetrics)
+					}
 				}
 			}
 
