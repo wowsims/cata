@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -464,10 +463,6 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 				remainingTTO := DurationFromSeconds(unit.CurrentMana() / manaSpentPerSecond)
 				timeToOOM = DurationFromSeconds(encounterDurationSeconds) + remainingTTO
 				timeToOOM = min(timeToOOM, time.Minute*60)
-
-				if timeToOOM < time.Minute*60 {
-					fmt.Printf("Time till oom %f\n", timeToOOM.Minutes())
-				}
 			} else {
 				timeToOOM = time.Minute * 60
 			}
@@ -479,6 +474,7 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 		}
 
 		unitMetrics.tto.Total = timeToOOM.Seconds()
+
 		// Hack because of the way DistributionMetrics does its calculations.
 		unitMetrics.tto.Total *= encounterDurationSeconds
 	}
