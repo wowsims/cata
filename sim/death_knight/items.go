@@ -8,241 +8,355 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-// TODO: T13 tank
-
-// T11 - DPS
-var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "Magma Plated Battlegear",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-			// Increases the critical strike chance of your Death Coil and Frost Strike abilities by 5%.
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Percent,
-				ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal | DeathKnightSpellFrostStrike,
-				FloatValue: 5,
-			})
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Each time you gain a Death Rune, you also gain 1% increased attack power for 30 sec. Stacks up to 3 times.
-			// Also activated whenever KM procs
-			character := agent.GetCharacter()
-
-			apDep := make([]*stats.StatDependency, 3)
-			for i := 1; i <= 3; i++ {
-				apDep[i-1] = character.NewDynamicMultiplyStat(stats.AttackPower, 1.0+float64(i)*0.01)
-			}
-
-			aura := character.GetOrRegisterAura(core.Aura{
-				Label:     "Death Eater",
-				ActionID:  core.ActionID{SpellID: 90507},
-				Duration:  time.Second * 30,
-				MaxStacks: 3,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					if oldStacks > 0 {
-						character.DisableDynamicStatDep(sim, apDep[oldStacks-1])
-					}
-					if newStacks > 0 {
-						character.EnableDynamicStatDep(sim, apDep[newStacks-1])
-					}
-				},
-			})
-
-			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:           "Magma Plated Battlegear",
-				Callback:       core.CallbackOnCastComplete,
-				ClassSpellMask: DeathKnightSpellConvertToDeathRune | DeathKnightSpellKillingMachine,
-				ICD:            time.Millisecond * 10, // Batch together double rune converts
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					aura.Activate(sim)
-					aura.AddStack(sim)
-				},
-			})
-		},
-	},
-})
-
-// T11 - Tank
-var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
-	Name: "Magma Plated Battlearmor",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-			// Increases the damage done by your Death Strike ability by 5%.
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  DeathKnightSpellDeathStrike,
-				FloatValue: 0.05,
-			})
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Increases the duration of your Icebound Fortitude ability by 50%.
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_BuffDuration_Flat,
-				ClassMask: DeathKnightSpellIceboundFortitude,
-				TimeValue: 6 * time.Second,
-			})
-		},
-	},
-})
-
-// T12 - DPS
-var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "Elementium Deathplate Battlegear",
+// T14 DPS
+var ItemSetBattlegearOfTheLostCatacomb = core.NewItemSet(core.ItemSet{
+	Name: "Battlegear of the Lost Catacomb",
+	ID:   1123,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your Obliterate, Frost Strike, and Scourge Strike deal 4% increased damage.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec == proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				ClassMask:  DeathKnightSpellFrostStrike | DeathKnightSpellObliterate | DeathKnightSpellScourgeStrike,
+				FloatValue: 0.04,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your Pillar of Frost ability grants 5% additional Strength, and your Unholy Frenzy ability grants 10% additional haste.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec == proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			// Handled in sim/core/buffs.go and sim/death_knight/frost/pillar_of_frost.go
+			dk.T14Dps4pc = setBonusAura
+		},
+	},
+})
+
+// T14 Tank
+var ItemSetPlateOfTheLostCatacomb = core.NewItemSet(core.ItemSet{
+	Name: "Plate of the Lost Catacomb",
+	ID:   1124,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Reduces the cooldown of your Vampiric Blood ability by 20 sec.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				ClassMask: DeathKnightSpellVampiricBlood,
+				TimeValue: time.Second * -20,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Increases the healing received from your Death Strike by 10%.
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 
-			actionID := core.ActionID{SpellID: 98971}
-			rpMetrics := dk.NewRunicPowerMetrics(actionID)
-			var pa *core.PendingAction
+			setBonusAura.AttachMultiplicativePseudoStatBuff(
+				&dk.deathStrikeHealingMultiplier, 1.1,
+			)
+		},
+	},
+})
 
-			buff := dk.RegisterAura(core.Aura{
-				Label:    "Smoldering Rune",
-				ActionID: actionID,
-				Duration: time.Minute * core.TernaryDuration(dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter), 3, 2),
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-						Period: time.Second * 5,
-						OnAction: func(sim *core.Simulation) {
-							dk.AddUnscaledRunicPower(sim, 3, rpMetrics)
-						},
-					})
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					pa.Cancel(sim)
+// T15 DPS
+var ItemSetBattleplateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
+	Name: "Battleplate of the All-Consuming Maw",
+	ID:   1152,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your attacks have a chance to raise the spirit of a fallen Zandalari as your Death Knight minion for 15 sec.
+			// (Approximately 1.15 procs per minute)
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			risenZandalariSpell := dk.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 138342},
+				SpellSchool: core.SpellSchoolPhysical,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					for _, troll := range dk.FallenZandalari {
+						if troll.IsActive() {
+							continue
+						}
+
+						troll.EnableWithTimeout(sim, troll, time.Second*15)
+
+						return
+					}
+
+					if sim.Log != nil {
+						dk.Log(sim, "No Fallen Zandalari available for the T15 4pc to proc, this is unreasonable.")
+					}
 				},
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:           "Smolering Rune Trigger",
-				ActionID:       actionID,
-				ClassSpellMask: DeathKnightSpellHornOfWinter,
-				Callback:       core.CallbackOnCastComplete,
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
+				DPM: dk.NewSetBonusRPPMProcManager(138343, setBonusAura, core.ProcMaskDirect, core.RPPMConfig{
+					PPM: 1.14999997616,
+				}),
+				ICD: time.Millisecond * 250,
+
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					buff.Activate(sim)
+					risenZandalariSpell.Cast(sim, result.Target)
 				},
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your Soul Reaper ability now deals additional Shadow damage to targets below 45% instead of below 35%.
+			// Additionally, Killing Machine now also increases the critical strike chance of Soul Reaper.
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			damage := 0.0
 
-			newFlamingTormentSpell := func(spellID int32) core.SpellConfig {
-				actionID := core.ActionID{SpellID: spellID} // actually 99000
+			// KM effect handled in sim/death_knight/frost/killing_machine.go
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				dk.soulReaper45Percent = true
+			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				dk.soulReaper45Percent = false
+			}).ExposeToAPL(138347)
+		},
+	},
+})
 
-				return core.SpellConfig{
-					ActionID:    actionID.WithTag(3),
-					SpellSchool: core.SpellSchoolFire,
+// T15 Tank
+var ItemSetPlateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
+	Name: "Plate of the All-Consuming Maw",
+	ID:   1151,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Reduces the cooldown of your Rune Tap ability by 10 sec and removes its Rune cost.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				ClassMask: DeathKnightSpellRuneTap,
+				TimeValue: time.Second * -10,
+			}).AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Pct,
+				ClassMask:  DeathKnightSpellRuneTap,
+				FloatValue: -2.0,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Your Bone Shield ability grants you 15 Runic Power each time one of its charges is consumed.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			rpMetrics := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 138214})
+
+			dk.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(DeathKnightSpellBoneShield) {
+					return
+				}
+
+				dk.BoneShieldAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					if !setBonusAura.IsActive() {
+						return
+					}
+
+					if newStacks < oldStacks {
+						dk.AddRunicPower(sim, 15, rpMetrics)
+					}
+				})
+			})
+		},
+	},
+})
+
+// T16 DPS
+var ItemSetBattleplateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
+	Name: "Battleplate of Cyclopean Dread",
+	ID:   1200,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Killing Machine and Sudden Doom grant 500 Haste or Mastery, whichever is highest, for [Dark Transformation: 15 / (Hands * 2 + 4)] sec, stacking up to 10 times.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec == proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			var duration time.Duration
+			if dk.Spec == proto.Spec_SpecUnholyDeathKnight {
+				duration = time.Second * 15
+			} else if dk.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+				duration = time.Second * 8
+			} else {
+				duration = time.Second * 6
+			}
+
+			currentStat := stats.HasteRating
+			deathShroudAura := dk.RegisterAura(core.Aura{
+				Label:     "Death Shroud" + dk.Label,
+				ActionID:  core.ActionID{SpellID: 144901},
+				Duration:  duration,
+				MaxStacks: 10,
+
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					newStat := core.Ternary(
+						dk.GetStat(stats.HasteRating) > dk.GetStat(stats.MasteryRating),
+						stats.HasteRating,
+						stats.MasteryRating)
+					if currentStat == newStat {
+						dk.AddStatDynamic(sim, currentStat, 500*float64(newStacks-oldStacks))
+					} else {
+						dk.AddStatDynamic(sim, currentStat, -500*float64(oldStacks))
+						dk.AddStatDynamic(sim, newStat, 500*float64(newStacks))
+						currentStat = newStat
+					}
+				},
+			})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellKillingMachine | DeathKnightSpellSuddenDoom,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					deathShroudAura.Activate(sim)
+					deathShroudAura.AddStack(sim)
+				},
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Death Coil increases the duration of Dark Transformation by 2.0 sec per cast.
+			// Special attacks while Pillar of Frost is active will impale your target with an icy spike.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			if dk.Spec == proto.Spec_SpecUnholyDeathKnight {
+				setBonusAura.AttachProcTrigger(core.ProcTrigger{
+					Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+					ClassSpellMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if dk.Ghoul.DarkTransformationAura.IsActive() {
+							dk.Ghoul.DarkTransformationAura.UpdateExpires(dk.Ghoul.DarkTransformationAura.ExpiresAt() + time.Second*2)
+						}
+					},
+				})
+			} else if dk.Spec == proto.Spec_SpecFrostDeathKnight {
+				frozenPowerSpell := dk.RegisterSpell(core.SpellConfig{
+					ActionID:    core.ActionID{SpellID: 147620},
+					SpellSchool: core.SpellSchoolFrost,
 					ProcMask:    core.ProcMaskEmpty,
-					Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagNoOnDamageDealt | core.SpellFlagIgnoreModifiers | core.SpellFlagPassiveSpell,
+					Flags:       core.SpellFlagPassiveSpell,
 
 					DamageMultiplier: 1,
+					CritMultiplier:   dk.DefaultCritMultiplier(),
 					ThreatMultiplier: 1,
 
 					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						spell.CalcAndDealDamage(sim, spell.Unit.CurrentTarget, damage, spell.OutcomeAlwaysHit)
+						baseDamage := 500.0 + 0.07999999821*spell.MeleeAttackPower()
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 					},
-				}
+				})
+
+				dk.OnSpellRegistered(func(spell *core.Spell) {
+					if !spell.Matches(DeathKnightSpellPillarOfFrost) {
+						return
+					}
+
+					dk.PillarOfFrostAura.AttachProcTrigger(core.ProcTrigger{
+						Callback: core.CallbackOnSpellHitDealt,
+						ProcMask: core.ProcMaskSpecial,
+						Outcome:  core.OutcomeLanded,
+						Harmful:  true,
+
+						Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+							frozenPowerSpell.Cast(sim, result.Target)
+						},
+					})
+				})
+			}
+		},
+	},
+})
+
+// T16 Tank
+var ItemSetPlateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
+	Name: "Plate of Cyclopean Dread",
+	ID:   1201,
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Every 10 Heart Strikes, Rune Strikes, Death Coils, Soul Reapers, or Blood Boils will add one charge to your next Bone Shield.
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
 			}
 
-			var flamingTormentSpellForObliterate = dk.RegisterSpell(newFlamingTormentSpell(49020))
-			var flamingTormentSpellForScourgeStrike = dk.RegisterSpell(newFlamingTormentSpell(55090))
+			dk.BoneWallAura = dk.RegisterAura(core.Aura{
+				Label:     "Bone Wall" + dk.Label,
+				ActionID:  core.ActionID{SpellID: 144948},
+				Duration:  time.Minute * 2,
+				MaxStacks: 6,
+			}).AttachProcTrigger(core.ProcTrigger{
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellBoneShield,
 
-			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:           "Flaming Torment Trigger",
-				Callback:       core.CallbackOnSpellHitDealt,
-				ClassSpellMask: DeathKnightSpellObliterate | DeathKnightSpellScourgeStrike | DeathKnightSpellScourgeStrikeShadow,
-				Outcome:        core.OutcomeLanded,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					damage = result.Damage * 0.06
-					if spell.Matches(DeathKnightSpellObliterate) {
-						flamingTormentSpellForObliterate.Cast(sim, result.Target)
-					} else {
-						flamingTormentSpellForScourgeStrike.Cast(sim, result.Target)
+					dk.BoneWallAura.Deactivate(sim)
+				},
+			})
+
+			boneWallDriver := dk.RegisterAura(core.Aura{
+				Label:     "Bone Wall Driver" + dk.Label,
+				ActionID:  core.ActionID{SpellID: 145719},
+				Duration:  time.Minute * 10,
+				MaxStacks: 10,
+
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					if newStacks == 10 {
+						dk.BoneWallAura.Activate(sim)
+						dk.BoneWallAura.AddStack(sim)
+						aura.SetStacks(sim, 1)
 					}
 				},
 			})
-		},
-	},
-})
-
-// T12 - Tank
-var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
-	Name: "Elementium Deathplate Battlearmor",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			dk := agent.(DeathKnightAgent).GetDeathKnight()
-
-			dk.BurningBloodSpell = dk.RegisterSpell(core.SpellConfig{
-				ActionID:         core.ActionID{SpellID: 98957},
-				SpellSchool:      core.SpellSchoolFire,
-				Flags:            core.SpellFlagAPL | core.SpellFlagPassiveSpell,
-				ProcMask:         core.ProcMaskEmpty,
-				DamageMultiplier: 1,
-				CritMultiplier:   dk.DefaultCritMultiplier(),
-				ThreatMultiplier: 1,
-
-				Dot: core.DotConfig{
-					Aura: core.Aura{
-						Label: "Burning Blood" + dk.Label,
-					},
-					NumberOfTicks: 3,
-					TickLength:    time.Second * 2,
-
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-						baseDamage := 800.0
-						dot.Snapshot(target, baseDamage)
-					},
-					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-					},
-				},
-
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.Dot(target).Apply(sim)
-				},
-			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:       "Burning Blood Trigger",
-				ActionID:   core.ActionID{SpellID: 98956},
-				ProcMask:   core.ProcMaskMelee,
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcChance: 1,
-				Harmful:    true,
+				Callback: core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellHeartStrike |
+					DeathKnightSpellRuneStrike |
+					DeathKnightSpellDeathCoil |
+					DeathKnightSpellSoulReaper |
+					DeathKnightSpellBloodBoil,
+
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					dk.BurningBloodSpell.Cast(sim, result.Target)
+					boneWallDriver.Activate(sim)
+					boneWallDriver.AddStack(sim)
 				},
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// When your Dancing Rune Weapon expires, you gain 15% additional parry chance for 12 sec.
-			// Implemented in dancing_rune_weapon.go
+			// Dancing Rune Weapon will reactivate all Frost and Unholy runes and convert them to Death runes.
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			dk.T12Tank4pc = setBonusAura
+			if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+				return
+			}
+
+			deathRuneMetrics := dk.CurrentTarget.NewDeathRuneMetrics(core.ActionID{SpellID: 144950})
+
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DeathKnightSpellDancingRuneWeapon,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					dk.RegenAllFrostAndUnholyRunesAsDeath(sim, deathRuneMetrics)
+				},
+			})
 		},
 	},
 })
-
-// T13 - DPS
-var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "Necrotic Boneplate Battlegear",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Sudden Doom has a 30% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
-			// Handled in talents_frost.go:applyRime() and talents_unholy.go:applySuddenDoom()
-			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			dk.T13Dps2pc = setBonusAura
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Runic Empowerment has a 25% chance and Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
-			// Spell: Runic Mastery (id: 105647)
-			// Handled in talents_unholy.go:applyRunicEmpowerementCorruption()
-			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			dk.T13Dps4pc = setBonusAura
-		},
-	},
-})
-
-func init() {
-}

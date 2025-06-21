@@ -14,7 +14,7 @@ func RegisterUnholyDeathKnight() {
 		func(character *core.Character, options *proto.Player) core.Agent {
 			return NewUnholyDeathKnight(character, options)
 		},
-		func(player *proto.Player, spec interface{}) {
+		func(player *proto.Player, spec any) {
 			playerSpec, ok := spec.(*proto.Player_UnholyDeathKnight)
 			if !ok {
 				panic("Invalid spec value for Unholy Death Knight!")
@@ -38,22 +38,14 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 			Spec: proto.Spec_SpecUnholyDeathKnight,
 
 			StartingRunicPower: unholyOptions.ClassOptions.StartingRunicPower,
-			PetUptime:          unholyOptions.ClassOptions.PetUptime,
 			IsDps:              true,
-
-			UseAMS:            unholyOptions.UseAms,
-			AvgAMSSuccessRate: unholyOptions.AvgAmsSuccessRate,
-			AvgAMSHit:         unholyOptions.AvgAmsHit,
 		}, player.TalentsString, 56835),
 	}
 
+	uhdk.Gargoyle = uhdk.NewGargoyle()
 	uhdk.Inputs.UnholyFrenzyTarget = unholyOptions.UnholyFrenzyTarget
 
 	return uhdk
-}
-
-func (uhdk UnholyDeathKnight) getMasteryShadowBonus() float64 {
-	return 0.2 + 0.025*uhdk.GetMasteryPoints()
 }
 
 func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
@@ -63,45 +55,26 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
 
-	// uhdk.registerScourgeStrikeSpell()
+	uhdk.registerMastery()
+
+	uhdk.registerBloodStrike()
+	uhdk.registerDarkTransformation()
+	uhdk.registerEbonPlaguebringer()
+	uhdk.registerFesteringStrike()
+	uhdk.registerImprovedUnholyPresence()
+	uhdk.registerMasterOfGhouls()
+	uhdk.registerScourgeStrike()
+	uhdk.registerReaping()
+	uhdk.registerShadowInfusion()
+	uhdk.registerSuddenDoom()
+	uhdk.registerSummonGargoyle()
+	uhdk.registerUnholyFrenzy()
+	uhdk.registerUnholyMight()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
 	uhdk.DeathKnight.ApplyTalents()
-	uhdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86524)
-
-	// Mastery: Dreadblade
-	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
-		School:    core.SpellSchoolShadow,
-		ClassMask: death_knight.DeathKnightSpellScourgeStrikeShadow | death_knight.DeathKnightSpellUnholyBlight,
-	})
-
-	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *=
-			(1.2 + 0.025*core.MasteryRatingToMasteryPoints(newMastery)) / (1.2 + 0.025*core.MasteryRatingToMasteryPoints(oldMastery))
-		masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
-	})
-
-	core.MakePermanent(uhdk.GetOrRegisterAura(core.Aura{
-		Label:    "Dreadblade",
-		ActionID: core.ActionID{SpellID: 77515},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.2 + 0.025*uhdk.GetMasteryPoints()
-			masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
-
-	// Unholy Might
-	uhdk.MultiplyStat(stats.Strength, 1.25)
-	core.MakePermanent(uhdk.GetOrRegisterAura(core.Aura{
-		Label:    "Unholy Might",
-		ActionID: core.ActionID{SpellID: 91107},
-	}))
+	uhdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86536)
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {

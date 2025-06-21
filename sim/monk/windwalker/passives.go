@@ -13,7 +13,7 @@ func (ww *WindwalkerMonk) registerPassives() {
 }
 
 func (ww *WindwalkerMonk) registerComboBreaker() {
-	registerComboBreakerAuraAndTrigger := func(labelSuffix string, spellID int32, triggerSpellMask int64) {
+	registerComboBreakerAuraAndTrigger := func(labelSuffix string, spellID int32, triggerSpellMask int64) *core.Aura {
 		aura := ww.RegisterAura(core.Aura{
 			Label:    fmt.Sprintf("Combo Breaker: %s %s", labelSuffix, ww.Label),
 			ActionID: core.ActionID{SpellID: spellID},
@@ -38,15 +38,17 @@ func (ww *WindwalkerMonk) registerComboBreaker() {
 				aura.Activate(sim)
 			},
 		})
+
+		return aura
 	}
 
-	registerComboBreakerAuraAndTrigger(
+	ww.ComboBreakerBlackoutKickAura = registerComboBreakerAuraAndTrigger(
 		"Blackout Kick",
 		116768,
 		monk.MonkSpellBlackoutKick,
 	)
 
-	registerComboBreakerAuraAndTrigger(
+	ww.ComboBreakerTigerPalmAura = registerComboBreakerAuraAndTrigger(
 		"Tiger Palm",
 		118864,
 		monk.MonkSpellTigerPalm,

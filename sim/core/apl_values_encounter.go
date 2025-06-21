@@ -115,6 +115,8 @@ func (value *APLValueIsExecutePhase) GetBool(sim *Simulation) bool {
 		return sim.IsExecutePhase25()
 	} else if value.threshold == proto.APLValueIsExecutePhase_E35 {
 		return sim.IsExecutePhase35()
+	} else if value.threshold == proto.APLValueIsExecutePhase_E45 {
+		return sim.IsExecutePhase45()
 	} else if value.threshold == proto.APLValueIsExecutePhase_E90 {
 		return sim.IsExecutePhase90()
 	} else {

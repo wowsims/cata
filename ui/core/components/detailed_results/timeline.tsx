@@ -1485,6 +1485,10 @@ const idToCategoryMap: Record<number, number> = {
 	[57623]: MELEE_ACTION_CATEGORY + 0.25, // HoW
 	[59131]: MELEE_ACTION_CATEGORY + 0.3, // Icy touch
 	[49921]: MELEE_ACTION_CATEGORY + 0.3, // Plague strike
+	[114866]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[130735]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[130736]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[114867]: MELEE_ACTION_CATEGORY + 0.32, // Soul Reaper (Tick)
 	[51271]: MELEE_ACTION_CATEGORY + 0.35, // UA
 	[45529]: MELEE_ACTION_CATEGORY + 0.35, // BT
 	[47568]: MELEE_ACTION_CATEGORY + 0.35, // ERW
@@ -1523,7 +1527,7 @@ const idToCategoryMap: Record<number, number> = {
 	[123986]: SPELL_ACTION_CATEGORY + 0.01, // Chi Burst
 	[148135]: SPELL_ACTION_CATEGORY + 0.011, // Chi Burst (Damage)
 	[130654]: SPELL_ACTION_CATEGORY + 0.012, // Chi Burst (Heal)
-	[116740]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
+	[1247275]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
 	[115399]: SPELL_ACTION_CATEGORY + 0.03, // Chi Brew
 	[115288]: SPELL_ACTION_CATEGORY + 0.04, // Energizing Brew
 	[126456]: SPELL_ACTION_CATEGORY + 0.05, // Fortifying Brew

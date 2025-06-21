@@ -18,6 +18,7 @@ type Encounter struct {
 	ExecuteProportion_20 float64
 	ExecuteProportion_25 float64
 	ExecuteProportion_35 float64
+	ExecuteProportion_45 float64
 	ExecuteProportion_90 float64
 
 	EndFightAtHealth float64
@@ -34,6 +35,7 @@ type Encounter struct {
 func NewEncounter(options *proto.Encounter) Encounter {
 	options.ExecuteProportion_25 = max(options.ExecuteProportion_25, options.ExecuteProportion_20)
 	options.ExecuteProportion_35 = max(options.ExecuteProportion_35, options.ExecuteProportion_25)
+	options.ExecuteProportion_45 = max(options.ExecuteProportion_45, options.ExecuteProportion_35)
 
 	encounter := Encounter{
 		Duration:             DurationFromSeconds(options.Duration),
@@ -41,6 +43,7 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		ExecuteProportion_20: max(options.ExecuteProportion_20, 0),
 		ExecuteProportion_25: max(options.ExecuteProportion_25, 0),
 		ExecuteProportion_35: max(options.ExecuteProportion_35, 0),
+		ExecuteProportion_45: max(options.ExecuteProportion_45, 0),
 		ExecuteProportion_90: max(options.ExecuteProportion_90, 0),
 		Targets:              []*Target{},
 		ActiveTargets:        []*Target{},
@@ -197,6 +200,7 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 }
 
 type DynamicDamageDoneByCaster func(sim *Simulation, spell *Spell, attackTable *AttackTable) float64
+type DynamicThreatDoneByCaster DynamicDamageDoneByCaster
 
 // Holds cached values for outcome/damage calculations, for a specific attacker+defender pair.
 // These are updated dynamically when attacker or defender stats change.
@@ -229,6 +233,8 @@ type AttackTable struct {
 	// When you need more then 1 active, default to using the above one
 	// Used with EnableDamageDoneByCaster/DisableDamageDoneByCaster
 	DamageDoneByCasterExtraMultiplier []DynamicDamageDoneByCaster
+
+	ThreatDoneByCasterExtraMultiplier []DynamicThreatDoneByCaster
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
@@ -273,4 +279,15 @@ func EnableDamageDoneByCaster(index int, maxIndex int, attackTable *AttackTable,
 
 func DisableDamageDoneByCaster(index int, attackTable *AttackTable) {
 	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
+}
+
+func EnableThreatDoneByCaster(index int, maxIndex int, attackTable *AttackTable, handler DynamicThreatDoneByCaster) {
+	if attackTable.ThreatDoneByCasterExtraMultiplier == nil {
+		attackTable.ThreatDoneByCasterExtraMultiplier = make([]DynamicThreatDoneByCaster, maxIndex)
+	}
+	attackTable.ThreatDoneByCasterExtraMultiplier[index] = handler
+}
+
+func DisableThreatDoneByCaster(index int, attackTable *AttackTable) {
+	attackTable.ThreatDoneByCasterExtraMultiplier[index] = nil
 }

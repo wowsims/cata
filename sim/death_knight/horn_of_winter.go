@@ -4,41 +4,47 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (dk *DeathKnight) registerHornOfWinterSpell() {
+/*
+The Death Knight blows the Horn of Winter, which generates 10 Runic Power and increases attack power of all party and raid members within 100 yards by 10%.
+Lasts 5 min.
+*/
+func (dk *DeathKnight) registerHornOfWinter() {
 	actionID := core.ActionID{SpellID: 57330}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
+	hasGlyphOfTheLongWinter := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfTheLongWinter)
 
-	// hornAura := dk.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
-	// 	return core.HornOfWinterAura(unit, false, dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter))
-	// })
+	hornArray := dk.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		aura := core.HornOfWinterAura(unit, false)
+		if hasGlyphOfTheLongWinter {
+			aura.Duration = time.Hour * 1
+		}
+		return aura
+	})
 
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: DeathKnightSpellHornOfWinter,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
 				Duration: 20 * time.Second,
 			},
-			IgnoreHaste: true,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dk.AddRunicPower(sim, 10, rpMetrics)
+			for _, unit := range sim.Raid.AllPlayerUnits {
+				hornArray.Get(unit).Activate(sim)
+			}
 
-			// for _, unit := range sim.Raid.GetActiveAllyUnits() {
-			// 	// Horn of Winter doesnt apply to pets
-			// 	if unit.Type != core.PetUnit {
-			// 		hornAura.Get(unit).Activate(sim)
-			// 	}
-			// }
+			dk.AddRunicPower(sim, 10, rpMetrics)
 		},
 	})
 }

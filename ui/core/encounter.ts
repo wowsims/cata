@@ -15,6 +15,7 @@ export class Encounter {
 	private executeProportion20 = 0.2;
 	private executeProportion25 = 0.25;
 	private executeProportion35 = 0.35;
+	private executeProportion45 = 0.45;
 	private executeProportion90 = 0.9;
 	private useHealth = false;
 	targets: Array<TargetProto>;
@@ -88,6 +89,15 @@ export class Encounter {
 		this.executeProportion35 = newExecuteProportion35;
 		this.executeProportionChangeEmitter.emit(eventID);
 	}
+	getExecuteProportion45(): number {
+		return this.executeProportion45;
+	}
+	setExecuteProportion45(eventID: EventID, newExecuteProportion45: number) {
+		if (newExecuteProportion45 == this.executeProportion45) return;
+
+		this.executeProportion45 = newExecuteProportion45;
+		this.executeProportionChangeEmitter.emit(eventID);
+	}
 	getExecuteProportion90(): number {
 		return this.executeProportion90;
 	}
@@ -129,6 +139,7 @@ export class Encounter {
 			executeProportion20: this.executeProportion20,
 			executeProportion25: this.executeProportion25,
 			executeProportion35: this.executeProportion35,
+			executeProportion45: this.executeProportion45,
 			executeProportion90: this.executeProportion90,
 			useHealth: this.useHealth,
 			targets: this.targets,
@@ -146,6 +157,7 @@ export class Encounter {
 			this.setExecuteProportion20(eventID, proto.executeProportion20);
 			this.setExecuteProportion25(eventID, proto.executeProportion25);
 			this.setExecuteProportion35(eventID, proto.executeProportion35);
+			this.setExecuteProportion45(eventID, proto.executeProportion45);
 			this.setExecuteProportion90(eventID, proto.executeProportion90);
 			this.setUseHealth(eventID, proto.useHealth);
 			this.targets = proto.targets;
@@ -162,6 +174,7 @@ export class Encounter {
 				executeProportion20: 0.2,
 				executeProportion25: 0.25,
 				executeProportion35: 0.35,
+				executeProportion45: 0.45,
 				executeProportion90: 0.9,
 				targets: [Encounter.defaultTargetProto()],
 				apiVersion: CURRENT_API_VERSION,

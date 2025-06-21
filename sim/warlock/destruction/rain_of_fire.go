@@ -30,6 +30,10 @@ func (destruction DestructionWarlock) registerRainOfFire() {
 			},
 		},
 
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 6.25,
+		},
+
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           destruction.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
