@@ -37,7 +37,7 @@ func (hunter *Hunter) registerFervorSpell() {
 			}
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				NumTicks: 10,
-				Period:   time.Second * 10,
+				Period:   time.Second * 1,
 				OnAction: func(sim *core.Simulation) {
 					hunter.AddFocus(sim, 5, focusMetrics)
 					hunter.Pet.AddFocus(sim, 5, focusMetrics)

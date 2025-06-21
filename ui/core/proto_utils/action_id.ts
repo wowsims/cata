@@ -656,7 +656,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (No Orb)';
 				}
-			case 'Improved Steady Shot':
+			case 'Steady Focus':
 				if (tag == 2) {
 					name += ' (pre)';
 				}

@@ -67,7 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
-		talents: Presets.SurvivalTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.SVDefaultOptions,
 		// Default raid/party buffs settings.
@@ -111,7 +111,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	presets: {
 		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.SurvivalTalents],
+		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
@@ -144,7 +144,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecSurvivalHunter,
-			talents: Presets.SurvivalTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.SVDefaultOptions,
 
 			consumables: Presets.DefaultConsumables,

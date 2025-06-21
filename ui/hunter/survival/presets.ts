@@ -4,7 +4,6 @@ import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/p
 import { HunterMajorGlyph as MajorGlyph, HunterOptions_PetType as PetType, SurvivalHunter_Options as HunterOptions } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import { GlaiveTossChance } from '../inputs';
 import P1Gear from '../presets/p1.json';
 import PreRaidGear from '../presets/preraid.json';
 import PreRaidGearCelestial from '../presets/preraid_celestial.json';
@@ -18,10 +17,10 @@ import SvApl from './apls/sv.apl.json';
 export const PRERAID_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid', PreRaidGear);
 export const PRERAID_CELESTIAL_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid', PreRaidGearCelestial);
 export const P1_PRESET_GEAR = PresetUtils.makePresetGear('P1', P1Gear);
-export const ROTATION_PRESET_SV = PresetUtils.makePresetAPLRotation('SV', SvApl);
+export const ROTATION_PRESET_SV = PresetUtils.makePresetAPLRotation('Single Target', SvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
-export const SurvivalTalents = {
-	name: 'Survival',
+export const DefaultTalents = {
+	name: 'Default',
 	data: SavedTalents.create({
 		talentsString: '312111',
 		glyphs: Glyphs.create({
@@ -53,19 +52,19 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const PRERAID_PRESET = PresetUtils.makePresetBuild('Pre-raid', {
 	gear: PRERAID_PRESET_GEAR,
 	epWeights: P1_EP_PRESET,
-	talents: SurvivalTalents,
+	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAPL,
 });
 export const PRERAID_PRESET_CELESTIAL = PresetUtils.makePresetBuild('Pre-raid (Celestial)', {
 	gear: PRERAID_CELESTIAL_PRESET_GEAR,
 	epWeights: P1_EP_PRESET,
-	talents: SurvivalTalents,
+	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAPL,
 });
 export const P1_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: P1_PRESET_GEAR,
 	epWeights: P1_EP_PRESET as PresetUtils.PresetEpWeights,
-	talents: SurvivalTalents,
+	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAPL,
 });
 // Default talents. Uses the wowhead calculator format, make the talents on
