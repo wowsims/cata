@@ -14,6 +14,8 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 	frostfireBoltVariance := 0.24   // Per https://wago.tools/db2/SpellEffect?build=5.5.0.60802&filter%5BSpellID%5D=44614 Field "Variance"
 
 	hasGlyph := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfIcyVeins)
+	mageSpecFrost := mage.Spec == proto.Spec_SpecFrostMage
+	mageSpecFire := mage.Spec == proto.Spec_SpecFireMage
 
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44614},
@@ -49,21 +51,39 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			for idx := range numberOfBolts {
 				baseDamage := mage.CalcAndRollDamageRange(sim, frostfireBoltScaling, frostfireBoltVariance)
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				if results[idx].Landed() && mageSpecFrost {
+					mage.ProcFingersOfFrost(sim, spell)
+				}
 			}
 
 			spell.DamageMultiplier /= damageMultiplier
 			mage.BrainFreezeAura.Deactivate(sim)
 
 			for _, result := range results {
-				if result.Landed() {
-					mage.ProcFingersOfFrost(sim, spell)
+				if spell.TravelTime() > time.Duration(FireSpellMaxTimeUntilResult) {
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + time.Duration(FireSpellMaxTimeUntilResult),
+						OnAction: func(s *core.Simulation) {
+							spell.DealDamage(sim, result)
+							if result.Landed() && mageSpecFrost {
+								mage.GainIcicle(sim, target, result.Damage)
+							}
+							if mageSpecFire {
+								mage.HandleHeatingUp(sim, spell, result)
+							}
+						},
+					})
+				} else {
+					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+						spell.DealDamage(sim, result)
+						if result.Landed() && mageSpecFrost {
+							mage.GainIcicle(sim, target, result.Damage)
+						}
+						if mageSpecFire {
+							mage.HandleHeatingUp(sim, spell, result)
+						}
+					})
 				}
-				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-					spell.DealDamage(sim, result)
-					if result.Landed() {
-						mage.GainIcicle(sim, target, result.Damage)
-					}
-				})
 			}
 		},
 	})
