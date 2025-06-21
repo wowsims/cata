@@ -58,6 +58,15 @@ func (dk *DeathKnight) registerFrostFever() {
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		spell.Dot(target).Apply(sim)
 	}
+	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+		dot := spell.Dot(target)
+		if useSnapshot {
+			return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+		} else {
+			baseTickDamage := dk.CalcScalingSpellDmg(0.13300000131) + dot.Spell.MeleeAttackPower()*0.15800000727
+			return spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicCrit)
+		}
+	}
 
 	dk.FrostFeverSpell = dk.RegisterSpell(config)
 }
@@ -96,6 +105,15 @@ func (dk *DeathKnight) registerBloodPlague() {
 	config.ThreatMultiplier = 1
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		spell.Dot(target).Apply(sim)
+	}
+	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+		dot := spell.Dot(target)
+		if useSnapshot {
+			return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+		} else {
+			baseTickDamage := dk.CalcScalingSpellDmg(0.15800000727) + dot.Spell.MeleeAttackPower()*0.15800000727
+			return spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicCrit)
+		}
 	}
 
 	dk.BloodPlagueSpell = dk.RegisterSpell(config)

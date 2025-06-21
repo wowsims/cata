@@ -64,9 +64,10 @@ export const DefaultTalents = {
 
 export const P1_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: P1_BIS_GEAR_PRESET,
-	epWeights: P1_UNHOLY_EP_PRESET,
+	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAuto,
 	rotation: DEFAULT_ROTATION_PRESET,
+	epWeights: P1_UNHOLY_EP_PRESET,
 });
 
 export const DefaultOptions = UnholyDeathKnight_Options.create({

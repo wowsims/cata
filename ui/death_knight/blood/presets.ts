@@ -59,9 +59,10 @@ export const BloodTalents = {
 
 export const P1_PRESET = PresetUtils.makePresetBuild('P1', {
 	gear: P1_BLOOD_PRESET,
-	epWeights: P1_BLOOD_EP_PRESET,
-	rotationType: APLRotation_Type.TypeAPL,
+	talents: BloodTalents,
+	rotationType: APLRotation_Type.TypeAuto,
 	rotation: BLOOD_ROTATION_PRESET_DEFAULT,
+	epWeights: P1_BLOOD_EP_PRESET,
 });
 
 export const DefaultOptions = BloodDeathKnight_Options.create({

@@ -94,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			weakenedArmor: true,
 			weakenedBlows: true,
 		}),
-		rotationType: APLRotation_Type.TypeAPL,
+		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
