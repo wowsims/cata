@@ -132,7 +132,6 @@ func (mage *Mage) registerSpells() {
 	mage.registerIceLanceSpell()
 	mage.registerIcyVeinsCD()
 	mage.registerHeatingUp()
-	mage.registerAlterTimeCD()
 }
 
 func (mage *Mage) registerMastery() {

@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerAlterTimeCD() {
+func (mage *Mage) RegisterAlterTimeCD() {
 
 	auraState := map[int32]core.AuraState{}
 	allAuras := mage.Unit.GetAuras()
@@ -33,7 +33,9 @@ func (mage *Mage) registerAlterTimeCD() {
 			for _, auraRef := range allAuras {
 				aura := auraRef
 				state := auraState[aura.ActionID.SpellID]
-				aura.RestoreState(state, sim)
+				if state != aura.SaveState(sim) {
+					aura.RestoreState(state, sim)
+				}
 			}
 		},
 	})
