@@ -263,13 +263,14 @@ func (dot *Dot) periodicTick(sim *Simulation) {
 	if dot.isChanneled {
 		// Note: even if the clip delay is 0ms, need a WaitUntil so that APL is called after the channel aura fades.
 		if dot.remainingTicks == 0 && dot.Spell.Unit.GCD.IsReady(sim) {
-			dot.Spell.Unit.WaitUntil(sim, sim.CurrentTime+dot.Spell.Unit.ChannelClipDelay)
+			dot.Spell.Unit.WaitUntil(sim, sim.CurrentTime+dot.getChannelClipDelay(sim))
 		} else if dot.Spell.Unit.Rotation.shouldInterruptChannel(sim) {
 			dot.tickAction.NextActionAt = NeverExpires // don't tick again in ApplyOnExpire
 			dot.Deactivate(sim)
 			if dot.Spell.Unit.GCD.IsReady(sim) {
-				dot.Spell.Unit.WaitUntil(sim, sim.CurrentTime+dot.Spell.Unit.ChannelClipDelay)
+				dot.Spell.Unit.WaitUntil(sim, sim.CurrentTime+dot.getChannelClipDelay(sim))
 			}
+
 			return // don't schedule another tick
 		}
 	}
@@ -279,6 +280,26 @@ func (dot *Dot) periodicTick(sim *Simulation) {
 		dot.tickAction.NextActionAt = sim.CurrentTime + dot.tickPeriod
 		sim.AddPendingAction(dot.tickAction)
 	}
+}
+
+func (dot *Dot) getChannelClipDelay(sim *Simulation) time.Duration {
+	channeledDot := dot.Spell.Unit.ChanneledDot
+	if channeledDot == nil {
+		return dot.Spell.Unit.ChannelClipDelay
+	}
+
+	nextAction := dot.Spell.Unit.Rotation.getNextAction(sim)
+	if nextAction == nil {
+		return dot.Spell.Unit.ChannelClipDelay
+	}
+
+	// if we're channeling the same spell again, we don't need to add a delay
+	// within the game we'd actually cast before the last tick and it would be carried over
+	if channelAction, ok := nextAction.impl.(*APLActionCastSpell); ok && channelAction.spell == channeledDot.Spell {
+		return 0
+	}
+
+	return dot.Spell.Unit.ChannelClipDelay
 }
 
 func newDot(config Dot) *Dot {
@@ -305,7 +326,7 @@ func newDot(config Dot) *Dot {
 			dot.TickOnce(sim)
 			// Note: even if the clip delay is 0ms, need a WaitUntil so that APL is called after the channel aura fades.
 			if dot.isChanneled && dot.Spell.Unit.GCD.IsReady(sim) {
-				dot.Spell.Unit.WaitUntil(sim, sim.CurrentTime+dot.Spell.Unit.ChannelClipDelay)
+				dot.Spell.Unit.WaitUntil(sim, sim.CurrentTime+dot.getChannelClipDelay(sim))
 			}
 		}
 
