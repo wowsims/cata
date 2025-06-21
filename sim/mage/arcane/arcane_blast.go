@@ -22,7 +22,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 1.66666698456,
+			BaseCostPercent: 1.5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -31,7 +31,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 / (1 - 0.229),
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		BonusCoefficient: arcaneBlastCoefficient,
 		ThreatMultiplier: 1,
