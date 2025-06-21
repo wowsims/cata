@@ -61,10 +61,11 @@ func (mage *Mage) registerLivingBomb() {
 	bombExplode := true
 
 	mage.LivingBomb = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MageSpellLivingBombApply,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 1.5,

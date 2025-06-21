@@ -411,6 +411,9 @@ func (dot *Dot) RestoreState(state DotState, sim *Simulation) {
 	dot.tickPeriod = state.TickPeriod
 	dot.remainingTicks = state.TicksRemaining
 	dot.tmpExtraTicks = state.ExtraTicks
+	dot.SnapshotBaseDamage = state.SnapshotBaseDamage
+	dot.SnapshotAttackerMultiplier = state.SnapshotAttackerMultiplier
+	dot.SnapshotCritChance = state.SnapshotCritChance
 	dot.Aura.RestoreState(state.AuraState, sim)
 
 	// recreate with new period, resetting the next tick.

@@ -1,85 +1,82 @@
 package mage
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellConfig {
-	label := "Flamestrike - " + strconv.Itoa(int(spellId))
-	if isProc {
-		label += " - Proc"
-	}
+func (mage *Mage) registerFlamestrikeSpell() {
 
-	config := core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: spellId},
+	flameStrikeVariance := 0.2    // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2120 Field: "Variance"
+	flameStrikeScaling := .46     // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2120 Field: "Coefficient"
+	flameStrikeCoefficient := .52 // Per https://wago.tools/db2/SpellEffect?build=5.5.0.61217&filter%5BSpellID%5D=exact%253A2120 Field: "BonusCoefficient"
+	flameStrikeDotScaling := .12
+	flameStrikeDotCoefficient := .14
+
+	mage.Flamestrike = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 2120},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAoE | core.Ternary(isProc, core.SpellFlagNone, core.SpellFlagAPL),
+		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFlamestrike,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 6,
+		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				NonEmpty: true,
+				GCD:      core.GCDDefault,
+				CastTime: time.Second * 2,
+			},
+			CD: core.Cooldown{
+				Timer:    mage.NewTimer(),
+				Duration: time.Second * 12,
 			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultCritMultiplier(),
-		BonusCoefficient: 0.146,
+		BonusCoefficient: flameStrikeCoefficient,
 		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDamage := mage.CalcAndRollDamageRange(sim, flameStrikeScaling, flameStrikeVariance)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+
+			spell.RelatedDotSpell.AOEDot().Apply(sim)
+		},
+	})
+
+	mage.Flamestrike.RelatedDotSpell = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 2120}.WithTag(1),
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: MageSpellFlamestrikeDot,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: flameStrikeDotCoefficient,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: label,
+				Label: "FlameStrike DOT",
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 2,
-			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
-				target := mage.CurrentTarget
-				baseDamage := 0.103 * mage.ClassSpellScaling
-				dot.Snapshot(target, baseDamage)
+			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.Snapshot(target, mage.CalcScalingSpellDmg(flameStrikeDotScaling))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeSnapshotCrit)
 				}
 			},
-			BonusCoefficient: 0.061,
 		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := 0.662 * mage.ClassSpellScaling
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-
-			if spell.AOEDot() != nil {
-				spell.AOEDot().Apply(sim)
-			}
-		},
-	}
-
-	if !isProc {
-		config.Cast = core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
-			},
-		}
-
-		config.ManaCost = core.ManaCostOptions{
-			BaseCostPercent: 30,
-		}
-	} else {
-		config.ProcMask = core.ProcMaskSpellProc
-		config.ActionID = config.ActionID.WithTag(1)
-	}
-
-	return config
-}
-func (mage *Mage) registerFlamestrikeSpell() {
-	mage.Flamestrike = mage.RegisterSpell(mage.GetFlameStrikeConfig(2120, false))
+	})
 }
