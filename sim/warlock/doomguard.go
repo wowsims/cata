@@ -62,7 +62,7 @@ func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,
 			HasDynamicCastSpeedInheritance:  true,
-			HasResourceRegenInheritance:     true,
+			HasResourceRegenInheritance:     false,
 		}),
 	}
 
