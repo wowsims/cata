@@ -64,7 +64,7 @@ func (mage *Mage) RegisterAlterTimeCD() {
 			} else {
 				mage.AlterTimeAura.Activate(sim)
 			}
-
+			mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
 		},
 	})
 
