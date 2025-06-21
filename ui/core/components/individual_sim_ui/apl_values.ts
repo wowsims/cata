@@ -62,6 +62,7 @@ import {
 	APLValueMaxEnergy,
 	APLValueMaxFocus,
 	APLValueMaxHealth,
+	APLValueMaxRage,
 	APLValueMaxRunicPower,
 	APLValueMin,
 	APLValueMonkCurrentChi,
@@ -703,10 +704,22 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [],
 	}),
 	currentRage: inputBuilder({
-		label: 'Rage',
-		submenu: ['Resources'],
+		label: 'Current Rage',
+		submenu: ['Resources', 'Rage'],
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassWarrior;
+		},
+		fields: [],
+	}),
+	maxRage: inputBuilder({
+		label: 'Max Rage',
+		submenu: ['Resources', 'Rage'],
+		shortDescription: 'Amount of maximum available Rage.',
+		newValue: APLValueMaxRage.create,
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
