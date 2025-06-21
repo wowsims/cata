@@ -438,7 +438,8 @@ message APLValueIsExecutePhase {
         E20 = 1;
         E25 = 2;
         E35 = 3;
-		E90 = 4;
+        E45 = 4;
+		E90 = 5;
     }
     ExecutePhaseThreshold threshold = 1;
 }

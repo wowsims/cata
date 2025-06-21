@@ -408,6 +408,7 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 					{ value: ExecutePhaseThreshold.E20, label: '20%' },
 					{ value: ExecutePhaseThreshold.E25, label: '25%' },
 					{ value: ExecutePhaseThreshold.E35, label: '35%' },
+					{ value: ExecutePhaseThreshold.E45, label: '45%' },
 					{ value: ExecutePhaseThreshold.E90, label: '90%' },
 				],
 			}),

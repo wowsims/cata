@@ -72,7 +72,7 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 				Name:     "Item - Warrior T15 DPS 2P Bonus",
 				ActionID: core.ActionID{SpellID: 138120},
 				ICD:      250 * time.Millisecond,
-				DPM: war.NewRPPMProcManager(138120, false, core.ProcMaskMeleeWhiteHit, core.RPPMConfig{
+				DPM: war.NewSetBonusRPPMProcManager(138120, setBonusAura, core.ProcMaskMeleeWhiteHit, core.RPPMConfig{
 					PPM: 1.1,
 				}.WithSpecMod(-0.625, proto.Spec_SpecFuryWarrior)),
 				Outcome:  core.OutcomeHit,
