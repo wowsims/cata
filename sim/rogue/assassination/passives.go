@@ -49,7 +49,7 @@ func (asnRogue *AssassinationRogue) registerBlindsidePassive() {
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellID == 111240 {
+			if spell.SpellID == 111240 {
 				// Dispatch casted, consume aura
 				aura.Deactivate(sim)
 			}
@@ -62,7 +62,7 @@ func (asnRogue *AssassinationRogue) registerBlindsidePassive() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: rogue.RogueSpellMutilate,
 		ProcChance:     0.3,
-		Outcome:        core.OutcomeHit,
+		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			blindsideProc.Activate(sim)
 		},

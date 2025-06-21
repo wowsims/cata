@@ -7,12 +7,12 @@ import (
 )
 
 func (hunter *Hunter) registerArcaneShotSpell() {
-	hunter.ArcaneShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3044},
 		SpellSchool:    core.SpellSchoolArcane,
 		ClassSpellMask: HunterSpellArcaneShot,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagRanged,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       40,
