@@ -8,8 +8,8 @@ import (
 )
 
 func (ww *WindwalkerMonk) registerTigereyeBrew() {
-	buffActionID := core.ActionID{SpellID: 116740}
-	stackActionID := core.ActionID{SpellID: 125195}
+	buffActionID := core.ActionID{SpellID: 1247275}
+	stackActionID := core.ActionID{SpellID: 1247279}
 
 	ww.Monk.RegisterOnChiSpent(func(sim *core.Simulation, chiSpent int32) {
 		accumulatedChi := ww.outstandingChi + chiSpent

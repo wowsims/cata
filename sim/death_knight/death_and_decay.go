@@ -6,7 +6,18 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (dk *DeathKnight) registerDeathAndDecaySpell() {
+/*
+Corrupts the ground targeted by the Death Knight, causing 26 Shadow damage every sec to targets that remain in the area
+
+-- Glyph of Death and Decay --
+
+and reducing their movement speed by 50%
+
+-- /Glyph of Death and Decay --
+
+for 10 sec.
+*/
+func (dk *DeathKnight) registerDeathAndDecay() {
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 43265},
 		Flags:          core.SpellFlagAoE | core.SpellFlagAPL,
@@ -20,7 +31,7 @@ func (dk *DeathKnight) registerDeathAndDecaySpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: core.GCDMin,
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
@@ -29,8 +40,8 @@ func (dk *DeathKnight) registerDeathAndDecaySpell() {
 		},
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1.9,
 		CritMultiplier:   dk.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,

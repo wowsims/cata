@@ -259,8 +259,9 @@ func (character *Character) GetActiveSetBonusNames() []string {
 }
 
 // Adds a spellID to the set bonus so it can be exposed to the APL
-func (setBonusTracker *Aura) ExposeToAPL(spellID int32) {
+func (setBonusTracker *Aura) ExposeToAPL(spellID int32) *Aura {
 	setBonusTracker.ActionID = ActionID{SpellID: spellID}
+	return setBonusTracker
 }
 
 // Adds a Spellmod to PVP GLoves
