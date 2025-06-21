@@ -99,7 +99,7 @@ import {
 	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
 	APLValueWarlockHandOfGuldanInFlight,
-	APLValueWarlockShouldRefreshCorruption,
+	APLValueWarlockHauntInFlight,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -1373,13 +1373,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecDemonologyWarlock,
 		fields: [],
 	}),
-	warlockShouldRefreshCorruption: inputBuilder({
-		label: 'Should Refresh Corruption',
+	warlockHauntInFlight: inputBuilder({
+		label: 'Haunt In Flight',
 		submenu: ['Warlock'],
-		shortDescription: 'Returns <b>True</b> if the current Corruption has expired, or should be refreshed to get a better snapshot.',
-		newValue: APLValueWarlockShouldRefreshCorruption.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
-		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets')],
+		shortDescription: 'Returns <b>True</b> if Haunt currently is in flight.',
+		newValue: APLValueWarlockHauntInFlight.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecAfflictionWarlock,
+		fields: [],
 	}),
 	mageCurrentCombustionDotEstimate: inputBuilder({
 		label: 'Combustion Dot Value',

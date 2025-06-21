@@ -2,6 +2,7 @@ package affliction
 
 import (
 	"math"
+	"time"
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
@@ -44,6 +45,7 @@ type AfflictionWarlock struct {
 	HauntDebuffAuras   core.AuraArray
 	LastCorruption     *core.Dot // Tracks the last corruption we've applied
 	ProcMaleficEffect  func(target *core.Unit, coeff float64, sim *core.Simulation)
+	HauntImpactTime    time.Duration
 }
 
 func (affliction AfflictionWarlock) getMasteryBonus() float64 {
@@ -94,6 +96,7 @@ func (affliction *AfflictionWarlock) Reset(sim *core.Simulation) {
 	affliction.Warlock.Reset(sim)
 
 	affliction.LastCorruption = nil
+	affliction.HauntImpactTime = 0
 }
 
 func calculateDoTBaseTickDamage(dot *core.Dot) float64 {
