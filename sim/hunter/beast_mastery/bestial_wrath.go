@@ -54,9 +54,6 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 			Cost: 0,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 1,
-			},
 			CD: core.Cooldown{
 				Timer:    bmHunter.NewTimer(),
 				Duration: time.Minute * 1,

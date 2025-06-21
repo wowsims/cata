@@ -43,7 +43,7 @@ func (bmHunter *BeastMasteryHunter) registerFocusFireSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 1,
+				GCD: time.Second,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
