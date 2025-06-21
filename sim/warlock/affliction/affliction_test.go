@@ -1,6 +1,9 @@
 package affliction
 
 import (
+	"log"
+	"os"
+	"runtime/pprof"
 	"testing"
 
 	_ "unsafe"
@@ -10,12 +13,31 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
+var cpuProfile = "cpu_after.prof"
+
+func startCPUProfile() {
+	f, err := os.Create(cpuProfile)
+	if err != nil {
+		log.Fatal("could not create CPU profile: ", err)
+	}
+	if err := pprof.StartCPUProfile(f); err != nil {
+		log.Fatal("could not start CPU profile: ", err)
+	}
+	log.Println("CPU profiling started")
+}
+
+func stopCPUProfile() {
+	pprof.StopCPUProfile()
+	log.Println("CPU profiling stopped. Data written to", cpuProfile)
+}
+
 func init() {
 	RegisterAfflictionWarlock()
 	common.RegisterAllEffects()
 }
 
 func TestAffliction(t *testing.T) {
+	startCPUProfile()
 	var defaultAfflictionWarlock = &proto.Player_AfflictionWarlock{
 		AfflictionWarlock: &proto.AfflictionWarlock{
 			Options: &proto.AfflictionWarlock_Options{
@@ -65,4 +87,6 @@ func TestAffliction(t *testing.T) {
 		ItemFilter:       itemFilter,
 		StartingDistance: 25,
 	}))
+
+	stopCPUProfile()
 }
