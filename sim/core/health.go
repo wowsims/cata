@@ -45,6 +45,10 @@ func (hb *healthBar) CurrentHealthPercent() float64 {
 	return hb.currentHealth / hb.unit.stats[stats.Health]
 }
 
+func (unit *Unit) SetCurrentHitPoints(newHitpoints float64) {
+	unit.currentHealth = newHitpoints
+}
+
 func (hb *healthBar) GainHealth(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to gain negative health!")

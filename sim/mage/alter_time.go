@@ -6,19 +6,44 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (mage *Mage) registerIcyVeinsCD() {
+func (mage *Mage) registerAlterTimeCD() {
 
+	auraState := map[int32]core.AuraState{}
+	allAuras := mage.Unit.GetAuras()
 	actionID := core.ActionID{SpellID: 108978}
-	mage.IcyVeinsAura = mage.RegisterAura(core.Aura{
+	mageCurrentMana := 0.0
+	mageCurrentHitpoints := 0.0
+
+	mage.AlterTimeAura = mage.RegisterAura(core.Aura{
 		Label:    "Alter Time",
 		ActionID: actionID,
-		Duration: time.Second * 20,
+		Duration: time.Second * 6,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			mageCurrentMana = mage.CurrentMana()
+			mageCurrentHitpoints = mage.CurrentHealth()
+			for _, aura := range allAuras {
+				auraState[aura.ActionID.SpellID] = aura.SaveState(sim)
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			mage.SetCurrentMana(mageCurrentMana)
+			mage.SetCurrentHitPoints(mageCurrentHitpoints)
+			for _, auraRef := range allAuras {
+				aura := auraRef
+				state := auraState[aura.ActionID.SpellID]
+				aura.RestoreState(state, sim)
+			}
+		},
 	})
 
-	mage.IcyVeins = mage.RegisterSpell(core.SpellConfig{
+	mage.AlterTime = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		ClassSpellMask: MageSpellIcyVeins,
+		ClassSpellMask: MageSpellAlterTime,
 		Flags:          core.SpellFlagNoOnCastComplete,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 1,
+		},
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -31,12 +56,12 @@ func (mage *Mage) registerIcyVeinsCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			mage.IcyVeinsAura.Activate(sim)
+			mage.AlterTimeAura.Activate(sim)
 		},
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.IcyVeins,
+		Spell: mage.AlterTime,
 		Type:  core.CooldownTypeDPS,
 	})
 }
