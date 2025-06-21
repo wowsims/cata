@@ -391,7 +391,7 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecProtectionWarrior, 'Critical Block'],
 	[Spec.SpecArcaneMage, 'Mana Adept'],
 	[Spec.SpecFireMage, 'Flashburn'],
-	[Spec.SpecFrostMage, 'Frostburn'],
+	[Spec.SpecFrostMage, 'Icicles'],
 	[Spec.SpecDisciplinePriest, 'Shield Discipline'],
 	[Spec.SpecHolyPriest, 'Echo of Light'],
 	[Spec.SpecShadowPriest, 'Shadow Orb Power'],

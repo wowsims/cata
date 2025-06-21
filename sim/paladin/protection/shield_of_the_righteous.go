@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/paladin"
 )
 
@@ -65,7 +66,7 @@ func (prot *ProtectionPaladin) registerShieldOfTheRighteous() {
 
 			snapshotDmgReduction = max(0.2, snapshotDmgReduction)
 
-			prot.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] *= snapshotDmgReduction
+			prot.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= snapshotDmgReduction
 
 			percent := int32(math.Round((1.0 - snapshotDmgReduction) * 100))
 			if percent > 0 {
@@ -73,7 +74,7 @@ func (prot *ProtectionPaladin) registerShieldOfTheRighteous() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			prot.PseudoStats.SchoolDamageTakenMultiplier[core.SpellSchoolPhysical] /= snapshotDmgReduction
+			prot.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= snapshotDmgReduction
 		},
 	})
 
