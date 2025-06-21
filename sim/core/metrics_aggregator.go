@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -463,6 +464,10 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 				remainingTTO := DurationFromSeconds(unit.CurrentMana() / manaSpentPerSecond)
 				timeToOOM = DurationFromSeconds(encounterDurationSeconds) + remainingTTO
 				timeToOOM = min(timeToOOM, time.Minute*60)
+
+				if timeToOOM < time.Minute*60 {
+					fmt.Println("Less than 1 hour till oom")
+				}
 			} else {
 				timeToOOM = time.Minute * 60
 			}
