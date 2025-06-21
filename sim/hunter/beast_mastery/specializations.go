@@ -12,6 +12,7 @@ func (bmHunter *BeastMasteryHunter) ApplyTalents() {
 	bmHunter.applyFrenzy()
 	bmHunter.applyGoForTheThroat()
 	bmHunter.applyCobraStrikes()
+	bmHunter.applyInvigoration()
 	bmHunter.Hunter.ApplyTalents()
 }
 
@@ -126,6 +127,30 @@ func (bmHunter *BeastMasteryHunter) applyCobraStrikes() {
 				} else {
 					csAura.Activate(sim)
 					csAura.SetStacks(sim, 2)
+				}
+			}
+		},
+	})
+}
+
+func (bmHunter *BeastMasteryHunter) applyInvigoration() {
+	if bmHunter.Pet == nil {
+		return
+	}
+
+	focusMetrics := bmHunter.NewFocusMetrics(core.ActionID{SpellID: 53253})
+
+	procChance := 0.15
+	bmHunter.Pet.RegisterAura(core.Aura{
+		Label:    "Invigoration",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+				if sim.RandomFloat("Invigoration") < procChance {
+					bmHunter.AddFocus(sim, 20, focusMetrics)
 				}
 			}
 		},
