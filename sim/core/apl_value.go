@@ -130,6 +130,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueMaxEnergy(config.GetMaxEnergy(), config.Uuid)
 	case *proto.APLValue_MaxFocus:
 		value = rot.newValueMaxFocus(config.GetMaxFocus(), config.Uuid)
+	case *proto.APLValue_MaxRage:
+		value = rot.newValueMaxRage(config.GetMaxRage(), config.Uuid)
 	case *proto.APLValue_MaxRunicPower:
 		value = rot.newValueMaxRunicPower(config.GetMaxRunicPower(), config.Uuid)
 	case *proto.APLValue_EnergyRegenPerSecond:

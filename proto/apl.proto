@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 102
+// NextIndex: 103
 message APLValue {
 	UUID uuid = 85;
 
@@ -129,6 +129,7 @@ message APLValue {
 		APLValueMaxComboPoints max_combo_points = 93;
 		APLValueMaxEnergy max_energy = 87;
 		APLValueMaxFocus max_focus = 88;
+		APLValueMaxRage max_rage = 102;
 		APLValueMaxRunicPower max_runic_power = 86;
 		APLValueEnergyRegenPerSecond energy_regen_per_second = 89;
 		APLValueFocusRegenPerSecond focus_regen_per_second = 90;
@@ -438,7 +439,8 @@ message APLValueIsExecutePhase {
         E20 = 1;
         E25 = 2;
         E35 = 3;
-		E90 = 4;
+        E45 = 4;
+		E90 = 5;
     }
     ExecutePhaseThreshold threshold = 1;
 }
@@ -479,6 +481,7 @@ message APLValueMaxHealth {}
 message APLValueMaxComboPoints {}
 message APLValueMaxEnergy {}
 message APLValueMaxFocus {}
+message APLValueMaxRage {}
 message APLValueMaxRunicPower {}
 message APLValueEnergyRegenPerSecond {}
 message APLValueFocusRegenPerSecond {}

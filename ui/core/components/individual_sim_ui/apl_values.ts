@@ -63,6 +63,7 @@ import {
 	APLValueMaxEnergy,
 	APLValueMaxFocus,
 	APLValueMaxHealth,
+	APLValueMaxRage,
 	APLValueMaxRunicPower,
 	APLValueMin,
 	APLValueMonkCurrentChi,
@@ -113,12 +114,24 @@ import * as AplHelpers from './apl_helpers.js';
 
 export interface APLValuePickerConfig extends InputConfig<Player<any>, APLValue | undefined> {}
 
-export type APLValueKind = APLValue['value']['oneofKind'];
-export type APLValueImplStruct<F extends APLValueKind> = Extract<APLValue['value'], { oneofKind: F }>;
-type APLValueImplTypesUnion = {
-	[f in NonNullable<APLValueKind>]: f extends keyof APLValueImplStruct<f> ? APLValueImplStruct<f>[f] : never;
+type APLValue_Value = APLValue['value'];
+export type APLValueKind = APLValue_Value['oneofKind'];
+type ValidAPLValueKind = NonNullable<APLValueKind>;
+
+export type APLValueImplStruct<F extends APLValueKind> = Extract<APLValue_Value, { oneofKind: F }>;
+
+// Get the implementation type for a specific kind using infer
+type APLValueImplFor<F extends ValidAPLValueKind> =
+	APLValueImplStruct<F> extends { [K in F]: infer T }
+		? T
+		: never;
+
+// Map all valid kinds to their implementation types
+type APLValueImplMap = {
+	[K in ValidAPLValueKind]: APLValueImplFor<K>;
 };
-export type APLValueImplType = APLValueImplTypesUnion[NonNullable<APLValueKind>] | undefined;
+
+export type APLValueImplType = APLValueImplMap[ValidAPLValueKind] | undefined;
 
 export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 	private kindPicker: TextDropdownPicker<Player<any>, APLValueKind>;
@@ -131,8 +144,8 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 
 		const isPrepull = this.rootElem.closest('.apl-prepull-action-picker') != null;
 
-		const allValueKinds = (Object.keys(valueKindFactories) as Array<NonNullable<APLValueKind>>).filter(
-			valueKind => valueKindFactories[valueKind].includeIf?.(player, isPrepull) ?? true,
+		const allValueKinds = (Object.keys(valueKindFactories) as ValidAPLValueKind[]).filter(
+			(valueKind): valueKind is ValidAPLValueKind => (!!valueKind && valueKindFactories[valueKind].includeIf?.(player, isPrepull)) ?? true,
 		);
 
 		if (this.rootElem.parentElement!.classList.contains('list-picker-item')) {
@@ -290,7 +303,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		}
 	}
 
-	private makeAPLValue<K extends NonNullable<APLValueKind>>(kind: K, implVal: APLValueImplTypesUnion[K]): APLValue {
+	private makeAPLValue<K extends ValidAPLValueKind>(kind: K, implVal: APLValueImplMap[K]): APLValue {
 		if (!kind) {
 			return APLValue.create({
 				uuid: { value: randomUUID() },
@@ -408,6 +421,7 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 					{ value: ExecutePhaseThreshold.E20, label: '20%' },
 					{ value: ExecutePhaseThreshold.E25, label: '25%' },
 					{ value: ExecutePhaseThreshold.E35, label: '35%' },
+					{ value: ExecutePhaseThreshold.E45, label: '45%' },
 					{ value: ExecutePhaseThreshold.E90, label: '90%' },
 				],
 			}),
@@ -511,7 +525,7 @@ function inputBuilder<T extends APLValueImplType>(
 	};
 }
 
-const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<APLValueImplTypesUnion[f]> } = {
+const valueKindFactories: { [f in ValidAPLValueKind]: ValueKindConfig<APLValueImplMap[f]> } = {
 	// Operators
 	const: inputBuilder({
 		label: 'Const',
@@ -704,10 +718,22 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [],
 	}),
 	currentRage: inputBuilder({
-		label: 'Rage',
-		submenu: ['Resources'],
+		label: 'Current Rage',
+		submenu: ['Resources', 'Rage'],
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassWarrior;
+		},
+		fields: [],
+	}),
+	maxRage: inputBuilder({
+		label: 'Max Rage',
+		submenu: ['Resources', 'Rage'],
+		shortDescription: 'Amount of maximum available Rage.',
+		newValue: APLValueMaxRage.create,
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
