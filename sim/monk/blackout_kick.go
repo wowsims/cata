@@ -67,6 +67,7 @@ func blackoutKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellCo
 
 func (monk *Monk) registerBlackoutKick() {
 	chiMetrics := monk.NewChiMetrics(blackoutKickActionID)
+	chiCost := int32(2)
 
 	monk.RegisterSpell(blackoutKickSpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
@@ -77,7 +78,7 @@ func (monk *Monk) registerBlackoutKick() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return monk.GetChi() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()
+			return monk.GetChi() >= chiCost || monk.ComboBreakerBlackoutKickAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -87,9 +88,9 @@ func (monk *Monk) registerBlackoutKick() {
 
 			if result.Landed() {
 				if monk.ComboBreakerBlackoutKickAura.IsActive() {
-					monk.SpendChi(sim, 0, chiMetrics)
+					monk.onChiSpent(sim, chiCost)
 				} else {
-					monk.SpendChi(sim, 2, chiMetrics)
+					monk.SpendChi(sim, chiCost, chiMetrics)
 				}
 			}
 
