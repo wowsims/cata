@@ -50,11 +50,15 @@ func (warlock *Warlock) RegisterCorruption(callback WarlockSpellCastedCallback) 
 			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			dot := spell.Dot(target)
 			if useSnapshot {
-				dot := spell.Dot(target)
-				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result.Damage /= dot.TickPeriod().Seconds()
+				return result
 			} else {
-				return spell.CalcPeriodicDamage(sim, target, 1033/6, spell.OutcomeExpectedMagicCrit)
+				result := spell.CalcPeriodicDamage(sim, target, warlock.CalcScalingSpellDmg(corruptionScale), spell.OutcomeExpectedMagicCrit)
+				result.Damage /= float64(warlock.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds())
+				return result
 			}
 		},
 	})

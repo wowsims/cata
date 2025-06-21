@@ -613,7 +613,9 @@ export class Timeline extends ResultComponent {
 		// Don't add a row for buffs that were already visualized in a cast row or are prioritized.
 		const buffsToShow = buffsById.filter(auraUptimeLogs =>
 			playerCastsByAbility.findIndex(
-				casts => auraUptimeLogs[0].actionId && (casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
+				casts =>
+					auraUptimeLogs[0].actionId &&
+					(casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
 			),
 		);
 		if (buffsToShow.length > 0) {
@@ -981,7 +983,11 @@ export class Timeline extends ResultComponent {
 
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
-			.filter(auraUptimeLogs => actionId.equals(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!))
+			.filter(auraUptimeLogs => {
+				return idsToGroupForRotation.includes(actionId.spellId) ?
+				actionId.equalsIgnoringTag(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!) :
+				actionId.equals(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!)
+			})
 			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem, true));
 
 		this.rotationTimeline.appendChild(rowElem);
@@ -1263,6 +1269,9 @@ const auraAsResource = [
 
 	// Monk
 	124255, // Stagger
+
+	// Mage
+	148022, // Icicle
 ];
 
 // Hard-coded spell categories for controlling rotation ordering.
@@ -1414,6 +1423,8 @@ const idToCategoryMap: Record<number, number> = {
 	[47610]: SPELL_ACTION_CATEGORY + 0.02, // Frostfire Bolt
 	[42897]: SPELL_ACTION_CATEGORY + 0.02, // Arcane Blast
 	[42833]: SPELL_ACTION_CATEGORY + 0.02, // Fireball
+	[10]: SPELL_ACTION_CATEGORY + 0.021, // Blizzard - Cast
+	[42208]: SPELL_ACTION_CATEGORY + 0.022, // Blizzard - Tick
 	[42859]: SPELL_ACTION_CATEGORY + 0.03, // Scorch
 	[42891]: SPELL_ACTION_CATEGORY + 0.1, // Pyroblast
 	[42846]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
@@ -1474,6 +1485,10 @@ const idToCategoryMap: Record<number, number> = {
 	[57623]: MELEE_ACTION_CATEGORY + 0.25, // HoW
 	[59131]: MELEE_ACTION_CATEGORY + 0.3, // Icy touch
 	[49921]: MELEE_ACTION_CATEGORY + 0.3, // Plague strike
+	[114866]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[130735]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[130736]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[114867]: MELEE_ACTION_CATEGORY + 0.32, // Soul Reaper (Tick)
 	[51271]: MELEE_ACTION_CATEGORY + 0.35, // UA
 	[45529]: MELEE_ACTION_CATEGORY + 0.35, // BT
 	[47568]: MELEE_ACTION_CATEGORY + 0.35, // ERW
@@ -1512,7 +1527,7 @@ const idToCategoryMap: Record<number, number> = {
 	[123986]: SPELL_ACTION_CATEGORY + 0.01, // Chi Burst
 	[148135]: SPELL_ACTION_CATEGORY + 0.011, // Chi Burst (Damage)
 	[130654]: SPELL_ACTION_CATEGORY + 0.012, // Chi Burst (Heal)
-	[116740]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
+	[1247275]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
 	[115399]: SPELL_ACTION_CATEGORY + 0.03, // Chi Brew
 	[115288]: SPELL_ACTION_CATEGORY + 0.04, // Energizing Brew
 	[126456]: SPELL_ACTION_CATEGORY + 0.05, // Fortifying Brew
@@ -1546,12 +1561,13 @@ const idToCategoryMap: Record<number, number> = {
 };
 
 const idsToGroupForRotation: Array<number> = [
-	6774, // Slice and Dice
-	8647, // Expose Armor
-	48668, // Eviscerate
-	48672, // Rupture
-	51690, // Killing Spree
-	57993, // Envenom
+	5171, 	// Rogue - Slice and Dice
+	2098, 	// Rogue - Eviscerate
+	1943, 	// Rogue - Rupture
+	51690, 	// Rogue - Killing Spree
+	32645, 	// Rogue - Envenom
+	16511, 	// Rogue - Hemorrhage
+	121471, // Rogue - Shadow Blades
 ];
 
 const percentageResources: Array<ResourceType> = [ResourceType.ResourceTypeHealth, ResourceType.ResourceTypeMana];

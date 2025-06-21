@@ -74,7 +74,6 @@ func (destruction *DestructionWarlock) Initialize() {
 	destruction.registerChaosBolt()
 	destruction.registerShadowBurnSpell()
 	destruction.registerRainOfFire()
-	destruction.registerEmberTap()
 	destruction.registerFireAndBrimstone()
 	destruction.RegisterDrainLife(nil) // no extra callback needed
 }

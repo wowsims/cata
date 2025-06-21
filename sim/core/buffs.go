@@ -757,7 +757,7 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 		return
 	}
 
-	ufAura := UnholyFrenzyAura(&agent.GetCharacter().Unit, -1)
+	ufAura := UnholyFrenzyAura(&agent.GetCharacter().Unit, -1, func() bool { return false })
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -777,19 +777,22 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 		numUnholyFrenzy)
 }
 
-func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
+func UnholyFrenzyAura(character *Unit, actionTag int32, has2pT14 func() bool) *Aura {
 	actionID := ActionID{SpellID: 49016, Tag: actionTag}
 
+	var activeMultiplier float64
+	// TODO: Should also lose 2% max hp every 3 sec.
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "UnholyFrenzy-" + actionID.String(),
 		Tag:      UnholyFrenzyAuraTag,
 		ActionID: actionID,
 		Duration: UnholyFrenzyDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1.2)
+			activeMultiplier = TernaryFloat64(has2pT14(), 1.3, 1.2)
+			aura.Unit.MultiplyAttackSpeed(sim, activeMultiplier)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.2)
+			aura.Unit.MultiplyAttackSpeed(sim, 1/activeMultiplier)
 		},
 	})
 
@@ -849,6 +852,7 @@ func DevotionAuraAura(unit *Unit, actionTag int32, isHoly bool) *Aura {
 		// Beta changes 2025-06-13: https://www.wowhead.com/mop-classic/news/additional-holy-priest-and-paladin-changes-coming-to-mists-of-pandaria-classic-377264
 		// - Devotion Aura cast by a Holy Paladin will now reduce all damage by 20% (was Magical damage only).
 		//   - Developers’ notes: Changing Devotion Aura to reduce all damage makes it beneficial in more situations and aligns with other damage reducing abilities like Power Word: Barrier.
+		// EffectIndex 2 on the Holy specific Hotfix Passive https://wago.tools/db2/SpellEffect?build=5.5.0.61496&filter%5BSpellID%5D=137029&page=1
 		auraConfig.AttachMultiplicativePseudoStatBuff(&unit.PseudoStats.DamageTakenMultiplier, 0.8)
 	} else {
 		auraConfig.OnGain = func(aura *Aura, sim *Simulation) {
@@ -1012,6 +1016,7 @@ func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
 }
 
 var RallyingCryAuraTag = "RallyingCry"
+var RallyingCryActionID = ActionID{SpellID: 97462}
 
 const RallyingCryDuration = time.Second * 10
 const RallyingCryCD = time.Minute * 3
@@ -1026,7 +1031,7 @@ func registerRallyingCryCD(agent Agent, numRallyingCries int32) {
 	registerExternalConsecutiveCDApproximation(
 		agent,
 		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 97462, Tag: -1},
+			ActionID:         RallyingCryActionID.WithTag(-1),
 			AuraTag:          RallyingCryAuraTag,
 			CooldownPriority: CooldownPriorityLow,
 			AuraDuration:     RallyingCryDuration,
@@ -1046,7 +1051,7 @@ func registerRallyingCryCD(agent Agent, numRallyingCries int32) {
 }
 
 func RallyingCryAura(character *Character, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 97462, Tag: actionTag}
+	actionID := RallyingCryActionID.WithTag(actionTag)
 	healthMetrics := character.NewHealthMetrics(actionID)
 
 	var bonusHealth float64
@@ -1097,6 +1102,8 @@ func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
 		numShatteringThrows)
 }
 
+var SkullBannerActionID = ActionID{SpellID: 114206}
+
 const SkullBannerAuraTag = "SkullBanner"
 const SkullBannerDuration = time.Second * 10
 const SkullBannerCD = time.Minute * 3
@@ -1111,7 +1118,7 @@ func registerSkullBannerCD(agent Agent, numSkullBanners int32) {
 	registerExternalConsecutiveCDApproximation(
 		agent,
 		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 114207, Tag: -1},
+			ActionID:         SkullBannerActionID.WithTag(-1),
 			AuraTag:          SkullBannerAuraTag,
 			CooldownPriority: CooldownPriorityDefault,
 			AuraDuration:     SkullBannerDuration,
@@ -1132,7 +1139,7 @@ func SkullBannerAura(character *Character, actionTag int32) *Aura {
 	return character.GetOrRegisterAura(Aura{
 		Label:    "Skull Banner",
 		Tag:      SkullBannerAuraTag,
-		ActionID: ActionID{SpellID: 114206, Tag: actionTag},
+		ActionID: SkullBannerActionID.WithTag(actionTag),
 		Duration: SkullBannerDuration,
 	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.CritDamageMultiplier, 1.2)
 }

@@ -42,14 +42,26 @@ func init() {
 
 	// Rune of the Spellbreaking
 	core.NewEnchantEffect(3595, func(agent core.Agent, _ proto.ItemLevelState) {
-		// TODO:
-		// Add 2% magic deflection
+		character := agent.GetCharacter()
+
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.98
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.98
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.98
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.98
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.98
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.98
 	})
 
 	// Rune of Spellshattering
 	core.NewEnchantEffect(3367, func(agent core.Agent, _ proto.ItemLevelState) {
-		// TODO:
-		// Add 4% magic deflection
+		character := agent.GetCharacter()
+
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 0.96
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 0.96
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= 0.96
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= 0.96
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 0.96
+		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.96
 	})
 
 	// Rune of the Fallen Crusader
@@ -69,7 +81,7 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-			CritMultiplier:   2,
+			CritMultiplier:   character.DefaultCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealHealing(sim, target, character.MaxHealth()*0.03, spell.OutcomeHealingCrit)
@@ -226,7 +238,7 @@ func init() {
 
 		dpm := character.NewDynamicLegacyProcForEnchant(3370, 0, 1.0)
 
-		for _, itemSlot := range core.MeleeWeaponSlots() {
+		for _, itemSlot := range core.AllWeaponSlots() {
 			spell := newRazoriceHitSpell(character, itemSlot == proto.ItemSlot_ItemSlotMainHand)
 			procMask := core.ProcMaskUnknown
 			var weapon *core.Item

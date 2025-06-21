@@ -146,6 +146,38 @@ func (sp staticProc) Proc(sim *Simulation, label string) bool {
 	return sim.Proc(sp.chance, label)
 }
 
+func (character *Character) NewSetBonusRPPMProcManager(spellID int32, setBonusAura *Aura, procMask ProcMask, rppmConfig RPPMConfig) *DynamicProcManager {
+	if procMask == ProcMaskUnknown {
+		panic("Cannot create a set bonus RPPM proc manager without a proc mask")
+	}
+
+	builder := func() DynamicProcManager {
+		manager := DynamicProcManager{
+			procMasks:   []ProcMask{},
+			procChances: []DynamicProc{},
+		}
+
+		if setBonusAura.IsActive() {
+			manager.procMasks = append(manager.procMasks, procMask)
+			manager.procChances = append(manager.procChances, NewRPPMProc(character, rppmConfig))
+		}
+
+		return manager
+	}
+
+	dpm := builder()
+	character.RegisterItemSwapCallback(ArmorSpecializationSlots(), func(_ *Simulation, _ proto.ItemSlot) {
+		dpm = builder()
+	})
+	setBonusAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		dpm = builder()
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		dpm = builder()
+	})
+
+	return &dpm
+}
+
 // Creates a new RPPM proc manager for the given effectID.
 // Will manage all equiped items that use the given effect ID and overwrite the given configuration's ilvl accordingly.
 //

@@ -9,12 +9,12 @@ import (
 
 func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 
-	mmHunter.AimedShot = mmHunter.RegisterSpell(core.SpellConfig{
+	mmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 19434},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: hunter.HunterSpellAimedShot,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagRanged,
 		MissileSpeed:   40,
 		MinRange:       0,
 		MaxRange:       40,

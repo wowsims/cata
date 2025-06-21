@@ -7,7 +7,7 @@ import (
 )
 
 func (hunter *Hunter) registerSilencingShotSpell() {
-	hunter.SilencingShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 34490},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskRangedSpecial,

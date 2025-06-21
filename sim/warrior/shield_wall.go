@@ -7,53 +7,47 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterShieldWallCD() {
-	if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
-		return
-	}
-
-	duration := time.Second * 12
-	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfShieldWall)
-	//This is the inverse of the tooltip since it is a damage TAKEN coefficient
-	damageTaken := core.TernaryFloat64(hasGlyph, 0.6, 0.4)
+func (war *Warrior) registerShieldWall() {
+	hasGlyph := war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfShieldWall)
+	damageReductionMulti := 1 - core.TernaryFloat64(hasGlyph, 0.6, 0.4)
+	cooldownDuration := core.TernaryDuration(hasGlyph, time.Minute*5, time.Minute*3)
 
 	actionID := core.ActionID{SpellID: 871}
-	swAura := warrior.RegisterAura(core.Aura{
+	aura := war.RegisterAura(core.Aura{
 		Label:    "Shield Wall",
 		ActionID: actionID,
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier *= damageTaken
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier /= damageTaken
-		},
-	})
+		Duration: time.Second * 12,
+	}).AttachMultiplicativePseudoStatBuff(
+		&war.PseudoStats.DamageTakenMultiplier, damageReductionMulti,
+	)
 
-	cooldownDur := time.Minute * 5
-
-	swSpell := warrior.RegisterSpell(core.SpellConfig{
+	spell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: SpellMaskShieldWall,
+		Flags:          core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 0,
+				NonEmpty: true,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
-				Duration: cooldownDur,
+				Timer:    war.NewTimer(),
+				Duration: cooldownDuration,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			swAura.Activate(sim)
+			aura.Activate(sim)
 		},
+		RelatedSelfBuff: aura,
 	})
 
-	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: swSpell,
+	war.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
 		Type:  core.CooldownTypeSurvival,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return war.CurrentHealthPercent() < 0.4
+		},
 	})
 }

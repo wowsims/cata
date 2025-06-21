@@ -14,8 +14,8 @@ func applyConsumeEffects(agent Agent) {
 	if consumables == nil {
 		return
 	}
-	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 80, 0)
-	alchemyBattleElixirBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 40, 0)
+	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 320, 0)
+	alchemyBattleElixirBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 240, 0)
 	if consumables.FlaskId != 0 {
 		flask := ConsumablesByID[consumables.FlaskId]
 		if flask.Stats[stats.Strength] > 0 {

@@ -13,6 +13,16 @@ func (destruction *DestructionWarlock) registerBackdraft() {
 		ActionID:  core.ActionID{SpellID: 117828},
 		Duration:  time.Second * 15,
 		MaxStacks: 6,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(warlock.WarlockSpellChaosBolt) && aura.GetStacks() >= 3 {
+				aura.SetStacks(sim, aura.GetStacks()-3)
+				return
+			}
+
+			if spell.Matches(warlock.WarlockSpellIncinerate | warlock.WarlockSpellFaBIncinerate) {
+				aura.RemoveStack(sim)
+			}
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -0.3,

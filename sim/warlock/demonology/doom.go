@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
-const doomScale = 0.9375
-const doomCoeff = 0.9375
+const doomScale = 0.9375 * 1.33
+const doomCoeff = 0.9375 * 1.33
 
 func (demonology *DemonologyWarlock) registerDoom() {
 	demonology.RegisterSpell(core.SpellConfig{
@@ -52,6 +52,19 @@ func (demonology *DemonologyWarlock) registerDoom() {
 				demonology.ApplyDotWithPandemic(spell.Dot(target), sim)
 			}
 			spell.DealOutcome(sim, result)
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			dot := spell.Dot(target)
+			if useSnapshot {
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result.Damage /= dot.TickPeriod().Seconds()
+				return result
+			} else {
+				result := spell.CalcPeriodicDamage(sim, target, demonology.CalcScalingSpellDmg(doomScale), spell.OutcomeExpectedMagicCrit)
+				result.Damage /= demonology.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				return result
+			}
 		},
 	})
 }

@@ -30,7 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatStrength,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatExpertiseRating, Stat.StatMasteryRating],
@@ -49,13 +49,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_ARMS_BIS_PRESET.gear,
+		gear: Presets.P1_ARMS_BIS_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return hitCap.add(expCap);
 		})(),
@@ -67,15 +67,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			legacyOfTheEmperor: true,
+			legacyOfTheWhiteTiger: true,
+			darkIntent: true,
+			trueshotAura: true,
+			unleashedRage: true,
+			moonkinAura: true,
+			blessingOfMight: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// bloodFrenzy: true,
-			// mangle: true,
-			// faerieFire: true,
-			// curseOfWeakness: true,
-			// ebonPlaguebringer: true,
+			physicalVulnerability: true,
+			weakenedArmor: true,
+			masterPoisoner: true,
 		}),
 	},
 
@@ -89,7 +98,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarriorInputs.StartingRage(), WarriorInputs.StanceSnapshot(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			WarriorInputs.StartingRage(),
+			WarriorInputs.StanceSnapshot(),
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotHead,
@@ -115,20 +131,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	},
 
 	presets: {
-		epWeights: [Presets.P3_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArmsTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_ARMS_PRESET,
-			Presets.P1_ARMS_BIS_PRESET,
-			Presets.P1_ARMS_REALISTIC_PRESET,
-			Presets.P3_ARMS_BIS_PRESET,
-			Presets.P4_ARMS_BIS_PRESET,
-		],
-		itemSwaps: [Presets.P4_ITEM_SWAP],
+		gear: [Presets.P1_PREBIS_ARMS_RICH_PRESET, Presets.P1_PREBIS_ARMS_POOR_PRESET, Presets.P1_ARMS_BIS_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
@@ -149,10 +158,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P3_ARMS_BIS_PRESET.gear,
+					1: Presets.P1_ARMS_BIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P3_ARMS_BIS_PRESET.gear,
+					1: Presets.P1_ARMS_BIS_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

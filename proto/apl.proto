@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 101
+// NextIndex: 102
 message APLValue {
 	UUID uuid = 85;
 
@@ -191,6 +191,7 @@ message APLValue {
         APLValueDotIsActive dot_is_active = 6;
         APLValueDotRemainingTime dot_remaining_time = 13;
         APLValueDotTickFrequency dot_tick_frequency = 67;
+		APLValueDotPercentIncrease dot_percent_increase = 101;
 
         // Sequence values
         APLValueSequenceIsComplete sequence_is_complete = 44;
@@ -206,8 +207,8 @@ message APLValue {
         APLValueTotemRemainingTime totem_remaining_time = 49;
         APLValueCatExcessEnergy cat_excess_energy = 52;
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
-        APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
-        APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
+        APLValueWarlockHandOfGuldanInFlight warlock_hand_of_guldan_in_flight = 59;
+        APLValueWarlockHauntInFlight warlock_haunt_in_flight = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
         APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
@@ -437,7 +438,8 @@ message APLValueIsExecutePhase {
         E20 = 1;
         E25 = 2;
         E35 = 3;
-		E90 = 4;
+        E45 = 4;
+		E90 = 5;
     }
     ExecutePhaseThreshold threshold = 1;
 }
@@ -689,10 +691,8 @@ message APLValueTotemRemainingTime {
 }
 message APLValueCatExcessEnergy {}
 message APLValueCatNewSavageRoarDuration {}
-message APLValueWarlockShouldRecastDrainSoul {}
-message APLValueWarlockShouldRefreshCorruption {
-    UnitReference target_unit = 1;
-}
+message APLValueWarlockHandOfGuldanInFlight {}
+message APLValueWarlockHauntInFlight {}
 message APLValueMageCurrentCombustionDotEstimate {}
 message APLValueShamanFireElementalDuration {}
 
@@ -700,3 +700,8 @@ message APLValueMonkCurrentChi {}
 message APLValueMonkMaxChi {}
 message APLValueBrewmasterMonkCurrentStaggerPercent {}
 message APLValueProtectionPaladinDamageTakenLastGlobal {}
+
+message APLValueDotPercentIncrease {
+	ActionID spell_id = 1;
+	UnitReference target_unit = 2;
+}

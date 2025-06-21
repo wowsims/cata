@@ -186,8 +186,8 @@ const (
 	SpellFlagSupressDoTApply                               // If present this spell will not apply dots (Used for DTR dot supression)
 	SpellFlagSwapped                                       // Indicates that this spell is not useable because it is from a currently swapped item
 	SpellFlagAoE                                           // Indicates that this spell is an AoE spell. Spells flagged with this will use the AoE Cap multiplier when calculating damage.
-	SpellFlagRanged
-	SpellFlagReadinessTrinket // Indicates that this spell part of Readiness. Used by Siege of Orgrimmar CDR trinkets.
+	SpellFlagRanged                                        // Indicates that this spell is a ranged spell. Spells flagged with this will have increased damage when Hunters Mark is active.
+	SpellFlagReadinessTrinket                              // Indicates that this spell part of Readiness. Used by Siege of Orgrimmar CDR trinkets.
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1
@@ -209,8 +209,10 @@ const (
 	SpellSchoolHoly
 	SpellSchoolNature
 	SpellSchoolShadow
-	SpellSchoolChaos       SpellSchool = 1<<iota - 3
+	SpellSchoolChaos       SpellSchool = SpellSchoolArcane | SpellSchoolFire | SpellSchoolFrost | SpellSchoolHoly | SpellSchoolNature | SpellSchoolShadow
 	SpellSchoolShadowFlame SpellSchool = SpellSchoolFire | SpellSchoolShadow
+	SpellSchoolShadowFrost SpellSchool = SpellSchoolFrost | SpellSchoolShadow
+	SpellSchoolPlague      SpellSchool = SpellSchoolNature | SpellSchoolShadow
 )
 
 // Returns whether there is any overlap between the given masks.

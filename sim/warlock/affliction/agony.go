@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/mop/sim/warlock"
 )
 
-const agonyScale = 0.0255
-const agonyCoeff = 0.0255
+const agonyScale = 0.0255 * 1.18
+const agonyCoeff = 0.0255 * 1.18
 
 func (affliction *AfflictionWarlock) registerAgony() {
 	affliction.Agony = affliction.RegisterSpell(core.SpellConfig{
@@ -67,6 +67,23 @@ func (affliction *AfflictionWarlock) registerAgony() {
 			if spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit).Landed() {
 				affliction.ApplyDotWithPandemic(spell.Dot(target), sim)
 				spell.Dot(target).AddStack(sim)
+			}
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			dot := spell.Dot(target)
+
+			// Always compare fully stacked agony damage
+			if useSnapshot {
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result.Damage *= 10
+				result.Damage /= dot.TickPeriod().Seconds()
+				return result
+			} else {
+				result := spell.CalcPeriodicDamage(sim, target, affliction.CalcScalingSpellDmg(agonyScale), spell.OutcomeExpectedMagicCrit)
+				result.Damage *= 10
+				result.Damage /= affliction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				return result
 			}
 		},
 	})

@@ -51,6 +51,10 @@ func init() {
 				auras[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})].Activate(sim)
 			},
 		})
+
+		for _, aura := range auras {
+			character.AddStatProcBuff(75274, aura, false, core.TrinketSlots())
+		}
 	})
 
 	core.NewItemEffect(81266, func(agent core.Agent, state proto.ItemLevelState) {
@@ -92,7 +96,7 @@ func init() {
 
 			statValue := core.GetItemEffectScaling(itemID, 0.44999998808, state)
 
-			_, aura := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+			statBuffAura, aura := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
 				AuraLabel:            fmt.Sprintf("%s %s", label, versionLabel),
 				ActionID:             core.ActionID{SpellID: 138756},
 				Duration:             time.Second * 20,
@@ -116,6 +120,8 @@ func init() {
 					aura.Activate(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, statBuffAura, false, core.TrinketSlots())
 		})
 	})
 
@@ -152,6 +158,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -193,6 +201,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -234,6 +244,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -275,6 +287,8 @@ func init() {
 					aura.AddStack(sim)
 				},
 			})
+
+			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
 		})
 	})
 
@@ -373,7 +387,7 @@ func RegisterReadinessCooldownReduction(character *core.Character, itemID int32,
 			proto.Spec_SpecMarksmanshipHunter: 145965,
 			proto.Spec_SpecSurvivalHunter:     145966,
 			// Rogue
-			// Missing: Cloak of Shadows, Evasion, JuJu Escape, Shadow Blades
+			// Missing: Cloak of Shadows, Evasion, JuJu Escape
 			proto.Spec_SpecAssassinationRogue: 145983,
 			proto.Spec_SpecCombatRogue:        145984,
 			proto.Spec_SpecSubtletyRogue:      145985,
@@ -393,7 +407,6 @@ func RegisterReadinessCooldownReduction(character *core.Character, itemID int32,
 		},
 		stats.Strength: {
 			// Death Knight
-			// Missing: Outbreak, Blood Rites,
 			proto.Spec_SpecBloodDeathKnight:  145958,
 			proto.Spec_SpecFrostDeathKnight:  145959,
 			proto.Spec_SpecUnholyDeathKnight: 145960,
@@ -403,7 +416,7 @@ func RegisterReadinessCooldownReduction(character *core.Character, itemID int32,
 			proto.Spec_SpecProtectionPaladin:  145976,
 			proto.Spec_SpecRetributionPaladin: 145975,
 			// Warrior
-			// Missing: Avatar, Bladestorm, Bloodbath, Die by the Sword, Dragon Roar, Heroic Leap, Recklessness, Shockwave, Storm Bolt, Demoralizing Shout, Last Stand, Mocking Banner, Shield Wall
+			// Missing: Die by the Sword, Mocking Banner
 			proto.Spec_SpecArmsWarrior:       145990,
 			proto.Spec_SpecFuryWarrior:       145991,
 			proto.Spec_SpecProtectionWarrior: 145992,

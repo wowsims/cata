@@ -1,0 +1,627 @@
+character_stats_results: {
+ key: "TestSubtlety-CharacterStats-Default"
+ value: {
+  final_stats: 222.6
+  final_stats: 18220.90725
+  final_stats: 14931.4
+  final_stats: 134.4
+  final_stats: 161.71
+  final_stats: 2552
+  final_stats: 2876
+  final_stats: 4740
+  final_stats: 2550
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3623
+  final_stats: 40506.85595
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 16122
+  final_stats: 0
+  final_stats: 355442.6
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7.50588
+  final_stats: 15.00588
+  final_stats: 23.95982
+  final_stats: 9.79333
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BarbedAssassinBattlegear"
+ value: {
+  dps: 89113.50824
+  tps: 62825.34413
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BattlegearoftheThousandfoldBlades"
+ value: {
+  dps: 79633.0142
+  tps: 56167.63512
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BlackfangBattleweave"
+ value: {
+  dps: 56560.57634
+  tps: 39874.13247
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 74453.16811
+  tps: 52460.60352
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 74047.5725
+  tps: 52172.72509
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-DelicateVialoftheSanguinaire-94518"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-DelicateVialoftheSanguinaire-95779"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-DelicateVialoftheSanguinaire-96151"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-DelicateVialoftheSanguinaire-96523"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 73861.40092
+  tps: 52040.54327
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 75667.73819
+  tps: 53318.59339
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 72461.54376
+  tps: 51073.30921
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 72461.54376
+  tps: 51073.30921
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 72461.54376
+  tps: 51073.30921
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 72461.54376
+  tps: 51073.30921
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 73100.57387
+  tps: 51534.64902
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 73861.40092
+  tps: 52040.54327
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-FangsoftheFather"
+ value: {
+  dps: 63857.68742
+  tps: 45009.16142
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Fear-77945"
+ value: {
+  dps: 63743.68703
+  tps: 44877.58315
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Felstriker-12590"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 74545.12827
+  tps: 52541.27164
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-GazeoftheTwins-94529"
+ value: {
+  dps: 74834.20147
+  tps: 52713.76673
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-GazeoftheTwins-95799"
+ value: {
+  dps: 74352.99766
+  tps: 52378.31512
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-GazeoftheTwins-96171"
+ value: {
+  dps: 75157.63164
+  tps: 52941.20953
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-GazeoftheTwins-96543"
+ value: {
+  dps: 75461.58894
+  tps: 53156.19896
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 75634.5799
+  tps: 53278.28041
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Gladiator'sVestments"
+ value: {
+  dps: 94751.17217
+  tps: 66779.40445
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Golad,TwilightofAspects-77949"
+ value: {
+  dps: 65649.0193
+  tps: 46241.14961
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Heartpierce-49982"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Heartpierce-50641"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 73861.40092
+  tps: 52040.54327
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-JawsofRetribution"
+ value: {
+  dps: 58143.97213
+  tps: 40950.31612
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-MawofOblivion"
+ value: {
+  dps: 59822.36176
+  tps: 42139.30379
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Nine-TailBattlegear"
+ value: {
+  dps: 87129.08347
+  tps: 61418.50935
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 76032.38219
+  tps: 53573.14094
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Primordius'TalismanofRage-94519"
+ value: {
+  dps: 74861.13062
+  tps: 52739.65165
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Primordius'TalismanofRage-95757"
+ value: {
+  dps: 74349.67054
+  tps: 52384.79103
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Primordius'TalismanofRage-96129"
+ value: {
+  dps: 75399.39117
+  tps: 53121.06365
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Primordius'TalismanofRage-96501"
+ value: {
+  dps: 75722.31089
+  tps: 53342.30702
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 76020.23723
+  tps: 53552.9798
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Renataki'sSoulCharm-94512"
+ value: {
+  dps: 85682.28591
+  tps: 60314.12582
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Renataki'sSoulCharm-95625"
+ value: {
+  dps: 83094.95436
+  tps: 58498.46536
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Renataki'sSoulCharm-95997"
+ value: {
+  dps: 86291.06255
+  tps: 60739.08484
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Renataki'sSoulCharm-96369"
+ value: {
+  dps: 87513.65733
+  tps: 61598.1547
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 88752.38464
+  tps: 62467.36634
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 74728.26888
+  tps: 52654.32987
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 74453.16811
+  tps: 52460.60352
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 74047.5725
+  tps: 52172.72509
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Slayer'sArmor"
+ value: {
+  dps: 39613.65072
+  tps: 27911.09636
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 77987.27791
+  tps: 54924.7831
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TalismanofBloodlust-94522"
+ value: {
+  dps: 79804.15061
+  tps: 56261.91011
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TalismanofBloodlust-95748"
+ value: {
+  dps: 78509.9464
+  tps: 55334.11327
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TalismanofBloodlust-96120"
+ value: {
+  dps: 80554.65838
+  tps: 56776.64957
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TalismanofBloodlust-96492"
+ value: {
+  dps: 81512.42568
+  tps: 57456.45656
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 81783.7102
+  tps: 57658.40586
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TheSleeper-77947"
+ value: {
+  dps: 64598.52397
+  tps: 45484.12164
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 73563.18255
+  tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VestmentsoftheDarkPhoenix"
+ value: {
+  dps: 57690.11234
+  tps: 40659.7039
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 78695.98601
+  tps: 55419.56298
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Average-Default"
+ value: {
+  dps: 75598.37604
+  tps: 53253.56553
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Human-preraid_subtlety-Subtlety-subtlety-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Human-preraid_subtlety-Subtlety-subtlety-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 75294.2059
+  tps: 53053.38546
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Human-preraid_subtlety-Subtlety-subtlety-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 107995.14821
+  tps: 74649.05158
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Human-preraid_subtlety-Subtlety-subtlety-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 50029.52354
+  tps: 35520.96171
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Human-preraid_subtlety-Subtlety-subtlety-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 50029.52354
+  tps: 35520.96171
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Human-preraid_subtlety-Subtlety-subtlety-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 56444.68122
+  tps: 40075.72367
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Orc-preraid_subtlety-Subtlety-subtlety-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 76436.17804
+  tps: 53832.47475
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Orc-preraid_subtlety-Subtlety-subtlety-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 76436.17804
+  tps: 53832.47475
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Orc-preraid_subtlety-Subtlety-subtlety-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 110499.75299
+  tps: 76268.76634
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Orc-preraid_subtlety-Subtlety-subtlety-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 50731.69184
+  tps: 36019.50121
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Orc-preraid_subtlety-Subtlety-subtlety-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 50731.69184
+  tps: 36019.50121
+ }
+}
+dps_results: {
+ key: "TestSubtlety-Settings-Orc-preraid_subtlety-Subtlety-subtlety-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 57602.32916
+  tps: 40897.65371
+ }
+}
+dps_results: {
+ key: "TestSubtlety-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 25637.10797
+  tps: 18202.34666
+ }
+}

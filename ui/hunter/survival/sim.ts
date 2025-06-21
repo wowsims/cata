@@ -19,9 +19,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	cssClass: 'survival-hunter-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Hunter),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: ['Glaive Toss hits AoE targets only once.'],
 	warnings: [],
-	consumableStats: [Stat.StatAgility],
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStamina,
@@ -54,14 +53,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.SV_P4_PRESET.gear,
+		gear: Presets.P1_PRESET_GEAR.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P4_EP_PRESET.epWeights,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats()
 				.withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5)
-				.withStat(Stat.StatExpertiseRating, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+				.withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 		})(),
 
 		other: Presets.OtherDefaults,
@@ -72,14 +71,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Default spec-specific settings.
 		specOptions: Presets.SVDefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			blessingOfKings: true,
+			trueshotAura: true,
+			leaderOfThePack: true,
+			blessingOfMight: true,
+			commandingShout: true,
+			unholyAura: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// faerieFire: true,
-			// curseOfElements: true,
-			// savageCombat: true,
-			// bloodFrenzy: true,
+			weakenedArmor: true,
+			physicalVulnerability: true,
+			curseOfElements: true,
 		}),
 	},
 
@@ -93,16 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			HunterInputs.PetUptime(),
-			HunterInputs.AQTierPrepull(),
-			HunterInputs.NaxxTierPrepull(),
-			HunterInputs.GlaiveTossChance(),
-			OtherInputs.InputDelay,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [HunterInputs.PetUptime(), HunterInputs.GlaiveTossChance(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -110,14 +109,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P3_EP_PRESET, Presets.P4_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SurvivalTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET, Presets.SV_P3_PRESET, Presets.SV_P4_PRESET],
+		builds: [Presets.PRERAID_PRESET, Presets.PRERAID_PRESET_CELESTIAL, Presets.P1_PRESET],
+		gear: [Presets.PRERAID_PRESET_GEAR, Presets.PRERAID_CELESTIAL_PRESET_GEAR, Presets.P1_PRESET_GEAR],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {
@@ -152,15 +151,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,
-				[Faction.Horde]: Race.RaceTroll,
+				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.SV_PRERAID_PRESET.gear,
+					1: Presets.PRERAID_CELESTIAL_PRESET_GEAR.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.SV_PRERAID_PRESET.gear,
+					1: Presets.PRERAID_CELESTIAL_PRESET_GEAR.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -175,13 +174,7 @@ export class SurvivalHunterSimUI extends IndividualSimUI<Spec.SpecSurvivalHunter
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecSurvivalHunter>) => {
-					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
-						return Presets.P1_EP_PRESET.epWeights;
-					}
-					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
-						return Presets.P3_EP_PRESET.epWeights;
-					}
-					return Presets.P3_EP_PRESET.epWeights;
+					return Presets.P1_EP_PRESET.epWeights;
 				},
 			});
 		});

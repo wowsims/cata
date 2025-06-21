@@ -31,7 +31,7 @@ func (druid *Druid) registerProwlSpell() {
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			icd.Use(sim)
-			aura.Unit.MultiplyMovementSpeed(sim, 1.0 / movementSpeedMultiplier)
+			aura.Unit.MultiplyMovementSpeed(sim, 1.0/movementSpeedMultiplier)
 		},
 	})
 
