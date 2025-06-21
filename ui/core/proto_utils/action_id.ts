@@ -289,6 +289,8 @@ export class ActionId {
 			case 'Minor Speed':
 				name = 'Minor Run Speed (8%)';
 				break;
+			case 'Arcane Missiles':
+				break;
 			case 'Arcane Blast':
 				if (tag == 1) {
 					name += ' (No Stacks)';
@@ -309,6 +311,7 @@ export class ActionId {
 			case 'Combustion':
 				if (tag) name += ' (DoT)';
 				break;
+			case 'Frost Bomb':
 			case 'Living Bomb':
 				if (tag == 1) name += ' (DoT)';
 				else if (tag == 2) name += ' (Explosion)';
@@ -392,9 +395,9 @@ export class ActionId {
 				break;
 			case 'Shadow Blades':
 				if (tag == 1) {
-					name = 'Shadow Blade'
+					name = 'Shadow Blade';
 				} else if (tag == 2) {
-					name = 'Shadow Blade Off-hand'
+					name = 'Shadow Blade Off-hand';
 				}
 				break;
 			case 'Bladestorm':
@@ -423,7 +426,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (Hit)';
 				} else {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Wind Lash':
@@ -1216,6 +1219,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 124081, tag: 4 }), { spellId: 124101 }],
 	[JSON.stringify({ spellId: 124081, tag: 5 }), { spellId: 125033 }],
 
+	// Mage - Living Bomb
+	[JSON.stringify({ spellId: 44457, tag: 2 }), { spellId: 44461 }], // Living Bomb Explosion
+
 	// Warlock - Immolation Aura
 	[JSON.stringify({ spellId: 104025, tag: 2 }), { spellId: 129476 }],
 ]);
@@ -1227,6 +1233,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Army of the Dead': ActionId.fromSpellId(42650),
 	Bloodworm: ActionId.fromSpellId(50452),
 	'Flame Orb': ActionId.fromSpellId(82731),
+	'Frozen Orb': ActionId.fromSpellId(84721),
 	Gargoyle: ActionId.fromSpellId(49206),
 	Ghoul: ActionId.fromSpellId(46584),
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),

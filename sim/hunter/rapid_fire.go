@@ -15,18 +15,13 @@ func (hunter *Hunter) registerRapidFireCD() {
 
 	hasteMultiplier := 1.4
 
-	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
+	rapidFireAura := hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
-			if sim.CurrentTime <= 0 && hunter.Options.UseAqTier {
-				hunter.RapidFire.CD.Reduce(2 * time.Minute)
-			}
-			if sim.CurrentTime < 0 && hunter.Options.UseNaxxTier {
-				aura.UpdateExpires(aura.ExpiresAt() + (time.Second * 4))
-			}
+
 			focusPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 3,
 				NumTicks: 5,
@@ -44,7 +39,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 		},
 	})
 
-	hunter.RapidFire = hunter.RegisterSpell(core.SpellConfig{
+	rapidFire := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: HunterSpellRapidFire,
 		FocusCost: core.FocusCostOptions{
@@ -60,12 +55,12 @@ func (hunter *Hunter) registerRapidFireCD() {
 			return hunter.GCD.IsReady(sim)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			hunter.RapidFireAura.Activate(sim)
+			rapidFireAura.Activate(sim)
 		},
 	})
 
 	hunter.AddMajorCooldown(core.MajorCooldown{
-		Spell: hunter.RapidFire,
+		Spell: rapidFire,
 		Type:  core.CooldownTypeDPS,
 	})
 }

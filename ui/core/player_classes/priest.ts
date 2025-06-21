@@ -21,7 +21,6 @@ export class Priest extends PlayerClass<Class.ClassPriest> {
 		Race.RaceBloodElf,
 		Race.RaceGoblin,
 		Race.RaceHordePandaren,
-
 		// [A]
 		Race.RaceWorgen,
 		Race.RaceHuman,

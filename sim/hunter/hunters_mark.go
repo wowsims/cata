@@ -9,7 +9,7 @@ import (
 func (hunter *Hunter) registerHuntersMarkSpell() {
 	actionID := core.ActionID{SpellID: 1130}
 	rangedMult := 1.05
-	hunter.HuntersMarkAura = hunter.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	hmAura := hunter.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "HuntersMark-" + hunter.Label,
 			ActionID: actionID,
@@ -30,13 +30,13 @@ func (hunter *Hunter) registerHuntersMarkSpell() {
 			Cost: 0,
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aura := range hunter.HuntersMarkAura {
+			for _, aura := range hmAura {
 				if aura.IsActive() {
 					aura.Deactivate(sim)
 				}
 			}
 			// Activating Hunters Mark for the new target
-			hunter.HuntersMarkAura.Get(target).Activate(sim)
+			hmAura.Get(target).Activate(sim)
 		},
 	}
 
