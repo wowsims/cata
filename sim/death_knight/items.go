@@ -103,7 +103,7 @@ var ItemSetBattleplateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Callback: core.CallbackOnSpellHitDealt,
 				Outcome:  core.OutcomeLanded,
-				DPM: dk.NewRPPMProcManager(138343, false, core.ProcMaskDirect, core.RPPMConfig{
+				DPM: dk.NewSetBonusRPPMProcManager(138343, setBonusAura, core.ProcMaskDirect, core.RPPMConfig{
 					PPM: 1.14999997616,
 				}),
 				ICD: time.Millisecond * 250,
