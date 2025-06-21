@@ -45,7 +45,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Activate(sim)
+			spell.Dot(target).Apply(sim)
 			spell.Dot(target).Aura.AddStack(sim)
 		},
 	})
@@ -79,14 +79,9 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// keep stacks in sync as they're shared
 			demonology.ChaosWave.ConsumeCharge(sim)
-
-			// Shadowflame is snapshotted at cast time
-			for _, enemy := range sim.Encounter.TargetUnits {
-				shadowFlame.Dot(enemy).TakeSnapshot(sim, false)
-			}
-
+			demonology.HandOfGuldanImpactTime = sim.CurrentTime + time.Millisecond*1300
 			sim.AddPendingAction(&core.PendingAction{
-				NextActionAt: sim.CurrentTime + time.Millisecond*1300, // Fixed delay of 1.3 seconds
+				NextActionAt: demonology.HandOfGuldanImpactTime, // Fixed delay of 1.3 seconds
 				Priority:     core.ActionPriorityAuto,
 				OnAction: func(sim *core.Simulation) {
 					for _, enemy := range sim.Encounter.TargetUnits {

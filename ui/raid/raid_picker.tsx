@@ -771,10 +771,6 @@ function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, rai
 		const newOptions = newPlayer.getSpecOptions() as BalanceDruidOptions;
 		newOptions.classOptions!.innervateTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
-	} else if (newPlayer.getSpec() == Spec.SpecArcaneMage) {
-		const newOptions = newPlayer.getSpecOptions() as ArcaneMage_Options;
-		newOptions.focusMagicTarget = newUnitReference(newPlayer.getRaidIndex());
-		newPlayer.setSpecOptions(eventID, newOptions);
 	} else if (newPlayer.getSpec() == Spec.SpecUnholyDeathKnight) {
 		const newOptions = newPlayer.getSpecOptions() as UnholyDeathKnight_Options;
 		newOptions.unholyFrenzyTarget = newUnitReference(newPlayer.getRaidIndex());

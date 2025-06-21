@@ -9,10 +9,11 @@ import { Cooldowns, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, 
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { formatToNumber } from '../../core/utils';
+import { DefaultDebuffs, DefaultRaidBuffs } from '../presets';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
-const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
+const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.presets;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	cssClass: 'fire-mage-sim-ui',
@@ -26,7 +27,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatExpertiseRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
@@ -75,15 +76,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		specOptions: Presets.DefaultFireOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: Presets.DefaultRaidBuffs,
+		raidBuffs: DefaultRaidBuffs,
 
-		partyBuffs: PartyBuffs.create({
-			manaTideTotems: 1,
-		}),
-		individualBuffs: IndividualBuffs.create({
-			innervateCount: 0,
-		}),
-		debuffs: Presets.DefaultDebuffs,
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
+		debuffs: DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -219,7 +216,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
+				statSelectionPresets: [Presets.FIRE_BREAKPOINTS],
 				enableBreakpointLimits: true,
 				updateSoftCaps: softCaps => {
 					const raidBuffs = player.getRaid()?.getBuffs();

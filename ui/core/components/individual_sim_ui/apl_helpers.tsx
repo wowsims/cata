@@ -28,7 +28,8 @@ export type ACTION_ID_SET =
 	| 'castable_dot_spells'
 	| 'shield_spells'
 	| 'non_instant_spells'
-	| 'friendly_spells';
+	| 'friendly_spells'
+	| 'expected_dot_spells';
 
 const actionIdSets: Record<
 	ACTION_ID_SET,
@@ -231,6 +232,23 @@ const actionIdSets: Record<
 						value: actionId.id,
 					};
 				});
+		},
+	},
+	expected_dot_spells: {
+		defaultLabel: 'DoT Spell',
+		getActionIDs: async metadata => {
+			return (
+				metadata
+					.getSpells()
+					.filter(spell => spell.data.hasExpectedTick)
+					// filter duplicate dot entries from RelatedDotSpell
+					.filter((value, index, self) => self.findIndex(v => v.id.anyId() === value.id.anyId()) === index)
+					.map(actionId => {
+						return {
+							value: actionId.id,
+						};
+					})
+			);
 		},
 	},
 	shield_spells: {

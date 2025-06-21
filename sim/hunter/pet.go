@@ -88,6 +88,7 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 		},
 		AutoSwingMelee: true,
 	})
+	direBeastPet.ApplyTalents()
 	hunter.AddPet(direBeastPet)
 	core.MakeProcTriggerAura(&direBeastPet.Unit, core.ProcTrigger{
 		Name:       "Dire Beast",

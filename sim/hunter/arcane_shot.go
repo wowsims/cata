@@ -7,7 +7,7 @@ import (
 )
 
 func (hunter *Hunter) registerArcaneShotSpell() {
-	hunter.ArcaneShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3044},
 		SpellSchool:    core.SpellSchoolArcane,
 		ClassSpellMask: HunterSpellArcaneShot,
