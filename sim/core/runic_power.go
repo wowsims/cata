@@ -54,6 +54,12 @@ type runicPowerBar struct {
 	unholyRuneGainMetrics *ResourceMetrics
 	deathRuneGainMetrics  *ResourceMetrics
 
+	spellRunicPowerMetrics map[ActionID]*ResourceMetrics
+	spellBloodRuneMetrics  map[ActionID]*ResourceMetrics
+	spellFrostRuneMetrics  map[ActionID]*ResourceMetrics
+	spellUnholyRuneMetrics map[ActionID]*ResourceMetrics
+	spellDeathRuneMetrics  map[ActionID]*ResourceMetrics
+
 	onRuneChange     OnRuneChange
 	onRunicPowerGain OnRunicPowerGain
 
@@ -139,6 +145,12 @@ func (character *Character) EnableRunicPowerBar(startingRunicPower float64, maxR
 
 		permanentDeaths: make([]int8, 0),
 		lastRegen:       make([]int8, 0),
+
+		spellRunicPowerMetrics: make(map[ActionID]*ResourceMetrics),
+		spellBloodRuneMetrics:  make(map[ActionID]*ResourceMetrics),
+		spellFrostRuneMetrics:  make(map[ActionID]*ResourceMetrics),
+		spellUnholyRuneMetrics: make(map[ActionID]*ResourceMetrics),
+		spellDeathRuneMetrics:  make(map[ActionID]*ResourceMetrics),
 	}
 
 	character.bloodRuneGainMetrics = character.NewBloodRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionBloodRuneGain, Tag: 1})
@@ -1321,4 +1333,54 @@ func (spell *Spell) UnholyRuneMetrics() *ResourceMetrics {
 
 func (spell *Spell) DeathRuneMetrics() *ResourceMetrics {
 	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).deathRuneMetrics
+}
+
+func (rp *runicPowerBar) NewRunicPowerMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellRunicPowerMetrics[action]
+	if !ok {
+		metric = rp.character.newRunicPowerMetrics(action)
+		rp.spellRunicPowerMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewBloodRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellBloodRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newBloodRuneMetrics(action)
+		rp.spellBloodRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewFrostRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellFrostRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newFrostRuneMetrics(action)
+		rp.spellFrostRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewUnholyRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellUnholyRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newUnholyRuneMetrics(action)
+		rp.spellUnholyRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewDeathRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellDeathRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newDeathRuneMetrics(action)
+		rp.spellDeathRuneMetrics[action] = metric
+	}
+
+	return metric
 }
