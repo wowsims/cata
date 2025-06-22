@@ -504,6 +504,8 @@ func (rp *runicPowerBar) AllRunesSpent() bool {
 func (rp *runicPowerBar) OptimalRuneCost(cost RuneCost) RuneCost {
 	var b, f, u, d int8
 
+	d += cost.Death()
+
 	if b = cost.Blood(); b > 0 {
 		if cb := rp.CurrentBloodRunes(); cb < b {
 			d += b - cb
@@ -528,8 +530,6 @@ func (rp *runicPowerBar) OptimalRuneCost(cost RuneCost) RuneCost {
 	if d == 0 {
 		return cost
 	}
-
-	d += cost.Death()
 
 	if cd := rp.CurrentDeathRunes(); cd >= d {
 		return NewRuneCost(cost.RunicPower(), b, f, u, d)
@@ -557,8 +557,11 @@ func (rp *runicPowerBar) spendRuneCost(sim *Simulation, spell *Spell, cost RuneC
 	for i := int8(0); i < u; i++ {
 		slots = append(slots, rp.spendRune(sim, 4, spell.UnholyRuneMetrics()))
 	}
+	defaultCost := RuneCost(spell.Cost.GetCurrentCost())
+	for i := int8(0); i < defaultCost.Death(); i++ {
+		slots = append(slots, rp.spendDeathRune(sim, []int8{0, 1, 2, 3, 4, 5}, spell.DeathRuneMetrics()))
+	}
 	if d > 0 {
-		defaultCost := RuneCost(spell.Cost.GetCurrentCost())
 		for i, mu := int8(0), defaultCost.Unholy()-u; i < mu; i++ {
 			slots = append(slots, rp.spendDeathRune(sim, []int8{4, 5, 2, 3, 0, 1}, spell.DeathRuneMetrics()))
 		}
