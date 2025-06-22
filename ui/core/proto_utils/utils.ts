@@ -1972,7 +1972,11 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 			return false;
 	}
 
-	if (item.rangedWeaponType > 0 && enchant.type != ItemType.ItemTypeRanged) {
+	if (
+		item.rangedWeaponType != RangedWeaponType.RangedWeaponTypeWand &&
+		item.rangedWeaponType > 0 &&
+		enchant.type != ItemType.ItemTypeRanged
+	) {
 		return false;
 	}
 

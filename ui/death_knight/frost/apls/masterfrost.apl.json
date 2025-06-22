@@ -29,8 +29,6 @@
 		{"action":{"condition":{"or":{"vals":[{"not":{"val":{"isExecutePhase":{"threshold":"E35"}}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":114851}}},"rhs":{"const":{"val":"8"}}}}]}},"castSpell":{"spellId":{"spellId":45529}}}},
 		{"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"currentRunicPower":{}},"rhs":{"const":{"val":"40"}}}},"castSpell":{"spellId":{"spellId":49143,"tag":1}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":57330}}}},
-		{"action":{"castSpell":{"spellId":{"spellId":45529}}}},
-		{"action":{"castSpell":{"spellId":{"spellId":123693}}}},
-		{"action":{"castSpell":{"spellId":{"spellId":47568}}}}
+		{"action":{"castSpell":{"spellId":{"spellId":123693}}}}
 	]
 }
