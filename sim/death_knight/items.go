@@ -347,7 +347,7 @@ var ItemSetPlateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
 				return
 			}
 
-			deathRuneMetrics := dk.CurrentTarget.NewDeathRuneMetrics(core.ActionID{SpellID: 144950})
+			deathRuneMetrics := dk.NewDeathRuneMetrics(core.ActionID{SpellID: 144950})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Callback:       core.CallbackOnCastComplete,
