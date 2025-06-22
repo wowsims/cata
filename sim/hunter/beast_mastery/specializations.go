@@ -40,7 +40,7 @@ func (bmHunter *BeastMasteryHunter) applyFrenzy() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+			if !spell.Matches(hunter.HunterPetFocusDump) {
 				return
 			}
 			if sim.RandomFloat("Frenzy") >= procChance {
@@ -96,18 +96,12 @@ func (bmHunter *BeastMasteryHunter) applyCobraStrikes() {
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bmHunter.Pet.FocusDump.BonusCritPercent += 100
-			if bmHunter.Pet.SpecialAbility != nil {
-				bmHunter.Pet.SpecialAbility.BonusCritPercent += 100
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			bmHunter.Pet.FocusDump.BonusCritPercent -= 100
-			if bmHunter.Pet.SpecialAbility != nil {
-				bmHunter.Pet.SpecialAbility.BonusCritPercent -= 100
-			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+			if spell.Matches(hunter.HunterPetFocusDump) {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -152,7 +146,7 @@ func (bmHunter *BeastMasteryHunter) applyInvigoration() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+			if spell.Matches(hunter.HunterPetFocusDump) {
 				if sim.RandomFloat("Invigoration") < procChance {
 					bmHunter.AddFocus(sim, 20, focusMetrics)
 				}
