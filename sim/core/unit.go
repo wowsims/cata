@@ -388,8 +388,23 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 		}
 	}
 
-	for _, pet := range unit.DynamicStatsPets {
-		pet.addOwnerStats(sim, bonus)
+	if len(unit.DynamicStatsPets) > 0 {
+		delayedInheritance := func(sim *Simulation) {
+			for _, pet := range unit.DynamicStatsPets {
+				pet.addOwnerStats(sim, bonus)
+			}
+		}
+
+		if sim.CurrentTime == 0 {
+			delayedInheritance(sim)
+			return
+		}
+
+		StartDelayedAction(sim, DelayedActionOptions{
+			DoAt:     sim.CurrentTime + time.Second*5,
+			Priority: ActionPriorityDOT,
+			OnAction: delayedInheritance,
+		})
 	}
 }
 

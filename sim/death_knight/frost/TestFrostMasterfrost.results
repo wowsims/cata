@@ -33,7 +33,7 @@ character_stats_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-AgilePrimalDiamond"
  value: {
-  dps: 112077.34255
+  dps: 112648.35237
   tps: 102203.62554
   hps: 1189.68343
  }
@@ -41,7 +41,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-AusterePrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1195.71618
  }
@@ -49,7 +49,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-BattlegearoftheLostCatacomb"
  value: {
-  dps: 101978.19354
+  dps: 102498.24022
   tps: 93222.14445
   hps: 1183.3683
  }
@@ -57,7 +57,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-BattleplateofCyclopeanDread"
  value: {
-  dps: 119534.22838
+  dps: 120031.18362
   tps: 110088.30008
   hps: 1318.3276
  }
@@ -65,15 +65,15 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-BattleplateoftheAll-ConsumingMaw"
  value: {
-  dps: 116395.09324
-  tps: 104374.54982
+  dps: 116727.51346
+  tps: 104160.40559
   hps: 1336.92706
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 112056.60825
+  dps: 112627.00327
   tps: 102185.85103
   hps: 1189.68343
  }
@@ -81,7 +81,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-CapacitivePrimalDiamond"
  value: {
-  dps: 111158.00822
+  dps: 111734.01468
   tps: 101195.18024
   hps: 1192.06388
  }
@@ -89,7 +89,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-CourageousPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1182.87295
  }
@@ -97,7 +97,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-94518"
  value: {
-  dps: 109240.63063
+  dps: 109802.70706
   tps: 99653.76328
   hps: 1189.68343
  }
@@ -105,7 +105,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-95779"
  value: {
-  dps: 109240.63063
+  dps: 109802.70706
   tps: 99653.76328
   hps: 1189.68343
  }
@@ -113,7 +113,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-96151"
  value: {
-  dps: 109240.63063
+  dps: 109802.70706
   tps: 99653.76328
   hps: 1189.68343
  }
@@ -121,7 +121,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-96523"
  value: {
-  dps: 109240.63063
+  dps: 109802.70706
   tps: 99653.76328
   hps: 1189.68343
  }
@@ -129,7 +129,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
-  dps: 109240.63063
+  dps: 109802.70706
   tps: 99653.76328
   hps: 1189.68343
  }
@@ -137,7 +137,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-DestructivePrimalDiamond"
  value: {
-  dps: 111289.50866
+  dps: 111867.09917
   tps: 101306.12952
   hps: 1192.06388
  }
@@ -145,7 +145,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EffulgentPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1195.71618
  }
@@ -153,7 +153,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-ElementiumDeathplateBattlearmor"
  value: {
-  dps: 78953.22055
+  dps: 79340.31645
   tps: 72423.05646
   hps: 844.45946
  }
@@ -161,7 +161,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-ElementiumDeathplateBattlegear"
  value: {
-  dps: 84789.2263
+  dps: 85201.91435
   tps: 77960.76418
   hps: 897.07941
  }
@@ -169,7 +169,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EmberPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1182.87295
  }
@@ -177,7 +177,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
  value: {
-  dps: 109478.70353
+  dps: 110030.54971
   tps: 99138.76198
   hps: 1189.68343
  }
@@ -185,7 +185,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-Colossus-4445"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -193,7 +193,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-DancingSteel-4444"
  value: {
-  dps: 109577.21801
+  dps: 110120.47191
   tps: 99193.89936
   hps: 1189.68343
  }
@@ -201,15 +201,15 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-JadeSpirit-4442"
  value: {
-  dps: 106507.82511
-  tps: 96554.20274
+  dps: 107023.18672
+  tps: 96495.23551
   hps: 1189.68343
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-River'sSong-4446"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -217,7 +217,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-SpiritofConquest-5124"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -225,15 +225,15 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnchantWeapon-Windsong-4441"
  value: {
-  dps: 108111.14189
-  tps: 97975.87263
-  hps: 1214.29674
+  dps: 108800.24996
+  tps: 98075.93576
+  hps: 1216.59448
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EnigmaticPrimalDiamond"
  value: {
-  dps: 111289.50866
+  dps: 111867.09917
   tps: 101306.12952
   hps: 1192.06388
  }
@@ -241,7 +241,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EternalPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1182.87295
  }
@@ -249,7 +249,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-FleetPrimalDiamond"
  value: {
-  dps: 111511.16791
+  dps: 112081.56293
   tps: 101648.79897
   hps: 1182.87295
  }
@@ -257,7 +257,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-ForlornPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1182.87295
  }
@@ -265,7 +265,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-94529"
  value: {
-  dps: 116288.3871
+  dps: 116855.02311
   tps: 105808.59614
   hps: 1219.85726
  }
@@ -273,7 +273,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-95799"
  value: {
-  dps: 115094.22973
+  dps: 115658.69196
   tps: 104769.06313
   hps: 1210.11487
  }
@@ -281,7 +281,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-96171"
  value: {
-  dps: 116721.94392
+  dps: 117290.15171
   tps: 106196.44263
   hps: 1227.16405
  }
@@ -289,7 +289,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-96543"
  value: {
-  dps: 117310.87687
+  dps: 117880.14432
   tps: 106724.08565
   hps: 1229.59965
  }
@@ -297,7 +297,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-96915"
  value: {
-  dps: 117767.64771
+  dps: 118337.61723
   tps: 107122.80585
   hps: 1235.41751
  }
@@ -305,7 +305,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-ImpassivePrimalDiamond"
  value: {
-  dps: 111289.50866
+  dps: 111867.09917
   tps: 101306.12952
   hps: 1192.06388
  }
@@ -313,7 +313,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-IndomitablePrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1195.71618
  }
@@ -321,7 +321,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-MagmaPlatedBattlearmor"
  value: {
-  dps: 77444.75881
+  dps: 77826.20186
   tps: 71013.03271
   hps: 821.17801
  }
@@ -329,7 +329,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-MagmaPlatedBattlegear"
  value: {
-  dps: 81050.91112
+  dps: 81446.01689
   tps: 74207.31124
   hps: 829.34717
  }
@@ -337,7 +337,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-NecroticBoneplateArmor"
  value: {
-  dps: 77947.69226
+  dps: 78326.02424
   tps: 71546.47894
   hps: 832.07308
  }
@@ -345,15 +345,15 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-NecroticBoneplateBattlegear"
  value: {
-  dps: 81134.37974
-  tps: 74377.34743
+  dps: 81541.43353
+  tps: 74373.74451
   hps: 847.54849
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-PhaseFingers-4697"
  value: {
-  dps: 112231.6555
+  dps: 112802.56763
   tps: 102343.25108
   hps: 1189.68343
  }
@@ -361,7 +361,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-PlateofCyclopeanDread"
  value: {
-  dps: 106077.38048
+  dps: 106509.63333
   tps: 97523.03896
   hps: 1208.46697
  }
@@ -369,7 +369,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-PlateoftheAll-ConsumingMaw"
  value: {
-  dps: 101133.24981
+  dps: 101561.32242
   tps: 92690.69687
   hps: 1245.87472
  }
@@ -377,7 +377,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-PlateoftheLostCatacomb"
  value: {
-  dps: 93231.97792
+  dps: 93644.28042
   tps: 85442.49981
   hps: 1122.41246
  }
@@ -385,7 +385,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-PowerfulPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1195.71618
  }
@@ -393,7 +393,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-PriceofProgress-81266"
  value: {
-  dps: 109240.63063
+  dps: 109802.70706
   tps: 99653.76328
   hps: 1189.68343
  }
@@ -401,7 +401,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-94519"
  value: {
-  dps: 116887.2641
+  dps: 117499.03773
   tps: 106423.12964
   hps: 1225.67512
  }
@@ -409,7 +409,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-95757"
  value: {
-  dps: 115587.35158
+  dps: 116190.04363
   tps: 105257.98911
   hps: 1220.80392
  }
@@ -417,7 +417,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-96129"
  value: {
-  dps: 117323.1297
+  dps: 117937.4494
   tps: 106811.93164
   hps: 1228.11072
  }
@@ -425,7 +425,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-96501"
  value: {
-  dps: 117838.15305
+  dps: 118455.98526
   tps: 107264.00722
   hps: 1228.11072
  }
@@ -433,7 +433,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-96873"
  value: {
-  dps: 118323.61132
+  dps: 118944.60469
   tps: 107690.07767
   hps: 1228.11072
  }
@@ -441,7 +441,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-94512"
  value: {
-  dps: 109340.14139
+  dps: 109907.17819
   tps: 99713.69109
   hps: 1189.68343
  }
@@ -449,7 +449,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-95625"
  value: {
-  dps: 109323.8842
+  dps: 109890.63379
   tps: 99703.17926
   hps: 1189.68343
  }
@@ -457,7 +457,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-95997"
  value: {
-  dps: 109346.22838
+  dps: 109915.47299
   tps: 99719.77808
   hps: 1189.68343
  }
@@ -465,7 +465,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-96369"
  value: {
-  dps: 109363.3471
+  dps: 109929.8271
   tps: 99733.33457
   hps: 1189.68343
  }
@@ -473,7 +473,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 109377.07311
+  dps: 109945.12778
   tps: 99744.22913
   hps: 1189.68343
  }
@@ -481,7 +481,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-ReverberatingPrimalDiamond"
  value: {
-  dps: 112878.56928
+  dps: 113451.39244
   tps: 102924.94691
   hps: 1189.68343
  }
@@ -489,7 +489,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 112056.60825
+  dps: 112627.00327
   tps: 102185.85103
   hps: 1189.68343
  }
@@ -497,7 +497,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneofCinderglacier-3369"
  value: {
-  dps: 108179.91723
+  dps: 108752.74039
   tps: 98226.29486
   hps: 1189.68343
  }
@@ -505,7 +505,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneofSpellbreaking-3595"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -513,7 +513,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneofSpellshattering-3367"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -521,7 +521,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneofSwordbreaking-3594"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -529,7 +529,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneofSwordshattering-3365"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1189.68343
  }
@@ -537,7 +537,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneoftheNerubianCarapace-3883"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1197.79015
  }
@@ -545,7 +545,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-RuneoftheStoneskinGargoyle-3847"
  value: {
-  dps: 106507.82511
+  dps: 107080.64827
   tps: 96554.20274
   hps: 1205.89688
  }
@@ -553,7 +553,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-SinisterPrimalDiamond"
  value: {
-  dps: 111158.00822
+  dps: 111734.01468
   tps: 101195.18024
   hps: 1192.06388
  }
@@ -561,7 +561,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 113573.88614
+  dps: 114227.28623
   tps: 103398.81337
   hps: 1189.68343
  }
@@ -569,47 +569,47 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-94522"
  value: {
-  dps: 112477.00689
-  tps: 102642.32728
-  hps: 1236.59395
+  dps: 112737.77502
+  tps: 102325.99819
+  hps: 1224.56302
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-95748"
  value: {
-  dps: 111783.28139
-  tps: 101989.97756
-  hps: 1223.07408
+  dps: 112574.3339
+  tps: 102203.81741
+  hps: 1226.31848
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-96120"
  value: {
-  dps: 112203.84304
-  tps: 102367.61831
-  hps: 1232.13634
+  dps: 111967.57927
+  tps: 101535.70304
+  hps: 1213.88315
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-96492"
  value: {
-  dps: 112986.74979
-  tps: 103111.58688
-  hps: 1227.80741
+  dps: 112969.42437
+  tps: 102506.75429
+  hps: 1232.13634
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-96864"
  value: {
-  dps: 112252.24525
-  tps: 102369.28566
-  hps: 1235.78514
+  dps: 113323.77701
+  tps: 102839.49985
+  hps: 1248.76274
  }
 }
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 110720.02241
+  dps: 111290.41744
   tps: 100857.65348
   hps: 1182.87295
  }
@@ -617,7 +617,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-ZenAlchemistStone-75274"
  value: {
-  dps: 116045.06185
+  dps: 116665.03386
   tps: 105645.21218
   hps: 1189.68343
  }
@@ -625,7 +625,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Average-Default"
  value: {
-  dps: 114896.31473
+  dps: 115555.63043
   tps: 104603.99655
   hps: 1125.80262
  }
@@ -633,7 +633,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 552005.91454
+  dps: 552661.22565
   tps: 541577.13332
   hps: 1189.68343
  }
@@ -641,7 +641,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 114220.79991
+  dps: 114876.11103
   tps: 103980.50921
   hps: 1189.68343
  }
@@ -649,7 +649,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 181517.88906
+  dps: 184850.25829
   tps: 129999.78711
   hps: 1495.73227
  }
@@ -657,7 +657,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 364320.50459
+  dps: 364565.93303
   tps: 358569.78109
   hps: 1022.6056
  }
@@ -665,7 +665,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 80893.83689
+  dps: 81139.26533
   tps: 75143.11339
   hps: 1022.6056
  }
@@ -673,7 +673,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Orc-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 109260.6726
+  dps: 110514.6077
   tps: 80486.93212
   hps: 1036.52946
  }
@@ -681,7 +681,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 550074.99732
+  dps: 550652.66877
   tps: 540045.83454
   hps: 1201.82114
  }
@@ -689,7 +689,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 113470.69251
+  dps: 114048.36395
   tps: 103616.93151
   hps: 1201.82114
  }
@@ -697,7 +697,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 178429.30272
+  dps: 181362.10077
   tps: 128865.59349
   hps: 1507.85973
  }
@@ -705,7 +705,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 362030.4049
+  dps: 362225.98589
   tps: 356533.63522
   hps: 1036.28026
  }
@@ -713,7 +713,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 80379.88626
+  dps: 80575.46725
   tps: 74883.11657
   hps: 1036.28026
  }
@@ -721,7 +721,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-Settings-Worgen-p1.masterfrost-Basic-masterfrost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 107157.42071
+  dps: 108163.73778
   tps: 79645.40374
   hps: 1047.91902
  }
@@ -729,7 +729,7 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 109796.19329
+  dps: 110409.13383
   tps: 100246.92541
   hps: 1091.54266
  }
