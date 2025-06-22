@@ -231,6 +231,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 135774.9719
+  tps: 122579.42104
+  hps: 1251.06047
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-FleetPrimalDiamond"
  value: {
   dps: 111511.16791
@@ -255,6 +263,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 109237.56483
+  tps: 99650.69748
+  hps: 1189.68343
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 111289.50866
@@ -268,6 +284,14 @@ dps_results: {
   dps: 110720.02241
   tps: 100857.65348
   hps: 1195.71618
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 109240.63063
+  tps: 99653.76328
+  hps: 1189.68343
  }
 }
 dps_results: {
@@ -361,8 +385,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 109459.55683
-  tps: 99803.76545
+  dps: 109462.8904
+  tps: 99806.2142
   hps: 1189.68343
  }
 }
@@ -468,6 +492,22 @@ dps_results: {
   dps: 110720.02241
   tps: 100857.65348
   hps: 1182.87295
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 109941.48203
+  tps: 100342.07101
+  hps: 1251.06047
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 112878.56928
+  tps: 102924.94691
+  hps: 1189.68343
  }
 }
 dps_results: {

@@ -668,6 +668,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 90596.41448
+  tps: 67458.8038
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-FearwurmBadge-84074"
  value: {
   dps: 91850.27919
@@ -1032,6 +1039,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 98223.83265
+  tps: 72966.69204
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 94225.98786
@@ -1043,6 +1057,13 @@ dps_results: {
  value: {
   dps: 93628.1171
   tps: 69531.05586
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 90596.41448
+  tps: 67458.8038
  }
 }
 dps_results: {
@@ -2226,6 +2247,13 @@ dps_results: {
  value: {
   dps: 92552.05848
   tps: 69004.31666
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 121878.89435
+  tps: 91093.23107
  }
 }
 dps_results: {

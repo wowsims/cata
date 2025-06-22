@@ -775,6 +775,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 136660.67099
+  tps: 126328.75434
+  hps: 8205.17794
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-FearwurmBadge-84074"
  value: {
   dps: 129548.49382
@@ -1199,6 +1207,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 126037.68048
+  tps: 117061.27073
+  hps: 7235.8655
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 131017.29409
@@ -1212,6 +1228,14 @@ dps_results: {
   dps: 130170.38153
   tps: 120604.3699
   hps: 7487.10172
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 126037.68048
+  tps: 117061.27073
+  hps: 7235.8655
  }
 }
 dps_results: {
@@ -1881,9 +1905,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 153378.28992
-  tps: 141399.31377
-  hps: 9283.91358
+  dps: 154284.51878
+  tps: 142306.09279
+  hps: 9104.80592
  }
 }
 dps_results: {
@@ -2532,6 +2556,22 @@ dps_results: {
   dps: 132663.38626
   tps: 123025.0668
   hps: 7734.21441
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 127014.23824
+  tps: 117922.79928
+  hps: 7201.47148
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 133159.41177
+  tps: 123496.5288
+  hps: 7613.08709
  }
 }
 dps_results: {

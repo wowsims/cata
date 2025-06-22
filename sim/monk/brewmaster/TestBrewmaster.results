@@ -877,6 +877,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 154771.96409
+  tps: 920444.52366
+  dtps: 35053.59773
+  hps: 42591.61923
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-FearwurmBadge-84074"
  value: {
   dps: 150845.13459
@@ -1354,6 +1363,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 149705.83576
+  tps: 893610.52921
+  dtps: 35210.54356
+  hps: 41284.29174
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 150526.99405
@@ -1369,6 +1387,15 @@ dps_results: {
   tps: 891442.24546
   dtps: 34634.66197
   hps: 41579.70361
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 149579.47024
+  tps: 892767.65994
+  dtps: 34826.31556
+  hps: 41167.76404
  }
 }
 dps_results: {
@@ -2130,10 +2157,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 165168.02539
-  tps: 975206.97296
-  dtps: 32447.39295
-  hps: 43972.74249
+  dps: 165081.47041
+  tps: 974988.26337
+  dtps: 32461.91208
+  hps: 43804.08175
  }
 }
 dps_results: {
@@ -2854,6 +2881,24 @@ dps_results: {
   tps: 907778.75344
   dtps: 34765.21451
   hps: 41597.38504
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 149554.02349
+  tps: 891902.57808
+  dtps: 35513.76818
+  hps: 41283.71894
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 163746.79642
+  tps: 988839.79494
+  dtps: 26921.3896
+  hps: 42363.74008
  }
 }
 dps_results: {

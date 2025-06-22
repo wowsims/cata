@@ -185,6 +185,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 152650.07572
+  tps: 102955.26534
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-FleetPrimalDiamond"
  value: {
   dps: 137058.85913
@@ -206,6 +213,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 137039.41692
@@ -217,6 +231,13 @@ dps_results: {
  value: {
   dps: 136438.94638
   tps: 91730.90573
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
  }
 }
 dps_results: {
@@ -271,8 +292,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 137072.59424
-  tps: 92314.37954
+  dps: 137068.49099
+  tps: 92310.27628
  }
 }
 dps_results: {
@@ -315,6 +336,20 @@ dps_results: {
  value: {
   dps: 136438.94638
   tps: 91730.90573
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 151240.04312
+  tps: 102344.96171
  }
 }
 dps_results: {

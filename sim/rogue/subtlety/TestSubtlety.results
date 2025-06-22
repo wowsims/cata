@@ -185,6 +185,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 72327.97385
+  tps: 50961.82993
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-FangsoftheFather"
  value: {
   dps: 63857.68742
@@ -255,6 +262,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 73861.40092
@@ -266,6 +280,13 @@ dps_results: {
  value: {
   dps: 73563.18255
   tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
  }
 }
 dps_results: {
@@ -320,8 +341,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 102568.41036
-  tps: 72276.74461
+  dps: 102589.28555
+  tps: 72271.32172
  }
 }
 dps_results: {
@@ -392,6 +413,13 @@ dps_results: {
  value: {
   dps: 57690.11234
   tps: 40659.7039
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 72327.97385
+  tps: 50961.82993
  }
 }
 dps_results: {

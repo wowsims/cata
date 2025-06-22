@@ -164,6 +164,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 131720.94583
+  tps: 92684.11039
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-FleetPrimalDiamond"
  value: {
   dps: 136147.5554
@@ -185,6 +192,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 140924.80109
+  tps: 99205.0821
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 136165.84297
@@ -196,6 +210,13 @@ dps_results: {
  value: {
   dps: 135299.37062
   tps: 94863.66462
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 131720.94583
+  tps: 92684.11039
  }
 }
 dps_results: {
@@ -287,6 +308,13 @@ dps_results: {
  value: {
   dps: 135299.37062
   tps: 94863.66462
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 166448.32343
+  tps: 117115.32
  }
 }
 dps_results: {
