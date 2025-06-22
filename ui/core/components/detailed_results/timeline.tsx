@@ -1473,6 +1473,9 @@ const idToCategoryMap: Record<number, number> = {
 	[2458]: DEFAULT_ACTION_CATEGORY + 0.1, // Berserker Stance
 
 	// Death Knight
+	[49998]: MELEE_ACTION_CATEGORY + 0.01, // Death Strike
+	[45470]: MELEE_ACTION_CATEGORY + 0.02, // Death Strike (Heal)
+	[77535]: MELEE_ACTION_CATEGORY + 0.03, // Blood Shield
 	[51425]: MELEE_ACTION_CATEGORY + 0.05, // Obliterate
 	[55268]: MELEE_ACTION_CATEGORY + 0.1, // Frost strike
 	[49930]: MELEE_ACTION_CATEGORY + 0.15, // Blood strike

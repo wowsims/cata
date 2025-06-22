@@ -314,19 +314,19 @@ func (unit *Unit) NewRageMetrics(actionID ActionID) *ResourceMetrics {
 func (unit *Unit) NewEnergyMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeEnergy)
 }
-func (unit *Unit) NewRunicPowerMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newRunicPowerMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeRunicPower)
 }
-func (unit *Unit) NewBloodRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newBloodRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeBloodRune)
 }
-func (unit *Unit) NewFrostRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newFrostRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeFrostRune)
 }
-func (unit *Unit) NewUnholyRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newUnholyRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeUnholyRune)
 }
-func (unit *Unit) NewDeathRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newDeathRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeDeathRune)
 }
 func (unit *Unit) NewComboPointMetrics(actionID ActionID) *ResourceMetrics {

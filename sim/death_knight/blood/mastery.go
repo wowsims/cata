@@ -1,6 +1,7 @@
 package blood
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -25,8 +26,9 @@ func (bdk *BloodDeathKnight) registerMastery() {
 		Shield: core.ShieldConfig{
 			SelfOnly: true,
 			Aura: core.Aura{
-				Label:    "Blood Shield" + bdk.Label,
-				Duration: time.Second * 10,
+				Label:     "Blood Shield" + bdk.Label,
+				Duration:  time.Second * 10,
+				MaxStacks: math.MaxInt32,
 
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					shieldAmount = 0.0
@@ -37,8 +39,9 @@ func (bdk *BloodDeathKnight) registerMastery() {
 						return
 					}
 
+					shield := shieldSpell.SelfShield()
 					if currentShield <= 0 {
-						shieldSpell.SelfShield().Deactivate(sim)
+						shield.Deactivate(sim)
 						return
 					}
 
@@ -48,7 +51,9 @@ func (bdk *BloodDeathKnight) registerMastery() {
 					bdk.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
 
 					if currentShield <= 0 {
-						shieldSpell.SelfShield().Deactivate(sim)
+						shield.Deactivate(sim)
+					} else {
+						shield.SetStacks(sim, int32(currentShield))
 					}
 				},
 			},
@@ -58,7 +63,9 @@ func (bdk *BloodDeathKnight) registerMastery() {
 			if currentShield < bdk.MaxHealth() {
 				shieldAmount = min(shieldAmount, bdk.MaxHealth()-currentShield)
 				currentShield += shieldAmount
-				spell.SelfShield().Apply(sim, shieldAmount)
+				shield := spell.SelfShield()
+				shield.Apply(sim, shieldAmount)
+				shield.SetStacks(sim, int32(currentShield))
 			}
 		},
 	})
