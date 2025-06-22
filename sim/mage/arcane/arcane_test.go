@@ -46,7 +46,7 @@ var ItemFilter = core.ItemFilter{
 	},
 }
 
-var ArcaneTalents = "311121"
+var ArcaneTalents = "311122"
 var ArcaneGlyphs = &proto.Glyphs{
 	Major1: int32(proto.MageMajorGlyph_GlyphOfArcanePower),
 	Major2: int32(proto.MageMajorGlyph_GlyphOfRapidDisplacement),
