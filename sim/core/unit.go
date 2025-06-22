@@ -614,9 +614,9 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 		unit.MultiplyEnergyRegenSpeed(sim, amount)
 	}
 
-	for _, pet := range unit.RegenInheritancePets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.RegenInheritancePets, func(sim *Simulation, pet *Pet) {
 		pet.MultiplyResourceRegenSpeed(sim, amount)
-	}
+	})
 }
 
 func (unit *Unit) AddBonusRangedHitPercent(percentage float64) {
