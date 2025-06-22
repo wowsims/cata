@@ -22,7 +22,7 @@ func (prot *ProtectionPaladin) registerArdentDefender() {
 
 	ardentDefender := prot.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		SpellSchool:    core.SpellSchoolHoly,
 		ClassSpellMask: paladin.SpellMaskArdentDefender,
 

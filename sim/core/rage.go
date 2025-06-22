@@ -6,13 +6,13 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-const MaxRage = 100.0
 const ThreatPerRageGained = 5
 const BaseRageHitFactor = 1.75
 
 type rageBar struct {
 	unit *Unit
 
+	maxRage      float64
 	startingRage float64
 	currentRage  float64
 
@@ -28,6 +28,7 @@ type rageBar struct {
 type RageBarOptions struct {
 	StartingRage       float64
 	BaseRageMultiplier float64
+	MaxRage            float64
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
@@ -79,9 +80,12 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 		ActionID: ActionID{OtherID: proto.OtherAction_OtherActionRageGain},
 	})
 
+	maxRage := max(100.0, options.MaxRage)
+
 	unit.rageBar = rageBar{
 		unit:              unit,
-		startingRage:      max(0, min(options.StartingRage, MaxRage)),
+		maxRage:           maxRage,
+		startingRage:      max(0, min(options.StartingRage, maxRage)),
 		startingHitFactor: BaseRageHitFactor * options.BaseRageMultiplier,
 		RageRefundMetrics: unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
@@ -95,6 +99,10 @@ func (rb *rageBar) CurrentRage() float64 {
 	return rb.currentRage
 }
 
+func (rb *rageBar) MaximumRage() float64 {
+	return rb.maxRage
+}
+
 // Call this within the OnGain and OnExpire callbacks for Battle Stance, Raging
 // Whirlwind, etc.
 func (rb *rageBar) MultiplyAutoAttackRageGen(multiplier float64) {
@@ -106,7 +114,7 @@ func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMet
 		panic("Trying to add negative rage!")
 	}
 
-	newRage := min(rb.currentRage+amount, MaxRage)
+	newRage := min(rb.currentRage+amount, rb.maxRage)
 	metrics.AddEvent(amount, newRage-rb.currentRage)
 
 	if sim.Log != nil {

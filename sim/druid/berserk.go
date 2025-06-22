@@ -53,7 +53,7 @@ func (druid *Druid) registerBerserkCD() {
 
 	druid.Berserk = druid.RegisterSpell(Cat|Bear, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 106952},
-		Flags:    core.SpellFlagAPL,
+		Flags:    core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

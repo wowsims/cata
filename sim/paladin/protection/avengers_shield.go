@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/paladin"
 )
 
 /*
@@ -26,10 +27,11 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 	results := make([]*core.SpellResult, numTargets)
 
 	prot.AvengersShield = prot.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31935},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 31935},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: paladin.SpellMaskAvengersShield,
 
 		MaxRange:     30,
 		MissileSpeed: 35,

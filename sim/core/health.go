@@ -124,10 +124,7 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 						DoAt: sim.CurrentTime,
 						OnAction: func(s *Simulation) {
 							if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-								aura.Unit.Metrics.Died = true
-								if sim.Log != nil {
-									character.Log(sim, "Dead")
-								}
+								character.Died(sim)
 							}
 						},
 					})
@@ -144,10 +141,7 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 						DoAt: sim.CurrentTime,
 						OnAction: func(s *Simulation) {
 							if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-								aura.Unit.Metrics.Died = true
-								if sim.Log != nil {
-									character.Log(sim, "Dead")
-								}
+								character.Died(sim)
 							}
 						},
 					})
@@ -168,6 +162,14 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 
 	if healingModel.Hps != 0 {
 		character.applyHealingModel(healingModel)
+	}
+}
+
+func (character *Character) Died(sim *Simulation) {
+	aura := character.GetAura(ChanceOfDeathAuraLabel)
+	aura.Unit.Metrics.Died = true
+	if sim.Log != nil {
+		character.Log(sim, "Dead")
 	}
 }
 
@@ -193,8 +195,14 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 	absorbFrac := Clamp(healingModel.AbsorbFrac, 0, 1)
 
 	if absorbFrac > 0 {
-		absorbShield = character.NewDamageAbsorptionAura("Healing Model Absorb Shield", healingModelActionID, NeverExpires, func(_ *Unit) float64 {
-			return max(absorbShield.ShieldStrength, healPerTick*absorbFrac)
+		absorbShield = character.NewDamageAbsorptionAura(AbsorptionAuraConfig{
+			Aura: Aura{
+				Label:    "Healing Model Absorb Shield" + character.Label,
+				ActionID: healingModelActionID,
+			},
+			ShieldStrengthCalculator: func(_ *Unit) float64 {
+				return max(absorbShield.ShieldStrength, healPerTick*absorbFrac)
+			},
 		})
 	}
 

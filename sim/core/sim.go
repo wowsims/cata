@@ -43,9 +43,9 @@ type Simulation struct {
 
 	Log func(string, ...interface{})
 
-	executePhase int32 // 20, 25, or 35 for the respective execute range, 100 otherwise
+	executePhase int32 // 20, 25, 35, 45 or 90 for the respective execute range, 100 otherwise
 
-	executePhaseCallbacks []func(*Simulation, int32) // 2nd parameter is 35 for 35%, 25 for 25% and 20 for 20%
+	executePhaseCallbacks []func(*Simulation, int32) // 2nd parameter is 90 for 90%, 45 for 45%, 35 for 35%, 25 for 25% and 20 for 20%
 
 	nextExecuteDuration time.Duration
 	nextExecuteDamage   float64
@@ -513,10 +513,11 @@ func (sim *Simulation) Step() bool {
 		return true
 	}
 
+	pa.consumed = true
+
 	if pa.NextActionAt > sim.CurrentTime {
 		sim.advance(pa.NextActionAt)
 	}
-	pa.consumed = true
 
 	if pa.cancelled {
 		return false
@@ -552,7 +553,7 @@ func (sim *Simulation) advance(nextTime time.Duration) {
 	sim.CurrentTime = nextTime
 
 	// this is a loop to handle duplicate ExecuteProportions, e.g. if they're all set to 100%, you reach
-	// execute phases 35%, 25%, and 20% in the first advance() call.
+	// execute phases 90%, 45%, 35%, 25%, and 20% in the first advance() call.
 	for sim.CurrentTime >= sim.nextExecuteDuration || sim.Encounter.DamageTaken >= sim.nextExecuteDamage {
 		sim.nextExecutePhase()
 		for _, callback := range sim.executePhaseCallbacks {
@@ -590,9 +591,11 @@ func (sim *Simulation) nextExecutePhase() {
 	switch sim.executePhase {
 	case 0: // initially waiting for 90%
 		setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
-	case 100: // at 90%, waiting for 35%
-		setup(90, 0.35, sim.Encounter.ExecuteProportion_35)
-	case 90: // at 35%, waiting for 25%
+	case 100: // at 90%, waiting for 45%
+		setup(90, 0.45, sim.Encounter.ExecuteProportion_45)
+	case 90: // at 45%, waiting for 35%
+		setup(45, 0.35, sim.Encounter.ExecuteProportion_35)
+	case 45: // at 35%, waiting for 25%
 		setup(35, 0.25, sim.Encounter.ExecuteProportion_25)
 	case 35: // at 25%, waiting for 20%
 		setup(25, 0.20, sim.Encounter.ExecuteProportion_20)
@@ -639,6 +642,9 @@ func (sim *Simulation) IsExecutePhase25() bool {
 }
 func (sim *Simulation) IsExecutePhase35() bool {
 	return sim.executePhase <= 35
+}
+func (sim *Simulation) IsExecutePhase45() bool {
+	return sim.executePhase <= 45
 }
 func (sim *Simulation) IsExecutePhase90() bool {
 	return sim.executePhase > 90

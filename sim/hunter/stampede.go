@@ -10,6 +10,7 @@ func (hunter *Hunter) RegisterStampedeSpell() {
 	actionID := core.ActionID{SpellID: 121818}
 	stampedeSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
+		Flags:    core.SpellFlagReadinessTrinket,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},

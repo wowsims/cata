@@ -361,6 +361,7 @@ type AutoAttackOptions struct {
 	AutoSwingMelee  bool // If true, core engine will handle calling SwingMelee() for you.
 	AutoSwingRanged bool // If true, core engine will handle calling SwingRanged() for you.
 	ReplaceMHSwing  ReplaceMHSwing
+	ProcMask        ProcMask // If set will replace the ProcMask for any weapon spells configured.
 }
 
 func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
@@ -400,7 +401,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	unit.AutoAttacks.mh.config = SpellConfig{
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 1},
 		SpellSchool: options.MainHand.GetSpellSchool(),
-		ProcMask:    ProcMaskMeleeMHAuto,
+		ProcMask:    Ternary(options.ProcMask == ProcMaskUnknown, ProcMaskMeleeMHAuto, options.ProcMask),
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 
 		DamageMultiplier:         1,
@@ -425,7 +426,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	unit.AutoAttacks.oh.config = SpellConfig{
 		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 2},
 		SpellSchool: options.OffHand.GetSpellSchool(),
-		ProcMask:    ProcMaskMeleeOHAuto,
+		ProcMask:    Ternary(options.ProcMask == ProcMaskUnknown, ProcMaskMeleeOHAuto, options.ProcMask),
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 
 		DamageMultiplier:         1,
@@ -445,8 +446,8 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	unit.AutoAttacks.ranged.config = SpellConfig{
 		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
 		SpellSchool:  options.Ranged.GetSpellSchool(),
-		ProcMask:     ProcMaskRangedAuto,
-		Flags:        SpellFlagMeleeMetrics,
+		ProcMask:     Ternary(options.ProcMask == ProcMaskUnknown, ProcMaskRangedAuto, options.ProcMask),
+		Flags:        SpellFlagMeleeMetrics | SpellFlagRanged,
 		MissileSpeed: 40,
 
 		DamageMultiplier:         1,

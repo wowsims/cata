@@ -19,6 +19,7 @@ type SpellModConfig struct {
 	Kind              SpellModType
 	School            SpellSchool
 	ProcMask          ProcMask
+	SpellFlag         SpellFlag
 	ResourceType      proto.ResourceType
 	IntValue          int32
 	TimeValue         time.Duration
@@ -35,6 +36,7 @@ type SpellMod struct {
 	Kind           SpellModType
 	School         SpellSchool
 	ProcMask       ProcMask
+	SpellFlag      SpellFlag
 	ResourceType   proto.ResourceType
 	floatValue     float64
 	intValue       int32
@@ -91,6 +93,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		Kind:         config.Kind,
 		School:       config.School,
 		ProcMask:     config.ProcMask,
+		SpellFlag:    config.SpellFlag,
 		ResourceType: config.ResourceType,
 		floatValue:   config.FloatValue,
 		intValue:     config.IntValue,
@@ -178,6 +181,10 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.ProcMask > 0 && !mod.ProcMask.Matches(spell.ProcMask) {
+		return false
+	}
+
+	if mod.SpellFlag > 0 && !mod.SpellFlag.Matches(spell.Flags) {
 		return false
 	}
 
@@ -708,10 +715,16 @@ func removeDebuffDurationFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	if spell.SharedCD.Duration != 0 {
+		spell.SharedCD.Duration += mod.timeValue
+	}
 	spell.RelatedSelfBuff.Duration += mod.timeValue
 }
 
 func removeBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	if spell.SharedCD.Duration != 0 {
+		spell.SharedCD.Duration -= mod.timeValue
+	}
 	spell.RelatedSelfBuff.Duration -= mod.timeValue
 }
 

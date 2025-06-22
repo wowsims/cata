@@ -30,10 +30,16 @@ func (dot *Dot) OutcomeTick(_ *Simulation, result *SpellResult, _ *AttackTable) 
 	result.Outcome = OutcomeHit
 	dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 }
-func (dot *Dot) OutcomeTickPhysicalHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+func (dot *Dot) OutcomeTickPhysicalHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if dot.Spell.PhysicalHitCheck(sim, attackTable) {
-		result.Outcome = OutcomeHit
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		if dot.Spell.PhysicalCritCheck(sim, attackTable) {
+			result.Outcome = OutcomeCrit
+			result.Damage *= dot.Spell.CritDamageMultiplier()
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			result.Outcome = OutcomeHit
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
 	} else {
 		result.Outcome = OutcomeMiss
 		dot.Spell.SpellMetrics[result.Target.UnitIndex].Misses++
@@ -369,6 +375,29 @@ func (spell *Spell) outcomeMeleeSpecialHitAndCrit(sim *Simulation, result *Spell
 	}
 }
 
+func (spell *Spell) OutcomeMeleeWeaponSpecialNoParry(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	spell.outcomeMeleeWeaponSpecialNoParry(sim, result, attackTable, true)
+}
+func (spell *Spell) OutcomeMeleeWeaponSpecialNoParryNoHitCounter(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	spell.outcomeMeleeWeaponSpecialNoParry(sim, result, attackTable, false)
+}
+
+func (spell *Spell) outcomeMeleeWeaponSpecialNoParry(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
+	if spell.Unit.PseudoStats.InFrontOfTarget {
+		roll := sim.RandomFloat("White Hit Table")
+		chance := 0.0
+
+		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableBlock(sim, spell, attackTable) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
+			result.applyAttackTableHit(spell, countHits)
+		}
+	} else {
+		spell.outcomeMeleeSpecialHitAndCrit(sim, result, attackTable, countHits)
+	}
+}
+
 func (spell *Spell) OutcomeMeleeWeaponSpecialHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	spell.outcomeMeleeWeaponSpecialHitAndCrit(sim, result, attackTable, true)
 }
@@ -458,7 +487,6 @@ func (spell *Spell) OutcomeMeleeSpecialCritOnlyNoHitCounter(sim *Simulation, res
 	spell.outcomeMeleeSpecialCritOnly(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
-
 	if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 		result.applyAttackTableHit(spell, countHits)
 	}

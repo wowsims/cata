@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, RaidBuffs, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DestructionWarlock_Options as WarlockOptions,
@@ -40,9 +40,8 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DestructionTalents = {
 	name: 'Destruction',
 	data: SavedTalents.create({
-		talentsString: '221231',
-		glyphs: Glyphs.create({
-		}),
+		talentsString: '221211',
+		glyphs: Glyphs.create({}),
 	}),
 };
 

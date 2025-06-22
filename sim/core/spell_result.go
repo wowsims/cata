@@ -68,9 +68,19 @@ func (result *SpellResult) HealingString() string {
 	return fmt.Sprintf("%s for %0.3f healing", result.Outcome.String(), result.Damage)
 }
 
-func (spell *Spell) ThreatFromDamage(outcome HitOutcome, damage float64) float64 {
+func (spell *Spell) ThreatFromDamage(sim *Simulation, outcome HitOutcome, damage float64, attackTable *AttackTable) float64 {
 	if outcome.Matches(OutcomeLanded) {
-		return (damage*spell.ThreatMultiplier + spell.FlatThreatBonus) * spell.Unit.PseudoStats.ThreatMultiplier
+		threat := (damage*spell.ThreatMultiplier + spell.FlatThreatBonus) * spell.Unit.PseudoStats.ThreatMultiplier
+
+		if attackTable.ThreatDoneByCasterExtraMultiplier != nil {
+			for i := range attackTable.ThreatDoneByCasterExtraMultiplier {
+				if attackTable.ThreatDoneByCasterExtraMultiplier[i] != nil {
+					threat *= attackTable.ThreatDoneByCasterExtraMultiplier[i](sim, spell, attackTable)
+				}
+			}
+		}
+
+		return threat
 	} else {
 		return 0
 	}
@@ -172,13 +182,20 @@ func (spell *Spell) ApplyPostOutcomeDamageModifiers(sim *Simulation, result *Spe
 	result.Damage = max(0, result.Damage)
 }
 
+func (spell *Spell) ApplyPostOutcomeHealingModifiers(sim *Simulation, result *SpellResult) {
+	for i := range result.Target.DynamicHealingTakenModifiers {
+		result.Target.DynamicHealingTakenModifiers[i](sim, spell, result)
+	}
+	result.Damage = max(0, result.Damage)
+}
+
 // For spells that do no damage but still have a hit/miss check.
 func (spell *Spell) CalcOutcome(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	attackTable := spell.Unit.AttackTables[target.UnitIndex]
 	result := spell.NewResult(target)
 
 	outcomeApplier(sim, result, attackTable)
-	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+	result.Threat = spell.ThreatFromDamage(sim, result.Outcome, result.Damage, attackTable)
 	return result
 }
 
@@ -216,7 +233,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.SpellPower(), baseDamage, afterAttackMods, afterArmor, afterTargetMods, afterOutcome, afterPostOutcome)
 	}
 
-	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+	result.Threat = spell.ThreatFromDamage(sim, result.Outcome, result.Damage, attackTable)
 
 	return result
 }
@@ -363,6 +380,7 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 		result.Damage *= casterMultiplier
 		result.Damage = spell.applyTargetHealingModifiers(result.Damage, attackTable)
 		outcomeApplier(sim, result, attackTable)
+		spell.ApplyPostOutcomeHealingModifiers(sim, result)
 	} else {
 		result.Damage *= casterMultiplier
 		afterCasterMods := result.Damage
@@ -371,13 +389,16 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 		outcomeApplier(sim, result, attackTable)
 		afterOutcome := result.Damage
 
+		spell.ApplyPostOutcomeHealingModifiers(sim, result)
+		afterPostOutcome := result.Damage
+
 		spell.Unit.Log(
 			sim,
-			"%s %s [DEBUG] HealingPower: %0.01f, BaseHealing:%0.01f, AfterCasterMods:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f",
-			target.LogLabel(), spell.ActionID, spell.HealingPower(target), baseHealing, afterCasterMods, afterTargetMods, afterOutcome)
+			"%s %s [DEBUG] HealingPower: %0.01f, BaseHealing:%0.01f, AfterCasterMods:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
+			target.LogLabel(), spell.ActionID, spell.HealingPower(target), baseHealing, afterCasterMods, afterTargetMods, afterOutcome, afterPostOutcome)
 	}
 
-	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
+	result.Threat = spell.ThreatFromDamage(sim, result.Outcome, result.Damage, attackTable)
 
 	return result
 }

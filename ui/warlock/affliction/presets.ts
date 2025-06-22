@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, RaidBuffs, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	AfflictionWarlock_Options as WarlockOptions,
@@ -29,9 +29,9 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatIntellect]: 1.26,
 		[Stat.StatSpellPower]: 1.0,
 		[Stat.StatHitRating]: 0.93,
-		[Stat.StatCritRating]: 0.52,
+		[Stat.StatCritRating]: 0.38,
 		[Stat.StatHasteRating]: 0.58,
-		[Stat.StatMasteryRating]: 0.38,
+		[Stat.StatMasteryRating]: 0.8,
 	}),
 );
 
@@ -43,6 +43,7 @@ export const AfflictionTalents = {
 	data: SavedTalents.create({
 		talentsString: '231211',
 		glyphs: Glyphs.create({
+			major1: MajorGlyph.GlyphOfUnstableAffliction,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),
 	}),

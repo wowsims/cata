@@ -289,6 +289,8 @@ export class ActionId {
 			case 'Minor Speed':
 				name = 'Minor Run Speed (8%)';
 				break;
+			case 'Arcane Missiles':
+				break;
 			case 'Arcane Blast':
 				if (tag == 1) {
 					name += ' (No Stacks)';
@@ -309,6 +311,7 @@ export class ActionId {
 			case 'Combustion':
 				if (tag) name += ' (DoT)';
 				break;
+			case 'Frost Bomb':
 			case 'Living Bomb':
 				if (tag == 1) name += ' (DoT)';
 				else if (tag == 2) name += ' (Explosion)';
@@ -392,11 +395,12 @@ export class ActionId {
 				break;
 			case 'Shadow Blades':
 				if (tag == 1) {
-					name = 'Shadow Blade'
+					name = 'Shadow Blade';
 				} else if (tag == 2) {
-					name = 'Shadow Blade Off-hand'
+					name = 'Shadow Blade Off-hand';
 				}
 				break;
+			case 'Bladestorm':
 			case 'Killing Spree':
 				if (tag == 1) {
 					name += ' (Main Hand)';
@@ -422,7 +426,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (Hit)';
 				} else {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Wind Lash':
@@ -569,22 +573,25 @@ export class ActionId {
 					name += ' (Off-target)';
 				}
 				break;
-			case 'Rune Strike':
-				if (tag == 0) {
-					name += ' (Queue)';
-				} else if (tag == 1) {
+			case 'Raging Blow':
+				if (tag == 2) {
 					name += ' (Main Hand)';
-				} else if (tag == 2) {
+				} else if (tag == 3) {
 					name += ' (Off Hand)';
 				}
 				break;
-			case 'Raging Blow':
+			case 'Soul Reaper':
+				if (tag === 0) {
+					name += ' (Tick)';
+				}
+				break;
 			case 'Whirlwind':
-			case 'Slam':
+			case 'Storm Bolt':
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':
 			case 'Obliterate':
+			case 'Rune of Razorice':
 			case 'Blood-Caked Strike':
 			case 'Festering Strike':
 			case 'Razor Frost':
@@ -596,10 +603,6 @@ export class ActionId {
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
 				}
-				// Warrior - T12 4P proc
-				if (baseName === 'Raging Blow' && tag === 3) {
-					name = 'Fiery attack';
-				}
 				// Death Knight - T12 4P proc
 				if (baseName === 'Obliterate' && tag === 3) {
 					name = 'Flaming Torment (T12 4P)';
@@ -610,7 +613,7 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
-				} else if (tag == 3) {
+				} else if (this.spellId === 45470) {
 					name += ' (Heal)';
 				}
 				break;
@@ -653,7 +656,7 @@ export class ActionId {
 				if (tag == 1) {
 					name += ' (No Orb)';
 				}
-			case 'Improved Steady Shot':
+			case 'Steady Focus':
 				if (tag == 2) {
 					name += ' (pre)';
 				}
@@ -687,6 +690,11 @@ export class ActionId {
 			case 'Mortal Strike':
 				if (tag === 3) {
 					name = 'Fiery attack (T12 4P)';
+				}
+				break;
+			case 'Slam':
+				if (tag == 1) {
+					name += ' (Sweeping Strikes)';
 				}
 				break;
 			// Hunter - T12 2P proc
@@ -1168,13 +1176,16 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 144580 }), { itemId: 99126 }], // Plate of Winged Triumph (2pc bonus)
 	[JSON.stringify({ spellId: 144566 }), { itemId: 99126 }], // Plate of Winged Triumph (4pc bonus)
 	[JSON.stringify({ spellId: 13889 }), { spellId: 109709 }], // Minor Run Speed
+	[JSON.stringify({ spellId: 65658 }), { spellId: 48721 }], // Blood Boil RP regen
 ]);
 
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 47897, tag: 1 }), { spellId: 47960 }], // Shadowflame Dot
-	[JSON.stringify({ spellId: 55090, tag: 1 }), { spellId: 70890 }], // Shadowflame Dot
+	[JSON.stringify({ spellId: 55090, tag: 2 }), { spellId: 70890 }], // Death Knight - Scourge Strike (Shadow)
+	[JSON.stringify({ spellId: 114867, tag: 1 }), { spellId: 114866 }], // Death Knight - Soul Reaper (Blood)
+	[JSON.stringify({ spellId: 114867, tag: 2 }), { spellId: 130735 }], // Death Knight - Soul Reaper (Frost)
+	[JSON.stringify({ spellId: 114867, tag: 3 }), { spellId: 130736 }], // Death Knight - Soul Reaper (Unholy)
 	[JSON.stringify({ spellId: 12294, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Mortal Strike
-	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Raging Blow
 	[JSON.stringify({ spellId: 23922, tag: 3 }), { spellId: 99240 }], // Warrior - T12 2P Combust - Shield Slam
 	[JSON.stringify({ spellId: 77767, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Cobra shot
 	[JSON.stringify({ spellId: 56641, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Steady shot
@@ -1189,24 +1200,25 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 121471, tag: 1 }), { spellId: 121473 }], // Rogue - Shadow Blade
 
 	// Off-Hand attacks
-	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand
-	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 49998 }], // Death Knight - Death Strike Off-Hand
-	[JSON.stringify({ spellId: 85948, tag: 2 }), { spellId: 86061 }], // Death Knight - Festering Strike Off-Hand
+	[JSON.stringify({ spellId: 49998, tag: 2 }), { spellId: 66188 }], // Death Knight - Death Strike Off-Hand
 	[JSON.stringify({ spellId: 49143, tag: 2 }), { spellId: 66196 }], // Death Knight - Frost Strike Off-Hand
 	[JSON.stringify({ spellId: 49020, tag: 2 }), { spellId: 66198 }], // Death Knight - Obliterate Off-Hand
 	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 66216 }], // Death Knight - Plague Strike Off-Hand
-	[JSON.stringify({ spellId: 56815, tag: 2 }), { spellId: 66217 }], // Death Knight - Rune Strike Off-Hand
 	[JSON.stringify({ spellId: 1329, tag: 2 }), { spellId: 27576 }], // Rogue - Mutilate Off-Hand
 	[JSON.stringify({ spellId: 121471, tag: 2 }), { spellId: 121474 }], // Rogue - Shadow Blade Off-Hand
 	[JSON.stringify({ spellId: 17364, tag: 2 }), { spellId: 32176 }], // Shaman - Stormstrike Off-Hand
-	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
-	[JSON.stringify({ spellId: 1464, tag: 2 }), { spellId: 97992 }], // Warrior - Slam Off-Hand
+	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 96103 }], // Warrior - Raging Blow Main-Hand
+	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
 	[JSON.stringify({ spellId: 1680, tag: 2 }), { spellId: 44949 }], // Warrior - Whirlwind Off-Hand
+	[JSON.stringify({ spellId: 107570, tag: 2 }), { spellId: 145585 }], // Warrior - Storm Bolt Off-Hand
 
 	// Monk - Zen Sphere
 	[JSON.stringify({ spellId: 124081, tag: 3 }), { spellId: 124098 }],
 	[JSON.stringify({ spellId: 124081, tag: 4 }), { spellId: 124101 }],
 	[JSON.stringify({ spellId: 124081, tag: 5 }), { spellId: 125033 }],
+
+	// Mage - Living Bomb
+	[JSON.stringify({ spellId: 44457, tag: 2 }), { spellId: 44461 }], // Living Bomb Explosion
 
 	// Warlock - Immolation Aura
 	[JSON.stringify({ spellId: 104025, tag: 2 }), { spellId: 129476 }],
@@ -1218,7 +1230,9 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Ancient Guardian': ActionId.fromSpellId(86698),
 	'Army of the Dead': ActionId.fromSpellId(42650),
 	Bloodworm: ActionId.fromSpellId(50452),
+	'Fallen Zandalari': ActionId.fromSpellId(138342),
 	'Flame Orb': ActionId.fromSpellId(82731),
+	'Frozen Orb': ActionId.fromSpellId(84721),
 	Gargoyle: ActionId.fromSpellId(49206),
 	Ghoul: ActionId.fromSpellId(46584),
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),
@@ -1278,6 +1292,7 @@ const petNameToIcon: Record<string, string> = {
 	Crocolisk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_crocolisk.jpg',
 	Devilsaur: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_devilsaur.jpg',
 	Dragonhawk: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_dragonhawk.jpg',
+	'Fallen Zandalari': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_animatedead.jpg',
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',

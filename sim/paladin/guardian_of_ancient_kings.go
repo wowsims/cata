@@ -56,7 +56,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) {
 
 	spell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
 
 		Cast: core.CastConfig{
@@ -106,7 +106,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) {
 
 	spell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
 
 		Cast: core.CastConfig{
@@ -178,7 +178,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) {
 		ActionID:    core.ActionID{SpellID: 86704},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagReadinessTrinket,
 
 		MaxRange: 10,
 

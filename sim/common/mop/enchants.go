@@ -56,6 +56,10 @@ func init() {
 				aura.Activate(sim)
 			},
 		})
+
+		for _, aura := range auras {
+			character.AddStatProcBuff(4441, aura, true, core.AllWeaponSlots())
+		}
 	})
 
 	// Permanently enchants a melee weapon to sometimes increase your Intellect by 0 when healing or dealing
@@ -101,6 +105,8 @@ func init() {
 					}
 				},
 			})
+
+			character.AddStatProcBuff(4442, intellect, true, core.AllWeaponSlots())
 		})
 	}
 
@@ -117,6 +123,7 @@ func init() {
 
 			createDancingSteelAuras := func(tag int32) map[stats.Stat]*core.StatBuffAura {
 				labelSuffix := core.Ternary(tag == 1, " Main Hand", " (Off Hand)")
+				slot := core.Ternary(tag == 1, proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand)
 				auras := make(map[stats.Stat]*core.StatBuffAura, 2)
 				auras[stats.Agility] = character.NewTemporaryStatsAura(
 					name+" - Agility"+labelSuffix,
@@ -130,6 +137,10 @@ func init() {
 					stats.Stats{stats.Strength: 1650},
 					duration,
 				)
+				for _, aura := range auras {
+					character.AddStatProcBuff(effectId, aura, true, []proto.ItemSlot{slot})
+					character.AddStatProcBuff(effectId, aura, true, []proto.ItemSlot{slot})
+				}
 				return auras
 			}
 
@@ -154,6 +165,7 @@ func init() {
 					core.Ternary(spell.IsOH(), ohAuras, mhAuras)[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility})].Activate(sim)
 				},
 			})
+
 		})
 	}
 
@@ -161,18 +173,20 @@ func init() {
 	newDancingSteelEnchant("Bloddy Dancing Steel", 5125, 142531, 142530, 142530)
 
 	// Permanently enchants a melee weapon to make your damaging melee strikes sometimes activate a Mogu protection
-	// spell, absorbing up to 0 damage.
+	// spell, absorbing up to 8000 damage.
 	core.NewEnchantEffect(4445, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
 
-		shield := character.NewDamageAbsorptionAura(
-			"Colossus",
-			core.ActionID{SpellID: 116631},
-			time.Second*10,
-			func(_ *core.Unit) float64 {
+		shield := character.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+			Aura: core.Aura{
+				Label:    "Colossus" + character.Label,
+				ActionID: core.ActionID{SpellID: 116631},
+				Duration: time.Second * 10,
+			},
+			ShieldStrengthCalculator: func(_ *core.Unit) float64 {
 				return 8000
 			},
-		)
+		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Enchant Weapon - Colossus",

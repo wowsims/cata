@@ -25,7 +25,14 @@ func TestBrewmaster(t *testing.T) {
 			core.GetGearSet("../../../ui/monk/brewmaster/gear_sets", "p1_prebis_rich"),
 			core.GetGearSet("../../../ui/monk/brewmaster/gear_sets", "p1_prebis_poor"),
 		},
-		Talents:     BrewmasterTalents,
+		Talents: BrewmasterDefaultTalents,
+		OtherTalentSets: []core.TalentsCombo{
+			{
+				Label:   "Dungeon",
+				Talents: BrewmasterDungeonTalents,
+				Glyphs:  BrewmasterDefaultGlyphs,
+			},
+		},
 		Glyphs:      BrewmasterDefaultGlyphs,
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBrewmaster},
@@ -38,11 +45,12 @@ func TestBrewmaster(t *testing.T) {
 	}))
 }
 
-var BrewmasterTalents = "123321"
+var BrewmasterDefaultTalents = "213322"
+var BrewmasterDungeonTalents = "213321"
 var BrewmasterDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.MonkMajorGlyph_GlyphOfSpinningCraneKick),
-	Major2: int32(proto.MonkMajorGlyph_GlyphOfFistsOfFury),
-	Minor1: int32(proto.MonkMinorGlyph_GlyphOfBlackoutKick),
+	Major1: int32(proto.MonkMajorGlyph_GlyphOfFortifyingBrew),
+	Major2: int32(proto.MonkMajorGlyph_GlyphOfEnduringHealingSphere),
+	Major3: int32(proto.MonkMajorGlyph_GlyphOfFortuitousSpheres),
 }
 
 var PlayerOptionsBrewmaster = &proto.Player_BrewmasterMonk{

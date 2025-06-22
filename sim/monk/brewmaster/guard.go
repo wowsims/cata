@@ -30,25 +30,29 @@ func (bm *BrewmasterMonk) registerGuard() {
 		spellSchool ^= core.SpellSchoolPhysical
 	}
 
-	aura := bm.NewDamageAbsorptionAuraForSchool(
-		"Guard Absorb",
-		actionID.WithTag(1),
-		30*time.Second,
-		spellSchool,
-		func(_ *core.Unit) float64 {
+	aura := bm.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
+		Aura: core.Aura{
+			Label:    "Guard Absorb" + bm.Label,
+			ActionID: actionID.WithTag(1),
+			Duration: time.Second * 30,
+		},
+		ShouldApplyToResult: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) bool {
+			return spell.SpellSchool.Matches(spellSchool)
+		},
+		ShieldStrengthCalculator: func(_ *core.Unit) float64 {
 			return (bm.GetStat(stats.AttackPower)*1.971+bm.CalcScalingSpellDmg(13))*
 				1 +
 				core.TernaryFloat64(hasGlyph, 0.1, 0) +
 				core.TernaryFloat64(bm.PowerGuardAura.IsActive(), 0.15, 0) +
 				core.TernaryFloat64(bm.T14Brewmaster4P != nil && bm.T14Brewmaster4P.IsActive(), 0.2, 0)
 		},
-	)
+	})
 
 	aura.Aura.AttachMultiplicativePseudoStatBuff(&bm.PseudoStats.HealingTakenMultiplier, 1.3)
 
 	bm.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          monk.SpellFlagSpender | core.SpellFlagAPL,
+		Flags:          monk.SpellFlagSpender | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: monk.MonkSpellGuard,
 
 		Cast: core.CastConfig{

@@ -30,7 +30,6 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	ret := &RetributionPaladin{
 		Paladin: paladin.NewPaladin(character, options.TalentsString, retOptions.Options.ClassOptions),
 	}
-	ret.StartingHolyPower = retOptions.Options.StartingHolyPower
 
 	return ret
 }

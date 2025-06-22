@@ -17,8 +17,7 @@ type Paladin struct {
 	// Used for CS/HotR
 	sharedBuilderTimer *core.Timer
 
-	CurrentSeal       *core.Aura
-	StartingHolyPower int32
+	CurrentSeal *core.Aura
 
 	// Pets
 	AncientGuardian *AncientGuardianPet
@@ -144,7 +143,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 		DefaultSecondaryResourceBarImpl: paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
 			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
 			Max:     5,
-			Default: paladin.StartingHolyPower,
+			Default: options.StartingHolyPower,
 		}),
 		paladin: paladin,
 	}

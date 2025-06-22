@@ -7,13 +7,16 @@ import (
 	"github.com/wowsims/mop/sim/warrior"
 )
 
-func (war *ProtectionWarrior) RegisterShieldSlam() {
-	war.shieldSlam = war.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 23922},
+func (war *ProtectionWarrior) registerShieldSlam() {
+	actionID := core.ActionID{SpellID: 23922}
+	rageMetrics := war.NewRageMetrics(actionID)
+
+	war.ShieldSlam = war.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO: Is this right?
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskShieldSlam | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskShieldSlam,
 		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{
@@ -30,22 +33,18 @@ func (war *ProtectionWarrior) RegisterShieldSlam() {
 				Duration: time.Second * 6,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return war.PseudoStats.CanBlock
-		},
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 1,
 		CritMultiplier:   war.DefaultCritMultiplier(),
-		ThreatMultiplier: 1.3,
-		FlatThreatBonus:  770,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Reimplement using scaling coefficients and variance once those stats are available
-			baseDamage := sim.Roll(1871.65, 1967.63) + spell.MeleeAttackPower()*0.6
+			baseDamage := war.CalcAndRollDamageRange(sim, 11.25, 0.05000000075) + spell.MeleeAttackPower()*1.5
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			additionalRage := core.TernaryFloat64(war.SwordAndBoardAura.IsActive(), 5, 0)
 
-			if !result.Landed() {
-				spell.IssueRefund(sim)
+			if result.Landed() {
+				war.AddRage(sim, (20+additionalRage)*war.GetRageMultiplier(target), rageMetrics)
 			}
 		},
 	})

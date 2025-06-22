@@ -29,7 +29,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 
 	prot := &ProtectionPaladin{
 		Paladin: paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
-		Options: protOptions.Options,
 	}
 
 	return prot
@@ -37,8 +36,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 
 type ProtectionPaladin struct {
 	*paladin.Paladin
-
-	Options *proto.ProtectionPaladin_Options
 
 	DamageTakenLastGlobal float64
 }
@@ -69,7 +66,7 @@ func (prot *ProtectionPaladin) Initialize() {
 	prot.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  paladin.SpellMaskSealOfTruth | paladin.SpellMaskCensure,
-		FloatValue: 0.2,
+		FloatValue: -0.8,
 	})
 
 	prot.trackDamageTakenLastGlobal()

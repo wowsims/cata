@@ -24,7 +24,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagSealFate,
-		ClassSpellMask: rogue.RogueSpellMutilate,
+		ClassSpellMask: rogue.RogueSpellMutilateHit,
 
 		DamageMultiplier:         mutWeaponPercent,
 		DamageMultiplierAdditive: 1,

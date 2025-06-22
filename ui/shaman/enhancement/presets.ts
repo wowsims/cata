@@ -12,7 +12,7 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1OrcGear from './gear_sets/p1.orc.gear.json';
+import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -21,12 +21,12 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 
-export const P1_ORC_PRESET = PresetUtils.makePresetGear('P1 - Orc', P1OrcGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
@@ -54,7 +54,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '313232',
+		talentsString: '313233',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
@@ -91,14 +91,16 @@ export const DefaultConsumables = ConsumesSpec.create({
 	prepotId: 76089, // Virmen's Bite
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({});
+export const DefaultRaidBuffs = RaidBuffs.create({
+	blessingOfKings: true,
+	leaderOfThePack: true,
+	trueshotAura: true,
+	bloodlust: true,
+	elementalOath: true,
+});
 
 export const DefaultDebuffs = Debuffs.create({
-	// bloodFrenzy: true,
-	// faerieFire: true,
-	// ebonPlaguebringer: true,
-	// mangle: true,
-	// criticalMass: true,
-	// demoralizingShout: true,
-	// frostFever: true,
+	physicalVulnerability: true,
+	weakenedArmor: true,
+	masterPoisoner: true,
 });
