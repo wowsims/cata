@@ -30,19 +30,19 @@ func (moonkin *BalanceDruid) registerIncarnation() {
 		Label:    "Incarnation: Chosen of Elune",
 		ActionID: actionID,
 		Duration: time.Second * 30,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(_ *core.Aura, _ *core.Simulation) {
 			// Only apply the damage bonus when in Eclipse
-			if moonkin.HasEclipseBar() && moonkin.IsInEclipse() {
+			if moonkin.IsInEclipse() {
 				incarnationSpellMod.Activate()
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 			incarnationSpellMod.Deactivate()
 		},
 	})
 
 	// Add Eclipse callback to apply/remove damage bonus when entering/exiting Eclipse
-	moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+	moonkin.AddEclipseCallback(func(_ Eclipse, gained bool, _ *core.Simulation) {
 		if incarnationAura.IsActive() {
 			if gained {
 				incarnationSpellMod.Activate()
@@ -66,7 +66,7 @@ func (moonkin *BalanceDruid) registerIncarnation() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			incarnationAura.Activate(sim)
 		},
 	})
@@ -92,7 +92,7 @@ func (moonkin *BalanceDruid) registerDreamOfCenarius() {
 		Name:           "Dream of Cenarius Trigger",
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: druid.DruidSpellHealingTouch,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 			moonkin.DreamOfCenarius.Activate(sim)
 		},
 	})
@@ -114,7 +114,7 @@ func (moonkin *BalanceDruid) registerSoulOfTheForest() {
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: druid.DruidSpellWrath | druid.DruidSpellStarfire | druid.DruidSpellStarsurge,
 		ProcChance:     0.08,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 			moonkin.AstralInsight.Activate(sim)
 		},
 	})

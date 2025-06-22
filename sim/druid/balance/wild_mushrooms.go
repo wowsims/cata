@@ -51,10 +51,10 @@ func (moonkin *BalanceDruid) registerWildMushrooms() {
 		ClassSpellMask:   druid.DruidSpellWildMushroomDetonate,
 		CritMultiplier:   moonkin.DefaultCritMultiplier(),
 		BonusCoefficient: WildMushroomsBonusCoeff,
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := moonkin.CalcAndRollDamageRange(sim, WildMushroomsCoeff, WildMushroomsVariance)
 
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				damage := moonkin.CalcAndRollDamageRange(sim, WildMushroomsCoeff, WildMushroomsVariance)
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

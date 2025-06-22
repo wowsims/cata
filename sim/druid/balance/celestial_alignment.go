@@ -14,21 +14,21 @@ func (moonkin *BalanceDruid) registerCelestialAlignmentSpell() {
 		Label:    "Celestial Alignment",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			moonkin.SuspendEclipseBar()
 
 			// Activate both eclipse damage bonuses
 			moonkin.ActivateEclipse(LunarEclipse, sim)
 			moonkin.ActivateEclipse(SolarEclipse, sim)
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 			moonkin.DeactivateEclipse(LunarEclipse, sim)
 			moonkin.DeactivateEclipse(SolarEclipse, sim)
 
 			// Restore previous eclipse gain mask
 			moonkin.RestoreEclipseBar()
 		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+		OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask == druid.DruidSpellMoonfire {
 				moonkin.Sunfire.Dot(spell.Unit.CurrentTarget).Apply(sim)
 			}
@@ -54,7 +54,7 @@ func (moonkin *BalanceDruid) registerCelestialAlignmentSpell() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			celestialAlignmentAura.Activate(sim)
 		},
 	})

@@ -41,14 +41,17 @@ func (moonkin *BalanceDruid) registerStarfallSpell() {
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellProc,
 		Flags:       core.SpellFlagAPL,
+
 		RelatedSelfBuff: moonkin.GetOrRegisterAura(core.Aura{
 			Label:    "Starfall",
 			ActionID: core.ActionID{SpellID: 48505},
 			Duration: time.Second * 10,
 		}),
+
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 32.6,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -58,18 +61,21 @@ func (moonkin *BalanceDruid) registerStarfallSpell() {
 				Duration: time.Second * 90,
 			},
 		},
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Starfall",
 			},
 			NumberOfTicks: numberOfTicks,
 			TickLength:    tickLength,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+			OnTick: func(sim *core.Simulation, target *core.Unit, _ *core.Dot) {
 				starfallTickSpell.Cast(sim, target)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.RelatedSelfBuff.Activate(sim)
+
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
@@ -77,11 +83,9 @@ func (moonkin *BalanceDruid) registerStarfallSpell() {
 		},
 	})
 
-	if moonkin.HasEclipseBar() {
-		moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
-			if gained && eclipse == LunarEclipse {
-				moonkin.Starfall.CD.Reset()
-			}
-		})
-	}
+	moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, _ *core.Simulation) {
+		if gained && eclipse == LunarEclipse {
+			moonkin.Starfall.CD.Reset()
+		}
+	})
 }

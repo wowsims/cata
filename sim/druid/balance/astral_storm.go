@@ -25,7 +25,7 @@ func (moonkin *BalanceDruid) registerAstralStormSpell() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: AstralStormBonusCoeff,
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			damage := moonkin.CalcScalingSpellDmg(AstralStormCoeff)
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -57,7 +57,7 @@ func (moonkin *BalanceDruid) registerAstralStormSpell() {
 			NumberOfTicks:       10,
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+			OnTick: func(sim *core.Simulation, target *core.Unit, _ *core.Dot) {
 				moonkin.AstralStormTickSpell.Cast(sim, target)
 			},
 		},

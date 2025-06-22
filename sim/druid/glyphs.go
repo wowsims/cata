@@ -15,7 +15,7 @@ func (druid *Druid) ApplyGlyphs() {
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.Matches(DruidSpellHealingTouch) && !druid.NaturesSwiftness.CD.IsReady(sim) {
 					*druid.NaturesSwiftness.CD.Timer = core.Timer(time.Duration(*druid.NaturesSwiftness.CD.Timer) - time.Second*3)
 					druid.UpdateMajorCooldowns()

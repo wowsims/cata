@@ -68,6 +68,7 @@ type BalanceDruid struct {
 
 	AstralInsight   *core.Aura // Soul of the Forest
 	DreamOfCenarius *core.Aura
+	NaturesGrace    *core.Aura
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {

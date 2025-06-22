@@ -14,8 +14,6 @@ const (
 )
 
 func (moonkin *BalanceDruid) registerStarsurgeSpell() {
-	//druid.SetSpellEclipseEnergy(DruidSpellStarsurge, StarsurgeBaseEnergyGain, StarsurgeBaseEnergyGain)
-
 	moonkin.Starsurge = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 78674},
 		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
@@ -27,6 +25,7 @@ func (moonkin *BalanceDruid) registerStarsurgeSpell() {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           moonkin.DefaultCritMultiplier(),
+
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 15.5,
 		},

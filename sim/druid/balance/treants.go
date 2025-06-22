@@ -28,7 +28,6 @@ func (moonkin *BalanceDruid) newTreant() *BalanceTreant {
 
 				return stats.Stats{
 					stats.Health:           0.4 * ownerStats[stats.Health],
-					stats.Armor:            4 * ownerStats[stats.Armor],
 					stats.HitRating:        combinedHitExp,
 					stats.ExpertiseRating:  combinedHitExp,
 					stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
@@ -90,15 +89,9 @@ func (treant *BalanceTreant) Initialize() {
 	treant.registerWrathSpell()
 }
 
-func (treant *BalanceTreant) Enable(sim *core.Simulation) {
-	treant.DefaultTreantImpl.Enable(sim)
-}
-
 func (treant *BalanceTreant) ExecuteCustomRotation(sim *core.Simulation) {
 	if treant.Wrath.CanCast(sim, treant.CurrentTarget) {
 		treant.Wrath.Cast(sim, treant.CurrentTarget)
-		treant.WaitUntil(sim, treant.NextGCDAt())
-
 		return
 	}
 }

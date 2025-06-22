@@ -8,10 +8,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const (
-	SpellFlagOmenTrigger = core.SpellFlagAgentReserved1
-)
-
 type Druid struct {
 	core.Character
 	SelfBuffs
@@ -42,7 +38,6 @@ type Druid struct {
 	HealingTouch          *DruidSpell
 	Hurricane             *DruidSpell
 	HurricaneTickSpell    *DruidSpell
-	GiftOfTheWild         *DruidSpell
 	Lacerate              *DruidSpell
 	MangleBear            *DruidSpell
 	MangleCat             *DruidSpell
@@ -82,13 +77,9 @@ type Druid struct {
 	FrenziedRegenerationAura *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	MightOfUrsocAura         *core.Aura
-	NaturesGraceProcAura     *core.Aura
 	OwlkinFrenzyAura         *core.Aura
 	ProwlAura                *core.Aura
-	SolarEclipseProcAura     *core.Aura
 	SurvivalInstinctsAura    *core.Aura
-
-	NaturesGrace *core.Aura
 
 	SavageRoarDurationTable [6]time.Duration
 
@@ -140,15 +131,16 @@ const (
 	DruidSpellWildGrowth
 
 	DruidSpellLast
-	DruidSpellsAll      = DruidSpellLast<<1 - 1
-	DruidSpellDoT       = DruidSpellMoonfireDoT | DruidSpellSunfireDoT
-	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
-	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
-	DruidSpellMangle    = DruidSpellMangleBear | DruidSpellMangleCat
-	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellWrath | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellHurricane
-	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
-	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
+	DruidSpellsAll               = DruidSpellLast<<1 - 1
+	DruidSpellDoT                = DruidSpellMoonfireDoT | DruidSpellSunfireDoT
+	DruidSpellHoT                = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
+	DruidSpellInstant            = DruidSpellBarkskin | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidSpellMangle             = DruidSpellMangleBear | DruidSpellMangleCat
+	DruidArcaneSpells            = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
+	DruidNatureSpells            = DruidSpellWrath | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellHurricane
+	DruidHealingNonInstantSpells = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellNourish
+	DruidHealingSpells           = DruidHealingNonInstantSpells | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellSwiftmend
+	DruidDamagingSpells          = DruidArcaneSpells | DruidNatureSpells
 )
 
 type SelfBuffs struct {
@@ -230,10 +222,6 @@ func (druid *Druid) Initialize() {
 	})
 
 	druid.RegisterBaselineSpells()
-	druid.registerFaerieFireSpell()
-	// druid.registerRebirthSpell()
-	// druid.registerInnervateCD()
-	druid.registerTranquilityCD()
 
 	druid.ApplyGlyphs()
 }
@@ -244,6 +232,11 @@ func (druid *Druid) RegisterBaselineSpells() {
 	druid.registerHealingTouchSpell()
 	druid.registerHurricaneSpell()
 	druid.registerNaturesSwiftness()
+	druid.registerFaerieFireSpell()
+	druid.registerTranquilityCD()
+
+	// druid.registerRebirthSpell()
+	// druid.registerInnervateCD()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {

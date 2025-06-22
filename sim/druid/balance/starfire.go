@@ -14,8 +14,6 @@ const (
 )
 
 func (moonkin *BalanceDruid) registerStarfireSpell() {
-	//druid.SetSpellEclipseEnergy(moonkin.Starfire, moonkin.StarfireBaseEnergyGain, moonkin.StarfireBaseEnergyGain)
-
 	moonkin.Starfire = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 2912},
 		SpellSchool:    core.SpellSchoolArcane,
@@ -44,9 +42,7 @@ func (moonkin *BalanceDruid) registerStarfireSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := moonkin.CalcAndRollDamageRange(sim, StarfireCoeff, StarfireVariance)
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

@@ -8,15 +8,15 @@ import (
 var ItemSetRegaliaOfTheEternalBloosom = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Eternal Blossom",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(agent core.Agent, setBonusAura *core.Aura) {
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			// Your Starfall deals 20% additional damage.
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  DruidSpellStarfall,
-				FloatValue: 0.1,
+				FloatValue: 0.2,
 			})
 		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
 			// Increases the duration of your Moonfire and Sunfire spells by 2 sec.
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_DotNumberOfTicks_Flat,
@@ -31,7 +31,7 @@ var ItemSetRegaliaOfTheEternalBloosom = core.NewItemSet(core.ItemSet{
 var ItemSetRegaliaOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Haunted Forest",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(agent core.Agent, setBonusAura *core.Aura) {
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			// Increases the critical strike chance of Starsurge by 10%.
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,

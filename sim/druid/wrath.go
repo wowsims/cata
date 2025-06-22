@@ -13,8 +13,6 @@ const (
 )
 
 func (druid *Druid) registerWrathSpell() {
-	//druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
-
 	druid.Wrath = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5176},
 		SpellSchool:    core.SpellSchoolNature,

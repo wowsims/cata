@@ -42,11 +42,11 @@ func (moonkin *BalanceDruid) registerMoonkinForm() {
 }
 
 func (moonkin *BalanceDruid) registerShootingStars() {
-	ssCastTimeMod := moonkin.AddDynamicMod(core.SpellModConfig{
+	castTimeModConfig := core.SpellModConfig{
 		ClassMask:  druid.DruidSpellStarsurge,
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1,
-	})
+	}
 
 	ssAura := moonkin.RegisterAura(core.Aura{
 		Label:    "Shooting Stars" + moonkin.Label,
@@ -57,17 +57,12 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 				return
 			}
 
-			ssCastTimeMod.Deactivate()
 			aura.Deactivate(sim)
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			ssCastTimeMod.Activate()
+		OnGain: func(_ *core.Aura, _ *core.Simulation) {
 			moonkin.Starsurge.CD.Reset()
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			ssCastTimeMod.Deactivate()
-		},
-	})
+	}).AttachSpellMod(castTimeModConfig)
 
 	core.MakeProcTriggerAura(&moonkin.Unit, core.ProcTrigger{
 		Name:           "Shooting Stars Trigger" + moonkin.Label,
@@ -111,21 +106,19 @@ func (moonkin *BalanceDruid) registerNaturesGrace() {
 		Label:    "Nature's Grace",
 		ActionID: core.ActionID{SpellID: 16886},
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(_ *core.Aura, _ *core.Simulation) {
 			moonkin.MultiplyCastSpeed(1.15)
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 			moonkin.MultiplyCastSpeed(1 / 1.15)
 		},
 	})
 
-	if moonkin.HasEclipseBar() {
-		moonkin.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
-			if gained {
-				moonkin.NaturesGrace.Activate(sim)
-			}
-		})
-	}
+	moonkin.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+		if gained {
+			moonkin.NaturesGrace.Activate(sim)
+		}
+	})
 }
 
 func (moonkin *BalanceDruid) registerEuphoria() {
@@ -162,14 +155,15 @@ func (moonkin *BalanceDruid) registerLunarShower() {
 		Duration:  time.Second * 3,
 		ActionID:  core.ActionID{SpellID: 81192},
 		MaxStacks: 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			lunarShowerDmgMod.UpdateFloatValue(float64(aura.GetStacks()) * 0.45)
+		OnGain: func(_ *core.Aura, Race_RaceNightElf *core.Simulation) {
 			lunarShowerDmgMod.Activate()
-
-			lunarShowerResourceMod.UpdateFloatValue(float64(aura.GetStacks()) * -0.3)
 			lunarShowerResourceMod.Activate()
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, _, newStacks int32) {
+			lunarShowerDmgMod.UpdateFloatValue(float64(newStacks) * 0.45)
+			lunarShowerResourceMod.UpdateFloatValue(float64(newStacks) * -0.3)
+		},
+		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 			lunarShowerDmgMod.Deactivate()
 			lunarShowerResourceMod.Deactivate()
 		},
@@ -181,7 +175,7 @@ func (moonkin *BalanceDruid) registerLunarShower() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 			if !spell.Matches(druid.DruidSpellMoonfire | druid.DruidSpellSunfire) {
 				return
 			}

@@ -45,7 +45,7 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			spell.SelfHot().Apply(sim)
 
 			if moonkin.AstralInsight.IsActive() {
@@ -60,7 +60,7 @@ func (moonkin *BalanceDruid) registerAstralCommunionSpell() {
 		},
 	})
 
-	moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+	moonkin.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
 		if gained && moonkin.AstralCommunion.SelfHot().IsActive() {
 			moonkin.AstralCommunion.SelfHot().Deactivate(sim)
 		}

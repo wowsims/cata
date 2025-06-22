@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 )
 
 const (
@@ -16,7 +15,7 @@ const (
 func (druid *Druid) registerHealingTouchSpell() {
 	actionID := core.ActionID{SpellID: 5185}
 
-	druid.HealingTouch = druid.RegisterSpell(Humanoid|Moonkin|Bear|Cat, core.SpellConfig{
+	druid.HealingTouch = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellHealing,
@@ -26,6 +25,7 @@ func (druid *Druid) registerHealingTouchSpell() {
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 28.9,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -33,11 +33,11 @@ func (druid *Druid) registerHealingTouchSpell() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := sim.Roll(core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, HealingTouchCoeff, HealingTouchVariance))
-			baseHealing += spell.HealingPower(target) * HealingTouchBonusCoeff
+		BonusCoefficient: HealingTouchBonusCoeff,
 
-			spell.CalcAndDealHealing(sim, &druid.Unit, baseHealing, spell.OutcomeHealing)
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			baseHealing := druid.CalcAndRollDamageRange(sim, HealingTouchCoeff, HealingTouchVariance)
+			spell.CalcAndDealHealing(sim, spell.Unit, baseHealing, spell.OutcomeHealingCrit)
 		},
 	})
 }

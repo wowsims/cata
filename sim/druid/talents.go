@@ -43,17 +43,18 @@ func (druid *Druid) registerNaturesVigil() {
 		Label:    "Nature's Vigil",
 		ActionID: actionID,
 		Duration: time.Second * 30,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(_ *core.Aura, _ *core.Simulation) {
 			druid.PseudoStats.DamageDealtMultiplier *= 1.12
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 			druid.PseudoStats.DamageDealtMultiplier /= 1.12
 		},
 	})
 
-	druid.RegisterSpell(Humanoid|Moonkin|Cat|Bear, core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+	naturesVigilSpell := druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID:        actionID,
+		Flags:           core.SpellFlagAPL,
+		RelatedSelfBuff: naturesVigilAura,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -66,9 +67,14 @@ func (druid *Druid) registerNaturesVigil() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			naturesVigilAura.Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+	})
+
+	druid.AddMajorCooldown(core.MajorCooldown{
+		Spell: naturesVigilSpell.Spell,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 
