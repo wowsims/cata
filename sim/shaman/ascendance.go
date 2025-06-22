@@ -64,6 +64,8 @@ func (shaman *Shaman) registerAscendanceSpell() {
 				originalOHSpell = shaman.AutoAttacks.OHAuto()
 				shaman.AutoAttacks.SetMHSpell(windslashMH)
 				shaman.AutoAttacks.SetOHSpell(windslashOH)
+			} else {
+				shaman.LavaBurst.CD.Reset()
 			}
 			pa := &core.PendingAction{
 				NextActionAt: aura.ExpiresAt(),
