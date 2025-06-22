@@ -54,7 +54,7 @@ func (dk *DeathKnight) registerArmyOfTheDead() {
 
 	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: DeathKnightSpellArmyOfTheDead,
 
 		RuneCost: core.RuneCostOptions{

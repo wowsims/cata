@@ -187,6 +187,7 @@ const (
 	SpellFlagSwapped                                       // Indicates that this spell is not useable because it is from a currently swapped item
 	SpellFlagAoE                                           // Indicates that this spell is an AoE spell. Spells flagged with this will use the AoE Cap multiplier when calculating damage.
 	SpellFlagRanged                                        // Indicates that this spell is a ranged spell. Spells flagged with this will have increased damage when Hunters Mark is active.
+	SpellFlagReadinessTrinket                              // Indicates that this spell part of Readiness. Used by Siege of Orgrimmar CDR trinkets.
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

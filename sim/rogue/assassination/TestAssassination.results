@@ -70,6 +70,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 71617.5909
+  tps: 50226.44006
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-AusterePrimalDiamond"
  value: {
   dps: 72915.21072
@@ -116,34 +123,6 @@ dps_results: {
  value: {
   dps: 72915.21072
   tps: 51251.35044
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 70711.07814
-  tps: 49704.3383
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 70711.07814
-  tps: 49704.3383
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 70711.07814
-  tps: 49704.3383
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 70711.07814
-  tps: 49704.3383
  }
 }
 dps_results: {
@@ -231,6 +210,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 72209.57545
+  tps: 50728.5828
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-FangsoftheFather"
  value: {
   dps: 62973.75494
@@ -263,34 +249,6 @@ dps_results: {
  value: {
   dps: 72915.21072
   tps: 51251.35044
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 74897.57715
-  tps: 52639.47835
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 74314.00006
-  tps: 52237.29554
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 75207.26402
-  tps: 52854.42399
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 75322.56691
-  tps: 52933.70038
  }
 }
 dps_results: {
@@ -385,66 +343,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 75442.99633
-  tps: 53023.80513
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 74609.10647
-  tps: 52443.49734
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 75681.36708
-  tps: 53190.83586
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 75999.04177
-  tps: 53415.03291
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 76288.63823
   tps: 53610.01554
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 95689.04374
-  tps: 67184.75505
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 91106.54722
-  tps: 63975.47
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 97185.86101
-  tps: 68232.40622
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 99005.82279
-  tps: 69505.96266
  }
 }
 dps_results: {
@@ -487,34 +389,6 @@ dps_results: {
  value: {
   dps: 76027.06572
   tps: 53407.2438
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 78597.37839
-  tps: 55266.5906
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 77491.53795
-  tps: 54500.02574
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 79234.43572
-  tps: 55704.449
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 79804.16801
-  tps: 56102.10789
  }
 }
 dps_results: {

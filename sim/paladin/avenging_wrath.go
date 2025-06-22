@@ -33,7 +33,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 
 	avengingWrath := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskAvengingWrath,
 
 		Cast: core.CastConfig{

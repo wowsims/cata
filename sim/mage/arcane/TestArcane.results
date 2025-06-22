@@ -38,6 +38,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 105815.26875
+  tps: 103425.37476
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-AusterePrimalDiamond"
  value: {
   dps: 108945.19059
@@ -63,34 +70,6 @@ dps_results: {
  value: {
   dps: 110316.3633
   tps: 107772.55658
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 104920.28949
-  tps: 102469.42753
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 104920.28949
-  tps: 102469.42753
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 104920.28949
-  tps: 102469.42753
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 104920.28949
-  tps: 102469.42753
  }
 }
 dps_results: {
@@ -178,6 +157,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 105815.26875
+  tps: 103425.37476
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-FleetPrimalDiamond"
  value: {
   dps: 109907.43349
@@ -189,34 +175,6 @@ dps_results: {
  value: {
   dps: 109878.86665
   tps: 107342.40724
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 106498.1976
-  tps: 104006.12546
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 106392.94724
-  tps: 103913.77677
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 106459.99113
-  tps: 103966.9147
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 106510.4803
-  tps: 104016.20161
  }
 }
 dps_results: {
@@ -262,34 +220,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 107148.98128
-  tps: 104666.03387
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 106776.59647
-  tps: 104299.87914
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 107250.17829
-  tps: 104766.02797
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 107387.61763
-  tps: 104901.07166
- }
-}
-dps_results: {
  key: "TestArcane-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 107484.17205
@@ -301,34 +231,6 @@ dps_results: {
  value: {
   dps: 98518.11323
   tps: 96167.18913
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 104851.66743
-  tps: 102400.09285
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 104851.66743
-  tps: 102400.09285
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 104851.66743
-  tps: 102400.09285
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 104851.66743
-  tps: 102400.09285
  }
 }
 dps_results: {
@@ -364,34 +266,6 @@ dps_results: {
  value: {
   dps: 111752.20644
   tps: 109099.34187
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 108500.93991
-  tps: 105919.89282
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 107849.11971
-  tps: 105278.33133
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 108277.39409
-  tps: 105686.75348
- }
-}
-dps_results: {
- key: "TestArcane-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 108493.79399
-  tps: 105889.01784
  }
 }
 dps_results: {

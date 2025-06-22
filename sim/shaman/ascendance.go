@@ -18,7 +18,7 @@ func (shaman *Shaman) registerAscendanceSpell() {
 		ActionID:    core.ActionID{SpellID: 114089, Tag: 1},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagReadinessTrinket,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -64,6 +64,8 @@ func (shaman *Shaman) registerAscendanceSpell() {
 				originalOHSpell = shaman.AutoAttacks.OHAuto()
 				shaman.AutoAttacks.SetMHSpell(windslashMH)
 				shaman.AutoAttacks.SetOHSpell(windslashOH)
+			} else {
+				shaman.LavaBurst.CD.Reset()
 			}
 			pa := &core.PendingAction{
 				NextActionAt: aura.ExpiresAt(),

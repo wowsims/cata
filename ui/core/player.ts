@@ -374,7 +374,7 @@ export class Player<SpecType extends Spec> {
 
 	bindChallengeModeChange() {
 		this.challengeModeChangeEmitter.on(() => {
-			this.setGear(TypedEvent.nextEventID(), this.gear.withChallengeMode(this.challengeModeEnabled));
+			this.setGear(TypedEvent.nextEventID(), this.gear, true);
 		});
 	}
 
@@ -754,9 +754,9 @@ export class Player<SpecType extends Spec> {
 		return this.gear;
 	}
 
-	setGear(eventID: EventID, newGear: Gear) {
-		if (newGear.equals(this.gear)) return;
-		this.gear = newGear;
+	setGear(eventID: EventID, newGear: Gear, forceUpdate?: boolean) {
+		if (newGear.equals(this.gear) && !forceUpdate) return;
+		this.gear = newGear.withChallengeMode(this.challengeModeEnabled);
 		this.gearChangeEmitter.emit(eventID);
 	}
 
