@@ -52,7 +52,6 @@ type Pet struct {
 	statInheritance        PetStatInheritance
 	dynamicStatInheritance PetStatInheritance
 	inheritedStats         stats.Stats
-	inheritanceDelay       time.Duration
 
 	// In MoP pets inherit their owners melee speed and cast speed
 	// rather than having auras such as Heroism being applied to them.
@@ -176,19 +175,8 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		pet.reset(sim, petAgent)
 	}
 
-	if pet.inheritanceDelay > 0 {
-		sim.AddPendingAction(&PendingAction{
-			NextActionAt: sim.CurrentTime + pet.inheritanceDelay,
-			OnAction: func(sim *Simulation) {
-				pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
-				pet.AddStatsDynamic(sim, pet.inheritedStats)
-			},
-		})
-	} else {
-		pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
-		pet.AddStatsDynamic(sim, pet.inheritedStats)
-	}
-
+	pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
+	pet.AddStatsDynamic(sim, pet.inheritedStats)
 	pet.Owner.DynamicStatsPets = append(pet.Owner.DynamicStatsPets, pet)
 	pet.dynamicStatInheritance = pet.statInheritance
 
@@ -316,12 +304,6 @@ func (pet *Pet) enableResourceRegenInheritance() {
 	if !slices.Contains(pet.Owner.RegenInheritancePets, pet) {
 		pet.Owner.RegenInheritancePets = append(pet.Owner.RegenInheritancePets, pet)
 	}
-}
-
-// Some pets, i.E. Shadowfiend only inherit their owners stat after a brief period of time
-// Causing initial attacks and abilities to not be scaled
-func (pet *Pet) DelayInitialInheritance(time time.Duration) {
-	pet.inheritanceDelay = time
 }
 
 func (pet *Pet) Disable(sim *Simulation) {
