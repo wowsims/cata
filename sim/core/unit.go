@@ -388,20 +388,23 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 		}
 	}
 
-	if len(unit.DynamicStatsPets) > 0 {
+	for _, pet := range unit.DynamicStatsPets {
 		delayedInheritance := func(sim *Simulation) {
-			for _, pet := range unit.DynamicStatsPets {
+			if pet.enabled {
 				pet.addOwnerStats(sim, bonus)
 			}
 		}
 
 		if sim.CurrentTime == 0 {
 			delayedInheritance(sim)
-			return
+			continue
 		}
 
+		numHeartbeats := (sim.CurrentTime - unit.Env.heartbeatOffset) / (time.Second * 5)
+		nextHeartbeat := (time.Second * 5) * (numHeartbeats + 1) + unit.Env.heartbeatOffset
+
 		StartDelayedAction(sim, DelayedActionOptions{
-			DoAt:     sim.CurrentTime + time.Second*5,
+			DoAt:     time.Second * 2 + nextHeartbeat,
 			Priority: ActionPriorityDOT,
 			OnAction: delayedInheritance,
 		})
