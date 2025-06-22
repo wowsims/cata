@@ -101,7 +101,7 @@ func (dk *DeathKnight) registerPlagueLeech() {
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
-				Duration: time.Second * 90,
+				Duration: time.Second * 25,
 			},
 		},
 
