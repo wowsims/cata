@@ -47,10 +47,10 @@ func (hb *healthBar) CurrentHealthPercent() float64 {
 }
 
 func (unit *Unit) SetCurrentHealth(sim *Simulation, newHealth float64, metrics *ResourceMetrics) {
-	if healthDiff := unit.currentHealth - newHealth; healthDiff > 0.0 {
-		unit.GainHealth(sim, math.Abs(healthDiff), metrics)
-	} else {
+	if healthDiff := unit.CurrentHealth() - newHealth; healthDiff > 0.0 {
 		unit.RemoveHealth(sim, math.Abs(healthDiff))
+	} else {
+		unit.GainHealth(sim, math.Abs(healthDiff), metrics)
 	}
 }
 

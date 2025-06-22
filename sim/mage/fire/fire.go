@@ -80,5 +80,4 @@ func (fireMage *FireMage) registerSpells() {
 	fireMage.registerDragonsBreathSpell()
 	fireMage.registerPyroblastSpell()
 	fireMage.registerScorchSpell()
-	fireMage.RegisterAlterTimeCD()
 }

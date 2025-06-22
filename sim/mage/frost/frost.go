@@ -71,7 +71,6 @@ func (frostMage *FrostMage) registerSpells() {
 	frostMage.registerSummonWaterElementalSpell()
 	frostMage.registerFrostboltSpell()
 	frostMage.registerFrozenOrbSpell()
-	frostMage.RegisterAlterTimeCD()
 }
 
 func (frostMage *FrostMage) GetFrozenCritPercentage() float64 {
