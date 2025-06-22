@@ -196,7 +196,8 @@ func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, 
 	if !withMultiplier || rp.runicRegenMultiplierDisabled {
 		runicRegenMultiplier = 1.0
 	}
-	newRunicPower := min(rp.currentRunicPower+(amount*runicRegenMultiplier), rp.maxRunicPower)
+	amount *= runicRegenMultiplier
+	newRunicPower := min(rp.currentRunicPower+amount, rp.maxRunicPower)
 
 	if sim.CurrentTime > 0 {
 		metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
