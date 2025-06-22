@@ -1,6 +1,8 @@
 package death_knight
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -179,10 +181,16 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 	})
 }
 
+func (ghoulPet *GhoulPet) EnableWithTimeout(sim *core.Simulation, petAgent core.PetAgent, petDuration time.Duration) {
+	ghoulPet.Enable(sim, petAgent)
+
+	ghoulPet.SetTimeoutAction(sim, petDuration)
+}
+
 func (ghoulPet *GhoulPet) Enable(sim *core.Simulation, petAgent core.PetAgent) {
 	if ghoulPet.IsGuardian() && ghoulPet.summonDelay {
 		// The ghoul takes around 4.5s - 5s to from summon to first hit, depending on your distance from the target.
-		randomDelay := core.DurationFromSeconds(sim.RollWithLabel(4.5, 5, "Raise Dead Delay"))
+		randomDelay := core.DurationFromSeconds(sim.RollWithLabel(4.5, 6, "Raise Dead Delay")).Round(time.Millisecond)
 		ghoulPet.Pet.EnableWithStartAttackDelay(sim, petAgent, randomDelay)
 	} else {
 		ghoulPet.Pet.Enable(sim, petAgent)

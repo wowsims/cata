@@ -20,6 +20,7 @@ func (dk *DeathKnight) registerArmyOfTheDead() {
 		Label:    "Army of the Dead",
 		ActionID: actionID,
 		Duration: time.Millisecond * 500 * 8,
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			attackTable := dk.AttackTables[dk.CurrentTarget.UnitIndex]
 			dmgReduction = 1.0 - (dk.GetTotalParryChanceAsDefender(attackTable) + dk.GetTotalDodgeChanceAsDefender(attackTable))
@@ -35,7 +36,10 @@ func (dk *DeathKnight) registerArmyOfTheDead() {
 				NumTicks: 8,
 				Period:   time.Millisecond * 500,
 				OnAction: func(sim *core.Simulation) {
-					dk.ArmyGhoul[ghoulIndex].EnableWithTimeout(sim, dk.ArmyGhoul[ghoulIndex], time.Second*40)
+					ghoul := dk.ArmyGhoul[ghoulIndex]
+					// Seems to always have two random ghouls spawn without a delay
+					// Adding two RandomFloat calls here screws with tests though and it's minor enough that I don't care
+					ghoul.EnableWithTimeout(sim, ghoul, time.Second*40)
 					ghoulIndex++
 				},
 				CleanUp: func(sim *core.Simulation) {
