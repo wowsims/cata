@@ -98,23 +98,32 @@ func (dot *Dot) ApplyRollover(sim *Simulation) {
 	dot.Activate(sim)
 }
 
-func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
-	nextTick := dot.TimeUntilNextTick(sim)
-
-	dot.remainingTicks = dot.BaseTickCount
-	dot.tmpExtraTicks = 0
+// Calculates the current tick period the dot would have based on the affects currently present
+func (dot *Dot) CalcTickPeriod() time.Duration {
 	if dot.affectedByCastSpeed {
 		// round the tickPeriod to the nearest full ms, same as ingame. This can best be seen ingame in how haste caps
 		// work. For example shadowflame should take 1009 haste rating with the 5%/3% haste buffs without rounding, but
 		// because of the rounding it already applies at 1007 haste rating.
-		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
-
-		if !dot.hasteReducesDuration {
-			dot.remainingTicks = dot.HastedTickCount()
+		if dot.isChanneled {
+			return dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
 		}
+
+		return dot.Spell.Unit.ApplyCastSpeed(dot.BaseTickLength).Round(time.Millisecond)
 	} else {
-		dot.tickPeriod = dot.BaseTickLength
+		return dot.BaseTickLength
 	}
+}
+
+func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
+	nextTick := dot.TimeUntilNextTick(sim)
+
+	dot.tickPeriod = dot.CalcTickPeriod()
+	dot.remainingTicks = dot.BaseTickCount
+	if dot.affectedByCastSpeed && !dot.hasteReducesDuration {
+		dot.remainingTicks = dot.HastedTickCount()
+	}
+
+	dot.tmpExtraTicks = 0
 	dot.Duration = dot.tickPeriod * time.Duration(dot.remainingTicks)
 
 	// we a have running dot tick
@@ -154,7 +163,7 @@ func (dot *Dot) HastedTickCount() int32 {
 func (dot *Dot) ExpectedTickCount() int32 {
 	tickCount := dot.BaseTickCount
 	if dot.affectedByCastSpeed && !dot.hasteReducesDuration {
-		tickPeriod := dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
+		tickPeriod := dot.CalcTickPeriod()
 		tickCount = dot.calculateHastedTickCount(dot.BaseDuration(), tickPeriod)
 	}
 	return tickCount
@@ -165,6 +174,10 @@ func (dot *Dot) RemainingTicks() int32 {
 }
 
 func (dot *Dot) TickCount() int32 {
+	if dot.hasteReducesDuration {
+		return dot.BaseTickCount + dot.tmpExtraTicks - dot.remainingTicks
+	}
+
 	return dot.HastedTickCount() + dot.tmpExtraTicks - dot.remainingTicks
 }
 
@@ -229,7 +242,7 @@ func (dot *Dot) DurationExtendSnapshot(sim *Simulation, extendBy time.Duration) 
 	dot.TakeSnapshot(sim, false)
 
 	previousTick := dot.tickAction.NextActionAt - dot.tickPeriod
-	dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
+	dot.tickPeriod = dot.CalcTickPeriod()
 
 	// ensure the tick is at least scheduled for the future ..
 	nextTick := max(previousTick+dot.tickPeriod, sim.CurrentTime+1*time.Millisecond)

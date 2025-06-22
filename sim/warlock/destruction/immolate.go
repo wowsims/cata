@@ -103,7 +103,7 @@ func (destruction *DestructionWarlock) registerImmolate() {
 				return result
 			} else {
 				result := spell.CalcPeriodicDamage(sim, target, destruction.CalcScalingSpellDmg(immolateCoeff), spell.OutcomeExpectedMagicCrit)
-				result.Damage /= destruction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				result.Damage /= dot.CalcTickPeriod().Round(time.Millisecond).Seconds()
 				return result
 			}
 		},

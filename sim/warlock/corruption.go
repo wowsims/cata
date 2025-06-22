@@ -57,7 +57,7 @@ func (warlock *Warlock) RegisterCorruption(callback WarlockSpellCastedCallback) 
 				return result
 			} else {
 				result := spell.CalcPeriodicDamage(sim, target, warlock.CalcScalingSpellDmg(corruptionScale), spell.OutcomeExpectedMagicCrit)
-				result.Damage /= float64(warlock.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds())
+				result.Damage /= dot.CalcTickPeriod().Round(time.Millisecond).Seconds()
 				return result
 			}
 		},
