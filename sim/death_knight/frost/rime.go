@@ -43,6 +43,7 @@ func (fdk *FrostDeathKnight) registerRime() {
 		Name:           "Rime" + fdk.Label,
 		ActionID:       core.ActionID{SpellID: 59057},
 		Callback:       core.CallbackOnSpellHitDealt,
+		ProcMask:       core.ProcMaskMeleeMH,
 		ClassSpellMask: death_knight.DeathKnightSpellObliterate,
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     0.45,

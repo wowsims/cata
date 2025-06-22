@@ -52,7 +52,7 @@ func (dk *DeathKnight) getFrostFeverConfig(character *core.Character) core.Spell
 // A disease dealing (166 + 0.158 * <AP>) Frost damage every 3 sec for 30 sec.
 func (dk *DeathKnight) registerFrostFever() {
 	config := dk.getFrostFeverConfig(dk.GetCharacter())
-	config.DamageMultiplier = 1.15
+	config.DamageMultiplier = 1
 	config.CritMultiplier = dk.DefaultCritMultiplier()
 	config.ThreatMultiplier = 1
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -100,7 +100,7 @@ func (dk *DeathKnight) getBloodPlagueConfig(character *core.Character) core.Spel
 // A disease dealing (197 + 0.158 * <AP>) Shadow damage every 3 sec for 30 sec.
 func (dk *DeathKnight) registerBloodPlague() {
 	config := dk.getBloodPlagueConfig(dk.GetCharacter())
-	config.DamageMultiplier = 1.15
+	config.DamageMultiplier = 1
 	config.CritMultiplier = dk.DefaultCritMultiplier()
 	config.ThreatMultiplier = 1
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
