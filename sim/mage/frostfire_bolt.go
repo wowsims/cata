@@ -42,6 +42,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !mage.BrainFreezeAura.IsActive() && mage.PresenceOfMindAura != nil {
+				mage.PresenceOfMindAura.Deactivate(sim)
+			}
 			hasSplitBolts := mage.IcyVeinsAura.IsActive() && hasGlyph
 			numberOfBolts := core.TernaryInt32(hasSplitBolts, 3, 1)
 			damageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)

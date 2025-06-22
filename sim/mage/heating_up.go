@@ -16,7 +16,7 @@ func (mage *Mage) registerHeatingUp() {
 		Duration: time.Second * 10,
 	})
 
-	mage.PyroblastAura = mage.RegisterAura(core.Aura{
+	mage.InstantPyroblastAura = mage.RegisterAura(core.Aura{
 		Label:    "Pyroblast!",
 		ActionID: core.ActionID{SpellID: 48108},
 		Duration: time.Second * 15,
@@ -56,7 +56,7 @@ func (mage *Mage) HeatingUpSpellHandler(sim *core.Simulation, spell *core.Spell,
 func (mage *Mage) HandleHeatingUp(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 	if result.DidCrit() {
 		if mage.HeatingUp.IsActive() {
-			mage.PyroblastAura.Activate(sim)
+			mage.InstantPyroblastAura.Activate(sim)
 			mage.HeatingUp.Deactivate(sim)
 		} else {
 			mage.HeatingUp.Activate(sim)

@@ -39,7 +39,10 @@ func (fire *FireMage) registerPyroblastSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			fire.PyroblastAura.Deactivate(sim)
+			if !fire.InstantPyroblastAura.IsActive() && fire.PresenceOfMindAura != nil {
+				fire.PresenceOfMindAura.Deactivate(sim)
+			}
+			fire.InstantPyroblastAura.Deactivate(sim)
 			baseDamage := fire.CalcAndRollDamageRange(sim, pyroblastScaling, pyroblastVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			fire.HeatingUpSpellHandler(sim, spell, result, func() {

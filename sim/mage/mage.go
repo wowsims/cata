@@ -37,18 +37,18 @@ type Mage struct {
 	IcyVeins             *core.Spell
 	Icicle               *core.Spell
 
-	AlterTimeAura      *core.Aura
-	InvocationAura     *core.Aura
-	RuneOfPowerAura    *core.Aura
-	PresenceOfMindAura *core.Aura
-	FingersOfFrostAura *core.Aura
-	BrainFreezeAura    *core.Aura
-	IcyVeinsAura       *core.Aura
-	IceFloesAura       *core.Aura
-	IciclesAura        *core.Aura
-	ArcaneChargesAura  *core.Aura
-	HeatingUp          *core.Aura
-	PyroblastAura      *core.Aura
+	AlterTimeAura        *core.Aura
+	InvocationAura       *core.Aura
+	RuneOfPowerAura      *core.Aura
+	PresenceOfMindAura   *core.Aura
+	FingersOfFrostAura   *core.Aura
+	BrainFreezeAura      *core.Aura
+	IcyVeinsAura         *core.Aura
+	IceFloesAura         *core.Aura
+	IciclesAura          *core.Aura
+	ArcaneChargesAura    *core.Aura
+	HeatingUp            *core.Aura
+	InstantPyroblastAura *core.Aura
 
 	arcaneMissileCritSnapshot float64
 
