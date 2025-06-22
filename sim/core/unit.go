@@ -491,9 +491,9 @@ func (unit *Unit) updateCastSpeed() {
 func (unit *Unit) MultiplyCastSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 
-	for _, pet := range unit.DynamicCastSpeedPets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.DynamicCastSpeedPets, func(_ *Simulation, pet *Pet) {
 		pet.dynamicCastSpeedInheritance(amount)
-	}
+	})
 
 	unit.updateCastSpeed()
 }
