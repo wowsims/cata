@@ -62,7 +62,7 @@ func (demonology *DemonologyWarlock) registerDoom() {
 				return result
 			} else {
 				result := spell.CalcPeriodicDamage(sim, target, demonology.CalcScalingSpellDmg(doomScale), spell.OutcomeExpectedMagicCrit)
-				result.Damage /= demonology.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				result.Damage /= dot.CalcTickPeriod().Round(time.Millisecond).Seconds()
 				return result
 			}
 		},
