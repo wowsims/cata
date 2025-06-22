@@ -1516,6 +1516,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 149713.61277
+  tps: 893007.96156
+  dtps: 35209.29148
+  hps: 42653.13628
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-KnightlyBadgeoftheShieldwall-93349"
  value: {
   dps: 150069.17475
@@ -2809,6 +2818,15 @@ dps_results: {
   tps: 891194.95305
   dtps: 34634.66197
   hps: 41626.65377
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 151320.65617
+  tps: 903506.61976
+  dtps: 34968.57586
+  hps: 41835.52795
  }
 }
 dps_results: {

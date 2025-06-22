@@ -288,6 +288,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostTwoHand-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 145601.15527
+  tps: 136217.13081
+  hps: 1921.35635
+ }
+}
+dps_results: {
  key: "TestFrostTwoHand-AllItems-MagmaPlatedBattlearmor"
  value: {
   dps: 106531.19181
@@ -485,6 +493,14 @@ dps_results: {
   dps: 146416.46899
   tps: 136757.22802
   hps: 1912.64017
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 148793.17264
+  tps: 139246.6738
+  hps: 2014.28254
  }
 }
 dps_results: {

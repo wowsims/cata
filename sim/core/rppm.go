@@ -159,7 +159,7 @@ func (config RPPMConfig) WithSpecMod(coefficient float64, spec proto.Spec) RPPMC
 
 // Attach an approximate Ilvl scaling to the RPPM config
 // The proc chance will be multiplied by 1.00936^(ilvlDiff)
-func (config *RPPMConfig) WithApproximateIlvlMod(coefficient float64, baseIlvl int32) *RPPMConfig {
+func (config RPPMConfig) WithApproximateIlvlMod(coefficient float64, baseIlvl int32) RPPMConfig {
 	config.Mods = append(config.Mods, rppmApproxIlvlMod{
 		coefficient: coefficient,
 		baseIlvl:    baseIlvl,

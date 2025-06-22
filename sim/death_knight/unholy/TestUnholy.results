@@ -288,6 +288,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 127796.5135
+  tps: 96599.88775
+  hps: 1855.89681
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-MagmaPlatedBattlearmor"
  value: {
   dps: 87165.56243
@@ -485,6 +493,14 @@ dps_results: {
   dps: 130781.49071
   tps: 98507.60816
   hps: 1843.95035
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 137553.64702
+  tps: 105435.09897
+  hps: 1943.76408
  }
 }
 dps_results: {

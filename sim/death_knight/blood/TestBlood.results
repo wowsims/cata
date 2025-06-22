@@ -328,6 +328,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 119589.31472
+  tps: 775382.26572
+  dtps: 104834.14567
+  hps: 70039.71651
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-MagmaPlatedBattlearmor"
  value: {
   dps: 101711.4917
@@ -559,6 +568,15 @@ dps_results: {
   tps: 766266.04827
   dtps: 105813.62241
   hps: 71704.9441
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 120648.23394
+  tps: 782393.35091
+  dtps: 104757.55406
+  hps: 68817.30905
  }
 }
 dps_results: {

@@ -329,6 +329,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 71551.73439
+  tps: 50308.48314
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-MawofOblivion"
  value: {
   dps: 60203.16736
@@ -438,6 +445,13 @@ dps_results: {
  value: {
   dps: 72915.21072
   tps: 51251.35044
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 72785.52682
+  tps: 51177.19686
  }
 }
 dps_results: {

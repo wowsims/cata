@@ -295,6 +295,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 109240.63063
+  tps: 99653.76328
+  hps: 1189.68343
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-MagmaPlatedBattlearmor"
  value: {
   dps: 77444.75881
@@ -492,6 +500,14 @@ dps_results: {
   dps: 110720.02241
   tps: 100857.65348
   hps: 1182.87295
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 112762.57807
+  tps: 102880.472
+  hps: 1283.18278
  }
 }
 dps_results: {

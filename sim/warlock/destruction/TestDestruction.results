@@ -1158,6 +1158,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 90596.41448
+  tps: 67458.8038
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-KnightlyBadgeoftheShieldwall-93349"
  value: {
   dps: 92176.58809
@@ -2184,6 +2191,13 @@ dps_results: {
  value: {
   dps: 93628.1171
   tps: 69531.05586
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 102812.88122
+  tps: 76693.30348
  }
 }
 dps_results: {

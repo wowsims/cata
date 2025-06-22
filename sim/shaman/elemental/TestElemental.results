@@ -1172,6 +1172,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 117481.09858
+  tps: 88656.59547
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-KnightlyBadgeoftheShieldwall-93349"
  value: {
   dps: 118768.6283
@@ -2191,6 +2198,13 @@ dps_results: {
  value: {
   dps: 123383.9902
   tps: 92738.33398
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 130414.55977
+  tps: 98303.4731
  }
 }
 dps_results: {

@@ -1343,6 +1343,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 126037.68048
+  tps: 117061.27073
+  hps: 7235.8655
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-KnightlyBadgeoftheShieldwall-93349"
  value: {
   dps: 128322.07375
@@ -2484,6 +2492,14 @@ dps_results: {
   dps: 130170.38153
   tps: 120604.3699
   hps: 7487.10172
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 127735.78238
+  tps: 118658.93073
+  hps: 7457.05864
  }
 }
 dps_results: {

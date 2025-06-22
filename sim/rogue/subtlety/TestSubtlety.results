@@ -297,6 +297,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 71317.32449
+  tps: 50247.19981
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-MawofOblivion"
  value: {
   dps: 59822.36176
@@ -406,6 +413,13 @@ dps_results: {
  value: {
   dps: 73563.18255
   tps: 51830.41107
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 73452.08709
+  tps: 51756.40652
  }
 }
 dps_results: {

@@ -220,6 +220,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 131720.94583
+  tps: 92684.11039
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-PhaseFingers-4697"
  value: {
   dps: 138058.44824
@@ -308,6 +315,13 @@ dps_results: {
  value: {
   dps: 135299.37062
   tps: 94863.66462
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 143781.70578
+  tps: 101001.44973
  }
 }
 dps_results: {
