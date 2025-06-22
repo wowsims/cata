@@ -682,6 +682,7 @@ func (dk *DeathKnight) registerBloodTap() {
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Blood Charge Trigger" + dk.Label,
 		Callback:       core.CallbackOnSpellHitDealt,
+		ProcMask:       core.ProcMaskMeleeMH | core.ProcMaskSpellDamage,
 		ClassSpellMask: DeathKnightSpellDeathCoil | DeathKnightSpellFrostStrike | DeathKnightSpellRuneStrike,
 		Outcome:        core.OutcomeLanded,
 
