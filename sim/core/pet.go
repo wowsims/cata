@@ -21,7 +21,7 @@ type OnPetEnable func(sim *Simulation)
 type OnPetDisable func(sim *Simulation)
 
 type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
-type PetMeleeSpeedInheritance func(amount float64)
+type PetSpeedInheritance func(amount float64)
 
 type PetConfig struct {
 	Name                            string
@@ -56,8 +56,8 @@ type Pet struct {
 
 	// In MoP pets inherit their owners melee speed and cast speed
 	// rather than having auras such as Heroism being applied to them.
-	dynamicMeleeSpeedInheritance PetMeleeSpeedInheritance
-	dynamicCastSpeedInheritance  PetMeleeSpeedInheritance
+	dynamicMeleeSpeedInheritance PetSpeedInheritance
+	dynamicCastSpeedInheritance  PetSpeedInheritance
 
 	// If true the pet will automatically inherit the owner's melee speed
 	hasDynamicMeleeSpeedInheritance bool
@@ -280,14 +280,14 @@ func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 }
 
 // Enables and possibly updates how the pet inherits its owner's melee speed.
-func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetSpeedInheritance) {
 	if pet.hasDynamicMeleeSpeedInheritance {
 		panic("To use custom EnableDynamicMeleeSpeed remove hasDynamicMeleeSpeedInheritance from the Pet constructor")
 	}
 	pet.enableDynamicMeleeSpeed(inheritance)
 }
 
-func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicMeleeSpeedPets, pet) {
 		pet.Owner.DynamicMeleeSpeedPets = append(pet.Owner.DynamicMeleeSpeedPets, pet)
 		inheritance(pet.Owner.PseudoStats.MeleeSpeedMultiplier)
@@ -297,14 +297,14 @@ func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
 }
 
 // Enables and possibly updates how the pet inherits its owner's cast speed.
-func (pet *Pet) EnableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) EnableDynamicCastSpeed(inheritance PetSpeedInheritance) {
 	if pet.hasDynamicCastSpeedInheritance {
 		panic("To use custom EnableDynamicCastSpeed remove hasDynamicCastSpeedInheritance from the Pet constructor")
 	}
 	pet.enableDynamicCastSpeed(inheritance)
 }
 
-func (pet *Pet) enableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) enableDynamicCastSpeed(inheritance PetSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicCastSpeedPets, pet) {
 		pet.Owner.DynamicCastSpeedPets = append(pet.Owner.DynamicCastSpeedPets, pet)
 		inheritance(pet.Owner.PseudoStats.CastSpeedMultiplier)
