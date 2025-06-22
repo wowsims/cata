@@ -97,7 +97,7 @@ func init() {
 	})
 
 	// Renataki's Soul Charm
-	// Your attacks  have a chance to grant Blades of Renataki, granting 1592 Agility every 1 sec for 10 sec.  (Approximately 1.21 procs per
+	// Your attacks  have a chance to grant Blades of Renataki, granting 1592 Agility every 1 sec for 10 sec.  (Approximately 1.21 procs per minute)
 	shared.ItemVersionMap{
 		shared.ItemVersionLFR:                 95625,
 		shared.ItemVersionNormal:              94512,
@@ -121,6 +121,7 @@ func init() {
 				BonusPerStack:        stats.Stats{stats.Agility: statValue},
 				StackingAuraActionID: core.ActionID{SpellID: 138737},
 				StackingAuraLabel:    fmt.Sprintf("Item - Proc Stacking Agility %s", versionLabel),
+				TickImmediately:      true,
 			})
 
 			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
@@ -139,6 +140,115 @@ func init() {
 
 			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
 			character.AddStatProcBuff(itemID, statBuffAura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
+		})
+	})
+
+	// Wushoolay's Final Choice
+	// Your harmful spells have a chance to grant Wushoolay's Lightning, granting 1592 Intellect every 1 sec for 10 sec.  (Approximately 1.21 procs per minute)
+	shared.ItemVersionMap{
+		shared.ItemVersionLFR:                 95669,
+		shared.ItemVersionNormal:              94513,
+		shared.ItemVersionHeroic:              96413,
+		shared.ItemVersionThunderforged:       96041,
+		shared.ItemVersionHeroicThunderforged: 96785,
+	}.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+		label := "Wushoolay's Final Choice"
+
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+			character := agent.GetCharacter()
+
+			statValue := core.GetItemEffectScaling(itemID, 0.44999998808, state)
+
+			statBuffAura, aura := character.NewTemporaryStatBuffWithStacks(core.TemporaryStatBuffWithStacksConfig{
+				AuraLabel:            fmt.Sprintf("%s %s", label, versionLabel),
+				ActionID:             core.ActionID{SpellID: 138790},
+				Duration:             time.Second * 20,
+				MaxStacks:            10,
+				TimePerStack:         time.Second * 1,
+				BonusPerStack:        stats.Stats{stats.Intellect: statValue},
+				StackingAuraActionID: core.ActionID{SpellID: 138786},
+				StackingAuraLabel:    fmt.Sprintf("Item - Proc Stacking Intellect %s", versionLabel),
+				TickImmediately:      true,
+			})
+
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:    label,
+				Harmful: true,
+				ICD:     time.Second * 10,
+				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskSpellOrSpellProc, core.RPPMConfig{
+					PPM: 1.21000003815,
+				}),
+				Outcome:  core.OutcomeLanded,
+				Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					aura.Activate(sim)
+				},
+			})
+
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.AddStatProcBuff(itemID, statBuffAura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
+		})
+	})
+
+	// Horridon's Last Gasp
+	// Your healing spells have a chance to grant 1375 mana per 2 sec over 10 sec.  (Approximately [0.96 + Haste] procs per minute)
+	shared.ItemVersionMap{
+		shared.ItemVersionLFR:                 95641,
+		shared.ItemVersionNormal:              94514,
+		shared.ItemVersionHeroic:              96385,
+		shared.ItemVersionThunderforged:       96013,
+		shared.ItemVersionHeroicThunderforged: 96757,
+	}.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+		label := "Horridon's Last Gasp"
+
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
+			character := agent.GetCharacter()
+
+			statValue := core.GetItemEffectScaling(itemID, 0.55900001526, state)
+			manaMetrics := character.NewManaMetrics(core.ActionID{SpellID: 138856})
+
+			stackingAura := character.RegisterAura(core.Aura{
+				ActionID:  core.ActionID{SpellID: 138849},
+				Label:     fmt.Sprintf("Item - Proc Mana Per Time %s", versionLabel),
+				Duration:  time.Second * 20,
+				MaxStacks: 5,
+			})
+
+			aura := character.RegisterAura(core.Aura{
+				Label:    fmt.Sprintf("%s %s", label, versionLabel),
+				ActionID: core.ActionID{SpellID: 138856},
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					stackingAura.Activate(sim)
+					core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+						Period:   time.Second * 2,
+						NumTicks: 10,
+						OnAction: func(sim *core.Simulation) {
+							stackingAura.Activate(sim)
+							stackingAura.AddStack(sim)
+							character.AddMana(sim, statValue*float64(stackingAura.GetStacks()), manaMetrics)
+						},
+					})
+				},
+			})
+
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:    label,
+				Harmful: true,
+				ICD:     time.Second * 3,
+				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskSpellHealing, core.RPPMConfig{
+					PPM: 0.95999997854,
+				}.WithHasteMod()),
+				Outcome:  core.OutcomeLanded,
+				Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					aura.Activate(sim)
+				},
+			})
+
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
 			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
 		})
 	})
