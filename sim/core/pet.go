@@ -405,3 +405,27 @@ func (pet *Pet) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (pet *Pet) AddPartyBuffs(_ *proto.PartyBuffs) {}
 func (pet *Pet) ApplyTalents()                     {}
 func (pet *Pet) OnGCDReady(_ *Simulation)          {}
+
+func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPets []*Pet, inheritanceFunc func(*Simulation, *Pet)) {
+	for _, pet := range dynamicPets {
+		delayedInheritance := func(sim *Simulation) {
+			if pet.enabled {
+				inheritanceFunc(sim, pet)
+			}
+		}
+
+		if sim.CurrentTime == 0 {
+			delayedInheritance(sim)
+			continue
+		}
+
+		numHeartbeats := (sim.CurrentTime - env.heartbeatOffset) / (time.Second * 5)
+		nextHeartbeat := (time.Second * 5) * (numHeartbeats + 1) + env.heartbeatOffset
+
+		StartDelayedAction(sim, DelayedActionOptions{
+			DoAt:     time.Second * 2 + nextHeartbeat,
+			Priority: ActionPriorityDOT,
+			OnAction: delayedInheritance,
+		})
+	}
+}
