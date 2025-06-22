@@ -19,11 +19,11 @@ func (fdk *FrostDeathKnight) registerMightOfTheFrozenWastes() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.3,
 		ProcMask:   core.ProcMaskMelee,
+		FloatValue: 0.3,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.4,
 		ClassMask:  death_knight.DeathKnightSpellObliterate,
+		FloatValue: 0.4,
 	})
 }

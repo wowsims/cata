@@ -64,7 +64,6 @@ func (runeWeapon *RuneWeaponPet) Initialize() {
 // The absolute first white hit doesn't get the -50% modifier.
 // Trying to abuse it by macroing e.g. DS and DRW together doesn't seem to work.
 func (runeWeapon *RuneWeaponPet) registerFirstHitDamageAura() {
-	var damageMultiplier float64
 	var firstHitAura *core.Aura
 	firstHitAura = runeWeapon.RegisterAura(core.Aura{
 		Label:    "First Hit Penalty Bypass" + runeWeapon.Label,
@@ -74,21 +73,16 @@ func (runeWeapon *RuneWeaponPet) registerFirstHitDamageAura() {
 			aura.Activate(sim)
 		},
 	}).AttachProcTrigger(core.ProcTrigger{
-		Callback: core.CallbackOnApplyEffects,
-		ProcMask: core.ProcMaskWhiteHit,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMeleeMHAuto,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			damageMultiplier = spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
-			spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 0.5
-		},
-	}).AttachProcTrigger(core.ProcTrigger{
-		Callback: core.CallbackOnCastComplete,
-		ProcMask: core.ProcMaskWhiteHit,
-
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			spell.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] = damageMultiplier
 			firstHitAura.Deactivate(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ProcMask:   core.ProcMaskMeleeMHAuto,
+		FloatValue: 1.0,
 	})
 }
 
