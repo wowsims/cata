@@ -245,11 +245,17 @@ func (pet *Pet) EnableWithStartAttackDelay(sim *Simulation, petAgent PetAgent, s
 func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuration time.Duration) {
 	pet.Enable(sim, petAgent)
 
-	pet.timeoutAction = &PendingAction{
-		NextActionAt: sim.CurrentTime + petDuration,
-		OnAction: func(sim *Simulation) {
-			pet.Disable(sim)
-		},
+	if pet.timeoutAction == nil {
+		pet.timeoutAction = &PendingAction{
+			NextActionAt: sim.CurrentTime + petDuration,
+
+			OnAction: func(sim *Simulation) {
+				pet.Disable(sim)
+			},
+		}
+	} else {
+		pet.timeoutAction.cancelled = false
+		pet.timeoutAction.NextActionAt = sim.CurrentTime + petDuration
 	}
 
 	sim.AddPendingAction(pet.timeoutAction)
@@ -353,9 +359,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 	// If a pet is immediately re-summoned it might try to use GCD, so we need to clear it.
 	pet.Hardcast = Hardcast{}
 
-	if pet.timeoutAction != nil {
+	if (pet.timeoutAction != nil) && !pet.timeoutAction.consumed {
 		pet.timeoutAction.Cancel(sim)
-		pet.timeoutAction = nil
 	}
 
 	if pet.OnPetDisable != nil {
