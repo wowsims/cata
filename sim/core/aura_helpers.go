@@ -311,6 +311,7 @@ func (character *Character) NewTemporaryStatBuffWithStacks(config TemporaryStatB
 					Period:   config.TimePerStack,
 					NumTicks: 10,
 					OnAction: func(sim *Simulation) {
+						stackingAura.Activate(sim)
 						stackingAura.AddStack(sim)
 					},
 				})
