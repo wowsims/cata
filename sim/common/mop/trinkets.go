@@ -271,6 +271,7 @@ func init() {
 
 			shieldValue := core.GetItemEffectScaling(itemID, 9.45600032806, state)
 
+			// TODO: For now self-shield as there is no healing Sim
 			shield := character.NewDamageAbsorptionAura(core.AbsorptionAuraConfig{
 				Aura: core.Aura{
 					Label:    fmt.Sprintf("%s %s", label, versionLabel),
