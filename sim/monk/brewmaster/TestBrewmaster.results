@@ -922,6 +922,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 161526.85124
+  tps: 968747.83154
+  dtps: 32231.93051
+  hps: 42775.36998
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-Fire-CharmArmor"
  value: {
   dps: 150459.13134
@@ -1045,6 +1054,15 @@ dps_results: {
   tps: 898984.50384
   dtps: 34647.02441
   hps: 41298.53896
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 158348.04869
+  tps: 950766.84418
+  dtps: 32753.3884
+  hps: 42471.97229
  }
 }
 dps_results: {
@@ -2101,6 +2119,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBrewmaster-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 155300.59365
+  tps: 925891.63498
+  dtps: 30720.46017
+  hps: 42756.7417
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 151201.88143
+  tps: 902291.60703
+  dtps: 31376.80673
+  hps: 42331.49513
+ }
+}
+dps_results: {
  key: "TestBrewmaster-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 149705.83576
@@ -2908,6 +2944,15 @@ dps_results: {
   tps: 891902.57808
   dtps: 35513.76818
   hps: 41283.71894
+ }
+}
+dps_results: {
+ key: "TestBrewmaster-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 151305.29609
+  tps: 903338.71867
+  dtps: 32964.96711
+  hps: 42131.28597
  }
 }
 dps_results: {

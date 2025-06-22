@@ -232,6 +232,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 136995.04194
+  tps: 104716.6849
+  hps: 1969.5419
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-FleetPrimalDiamond"
  value: {
   dps: 131431.5891
@@ -253,6 +261,14 @@ dps_results: {
   dps: 140747.72869
   tps: 105632.72126
   hps: 1885.41487
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 147163.41091
+  tps: 112400.96494
+  hps: 1971.98108
  }
 }
 dps_results: {
@@ -384,6 +400,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 130959.5923
+  tps: 99037.43938
+  hps: 1948.87715
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 137505.97316
+  tps: 103905.12798
+  hps: 1923.30476
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Renataki'sSoulCharm-96741"
  value: {
   dps: 128205.89729
@@ -509,6 +541,14 @@ dps_results: {
   dps: 127796.5135
   tps: 96599.88775
   hps: 1855.89681
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 131958.0418
+  tps: 99724.10278
+  hps: 1969.5419
  }
 }
 dps_results: {

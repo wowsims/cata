@@ -369,7 +369,7 @@ func (mage *Mage) applyIgnite() {
 			},
 		},
 
-		DamageCalculator: func(result *core.SpellResult) float64 {
+		DamageCalculator: func(spell *core.Spell, result *core.SpellResult) float64 {
 			var masteryMultiplier float64 = 1 + (22.4+2.8*mage.GetMasteryPoints())/100
 			return result.Damage * igniteDamageMultiplier * masteryMultiplier
 		},
