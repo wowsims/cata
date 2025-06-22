@@ -39,6 +39,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 109268.85163
+  tps: 99662.72747
+  hps: 1189.68343
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-AusterePrimalDiamond"
  value: {
   dps: 110720.02241
@@ -92,38 +100,6 @@ dps_results: {
   dps: 110720.02241
   tps: 100857.65348
   hps: 1182.87295
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 109240.63063
-  tps: 99653.76328
-  hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 109240.63063
-  tps: 99653.76328
-  hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 109240.63063
-  tps: 99653.76328
-  hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 109240.63063
-  tps: 99653.76328
-  hps: 1189.68343
  }
 }
 dps_results: {
@@ -247,6 +223,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 109093.1666
+  tps: 98904.67876
+  hps: 1188.33236
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-FleetPrimalDiamond"
  value: {
   dps: 111511.16791
@@ -260,38 +244,6 @@ dps_results: {
   dps: 110720.02241
   tps: 100857.65348
   hps: 1182.87295
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 116288.3871
-  tps: 105808.59614
-  hps: 1219.85726
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 115094.22973
-  tps: 104769.06313
-  hps: 1210.11487
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 116721.94392
-  tps: 106196.44263
-  hps: 1227.16405
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 117310.87687
-  tps: 106724.08565
-  hps: 1229.59965
  }
 }
 dps_results: {
@@ -399,38 +351,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 116887.2641
-  tps: 106423.12964
-  hps: 1225.67512
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 115587.35158
-  tps: 105257.98911
-  hps: 1220.80392
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 117323.1297
-  tps: 106811.93164
-  hps: 1228.11072
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 117838.15305
-  tps: 107264.00722
-  hps: 1228.11072
- }
-}
-dps_results: {
  key: "TestFrostMasterfrost-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 118323.61132
@@ -439,42 +359,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 109340.14139
-  tps: 99713.69109
-  hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 109323.8842
-  tps: 99703.17926
-  hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 109346.22838
-  tps: 99719.77808
-  hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 109363.3471
-  tps: 99733.33457
-  hps: 1189.68343
- }
-}
-dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 109377.07311
-  tps: 99744.22913
+  dps: 109459.55683
+  tps: 99803.76545
   hps: 1189.68343
  }
 }
@@ -564,38 +452,6 @@ dps_results: {
   dps: 113573.88614
   tps: 103398.81337
   hps: 1189.68343
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 112477.00689
-  tps: 102642.32728
-  hps: 1236.59395
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 111783.28139
-  tps: 101989.97756
-  hps: 1223.07408
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 112203.84304
-  tps: 102367.61831
-  hps: 1232.13634
- }
-}
-dps_results: {
- key: "TestFrostMasterfrost-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 112986.74979
-  tps: 103111.58688
-  hps: 1227.80741
  }
 }
 dps_results: {

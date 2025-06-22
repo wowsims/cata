@@ -79,6 +79,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 123358.55624
+  tps: 113821.69768
+  hps: 7646.98606
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-AusterePrimalDiamond"
  value: {
   dps: 130170.38153
@@ -503,38 +511,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 126037.68048
-  tps: 117061.27073
-  hps: 7235.8655
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 126037.68048
-  tps: 117061.27073
-  hps: 7235.8655
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 126037.68048
-  tps: 117061.27073
-  hps: 7235.8655
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 126037.68048
-  tps: 117061.27073
-  hps: 7235.8655
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
   dps: 126037.68048
@@ -791,6 +767,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 127304.41154
+  tps: 118136.89808
+  hps: 7382.51273
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-FearwurmBadge-84074"
  value: {
   dps: 129548.49382
@@ -916,38 +900,6 @@ dps_results: {
   dps: 128448.21399
   tps: 119461.29235
   hps: 7235.8655
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 131219.052
-  tps: 121792.42625
-  hps: 7652.33279
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 130295.59204
-  tps: 120969.92935
-  hps: 7572.402
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 131488.4477
-  tps: 122027.58232
-  hps: 7657.48845
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 132114.73731
-  tps: 122595.77477
-  hps: 7678.00642
  }
 }
 dps_results: {
@@ -1871,38 +1823,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 130786.92539
-  tps: 121406.61934
-  hps: 7642.33589
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 129969.79477
-  tps: 120664.27229
-  hps: 7573.84618
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 131100.00429
-  tps: 121700.96614
-  hps: 7659.07593
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 131518.4159
-  tps: 122095.74578
-  hps: 7695.59861
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 131967.43534
@@ -1959,43 +1879,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestWindwalker-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 139978.67317
-  tps: 129461.28629
-  hps: 8198.40201
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 137588.11705
-  tps: 127351.51096
-  hps: 8027.37953
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 140815.83616
-  tps: 130194.35173
-  hps: 8255.5095
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 142053.31873
-  tps: 131308.99396
-  hps: 8325.96681
- }
-}
-dps_results: {
  key: "TestWindwalker-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 142948.4248
-  tps: 132087.61727
-  hps: 8390.49086
+  dps: 153378.28992
+  tps: 141399.31377
+  hps: 9283.91358
  }
 }
 dps_results: {
@@ -2308,38 +2196,6 @@ dps_results: {
   dps: 134983.55056
   tps: 125068.57028
   hps: 7769.22347
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 135496.66336
-  tps: 125942.20148
-  hps: 7654.25568
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 133969.84851
-  tps: 124484.92046
-  hps: 7656.86396
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 136243.29522
-  tps: 126600.44125
-  hps: 7733.38212
- }
-}
-dps_results: {
- key: "TestWindwalker-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 137154.42885
-  tps: 127479.48755
-  hps: 7708.61688
  }
 }
 dps_results: {

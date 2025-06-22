@@ -39,6 +39,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 127869.23626
+  tps: 96640.34278
+  hps: 1855.89681
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-AusterePrimalDiamond"
  value: {
   dps: 130781.49071
@@ -92,38 +100,6 @@ dps_results: {
   dps: 130781.49071
   tps: 98507.60816
   hps: 1843.95035
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
  }
 }
 dps_results: {
@@ -240,6 +216,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 130147.66541
+  tps: 100462.05508
+  hps: 1804.83428
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-FleetPrimalDiamond"
  value: {
   dps: 131431.5891
@@ -253,38 +237,6 @@ dps_results: {
   dps: 130781.49071
   tps: 98507.60816
   hps: 1843.95035
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 138522.1087
-  tps: 104073.47531
-  hps: 1897.71406
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 136846.1029
-  tps: 102900.52599
-  hps: 1892.79438
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 139125.39191
-  tps: 104475.88146
-  hps: 1900.17389
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 140025.62559
-  tps: 105224.69605
-  hps: 1885.41487
  }
 }
 dps_results: {
@@ -392,38 +344,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 140104.49118
-  tps: 105323.06003
-  hps: 1898.25244
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 137713.68805
-  tps: 103551.33653
-  hps: 1888.55232
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 140758.34681
-  tps: 105768.23956
-  hps: 1903.17211
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 141618.42151
-  tps: 106397.37934
-  hps: 1908.09179
- }
-}
-dps_results: {
  key: "TestUnholy-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 142560.52141
@@ -432,42 +352,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 127967.49783
-  tps: 96702.22957
-  hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 127958.96533
-  tps: 96702.22957
-  hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 127977.21526
-  tps: 96706.56537
-  hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 127983.60472
-  tps: 96710.45425
-  hps: 1855.89681
- }
-}
-dps_results: {
  key: "TestUnholy-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 127992.8472
-  tps: 96714.94324
+  dps: 128204.26641
+  tps: 96857.32119
   hps: 1855.89681
  }
 }
@@ -557,38 +445,6 @@ dps_results: {
   dps: 134367.31006
   tps: 101307.4001
   hps: 1855.89681
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 131259.15053
-  tps: 98709.47946
-  hps: 1902.72656
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 130734.31126
-  tps: 98459.16409
-  hps: 1889.6198
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 131361.40249
-  tps: 98890.344
-  hps: 1896.5816
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 131716.46378
-  tps: 99186.40905
-  hps: 1906.00325
  }
 }
 dps_results: {

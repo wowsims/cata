@@ -13,26 +13,6 @@ func RegisterAllProcs() {
 	//       This can be ignored if the effect has already been implemented.
 	//       With next db run the item will be removed if implemented.
 	//
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Agility-based
-	// damage roles only.
-	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-	//	Callback: core.CallbackOnSpellHitDealt,
-	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedAuto | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  true,
-	// }, []shared.ItemVariant{
-	//	{ItemID: 102292, ItemName: "Assurance of Consequence (N)"},
-	//	{ItemID: 104476, ItemName: "Assurance of Consequence (H)"},
-	//	{ItemID: 104725, ItemName: "Assurance of Consequence (Flexible)"},
-	//	{ItemID: 104974, ItemName: "Assurance of Consequence (LFR) (Celestial)"},
-	//	{ItemID: 105223, ItemName: "Assurance of Consequence (Warforged)"},
-	//	{ItemID: 105472, ItemName: "Assurance of Consequence (Heroic Warforged)"},
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
 	// Your attacks have a chance to grant 1 Intellect for 20s. ( 15% chance, 115 sec cooldown)
 	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
 	//	Callback: core.CallbackOnSpellHitDealt,
@@ -85,26 +65,6 @@ func RegisterAllProcs() {
 	//	{ItemID: 104961, ItemName: "Fusion-Fire Core (LFR) (Celestial)"},
 	//	{ItemID: 105210, ItemName: "Fusion-Fire Core (Warforged)"},
 	//	{ItemID: 105459, ItemName: "Fusion-Fire Core (Heroic Warforged)"},
-	// })
-	
-	// TODO: Manual implementation required
-	//       This can be ignored if the effect has already been implemented.
-	//       With next db run the item will be removed if implemented.
-	//
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based
-	// damage roles only.
-	// shared.NewProcStatBonusEffectWithVariants(shared.ProcStatBonusEffect{
-	//	Callback: core.CallbackOnSpellHitDealt,
-	//	ProcMask: core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeOHAuto | core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial | core.ProcMaskRangedSpecial | core.ProcMaskSpellDamage | core.ProcMaskMeleeProc | core.ProcMaskRangedProc | core.ProcMaskSpellDamageProc,
-	//	Outcome:  core.OutcomeLanded,
-	//	Harmful:  true,
-	// }, []shared.ItemVariant{
-	//	{ItemID: 102298, ItemName: "Evil Eye of Galakras (N)"},
-	//	{ItemID: 104495, ItemName: "Evil Eye of Galakras (H)"},
-	//	{ItemID: 104744, ItemName: "Evil Eye of Galakras (Flexible)"},
-	//	{ItemID: 104993, ItemName: "Evil Eye of Galakras (LFR) (Celestial)"},
-	//	{ItemID: 105242, ItemName: "Evil Eye of Galakras (Warforged)"},
-	//	{ItemID: 105491, ItemName: "Evil Eye of Galakras (Heroic Warforged)"},
 	// })
 	
 	// TODO: Manual implementation required

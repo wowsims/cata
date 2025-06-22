@@ -28,6 +28,7 @@ func (druid *Druid) registerInnervateCD() {
 
 	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
 		ActionID: actionID,
+		Flags:    core.SpellFlagReadinessTrinket,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

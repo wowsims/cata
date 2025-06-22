@@ -40,6 +40,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 118375.9821
+  tps: 766971.23241
+  dtps: 104745.53925
+  hps: 68674.71687
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-AusterePrimalDiamond"
  value: {
   dps: 118473.07997
@@ -100,42 +109,6 @@ dps_results: {
   tps: 766266.04827
   dtps: 105813.62241
   hps: 71704.9441
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 119678.68465
-  tps: 772128.77055
-  dtps: 104368.89783
-  hps: 68501.78135
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 119891.15815
-  tps: 775743.38343
-  dtps: 104696.1722
-  hps: 68844.31436
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 120212.68992
-  tps: 775558.56697
-  dtps: 104035.33211
-  hps: 68218.74992
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 121236.99377
-  tps: 781161.02554
-  dtps: 103769.61375
-  hps: 68105.51041
  }
 }
 dps_results: {
@@ -274,6 +247,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 114785.57279
+  tps: 777341.82284
+  dtps: 112810.5743
+  hps: 69190.59894
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-FleetPrimalDiamond"
  value: {
   dps: 118268.3652
@@ -289,42 +271,6 @@ dps_results: {
   tps: 766266.04827
   dtps: 105813.62241
   hps: 71704.9441
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 124666.86918
-  tps: 807320.92548
-  dtps: 102277.15372
-  hps: 67745.31694
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 123597.16008
-  tps: 799904.73404
-  dtps: 102460.90379
-  hps: 67623.46464
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 125498.76518
-  tps: 813360.24068
-  dtps: 102145.90391
-  hps: 67644.01468
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 126178.34527
-  tps: 816917.44501
-  dtps: 102206.9648
-  hps: 67525.66131
  }
 }
 dps_results: {
@@ -445,42 +391,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 126532.90655
-  tps: 816585.01739
-  dtps: 102237.78083
-  hps: 67402.84399
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 125086.19459
-  tps: 808149.44974
-  dtps: 102511.94055
-  hps: 67898.65072
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 127137.09158
-  tps: 820205.01618
-  dtps: 102096.34868
-  hps: 66982.48327
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 127955.88895
-  tps: 826480.66216
-  dtps: 101540.46483
-  hps: 66436.58557
- }
-}
-dps_results: {
  key: "TestBlood-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 127972.81579
@@ -490,46 +400,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 119939.88175
-  tps: 776787.78266
-  dtps: 104848.74484
-  hps: 68716.27148
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 119135.99026
-  tps: 771018.87339
-  dtps: 104640.23488
-  hps: 68727.30673
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 119853.38614
-  tps: 776410.13194
-  dtps: 104848.74484
-  hps: 68724.57455
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 120085.66945
-  tps: 777995.98161
-  dtps: 104958.0716
-  hps: 68919.33942
- }
-}
-dps_results: {
  key: "TestBlood-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 120087.44932
-  tps: 777822.1132
+  dps: 120439.22094
+  tps: 780266.06694
   dtps: 104877.78662
   hps: 68447.43294
  }
@@ -640,42 +514,6 @@ dps_results: {
   tps: 774514.42975
   dtps: 104187.03453
   hps: 70723.22112
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 120486.00966
-  tps: 782636.49368
-  dtps: 105047.38243
-  hps: 71025.1321
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 120223.40192
-  tps: 778526.89939
-  dtps: 105037.06385
-  hps: 69239.55912
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 120492.34574
-  tps: 782368.78564
-  dtps: 104979.77059
-  hps: 69941.26425
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 120772.30536
-  tps: 781768.1573
-  dtps: 105126.00286
-  hps: 70191.62615
  }
 }
 dps_results: {

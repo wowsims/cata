@@ -32,6 +32,7 @@ func (druid *Druid) registerMightOfUrsocCD() {
 
 	druid.MightOfUrsoc = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
+		Flags:    core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

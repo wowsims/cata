@@ -48,7 +48,7 @@ func (bdk *BloodDeathKnight) registerVampiricBlood() {
 	spell := bdk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: death_knight.DeathKnightSpellVampiricBlood,
 
 		Cast: core.CastConfig{
