@@ -69,9 +69,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.BM_P3_PRESET.gear,
+		gear: Presets.P1_PRESET_GEAR.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats()
@@ -82,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
-		talents: Presets.BeastMasteryTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.BMDefaultOptions,
 		// Default raid/party buffs settings.
@@ -115,13 +115,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P3_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BeastMasteryTalents],
+		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_BM, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.BM_P3_PRESET, Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET],
+		builds: [Presets.PRERAID_PRESET, Presets.PRERAID_PRESET_CELESTIAL, Presets.P1_PRESET],
+		gear: [Presets.PRERAID_PRESET_GEAR, Presets.PRERAID_CELESTIAL_PRESET_GEAR, Presets.P1_PRESET_GEAR],
 	},
 
 	autoRotation: (player: Player<Spec.SpecBeastMasteryHunter>): APLRotation => {
@@ -195,7 +196,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecBeastMasteryHunter,
-			talents: Presets.BeastMasteryTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.BMDefaultOptions,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
@@ -206,10 +207,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.BM_PRERAID_PRESET.gear,
+					1: Presets.PRERAID_CELESTIAL_PRESET_GEAR.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.BM_PRERAID_PRESET.gear,
+					1: Presets.PRERAID_CELESTIAL_PRESET_GEAR.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -224,12 +225,6 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
-					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
-						return Presets.P1_EP_PRESET.epWeights;
-					}
-					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
-						return Presets.P3_EP_PRESET.epWeights;
-					}
 					return Presets.P1_EP_PRESET.epWeights;
 				},
 			});
