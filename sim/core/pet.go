@@ -74,7 +74,8 @@ type Pet struct {
 	// Examples:
 	// DK Raise Dead is doing its whole RP thing by climbing out of the ground before attacking.
 	// Monk clones Rush towards targets before attacking.
-	startAttackDelay time.Duration
+	startAttackDelay  time.Duration
+	attackDelayAction *PendingAction
 }
 
 func NewPet(config PetConfig) Pet {
@@ -207,14 +208,20 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
 		pet.AutoAttacks.EnableAutoSwing(sim)
 	} else {
-		sim.AddPendingAction(&PendingAction{
-			NextActionAt: max(0, sim.CurrentTime+pet.startAttackDelay),
-			OnAction: func(sim *Simulation) {
-				if pet.enabled {
-					pet.AutoAttacks.EnableAutoSwing(sim)
-				}
-			},
-		})
+		if pet.attackDelayAction == nil {
+			pet.attackDelayAction = &PendingAction{
+				OnAction: func(sim *Simulation) {
+					if pet.enabled {
+						pet.AutoAttacks.EnableAutoSwing(sim)
+					}
+				},
+			}
+		} else {
+			pet.attackDelayAction.cancelled = false
+		}
+
+		pet.attackDelayAction.NextActionAt = max(0, sim.CurrentTime + pet.startAttackDelay)
+		sim.AddPendingAction(pet.attackDelayAction)
 	}
 
 	if sim.Log != nil {
@@ -247,17 +254,15 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 
 	if pet.timeoutAction == nil {
 		pet.timeoutAction = &PendingAction{
-			NextActionAt: sim.CurrentTime + petDuration,
-
 			OnAction: func(sim *Simulation) {
 				pet.Disable(sim)
 			},
 		}
 	} else {
 		pet.timeoutAction.cancelled = false
-		pet.timeoutAction.NextActionAt = sim.CurrentTime + petDuration
 	}
 
+	pet.timeoutAction.NextActionAt = sim.CurrentTime + petDuration
 	sim.AddPendingAction(pet.timeoutAction)
 }
 
@@ -361,6 +366,9 @@ func (pet *Pet) Disable(sim *Simulation) {
 
 	if (pet.timeoutAction != nil) && !pet.timeoutAction.consumed {
 		pet.timeoutAction.Cancel(sim)
+	}
+	if (pet.attackDelayAction != nil) && !pet.attackDelayAction.consumed {
+		pet.attackDelayAction.Cancel(sim)
 	}
 
 	if pet.OnPetDisable != nil {
