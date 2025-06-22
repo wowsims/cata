@@ -511,17 +511,13 @@ func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonu
 }
 
 func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
-	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
-		parentAura.Unit.MultiplyCastSpeed(multiplier)
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyCastSpeed(sim, multiplier)
 	})
 
-	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
-		parentAura.Unit.MultiplyCastSpeed(1 / multiplier)
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.MultiplyCastSpeed(sim, 1 / multiplier)
 	})
-
-	if parentAura.IsActive() {
-		parentAura.Unit.MultiplyCastSpeed(multiplier)
-	}
 
 	return parentAura
 }

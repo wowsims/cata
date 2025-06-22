@@ -200,7 +200,7 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 
 	if pet.hasDynamicCastSpeedInheritance {
 		pet.enableDynamicCastSpeed(func(amount float64) {
-			pet.MultiplyCastSpeed(amount)
+			pet.MultiplyCastSpeed(sim, amount)
 		})
 	}
 
