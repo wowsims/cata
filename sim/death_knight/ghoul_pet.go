@@ -55,6 +55,7 @@ func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingC
 			EnabledOnStart:                  permanent,
 			IsGuardian:                      !permanent,
 			HasDynamicMeleeSpeedInheritance: true,
+			HasResourceRegenInheritance:     true,
 		}),
 		dkOwner:     dk,
 		clawSpellID: 91776,
@@ -91,6 +92,7 @@ func (ghoulPet *GhoulPet) GetPet() *core.Pet {
 }
 
 func (ghoulPet *GhoulPet) Initialize() {
+	ghoulPet.Pet.Initialize()
 	ghoulPet.Claw = ghoulPet.registerClaw()
 }
 
@@ -147,7 +149,7 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDMin,
+				GCD: core.BossGCD,
 			},
 			IgnoreHaste: true,
 		},
