@@ -258,10 +258,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-FabledFeatherofJi-Kun-96842"
  value: {
-  dps: 138950.45303
-  tps: 901349.63541
-  dtps: 95656.18987
-  hps: 64992.1026
+  dps: 153378.64175
+  tps: 969036.97454
+  dtps: 89145.95961
+  hps: 85571.90297
  }
 }
 dps_results: {
@@ -294,10 +294,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Horridon'sLastGasp-96757"
  value: {
-  dps: 118736.42987
-  tps: 769749.5817
-  dtps: 104750.70336
-  hps: 68748.54588
+  dps: 130291.16442
+  tps: 819343.95078
+  dtps: 98457.47967
+  hps: 88682.90861
  }
 }
 dps_results: {
@@ -321,19 +321,19 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-InscribedBagofHydra-Spawn-96828"
  value: {
-  dps: 117657.89229
-  tps: 762589.93384
-  dtps: 104072.24018
-  hps: 68075.64063
+  dps: 130529.99791
+  tps: 820811.82966
+  dtps: 97583.87288
+  hps: 88163.27955
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
-  dps: 119589.31472
-  tps: 775382.26572
-  dtps: 104834.14567
-  hps: 70039.71651
+  dps: 131046.82548
+  tps: 824893.53075
+  dtps: 98274.22545
+  hps: 90742.80164
  }
 }
 dps_results: {
@@ -438,10 +438,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 131594.63872
-  tps: 828906.98722
-  dtps: 98340.95384
-  hps: 89362.67242
+  dps: 131636.51099
+  tps: 829267.50463
+  dtps: 98276.18082
+  hps: 89310.99526
  }
 }
 dps_results: {
@@ -573,19 +573,19 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-UnerringVisionofLeiShen-96930"
  value: {
-  dps: 120648.23394
-  tps: 782393.35091
-  dtps: 104757.55406
-  hps: 68817.30905
+  dps: 133684.36026
+  tps: 842775.86132
+  dtps: 98316.93502
+  hps: 89371.7787
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-Wushoolay'sFinalChoice-96785"
  value: {
-  dps: 118301.92161
-  tps: 765913.79529
-  dtps: 104719.91713
-  hps: 68634.99844
+  dps: 130470.14564
+  tps: 819819.07137
+  dtps: 98460.31817
+  hps: 87562.89197
  }
 }
 dps_results: {

@@ -226,9 +226,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-FabledFeatherofJi-Kun-96842"
  value: {
-  dps: 168186.55479
-  tps: 124008.80933
-  hps: 1848.79577
+  dps: 168722.10993
+  tps: 124901.03683
+  hps: 1859.1735
  }
 }
 dps_results: {
@@ -258,9 +258,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Horridon'sLastGasp-96757"
  value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
+  dps: 128825.22537
+  tps: 97453.00132
+  hps: 1861.4941
  }
 }
 dps_results: {
@@ -282,17 +282,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-InscribedBagofHydra-Spawn-96828"
  value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
+  dps: 128824.95398
+  tps: 97452.72993
+  hps: 1861.4941
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
+  dps: 128824.95398
+  tps: 97452.72993
+  hps: 1861.4941
  }
 }
 dps_results: {
@@ -386,8 +386,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 129197.05265
-  tps: 97669.52431
+  dps: 129188.64003
+  tps: 97660.33116
   hps: 1861.4941
  }
 }
@@ -498,17 +498,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-UnerringVisionofLeiShen-96930"
  value: {
-  dps: 137553.64702
-  tps: 105435.09897
-  hps: 1943.76408
+  dps: 136963.43594
+  tps: 104837.77121
+  hps: 1954.55024
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Wushoolay'sFinalChoice-96785"
  value: {
-  dps: 127796.5135
-  tps: 96599.88775
-  hps: 1855.89681
+  dps: 128825.13827
+  tps: 97452.91423
+  hps: 1861.4941
  }
 }
 dps_results: {
