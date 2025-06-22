@@ -10,6 +10,17 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
+type readinessTrinketConfig struct {
+	itemVersionMap   shared.ItemVersionMap
+	baseTrinketLabel string
+	buffAuraLabel    string
+	buffAuraID       int32
+	buffedStat       stats.Stat
+	buffDuration     time.Duration
+	icd              time.Duration
+	cdrAuraIDs       map[proto.Spec]int32
+}
+
 func init() {
 
 	core.NewItemEffect(75274, func(agent core.Agent, state proto.ItemLevelState) {
@@ -38,7 +49,7 @@ func init() {
 			duration,
 		)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Zen Alchemist Stone",
 			ActionID:   core.ActionID{SpellID: 105574},
 			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
@@ -52,9 +63,11 @@ func init() {
 			},
 		})
 
+		eligibleSlots := character.ItemSwap.EligibleSlotsForItem(75274)
 		for _, aura := range auras {
-			character.AddStatProcBuff(75274, aura, false, core.TrinketSlots())
+			character.AddStatProcBuff(75274, aura, false, eligibleSlots)
 		}
+		character.ItemSwap.RegisterProcWithSlots(81266, triggerAura, eligibleSlots)
 	})
 
 	core.NewItemEffect(81266, func(agent core.Agent, state proto.ItemLevelState) {
@@ -64,7 +77,7 @@ func init() {
 
 		mana := core.GetItemEffectScaling(81266, 2.97199988365, state)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Price of Progress (Heroic)",
 			ActionID:   actionID,
 			ProcMask:   core.ProcMaskSpellHealing,
@@ -78,6 +91,9 @@ func init() {
 				}
 			},
 		})
+
+		eligibleSlots := character.ItemSwap.EligibleSlotsForItem(81266)
+		character.ItemSwap.RegisterProcWithSlots(81266, triggerAura, eligibleSlots)
 	})
 
 	// Renataki's Soul Charm
@@ -107,7 +123,7 @@ func init() {
 				StackingAuraLabel:    fmt.Sprintf("Item - Proc Stacking Agility %s", versionLabel),
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:    label,
 				Harmful: true,
 				ICD:     time.Second * 10,
@@ -121,7 +137,9 @@ func init() {
 				},
 			})
 
-			character.AddStatProcBuff(itemID, statBuffAura, false, core.TrinketSlots())
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.AddStatProcBuff(itemID, statBuffAura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
 		})
 	})
 
@@ -148,7 +166,7 @@ func init() {
 				StackingAuraLabel:    fmt.Sprintf("Blood of Power %s", versionLabel),
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       label,
 				ProcChance: 0.04,
 				Outcome:    core.OutcomeDodge,
@@ -159,7 +177,9 @@ func init() {
 				},
 			})
 
-			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.AddStatProcBuff(itemID, aura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
 		})
 	})
 
@@ -187,7 +207,7 @@ func init() {
 				StackingAuraLabel:    fmt.Sprintf("Rampage %s", versionLabel),
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:    label,
 				Harmful: true,
 				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
@@ -202,7 +222,9 @@ func init() {
 				},
 			})
 
-			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.AddStatProcBuff(itemID, aura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
 		})
 	})
 
@@ -230,7 +252,7 @@ func init() {
 				StackingAuraLabel:    fmt.Sprintf("Frenzy %s", versionLabel),
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:    label,
 				Harmful: true,
 				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
@@ -245,7 +267,9 @@ func init() {
 				},
 			})
 
-			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.AddStatProcBuff(itemID, aura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
 		})
 	})
 
@@ -273,7 +297,7 @@ func init() {
 				StackingAuraLabel:    fmt.Sprintf("Eye of Brutality %s", versionLabel),
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:    label,
 				Harmful: true,
 				DPM: character.NewRPPMProcManager(itemID, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
@@ -288,30 +312,45 @@ func init() {
 				},
 			})
 
-			character.AddStatProcBuff(itemID, aura, false, core.TrinketSlots())
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.AddStatProcBuff(itemID, aura, false, eligibleSlots)
+			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
 		})
 	})
 
-	newReadinessTrinket := func(itemVersionMap shared.ItemVersionMap, label string, buffAuraLabel string, buffAuraID int32, stat stats.Stat, duration time.Duration, cooldown time.Duration) {
-		itemVersionMap.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
+	newReadinessTrinket := func(config *readinessTrinketConfig) {
+		config.itemVersionMap.RegisterAll(func(version shared.ItemVersion, itemID int32, versionLabel string) {
 			core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
 				character := agent.GetCharacter()
 
+				auraID, exists := config.cdrAuraIDs[character.Spec]
+				if exists {
+					cdr := core.GetItemEffectScaling(itemID, 0.00989999995, state)
+					core.MakePermanent(character.RegisterAura(core.Aura{
+						Label:    fmt.Sprintf("Readiness %s", versionLabel),
+						ActionID: core.ActionID{SpellID: auraID},
+					}).AttachSpellMod(core.SpellModConfig{
+						Kind:       core.SpellMod_Cooldown_Multiplier,
+						SpellFlag:  core.SpellFlagReadinessTrinket,
+						FloatValue: cdr,
+					}))
+				}
+
 				stats := stats.Stats{}
-				stats[stat] = core.GetItemEffectScaling(itemID, 0.96799999475, state)
+				stats[config.buffedStat] = core.GetItemEffectScaling(itemID, 0.96799999475, state)
 
 				aura := character.NewTemporaryStatsAura(
-					fmt.Sprintf("%s %s", buffAuraLabel, versionLabel),
-					core.ActionID{SpellID: buffAuraID},
+					fmt.Sprintf("%s %s", config.buffAuraLabel, versionLabel),
+					core.ActionID{SpellID: config.buffAuraID},
 					stats,
-					duration,
+					config.buffDuration,
 				)
 
-				core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-					Name:       label,
+				triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+					Name:       config.baseTrinketLabel,
 					Harmful:    true,
 					ProcChance: 0.15,
-					ICD:        cooldown,
+					ICD:        config.icd,
 					ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
 					Outcome:    core.OutcomeLanded,
 					Callback:   core.CallbackOnSpellHitDealt,
@@ -320,7 +359,10 @@ func init() {
 					},
 				})
 
-				RegisterReadinessCooldownReduction(character, itemID, versionLabel, stat, state)
+				eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+				character.AddStatProcBuff(itemID, aura, false, eligibleSlots)
+				character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
+
 			})
 		})
 	}
@@ -331,8 +373,8 @@ func init() {
 	//
 	// Your attacks have a chance to grant you 14039 Agility for 20 sec.
 	// (15% chance, 115 sec cooldown) (Proc chance: 15%, 1.917m cooldown)
-	newReadinessTrinket(
-		shared.ItemVersionMap{
+	newReadinessTrinket(&readinessTrinketConfig{
+		itemVersionMap: shared.ItemVersionMap{
 			shared.ItemVersionLFR:             104974,
 			shared.ItemVersionNormal:          102292,
 			shared.ItemVersionHeroic:          104476,
@@ -340,42 +382,13 @@ func init() {
 			shared.ItemVersionHeroicWarforged: 105472,
 			shared.ItemVersionFlexible:        104725,
 		},
-		"Assurance of Consequence",
-		"Dextrous",
-		146308,
-		stats.Agility,
-		time.Second*20,
-		time.Second*115,
-	)
-
-	// Evil Eye of Galakras
-	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based
-	// damage roles only.
-	//
-	// Your attacks have a chance to grant you 11761 Strength for 10 sec.
-	// (15% chance, 55 sec cooldown) (Proc chance: 15%, 55s cooldown)
-	newReadinessTrinket(
-		shared.ItemVersionMap{
-			shared.ItemVersionLFR:             104993,
-			shared.ItemVersionNormal:          102298,
-			shared.ItemVersionHeroic:          104495,
-			shared.ItemVersionWarforged:       105242,
-			shared.ItemVersionHeroicWarforged: 105491,
-			shared.ItemVersionFlexible:        104744,
-		},
-		"Evil Eye of Galakras",
-		"Outrage",
-		146245,
-		stats.Strength,
-		time.Second*10,
-		time.Second*55,
-	)
-}
-
-func RegisterReadinessCooldownReduction(character *core.Character, itemID int32, versionLabel string, stat stats.Stat, state proto.ItemLevelState) {
-	cdr := core.GetItemEffectScaling(itemID, 0.00989999995, state)
-	auraID := map[stats.Stat]map[proto.Spec]int32{
-		stats.Agility: {
+		baseTrinketLabel: "Assurance of Consequence",
+		buffAuraLabel:    "Dextrous",
+		buffAuraID:       146308,
+		buffedStat:       stats.Agility,
+		buffDuration:     time.Second * 20,
+		icd:              time.Second * 115,
+		cdrAuraIDs: map[proto.Spec]int32{
 			// Druid
 			// Missing: Bear Hug, Ironbark, Nature's Swiftness
 			proto.Spec_SpecFeralDruid:       145961,
@@ -405,7 +418,30 @@ func RegisterReadinessCooldownReduction(character *core.Character, itemID int32,
 			proto.Spec_SpecMistweaverMonk: 145968,
 			proto.Spec_SpecWindwalkerMonk: 145969,
 		},
-		stats.Strength: {
+	})
+
+	// Evil Eye of Galakras
+	// Increases the cooldown recovery rate of six of your major abilities by 1%. Effective for Strength-based
+	// damage roles only.
+	//
+	// Your attacks have a chance to grant you 11761 Strength for 10 sec.
+	// (15% chance, 55 sec cooldown) (Proc chance: 15%, 55s cooldown)
+	newReadinessTrinket(&readinessTrinketConfig{
+		itemVersionMap: shared.ItemVersionMap{
+			shared.ItemVersionLFR:             104993,
+			shared.ItemVersionNormal:          102298,
+			shared.ItemVersionHeroic:          104495,
+			shared.ItemVersionWarforged:       105242,
+			shared.ItemVersionHeroicWarforged: 105491,
+			shared.ItemVersionFlexible:        104744,
+		},
+		baseTrinketLabel: "Evil Eye of Galakras",
+		buffAuraLabel:    "Outrage",
+		buffAuraID:       146245,
+		buffedStat:       stats.Strength,
+		buffDuration:     time.Second * 10,
+		icd:              time.Second * 55,
+		cdrAuraIDs: map[proto.Spec]int32{
 			// Death Knight
 			proto.Spec_SpecBloodDeathKnight:  145958,
 			proto.Spec_SpecFrostDeathKnight:  145959,
@@ -421,15 +457,5 @@ func RegisterReadinessCooldownReduction(character *core.Character, itemID int32,
 			proto.Spec_SpecFuryWarrior:       145991,
 			proto.Spec_SpecProtectionWarrior: 145992,
 		},
-	}[stat][character.Spec]
-
-	core.MakePermanent(character.RegisterAura(core.Aura{
-		Label:    fmt.Sprintf("Readiness %s", versionLabel),
-		ActionID: core.ActionID{SpellID: auraID},
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-		SpellFlag:  core.SpellFlagReadinessTrinket,
-		FloatValue: cdr,
-	}))
-
+	})
 }

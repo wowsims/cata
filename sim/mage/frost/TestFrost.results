@@ -38,6 +38,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 131720.94583
+  tps: 92684.11039
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-AusterePrimalDiamond"
  value: {
   dps: 135299.37062
@@ -63,34 +70,6 @@ dps_results: {
  value: {
   dps: 136966.03714
   tps: 96036.70073
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
  }
 }
 dps_results: {
@@ -178,6 +157,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 131720.94583
+  tps: 92684.11039
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-FleetPrimalDiamond"
  value: {
   dps: 136147.5554
@@ -189,34 +175,6 @@ dps_results: {
  value: {
   dps: 136399.31858
   tps: 95632.94869
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 133679.03406
-  tps: 94009.55853
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 133466.87384
-  tps: 93890.29036
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 133877.33561
-  tps: 94144.12502
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 134143.82916
-  tps: 94286.67723
  }
 }
 dps_results: {
@@ -262,34 +220,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 134640.29464
-  tps: 94713.46212
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 134177.11488
-  tps: 94397.47489
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 134743.34781
-  tps: 94775.03311
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 134844.86664
-  tps: 94829.26024
- }
-}
-dps_results: {
  key: "TestFrost-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 135097.06923
@@ -301,34 +231,6 @@ dps_results: {
  value: {
   dps: 123758.53674
   tps: 85306.37474
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 131720.94583
-  tps: 92684.11039
  }
 }
 dps_results: {
@@ -364,34 +266,6 @@ dps_results: {
  value: {
   dps: 140618.56934
   tps: 98743.65717
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 135252.33418
-  tps: 94938.85811
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 134477.66069
-  tps: 94497.21881
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 135699.62269
-  tps: 95302.58651
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 136048.86617
-  tps: 95544.49333
  }
 }
 dps_results: {

@@ -39,6 +39,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostTwoHand-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 145692.25319
+  tps: 136291.49912
+  hps: 1921.35635
+ }
+}
+dps_results: {
  key: "TestFrostTwoHand-AllItems-AusterePrimalDiamond"
  value: {
   dps: 146416.46899
@@ -92,38 +100,6 @@ dps_results: {
   dps: 146416.46899
   tps: 136757.22802
   hps: 1912.64017
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 145601.15527
-  tps: 136217.13081
-  hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 145601.15527
-  tps: 136217.13081
-  hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 145601.15527
-  tps: 136217.13081
-  hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 145601.15527
-  tps: 136217.13081
-  hps: 1921.35635
  }
 }
 dps_results: {
@@ -240,6 +216,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostTwoHand-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 144122.96251
+  tps: 134209.54512
+  hps: 1932.14251
+ }
+}
+dps_results: {
  key: "TestFrostTwoHand-AllItems-FleetPrimalDiamond"
  value: {
   dps: 147557.28671
@@ -253,38 +237,6 @@ dps_results: {
   dps: 146416.46899
   tps: 136757.22802
   hps: 1912.64017
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 153206.28242
-  tps: 142921.86925
-  hps: 1960.1661
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 151922.23094
-  tps: 141795.30154
-  hps: 1963.58202
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 153632.59173
-  tps: 143303.63004
-  hps: 1957.70626
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 154297.02241
-  tps: 143907.66828
-  hps: 1960.1661
  }
 }
 dps_results: {
@@ -392,75 +344,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrostTwoHand-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 153787.81955
-  tps: 143492.46734
-  hps: 1972.46529
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 152328.66698
-  tps: 142199.87277
-  hps: 1967.54561
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 154328.59118
-  tps: 143981.8063
-  hps: 1977.38496
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 154852.78257
-  tps: 144444.97218
-  hps: 1977.38496
- }
-}
-dps_results: {
  key: "TestFrostTwoHand-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 155370.32349
   tps: 144894.52605
   hps: 1979.8448
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 145974.38781
-  tps: 136533.83789
-  hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 145911.92019
-  tps: 136477.60096
-  hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 145994.8689
-  tps: 136550.18107
-  hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 146019.78365
-  tps: 136569.48743
-  hps: 1921.35635
  }
 }
 dps_results: {
@@ -557,38 +445,6 @@ dps_results: {
   dps: 150269.26212
   tps: 140334.51633
   hps: 1921.35635
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 148883.73992
-  tps: 139299.12785
-  hps: 1969.95904
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 148900.96974
-  tps: 139341.309
-  hps: 1962.99723
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 148886.15524
-  tps: 139269.53934
-  hps: 1973.23573
- }
-}
-dps_results: {
- key: "TestFrostTwoHand-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 149181.92427
-  tps: 139560.41112
-  hps: 1977.87693
  }
 }
 dps_results: {
