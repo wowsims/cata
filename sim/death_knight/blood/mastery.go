@@ -53,7 +53,7 @@ func (bdk *BloodDeathKnight) registerMastery() {
 					if currentShield <= 0 {
 						shield.Deactivate(sim)
 					} else {
-						shield.Aura.SetStacks(sim, int32(currentShield))
+						shield.SetStacks(sim, int32(currentShield))
 					}
 				},
 			},
@@ -65,7 +65,7 @@ func (bdk *BloodDeathKnight) registerMastery() {
 				currentShield += shieldAmount
 				shield := spell.SelfShield()
 				shield.Apply(sim, shieldAmount)
-				shield.Aura.SetStacks(sim, int32(currentShield))
+				shield.SetStacks(sim, int32(currentShield))
 			}
 		},
 	})
