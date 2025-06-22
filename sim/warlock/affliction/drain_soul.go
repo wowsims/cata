@@ -44,7 +44,7 @@ func (affliction *AfflictionWarlock) registerDrainSoul() {
 				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 
 				// Every 2nd tick grants 1 soul shard
-				if dot.TickCount()%2 == 1 {
+				if dot.TickCount()%2 == 0 {
 					affliction.SoulShards.Gain(sim, 1, dot.Spell.ActionID)
 				}
 

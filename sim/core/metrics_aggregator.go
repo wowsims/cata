@@ -459,9 +459,13 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 		if !unitMetrics.WentOOM {
 			// If we didn't actually go OOM in this iteration, infer TTO based on remaining mana.
 			manaSpentPerSecond := (unitMetrics.ManaSpent - unitMetrics.ManaGained) / encounterDurationSeconds
-			remainingTTO := DurationFromSeconds(unit.CurrentMana() / manaSpentPerSecond)
-			timeToOOM = DurationFromSeconds(encounterDurationSeconds) + remainingTTO
-			timeToOOM = min(timeToOOM, time.Minute*60)
+			if manaSpentPerSecond > 0 {
+				remainingTTO := DurationFromSeconds(unit.CurrentMana() / manaSpentPerSecond)
+				timeToOOM = DurationFromSeconds(encounterDurationSeconds) + remainingTTO
+				timeToOOM = min(timeToOOM, time.Minute*60)
+			} else {
+				timeToOOM = time.Minute * 60
+			}
 		}
 
 		if timeToOOM < 0 {
@@ -470,6 +474,7 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 		}
 
 		unitMetrics.tto.Total = timeToOOM.Seconds()
+
 		// Hack because of the way DistributionMetrics does its calculations.
 		unitMetrics.tto.Total *= encounterDurationSeconds
 	}
