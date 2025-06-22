@@ -20,9 +20,9 @@ func (mage *Mage) registerAlterTimeCD() {
 		Label:    "Alter Time",
 		ActionID: actionID,
 		Duration: time.Second * 6,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(alterTimeAura *core.Aura, sim *core.Simulation) {
 			allAuras = core.FilterSlice(mage.GetAuras(), func(aura *core.Aura) bool {
-				return aura.Duration == core.NeverExpires
+				return aura.Duration != core.NeverExpires && aura != alterTimeAura
 			})
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
