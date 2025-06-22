@@ -24,7 +24,7 @@ func (priest *Priest) registerMindbenderSpell() {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: PriestSpellMindBender,
 
 		Cast: core.CastConfig{

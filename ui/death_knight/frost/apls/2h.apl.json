@@ -33,7 +33,6 @@
 		{"action":{"castSpell":{"spellId":{"spellId":49020,"tag":1}}}},
 		{"action":{"condition":{"or":{"vals":[{"cmp":{"op":"OpGe","lhs":{"currentRunicPower":{}},"rhs":{"const":{"val":"20"}}}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"auraId":{"spellId":114851}}},"rhs":{"const":{"val":"10"}}}}]}},"castSpell":{"spellId":{"spellId":45529}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":49143,"tag":1}}}},
-		{"action":{"castSpell":{"spellId":{"spellId":123693}}}},
-		{"action":{"castSpell":{"spellId":{"spellId":47568}}}}
+		{"action":{"castSpell":{"spellId":{"spellId":123693}}}}
 	]
 }

@@ -59,6 +59,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 88746.41675
+  tps: 61366.2744
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-AusterePrimalDiamond"
  value: {
   dps: 92289.36303
@@ -430,34 +437,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
  key: "TestAffliction-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
   dps: 88746.41675
@@ -682,6 +661,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 88746.41675
+  tps: 61366.2744
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-FearwurmBadge-84074"
  value: {
   dps: 89397.24203
@@ -777,34 +763,6 @@ dps_results: {
  value: {
   dps: 91907.0974
   tps: 63836.11442
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 90330.31898
-  tps: 62536.89215
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 89802.56183
-  tps: 62195.78609
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 90365.82419
-  tps: 62512.07114
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 90226.62722
-  tps: 62349.83348
  }
 }
 dps_results: {
@@ -1613,34 +1571,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 90464.25576
-  tps: 62428.59541
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 90173.59987
-  tps: 62242.6647
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 90523.92611
-  tps: 62457.1325
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 90636.61866
-  tps: 62523.32579
- }
-}
-dps_results: {
  key: "TestAffliction-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 90708.5669
@@ -1698,34 +1628,6 @@ dps_results: {
 }
 dps_results: {
  key: "TestAffliction-AllItems-RelicofXuen-79328"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 88746.41675
-  tps: 61366.2744
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-Renataki'sSoulCharm-96369"
  value: {
   dps: 88746.41675
   tps: 61366.2744
@@ -2030,34 +1932,6 @@ dps_results: {
  value: {
   dps: 94833.12025
   tps: 65360.76561
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 92625.85101
-  tps: 64270.70325
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 91802.56566
-  tps: 63651.81723
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 92278.87136
-  tps: 63786.23683
- }
-}
-dps_results: {
- key: "TestAffliction-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 92683.0628
-  tps: 64230.24186
  }
 }
 dps_results: {

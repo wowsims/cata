@@ -31,14 +31,12 @@
 		{"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"currentNonDeathRuneCount":{"runeType":"RuneUnholy"}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":55090,"tag":1}}}},
 		{"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"currentNonDeathRuneCount":{"runeType":"RuneBlood"}},"rhs":{"const":{"val":"2"}}}},{"cmp":{"op":"OpEq","lhs":{"currentNonDeathRuneCount":{"runeType":"RuneFrost"}},"rhs":{"const":{"val":"2"}}}}]}},"castSpell":{"spellId":{"spellId":85948,"tag":1}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":43265}}}},
-		{"action":{"condition":{"spellIsReady":{"spellId":{"spellId":43265}}},"castSpell":{"spellId":{"spellId":45529}}}},
 		{"action":{"condition":{"or":{"vals":[{"auraIsActiveWithReactionTime":{"auraId":{"spellId":81340}}},{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":63560}}}}},{"cmp":{"op":"OpLe","lhs":{"currentNonDeathRuneCount":{"runeType":"RuneUnholy"}},"rhs":{"const":{"val":"1"}}}}]}}]}},"castSpell":{"spellId":{"spellId":47541}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":55090,"tag":1}}}},
 		{"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"spellTimeToReady":{"spellId":{"spellId":77575}}},"rhs":{"const":{"val":"1s"}}}},"castSpell":{"spellId":{"spellId":123693}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":85948,"tag":1}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":57330}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":47541}}}},
-		{"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":114851}}},"rhs":{"const":{"val":"8"}}}},"castSpell":{"spellId":{"spellId":45529}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":47568}}}}
 	]
 }

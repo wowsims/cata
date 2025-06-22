@@ -112,10 +112,14 @@ func (dk *DeathKnight) registerPlagueLeech() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			if !result.Landed() {
+				return
+			}
+
 			dk.BloodPlagueSpell.Dot(target).Deactivate(sim)
 			dk.FrostFeverSpell.Dot(target).Deactivate(sim)
-			dk.RegenRandomDepletedRune(sim, runeMetrics)
-			dk.RegenRandomDepletedRune(sim, runeMetrics)
+			dk.RegenPseudoRandomPlagueLeechRunes(sim, spell, runeMetrics)
 		},
 	})
 }
@@ -669,8 +673,7 @@ func (dk *DeathKnight) registerBloodTap() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if ok, slot := dk.RegenRandomDepletedRune(sim, runeMetrics); ok {
-				dk.ConvertToDeath(sim, slot, core.NeverExpires)
+			if dk.RegenPseudoRandomBloodTapRuneAsDeath(sim, spell, runeMetrics) {
 				bloodChargeAura.RemoveStacks(sim, 5)
 			}
 		},
@@ -679,6 +682,7 @@ func (dk *DeathKnight) registerBloodTap() {
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Blood Charge Trigger" + dk.Label,
 		Callback:       core.CallbackOnSpellHitDealt,
+		ProcMask:       core.ProcMaskMeleeMH | core.ProcMaskSpellDamage,
 		ClassSpellMask: DeathKnightSpellDeathCoil | DeathKnightSpellFrostStrike | DeathKnightSpellRuneStrike,
 		Outcome:        core.OutcomeLanded,
 

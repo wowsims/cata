@@ -59,6 +59,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 146045.90394
+  tps: 137769.25808
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-AusterePrimalDiamond"
  value: {
   dps: 152944.66628
@@ -430,34 +437,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 145863.39353
-  tps: 137615.13834
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 145863.39353
-  tps: 137615.13834
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 145863.39353
-  tps: 137615.13834
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 145863.39353
-  tps: 137615.13834
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
   dps: 145863.39353
@@ -682,6 +661,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 132359.6141
+  tps: 127261.81211
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-FearwurmBadge-84074"
  value: {
   dps: 148434.19148
@@ -777,34 +763,6 @@ dps_results: {
  value: {
   dps: 150034.3352
   tps: 141786.08
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 155499.32843
-  tps: 146548.43211
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 153843.06178
-  tps: 145004.15682
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 155943.06902
-  tps: 146948.28064
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 156615.99546
-  tps: 147591.18612
  }
 }
 dps_results: {
@@ -1627,34 +1585,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 155894.06182
-  tps: 146870.99686
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 154099.36416
-  tps: 145220.09951
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 156582.89808
-  tps: 147518.32192
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 157410.34783
-  tps: 148289.97393
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 158223.65573
@@ -1711,38 +1641,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRetribution-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 146252.05286
-  tps: 137983.09619
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 146212.37069
-  tps: 137943.41402
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 146267.85094
-  tps: 137991.94906
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 146275.62136
-  tps: 137999.71948
- }
-}
-dps_results: {
  key: "TestRetribution-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 146302.67713
-  tps: 138019.83004
+  dps: 146596.36725
+  tps: 138306.11514
  }
 }
 dps_results: {
@@ -2023,34 +1925,6 @@ dps_results: {
  value: {
   dps: 156539.88555
   tps: 147250.83338
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 149189.39059
-  tps: 140812.01854
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 149124.04349
-  tps: 140592.49149
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 149104.63928
-  tps: 140657.84843
- }
-}
-dps_results: {
- key: "TestRetribution-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 149327.36594
-  tps: 140925.99864
  }
 }
 dps_results: {

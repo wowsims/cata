@@ -21,7 +21,7 @@ func (shaman *Shaman) registerEarthElementalTotem(isGuardian bool) {
 
 	shaman.EarthElementalTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskEarthElementalTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 28.1,

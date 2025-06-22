@@ -21,7 +21,7 @@ func (shaman *Shaman) registerFireElementalTotem(isGuardian bool) {
 
 	shaman.FireElementalTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskFireElementalTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 26.9,

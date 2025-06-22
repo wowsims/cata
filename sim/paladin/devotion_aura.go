@@ -33,7 +33,7 @@ func (paladin *Paladin) registerDevotionAura() {
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.DevotionAuraActionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskDevotionAura,
 
 		Cast: core.CastConfig{

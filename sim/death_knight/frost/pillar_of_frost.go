@@ -45,7 +45,7 @@ func (fdk *FrostDeathKnight) registerPillarOfFrost() {
 	spell := fdk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: death_knight.DeathKnightSpellPillarOfFrost,
 
 		RuneCost: core.RuneCostOptions{
