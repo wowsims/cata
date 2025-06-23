@@ -17,6 +17,14 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 		ClassMask:  hunter.HunterSpellsAll,
 		FloatValue: -0.5,
 	})
+	bwDamageMod := bmHunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.1,
+	})
+	bwPetDamageMod := bmHunter.Pet.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.2,
+	})
 
 	actionID := core.ActionID{SpellID: 19574}
 
@@ -25,10 +33,10 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
+			bwPetDamageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
+			bwPetDamageMod.Deactivate()
 		},
 	})
 
@@ -37,11 +45,11 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
+			bwDamageMod.Activate()
 			bwCostMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
+			bwDamageMod.Deactivate()
 			bwCostMod.Deactivate()
 		},
 	})

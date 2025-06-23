@@ -87,6 +87,12 @@ func (bmHunter *BeastMasteryHunter) applyCobraStrikes() {
 		return
 	}
 
+	basicAttackCritMod := bmHunter.Pet.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: 100,
+	})
+
 	actionID := core.ActionID{SpellID: 53260}
 	procChance := 0.15
 	csAura := bmHunter.Pet.RegisterAura(core.Aura{
@@ -95,13 +101,13 @@ func (bmHunter *BeastMasteryHunter) applyCobraStrikes() {
 		Duration:  time.Second * 15,
 		MaxStacks: 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			bmHunter.Pet.FocusDump.BonusCritPercent += 100
+			basicAttackCritMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			bmHunter.Pet.FocusDump.BonusCritPercent -= 100
+			basicAttackCritMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(hunter.HunterPetFocusDump) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) {
 				aura.RemoveStack(sim)
 			}
 		},
