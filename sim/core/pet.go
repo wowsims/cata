@@ -236,7 +236,10 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	sim.addTracker(&pet.auraTracker)
 
 	if pet.HasFocusBar() {
+		// make sure to reset it to refresh focus
+		pet.focusBar.reset(sim)
 		pet.focusBar.enable(sim, sim.CurrentTime)
+		pet.focusBar.focusRegenMultiplier *= pet.Owner.PseudoStats.AttackSpeedMultiplier
 	}
 
 	if pet.HasEnergyBar() {
