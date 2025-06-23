@@ -33,7 +33,6 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 	conf := core.PetConfig{
 		Name:                            "Stampede",
 		Owner:                           &hunter.Character,
-		BaseStats:                       hunterPetBaseStats,
 		StatInheritance:                 hunter.makeStatInheritance(),
 		EnabledOnStart:                  false,
 		IsGuardian:                      false,
@@ -51,7 +50,7 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
 			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
-			SwingSpeed:     1.8,
+			SwingSpeed:     2,
 		},
 		AutoSwingMelee: true,
 		ProcMask:       core.ProcMaskEmpty,
@@ -65,7 +64,6 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	conf := core.PetConfig{
 		Name:                            "Dire Beast Pet",
 		Owner:                           &hunter.Character,
-		BaseStats:                       hunterPetBaseStats,
 		StatInheritance:                 hunter.makeStatInheritance(),
 		EnabledOnStart:                  false,
 		IsGuardian:                      true,
@@ -82,15 +80,16 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	focusMetrics := hunter.NewFocusMetrics(dbActionID)
 	direBeastPet.EnableAutoAttacks(direBeastPet, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
-			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
-			CritMultiplier: 2,
-			SwingSpeed:     1.8,
+			BaseDamageMin:     hunter.ClassSpellScaling,
+			BaseDamageMax:     hunter.ClassSpellScaling,
+			CritMultiplier:    2,
+			SwingSpeed:        2,
+			AttackPowerPerDPS: 7,
 		},
 		AutoSwingMelee: true,
 		ProcMask:       core.ProcMaskEmpty,
 	})
-	direBeastPet.ApplyTalents()
+
 	hunter.AddPet(direBeastPet)
 	core.MakeProcTriggerAura(&direBeastPet.Unit, core.ProcTrigger{
 		Name:       "Dire Beast",
@@ -117,7 +116,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	conf := core.PetConfig{
 		Name:                            petConfig.Name,
 		Owner:                           &hunter.Character,
-		BaseStats:                       hunterPetBaseStats,
 		StatInheritance:                 hunter.makeStatInheritance(),
 		EnabledOnStart:                  true,
 		IsGuardian:                      false,
@@ -160,22 +158,15 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		}
 	})
 
-	atkSpd := 1.8
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  hp.hunterOwner.ClassSpellScaling * 0.25,
 			BaseDamageMax:  hp.hunterOwner.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
-			SwingSpeed:     atkSpd,
+			SwingSpeed:     2,
 		},
 		AutoSwingMelee: true,
 	})
-
-	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
-
-	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Strength, stats.RangedAttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/324.72)
 
 	hunter.AddPet(hp)
 	return hp
@@ -260,15 +251,6 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	} else {
 		_ = hp.specialAbility.Cast(sim, target) || hp.focusDump.Cast(sim, target)
 	}
-}
-
-var hunterPetBaseStats = stats.Stats{
-	stats.Agility:     438,
-	stats.Strength:    476,
-	stats.AttackPower: -20, // Apparently pets and warriors have a AP penalty.
-
-	// Add 1.8% because pets aren't affected by that component of crit suppression.
-	stats.PhysicalCritPercent: 3.2 + 1.8,
 }
 
 const PetExpertiseRatingScale = 3.25 * core.PhysicalHitRatingPerHitPercent
