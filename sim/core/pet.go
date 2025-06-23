@@ -403,7 +403,7 @@ func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPet
 		nextHeartbeat := (time.Second * 5) * (numHeartbeats + 1) + env.heartbeatOffset
 
 		StartDelayedAction(sim, DelayedActionOptions{
-			DoAt:     time.Second * 2 + nextHeartbeat,
+			DoAt:     nextHeartbeat,
 			Priority: ActionPriorityDOT,
 
 			OnAction: func(sim *Simulation) {
