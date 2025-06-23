@@ -15,7 +15,7 @@ func (uhdk *UnholyDeathKnight) registerSummonGargoyle() {
 	actionID := core.ActionID{SpellID: 49206}
 	spell := uhdk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: death_knight.DeathKnightSpellSummonGargoyle,
 
 		Cast: core.CastConfig{

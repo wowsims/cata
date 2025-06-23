@@ -31,7 +31,7 @@ func (uhdk *UnholyDeathKnight) registerUnholyFrenzy() {
 
 	unholyFrenzy := uhdk.Character.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: death_knight.DeathKnightSpellUnholyFrenzy,
 
 		Cast: core.CastConfig{

@@ -42,6 +42,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 	rapidFire := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: HunterSpellRapidFire,
+		Flags:          core.SpellFlagReadinessTrinket,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},

@@ -54,6 +54,12 @@ type runicPowerBar struct {
 	unholyRuneGainMetrics *ResourceMetrics
 	deathRuneGainMetrics  *ResourceMetrics
 
+	spellRunicPowerMetrics map[ActionID]*ResourceMetrics
+	spellBloodRuneMetrics  map[ActionID]*ResourceMetrics
+	spellFrostRuneMetrics  map[ActionID]*ResourceMetrics
+	spellUnholyRuneMetrics map[ActionID]*ResourceMetrics
+	spellDeathRuneMetrics  map[ActionID]*ResourceMetrics
+
 	onRuneChange     OnRuneChange
 	onRunicPowerGain OnRunicPowerGain
 
@@ -139,6 +145,12 @@ func (character *Character) EnableRunicPowerBar(startingRunicPower float64, maxR
 
 		permanentDeaths: make([]int8, 0),
 		lastRegen:       make([]int8, 0),
+
+		spellRunicPowerMetrics: make(map[ActionID]*ResourceMetrics),
+		spellBloodRuneMetrics:  make(map[ActionID]*ResourceMetrics),
+		spellFrostRuneMetrics:  make(map[ActionID]*ResourceMetrics),
+		spellUnholyRuneMetrics: make(map[ActionID]*ResourceMetrics),
+		spellDeathRuneMetrics:  make(map[ActionID]*ResourceMetrics),
 	}
 
 	character.bloodRuneGainMetrics = character.NewBloodRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionBloodRuneGain, Tag: 1})
@@ -184,7 +196,8 @@ func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, 
 	if !withMultiplier || rp.runicRegenMultiplierDisabled {
 		runicRegenMultiplier = 1.0
 	}
-	newRunicPower := min(rp.currentRunicPower+(amount*runicRegenMultiplier), rp.maxRunicPower)
+	amount *= runicRegenMultiplier
+	newRunicPower := min(rp.currentRunicPower+amount, rp.maxRunicPower)
 
 	if sim.CurrentTime > 0 {
 		metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
@@ -684,92 +697,122 @@ func (rp *runicPowerBar) isDepleted(runeSlot int) bool {
 	return rp.runeStates&isSpents[runeSlot] > 0 && rp.runeMeta[runeSlot].regenAt == NeverExpires
 }
 
-func (rp *runicPowerBar) RegenRandomDepletedRune(sim *Simulation, runeMetrics []*ResourceMetrics) {
-	changeType := None
-	possibleRunes := make([]int, 0)
-	for i := range rp.runeMeta {
-		if rp.isDepleted(i) {
-			possibleRunes = append(possibleRunes, i)
+type depletedRune struct {
+	runeSlot int8
+	regenAt  time.Duration
+}
+
+func getHighestCDRune(sim *Simulation, possibleRunes []*depletedRune) int8 {
+	maxRegenAt := sim.CurrentTime
+	for _, rune := range possibleRunes {
+		if rune.regenAt > maxRegenAt {
+			maxRegenAt = rune.regenAt
 		}
+	}
+
+	filteredRunes := make([]int8, 0)
+	for _, rune := range possibleRunes {
+		if rune.regenAt == maxRegenAt {
+			filteredRunes = append(filteredRunes, rune.runeSlot)
+		}
+	}
+
+	randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(filteredRunes))))
+	return filteredRunes[randomRuneIndex]
+}
+
+// Runic Empowerment prioritizes fully depleted runes with the highest cd
+func (rp *runicPowerBar) RegenRunicEmpowermentRune(sim *Simulation, runeMetrics []*ResourceMetrics) {
+	possibleRunes := make([]*depletedRune, 0)
+
+	if rp.isDepleted(0) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 0, regenAt: rp.runeMeta[1].regenAt})
+	} else if rp.isDepleted(1) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 1, regenAt: rp.runeMeta[0].regenAt})
+	}
+	if rp.isDepleted(2) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+	} else if rp.isDepleted(3) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
+	}
+	if rp.isDepleted(4) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 4, regenAt: rp.runeMeta[5].regenAt})
+	} else if rp.isDepleted(5) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 5, regenAt: rp.runeMeta[4].regenAt})
 	}
 
 	if len(possibleRunes) == 0 {
 		return
 	}
 
-	randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(possibleRunes))))
-	randomRune := int8(possibleRunes[randomRuneIndex])
+	slot := getHighestCDRune(sim, possibleRunes)
 
-	rp.regenRuneInternal(sim, sim.CurrentTime, randomRune)
-	changeType = GainRune
-	if rp.runeStates&isDeaths[randomRune] > 0 {
+	rp.regenRuneInternal(sim, sim.CurrentTime, slot)
+	if rp.runeStates&isDeaths[slot] > 0 {
 		rp.gainRuneMetrics(sim, runeMetrics[3], 1)
 	} else {
-		rp.gainRuneMetrics(sim, runeMetrics[randomRune/2], 1)
+		rp.gainRuneMetrics(sim, runeMetrics[slot/2], 1)
 	}
 
-	rp.maybeFireChange(sim, changeType)
+	rp.maybeFireChange(sim, GainRune)
 }
 
-func (rp *runicPowerBar) RegenPseudoRandomPlagueLeechRunes(sim *Simulation, spell *Spell, runeMetrics []*ResourceMetrics) {
-	possibleRunes := make([]int8, 0)
+// Plague leech prioritizes runes based on spec
+// Unholy prefers to regen a pair of B/F runes first, then U if no other runes are available.
+// Blood and Frost prefers to regen a pair of F/U runes first, then B if no other runes are available.
+func (rp *runicPowerBar) ConvertAndRegenPlagueLeechRunes(sim *Simulation, spell *Spell, runeMetrics []*ResourceMetrics) {
+	runesToRegen := make([]int8, 0)
 
-	// In MoP, this process is not really "random" by the fact that it tries to pick the "most useful" rune to regen first.
 	if rp.character.Spec == proto.Spec_SpecUnholyDeathKnight {
-		// Unholy spec prefers to regen a pair of B/F runes first, then U if no other runes are available.
 		if rp.isDepleted(0) {
-			possibleRunes = append(possibleRunes, 0)
+			runesToRegen = append(runesToRegen, 0)
 		} else if rp.isDepleted(1) {
-			possibleRunes = append(possibleRunes, 1)
+			runesToRegen = append(runesToRegen, 1)
 		}
 
 		if rp.isDepleted(2) {
-			possibleRunes = append(possibleRunes, 2)
+			runesToRegen = append(runesToRegen, 2)
 		} else if rp.isDepleted(3) {
-			possibleRunes = append(possibleRunes, 3)
+			runesToRegen = append(runesToRegen, 3)
 		}
 
-		if len(possibleRunes) < 2 {
+		if len(runesToRegen) < 2 {
 			if rp.isDepleted(4) {
-				possibleRunes = append(possibleRunes, 4)
+				runesToRegen = append(runesToRegen, 4)
 			} else if rp.isDepleted(5) {
-				possibleRunes = append(possibleRunes, 5)
+				runesToRegen = append(runesToRegen, 5)
 			}
 		}
 	} else {
-		// Blood and Frost specs prefers to regen a pair of F/U runes first, then B if no other runes are available.
 		if rp.isDepleted(2) {
-			possibleRunes = append(possibleRunes, 2)
+			runesToRegen = append(runesToRegen, 2)
 		} else if rp.isDepleted(3) {
-			possibleRunes = append(possibleRunes, 3)
+			runesToRegen = append(runesToRegen, 3)
 		}
 
 		if rp.isDepleted(4) {
-			possibleRunes = append(possibleRunes, 4)
+			runesToRegen = append(runesToRegen, 4)
 		} else if rp.isDepleted(5) {
-			possibleRunes = append(possibleRunes, 5)
+			runesToRegen = append(runesToRegen, 5)
 		}
 
-		if len(possibleRunes) < 2 {
+		if len(runesToRegen) < 2 {
 			if rp.isDepleted(0) {
-				possibleRunes = append(possibleRunes, 0)
+				runesToRegen = append(runesToRegen, 0)
 			} else if rp.isDepleted(1) {
-				possibleRunes = append(possibleRunes, 1)
+				runesToRegen = append(runesToRegen, 1)
 			}
 		}
 	}
 
-	if len(possibleRunes) == 0 {
+	if len(runesToRegen) == 0 {
 		return
 	}
 
-	changeType := None
-	for _, slot := range possibleRunes {
+	for _, slot := range runesToRegen {
 		spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
-		changeType |= ConvertToDeath
 
 		rp.regenRuneInternal(sim, sim.CurrentTime, slot)
-		changeType |= GainRune
 		if rp.runeStates&isDeaths[slot] > 0 {
 			rp.gainRuneMetrics(sim, runeMetrics[3], 1)
 		} else {
@@ -777,62 +820,61 @@ func (rp *runicPowerBar) RegenPseudoRandomPlagueLeechRunes(sim *Simulation, spel
 		}
 	}
 
-	rp.maybeFireChange(sim, changeType)
+	rp.maybeFireChange(sim, ConvertToDeath|GainRune)
 }
 
-func (rp *runicPowerBar) RegenPseudoRandomBloodTapRuneAsDeath(sim *Simulation, spell *Spell, runeMetrics []*ResourceMetrics) bool {
+// Blood tap prioritizes runes based on spec
+// Blood prefers to regen B runes first, then the F/U rune with the highest CD if no blood runes are available.
+// Frost prefers to regen U runes first, then the B/F rune with the highest CD if no other runes are available.
+// Unholy prefers to regen a B/F rune with the highest CD first, then an U rune if no other runes are available.
+func (rp *runicPowerBar) ConvertAndRegenBloodTapRune(sim *Simulation, spell *Spell, runeMetrics []*ResourceMetrics) bool {
 	slot := int8(-1)
+	possibleRunes := make([]*depletedRune, 0)
 
-	// In MoP, this process is not really "random" by the fact that it tries to pick the "most useful" rune to regen first.
 	if rp.character.Spec == proto.Spec_SpecBloodDeathKnight {
-		// Blood spec prefers to regen blood runes first, then frost/uhholy if no blood runes are available.
 		if rp.isDepleted(0) {
 			slot = 0
 		} else if rp.isDepleted(1) {
 			slot = 1
 		} else {
-			possibleRunes := make([]int, 0)
-			for i := 2; i < 6; i++ {
-				if rp.isDepleted(i) {
-					possibleRunes = append(possibleRunes, i)
-				}
+			if rp.isDepleted(2) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+			} else if rp.isDepleted(3) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
 			}
-
-			if len(possibleRunes) == 0 {
-				return false
+			if rp.isDepleted(4) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 4, regenAt: rp.runeMeta[5].regenAt})
+			} else if rp.isDepleted(5) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 5, regenAt: rp.runeMeta[4].regenAt})
 			}
-
-			randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(possibleRunes))))
-			slot = int8(possibleRunes[randomRuneIndex])
 		}
 	} else if rp.character.Spec == proto.Spec_SpecFrostDeathKnight {
-		// Frost spec prefers to regen unholy runes first, then frost/blood if no other runes are available.
 		if rp.isDepleted(4) {
 			slot = 4
 		} else if rp.isDepleted(5) {
 			slot = 5
 		} else {
-			possibleRunes := make([]int, 0)
-			for i := range 4 {
-				if rp.isDepleted(i) {
-					possibleRunes = append(possibleRunes, i)
-				}
+			if rp.isDepleted(0) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 0, regenAt: rp.runeMeta[1].regenAt})
+			} else if rp.isDepleted(1) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 1, regenAt: rp.runeMeta[0].regenAt})
 			}
-
-			if len(possibleRunes) == 0 {
-				return false
+			if rp.isDepleted(2) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+			} else if rp.isDepleted(3) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
 			}
-
-			randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(possibleRunes))))
-			slot = int8(possibleRunes[randomRuneIndex])
 		}
 	} else {
-		// Unholy spec prefers to regen non-unholy runes first, then unholy if no other runes are available.
-		possibleRunes := make([]int, 0)
-		for i := range 4 {
-			if rp.isDepleted(i) {
-				possibleRunes = append(possibleRunes, i)
-			}
+		if rp.isDepleted(0) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 0, regenAt: rp.runeMeta[1].regenAt})
+		} else if rp.isDepleted(1) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 1, regenAt: rp.runeMeta[0].regenAt})
+		}
+		if rp.isDepleted(2) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+		} else if rp.isDepleted(3) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
 		}
 
 		if len(possibleRunes) == 0 {
@@ -840,13 +882,12 @@ func (rp *runicPowerBar) RegenPseudoRandomBloodTapRuneAsDeath(sim *Simulation, s
 				slot = 4
 			} else if rp.isDepleted(5) {
 				slot = 5
-			} else {
-				return false
 			}
-		} else {
-			randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(possibleRunes))))
-			slot = int8(possibleRunes[randomRuneIndex])
 		}
+	}
+
+	if len(possibleRunes) > 0 {
+		slot = getHighestCDRune(sim, possibleRunes)
 	}
 
 	if slot == -1 {
@@ -854,16 +895,14 @@ func (rp *runicPowerBar) RegenPseudoRandomBloodTapRuneAsDeath(sim *Simulation, s
 	}
 
 	spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
-	changeType := ConvertToDeath
 
 	rp.regenRuneInternal(sim, sim.CurrentTime, slot)
-	changeType |= GainRune
 	if rp.runeStates&isDeaths[slot] > 0 {
 		rp.gainRuneMetrics(sim, runeMetrics[3], 1)
 	} else {
 		rp.gainRuneMetrics(sim, runeMetrics[slot/2], 1)
 	}
-	rp.maybeFireChange(sim, changeType)
+	rp.maybeFireChange(sim, ConvertToDeath|GainRune)
 
 	return true
 }
@@ -1321,4 +1360,54 @@ func (spell *Spell) UnholyRuneMetrics() *ResourceMetrics {
 
 func (spell *Spell) DeathRuneMetrics() *ResourceMetrics {
 	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).deathRuneMetrics
+}
+
+func (rp *runicPowerBar) NewRunicPowerMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellRunicPowerMetrics[action]
+	if !ok {
+		metric = rp.character.newRunicPowerMetrics(action)
+		rp.spellRunicPowerMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewBloodRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellBloodRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newBloodRuneMetrics(action)
+		rp.spellBloodRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewFrostRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellFrostRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newFrostRuneMetrics(action)
+		rp.spellFrostRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewUnholyRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellUnholyRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newUnholyRuneMetrics(action)
+		rp.spellUnholyRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewDeathRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellDeathRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newDeathRuneMetrics(action)
+		rp.spellDeathRuneMetrics[action] = metric
+	}
+
+	return metric
 }

@@ -61,7 +61,7 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 				return result
 			} else {
 				result := spell.CalcPeriodicDamage(sim, target, affliction.CalcScalingSpellDmg(uaScale), spell.OutcomeExpectedMagicCrit)
-				result.Damage /= affliction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				result.Damage /= dot.CalcTickPeriod().Round(time.Millisecond).Seconds()
 				return result
 			}
 		},

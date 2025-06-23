@@ -314,19 +314,19 @@ func (unit *Unit) NewRageMetrics(actionID ActionID) *ResourceMetrics {
 func (unit *Unit) NewEnergyMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeEnergy)
 }
-func (unit *Unit) NewRunicPowerMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newRunicPowerMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeRunicPower)
 }
-func (unit *Unit) NewBloodRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newBloodRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeBloodRune)
 }
-func (unit *Unit) NewFrostRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newFrostRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeFrostRune)
 }
-func (unit *Unit) NewUnholyRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newUnholyRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeUnholyRune)
 }
-func (unit *Unit) NewDeathRuneMetrics(actionID ActionID) *ResourceMetrics {
+func (unit *Unit) newDeathRuneMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeDeathRune)
 }
 func (unit *Unit) NewComboPointMetrics(actionID ActionID) *ResourceMetrics {
@@ -459,9 +459,13 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 		if !unitMetrics.WentOOM {
 			// If we didn't actually go OOM in this iteration, infer TTO based on remaining mana.
 			manaSpentPerSecond := (unitMetrics.ManaSpent - unitMetrics.ManaGained) / encounterDurationSeconds
-			remainingTTO := DurationFromSeconds(unit.CurrentMana() / manaSpentPerSecond)
-			timeToOOM = DurationFromSeconds(encounterDurationSeconds) + remainingTTO
-			timeToOOM = min(timeToOOM, time.Minute*60)
+			if manaSpentPerSecond > 0 {
+				remainingTTO := DurationFromSeconds(unit.CurrentMana() / manaSpentPerSecond)
+				timeToOOM = DurationFromSeconds(encounterDurationSeconds) + remainingTTO
+				timeToOOM = min(timeToOOM, time.Minute*60)
+			} else {
+				timeToOOM = time.Minute * 60
+			}
 		}
 
 		if timeToOOM < 0 {
@@ -470,6 +474,7 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 		}
 
 		unitMetrics.tto.Total = timeToOOM.Seconds()
+
 		// Hack because of the way DistributionMetrics does its calculations.
 		unitMetrics.tto.Total *= encounterDurationSeconds
 	}

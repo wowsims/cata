@@ -2,6 +2,7 @@ package death_knight
 
 import (
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -27,13 +28,20 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 
 func (dk *DeathKnight) NewFallenZandalariPet() *GhoulPet {
 	troll := dk.newGhoulPetInternal("Fallen Zandalari", false, 0.8)
-	troll.clawSpellID = 138537
 	troll.summonDelay = false
+
+	// Fallen Zandalari use their own spell called Strike, which does 150% damage
+	troll.clawSpellID = 138537
 	troll.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  GhoulSpellClaw,
 		FloatValue: 0.2,
 	})
+
+	// Command doesn't apply to Fallen Zandalari
+	if dk.Race == proto.Race_RaceOrc {
+		troll.PseudoStats.DamageDealtMultiplier /= 1.02
+	}
 	return troll
 }
 

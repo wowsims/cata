@@ -25,7 +25,7 @@ func (shaman *Shaman) registerSpiritwalkersGraceSpell() {
 	shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolNature,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskSpiritwalkersGrace,
 
 		ManaCost: core.ManaCostOptions{

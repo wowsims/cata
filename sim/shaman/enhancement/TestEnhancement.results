@@ -59,6 +59,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 57254.20639
+  tps: 50552.83338
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-AusterePrimalDiamond"
  value: {
   dps: 57316.94854
@@ -451,34 +458,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 53497.28748
-  tps: 46267.76157
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 53497.28748
-  tps: 46267.76157
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 53497.28748
-  tps: 46267.76157
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 53497.28748
-  tps: 46267.76157
- }
-}
-dps_results: {
  key: "TestEnhancement-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
   dps: 53497.28748
@@ -710,6 +689,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 54945.97601
+  tps: 47394.67822
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-FearwurmBadge-84074"
  value: {
   dps: 54763.37102
@@ -805,34 +791,6 @@ dps_results: {
  value: {
   dps: 54986.66663
   tps: 47488.84527
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 56422.12568
-  tps: 48413.94643
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 56320.36821
-  tps: 48437.45176
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 56620.78903
-  tps: 48564.14611
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 56808.1697
-  tps: 48700.21779
  }
 }
 dps_results: {
@@ -1648,34 +1606,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 56717.69477
-  tps: 48770.15567
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 56364.39392
-  tps: 48501.73653
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 57079.56587
-  tps: 49095.10384
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 57350.19842
-  tps: 49344.39165
- }
-}
-dps_results: {
  key: "TestEnhancement-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 57545.68162
@@ -1739,38 +1669,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 68210.62741
-  tps: 57442.08366
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 65960.28458
-  tps: 55733.97438
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 69169.4474
-  tps: 58148.95418
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 70133.57634
-  tps: 58838.41114
- }
-}
-dps_results: {
  key: "TestEnhancement-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 70581.04296
-  tps: 59041.29729
+  dps: 79476.65846
+  tps: 66105.8618
  }
 }
 dps_results: {
@@ -2051,34 +1953,6 @@ dps_results: {
  value: {
   dps: 59240.87141
   tps: 50627.67896
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 60158.37295
-  tps: 51554.21071
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 58813.38818
-  tps: 50399.18858
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 60327.45596
-  tps: 51639.55476
- }
-}
-dps_results: {
- key: "TestEnhancement-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 61232.1273
-  tps: 52293.82983
  }
 }
 dps_results: {
