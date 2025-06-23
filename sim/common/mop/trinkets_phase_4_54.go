@@ -30,7 +30,7 @@ func init() {
 				auraID, exists := config.cdrAuraIDs[character.Spec]
 				var cdrAura *core.Aura
 				if exists {
-					cdr := core.GetItemEffectScaling(itemID, 0.00989999995, state)
+					cdr := core.GetItemEffectScaling(itemID, 0.00989999995, state) / 100
 					cdrAura = core.MakePermanent(character.RegisterAura(core.Aura{
 						Label:    fmt.Sprintf("Readiness %s", versionLabel),
 						ActionID: core.ActionID{SpellID: auraID},
