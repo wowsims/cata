@@ -817,9 +817,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 146081.12675
-  tps: 136160.87564
-  hps: 7924.27251
+  dps: 151930.67641
+  tps: 142106.33107
+  hps: 7890.51362
  }
 }
 dps_results: {
@@ -937,9 +937,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 140835.14517
-  tps: 131333.02834
-  hps: 7626.5118
+  dps: 147915.5773
+  tps: 138509.72032
+  hps: 7585.73851
  }
 }
 dps_results: {

@@ -897,10 +897,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 96966.00984
-  tps: 671778.36658
-  dtps: 52807.5753
-  hps: 26290.43228
+  dps: 102195.20341
+  tps: 708895.27058
+  dtps: 52026.76771
+  hps: 26169.42261
  }
 }
 dps_results: {
@@ -1005,10 +1005,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 95081.99376
-  tps: 658702.78934
-  dtps: 53486.35013
-  hps: 25501.05944
+  dps: 100301.12466
+  tps: 695493.32255
+  dtps: 53129.87077
+  hps: 25573.85504
  }
 }
 dps_results: {
@@ -2913,8 +2913,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 89347.91352
-  tps: 618650.07808
+  dps: 89037.80085
+  tps: 616479.28943
   dtps: 53480.51221
   hps: 25252.67105
  }

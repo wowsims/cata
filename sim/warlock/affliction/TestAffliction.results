@@ -705,8 +705,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 92640.68691
-  tps: 64287.12455
+  dps: 92380.9963
+  tps: 64084.65714
  }
 }
 dps_results: {
@@ -803,8 +803,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 92640.68691
-  tps: 64287.12455
+  dps: 92380.9963
+  tps: 64084.65714
  }
 }
 dps_results: {
@@ -1622,15 +1622,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 92005.07947
-  tps: 63696.26805
+  dps: 91630.63616
+  tps: 63529.83717
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 90939.89253
-  tps: 63058.63944
+  dps: 90582.3105
+  tps: 62940.28038
  }
 }
 dps_results: {
@@ -2301,8 +2301,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 103631.0675
-  tps: 73077.33376
+  dps: 103628.28742
+  tps: 73130.52247
  }
 }
 dps_results: {

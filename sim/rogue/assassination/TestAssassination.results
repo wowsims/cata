@@ -247,8 +247,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 86229.20955
-  tps: 60692.9132
+  dps: 89797.38413
+  tps: 63212.79662
  }
 }
 dps_results: {
@@ -289,8 +289,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 81606.95279
-  tps: 57442.36843
+  dps: 84201.84337
+  tps: 59272.25034
  }
 }
 dps_results: {

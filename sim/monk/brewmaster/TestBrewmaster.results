@@ -924,10 +924,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 161526.85124
-  tps: 968747.83154
-  dtps: 32231.93051
-  hps: 42775.36998
+  dps: 166448.96119
+  tps: 1.00267378284e+06
+  dtps: 31890.38532
+  hps: 42947.95208
  }
 }
 dps_results: {
@@ -1059,10 +1059,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 158348.04869
-  tps: 950766.84418
-  dtps: 32753.3884
-  hps: 42471.97229
+  dps: 163432.74568
+  tps: 986640.06253
+  dtps: 33192.29827
+  hps: 42698.04408
  }
 }
 dps_results: {

@@ -9,14 +9,11 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-type cloakConfig struct {
-	label  string
-	itemID int32
-}
-
 func init() {
 	// Xing-Ho, Breath of Yu'lon
-	// Your damaging spells have a chance to grant 100% critical strike chance for 4 sec.  (Approximately 0.62 procs per minute)
+	// Your damaging spell casts have a chance to empower you with the Essence of Yu'lon,
+	// causing you to hurl jade dragonflame at the target, dealing 1 damage over 4 sec.
+	// This damage also affects up to 4 other enemies near the burning target. (Approximately [2.61 + Haste] procs per minute)
 	core.NewItemEffect(102246, func(agent core.Agent, state proto.ItemLevelState) {
 		character := agent.GetCharacter()
 		label := "Xing-Ho, Breath of Yu'lon"
@@ -32,13 +29,13 @@ func init() {
 			DotAuraLabel:       "Essence of Yu'lon",
 			TickLength:         1 * time.Second,
 			NumberOfTicks:      4,
-			NumberAOEOfTargets: 5,
+			NumAoeTargets:      5,
 			ParentAura:         aura,
 
 			ProcTrigger: core.ProcTrigger{
 				Name:    label,
 				Harmful: true,
-				DPM: character.NewRPPMProcManager(102246, false, core.ProcMaskSpecial|core.ProcMaskProc, core.RPPMConfig{
+				DPM: character.NewRPPMProcManager(102246, false, core.ProcMaskSpellOrSpellProc, core.RPPMConfig{
 					PPM: 2.61100006104,
 				}.WithHasteMod().
 					WithSpecMod(0.25, proto.Spec_SpecArcaneMage).
@@ -68,8 +65,8 @@ func init() {
 		character.ItemSwap.RegisterProcWithSlots(102246, aura, eligibleSlots)
 	})
 
-	newXuenCloakEffect := func(config cloakConfig) {
-		core.NewItemEffect(config.itemID, func(agent core.Agent, state proto.ItemLevelState) {
+	newXuenCloakEffect := func(label string, itemID int32) {
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
 			character := agent.GetCharacter()
 			numHits := min(5, character.Env.GetNumTargets())
 
@@ -83,33 +80,32 @@ func init() {
 				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					baseDamage := max(spell.MeleeAttackPower(), spell.RangedAttackPower()) * 0.2
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Flurry of Xuen",
+					},
+					NumberOfTicks: 10,
+					TickLength:    300 * time.Millisecond,
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						baseDamage := max(dot.Spell.MeleeAttackPower(), dot.Spell.RangedAttackPower()) * 0.2
+						for range numHits {
+							dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDamage, dot.Spell.OutcomeMeleeSpecialHitAndCrit)
+							target = sim.Environment.NextTargetUnit(target)
+						}
+					},
+				},
 
-					core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-						NumTicks: 10,
-						Period:   300 * time.Millisecond,
-						OnAction: func(sim *core.Simulation) {
-							targetsHit := int32(0)
-							for range numHits {
-								if target == nil || targetsHit >= numHits {
-									break
-								}
-								target = sim.Environment.NextTargetUnit(target)
-								spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
-								targetsHit++
-							}
-						},
-					})
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).Apply(sim)
 				},
 			})
 
 			procTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:     config.label,
+				Name:     label,
 				ActionID: core.ActionID{SpellID: 146195},
 				Harmful:  true,
 				ICD:      time.Second * 3,
-				DPM: character.NewRPPMProcManager(config.itemID,
+				DPM: character.NewRPPMProcManager(itemID,
 					false,
 					core.ProcMaskMeleeOrMeleeProc|core.ProcMaskRangedOrRangedProc,
 					core.RPPMConfig{
@@ -141,29 +137,22 @@ func init() {
 				},
 			})
 
-			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(config.itemID)
-			character.ItemSwap.RegisterProcWithSlots(config.itemID, procTrigger, eligibleSlots)
+			character.ItemSwap.RegisterProc(itemID, procTrigger)
 		})
 	}
 
 	// Fen-Yu, Fury of Xuen
 	// Your damaging attacks have a chance to trigger a Flurry of Xuen, causing you to deal 1 damage
 	// to up to 5 enemies in front of you, every 0.3 sec for 3 sec. (Approximately [1.74 + Haste] procs per minute)
-	newXuenCloakEffect(cloakConfig{
-		label:  "Fen-Yu, Fury of Xuen",
-		itemID: 102248,
-	})
+	newXuenCloakEffect("Fen-Yu, Fury of Xuen", 102248)
 
 	// Gong-Lu, Strength of Xuen
 	// Your damaging attacks have a chance to trigger a Flurry of Xuen, causing you to deal 1 damage
 	// to up to 5 enemies in front of you, every 0.3 sec for 3 sec. (Approximately [1.74 + Haste] procs per minute)
-	newXuenCloakEffect(cloakConfig{
-		label:  "Gong-Lu, Strength of Xuen",
-		itemID: 102249,
-	})
+	newXuenCloakEffect("Gong-Lu, Strength of Xuen", 102249)
 
-	newNiuzaoCloakEffect := func(config cloakConfig) {
-		core.NewItemEffect(config.itemID, func(agent core.Agent, state proto.ItemLevelState) {
+	newNiuzaoCloakEffect := func(label string, itemID int32) {
+		core.NewItemEffect(itemID, func(agent core.Agent, state proto.ItemLevelState) {
 			character := agent.GetCharacter()
 
 			dummyAura := core.MakePermanent(character.RegisterAura(core.Aura{
@@ -194,22 +183,16 @@ func init() {
 				}
 			})
 
-			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(config.itemID)
-			character.ItemSwap.RegisterProcWithSlots(config.itemID, dummyAura, eligibleSlots)
+			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
+			character.ItemSwap.RegisterProcWithSlots(itemID, dummyAura, eligibleSlots)
 		})
 	}
 
 	// Qian-Le, Courage of Niuzao
 	// The Endurance of Niuzao fully absorbs the damage of one attack that would normally kill you. This effect has a 2 min cooldown. Does not function for non-Tank-specialized characters.
-	newNiuzaoCloakEffect(cloakConfig{
-		label:  "Qian-Le, Courage of Niuzao",
-		itemID: 102245,
-	})
+	newNiuzaoCloakEffect("Qian-Le, Courage of Niuzao", 102245)
 
 	// Qian-Ying, Fortitude of Niuzao
 	// The Endurance of Niuzao fully absorbs the damage of one attack that would normally kill you. This effect has a 2 min cooldown. Does not function for non-Tank-specialized characters.
-	newNiuzaoCloakEffect(cloakConfig{
-		label:  "Qian-Ying, Fortitude of Niuzao",
-		itemID: 102250,
-	})
+	newNiuzaoCloakEffect("Qian-Ying, Fortitude of Niuzao", 102250)
 }

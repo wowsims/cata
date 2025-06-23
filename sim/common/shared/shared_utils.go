@@ -591,8 +591,8 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 	})
 }
 
-// Takes in the SpellResult for the triggering spell, and returns the damage per
-// tick of a *fresh* Ignite triggered by that spell. Roll-over damage
+// Takes in the SpellResult for the triggering spell, and returns the total damage
+// of a *fresh* Ignite triggered by that spell. Roll-over damage
 // calculations for existing Ignites are handled internally.
 type IgniteDamageCalculator func(spell *core.Spell, result *core.SpellResult) float64
 
@@ -604,7 +604,7 @@ type IgniteConfig struct {
 	DotAuraTag         string
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
-	NumberAOEOfTargets int32 // Number of targets the Ignite tick will hit. defaults to 1.
+	NumAoeTargets      int32 // Number of targets the Ignite tick will hit. defaults to 1.
 	IncludeAuraDelay   bool  // "munching" and "free roll-over" interactions
 	SpellSchool        core.SpellSchool
 	NumberOfTicks      int32
@@ -631,11 +631,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		config.TickLength = time.Second * 2
 	}
 
-	if config.NumberAOEOfTargets == 0 {
-		config.NumberAOEOfTargets = 1
-	} else {
-		config.NumberAOEOfTargets = min(config.NumberAOEOfTargets, unit.Env.GetNumTargets())
-	}
+	config.NumAoeTargets = int32(core.Clamp(float64(config.NumAoeTargets), 1.0, float64(unit.Env.GetNumTargets())))
 
 	igniteSpell := unit.RegisterSpell(core.SpellConfig{
 		ActionID:         config.ActionID,
@@ -658,18 +654,9 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 			AffectedByCastSpeed: false,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-
-				if config.NumberAOEOfTargets > 1 {
-					targetsHit := int32(1)
-					for range config.NumberAOEOfTargets - 1 {
-						if target == nil || targetsHit >= config.NumberAOEOfTargets {
-							break
-						}
-						target = sim.Environment.NextTargetUnit(target)
-						dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-						targetsHit++
-					}
+				for range config.NumAoeTargets {
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
+					target = sim.Environment.NextTargetUnit(target)
 				}
 			},
 		},

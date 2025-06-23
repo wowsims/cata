@@ -897,10 +897,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 141418.66166
-  tps: 979567.25149
-  dtps: 58743.72873
-  hps: 74047.51677
+  dps: 145943.32954
+  tps: 1.01118556238e+06
+  dtps: 58876.95125
+  hps: 73993.20818
  }
 }
 dps_results: {
@@ -1023,10 +1023,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 144570.18001
-  tps: 1.00126664205e+06
-  dtps: 57754.95647
-  hps: 75712.64509
+  dps: 149248.72211
+  tps: 1.03398487034e+06
+  dtps: 57757.30524
+  hps: 75811.04891
  }
 }
 dps_results: {
@@ -2985,10 +2985,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 136990.87045
-  tps: 948472.02032
-  dtps: 58420.10548
-  hps: 74226.86981
+  dps: 136907.23668
+  tps: 947885.60892
+  dtps: 58893.15517
+  hps: 74234.81029
  }
 }
 dps_results: {

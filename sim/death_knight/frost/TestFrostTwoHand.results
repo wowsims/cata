@@ -234,9 +234,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 154952.20472
-  tps: 145358.0428
-  hps: 2043.24422
+  dps: 198899.93485
+  tps: 187015.24386
+  hps: 2581.04483
  }
 }
 dps_results: {
@@ -266,9 +266,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 162626.21304
-  tps: 152393.29842
-  hps: 2043.24422
+  dps: 209301.20207
+  tps: 196513.88242
+  hps: 2579.61059
  }
 }
 dps_results: {
@@ -402,17 +402,17 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 148696.90713
-  tps: 139097.62257
-  hps: 2023.58441
+  dps: 189533.75782
+  tps: 177846.15994
+  hps: 2554.64312
  }
 }
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 154014.69976
-  tps: 144040.23809
-  hps: 1983.79648
+  dps: 196269.08894
+  tps: 184025.69431
+  hps: 2513.27459
  }
 }
 dps_results: {
@@ -546,9 +546,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 150116.055
-  tps: 140537.83627
-  hps: 2043.24422
+  dps: 190665.07095
+  tps: 178763.57121
+  hps: 2573.72728
  }
 }
 dps_results: {
