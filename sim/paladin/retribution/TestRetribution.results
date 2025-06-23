@@ -663,8 +663,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 132359.6141
-  tps: 127261.81211
+  dps: 164588.985
+  tps: 156038.18939
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 181880.50178
+  tps: 170029.57117
  }
 }
 dps_results: {
@@ -1032,6 +1039,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 145986.9234
+  tps: 137738.6682
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 153756.64833
@@ -1043,6 +1057,13 @@ dps_results: {
  value: {
   dps: 152944.66628
   tps: 143883.18877
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 145863.39353
+  tps: 137615.13834
  }
 }
 dps_results: {
@@ -1134,6 +1155,13 @@ dps_results: {
  value: {
   dps: 147958.6243
   tps: 139710.36911
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 145863.39353
+  tps: 137615.13834
  }
 }
 dps_results: {
@@ -1643,8 +1671,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 146596.36725
-  tps: 138306.11514
+  dps: 146612.14484
+  tps: 138321.89273
  }
 }
 dps_results: {
@@ -2159,6 +2187,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 150997.1395
+  tps: 142544.04546
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 148387.91875
@@ -2254,6 +2289,13 @@ dps_results: {
  value: {
   dps: 148601.43092
   tps: 140130.37066
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 146163.49858
+  tps: 137904.40331
  }
 }
 dps_results: {

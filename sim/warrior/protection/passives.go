@@ -74,7 +74,7 @@ func (war *ProtectionWarrior) registerRiposte() {
 		ActionID: core.ActionID{SpellID: 122510},
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			critRating := (war.GetStat(stats.DodgeRating) + war.GetStat(stats.ParryRating)) * 0.75
+			critRating := (war.GetStat(stats.DodgeRating) + war.GetParryRatingWithoutStrength()) * 0.75
 			war.AddStatDynamic(sim, stats.CritRating, critRating)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

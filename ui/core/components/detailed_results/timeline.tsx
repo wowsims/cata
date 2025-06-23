@@ -1269,6 +1269,10 @@ const auraAsResource = [
 
 	// Monk
 	124255, // Stagger
+	128938, // Elusive Brew - Stacks
+	115308, // Elusive Brew - Active
+	1247279, // Tiger Eye Brew - Stacks
+	1247275, // Tiger Eye Brew - Active
 
 	// Mage
 	148022, // Icicle

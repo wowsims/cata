@@ -57,7 +57,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
-	focusPerSecond := 5.0
+	focusPerSecond := 4.0
 
 	hunter.EnableFocusBar(100+(core.TernaryFloat64(hunter.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), focusPerSecond, true, nil)
 

@@ -668,6 +668,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 72277.35225
+  tps: 45735.50304
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-FearwurmBadge-84074"
  value: {
   dps: 72867.50137
@@ -1032,6 +1039,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 78121.55812
+  tps: 49312.42986
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 75525.84843
@@ -1043,6 +1057,13 @@ dps_results: {
  value: {
   dps: 75131.51627
   tps: 47111.19088
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 72047.3876
+  tps: 45541.7883
  }
 }
 dps_results: {
@@ -1134,6 +1155,13 @@ dps_results: {
  value: {
   dps: 73708.59787
   tps: 46754.40102
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 72277.35225
+  tps: 45735.50304
  }
 }
 dps_results: {
@@ -2173,6 +2201,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 81812.00171
+  tps: 51493.85922
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 73796.30462
@@ -2233,6 +2268,13 @@ dps_results: {
  value: {
   dps: 73668.16515
   tps: 46373.47706
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 94096.38986
+  tps: 58849.13749
  }
 }
 dps_results: {

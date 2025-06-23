@@ -15,10 +15,10 @@ func (hunter *Hunter) registerHuntersMarkSpell() {
 			ActionID: actionID,
 			Duration: 5 * time.Minute,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.AttackTables[aura.Unit.UnitIndex].RangedDamageTakenMulitplier *= rangedMult
+				hunter.AttackTables[aura.Unit.UnitIndex].RangedDamageTakenMultiplier *= rangedMult
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.AttackTables[aura.Unit.UnitIndex].RangedDamageTakenMulitplier /= rangedMult
+				hunter.AttackTables[aura.Unit.UnitIndex].RangedDamageTakenMultiplier /= rangedMult
 			},
 		})
 	})

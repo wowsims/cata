@@ -88,6 +88,7 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			buffAura.Deactivate(sim)
 			buffAura.Activate(sim)
 		},
 

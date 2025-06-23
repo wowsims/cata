@@ -33,10 +33,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	epReferenceStat: Stat.StatStrength,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatArmor, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
+		[Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
@@ -75,14 +76,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
 			blessingOfKings: true,
 			blessingOfMight: true,
 			bloodlust: true,
 			elementalOath: true,
-			powerWordFortitude: true,
-			serpentsSwiftness: true,
+			leaderOfThePack: true,
 			trueshotAura: true,
+			unholyAura: true,
 			skullBannerCount: 2,
 			stormlashTotemCount: 4,
 		}),
@@ -100,7 +100,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
 		const mainHand = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
 		if (mainHand?.item?.handType === HandType.HandTypeTwoHand) {
-			return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.OBLITERATE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} else {
 			return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
@@ -110,7 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.SpellHasteBuff],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.CastSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -139,11 +139,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_MASTERFROST_EP_PRESET, Presets.P1_TWOHAND_EP_PRESET],
+		epWeights: [Presets.P1_MASTERFROST_EP_PRESET, Presets.P1_2H_OBLITERATE_EP_PRESET],
 		talents: [Presets.DefaultTalents],
-		rotations: [Presets.MASTERFROST_ROTATION_PRESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT],
-		gear: [Presets.P1_MASTERFROST_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET],
-		builds: [Presets.PRESET_BUILD_MASTERFROST, Presets.PRESET_BUILD_2H],
+		rotations: [Presets.MASTERFROST_ROTATION_PRESET_DEFAULT, Presets.OBLITERATE_ROTATION_PRESET_DEFAULT],
+		gear: [Presets.P1_MASTERFROST_GEAR_PRESET, Presets.P1_2H_OBLITERATE_GEAR_PRESET],
+		builds: [Presets.PRESET_BUILD_MASTERFROST, Presets.PRESET_BUILD_2H_OBLITERATE],
 	},
 
 	raidSimPresets: [
@@ -196,7 +196,7 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 				getEPDefaults: (player: Player<Spec.SpecFrostDeathKnight>) => {
 					const mainHand = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
 					if (mainHand?.item?.handType === HandType.HandTypeTwoHand) {
-						return Presets.P1_TWOHAND_EP_PRESET.epWeights;
+						return Presets.P1_2H_OBLITERATE_EP_PRESET.epWeights;
 					} else {
 						return Presets.P1_MASTERFROST_EP_PRESET.epWeights;
 					}
