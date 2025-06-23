@@ -258,10 +258,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-FabledFeatherofJi-Kun-96842"
  value: {
-  dps: 153378.64175
-  tps: 969036.97454
-  dtps: 89145.95961
-  hps: 85571.90297
+  dps: 153210.52526
+  tps: 967296.5196
+  dtps: 88943.18963
+  hps: 86374.29445
  }
 }
 dps_results: {
@@ -294,10 +294,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Horridon'sLastGasp-96757"
  value: {
-  dps: 130291.16442
-  tps: 819343.95078
-  dtps: 98457.47967
-  hps: 88682.90861
+  dps: 129871.76306
+  tps: 817020.19945
+  dtps: 98492.18013
+  hps: 88800.27065
  }
 }
 dps_results: {
@@ -321,19 +321,19 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-InscribedBagofHydra-Spawn-96828"
  value: {
-  dps: 130529.99791
-  tps: 820811.82966
-  dtps: 97583.87288
-  hps: 88163.27955
+  dps: 129990.9592
+  tps: 817861.96929
+  dtps: 97589.2979
+  hps: 88129.36793
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
-  dps: 131046.82548
-  tps: 824893.53075
-  dtps: 98274.22545
-  hps: 90742.80164
+  dps: 130828.01833
+  tps: 823631.6856
+  dtps: 98273.34054
+  hps: 90961.88037
  }
 }
 dps_results: {
@@ -438,8 +438,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 131442.65261
-  tps: 828218.68924
+  dps: 131407.6331
+  tps: 827964.676
   dtps: 98249.58817
   hps: 89513.56784
  }
@@ -573,19 +573,19 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-UnerringVisionofLeiShen-96930"
  value: {
-  dps: 133684.36026
-  tps: 842775.86132
-  dtps: 98316.93502
-  hps: 89371.7787
+  dps: 133082.34544
+  tps: 838687.71424
+  dtps: 98221.45538
+  hps: 89124.82116
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-Wushoolay'sFinalChoice-96785"
  value: {
-  dps: 130470.14564
-  tps: 819819.07137
-  dtps: 98460.31817
-  hps: 87562.89197
+  dps: 130021.96819
+  tps: 817066.77804
+  dtps: 98328.93057
+  hps: 87820.95183
  }
 }
 dps_results: {
