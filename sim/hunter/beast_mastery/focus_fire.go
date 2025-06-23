@@ -21,8 +21,8 @@ func (bmHunter *BeastMasteryHunter) registerFocusFireSpell() {
 			bmHunter.Pet.FrenzyStacksSnapshot = bmHunter.Pet.FrenzyAura.GetStacks()
 			if bmHunter.Pet.FrenzyStacksSnapshot >= 1 {
 				bmHunter.Pet.FrenzyAura.Deactivate(sim)
-				bmHunter.Pet.AddFocus(sim, 6, petFocusMetrics)
-				bmHunter.MultiplyRangedSpeed(sim, 1+(float64(bmHunter.Pet.FrenzyStacksSnapshot)*0.06))
+				bmHunter.Pet.AddFocus(sim, 6*float64(bmHunter.Pet.FrenzyStacksSnapshot), petFocusMetrics)
+				bmHunter.MultiplyRangedHaste(sim, 1+(float64(bmHunter.Pet.FrenzyStacksSnapshot)*0.06))
 				if sim.Log != nil {
 					bmHunter.Pet.Log(sim, "Consumed %d stacks of Frenzy for Focus Fire.", bmHunter.Pet.FrenzyStacksSnapshot)
 				}
@@ -30,7 +30,7 @@ func (bmHunter *BeastMasteryHunter) registerFocusFireSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if bmHunter.Pet.FrenzyStacksSnapshot > 0 {
-				bmHunter.MultiplyRangedSpeed(sim, 1/(1+(float64(bmHunter.Pet.FrenzyStacksSnapshot)*0.06)))
+				bmHunter.MultiplyRangedHaste(sim, 1/(1+(float64(bmHunter.Pet.FrenzyStacksSnapshot)*0.06)))
 			}
 		},
 	})
