@@ -74,11 +74,7 @@ func (fb *focusBar) FocusRegenPerTick() float64 {
 }
 
 func (fb *focusBar) FocusRegenPerSecond() float64 {
-	if fb.isPlayer {
-		return fb.baseFocusPerSecond * fb.getTotalRegenMultiplier()
-	} else {
-		return fb.baseFocusPerSecond
-	}
+	return fb.baseFocusPerSecond * fb.getTotalRegenMultiplier()
 }
 
 func (fb *focusBar) TimeToTargetFocus(targetFocus float64) time.Duration {

@@ -219,9 +219,17 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
 		pet.AutoAttacks.EnableAutoSwing(sim)
 	} else {
+		previousAutoSwingMelee := pet.AutoAttacks.AutoSwingMelee
+		previousAutoSwingRanged := pet.AutoAttacks.AutoSwingRanged
+		if pet.startAttackDelay > 0 {
+			pet.AutoAttacks.AutoSwingMelee = false
+			pet.AutoAttacks.AutoSwingRanged = false
+		}
 		sim.AddPendingAction(&PendingAction{
 			NextActionAt: max(0, sim.CurrentTime+pet.startAttackDelay),
 			OnAction: func(sim *Simulation) {
+				pet.AutoAttacks.AutoSwingMelee = previousAutoSwingMelee
+				pet.AutoAttacks.AutoSwingRanged = previousAutoSwingRanged
 				if pet.enabled {
 					pet.AutoAttacks.EnableAutoSwing(sim)
 				}
@@ -257,8 +265,12 @@ func (pet *Pet) EnableWithStartAttackDelay(sim *Simulation, petAgent PetAgent, s
 func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuration time.Duration) {
 	pet.Enable(sim, petAgent)
 
+	pet.SetTimeoutAction(sim, petDuration)
+}
+
+func (pet *Pet) SetTimeoutAction(sim *Simulation, duration time.Duration) {
 	pet.timeoutAction = &PendingAction{
-		NextActionAt: sim.CurrentTime + petDuration,
+		NextActionAt: sim.CurrentTime + duration,
 		OnAction: func(sim *Simulation) {
 			pet.Disable(sim)
 		},
