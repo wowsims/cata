@@ -1,6 +1,7 @@
 package mop
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -17,12 +18,12 @@ func init() {
 		character := agent.GetCharacter()
 		label := "Xing-Ho, Breath of Yu'lon"
 
-		numTargets := int32(core.Clamp(float64(5), 1.0, float64(character.Env.GetNumTargets())))
+		numTargets := min(character.Env.GetNumTargets(), 5)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 146198},
 			SpellSchool: core.SpellSchoolFirestorm,
-			Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
@@ -44,6 +45,7 @@ func init() {
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					for range numTargets {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+						target = sim.Environment.NextTargetUnit(target)
 					}
 				},
 			},
@@ -89,7 +91,7 @@ func init() {
 			numHits := min(5, character.Env.GetNumTargets())
 
 			flurrySpell := character.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 146194},
+				ActionID:    core.ActionID{SpellID: 147891},
 				SpellSchool: core.SpellSchoolPhysical,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
@@ -98,28 +100,34 @@ func init() {
 				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
-				Dot: core.DotConfig{
-					Aura: core.Aura{
-						Label: "Flurry of Xuen",
-					},
-					NumberOfTicks: 10,
-					TickLength:    300 * time.Millisecond,
-					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						baseDamage := max(dot.Spell.MeleeAttackPower(), dot.Spell.RangedAttackPower()) * 0.2
-						for range numHits {
-							dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDamage, dot.Spell.OutcomeMeleeSpecialHitAndCrit)
-							target = sim.Environment.NextTargetUnit(target)
-						}
-					},
-				},
-
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.Dot(target).Apply(sim)
+					baseDamage := max(spell.MeleeAttackPower(), spell.RangedAttackPower()) * 0.2
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				},
+			})
+
+			flurryAura := character.RegisterAura(core.Aura{
+				Label:    label,
+				ActionID: core.ActionID{SpellID: 146194},
+				Duration: time.Second * 3,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+						Period:          time.Millisecond * 300,
+						NumTicks:        10,
+						TickImmediately: true,
+						OnAction: func(sim *core.Simulation) {
+							target := aura.Unit.CurrentTarget
+							for range numHits {
+								flurrySpell.Cast(sim, target)
+								target = sim.Environment.NextTargetUnit(target)
+							}
+						},
+					})
 				},
 			})
 
 			procTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:     label,
+				Name:     fmt.Sprintf("%s - Trigger", label),
 				ActionID: core.ActionID{SpellID: 146195},
 				Harmful:  true,
 				ICD:      time.Second * 3,
@@ -151,7 +159,7 @@ func init() {
 				),
 				Callback: core.CallbackOnSpellHitDealt,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					flurrySpell.Cast(sim, spell.Unit.CurrentTarget)
+					flurryAura.Activate(sim)
 				},
 			})
 
@@ -174,21 +182,22 @@ func init() {
 			character := agent.GetCharacter()
 
 			dummyAura := core.MakePermanent(character.RegisterAura(core.Aura{
-				Label:    "Endurance of Niuzao - Dummy",
+				Label:    label,
 				Duration: core.NeverExpires,
 			}))
+
+			icd := core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Minute * 2,
+			}
 
 			shieldAura := character.RegisterAura(core.Aura{
 				Label:     "Endurance of Niuzao",
 				ActionID:  core.ActionID{SpellID: 146193},
 				Duration:  core.NeverExpires,
 				MaxStacks: math.MaxInt32,
+				Icd:       &icd,
 			})
-
-			icd := core.Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: time.Minute * 2,
-			}
 
 			character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, isPeriodic bool) {
 				if character.CurrentHealth()-result.Damage <= 0 && dummyAura.IsActive() && icd.IsReady(sim) {
@@ -201,8 +210,7 @@ func init() {
 				}
 			})
 
-			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
-			character.ItemSwap.RegisterProcWithSlots(itemID, dummyAura, eligibleSlots)
+			character.ItemSwap.RegisterProc(itemID, dummyAura)
 		})
 	}
 

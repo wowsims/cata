@@ -241,9 +241,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 161978.53153
-  tps: 151658.91821
-  hps: 1556.87879
+  dps: 159198.05004
+  tps: 148865.43182
+  hps: 1560.4356
  }
 }
 dps_results: {
@@ -273,9 +273,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 172093.24373
-  tps: 161093.97002
-  hps: 1561.71142
+  dps: 169047.88096
+  tps: 157937.02412
+  hps: 1571.66663
  }
 }
 dps_results: {

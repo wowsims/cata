@@ -705,8 +705,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 166604.16087
-  tps: 157800.53881
+  dps: 163701.78794
+  tps: 154709.64649
  }
 }
 dps_results: {
@@ -803,8 +803,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 177170.12255
-  tps: 167762.81138
+  dps: 171380.52789
+  tps: 161942.31993
  }
 }
 dps_results: {
@@ -2329,8 +2329,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 164249.8997
-  tps: 155421.93009
+  dps: 164891.5057
+  tps: 156063.53609
  }
 }
 dps_results: {

@@ -267,10 +267,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 138673.05852
-  tps: 879927.75591
-  dtps: 99054.01659
-  hps: 95396.40279
+  dps: 136507.37625
+  tps: 864915.68873
+  dtps: 99054.1574
+  hps: 94529.28244
  }
 }
 dps_results: {
@@ -303,10 +303,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 146913.87821
-  tps: 930548.93686
-  dtps: 96009.44986
-  hps: 93918.56728
+  dps: 143749.31683
+  tps: 905224.04931
+  dtps: 96002.17415
+  hps: 93857.07005
  }
 }
 dps_results: {

@@ -234,9 +234,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 198899.93485
-  tps: 187015.24386
-  hps: 2581.04483
+  dps: 195680.19881
+  tps: 183795.70879
+  hps: 2590.9479
  }
 }
 dps_results: {
@@ -266,9 +266,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 209301.20207
-  tps: 196513.88242
-  hps: 2579.61059
+  dps: 206479.72197
+  tps: 193745.07679
+  hps: 2582.62542
  }
 }
 dps_results: {

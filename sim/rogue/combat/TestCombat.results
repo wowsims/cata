@@ -215,8 +215,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 94387.8744
-  tps: 66392.28706
+  dps: 92007.11306
+  tps: 64710.52489
  }
 }
 dps_results: {
@@ -257,8 +257,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 89373.68534
-  tps: 62844.24444
+  dps: 87275.57208
+  tps: 61382.60247
  }
 }
 dps_results: {

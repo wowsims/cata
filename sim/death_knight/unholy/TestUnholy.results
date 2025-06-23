@@ -234,9 +234,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 145539.50562
-  tps: 108404.18521
-  hps: 1969.5419
+  dps: 142493.81737
+  tps: 105546.08106
+  hps: 1970.97614
  }
 }
 dps_results: {
@@ -266,9 +266,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 156955.83955
-  tps: 116983.246
-  hps: 1975.8545
+  dps: 152923.30608
+  tps: 112981.25335
+  hps: 1974.42026
  }
 }
 dps_results: {
