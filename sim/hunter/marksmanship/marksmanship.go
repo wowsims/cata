@@ -58,6 +58,16 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 				wqSpell.Cast(sim, result.Target)
 			}
 		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != hunter.AutoAttacks.RangedAuto() {
+				return
+			}
+
+			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
+			if sim.RandomFloat("Wild Quiver") < procChance {
+				wqSpell.Cast(sim, result.Target)
+			}
+		},
 	})
 }
 func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *MarksmanshipHunter {
