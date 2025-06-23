@@ -395,14 +395,7 @@ func (pet *Pet) OnGCDReady(_ *Simulation)          {}
 
 func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPets []*Pet, inheritanceFunc func(*Simulation, *Pet)) {
 	for _, pet := range dynamicPets {
-		delayedInheritance := func(sim *Simulation) {
-			if pet.enabled {
-				inheritanceFunc(sim, pet)
-			}
-		}
-
-		if sim.CurrentTime == 0 {
-			delayedInheritance(sim)
+		if !pet.IsEnabled() {
 			continue
 		}
 
@@ -412,7 +405,12 @@ func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPet
 		StartDelayedAction(sim, DelayedActionOptions{
 			DoAt:     time.Second * 2 + nextHeartbeat,
 			Priority: ActionPriorityDOT,
-			OnAction: delayedInheritance,
+
+			OnAction: func(sim *Simulation) {
+				if pet.enabled {
+					inheritanceFunc(sim, pet)
+				}
+			},
 		})
 	}
 }
