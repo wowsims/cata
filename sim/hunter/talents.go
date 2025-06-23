@@ -15,9 +15,9 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 	procChance := 0.30
 
 	tothMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  HunterSpellMultiShot | HunterSpellArcaneShot,
-		FloatValue: -0.5,
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: HunterSpellMultiShot | HunterSpellArcaneShot,
+		IntValue:  -20,
 	})
 
 	tothAura := hunter.RegisterAura(core.Aura{
@@ -47,7 +47,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Needs to cost Focus to proc
 			if spell.CurCast.Cost <= 0 {
 				return

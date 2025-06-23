@@ -36,7 +36,7 @@ func (druid *Druid) registerTigersFurySpell() {
 
 	spell := druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		Flags:    core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),

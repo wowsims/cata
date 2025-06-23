@@ -16,7 +16,7 @@ func (druid *Druid) registerTranquilityCD() {
 		ActionID:         core.ActionID{SpellID: 44203},
 		SpellSchool:      core.SpellSchoolNature,
 		ProcMask:         core.ProcMaskSpellHealing,
-		Flags:            core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:            core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagReadinessTrinket,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   druid.DefaultCritMultiplier(),

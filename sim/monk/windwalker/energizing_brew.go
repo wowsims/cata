@@ -29,7 +29,7 @@ func (ww *WindwalkerMonk) registerEnergizingBrew() {
 
 	ww.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: monk.MonkSpellEnergizingBrew,
 
 		Cast: core.CastConfig{

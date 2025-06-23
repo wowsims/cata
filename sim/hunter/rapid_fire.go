@@ -20,7 +20,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
+			aura.Unit.MultiplyRangedHaste(sim, hasteMultiplier)
 
 			focusPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 3,
@@ -35,13 +35,14 @@ func (hunter *Hunter) registerRapidFireCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			focusPA.Cancel(sim)
-			aura.Unit.MultiplyRangedSpeed(sim, 1/hasteMultiplier)
+			aura.Unit.MultiplyRangedHaste(sim, 1/hasteMultiplier)
 		},
 	})
 
 	rapidFire := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: HunterSpellRapidFire,
+		Flags:          core.SpellFlagReadinessTrinket,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},

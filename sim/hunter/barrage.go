@@ -9,7 +9,8 @@ import (
 func (hunter *Hunter) getBarrageConfig() core.SpellConfig {
 	return core.SpellConfig{
 		SpellSchool:              core.SpellSchoolPhysical,
-		ProcMask:                 core.ProcMaskSpellProc,
+		ProcMask:                 core.ProcMaskRangedSpecial,
+		Flags:                    core.SpellFlagRanged,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
@@ -54,6 +55,7 @@ func (hunter *Hunter) registerBarrageSpell() {
 	config.ActionID = core.ActionID{SpellID: 120360}
 	config.ProcMask = core.ProcMaskRangedSpecial
 	config.Flags = core.SpellFlagChanneled | core.SpellFlagAPL | core.SpellFlagRanged
+	config.ClassSpellMask = HunterSpellBarrage
 	config.FocusCost = core.FocusCostOptions{
 		Cost: 30,
 	}

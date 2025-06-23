@@ -51,7 +51,11 @@ func (affliction *AfflictionWarlock) registerSoulburn() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			affliction.SoulBurnAura.Activate(sim)
-			affliction.SoulShards.Spend(sim, 1, spell.ActionID)
+
+			// if we cast this >= 20 sec pre pull we will regenerate the shard
+			if sim.CurrentTime > -20*time.Second {
+				affliction.SoulShards.Spend(sim, 1, spell.ActionID)
+			}
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

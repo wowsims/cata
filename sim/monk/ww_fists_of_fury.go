@@ -26,7 +26,7 @@ func fistsOfFuryTickSpellConfig(monk *Monk, pet *StormEarthAndFirePet) core.Spel
 		ActionID:       fofDebuffActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: MonkSpellFistsOfFury,
 		MaxRange:       core.MaxMeleeRange,
 

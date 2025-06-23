@@ -57,7 +57,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
-	focusPerSecond := 5.0
+	focusPerSecond := 4.0
 
 	// TODO: Fix this to work with the new talent system.
 	// hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
@@ -127,7 +127,6 @@ func (hunter *Hunter) ApplyTalents() {
 }
 
 func (hunter *Hunter) RegisterSpells() {
-	hunter.registerSteadyShotSpell()
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
 	hunter.registerHawkSpell()
@@ -239,6 +238,7 @@ const (
 	HunterSpellBestialWrath
 	HunterPetFocusDump
 	HunterPetDamage
+	HunterSpellBarrage
 	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellMultiShot | HunterSpellAimedShot
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |
