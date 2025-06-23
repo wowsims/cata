@@ -75,6 +75,13 @@ func (bmHunter *BeastMasteryHunter) Initialize() {
 		direBeastPetMod.Activate()
 	}
 
+	amocDamageMod := bmHunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  hunter.HunterSpellAMurderOfCrows,
+		FloatValue: baseMasteryBonus,
+	})
+	amocDamageMod.Activate()
+
 	bmHunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
 		masteryBonus := bmHunter.getMasteryBonus(newMasteryRating)
 		if petMod != nil {
@@ -90,6 +97,8 @@ func (bmHunter *BeastMasteryHunter) Initialize() {
 		if direBeastPetMod != nil {
 			direBeastPetMod.UpdateFloatValue(masteryBonus)
 		}
+
+		amocDamageMod.UpdateFloatValue(masteryBonus)
 	})
 }
 
