@@ -50,14 +50,15 @@ type Mage struct {
 	HeatingUp            *core.Aura
 	InstantPyroblastAura *core.Aura
 
-	arcaneMissileCritSnapshot float64
-
-	Icicles []float64
+	T15_4PC_ArcaneChargeEffect  float64
+	T15_4PC_FrostboltProcChance float64
+	Icicles                     []float64
 
 	// Item sets
 	T12_4pc *core.Aura
 	T13_4pc *core.Aura
 	T14_4pc *core.Aura
+	T16_4pc *core.Aura
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -91,7 +92,7 @@ func (mage *Mage) ProcFingersOfFrost(sim *core.Simulation, spell *core.Spell) {
 		return
 	}
 	if spell.Matches(MageSpellFrostbolt | MageSpellFrostfireBolt) {
-		if sim.Proc(0.15, "FingersOfFrostProc") {
+		if sim.Proc(0.15+core.TernaryFloat64(spell.Matches(MageSpellFrostbolt), mage.T15_4PC_FrostboltProcChance, 0), "FingersOfFrostProc") {
 			mage.FingersOfFrostAura.Activate(sim)
 			mage.FingersOfFrostAura.AddStack(sim)
 		}
@@ -141,7 +142,8 @@ func (mage *Mage) registerMastery() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
-	mage.arcaneMissileCritSnapshot = 0.0
+	mage.T15_4PC_ArcaneChargeEffect = 1.0
+	mage.T15_4PC_FrostboltProcChance = 0
 	mage.Icicles = make([]float64, 0)
 }
 
@@ -162,9 +164,8 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	mage.HasteEffectsManaRegen()
 
 	mage.Icicles = make([]float64, 0)
-	// mage.mirrorImage = mage.NewMirrorImage()
-	// mage.flameOrb = mage.NewFlameOrb()
-	// mage.frostfireOrb = mage.NewFrostfireOrb()
+	mage.T15_4PC_ArcaneChargeEffect = 1.0
+	mage.T15_4PC_FrostboltProcChance = 0
 
 	return mage
 }

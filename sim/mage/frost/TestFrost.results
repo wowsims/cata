@@ -66,6 +66,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ChronomancerRegalia"
+ value: {
+  dps: 132864.73271
+  tps: 92176.58406
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-CourageousPrimalDiamond"
  value: {
   dps: 134517.66896
@@ -166,8 +173,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-FabledFeatherofJi-Kun-96842"
  value: {
-  dps: 131720.94583
-  tps: 92684.11039
+  dps: 129184.2022
+  tps: 89497.24678
  }
 }
 dps_results: {
@@ -194,8 +201,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Horridon'sLastGasp-96757"
  value: {
-  dps: 140924.80109
-  tps: 99205.0821
+  dps: 138368.03111
+  tps: 95911.08175
  }
 }
 dps_results: {
@@ -215,15 +222,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-InscribedBagofHydra-Spawn-96828"
  value: {
-  dps: 131720.94583
-  tps: 92684.11039
+  dps: 129184.2022
+  tps: 89497.24678
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
-  dps: 131720.94583
-  tps: 92684.11039
+  dps: 129184.2022
+  tps: 89497.24678
  }
 }
 dps_results: {
@@ -259,6 +266,13 @@ dps_results: {
  value: {
   dps: 120564.77233
   tps: 81907.74195
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-RegaliaoftheChromaticHydra"
+ value: {
+  dps: 129381.21246
+  tps: 85598.61957
  }
 }
 dps_results: {
@@ -320,15 +334,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-UnerringVisionofLeiShen-96930"
  value: {
-  dps: 143781.70578
-  tps: 101001.44973
+  dps: 141136.60643
+  tps: 97582.48878
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-Wushoolay'sFinalChoice-96785"
  value: {
-  dps: 166448.32343
-  tps: 117115.32
+  dps: 159293.83841
+  tps: 110274.5634
  }
 }
 dps_results: {

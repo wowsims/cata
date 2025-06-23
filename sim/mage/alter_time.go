@@ -91,6 +91,8 @@ func (mage *Mage) registerAlterTimeCD() {
 			mage.AlterTimeAura.Activate(sim)
 			mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
 		},
+
+		RelatedSelfBuff: mage.AlterTimeAura,
 	})
 
 	mage.RegisterSpell(core.SpellConfig{

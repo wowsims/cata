@@ -66,6 +66,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-ChronomancerRegalia"
+ value: {
+  dps: 105568.39642
+  tps: 102813.2256
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-CourageousPrimalDiamond"
  value: {
   dps: 112420.28616
@@ -166,8 +173,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-FabledFeatherofJi-Kun-96842"
  value: {
-  dps: 105815.26875
-  tps: 103425.37476
+  dps: 107001.33345
+  tps: 104428.47904
  }
 }
 dps_results: {
@@ -194,8 +201,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Horridon'sLastGasp-96757"
  value: {
-  dps: 113300.10245
-  tps: 110793.66991
+  dps: 114479.15707
+  tps: 111773.66809
  }
 }
 dps_results: {
@@ -215,15 +222,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-InscribedBagofHydra-Spawn-96828"
  value: {
-  dps: 105815.26875
-  tps: 103425.37476
+  dps: 106996.61077
+  tps: 104423.75637
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
-  dps: 105815.26875
-  tps: 103425.37476
+  dps: 106996.61077
+  tps: 104423.75637
  }
 }
 dps_results: {
@@ -262,10 +269,17 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-RegaliaoftheChromaticHydra"
+ value: {
+  dps: 111946.41227
+  tps: 109142.00271
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 106834.59292
-  tps: 104271.11356
+  dps: 106835.37247
+  tps: 104271.8931
  }
 }
 dps_results: {
@@ -320,15 +334,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-UnerringVisionofLeiShen-96930"
  value: {
-  dps: 118026.98179
-  tps: 115445.46662
+  dps: 119131.34255
+  tps: 116315.88882
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Wushoolay'sFinalChoice-96785"
  value: {
-  dps: 138571.28566
-  tps: 135518.16652
+  dps: 135402.14662
+  tps: 132240.23453
  }
 }
 dps_results: {
