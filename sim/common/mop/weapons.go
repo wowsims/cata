@@ -20,7 +20,7 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 126211},
 			SpellSchool: core.SpellSchoolFire,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagIgnoreArmor | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultCritMultiplier(),
@@ -34,7 +34,7 @@ func init() {
 				TickLength:    time.Second * 2,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, statValue)
+					dot.SnapshotPhysical(target, statValue)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -54,8 +54,8 @@ func init() {
 			ProcChance: 0.1,
 			Outcome:    core.OutcomeLanded,
 			Callback:   core.CallbackOnSpellHitDealt,
-			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				dot.Cast(sim, spell.Unit.CurrentTarget)
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				dot.Cast(sim, result.Target)
 			},
 		})
 	})
