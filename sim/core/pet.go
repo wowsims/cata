@@ -229,6 +229,7 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		// make sure to reset it to refresh energy
 		pet.energyBar.reset(sim)
 		pet.energyBar.enable(sim, sim.CurrentTime)
+		pet.energyBar.energyRegenMultiplier *= pet.Owner.PseudoStats.AttackSpeedMultiplier
 	}
 }
 
@@ -346,6 +347,7 @@ func (pet *Pet) Disable(sim *Simulation) {
 
 	pet.CancelGCDTimer(sim)
 	pet.focusBar.disable(sim)
+	pet.energyBar.disable(sim)
 	pet.AutoAttacks.CancelAutoSwing(sim)
 	pet.enabled = false
 

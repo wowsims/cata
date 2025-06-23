@@ -2308,8 +2308,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 146651.96614
-  tps: 101040.47957
+  dps: 150097.38867
+  tps: 101328.43968
  }
 }
 dps_results: {
@@ -2350,8 +2350,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 147144.9894
-  tps: 101469.43204
+  dps: 149162.01687
+  tps: 100314.24937
  }
 }
 dps_results: {
@@ -2392,8 +2392,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 151618.13438
-  tps: 104312.23566
+  dps: 153827.48632
+  tps: 103193.54974
  }
 }
 dps_results: {
@@ -2434,8 +2434,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-prebis-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 149077.92732
-  tps: 102043.85617
+  dps: 154113.54075
+  tps: 101310.51572
  }
 }
 dps_results: {
@@ -2455,8 +2455,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-prebis-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 80447.87929
-  tps: 54595.68812
+  dps: 81174.11229
+  tps: 54240.12077
  }
 }
 dps_results: {
