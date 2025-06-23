@@ -18,6 +18,14 @@ var OtherItemIdsToFetch = []string{
 var ConsumableOverrides = []*proto.Consumable{
 	{Id: 62290, BuffsMainStat: true, Stats: stats.Stats{stats.Stamina: 90}.ToProtoArray()},
 	{Id: 62649, BuffsMainStat: true, Stats: stats.Stats{stats.Stamina: 90}.ToProtoArray()},
+	{
+		Id:            86125,
+		Name:          "Kafa Press",
+		Type:          proto.ConsumableType_ConsumableTypePotion,
+		BuffsMainStat: false,
+		Stats:         stats.Stats{stats.HasteRating: 4000}.ToProtoArray(),
+		BuffDuration:  25,
+	},
 }
 var ItemOverrides = []*proto.UIItem{
 	// Boosted 359 green weapon damage stats are way off
@@ -834,6 +842,7 @@ var ExtraItemIcons = []int32{
 	41166,
 	42545,
 	42641,
+	86125,
 
 	// Poisons
 	43231,
