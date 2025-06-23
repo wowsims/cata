@@ -42,5 +42,8 @@ func (ele *ElementalShaman) registerShamanisticRageSpell() {
 	ele.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeMana,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return ele.CurrentManaPercent() < 0.05
+		},
 	})
 }

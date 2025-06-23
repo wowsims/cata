@@ -51,6 +51,7 @@ func (eleShaman *ElementalShaman) Initialize() {
 	eleShaman.registerLavaBurstSpell()
 	eleShaman.registerEarthquakeSpell()
 	eleShaman.registerLavaBeamSpell()
+	eleShaman.registerShamanisticRageSpell()
 }
 
 func (ele *ElementalShaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
