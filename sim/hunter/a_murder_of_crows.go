@@ -16,7 +16,7 @@ func (hunter *Hunter) registerAMOCSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskProc,
 		//ClassSpellMask: HunterSpellSerpentSting,
-		Flags:    core.SpellFlagAPL | core.SpellFlagApplyArmorReduction,
+		Flags:    core.SpellFlagAPL | core.SpellFlagApplyArmorReduction | core.SpellFlagRanged,
 		MinRange: 0,
 		MaxRange: 40,
 		FocusCost: core.FocusCostOptions{
