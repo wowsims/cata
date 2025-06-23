@@ -72,8 +72,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 71617.5909
-  tps: 50226.44006
+  dps: 79458.66531
+  tps: 55793.60289
  }
 }
 dps_results: {
@@ -217,6 +217,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 82605.33964
+  tps: 58019.59617
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-FangsoftheFather"
  value: {
   dps: 62973.75494
@@ -287,6 +294,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 70711.07814
+  tps: 49704.3383
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 73573.96861
@@ -301,10 +315,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 70711.07814
+  tps: 49704.3383
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-JawsofRetribution"
  value: {
   dps: 58788.80911
   tps: 41309.91134
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 71551.73439
+  tps: 50308.48314
  }
 }
 dps_results: {
@@ -352,8 +380,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 101229.25295
-  tps: 71067.54936
+  dps: 101895.92709
+  tps: 71518.17107
  }
 }
 dps_results: {
@@ -420,10 +448,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 72785.52682
+  tps: 51177.19686
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-VestmentsoftheDarkPhoenix"
  value: {
   dps: 56911.81049
   tps: 39994.68981
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 71556.51555
+  tps: 50299.94868
  }
 }
 dps_results: {

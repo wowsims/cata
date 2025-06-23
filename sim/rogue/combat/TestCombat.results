@@ -40,8 +40,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 61490.28194
-  tps: 42972.89135
+  dps: 109975.24172
+  tps: 77397.21279
  }
 }
 dps_results: {
@@ -185,6 +185,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 77809.37752
+  tps: 54695.84257
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-FangsoftheFather"
  value: {
   dps: 61945.16425
@@ -255,6 +262,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 76463.76922
+  tps: 53737.65967
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 79262.05571
@@ -269,10 +283,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 76463.76922
+  tps: 53737.65967
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-JawsofRetribution"
  value: {
   dps: 58196.26566
   tps: 40816.01494
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 76463.76922
+  tps: 53737.65967
  }
 }
 dps_results: {
@@ -320,8 +348,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 105969.04414
-  tps: 74284.9148
+  dps: 106263.74722
+  tps: 74486.96834
  }
 }
 dps_results: {
@@ -395,10 +423,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 79624.75743
+  tps: 55942.71742
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-VestmentsoftheDarkPhoenix"
  value: {
   dps: 62497.86554
   tps: 43893.4304
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 77809.37752
+  tps: 54695.84257
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 80420.47747
+  tps: 56517.71597
  }
 }
 dps_results: {

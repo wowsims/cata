@@ -218,9 +218,17 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 184008.955
-  tps: 174442.31918
-  hps: 2409.93589
+  dps: 198264.61872
+  tps: 185770.80397
+  hps: 2391.37108
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 222326.06928
+  tps: 206137.25383
+  hps: 2396.01228
  }
 }
 dps_results: {
@@ -248,6 +256,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostTwoHand-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 187134.05865
+  tps: 175311.9049
+  hps: 2396.01228
+ }
+}
+dps_results: {
  key: "TestFrostTwoHand-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 189732.71139
@@ -261,6 +277,22 @@ dps_results: {
   dps: 188639.31531
   tps: 176743.34814
   hps: 2431.39713
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 187134.05865
+  tps: 175311.9049
+  hps: 2396.01228
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 187134.05865
+  tps: 175311.9049
+  hps: 2396.01228
  }
 }
 dps_results: {
@@ -354,8 +386,8 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 187820.84974
-  tps: 175908.9404
+  dps: 187794.34806
+  tps: 175886.97264
   hps: 2396.01228
  }
 }
@@ -461,6 +493,22 @@ dps_results: {
   dps: 188639.31531
   tps: 176743.34814
   hps: 2405.53603
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 192160.18488
+  tps: 180057.63752
+  hps: 2502.74141
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 187134.05865
+  tps: 175311.9049
+  hps: 2396.01228
  }
 }
 dps_results: {
