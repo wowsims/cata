@@ -14,23 +14,27 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 	actionID := core.ActionID{SpellID: 109306}
 	procChance := 0.30
 
+	tothMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: HunterSpellMultiShot | HunterSpellArcaneShot,
+		IntValue:  -20,
+	})
+
 	tothAura := hunter.RegisterAura(core.Aura{
 		Label:     "Thrill of the Hunt",
 		ActionID:  actionID,
 		Duration:  time.Second * 12,
-		MaxStacks: 2,
+		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.MultiShot.Cost.PercentModifier -= 50
-			hunter.ArcaneShot.Cost.PercentModifier -= 50
+			tothMod.Activate()
 
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.MultiShot.Cost.PercentModifier += 50
-			hunter.ArcaneShot.Cost.PercentModifier += 50
+			tothMod.Deactivate()
 
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == hunter.MultiShot || spell == hunter.ArcaneShot {
+			if spell.Matches(HunterSpellMultiShot) || spell.Matches(HunterSpellArcaneShot) {
 				aura.RemoveStack(sim)
 
 			}
@@ -43,7 +47,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Needs to cost Focus to proc
 			if spell.CurCast.Cost <= 0 {
 				return
@@ -51,7 +55,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 
 			if sim.RandomFloat("Thrill of the Hunt") < procChance {
 				tothAura.Activate(sim)
-				tothAura.SetStacks(sim, 2)
+				tothAura.SetStacks(sim, 3)
 			}
 		},
 	})

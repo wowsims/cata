@@ -46,7 +46,7 @@ func (rogue *Rogue) registerShadowBladesCD() {
 
 	rogue.ShadowBlades = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 121471},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: RogueSpellShadowBlades,
 
 		Cast: core.CastConfig{

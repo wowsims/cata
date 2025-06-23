@@ -37,7 +37,7 @@ type RuneMeta struct {
 }
 
 type runicPowerBar struct {
-	unit *Unit
+	character *Character
 
 	maxRunicPower      float64
 	startingRunicPower float64
@@ -48,12 +48,17 @@ type runicPowerBar struct {
 	// |DS|DS|DS|DS|DS|DS|
 	runeStates int16
 	runeMeta   [6]RuneMeta
-	btSlot     int8
 
 	bloodRuneGainMetrics  *ResourceMetrics
 	frostRuneGainMetrics  *ResourceMetrics
 	unholyRuneGainMetrics *ResourceMetrics
 	deathRuneGainMetrics  *ResourceMetrics
+
+	spellRunicPowerMetrics map[ActionID]*ResourceMetrics
+	spellBloodRuneMetrics  map[ActionID]*ResourceMetrics
+	spellFrostRuneMetrics  map[ActionID]*ResourceMetrics
+	spellUnholyRuneMetrics map[ActionID]*ResourceMetrics
+	spellDeathRuneMetrics  map[ActionID]*ResourceMetrics
 
 	onRuneChange     OnRuneChange
 	onRunicPowerGain OnRunicPowerGain
@@ -62,6 +67,8 @@ type runicPowerBar struct {
 
 	runeRegenMultiplier  float64
 	runicRegenMultiplier float64
+
+	runicRegenMultiplierDisabled bool
 
 	permanentDeaths []int8
 
@@ -96,7 +103,7 @@ func (rp *runicPowerBar) DebugString() string {
 }
 
 func (rp *runicPowerBar) reset(sim *Simulation) {
-	if rp.unit == nil {
+	if rp.character == nil {
 		return
 	}
 
@@ -118,11 +125,11 @@ func (rp *runicPowerBar) reset(sim *Simulation) {
 	rp.currentRunicPower = rp.startingRunicPower
 }
 
-func (unit *Unit) EnableRunicPowerBar(startingRunicPower float64, maxRunicPower float64, runeCD time.Duration,
+func (character *Character) EnableRunicPowerBar(startingRunicPower float64, maxRunicPower float64, runeCD time.Duration,
 	onRuneChange OnRuneChange, onRunicPowerGain OnRunicPowerGain) {
-	unit.SetCurrentPowerBar(RunicPower)
-	unit.runicPowerBar = runicPowerBar{
-		unit: unit,
+	character.SetCurrentPowerBar(RunicPower)
+	character.runicPowerBar = runicPowerBar{
+		character: character,
 
 		maxRunicPower:        maxRunicPower,
 		currentRunicPower:    startingRunicPower,
@@ -132,23 +139,28 @@ func (unit *Unit) EnableRunicPowerBar(startingRunicPower float64, maxRunicPower 
 		runicRegenMultiplier: 1.0,
 
 		runeStates: baseRuneState,
-		btSlot:     -1,
 
 		onRuneChange:     onRuneChange,
 		onRunicPowerGain: onRunicPowerGain,
 
 		permanentDeaths: make([]int8, 0),
 		lastRegen:       make([]int8, 0),
+
+		spellRunicPowerMetrics: make(map[ActionID]*ResourceMetrics),
+		spellBloodRuneMetrics:  make(map[ActionID]*ResourceMetrics),
+		spellFrostRuneMetrics:  make(map[ActionID]*ResourceMetrics),
+		spellUnholyRuneMetrics: make(map[ActionID]*ResourceMetrics),
+		spellDeathRuneMetrics:  make(map[ActionID]*ResourceMetrics),
 	}
 
-	unit.bloodRuneGainMetrics = unit.NewBloodRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionBloodRuneGain, Tag: 1})
-	unit.frostRuneGainMetrics = unit.NewFrostRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFrostRuneGain, Tag: 1})
-	unit.unholyRuneGainMetrics = unit.NewUnholyRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionUnholyRuneGain, Tag: 1})
-	unit.deathRuneGainMetrics = unit.NewDeathRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionDeathRuneGain, Tag: 1})
+	character.bloodRuneGainMetrics = character.NewBloodRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionBloodRuneGain, Tag: 1})
+	character.frostRuneGainMetrics = character.NewFrostRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFrostRuneGain, Tag: 1})
+	character.unholyRuneGainMetrics = character.NewUnholyRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionUnholyRuneGain, Tag: 1})
+	character.deathRuneGainMetrics = character.NewDeathRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionDeathRuneGain, Tag: 1})
 }
 
 func (unit *Unit) HasRunicPowerBar() bool {
-	return unit.runicPowerBar.unit != nil
+	return unit.runicPowerBar.character != nil
 }
 
 func (rp *runicPowerBar) SetPermanentDeathRunes(permanentDeaths []int8) {
@@ -181,17 +193,18 @@ func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, 
 	}
 
 	runicRegenMultiplier := rp.runicRegenMultiplier
-	if !withMultiplier {
+	if !withMultiplier || rp.runicRegenMultiplierDisabled {
 		runicRegenMultiplier = 1.0
 	}
-	newRunicPower := min(rp.currentRunicPower+(amount*runicRegenMultiplier), rp.maxRunicPower)
+	amount *= runicRegenMultiplier
+	newRunicPower := min(rp.currentRunicPower+amount, rp.maxRunicPower)
 
 	if sim.CurrentTime > 0 {
 		metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
 	}
 
 	if sim.Log != nil {
-		rp.unit.Log(sim, "Gained %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
+		rp.character.Log(sim, "Gained %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
 	}
 
 	rp.currentRunicPower = newRunicPower
@@ -225,7 +238,7 @@ func (rp *runicPowerBar) spendRunicPower(sim *Simulation, amount float64, metric
 	}
 
 	if sim.Log != nil {
-		rp.unit.Log(sim, "Spent %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
+		rp.character.Log(sim, "Spent %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
 	}
 
 	rp.currentRunicPower = newRunicPower
@@ -407,15 +420,7 @@ func (rp *runicPowerBar) ConvertToDeath(sim *Simulation, slot int8, revertAt tim
 
 	rp.runeStates |= isDeaths[slot]
 
-	if rp.btSlot != slot {
-		rp.runeMeta[slot].revertAt = NeverExpires
-	} else {
-		if rp.runeMeta[slot].revertAt != NeverExpires {
-			rp.runeMeta[slot].revertAt = max(rp.runeMeta[slot].revertAt, revertAt)
-		} else {
-			rp.runeMeta[slot].revertAt = revertAt
-		}
-	}
+	rp.runeMeta[slot].revertAt = NeverExpires
 
 	// Note we gained
 	metrics := rp.bloodRuneGainMetrics
@@ -429,57 +434,6 @@ func (rp *runicPowerBar) ConvertToDeath(sim *Simulation, slot int8, revertAt tim
 		rp.spendRuneMetrics(sim, metrics, 1)
 		rp.gainRuneMetrics(sim, rp.deathRuneGainMetrics, 1)
 	}
-}
-
-func (rp *runicPowerBar) CancelBloodTap(sim *Simulation) {
-	if rp.btSlot == -1 {
-		return
-	}
-	rp.ConvertFromDeath(sim, rp.btSlot)
-	bloodTapAura := rp.unit.GetAura("Blood Tap")
-	bloodTapAura.Deactivate(sim)
-	rp.btSlot = -1
-
-	rp.maybeFireChange(sim, ConvertFromDeath)
-}
-
-func (rp *runicPowerBar) BloodTapConversion(sim *Simulation, bloodMetrics *ResourceMetrics, deathMetrics *ResourceMetrics) {
-	changeType := None
-
-	// 1. converts a blood rune -> death rune
-	// 2. then convert one inactive blood or death rune -> active
-	if rp.runeStates&isDeaths[0] == 0 {
-		rp.btSlot = 0
-		rp.ConvertToDeath(sim, 0, sim.CurrentTime+time.Second*20)
-		changeType |= ConvertToDeath
-	} else if rp.runeStates&isDeaths[1] == 0 {
-		rp.btSlot = 1
-		rp.ConvertToDeath(sim, 1, sim.CurrentTime+time.Second*20)
-		changeType |= ConvertToDeath
-	}
-
-	if rp.runeStates&isSpents[0] > 0 {
-		rp.regenRuneInternal(sim, sim.CurrentTime, 0)
-		if rp.runeStates&isDeaths[0] > 0 {
-			rp.gainRuneMetrics(sim, deathMetrics, 1)
-		} else {
-			rp.gainRuneMetrics(sim, bloodMetrics, 1)
-		}
-		changeType |= GainRune
-	} else if rp.runeStates&isSpents[1] > 0 {
-		rp.regenRuneInternal(sim, sim.CurrentTime, 1)
-		if rp.runeStates&isDeaths[1] > 0 {
-			rp.gainRuneMetrics(sim, deathMetrics, 1)
-		} else {
-			rp.gainRuneMetrics(sim, bloodMetrics, 1)
-		}
-		changeType |= GainRune
-	}
-
-	// if PA isn't running, make it run 20s from now to disable BT
-	rp.launchPA(sim, sim.CurrentTime+20.0*time.Second)
-
-	rp.maybeFireChange(sim, changeType)
 }
 
 func (rp *runicPowerBar) LeftBloodRuneReady() bool {
@@ -550,6 +504,8 @@ func (rp *runicPowerBar) AllRunesSpent() bool {
 func (rp *runicPowerBar) OptimalRuneCost(cost RuneCost) RuneCost {
 	var b, f, u, d int8
 
+	d += cost.Death()
+
 	if b = cost.Blood(); b > 0 {
 		if cb := rp.CurrentBloodRunes(); cb < b {
 			d += b - cb
@@ -574,8 +530,6 @@ func (rp *runicPowerBar) OptimalRuneCost(cost RuneCost) RuneCost {
 	if d == 0 {
 		return cost
 	}
-
-	d += cost.Death()
 
 	if cd := rp.CurrentDeathRunes(); cd >= d {
 		return NewRuneCost(cost.RunicPower(), b, f, u, d)
@@ -603,8 +557,11 @@ func (rp *runicPowerBar) spendRuneCost(sim *Simulation, spell *Spell, cost RuneC
 	for i := int8(0); i < u; i++ {
 		slots = append(slots, rp.spendRune(sim, 4, spell.UnholyRuneMetrics()))
 	}
+	defaultCost := RuneCost(spell.Cost.GetCurrentCost())
+	for i := int8(0); i < defaultCost.Death(); i++ {
+		slots = append(slots, rp.spendDeathRune(sim, []int8{0, 1, 2, 3, 4, 5}, spell.DeathRuneMetrics()))
+	}
 	if d > 0 {
-		defaultCost := RuneCost(spell.Cost.GetCurrentCost())
 		for i, mu := int8(0), defaultCost.Unholy()-u; i < mu; i++ {
 			slots = append(slots, rp.spendDeathRune(sim, []int8{4, 5, 2, 3, 0, 1}, spell.DeathRuneMetrics()))
 		}
@@ -644,7 +601,7 @@ func (rp *runicPowerBar) gainRuneMetrics(sim *Simulation, metrics *ResourceMetri
 
 	if sim.Log != nil {
 		name, currRunes := rp.typeAmount(metrics)
-		rp.unit.Log(sim, "Gained %0.3f %s rune from %s (%d --> %d).", float64(gainAmount), name, metrics.ActionID, currRunes-gainAmount, currRunes)
+		rp.character.Log(sim, "Gained %0.3f %s rune from %s (%d --> %d).", float64(gainAmount), name, metrics.ActionID, currRunes-gainAmount, currRunes)
 	}
 }
 
@@ -654,7 +611,7 @@ func (rp *runicPowerBar) spendRuneMetrics(sim *Simulation, metrics *ResourceMetr
 
 	if sim.Log != nil {
 		name, currRunes := rp.typeAmount(metrics)
-		rp.unit.Log(sim, "Spent 1.000 %s rune from %s (%d --> %d).", name, metrics.ActionID, currRunes+spendAmount, currRunes)
+		rp.character.Log(sim, "Spent 1.000 %s rune from %s (%d --> %d).", name, metrics.ActionID, currRunes+spendAmount, currRunes)
 	}
 }
 
@@ -709,30 +666,248 @@ func (rp *runicPowerBar) RegenAllRunes(sim *Simulation, metrics []*ResourceMetri
 	rp.maybeFireChange(sim, changeType)
 }
 
-func (rp *runicPowerBar) RegenRandomDepletedRune(sim *Simulation, runeMetrics []*ResourceMetrics) {
+func (rp *runicPowerBar) RegenAllFrostAndUnholyRunesAsDeath(sim *Simulation, deathRuneMetrics *ResourceMetrics) {
 	changeType := None
-	possibleRunes := make([]int, 0)
-	for i := range rp.runeMeta {
-		if rp.runeStates&isSpents[i] > 0 && rp.runeMeta[i].regenAt == NeverExpires {
-			possibleRunes = append(possibleRunes, i)
+	for i := 2; i < 6; i++ {
+		if rp.runeStates&isSpents[i] > 0 {
+			rp.regenRuneInternal(sim, sim.CurrentTime, int8(i))
+
+			rp.gainRuneMetrics(sim, deathRuneMetrics, 1)
+
+			changeType = GainRune
 		}
+
+		if rp.runeStates&isDeaths[i] == 0 {
+			rp.ConvertToDeath(sim, int8(i), NeverExpires)
+			changeType |= ConvertToDeath
+		}
+	}
+
+	rp.maybeFireChange(sim, changeType)
+}
+
+func (rp *runicPowerBar) AnyDepletedRunes() bool {
+	for slot := range rp.runeMeta {
+		if rp.isDepleted(slot) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (rp *runicPowerBar) isDepleted(runeSlot int) bool {
+	return rp.runeStates&isSpents[runeSlot] > 0 && rp.runeMeta[runeSlot].regenAt == NeverExpires
+}
+
+type depletedRune struct {
+	runeSlot int8
+	regenAt  time.Duration
+}
+
+func getHighestCDRune(sim *Simulation, possibleRunes []*depletedRune) int8 {
+	maxRegenAt := sim.CurrentTime
+	for _, rune := range possibleRunes {
+		if rune.regenAt > maxRegenAt {
+			maxRegenAt = rune.regenAt
+		}
+	}
+
+	filteredRunes := make([]int8, 0)
+	for _, rune := range possibleRunes {
+		if rune.regenAt == maxRegenAt {
+			filteredRunes = append(filteredRunes, rune.runeSlot)
+		}
+	}
+
+	randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(filteredRunes))))
+	return filteredRunes[randomRuneIndex]
+}
+
+// Runic Empowerment prioritizes fully depleted runes with the highest cd
+func (rp *runicPowerBar) RegenRunicEmpowermentRune(sim *Simulation, runeMetrics []*ResourceMetrics) {
+	possibleRunes := make([]*depletedRune, 0)
+
+	if rp.isDepleted(0) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 0, regenAt: rp.runeMeta[1].regenAt})
+	} else if rp.isDepleted(1) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 1, regenAt: rp.runeMeta[0].regenAt})
+	}
+	if rp.isDepleted(2) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+	} else if rp.isDepleted(3) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
+	}
+	if rp.isDepleted(4) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 4, regenAt: rp.runeMeta[5].regenAt})
+	} else if rp.isDepleted(5) {
+		possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 5, regenAt: rp.runeMeta[4].regenAt})
 	}
 
 	if len(possibleRunes) == 0 {
 		return
 	}
 
-	randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(possibleRunes))))
-	randomRune := int8(possibleRunes[randomRuneIndex])
+	slot := getHighestCDRune(sim, possibleRunes)
 
-	rp.regenRuneInternal(sim, sim.CurrentTime, randomRune)
-	changeType = GainRune
-	if rp.runeStates&isDeaths[randomRune] > 0 {
+	rp.regenRuneInternal(sim, sim.CurrentTime, slot)
+	if rp.runeStates&isDeaths[slot] > 0 {
 		rp.gainRuneMetrics(sim, runeMetrics[3], 1)
 	} else {
-		rp.gainRuneMetrics(sim, runeMetrics[randomRune/2], 1)
+		rp.gainRuneMetrics(sim, runeMetrics[slot/2], 1)
 	}
-	rp.maybeFireChange(sim, changeType)
+
+	rp.maybeFireChange(sim, GainRune)
+}
+
+// Plague leech prioritizes runes based on spec
+// Unholy prefers to regen a pair of B/F runes first, then U if no other runes are available.
+// Blood and Frost prefers to regen a pair of F/U runes first, then B if no other runes are available.
+func (rp *runicPowerBar) ConvertAndRegenPlagueLeechRunes(sim *Simulation, spell *Spell, runeMetrics []*ResourceMetrics) {
+	runesToRegen := make([]int8, 0)
+
+	if rp.character.Spec == proto.Spec_SpecUnholyDeathKnight {
+		if rp.isDepleted(0) {
+			runesToRegen = append(runesToRegen, 0)
+		} else if rp.isDepleted(1) {
+			runesToRegen = append(runesToRegen, 1)
+		}
+
+		if rp.isDepleted(2) {
+			runesToRegen = append(runesToRegen, 2)
+		} else if rp.isDepleted(3) {
+			runesToRegen = append(runesToRegen, 3)
+		}
+
+		if len(runesToRegen) < 2 {
+			if rp.isDepleted(4) {
+				runesToRegen = append(runesToRegen, 4)
+			} else if rp.isDepleted(5) {
+				runesToRegen = append(runesToRegen, 5)
+			}
+		}
+	} else {
+		if rp.isDepleted(2) {
+			runesToRegen = append(runesToRegen, 2)
+		} else if rp.isDepleted(3) {
+			runesToRegen = append(runesToRegen, 3)
+		}
+
+		if rp.isDepleted(4) {
+			runesToRegen = append(runesToRegen, 4)
+		} else if rp.isDepleted(5) {
+			runesToRegen = append(runesToRegen, 5)
+		}
+
+		if len(runesToRegen) < 2 {
+			if rp.isDepleted(0) {
+				runesToRegen = append(runesToRegen, 0)
+			} else if rp.isDepleted(1) {
+				runesToRegen = append(runesToRegen, 1)
+			}
+		}
+	}
+
+	if len(runesToRegen) == 0 {
+		return
+	}
+
+	for _, slot := range runesToRegen {
+		spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+
+		rp.regenRuneInternal(sim, sim.CurrentTime, slot)
+		if rp.runeStates&isDeaths[slot] > 0 {
+			rp.gainRuneMetrics(sim, runeMetrics[3], 1)
+		} else {
+			rp.gainRuneMetrics(sim, runeMetrics[slot/2], 1)
+		}
+	}
+
+	rp.maybeFireChange(sim, ConvertToDeath|GainRune)
+}
+
+// Blood tap prioritizes runes based on spec
+// Blood prefers to regen B runes first, then the F/U rune with the highest CD if no blood runes are available.
+// Frost prefers to regen U runes first, then the B/F rune with the highest CD if no other runes are available.
+// Unholy prefers to regen a B/F rune with the highest CD first, then an U rune if no other runes are available.
+func (rp *runicPowerBar) ConvertAndRegenBloodTapRune(sim *Simulation, spell *Spell, runeMetrics []*ResourceMetrics) bool {
+	slot := int8(-1)
+	possibleRunes := make([]*depletedRune, 0)
+
+	if rp.character.Spec == proto.Spec_SpecBloodDeathKnight {
+		if rp.isDepleted(0) {
+			slot = 0
+		} else if rp.isDepleted(1) {
+			slot = 1
+		} else {
+			if rp.isDepleted(2) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+			} else if rp.isDepleted(3) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
+			}
+			if rp.isDepleted(4) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 4, regenAt: rp.runeMeta[5].regenAt})
+			} else if rp.isDepleted(5) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 5, regenAt: rp.runeMeta[4].regenAt})
+			}
+		}
+	} else if rp.character.Spec == proto.Spec_SpecFrostDeathKnight {
+		if rp.isDepleted(4) {
+			slot = 4
+		} else if rp.isDepleted(5) {
+			slot = 5
+		} else {
+			if rp.isDepleted(0) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 0, regenAt: rp.runeMeta[1].regenAt})
+			} else if rp.isDepleted(1) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 1, regenAt: rp.runeMeta[0].regenAt})
+			}
+			if rp.isDepleted(2) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+			} else if rp.isDepleted(3) {
+				possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
+			}
+		}
+	} else {
+		if rp.isDepleted(0) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 0, regenAt: rp.runeMeta[1].regenAt})
+		} else if rp.isDepleted(1) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 1, regenAt: rp.runeMeta[0].regenAt})
+		}
+		if rp.isDepleted(2) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 2, regenAt: rp.runeMeta[3].regenAt})
+		} else if rp.isDepleted(3) {
+			possibleRunes = append(possibleRunes, &depletedRune{runeSlot: 3, regenAt: rp.runeMeta[2].regenAt})
+		}
+
+		if len(possibleRunes) == 0 {
+			if rp.isDepleted(4) {
+				slot = 4
+			} else if rp.isDepleted(5) {
+				slot = 5
+			}
+		}
+	}
+
+	if len(possibleRunes) > 0 {
+		slot = getHighestCDRune(sim, possibleRunes)
+	}
+
+	if slot == -1 {
+		return false
+	}
+
+	spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+
+	rp.regenRuneInternal(sim, sim.CurrentTime, slot)
+	if rp.runeStates&isDeaths[slot] > 0 {
+		rp.gainRuneMetrics(sim, runeMetrics[3], 1)
+	} else {
+		rp.gainRuneMetrics(sim, runeMetrics[slot/2], 1)
+	}
+	rp.maybeFireChange(sim, ConvertToDeath|GainRune)
+
+	return true
 }
 
 func (rp *runicPowerBar) MultiplyRuneRegenSpeed(sim *Simulation, multiplier float64) {
@@ -744,14 +919,18 @@ func (rp *runicPowerBar) MultiplyRunicRegen(multiply float64) {
 	rp.runicRegenMultiplier *= multiply
 }
 
+func (rp *runicPowerBar) GetRuneRegenMultiplier() float64 {
+	return rp.runeRegenMultiplier
+}
+
 func (rp *runicPowerBar) getTotalRegenMultiplier() float64 {
-	hasteMultiplier := 1.0 + rp.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
+	hasteMultiplier := 1.0 + rp.character.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 	totalMultiplier := 1 / (hasteMultiplier * rp.runeRegenMultiplier)
 	return totalMultiplier
 }
 
 func (rp *runicPowerBar) updateRegenTimes(sim *Simulation) {
-	if rp.unit == nil {
+	if rp.character == nil {
 		return
 	}
 	totalMultiplier := rp.getTotalRegenMultiplier()
@@ -818,9 +997,6 @@ func (rp *runicPowerBar) Advance(sim *Simulation, newTime time.Duration) {
 	if rp.runeStates&allDeath > 0 {
 		for i, rm := range rp.runeMeta {
 			if rm.revertAt <= newTime {
-				if rp.btSlot == int8(i) {
-					rp.btSlot = -1 // this was the BT slot
-				}
 				rp.ConvertFromDeath(sim, int8(i))
 				changeType |= ConvertFromDeath
 			}
@@ -840,7 +1016,7 @@ func (rp *runicPowerBar) Advance(sim *Simulation, newTime time.Duration) {
 
 	// Query APL if a change occurred
 	if changeType != None {
-		rp.unit.ReactToEvent(sim)
+		rp.character.ReactToEvent(sim)
 	}
 }
 
@@ -870,7 +1046,7 @@ func (rp *runicPowerBar) findReadyRune(slot int8) int8 {
 
 func (rp *runicPowerBar) spendDeathRune(sim *Simulation, order []int8, metrics *ResourceMetrics) int8 {
 	slot := rp.findReadyDeathRune(order)
-	if rp.btSlot != slot && !slices.Contains(rp.permanentDeaths, slot) {
+	if !slices.Contains(rp.permanentDeaths, slot) {
 		rp.runeMeta[slot].revertAt = NeverExpires // disable revert at
 		rp.runeStates ^= isDeaths[slot]           // clear death bit to revert.
 	}
@@ -898,14 +1074,11 @@ func (rp *runicPowerBar) findReadyDeathRune(order []int8) int8 {
 	panic(fmt.Sprintf("findReadyDeathRune() - no slot found (runeStates = %12b)", rp.runeStates))
 }
 
-func (rp *runicPowerBar) IsBloodTappedRune(slot int8) bool {
-	return slot == rp.btSlot
-}
-
 type RuneCostOptions struct {
 	BloodRuneCost  int8
 	FrostRuneCost  int8
 	UnholyRuneCost int8
+	DeathRuneCost  int8
 	RunicPowerCost float64
 	RunicPowerGain float64
 	Refundable     bool
@@ -916,6 +1089,7 @@ type RuneCostImpl struct {
 	BloodRuneCost  int8
 	FrostRuneCost  int8
 	UnholyRuneCost int8
+	DeathRuneCost  int8
 	RunicPowerCost float64
 	RunicPowerGain float64
 	Refundable     bool
@@ -931,12 +1105,13 @@ type RuneCostImpl struct {
 func newRuneCost(spell *Spell, options RuneCostOptions) *SpellCost {
 	return &SpellCost{
 		spell:           spell,
-		BaseCost:        int32(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, 0)),
+		BaseCost:        int32(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, options.DeathRuneCost)),
 		PercentModifier: 1,
 		ResourceCostImpl: &RuneCostImpl{
 			BloodRuneCost:  options.BloodRuneCost,
 			FrostRuneCost:  options.FrostRuneCost,
 			UnholyRuneCost: options.UnholyRuneCost,
+			DeathRuneCost:  options.DeathRuneCost,
 			RunicPowerCost: options.RunicPowerCost,
 			RunicPowerGain: options.RunicPowerGain,
 			Refundable:     options.Refundable,
@@ -956,6 +1131,7 @@ func (rc *RuneCostImpl) GetConfig() RuneCostOptions {
 		BloodRuneCost:  rc.BloodRuneCost,
 		FrostRuneCost:  rc.FrostRuneCost,
 		UnholyRuneCost: rc.UnholyRuneCost,
+		DeathRuneCost:  rc.DeathRuneCost,
 		RunicPowerCost: rc.RunicPowerCost,
 		RunicPowerGain: rc.RunicPowerGain,
 		Refundable:     rc.Refundable,
@@ -963,7 +1139,7 @@ func (rc *RuneCostImpl) GetConfig() RuneCostOptions {
 }
 
 func (rc *RuneCostImpl) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.Cost.GetCurrentCost() // TODO this looks fishy - multiplying and rune costs don't go well together
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 
 	cost := RuneCost(spell.CurCast.Cost)
 	if cost == 0 {
@@ -1012,8 +1188,15 @@ func (rc *RuneCostImpl) spendRefundableCost(sim *Simulation, spell *Spell, resul
 		if rc.RunicPowerGain > 0 {
 			spell.Unit.AddRunicPower(sim, rc.RunicPowerGain, spell.RunicPowerMetrics())
 		}
-	} else if rc.RefundCost > 0 {
-		spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
+	} else {
+		rc.spendRefundableRunicPowerCost(sim, spell)
+	}
+}
+
+func (rc *RuneCostImpl) spendRefundableRunicPowerCost(sim *Simulation, spell *Spell) {
+	if rc.Refundable && rc.RunicPowerCost > 0 {
+		refundCost := TernaryFloat64(rc.RefundCost > 0, rc.RefundCost, rc.RunicPowerCost*0.1)
+		spell.Unit.spendRunicPower(sim, refundCost, spell.RunicPowerMetrics())
 	}
 }
 
@@ -1021,37 +1204,23 @@ func (spell *Spell) SpendRefundableCost(sim *Simulation, result *SpellResult) {
 	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCost(sim, spell, result)
 }
 
-func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
+func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, spell *Spell, landed bool) {
 	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
 	if cost == 0 {
 		return // it was free this time. we don't care
 	}
-	if !result.Landed() {
+	if !landed {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
-		if rc.RefundCost > 0 {
-			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
-		}
+		rc.spendRefundableRunicPowerCost(sim, spell)
 		return
 	}
 
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
-	if !sim.Proc(convertChance, "Reaping") {
-		spell.Unit.maybeFireChange(sim, changeType)
-		return
-	}
-
 	for _, slot := range slots {
 		if slot == 0 || slot == 1 {
-			// If the slot to be converted is already blood-tapped, then we convert the other blood rune
-			if spell.Unit.IsBloodTappedRune(slot) {
-				otherRune := (slot + 1) % 2
-				spell.Unit.ConvertToDeath(sim, otherRune, NeverExpires)
-				changeType |= ConvertToDeath
-			} else {
-				spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
-				changeType |= ConvertToDeath
-			}
+			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+			changeType |= ConvertToDeath
 		}
 	}
 
@@ -1062,30 +1231,23 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 	spell.Unit.maybeFireChange(sim, changeType)
 }
 
-func (spell *Spell) SpendRefundableCostAndConvertBloodRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
+func (spell *Spell) SpendRefundableCostAndConvertBloodRune(sim *Simulation, landed bool) {
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, landed)
 }
 
-func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64, refundable bool) {
+func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, landed bool, refundable bool) {
 	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
 	if cost == 0 {
 		return // it was free this time. we don't care
 	}
-	if refundable && !result.Landed() {
+	if refundable && !landed {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
-		if rc.RefundCost > 0 {
-			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
-		}
+		rc.spendRefundableRunicPowerCost(sim, spell)
 		return
 	}
 
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
-	if !sim.Proc(convertChance, "Blood Rites") {
-		spell.Unit.maybeFireChange(sim, changeType)
-		return
-	}
-
 	for _, slot := range slots {
 		if slot == 2 || slot == 3 || slot == 4 || slot == 5 {
 			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
@@ -1100,45 +1262,31 @@ func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, sp
 	spell.Unit.maybeFireChange(sim, changeType)
 }
 
-func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
+func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, landed bool) {
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, landed, true)
 }
 
-func (spell *Spell) SpendCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
+func (spell *Spell) SpendCostAndConvertFrostOrUnholyRune(sim *Simulation, landed bool) {
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, landed, false)
 }
 
-func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
+func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, landed bool) {
 	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
 	if cost == 0 {
 		return // it was free this time. we don't care
 	}
-	if !result.Landed() {
+	if !landed {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
-		if rc.RefundCost > 0 {
-			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
-		}
+		rc.spendRefundableRunicPowerCost(sim, spell)
 		return
 	}
 
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
-	if !sim.Proc(convertChance, "Reaping") {
-		spell.Unit.maybeFireChange(sim, changeType)
-		return
-	}
-
 	for _, slot := range slots {
 		if slot == 0 || slot == 1 {
-			// If the slot to be converted is already blood-tapped, then we convert the other blood rune
-			if spell.Unit.IsBloodTappedRune(slot) {
-				otherRune := (slot + 1) % 2
-				spell.Unit.ConvertToDeath(sim, otherRune, NeverExpires)
-				changeType |= ConvertToDeath
-			} else {
-				spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
-				changeType |= ConvertToDeath
-			}
+			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+			changeType |= ConvertToDeath
 		}
 		if slot == 2 || slot == 3 {
 			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
@@ -1153,8 +1301,39 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simul
 	spell.Unit.maybeFireChange(sim, changeType)
 }
 
-func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, result, convertChance)
+func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, landed bool) {
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, landed)
+}
+
+func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostRune(sim *Simulation, spell *Spell, landed bool) {
+	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
+	if cost == 0 {
+		return // it was free this time. we don't care
+	}
+	if !landed {
+		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
+		// only spend RP
+		rc.spendRefundableRunicPowerCost(sim, spell)
+		return
+	}
+
+	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
+	for _, slot := range slots {
+		if slot == 2 || slot == 3 {
+			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+			changeType |= ConvertToDeath
+		}
+	}
+
+	if rc.RunicPowerGain > 0 {
+		spell.Unit.AddRunicPower(sim, rc.RunicPowerGain, spell.RunicPowerMetrics())
+	}
+
+	spell.Unit.maybeFireChange(sim, changeType)
+}
+
+func (spell *Spell) SpendRefundableCostAndConvertFrostRune(sim *Simulation, landed bool) {
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertFrostRune(sim, spell, landed)
 }
 
 func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
@@ -1184,4 +1363,54 @@ func (spell *Spell) UnholyRuneMetrics() *ResourceMetrics {
 
 func (spell *Spell) DeathRuneMetrics() *ResourceMetrics {
 	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).deathRuneMetrics
+}
+
+func (rp *runicPowerBar) NewRunicPowerMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellRunicPowerMetrics[action]
+	if !ok {
+		metric = rp.character.newRunicPowerMetrics(action)
+		rp.spellRunicPowerMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewBloodRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellBloodRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newBloodRuneMetrics(action)
+		rp.spellBloodRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewFrostRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellFrostRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newFrostRuneMetrics(action)
+		rp.spellFrostRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewUnholyRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellUnholyRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newUnholyRuneMetrics(action)
+		rp.spellUnholyRuneMetrics[action] = metric
+	}
+
+	return metric
+}
+
+func (rp *runicPowerBar) NewDeathRuneMetrics(action ActionID) *ResourceMetrics {
+	metric, ok := rp.spellDeathRuneMetrics[action]
+	if !ok {
+		metric = rp.character.newDeathRuneMetrics(action)
+		rp.spellDeathRuneMetrics[action] = metric
+	}
+
+	return metric
 }

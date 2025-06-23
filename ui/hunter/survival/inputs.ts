@@ -26,15 +26,5 @@ export const SVRotationConfig = {
 				{ name: 'AOE', value: RotationType.Aoe },
 			],
 		}),
-		InputHelpers.makeRotationEnumInput<Spec.SpecSurvivalHunter, HunterStingType>({
-			fieldName: 'sting',
-			label: 'Sting',
-			labelTooltip: 'Maintains the selected Sting on the primary target.',
-			values: [
-				{ name: 'None', value: HunterStingType.NoSting },
-				{ name: 'Serpent Sting', value: HunterStingType.SerpentSting },
-			],
-			showWhen: (player: Player<Spec.SpecSurvivalHunter>) => player.getSimpleRotation().type == RotationType.SingleTarget,
-		}),
 	],
 };

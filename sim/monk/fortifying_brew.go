@@ -34,7 +34,7 @@ func (monk *Monk) registerFortifyingBrew() {
 
 	spell := monk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: MonkSpellFortifyingBrew,
 
 		Cast: core.CastConfig{

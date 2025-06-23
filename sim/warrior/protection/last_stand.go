@@ -30,6 +30,7 @@ func (war *ProtectionWarrior) registerLastStand() {
 	spell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: warrior.SpellMaskLastStand,
+		Flags:          core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

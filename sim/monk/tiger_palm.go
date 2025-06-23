@@ -84,6 +84,7 @@ func tigerPalmSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfi
 func (monk *Monk) registerTigerPalm() {
 	chiMetrics := monk.NewChiMetrics(tigerPalmActionID)
 	isBrewmaster := monk.Spec == proto.Spec_SpecBrewmasterMonk
+	chiCost := int32(1)
 
 	tigerPowerBuff := monk.RegisterAura(tigerPowerBuffConfig(monk, false))
 
@@ -107,7 +108,7 @@ func (monk *Monk) registerTigerPalm() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return isBrewmaster || monk.GetChi() >= 1 || monk.ComboBreakerTigerPalmAura.IsActive()
+			return isBrewmaster || monk.GetChi() >= chiCost || monk.ComboBreakerTigerPalmAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -117,11 +118,12 @@ func (monk *Monk) registerTigerPalm() {
 
 			if result.Landed() {
 				tigerPowerBuff.Activate(sim)
-
-				if monk.ComboBreakerTigerPalmAura.IsActive() || isBrewmaster {
-					monk.SpendChi(sim, 0, chiMetrics)
-				} else {
-					monk.SpendChi(sim, 1, chiMetrics)
+				if !isBrewmaster {
+					if monk.ComboBreakerTigerPalmAura.IsActive() {
+						monk.onChiSpent(sim, chiCost)
+					} else {
+						monk.SpendChi(sim, chiCost, chiMetrics)
+					}
 				}
 			}
 

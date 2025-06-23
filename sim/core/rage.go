@@ -99,6 +99,10 @@ func (rb *rageBar) CurrentRage() float64 {
 	return rb.currentRage
 }
 
+func (rb *rageBar) MaximumRage() float64 {
+	return rb.maxRage
+}
+
 // Call this within the OnGain and OnExpire callbacks for Battle Stance, Raging
 // Whirlwind, etc.
 func (rb *rageBar) MultiplyAutoAttackRageGen(multiplier float64) {

@@ -22,6 +22,7 @@ func (ele *ElementalShaman) registerShamanisticRageSpell() {
 	spell := ele.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: shaman.SpellMaskShamanisticRage,
+		Flags:          core.SpellFlagReadinessTrinket,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -41,5 +42,8 @@ func (ele *ElementalShaman) registerShamanisticRageSpell() {
 	ele.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeMana,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return ele.CurrentManaPercent() < 0.05
+		},
 	})
 }

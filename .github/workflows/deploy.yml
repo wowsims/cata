@@ -67,4 +67,3 @@ jobs:
                   target-folder: mop
                   single-commit: true
                   token: ${{ secrets.DEPLOY_REPO_TOKEN }}
-                  clean: false
