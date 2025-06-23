@@ -117,8 +117,7 @@ func init() {
 				},
 			})
 
-			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
-			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -345,8 +344,7 @@ func init() {
 				},
 			})
 
-			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
-			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -380,26 +378,21 @@ func init() {
 				},
 			})
 
-			icd := core.Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: time.Second * 30,
-			}
-
 			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     label,
 				Harmful:  true,
+				ICD:      time.Second * 30,
 				Outcome:  core.OutcomeLanded,
 				Callback: core.CallbackOnSpellHitTaken,
+				ExtraCondition: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
+					return character.CurrentHealth() < 0.35
+				},
 				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-					if character.CurrentHealth() < 0.35 && icd.IsReady(sim) {
-						spell.Cast(sim, &character.Unit)
-						icd.Use(sim)
-					}
+					spell.Cast(sim, &character.Unit)
 				},
 			})
 
-			eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
-			character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 

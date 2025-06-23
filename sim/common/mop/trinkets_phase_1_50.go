@@ -14,8 +14,9 @@ func init() {
 		duration := time.Second * 15
 
 		statValue := core.GetItemEffectScaling(75274, 2.66700005531, state)
+		statTypeOptions := []stats.Stat{stats.Strength, stats.Agility, stats.Intellect}
 
-		auras := make(map[stats.Stat]*core.StatBuffAura, 2)
+		auras := make(map[stats.Stat]*core.StatBuffAura, 3)
 		auras[stats.Strength] = character.NewTemporaryStatsAura(
 			"Strength",
 			core.ActionID{SpellID: 60229},
@@ -45,7 +46,7 @@ func init() {
 			Outcome:    core.OutcomeLanded,
 			Callback:   core.CallbackOnSpellHitDealt,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				auras[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})].Activate(sim)
+				auras[character.GetHighestStatType(statTypeOptions)].Activate(sim)
 			},
 		})
 
@@ -53,7 +54,7 @@ func init() {
 		for _, aura := range auras {
 			character.AddStatProcBuff(75274, aura, false, eligibleSlots)
 		}
-		character.ItemSwap.RegisterProcWithSlots(81266, triggerAura, eligibleSlots)
+		character.ItemSwap.RegisterProcWithSlots(75274, triggerAura, eligibleSlots)
 	})
 
 	core.NewItemEffect(81266, func(agent core.Agent, state proto.ItemLevelState) {
@@ -78,7 +79,6 @@ func init() {
 			},
 		})
 
-		eligibleSlots := character.ItemSwap.EligibleSlotsForItem(81266)
-		character.ItemSwap.RegisterProcWithSlots(81266, triggerAura, eligibleSlots)
+		character.ItemSwap.RegisterProc(81266, triggerAura)
 	})
 }

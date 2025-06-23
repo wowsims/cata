@@ -1,7 +1,10 @@
 package death_knight
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -27,13 +30,20 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 
 func (dk *DeathKnight) NewFallenZandalariPet() *GhoulPet {
 	troll := dk.newGhoulPetInternal("Fallen Zandalari", false, 0.8)
-	troll.clawSpellID = 138537
 	troll.summonDelay = false
+
+	// Fallen Zandalari use their own spell called Strike, which does 150% damage
+	troll.clawSpellID = 138537
 	troll.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  GhoulSpellClaw,
 		FloatValue: 0.2,
 	})
+
+	// Command doesn't apply to Fallen Zandalari
+	if dk.Race == proto.Race_RaceOrc {
+		troll.PseudoStats.DamageDealtMultiplier /= 1.02
+	}
 	return troll
 }
 
@@ -47,6 +57,7 @@ func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingC
 			EnabledOnStart:                  permanent,
 			IsGuardian:                      !permanent,
 			HasDynamicMeleeSpeedInheritance: true,
+			HasResourceRegenInheritance:     true,
 		}),
 		dkOwner:     dk,
 		clawSpellID: 91776,
@@ -83,6 +94,7 @@ func (ghoulPet *GhoulPet) GetPet() *core.Pet {
 }
 
 func (ghoulPet *GhoulPet) Initialize() {
+	ghoulPet.Pet.Initialize()
 	ghoulPet.Claw = ghoulPet.registerClaw()
 }
 
@@ -139,7 +151,7 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDMin,
+				GCD: core.BossGCD,
 			},
 			IgnoreHaste: true,
 		},
@@ -169,10 +181,16 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 	})
 }
 
+func (ghoulPet *GhoulPet) EnableWithTimeout(sim *core.Simulation, petAgent core.PetAgent, petDuration time.Duration) {
+	ghoulPet.Enable(sim, petAgent)
+
+	ghoulPet.SetTimeoutAction(sim, petDuration)
+}
+
 func (ghoulPet *GhoulPet) Enable(sim *core.Simulation, petAgent core.PetAgent) {
 	if ghoulPet.IsGuardian() && ghoulPet.summonDelay {
 		// The ghoul takes around 4.5s - 5s to from summon to first hit, depending on your distance from the target.
-		randomDelay := core.DurationFromSeconds(sim.RollWithLabel(4.5, 5, "Raise Dead Delay"))
+		randomDelay := core.DurationFromSeconds(sim.RollWithLabel(4.5, 6, "Raise Dead Delay")).Round(time.Millisecond)
 		ghoulPet.Pet.EnableWithStartAttackDelay(sim, petAgent, randomDelay)
 	} else {
 		ghoulPet.Pet.Enable(sim, petAgent)

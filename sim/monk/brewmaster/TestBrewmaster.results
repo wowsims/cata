@@ -87,10 +87,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 153860.25905
-  tps: 919641.40634
-  dtps: 43833.29151
-  hps: 40735.03141
+  dps: 148972.90902
+  tps: 884959.54345
+  dtps: 24893.79523
+  hps: 42444.02283
  }
 }
 dps_results: {
@@ -2958,8 +2958,8 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-YaungolFireCarrier-86518"
  value: {
-  dps: 163746.79642
-  tps: 988839.79494
+  dps: 163822.72828
+  tps: 989371.318
   dtps: 26921.3896
   hps: 42363.74008
  }

@@ -69,10 +69,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 86923.60344
-  tps: 602218.85124
-  dtps: 59611.73071
-  hps: 21797.40387
+  dps: 86399.43532
+  tps: 598549.55556
+  dtps: 49948.27214
+  hps: 24486.32037
  }
 }
 dps_results: {
@@ -2922,8 +2922,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-YaungolFireCarrier-86518"
  value: {
-  dps: 89870.22386
-  tps: 622233.67259
+  dps: 89918.81324
+  tps: 622573.79825
   dtps: 54591.81932
   hps: 24419.70737
  }

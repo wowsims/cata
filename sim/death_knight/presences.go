@@ -40,8 +40,9 @@ func (dk *DeathKnight) registerBloodPresence() {
 	).NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
 
 	dk.BloodPresenceSpell = dk.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellBloodPresence,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -75,8 +76,9 @@ func (dk *DeathKnight) registerFrostPresence() {
 	}).NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
 
 	dk.FrostPresenceSpell = dk.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellFrostPresence,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -116,8 +118,9 @@ func (dk *DeathKnight) registerUnholyPresence() {
 	presenceAura.Aura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
 
 	dk.UnholyPresenceSpell = dk.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellUnholyPresence,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
