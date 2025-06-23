@@ -26,7 +26,7 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '312121',
+		talentsString: '312211',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfAnimalBond,
 			major2: MajorGlyph.GlyphOfDeterrence,
