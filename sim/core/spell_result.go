@@ -531,7 +531,7 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 	}
 
 	if spell.Flags.Matches(SpellFlagRanged) {
-		multiplier *= attackTable.RangedDamageTakenMulitplier
+		multiplier *= attackTable.RangedDamageTakenMultiplier
 	}
 
 	if attackTable.DamageDoneByCasterMultiplier != nil {
