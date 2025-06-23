@@ -563,6 +563,11 @@ func (unit *Unit) MultiplyRangedSpeed(sim *Simulation, amount float64) {
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
+func (unit *Unit) MultiplyRangedHaste(sim *Simulation, amount float64) {
+	unit.MultiplyRangedSpeed(sim, amount)
+	unit.MultiplyResourceRegenSpeed(sim, amount)
+}
+
 func (unit *Unit) updateAttackSpeed() {
 	oldMeleeAttackSpeed := unit.meleeAttackSpeed
 	oldRangedAttackSpeed := unit.rangedAttackSpeed
