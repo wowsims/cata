@@ -27,7 +27,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
