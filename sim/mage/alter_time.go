@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -8,13 +9,36 @@ import (
 
 func (mage *Mage) registerAlterTimeCD() {
 
-	auraState := map[int32]core.AuraState{}
+	auraState := map[string]*core.AuraState{}
 	var allAuras []*core.Aura
 	actionID := core.ActionID{SpellID: 108978}
-	mageCurrentMana := 0.0
-	mageCurrentHitpoints := 0.0
-	manaMetrics := mage.NewManaMetrics(actionID)
-	healthMetrics := mage.NewHealthMetrics(actionID)
+	mageSavedMana := 0.0
+	mageSavedHitPoints := 0.0
+	manaMetrics := mage.NewManaMetrics(actionID.WithTag(1))
+	healthMetrics := mage.NewHealthMetrics(actionID.WithTag(1))
+
+	restoreState := func(sim *core.Simulation) {
+		if manaDiff := mage.CurrentMana() - mageSavedMana; manaDiff > 0.0 {
+			mage.SpendMana(sim, math.Abs(manaDiff), manaMetrics)
+		} else {
+			mage.AddMana(sim, math.Abs(manaDiff), manaMetrics)
+		}
+
+		if healthDiff := mage.CurrentHealth() - mageSavedHitPoints; healthDiff > 0.0 {
+			mage.RemoveHealth(sim, math.Abs(healthDiff))
+		} else {
+			mage.GainHealth(sim, math.Abs(healthDiff), healthMetrics)
+		}
+
+		for _, aura := range allAuras {
+			state := auraState[aura.Label]
+			if state != nil {
+				aura.RestoreState(*state, sim)
+			} else if aura.IsActive() {
+				aura.Deactivate(sim)
+			}
+		}
+	}
 
 	mage.AlterTimeAura = mage.RegisterAura(core.Aura{
 		Label:    "Alter Time",
@@ -26,26 +50,26 @@ func (mage *Mage) registerAlterTimeCD() {
 			})
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mageCurrentMana = mage.CurrentMana()
-			mageCurrentHitpoints = mage.CurrentHealth()
+			mageSavedMana = mage.CurrentMana()
+			mageSavedHitPoints = mage.CurrentHealth()
 			for _, aura := range allAuras {
-				auraState[aura.ActionID.SpellID] = aura.SaveState(sim)
+				if aura.IsActive() {
+					state := aura.SaveState(sim)
+					auraState[aura.Label] = &state
+				} else {
+					auraState[aura.Label] = nil
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.SetCurrentMana(sim, mageCurrentMana, manaMetrics)
-			mage.SetCurrentHealth(sim, mageCurrentHitpoints, healthMetrics)
-			for _, aura := range allAuras {
-				state := auraState[aura.ActionID.SpellID]
-				if state != aura.SaveState(sim) {
-					aura.RestoreState(state, sim)
-				}
+			if aura.StartedAt()+aura.Duration <= sim.CurrentTime {
+				restoreState(sim)
 			}
 		},
 	})
 
 	mage.AlterTime = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       core.ActionID{SpellID: 108978},
 		ClassSpellMask: MageSpellAlterTime,
 		Flags:          core.SpellFlagNoOnCastComplete,
 
@@ -66,6 +90,18 @@ func (mage *Mage) registerAlterTimeCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			mage.AlterTimeAura.Activate(sim)
 			mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
+		},
+	})
+
+	mage.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 108978}.WithTag(1),
+		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return mage.AlterTimeAura.IsActive()
+		},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			mage.AlterTimeAura.Deactivate(sim)
+			restoreState(sim)
 		},
 	})
 

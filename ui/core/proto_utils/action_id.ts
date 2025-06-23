@@ -933,6 +933,11 @@ export class ActionId {
 					}
 				}
 				break;
+			case 'Alter Time':
+				if (tag == 1) {
+					name += " (Restore)"
+				}
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';
