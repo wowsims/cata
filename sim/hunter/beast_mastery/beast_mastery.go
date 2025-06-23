@@ -44,19 +44,51 @@ func (bmHunter *BeastMasteryHunter) Initialize() {
 
 	// Apply BM Hunter mastery
 	baseMasteryRating := bmHunter.GetStat(stats.MasteryRating)
+	baseMasteryBonus := bmHunter.getMasteryBonus(baseMasteryRating)
 
 	var petMod *core.SpellMod
 	if bmHunter.Pet != nil {
 		petMod = bmHunter.Pet.AddDynamicMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: bmHunter.getMasteryBonus(baseMasteryRating),
+			FloatValue: baseMasteryBonus,
 		})
 		petMod.Activate()
 	}
 
+	var stampedePetMods []*core.SpellMod = make([]*core.SpellMod, len(bmHunter.StampedePet))
+	for i := range bmHunter.StampedePet {
+		if bmHunter.StampedePet[i] != nil {
+			stampedePetMods[i] = bmHunter.StampedePet[i].AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: baseMasteryBonus,
+			})
+			stampedePetMods[i].Activate()
+		}
+	}
+
+	var direBeastPetMod *core.SpellMod
+	if bmHunter.DireBeastPet != nil {
+		direBeastPetMod = bmHunter.DireBeastPet.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: baseMasteryBonus,
+		})
+		direBeastPetMod.Activate()
+	}
+
 	bmHunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+		masteryBonus := bmHunter.getMasteryBonus(newMasteryRating)
 		if petMod != nil {
-			petMod.UpdateFloatValue(bmHunter.getMasteryBonus(newMasteryRating))
+			petMod.UpdateFloatValue(masteryBonus)
+		}
+
+		for i := range bmHunter.StampedePet {
+			if stampedePetMods[i] != nil {
+				stampedePetMods[i].UpdateFloatValue(masteryBonus)
+			}
+		}
+
+		if direBeastPetMod != nil {
+			direBeastPetMod.UpdateFloatValue(masteryBonus)
 		}
 	})
 }
