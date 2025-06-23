@@ -162,9 +162,8 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	paladin.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
 
-	strengthToParryRating := (1 / 951.158596) * core.ParryRatingPerParryPercent
-	paladin.AddStat(stats.ParryRating, -paladin.GetBaseStats()[stats.Strength]*strengthToParryRating) // Does not apply to base Strength
-	paladin.AddStatDependency(stats.Strength, stats.ParryRating, strengthToParryRating)
+	paladin.AddStat(stats.ParryRating, -paladin.GetBaseStats()[stats.Strength]*core.StrengthToParryRating) // Does not apply to base Strength
+	paladin.AddStatDependency(stats.Strength, stats.ParryRating, core.StrengthToParryRating)
 
 	paladin.PseudoStats.BaseBlockChance += 0.03
 	paladin.PseudoStats.BaseDodgeChance += 0.03
