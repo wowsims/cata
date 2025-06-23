@@ -94,7 +94,7 @@ func (monk *Monk) registerCracklingJadeLightning() {
 				dot := spell.Dot(target)
 				dot.Apply(sim)
 				expiresAt := dot.ExpiresAt()
-				monk.AutoAttacks.StopMeleeUntil(sim, expiresAt, false)
+				monk.AutoAttacks.StopMeleeUntil(sim, expiresAt)
 				monk.ExtendGCDUntil(sim, expiresAt+monk.ReactionTime)
 			}
 

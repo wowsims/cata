@@ -96,7 +96,7 @@ func (earthElemental *EarthElemental) TryCast(sim *core.Simulation, target *core
 		return false
 	}
 	// all spell casts reset the elemental's swing timer
-	earthElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime, false)
+	earthElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime)
 	return true
 }
 
