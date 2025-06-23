@@ -164,6 +164,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 105815.26875
+  tps: 103425.37476
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-FleetPrimalDiamond"
  value: {
   dps: 112036.53771
@@ -185,6 +192,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 113300.10245
+  tps: 110793.66991
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 111791.3929
@@ -196,6 +210,20 @@ dps_results: {
  value: {
   dps: 111054.18224
   tps: 108402.88496
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 105815.26875
+  tps: 103425.37476
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 105815.26875
+  tps: 103425.37476
  }
 }
 dps_results: {
@@ -287,6 +315,20 @@ dps_results: {
  value: {
   dps: 111054.18224
   tps: 108402.88496
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 118026.98179
+  tps: 115445.46662
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 138571.28566
+  tps: 135518.16652
  }
 }
 dps_results: {
