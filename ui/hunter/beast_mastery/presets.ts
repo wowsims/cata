@@ -38,18 +38,18 @@ export const DefaultTalents = {
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
-	Stats.fromMap( // TODO: This is just copied from MM
+	Stats.fromMap(
 		{
 			[Stat.StatStamina]: 0.0,
 			[Stat.StatAgility]: 1,
 			[Stat.StatHitRating]: 0.63,
-			[Stat.StatCritRating]: 0.4,
-			[Stat.StatHasteRating]: 0.35,
-			[Stat.StatMasteryRating]: 0.29,
+			[Stat.StatCritRating]: 0.3,
+			[Stat.StatHasteRating]: 0.37,
+			[Stat.StatMasteryRating]: 0.32,
 			[Stat.StatExpertiseRating]: 0.59,
 		},
 		{
-			[PseudoStat.PseudoStatRangedDps]: 0.62,
+			[PseudoStat.PseudoStatRangedDps]: 0.63,
 		},
 	),
 );
