@@ -27,7 +27,7 @@ func combatConditioningConfig(unit *core.Unit, isSEFClone bool) shared.IgniteCon
 			Outcome:        core.OutcomeLanded,
 		},
 
-		DamageCalculator: func(spell *core.Spell, result *core.SpellResult) float64 {
+		DamageCalculator: func(result *core.SpellResult) float64 {
 			return result.Damage * 0.2
 		},
 	}

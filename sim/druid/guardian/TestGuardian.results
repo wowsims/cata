@@ -2913,8 +2913,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 89037.80085
-  tps: 616479.28943
+  dps: 89057.62506
+  tps: 616618.05888
   dtps: 53480.51221
   hps: 25252.67105
  }

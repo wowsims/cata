@@ -4,7 +4,6 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/mop/sim/common/shared"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
@@ -18,51 +17,70 @@ func init() {
 		character := agent.GetCharacter()
 		label := "Xing-Ho, Breath of Yu'lon"
 
-		aura := core.MakePermanent(character.RegisterAura(core.Aura{
-			Label: label,
-		}))
+		numTargets := int32(core.Clamp(float64(5), 1.0, float64(character.Env.GetNumTargets())))
 
-		shared.RegisterIgniteEffect(&character.Unit, shared.IgniteConfig{
-			ActionID:           core.ActionID{SpellID: 146198},
-			SpellSchool:        core.SpellSchoolNature,
-			DisableCastMetrics: true,
-			DotAuraLabel:       "Essence of Yu'lon",
-			TickLength:         1 * time.Second,
-			NumberOfTicks:      4,
-			NumAoeTargets:      5,
-			ParentAura:         aura,
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 146198},
+			SpellSchool: core.SpellSchoolFirestorm,
+			Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			ProcMask:    core.ProcMaskEmpty,
 
-			ProcTrigger: core.ProcTrigger{
-				Name:    label,
-				Harmful: true,
-				DPM: character.NewRPPMProcManager(102246, false, core.ProcMaskSpellOrSpellProc, core.RPPMConfig{
-					PPM: 2.61100006104,
-				}.WithHasteMod().
-					WithSpecMod(0.25, proto.Spec_SpecArcaneMage).
-					WithSpecMod(0.20000000298, proto.Spec_SpecFireMage).
-					WithSpecMod(0.20000000298, proto.Spec_SpecFrostMage).
-					WithSpecMod(-0.75, proto.Spec_SpecProtectionPaladin).
-					WithSpecMod(-0.75, proto.Spec_SpecProtectionWarrior).
-					WithSpecMod(0.10000000149, proto.Spec_SpecBalanceDruid).
-					WithSpecMod(-0.75, proto.Spec_SpecGuardianDruid).
-					WithSpecMod(-0.75, proto.Spec_SpecBloodDeathKnight).
-					WithSpecMod(0, proto.Spec_SpecShadowPriest).
-					WithSpecMod(0.05000000075, proto.Spec_SpecElementalShaman).
-					WithSpecMod(0.10000000149, proto.Spec_SpecAfflictionWarlock).
-					WithSpecMod(0.25, proto.Spec_SpecDemonologyWarlock).
-					WithSpecMod(0.15000000596, proto.Spec_SpecDestructionWarlock).
-					WithSpecMod(-0.75, proto.Spec_SpecBrewmasterMonk),
-				),
-				Callback: core.CallbackOnSpellHitDealt,
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultCritMultiplier(),
+			ThreatMultiplier: 1,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Essence of Yu'lon",
+				},
+				TickLength:           1 * time.Second,
+				NumberOfTicks:        4,
+				AffectedByCastSpeed:  true,
+				HasteReducesDuration: true,
+
+				OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, dot.Spell.SpellPower()*2)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					for range numTargets {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+					}
+				},
 			},
 
-			DamageCalculator: func(spell *core.Spell, result *core.SpellResult) float64 {
-				return spell.SpellPower() * 2
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
 			},
 		})
 
-		eligibleSlots := character.ItemSwap.EligibleSlotsForItem(102246)
-		character.ItemSwap.RegisterProcWithSlots(102246, aura, eligibleSlots)
+		proctrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:    label,
+			Harmful: true,
+			DPM: character.NewRPPMProcManager(102246, false, core.ProcMaskSpellOrSpellProc, core.RPPMConfig{
+				PPM: 2.61100006104,
+			}.WithHasteMod().
+				WithSpecMod(0.25, proto.Spec_SpecArcaneMage).
+				WithSpecMod(0.20000000298, proto.Spec_SpecFireMage).
+				WithSpecMod(0.20000000298, proto.Spec_SpecFrostMage).
+				WithSpecMod(-0.75, proto.Spec_SpecProtectionPaladin).
+				WithSpecMod(-0.75, proto.Spec_SpecProtectionWarrior).
+				WithSpecMod(0.10000000149, proto.Spec_SpecBalanceDruid).
+				WithSpecMod(-0.75, proto.Spec_SpecGuardianDruid).
+				WithSpecMod(-0.75, proto.Spec_SpecBloodDeathKnight).
+				WithSpecMod(0, proto.Spec_SpecShadowPriest).
+				WithSpecMod(0.05000000075, proto.Spec_SpecElementalShaman).
+				WithSpecMod(0.10000000149, proto.Spec_SpecAfflictionWarlock).
+				WithSpecMod(0.25, proto.Spec_SpecDemonologyWarlock).
+				WithSpecMod(0.15000000596, proto.Spec_SpecDestructionWarlock).
+				WithSpecMod(-0.75, proto.Spec_SpecBrewmasterMonk),
+			),
+			Callback: core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				spell.Cast(sim, result.Target)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(102246, proctrigger)
 	})
 
 	newXuenCloakEffect := func(label string, itemID int32) {

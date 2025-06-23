@@ -77,7 +77,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 					Outcome:  core.OutcomeCrit,
 				},
 
-				DamageCalculator: func(spell *core.Spell, result *core.SpellResult) float64 {
+				DamageCalculator: func(result *core.SpellResult) float64 {
 					return result.Damage * .06
 				},
 			})

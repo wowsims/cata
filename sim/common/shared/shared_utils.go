@@ -594,19 +594,18 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 // Takes in the SpellResult for the triggering spell, and returns the total damage
 // of a *fresh* Ignite triggered by that spell. Roll-over damage
 // calculations for existing Ignites are handled internally.
-type IgniteDamageCalculator func(spell *core.Spell, result *core.SpellResult) float64
+type IgniteDamageCalculator func(result *core.SpellResult) float64
 
 type IgniteConfig struct {
 	ActionID           core.ActionID
 	ClassSpellMask     int64
+	SpellSchool        core.SpellSchool
 	DisableCastMetrics bool
 	DotAuraLabel       string
 	DotAuraTag         string
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
-	NumAoeTargets      int32 // Number of targets the Ignite tick will hit. defaults to 1.
-	IncludeAuraDelay   bool  // "munching" and "free roll-over" interactions
-	SpellSchool        core.SpellSchool
+	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
 	NumberOfTicks      int32
 	TickLength         time.Duration
 	ParentAura         *core.Aura
@@ -631,8 +630,6 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		config.TickLength = time.Second * 2
 	}
 
-	config.NumAoeTargets = int32(core.Clamp(float64(config.NumAoeTargets), 1.0, float64(unit.Env.GetNumTargets())))
-
 	igniteSpell := unit.RegisterSpell(core.SpellConfig{
 		ActionID:         config.ActionID,
 		SpellSchool:      config.SpellSchool,
@@ -654,10 +651,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 			AffectedByCastSpeed: false,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				for range config.NumAoeTargets {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-					target = sim.Environment.NextTargetUnit(target)
-				}
+				dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
 			},
 		},
 
@@ -682,7 +676,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		target := result.Target
 		dot := igniteSpell.Dot(target)
 		outstandingDamage := dot.OutstandingDmg()
-		newDamage := config.DamageCalculator(igniteSpell, result)
+		newDamage := config.DamageCalculator(result)
 		totalDamage := outstandingDamage + newDamage
 		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
 		damagePerTick := totalDamage / float64(newTickCount)
