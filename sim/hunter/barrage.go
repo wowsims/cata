@@ -10,6 +10,7 @@ func (hunter *Hunter) getBarrageConfig() core.SpellConfig {
 	return core.SpellConfig{
 		SpellSchool:              core.SpellSchoolPhysical,
 		ProcMask:                 core.ProcMaskRangedSpecial,
+		Flags:                    core.SpellFlagRanged,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
