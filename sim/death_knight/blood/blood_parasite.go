@@ -17,29 +17,31 @@ func (bdk *BloodDeathKnight) registerBloodParasite() {
 		ActionID:    core.ActionID{SpellID: 50452},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete,
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			// Summon Bloodworm
-			i := 0
-			max := len(bdk.Bloodworm)
-			for ; i < max; i++ {
-				if !bdk.Bloodworm[i].IsActive() {
-					break
+			for _, worm := range bdk.Bloodworm {
+				if worm.IsActive() {
+					continue
 				}
-			}
-			if i == max {
-				// No free worms - increase cap
+
+				worm.EnableWithTimeout(sim, worm, time.Second*20)
+				worm.CancelGCDTimer(sim)
+
 				return
 			}
-			bdk.Bloodworm[i].EnableWithTimeout(sim, bdk.Bloodworm[i], time.Second*20)
-			bdk.Bloodworm[i].CancelGCDTimer(sim)
+
+			if sim.Log != nil {
+				bdk.Log(sim, "No Bloodworm available for Blood Parasite to proc, this is unreasonable.")
+			}
 		},
 	})
 
 	core.MakeProcTriggerAura(&bdk.Unit, core.ProcTrigger{
 		Name:       "Blood Parasite Trigger" + bdk.Label,
 		ActionID:   core.ActionID{SpellID: 49542},
+		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMelee,
 		Outcome:    core.OutcomeLanded,
 		ICD:        time.Second * 5,

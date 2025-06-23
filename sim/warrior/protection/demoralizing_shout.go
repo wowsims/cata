@@ -20,7 +20,7 @@ func (war *ProtectionWarrior) registerDemoralizingShout() {
 		ActionID:       core.ActionID{SpellID: 1160},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: warrior.SpellMaskDemoralizingShout,
 
 		Cast: core.CastConfig{

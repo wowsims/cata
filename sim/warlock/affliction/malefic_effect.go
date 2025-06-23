@@ -56,7 +56,7 @@ func (affliction *AfflictionWarlock) registerMaleficEffect() {
 			source := procTable[proc]
 			dot := (*source).Dot(target)
 			if !dot.IsActive() {
-				return
+				continue
 			}
 
 			proc.BonusSpellPower = calculateDoTBaseTickDamage(dot) * coeff

@@ -27,9 +27,9 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagRanged,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
 		CritMultiplier:   hunter.DefaultCritMultiplier(),

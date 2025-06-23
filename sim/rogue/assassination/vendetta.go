@@ -35,7 +35,7 @@ func (sinRogue *AssassinationRogue) registerVendetta() {
 	sinRogue.Vendetta = sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: rogue.RogueSpellVendetta,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

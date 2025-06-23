@@ -7,12 +7,19 @@ import (
 	"github.com/wowsims/mop/sim/death_knight"
 )
 
+/*
+When a damaging attack brings you below 30% of your maximum health, the cooldown on your Rune Tap ability is refreshed and your next Rune Tap has no cost, and all damage taken is reduced by 25% for 8 sec.
+This effect cannot occur more than once every 45 seconds.
+(45s cooldown)
+*/
 func (bdk *BloodDeathKnight) registerWillOfTheNecropolis() {
 	wotnDmgReductionAura := bdk.RegisterAura(core.Aura{
 		Label:    "Will of The Necropolis Damage Reduction" + bdk.Label,
 		ActionID: core.ActionID{SpellID: 81162},
 		Duration: time.Second * 8,
-	}).AttachMultiplicativePseudoStatBuff(&bdk.Unit.PseudoStats.DamageTakenMultiplier, 0.75)
+	}).AttachMultiplicativePseudoStatBuff(
+		&bdk.Unit.PseudoStats.DamageTakenMultiplier, 0.75,
+	)
 
 	var wotnRuneTapCostAura *core.Aura
 	wotnRuneTapCostAura = bdk.RegisterAura(core.Aura{

@@ -287,6 +287,7 @@ type TemporaryStatBuffWithStacksConfig struct {
 	MaxStacks            int32
 	TimePerStack         time.Duration
 	Duration             time.Duration
+	TickImmediately      bool
 }
 
 func (character *Character) NewTemporaryStatBuffWithStacks(config TemporaryStatBuffWithStacksConfig) (*StatBuffAura, *Aura) {
@@ -308,9 +309,11 @@ func (character *Character) NewTemporaryStatBuffWithStacks(config TemporaryStatB
 			OnGain: func(aura *Aura, sim *Simulation) {
 				stackingAura.Activate(sim)
 				StartPeriodicAction(sim, PeriodicActionOptions{
-					Period:   config.TimePerStack,
-					NumTicks: 10,
+					Period:          config.TimePerStack,
+					NumTicks:        10,
+					TickImmediately: config.TickImmediately,
 					OnAction: func(sim *Simulation) {
+						stackingAura.Activate(sim)
 						stackingAura.AddStack(sim)
 					},
 				})

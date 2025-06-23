@@ -36,13 +36,13 @@ func (shaman *Shaman) NewChainSpellConfig(config ShamSpellConfig) core.SpellConf
 	numHits = min(numHits, shaman.Env.GetNumTargets())
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.CalcAndRollDamageRange(sim, config.Coeff, config.Variance)
 		curTarget := target
 
 		// Damage calculation and DealDamage are in separate loops so that e.g. a spell power proc
 		// can't proc on the first target and apply to the second
 		results := make([]*core.SpellResult, numHits)
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			baseDamage := shaman.CalcAndRollDamageRange(sim, config.Coeff, config.Variance)
 			results[hitIndex] = shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
 
 			curTarget = sim.Environment.NextTargetUnit(curTarget)

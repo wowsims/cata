@@ -35,7 +35,7 @@ func (bdk *BloodDeathKnight) registerBoneShield() {
 	spell := bdk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: death_knight.DeathKnightSpellBoneShield,
 
 		Cast: core.CastConfig{

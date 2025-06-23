@@ -54,7 +54,7 @@ func (dk *DeathKnight) registerAntiMagicShell() {
 		ActionID:    actionID,
 		ProcMask:    core.ProcMaskSpellHealing,
 		SpellSchool: core.SpellSchoolShadow,
-		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful,
+		Flags:       core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

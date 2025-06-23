@@ -82,7 +82,7 @@ func (affliction *AfflictionWarlock) registerAgony() {
 			} else {
 				result := spell.CalcPeriodicDamage(sim, target, affliction.CalcScalingSpellDmg(agonyScale), spell.OutcomeExpectedMagicCrit)
 				result.Damage *= 10
-				result.Damage /= affliction.ApplyCastSpeedForSpell(dot.BaseTickLength, spell).Seconds()
+				result.Damage /= dot.CalcTickPeriod().Round(time.Millisecond).Seconds()
 				return result
 			}
 		},

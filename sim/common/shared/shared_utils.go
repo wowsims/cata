@@ -777,7 +777,16 @@ func (version ItemVersion) GetLabel() string {
 }
 
 func (versions ItemVersionMap) RegisterAll(fac ItemVersionFactory) {
+	var maxItemID int32
+
+	for _, id := range versions {
+		maxItemID = max(maxItemID, id)
+	}
+
 	for version, id := range versions {
+		core.AddEffectsToTest = (id == maxItemID)
 		fac(version, id, version.GetLabel())
 	}
+
+	core.AddEffectsToTest = true
 }

@@ -35,12 +35,12 @@ func TestFrostTwoHand(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1.2h"),
+		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1.2h-obliterate"),
 		Talents:     DefaultTalents,
 		Glyphs:      FrostDefaultGlyphs,
 		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "2h"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "obliterate"),
 
 		ItemFilter: ItemFilterTwoHand,
 	}))

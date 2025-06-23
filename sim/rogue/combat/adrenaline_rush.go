@@ -39,6 +39,7 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 	comRogue.AdrenalineRush = comRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       AdrenalineRushActionID,
 		ClassSpellMask: rogue.RogueSpellAdrenalineRush,
+		Flags:          core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

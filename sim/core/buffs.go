@@ -324,6 +324,7 @@ func HornOfWinterAura(unit *Unit, asExternal bool) *Aura {
 
 	baseAura.OnReset = nil
 	baseAura.Duration = time.Minute * 5
+	baseAura.BuildPhase = CharacterBuildPhaseNone
 	return baseAura
 }
 
@@ -342,6 +343,7 @@ func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 
 	baseAura.OnReset = nil
 	baseAura.Duration = time.Minute * 5
+	baseAura.BuildPhase = CharacterBuildPhaseNone
 	return baseAura
 }
 

@@ -38,6 +38,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 136117.10563
+  tps: 91569.49476
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-AusterePrimalDiamond"
  value: {
   dps: 136438.94638
@@ -84,34 +91,6 @@ dps_results: {
  value: {
   dps: 136438.94638
   tps: 91730.90573
- }
-}
-dps_results: {
- key: "TestArms-AllItems-DelicateVialoftheSanguinaire-94518"
- value: {
-  dps: 135865.45275
-  tps: 91431.53927
- }
-}
-dps_results: {
- key: "TestArms-AllItems-DelicateVialoftheSanguinaire-95779"
- value: {
-  dps: 135865.45275
-  tps: 91431.53927
- }
-}
-dps_results: {
- key: "TestArms-AllItems-DelicateVialoftheSanguinaire-96151"
- value: {
-  dps: 135865.45275
-  tps: 91431.53927
- }
-}
-dps_results: {
- key: "TestArms-AllItems-DelicateVialoftheSanguinaire-96523"
- value: {
-  dps: 135865.45275
-  tps: 91431.53927
  }
 }
 dps_results: {
@@ -199,6 +178,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 150579.73653
+  tps: 101668.09356
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 152650.07572
+  tps: 102955.26534
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-FleetPrimalDiamond"
  value: {
   dps: 137058.85913
@@ -213,38 +206,17 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-AllItems-GazeoftheTwins-94529"
- value: {
-  dps: 144100.97105
-  tps: 96688.29648
- }
-}
-dps_results: {
- key: "TestArms-AllItems-GazeoftheTwins-95799"
- value: {
-  dps: 142499.80378
-  tps: 96070.30389
- }
-}
-dps_results: {
- key: "TestArms-AllItems-GazeoftheTwins-96171"
- value: {
-  dps: 144558.89609
-  tps: 97033.59286
- }
-}
-dps_results: {
- key: "TestArms-AllItems-GazeoftheTwins-96543"
- value: {
-  dps: 145144.78362
-  tps: 97365.15796
- }
-}
-dps_results: {
  key: "TestArms-AllItems-GazeoftheTwins-96915"
  value: {
   dps: 145891.89481
   tps: 97982.88359
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
  }
 }
 dps_results: {
@@ -259,6 +231,20 @@ dps_results: {
  value: {
   dps: 136438.94638
   tps: 91730.90573
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
  }
 }
 dps_results: {
@@ -304,34 +290,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-AllItems-Primordius'TalismanofRage-94519"
- value: {
-  dps: 144412.05162
-  tps: 97439.32191
- }
-}
-dps_results: {
- key: "TestArms-AllItems-Primordius'TalismanofRage-95757"
- value: {
-  dps: 142643.50317
-  tps: 96194.07903
- }
-}
-dps_results: {
- key: "TestArms-AllItems-Primordius'TalismanofRage-96129"
- value: {
-  dps: 144886.47505
-  tps: 97758.33817
- }
-}
-dps_results: {
- key: "TestArms-AllItems-Primordius'TalismanofRage-96501"
- value: {
-  dps: 145635.92047
-  tps: 98308.2388
- }
-}
-dps_results: {
  key: "TestArms-AllItems-Primordius'TalismanofRage-96873"
  value: {
   dps: 146413.64858
@@ -339,38 +297,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-AllItems-Renataki'sSoulCharm-94512"
- value: {
-  dps: 136643.42756
-  tps: 92095.62183
- }
-}
-dps_results: {
- key: "TestArms-AllItems-Renataki'sSoulCharm-95625"
- value: {
-  dps: 136440.66444
-  tps: 91950.90634
- }
-}
-dps_results: {
- key: "TestArms-AllItems-Renataki'sSoulCharm-95997"
- value: {
-  dps: 136662.72679
-  tps: 92114.92106
- }
-}
-dps_results: {
- key: "TestArms-AllItems-Renataki'sSoulCharm-96369"
- value: {
-  dps: 136718.55988
-  tps: 92170.75415
- }
-}
-dps_results: {
  key: "TestArms-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 136757.08226
-  tps: 92182.34816
+  dps: 137068.49099
+  tps: 92310.27628
  }
 }
 dps_results: {
@@ -402,34 +332,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-AllItems-TalismanofBloodlust-94522"
- value: {
-  dps: 136694.00068
-  tps: 92407.26351
- }
-}
-dps_results: {
- key: "TestArms-AllItems-TalismanofBloodlust-95748"
- value: {
-  dps: 136815.36726
-  tps: 92393.28953
- }
-}
-dps_results: {
- key: "TestArms-AllItems-TalismanofBloodlust-96120"
- value: {
-  dps: 136465.36185
-  tps: 92252.03279
- }
-}
-dps_results: {
- key: "TestArms-AllItems-TalismanofBloodlust-96492"
- value: {
-  dps: 136456.58009
-  tps: 92787.30557
- }
-}
-dps_results: {
  key: "TestArms-AllItems-TalismanofBloodlust-96864"
  value: {
   dps: 136949.66848
@@ -441,6 +343,27 @@ dps_results: {
  value: {
   dps: 136438.94638
   tps: 91730.90573
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 139213.48302
+  tps: 94001.16321
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 135865.45275
+  tps: 91431.53927
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 151263.99675
+  tps: 102368.91535
  }
 }
 dps_results: {

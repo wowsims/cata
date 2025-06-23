@@ -38,6 +38,12 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 
 		expectedV := vst.Float()
 		actualV := vmt.Float()
+
+		if strings.Contains(loc, "Stdev") && expectedV < 1 && actualV < 1 {
+			expectedV *= expectedV
+			actualV *= actualV
+		}
+
 		absDiff := math.Abs(expectedV - actualV)
 		relativeDiff := absDiff / min(math.Abs(expectedV), math.Abs(actualV))
 

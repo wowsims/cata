@@ -12,7 +12,7 @@ You can have a maximum of one ghoul at a time.
 Lasts 1 min.
 */
 func (dk *DeathKnight) registerRaiseDead() {
-	spell := dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 46584},
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellRaiseDead,
@@ -43,13 +43,5 @@ func (dk *DeathKnight) registerRaiseDead() {
 				dk.Ghoul.Pet.Disable(sim)
 			},
 		}),
-	})
-
-	dk.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
-		Type:  core.CooldownTypeDPS,
-		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-			return dk.HasActiveAuraWithTag(core.UnholyFrenzyAuraTag)
-		},
 	})
 }
