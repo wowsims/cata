@@ -74,8 +74,7 @@ type Pet struct {
 	// Examples:
 	// DK Raise Dead is doing its whole RP thing by climbing out of the ground before attacking.
 	// Monk clones Rush towards targets before attacking.
-	startAttackDelay  time.Duration
-	attackDelayAction *PendingAction
+	startAttackDelay time.Duration
 }
 
 func NewPet(config PetConfig) Pet {
@@ -205,26 +204,10 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	}
 
 	pet.SetGCDTimer(sim, max(0, sim.CurrentTime+pet.startAttackDelay, sim.CurrentTime))
-	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
-		pet.AutoAttacks.EnableAutoSwing(sim)
-	} else {
-		previousAutoSwingMelee := pet.AutoAttacks.AutoSwingMelee
-		previousAutoSwingRanged := pet.AutoAttacks.AutoSwingRanged
-		if pet.startAttackDelay > 0 {
-			pet.AutoAttacks.AutoSwingMelee = false
-			pet.AutoAttacks.AutoSwingRanged = false
-		}
-		pet.attackDelayAction = &PendingAction{
-			NextActionAt: max(0, sim.CurrentTime+pet.startAttackDelay),
-			OnAction: func(sim *Simulation) {
-				pet.AutoAttacks.AutoSwingMelee = previousAutoSwingMelee
-				pet.AutoAttacks.AutoSwingRanged = previousAutoSwingRanged
-				if pet.enabled {
-					pet.AutoAttacks.EnableAutoSwing(sim)
-				}
-			},
-		}
-		sim.AddPendingAction(pet.attackDelayAction)
+	pet.AutoAttacks.EnableAutoSwing(sim)
+
+	if (sim.CurrentTime < 0) || (pet.startAttackDelay > 0) {
+		pet.AutoAttacks.StopMeleeUntil(sim, max(0, sim.CurrentTime + pet.startAttackDelay) - pet.AutoAttacks.MainhandSwingSpeed(), true)
 	}
 
 	if sim.Log != nil {
@@ -371,9 +354,6 @@ func (pet *Pet) Disable(sim *Simulation) {
 
 	if (pet.timeoutAction != nil) && !pet.timeoutAction.consumed {
 		pet.timeoutAction.Cancel(sim)
-	}
-	if (pet.attackDelayAction != nil) && !pet.attackDelayAction.consumed {
-		pet.attackDelayAction.Cancel(sim)
 	}
 
 	if pet.OnPetDisable != nil {
