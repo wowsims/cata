@@ -126,24 +126,26 @@ func ItemEffectRandPropPointsToProto(ieRpp ItemEffectRandPropPoints) *proto.Item
 }
 
 type Consumable struct {
-	Id            int32
-	Type          proto.ConsumableType
-	Stats         stats.Stats
-	BuffsMainStat bool
-	Name          string
-	BuffDuration  time.Duration
-	EffectIds     []int32
+	Id               int32
+	Type             proto.ConsumableType
+	Stats            stats.Stats
+	BuffsMainStat    bool
+	Name             string
+	BuffDuration     time.Duration
+	CooldownDuration time.Duration
+	EffectIds        []int32
 }
 
 func ConsumableFromProto(consumable *proto.Consumable) Consumable {
 	return Consumable{
-		Id:            consumable.Id,
-		Type:          consumable.Type,
-		Stats:         stats.FromProtoArray(consumable.Stats),
-		BuffsMainStat: consumable.BuffsMainStat,
-		Name:          consumable.Name,
-		BuffDuration:  time.Second * time.Duration(consumable.BuffDuration),
-		EffectIds:     consumable.EffectIds,
+		Id:               consumable.Id,
+		Type:             consumable.Type,
+		Stats:            stats.FromProtoArray(consumable.Stats),
+		BuffsMainStat:    consumable.BuffsMainStat,
+		Name:             consumable.Name,
+		BuffDuration:     time.Second * time.Duration(consumable.BuffDuration),
+		CooldownDuration: time.Second * time.Duration(consumable.CooldownDuration),
+		EffectIds:        consumable.EffectIds,
 	}
 }
 
