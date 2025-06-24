@@ -163,7 +163,7 @@ export default class SelectorModal extends BaseModal {
 						onEquip: (eventID, item) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) {
-								gearData.equipItem(eventID, equippedItem.withItem(item).withChallengeMode(this.player.getChallengeModeEnabled()));
+								gearData.equipItem(eventID, equippedItem.withItem(item));
 							} else {
 								gearData.equipItem(eventID, new EquippedItem({ item, challengeMode: this.player.getChallengeModeEnabled() }));
 							}
