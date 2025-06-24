@@ -182,6 +182,7 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 			OnAction: func(sim *Simulation) {
 				pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
 				pet.AddStatsDynamic(sim, pet.inheritedStats)
+				pet.healthBar.reset(sim)
 			},
 		})
 	} else {
@@ -194,6 +195,9 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 
 	//reset current mana after applying stats
 	pet.manaBar.reset()
+
+	//reset current health after applying stats
+	pet.healthBar.reset(sim)
 
 	// Call onEnable callbacks before enabling auto swing
 	// to not have to reorder PAs multiple times
@@ -216,25 +220,10 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	}
 
 	pet.SetGCDTimer(sim, max(0, sim.CurrentTime+pet.startAttackDelay, sim.CurrentTime))
-	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
-		pet.AutoAttacks.EnableAutoSwing(sim)
-	} else {
-		previousAutoSwingMelee := pet.AutoAttacks.AutoSwingMelee
-		previousAutoSwingRanged := pet.AutoAttacks.AutoSwingRanged
-		if pet.startAttackDelay > 0 {
-			pet.AutoAttacks.AutoSwingMelee = false
-			pet.AutoAttacks.AutoSwingRanged = false
-		}
-		sim.AddPendingAction(&PendingAction{
-			NextActionAt: max(0, sim.CurrentTime+pet.startAttackDelay),
-			OnAction: func(sim *Simulation) {
-				pet.AutoAttacks.AutoSwingMelee = previousAutoSwingMelee
-				pet.AutoAttacks.AutoSwingRanged = previousAutoSwingRanged
-				if pet.enabled {
-					pet.AutoAttacks.EnableAutoSwing(sim)
-				}
-			},
-		})
+	pet.AutoAttacks.EnableAutoSwing(sim)
+
+	if (sim.CurrentTime < 0) || (pet.startAttackDelay > 0) {
+		pet.AutoAttacks.StopMeleeUntil(sim, max(0, sim.CurrentTime+pet.startAttackDelay)-pet.AutoAttacks.MainhandSwingSpeed(), true)
 	}
 
 	if sim.Log != nil {
@@ -246,7 +235,10 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	sim.addTracker(&pet.auraTracker)
 
 	if pet.HasFocusBar() {
+		// make sure to reset it to refresh focus
+		pet.focusBar.reset(sim)
 		pet.focusBar.enable(sim, sim.CurrentTime)
+		pet.focusBar.focusRegenMultiplier *= pet.Owner.PseudoStats.AttackSpeedMultiplier
 	}
 
 	if pet.HasEnergyBar() {

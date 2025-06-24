@@ -125,13 +125,11 @@ func (dk *DeathKnight) ghoulStatInheritance(apCoef float64) core.PetStatInherita
 		return stats.Stats{
 			stats.Armor:               ownerStats[stats.Armor],
 			stats.AttackPower:         ownerStats[stats.AttackPower] * apCoef,
-			stats.CritRating:          ownerStats[stats.CritRating],
 			stats.ExpertiseRating:     combined,
 			stats.HasteRating:         ownerStats[stats.HasteRating],
 			stats.Health:              ownerStats[stats.Health],
 			stats.HitRating:           combined,
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.Stamina:             ownerStats[stats.Stamina],
 		}
 	}
 }
