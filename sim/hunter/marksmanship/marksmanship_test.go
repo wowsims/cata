@@ -3,29 +3,38 @@ package marksmanship
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/common" // imported to get item effects included.
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterMarksmanshipHunter()
+	common.RegisterAllEffects()
 }
 
-func TestMM(t *testing.T) {
+func TestMarksmanship(t *testing.T) {
+	var talentSets []core.TalentsCombo
+	talentSets = core.GenerateTalentVariations(MarksmanshipTalents, MarksmanshipDefaultGlyphs)
+
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassHunter,
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../../ui/hunter/marksmanship/gear_sets", "preraid_mm"),
-		Talents:     MMTalents,
-		Glyphs:      MMGlyphs,
-		Consumables: FullConsumes,
+		GearSet: core.GetGearSet("../../../ui/hunter/presets", "p1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/hunter/presets", "preraid"),
+			core.GetGearSet("../../../ui/hunter/presets", "preraid_celestial"),
+		},
+		Talents:     MarksmanshipTalents,
+		OtherTalentSets: talentSets,
+		Glyphs:      MarksmanshipDefaultGlyphs,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
+			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "aoe"),
 		},
 
 		ItemFilter:       ItemFilter,
@@ -35,16 +44,6 @@ func TestMM(t *testing.T) {
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeMail,
-	WeaponTypes: []proto.WeaponType{
-		proto.WeaponType_WeaponTypeAxe,
-		proto.WeaponType_WeaponTypeDagger,
-		proto.WeaponType_WeaponTypeFist,
-		proto.WeaponType_WeaponTypeMace,
-		proto.WeaponType_WeaponTypeOffHand,
-		proto.WeaponType_WeaponTypePolearm,
-		proto.WeaponType_WeaponTypeStaff,
-		proto.WeaponType_WeaponTypeSword,
-	},
 	RangedWeaponTypes: []proto.RangedWeaponType{
 		proto.RangedWeaponType_RangedWeaponTypeBow,
 		proto.RangedWeaponType_RangedWeaponTypeCrossbow,
@@ -58,11 +57,11 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceOrc,
 				Class:          proto.Class_ClassHunter,
-				Equipment:      core.GetGearSet("../../../ui/hunter/marksmanship/gear_sets", "preraid_mm").GearSet,
-				Consumables:    FullConsumes,
+				Equipment:      core.GetGearSet("../../../ui/hunter/presets", "p1").GearSet,
+				Consumables:    FullConsumesSpec,
 				Spec:           PlayerOptionsBasic,
-				Glyphs:         MMGlyphs,
-				TalentsString:  MMTalents,
+				Glyphs:         MarksmanshipDefaultGlyphs,
+				TalentsString:  MarksmanshipTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
 			},
@@ -81,33 +80,27 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FullConsumes = &proto.ConsumesSpec{
-	FlaskId: 58087,
-	PotId:   58145,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  76084, // Flask of Spring Blossoms
+	FoodId:   74648, // Sea Mist Rice Noodles
+	PotId:    76089, // Virmen's Bite
+	PrepotId: 76089, // Virmen's Bite
 }
-var MMTalents = "032002-2302320032120231221-03"
 
-var MMGlyphs = &proto.Glyphs{}
-var FerocityTalents = &proto.HunterPetTalents{
-	SerpentSwiftness: 2,
-	Dive:             true,
-	SpikedCollar:     3,
-	Bloodthirsty:     1,
-	CullingTheHerd:   3,
-	SpidersBite:      3,
-	Rabid:            true,
-	CallOfTheWild:    true,
-	SharkAttack:      2,
+var MarksmanshipTalents = "312111"
+var MarksmanshipDefaultGlyphs = &proto.Glyphs{
+	Major1: int32(proto.HunterMajorGlyph_GlyphOfAimedShot),
+	Major2: int32(proto.HunterMajorGlyph_GlyphOfAnimalBond),
+	Major3: int32(proto.HunterMajorGlyph_GlyphOfDeterrence),
 }
+
 
 var PlayerOptionsBasic = &proto.Player_MarksmanshipHunter{
 	MarksmanshipHunter: &proto.MarksmanshipHunter{
 		Options: &proto.MarksmanshipHunter_Options{
 			ClassOptions: &proto.HunterOptions{
 				PetType:           proto.HunterOptions_Wolf,
-				PetTalents:        FerocityTalents,
-				PetUptime:         0.9,
-				TimeToTrapWeaveMs: 0,
+				PetUptime:         1,
 			},
 		},
 	},

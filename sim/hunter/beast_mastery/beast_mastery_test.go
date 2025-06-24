@@ -3,29 +3,39 @@ package beast_mastery
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/common" // imported to get item effects included.
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterBeastMasteryHunter()
+	common.RegisterAllEffects()
 }
 
-func TestBM(t *testing.T) {
+func TestBeastMastery(t *testing.T) {
+	var talentSets []core.TalentsCombo
+	talentSets = core.GenerateTalentVariations(BeastMasteryTalents, BeastMasteryDefaultGlyphs)
+
+
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassHunter,
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm"),
-		Talents:     BMTalents,
-		Glyphs:      BMGlyphs,
-		Consumables: FullConsumes,
+		GearSet: core.GetGearSet("../../../ui/hunter/presets", "p1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/hunter/presets", "preraid"),
+			core.GetGearSet("../../../ui/hunter/presets", "preraid_celestial"),
+		},
+		Talents:     BeastMasteryTalents,
+		OtherTalentSets: talentSets,
+		Glyphs:      BeastMasteryDefaultGlyphs,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm_advanced"),
+			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "aoe"),
 		},
 
 		ItemFilter:       ItemFilter,
@@ -35,16 +45,6 @@ func TestBM(t *testing.T) {
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeMail,
-	WeaponTypes: []proto.WeaponType{
-		proto.WeaponType_WeaponTypeAxe,
-		proto.WeaponType_WeaponTypeDagger,
-		proto.WeaponType_WeaponTypeFist,
-		proto.WeaponType_WeaponTypeMace,
-		proto.WeaponType_WeaponTypeOffHand,
-		proto.WeaponType_WeaponTypePolearm,
-		proto.WeaponType_WeaponTypeStaff,
-		proto.WeaponType_WeaponTypeSword,
-	},
 	RangedWeaponTypes: []proto.RangedWeaponType{
 		proto.RangedWeaponType_RangedWeaponTypeBow,
 		proto.RangedWeaponType_RangedWeaponTypeCrossbow,
@@ -58,11 +58,11 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceOrc,
 				Class:          proto.Class_ClassHunter,
-				Equipment:      core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm").GearSet,
-				Consumables:    FullConsumes,
+				Equipment:      core.GetGearSet("../../../ui/hunter/presets", "p1").GearSet,
+				Consumables:    FullConsumesSpec,
 				Spec:           PlayerOptionsBasic,
-				Glyphs:         BMGlyphs,
-				TalentsString:  BMTalents,
+				Glyphs:         BeastMasteryDefaultGlyphs,
+				TalentsString:  BeastMasteryTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
 			},
@@ -81,24 +81,18 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FullConsumes = &proto.ConsumesSpec{
-	FlaskId: 58087,
-	PotId:   58145,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  76084, // Flask of Spring Blossoms
+	FoodId:   74648, // Sea Mist Rice Noodles
+	PotId:    76089, // Virmen's Bite
+	PrepotId: 76089, // Virmen's Bite
 }
-var BMTalents = "2330230311320112121-2302-03"
-var BMGlyphs = &proto.Glyphs{
-	Major1: int32(proto.HunterMajorGlyph_GlyphOfBestialWrath),
-}
-var FerocityTalents = &proto.HunterPetTalents{
-	SerpentSwiftness: 2,
-	Dash:             true,
-	SpikedCollar:     3,
-	Bloodthirsty:     1,
-	CullingTheHerd:   3,
-	SpidersBite:      3,
-	Rabid:            true,
-	CallOfTheWild:    true,
-	SharkAttack:      2,
+
+var BeastMasteryTalents = "312111"
+var BeastMasteryDefaultGlyphs = &proto.Glyphs{
+	Major1: int32(proto.HunterMajorGlyph_GlyphOfPathfinding),
+	Major2: int32(proto.HunterMajorGlyph_GlyphOfAnimalBond),
+	Major3: int32(proto.HunterMajorGlyph_GlyphOfDeterrence),
 }
 
 var PlayerOptionsBasic = &proto.Player_BeastMasteryHunter{
@@ -106,7 +100,6 @@ var PlayerOptionsBasic = &proto.Player_BeastMasteryHunter{
 		Options: &proto.BeastMasteryHunter_Options{
 			ClassOptions: &proto.HunterOptions{
 				PetType:    proto.HunterOptions_Wolf,
-				PetTalents: FerocityTalents,
 				PetUptime:  1,
 			},
 		},
