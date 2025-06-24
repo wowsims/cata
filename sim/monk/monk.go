@@ -14,7 +14,8 @@ const (
 // Damage Done By Caster setup
 // Used by Windwalker Monk and SEF
 const (
-	DDBC_RisingSunKick int = iota
+	DDBC_RisingSunKick    int = iota
+	DDBC_RisingSunKickSEF int = iota
 
 	DDBC_Total
 )
