@@ -18,20 +18,18 @@ type BurningTreant struct {
 func (druid *Druid) NewBurningTreant() *BurningTreant {
 	baseStats := stats.Stats{stats.SpellCritPercent: 0}
 
-	statInheritance := func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			stats.SpellHitPercent: ownerStats[stats.SpellHitPercent],
-		}
+	statInheritance := func(_ stats.Stats) stats.Stats {
+		return stats.Stats{}
 	}
 
 	burningTreant := &BurningTreant{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Burning Treant",
-			Owner:           &druid.Character,
-			BaseStats:       baseStats,
-			StatInheritance: statInheritance,
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                     "Burning Treant",
+			Owner:                    &druid.Character,
+			BaseStats:                baseStats,
+			NonHitExpStatInheritance: statInheritance,
+			EnabledOnStart:           false,
+			IsGuardian:               true,
 		}),
 		owner: druid,
 	}

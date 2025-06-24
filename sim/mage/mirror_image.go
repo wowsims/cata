@@ -64,18 +64,11 @@ func (mage *Mage) NewMirrorImage() *MirrorImage {
 	hasGlyph := mage.HasMinorGlyph(proto.MageMinorGlyph_GlyphOfMirrorImage)
 
 	mirrorImageStatInheritance := func(ownerStats stats.Stats) stats.Stats {
-
-		hitRating := ownerStats[stats.HitRating]
-		expertiseRating := ownerStats[stats.ExpertiseRating]
-		combinedHitExp := (hitRating + expertiseRating) * 0.5
-
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina],
 			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.05,
 			stats.HasteRating:      ownerStats[stats.HasteRating],
 			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-			stats.HitRating:        combinedHitExp,
-			stats.ExpertiseRating:  combinedHitExp,
 		}
 	}
 
@@ -85,12 +78,12 @@ func (mage *Mage) NewMirrorImage() *MirrorImage {
 
 	mirrorImage := &MirrorImage{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Mirror Image",
-			Owner:           &mage.Character,
-			BaseStats:       mirrorImageBaseStats,
-			StatInheritance: mirrorImageStatInheritance,
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                     "Mirror Image",
+			Owner:                    &mage.Character,
+			BaseStats:                mirrorImageBaseStats,
+			NonHitExpStatInheritance: mirrorImageStatInheritance,
+			EnabledOnStart:           false,
+			IsGuardian:               true,
 		}),
 		mageOwner: mage,
 		hasGlyph:  hasGlyph,

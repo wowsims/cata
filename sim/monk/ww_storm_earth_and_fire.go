@@ -245,20 +245,13 @@ func (monk *Monk) NewSEFPet(name string, cloneID int32, swingSpeed float64) *Sto
 			Name:      name,
 			Owner:     &monk.Character,
 			BaseStats: stats.Stats{},
-			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
-
-				hitRating := ownerStats[stats.HitRating]
-				expertiseRating := ownerStats[stats.ExpertiseRating]
-				combinedHitExp := (hitRating + expertiseRating) * 0.5
-
+			NonHitExpStatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				return stats.Stats{
 					stats.Stamina:     ownerStats[stats.Stamina] * 0.1,
 					stats.AttackPower: ownerStats[stats.AttackPower],
 
-					stats.HitRating:       combinedHitExp,
-					stats.ExpertiseRating: combinedHitExp,
-					stats.DodgeRating:     ownerStats[stats.DodgeRating],
-					stats.ParryRating:     ownerStats[stats.ParryRating],
+					stats.DodgeRating: ownerStats[stats.DodgeRating],
+					stats.ParryRating: ownerStats[stats.ParryRating],
 
 					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],

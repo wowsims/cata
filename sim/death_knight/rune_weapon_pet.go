@@ -113,21 +113,7 @@ func (dk *DeathKnight) NewRuneWeapon() *RuneWeaponPet {
 			BaseStats: stats.Stats{
 				stats.Stamina: 100,
 			},
-			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
-				hitRating := ownerStats[stats.HitRating]
-				expertiseRating := ownerStats[stats.ExpertiseRating]
-				combined := (hitRating + expertiseRating) * 0.5
-
-				return stats.Stats{
-					stats.AttackPower:         ownerStats[stats.AttackPower],
-					stats.CritRating:          ownerStats[stats.CritRating],
-					stats.ExpertiseRating:     combined,
-					stats.HasteRating:         ownerStats[stats.HasteRating],
-					stats.HitRating:           combined,
-					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-					stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
-				}
-			},
+			NonHitExpStatInheritance:        runeeaponStatInheritance,
 			EnabledOnStart:                  false,
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -182,6 +168,15 @@ func (runeWeapon *RuneWeaponPet) Reset(_ *core.Simulation) {
 }
 
 func (runeWeapon *RuneWeaponPet) ExecuteCustomRotation(_ *core.Simulation) {
+}
+
+func runeeaponStatInheritance(ownerStats stats.Stats) stats.Stats {
+	return stats.Stats{
+		stats.AttackPower:         ownerStats[stats.AttackPower],
+		stats.HasteRating:         ownerStats[stats.HasteRating],
+		stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+		stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+	}
 }
 
 func (runeWeapon *RuneWeaponPet) enable(sim *core.Simulation) {

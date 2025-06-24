@@ -23,7 +23,7 @@ func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 			Name:                            "Ancient Guardian",
 			Owner:                           &paladin.Character,
 			BaseStats:                       stats.Stats{},
-			StatInheritance:                 statInheritance,
+			NonHitExpStatInheritance:        ancientGuardianStatInheritance,
 			EnabledOnStart:                  false,
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -44,18 +44,10 @@ func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 	return ancientGuardian
 }
 
-func statInheritance(ownerStats stats.Stats) stats.Stats {
-	// Draenei Heroic Presence is not included, so inherit HitRating
-	// rather than PhysicalHitPercent.
-	hitRating := ownerStats[stats.HitRating]
-	expertiseRating := ownerStats[stats.ExpertiseRating]
-	combined := (hitRating + expertiseRating) * 0.5
-
+func ancientGuardianStatInheritance(ownerStats stats.Stats) stats.Stats {
 	return stats.Stats{
 		stats.AttackPower:         ownerStats[stats.AttackPower] * 6.1,
-		stats.ExpertiseRating:     combined,
 		stats.HasteRating:         ownerStats[stats.HasteRating],
-		stats.HitRating:           combined,
 		stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 		stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 	}
@@ -98,7 +90,6 @@ func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 	})
 
 	ancientGuardian.OnPetEnable = func(sim *core.Simulation) {
-		ancientGuardian.EnableDynamicStats(statInheritance)
 		ancientPowerAura.Activate(sim)
 	}
 	ancientGuardian.OnPetDisable = func(sim *core.Simulation) {

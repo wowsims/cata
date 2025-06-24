@@ -2553,7 +2553,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 85198.92459
+  dps: 85249.4451
   tps: 80391.51991
  }
 }

@@ -24,10 +24,12 @@ type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
 type PetMeleeSpeedInheritance func(amount float64)
 
 type PetConfig struct {
-	Name                            string
-	Owner                           *Character
-	BaseStats                       stats.Stats
-	StatInheritance                 PetStatInheritance
+	Name      string
+	Owner     *Character
+	BaseStats stats.Stats
+	// Hit and Expertise are always inherited by combining the owners physical hit and expertise, then halving it
+	// For casters this will automatically give spell hit cap at 7.5% physical hit and exp
+	NonHitExpStatInheritance        PetStatInheritance
 	EnabledOnStart                  bool
 	IsGuardian                      bool
 	HasDynamicMeleeSpeedInheritance bool
@@ -102,7 +104,7 @@ func NewPet(config PetConfig) Pet {
 			baseStats:  config.BaseStats,
 		},
 		Owner:                           config.Owner,
-		statInheritance:                 config.StatInheritance,
+		statInheritance:                 makeStatInheritanceFunc(config.NonHitExpStatInheritance),
 		hasDynamicMeleeSpeedInheritance: config.HasDynamicMeleeSpeedInheritance,
 		hasDynamicCastSpeedInheritance:  config.HasDynamicCastSpeedInheritance,
 		hasResourceRegenInheritance:     config.HasResourceRegenInheritance,
@@ -122,6 +124,21 @@ func NewPet(config PetConfig) Pet {
 func (pet *Pet) Initialize() {
 	if pet.hasResourceRegenInheritance {
 		pet.enableResourceRegenInheritance()
+	}
+}
+
+func makeStatInheritanceFunc(statInheritance PetStatInheritance) PetStatInheritance {
+	return func(ownerStats stats.Stats) stats.Stats {
+		inheritedStats := statInheritance(ownerStats)
+
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combined := (hitRating + expertiseRating) * 0.5
+
+		inheritedStats[stats.HitRating] = combined
+		inheritedStats[stats.ExpertiseRating] = combined
+
+		return inheritedStats
 	}
 }
 
@@ -395,7 +412,7 @@ func (pet *Pet) Disable(sim *Simulation) {
 }
 
 func (pet *Pet) ChangeStatInheritance(statInheritance PetStatInheritance) {
-	pet.statInheritance = statInheritance
+	pet.statInheritance = makeStatInheritanceFunc(statInheritance)
 }
 
 func (pet *Pet) GetInheritedStats() stats.Stats {

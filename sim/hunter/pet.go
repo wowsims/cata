@@ -35,7 +35,7 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 	conf := core.PetConfig{
 		Name:                            "Stampede",
 		Owner:                           &hunter.Character,
-		StatInheritance:                 hunter.makeStatInheritance(),
+		NonHitExpStatInheritance:        hunter.makeStatInheritance(),
 		EnabledOnStart:                  false,
 		IsGuardian:                      false,
 		HasDynamicMeleeSpeedInheritance: true,
@@ -66,7 +66,7 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	conf := core.PetConfig{
 		Name:                            "Dire Beast Pet",
 		Owner:                           &hunter.Character,
-		StatInheritance:                 hunter.makeStatInheritance(),
+		NonHitExpStatInheritance:        hunter.makeStatInheritance(),
 		EnabledOnStart:                  false,
 		IsGuardian:                      true,
 		HasDynamicMeleeSpeedInheritance: true,
@@ -118,7 +118,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	conf := core.PetConfig{
 		Name:                            petConfig.Name,
 		Owner:                           &hunter.Character,
-		StatInheritance:                 hunter.makeStatInheritance(),
+		NonHitExpStatInheritance:        hunter.makeStatInheritance(),
 		EnabledOnStart:                  true,
 		IsGuardian:                      false,
 		HasDynamicMeleeSpeedInheritance: true,
@@ -267,21 +267,14 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 }
 
-const PetExpertiseRatingScale = 3.25 * core.PhysicalHitRatingPerHitPercent
-
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		hitRating := ownerStats[stats.HitRating]
-		expertiseRating := ownerStats[stats.ExpertiseRating]
-		combinedHitExp := (hitRating + expertiseRating) * 0.5
 		return stats.Stats{
 			stats.Stamina:           ownerStats[stats.Stamina] * 0.45,
 			stats.Armor:             ownerStats[stats.Armor] * 1.05,
 			stats.AttackPower:       ownerStats[stats.RangedAttackPower],
 			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower],
 			stats.SpellPower:        ownerStats[stats.RangedAttackPower] * 0.5,
-			stats.HitRating:         combinedHitExp,
-			stats.ExpertiseRating:   combinedHitExp,
 
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 			stats.SpellCritPercent:    ownerStats[stats.PhysicalCritPercent],

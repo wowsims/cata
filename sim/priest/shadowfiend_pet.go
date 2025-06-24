@@ -36,7 +36,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 			Name:                            "Shadowfiend",
 			Owner:                           &priest.Character,
 			BaseStats:                       baseStats,
-			StatInheritance:                 priest.shadowfiendStatInheritance(),
+			NonHitExpStatInheritance:        priest.shadowfiendStatInheritance(),
 			EnabledOnStart:                  false,
 			IsGuardian:                      false,
 			HasDynamicMeleeSpeedInheritance: true,
