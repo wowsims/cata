@@ -199,12 +199,8 @@ func init() {
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					dmg := 0.0
-					if isMH {
-						dmg = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.03
-					} else {
-						dmg = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.03
-					}
+					// Always deals MH-damage in MoP
+					dmg := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.03
 					spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit)
 				},
 			})
