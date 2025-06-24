@@ -153,6 +153,7 @@ func (mm *MarksmanshipHunter) SteadyFocusAura() {
 }
 
 func (mm *MarksmanshipHunter) PiercingShotsAura() {
+
 	psSpell := mm.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53238},
 		SpellSchool: core.SpellSchoolPhysical,
