@@ -14,8 +14,7 @@ type HunterPet struct {
 
 	hunterOwner *Hunter
 
-	FrenzyStacksSnapshot int32
-	FrenzyAura           *core.Aura
+	FrenzyAura *core.Aura
 
 	specialAbility *core.Spell
 	KillCommand    *core.Spell
@@ -148,7 +147,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	WHFocusIncreaseMod.Activate()
 	WHDamageMod.Activate()
 
-	hp.EnableFocusBar(100+(core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
+	kindredSpritsBonusFocus := core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)
+	hp.EnableFocusBar(100+kindredSpritsBonusFocus, baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
 		if focus >= 50 {
 			WHFocusIncreaseMod.Activate()
 			WHDamageMod.Activate()

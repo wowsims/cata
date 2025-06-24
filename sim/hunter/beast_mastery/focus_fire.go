@@ -13,25 +13,27 @@ func (bmHunter *BeastMasteryHunter) registerFocusFireSpell() {
 
 	actionID := core.ActionID{SpellID: 82692}
 	petFocusMetrics := bmHunter.Pet.NewFocusMetrics(actionID)
+	var frenzyStacksSnapshot int32
 	focusFireAura := bmHunter.RegisterAura(core.Aura{
 		Label:    "Focus Fire",
 		ActionID: actionID,
 		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			bmHunter.Pet.FrenzyStacksSnapshot = bmHunter.Pet.FrenzyAura.GetStacks()
-			if bmHunter.Pet.FrenzyStacksSnapshot >= 1 {
+			frenzyStacksSnapshot = bmHunter.Pet.FrenzyAura.GetStacks()
+			if frenzyStacksSnapshot >= 1 {
 				bmHunter.Pet.FrenzyAura.Deactivate(sim)
-				bmHunter.Pet.AddFocus(sim, 6*float64(bmHunter.Pet.FrenzyStacksSnapshot), petFocusMetrics)
-				bmHunter.MultiplyRangedHaste(sim, 1+(float64(bmHunter.Pet.FrenzyStacksSnapshot)*0.06))
+				bmHunter.Pet.AddFocus(sim, 6*float64(frenzyStacksSnapshot), petFocusMetrics)
+				bmHunter.MultiplyRangedHaste(sim, 1+(float64(frenzyStacksSnapshot)*0.06))
 				if sim.Log != nil {
-					bmHunter.Pet.Log(sim, "Consumed %d stacks of Frenzy for Focus Fire.", bmHunter.Pet.FrenzyStacksSnapshot)
+					bmHunter.Pet.Log(sim, "Consumed %d stacks of Frenzy for Focus Fire.", frenzyStacksSnapshot)
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if bmHunter.Pet.FrenzyStacksSnapshot > 0 {
-				bmHunter.MultiplyRangedHaste(sim, 1/(1+(float64(bmHunter.Pet.FrenzyStacksSnapshot)*0.06)))
+			if frenzyStacksSnapshot > 0 {
+				bmHunter.MultiplyRangedHaste(sim, 1/(1+(float64(frenzyStacksSnapshot)*0.06)))
 			}
+			frenzyStacksSnapshot = 0
 		},
 	})
 
@@ -47,7 +49,7 @@ func (bmHunter *BeastMasteryHunter) registerFocusFireSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bmHunter.Pet.FrenzyAura.GetStacks() >= bmHunter.Pet.FrenzyStacksSnapshot
+			return bmHunter.Pet.FrenzyAura.GetStacks() > 0 && !focusFireAura.IsActive()
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			if focusFireAura.IsActive() {

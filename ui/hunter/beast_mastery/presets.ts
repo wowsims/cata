@@ -82,14 +82,16 @@ export const BMDefaultOptions = BeastMasteryOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId: 76084, // Flask of the Winds
+	foodId: 74648, // Seafood Magnifique Feast
+	potId: 76089, // Potion of the Tol'vir
+	prepotId: 76089, // Potion of the Tol'vir
 	conjuredId: 5512, // Conjured Healthstone
 });
 export const OtherDefaults = {
 	distanceFromTarget: 24,
+	iterationCount: 25000,
 	profession1: Profession.Engineering,
-	profession2: Profession.Jewelcrafting,
+	profession2: Profession.Leatherworking,
+	GlaiveTossChance: 80,
 };
