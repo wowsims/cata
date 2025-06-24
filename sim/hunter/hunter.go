@@ -59,9 +59,8 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
 	focusPerSecond := 4.0
 
-	// TODO: Fix this to work with the new talent system.
-	// hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
-	hunter.EnableFocusBar(100, focusPerSecond, true, nil)
+	kindredSpritsBonusFocus := core.TernaryFloat64(hunter.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)
+	hunter.EnableFocusBar(100+kindredSpritsBonusFocus, focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -133,7 +132,6 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.RegisterLynxRushSpell()
 	hunter.registerSerpentStingSpell()
 	hunter.registerMultiShotSpell()
-	hunter.registerKillCommandSpell()
 	hunter.registerExplosiveTrapSpell()
 	hunter.registerCobraShotSpell()
 	hunter.registerRapidFireCD()
@@ -238,6 +236,7 @@ const (
 	HunterPetFocusDump
 	HunterPetDamage
 	HunterSpellBarrage
+	HunterSpellAMurderOfCrows
 	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellMultiShot | HunterSpellAimedShot
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |
