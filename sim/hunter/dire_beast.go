@@ -12,7 +12,8 @@ func (hunter *Hunter) RegisterDireBeastSpell() {
 	}
 	actionID := core.ActionID{SpellID: 120679}
 	direBeastSpell := hunter.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
+		ActionID:       actionID,
+		ClassSpellMask: HunterSpellDireBeast,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
