@@ -39,11 +39,6 @@ func (war *Warrior) registerColossusSmash() {
 		ClassSpellMask: SpellMaskColossusSmash,
 		MaxRange:       core.MaxMeleeRange,
 
-		RageCost: core.RageCostOptions{
-			Cost:   20,
-			Refund: 0.8,
-		},
-
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -63,9 +58,7 @@ func (war *Warrior) registerColossusSmash() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.77999997139
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			if !result.Landed() {
-				spell.IssueRefund(sim)
-			} else {
+			if result.Landed() {
 				csAura := war.ColossusSmashAuras.Get(target)
 				csAura.Activate(sim)
 
