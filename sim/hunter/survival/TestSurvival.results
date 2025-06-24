@@ -1,0 +1,4827 @@
+character_stats_results: {
+ key: "TestSurvival-CharacterStats-Default"
+ value: {
+  final_stats: 177.45
+  final_stats: 20478.9375
+  final_stats: 22600.6
+  final_stats: 191.1
+  final_stats: 195
+  final_stats: 2550
+  final_stats: 8556
+  final_stats: 3452
+  final_stats: 2566
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6296
+  final_stats: 45229.6625
+  final_stats: 61060.04438
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 25425
+  final_stats: 0
+  final_stats: 462811.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7.5
+  final_stats: 15.04706
+  final_stats: 33.98925
+  final_stats: 19.26
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 150593.71274
+  tps: 122870.42291
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-AlacrityofXuen-103989"
+ value: {
+  dps: 140154.79527
+  tps: 115164.20631
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ArcaneBadgeoftheShieldwall-93347"
+ value: {
+  dps: 140619.74537
+  tps: 115367.13628
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ArrowflightMedallion-93258"
+ value: {
+  dps: 149690.65902
+  tps: 122645.17876
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 154135.74646
+  tps: 123140.60037
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BadJuju-96781"
+ value: {
+  dps: 155286.17808
+  tps: 126552.7384
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BadgeofKypariZar-84079"
+ value: {
+  dps: 142087.0601
+  tps: 116840.67934
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BattlegearoftheSaurokStalker"
+ value: {
+  dps: 139926.89973
+  tps: 112767.49598
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BlossomofPureSnow-89081"
+ value: {
+  dps: 141949.93301
+  tps: 116502.67666
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BraidofTenSongs-84072"
+ value: {
+  dps: 141521.19715
+  tps: 116383.96161
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Brawler'sStatue-87571"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BreathoftheHydra-96827"
+ value: {
+  dps: 141542.36737
+  tps: 116072.8847
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BroochofMunificentDeeds-87500"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BrutalTalismanoftheShado-PanAssault-94508"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 149212.94333
+  tps: 121790.57637
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 147991.74607
+  tps: 120479.87966
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CarbonicCarbuncle-81138"
+ value: {
+  dps: 142112.08695
+  tps: 116693.16451
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Cha-Ye'sEssenceofBrilliance-96888"
+ value: {
+  dps: 143214.74942
+  tps: 117698.50731
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CharmofTenSongs-84071"
+ value: {
+  dps: 141388.28627
+  tps: 115924.39002
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CommunalIdolofDestruction-101168"
+ value: {
+  dps: 141439.12478
+  tps: 116299.85845
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CommunalStoneofDestruction-101171"
+ value: {
+  dps: 141584.40341
+  tps: 116567.97725
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CommunalStoneofWisdom-101183"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ContemplationofChi-Ji-103688"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ContemplationofChi-Ji-103988"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Coren'sColdChromiumCoaster-87574"
+ value: {
+  dps: 146334.12792
+  tps: 119569.85793
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CoreofDecency-87497"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sBadgeofConquest-93419"
+ value: {
+  dps: 144888.73867
+  tps: 118761.38493
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sBadgeofDominance-93600"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sBadgeofVictory-93606"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sEmblemofCruelty-93485"
+ value: {
+  dps: 141412.79788
+  tps: 116206.83546
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sEmblemofMeditation-93487"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sEmblemofTenacity-93486"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sInsigniaofConquest-93424"
+ value: {
+  dps: 147556.06967
+  tps: 120120.19044
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sInsigniaofDominance-93601"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedDreadfulGladiator'sInsigniaofVictory-93611"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sBadgeofConquest-98755"
+ value: {
+  dps: 145785.16223
+  tps: 119448.08962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sBadgeofDominance-98910"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sBadgeofVictory-98912"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sEmblemofCruelty-98811"
+ value: {
+  dps: 141696.70421
+  tps: 116436.1757
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sEmblemofMeditation-98813"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sEmblemofTenacity-98812"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sInsigniaofConquest-98760"
+ value: {
+  dps: 148751.33145
+  tps: 121020.91926
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sInsigniaofDominance-98911"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CraftedMalevolentGladiator'sInsigniaofVictory-98917"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CurseofHubris-102307"
+ value: {
+  dps: 145003.32603
+  tps: 118829.84235
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CurseofHubris-104649"
+ value: {
+  dps: 145580.22005
+  tps: 119264.91713
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CurseofHubris-104898"
+ value: {
+  dps: 144370.36309
+  tps: 118326.02368
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CurseofHubris-105147"
+ value: {
+  dps: 143929.36125
+  tps: 117980.9972
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CurseofHubris-105396"
+ value: {
+  dps: 145205.61793
+  tps: 118991.20799
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CurseofHubris-105645"
+ value: {
+  dps: 145925.08842
+  tps: 119535.91273
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-CutstitcherMedallion-93255"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Daelo'sFinalWords-87496"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 150268.84907
+  tps: 122629.58354
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DarkmistVortex-87172"
+ value: {
+  dps: 140379.94286
+  tps: 115107.71714
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DeadeyeBadgeoftheShieldwall-93346"
+ value: {
+  dps: 146047.87711
+  tps: 119986.23222
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 148275.16724
+  tps: 120703.9721
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DisciplineofXuen-103986"
+ value: {
+  dps: 153381.49335
+  tps: 126069.78235
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Dominator'sArcaneBadge-93342"
+ value: {
+  dps: 140619.74537
+  tps: 115367.13628
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Dominator'sDeadeyeBadge-93341"
+ value: {
+  dps: 146047.87711
+  tps: 119986.23222
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Dominator'sDurableBadge-93345"
+ value: {
+  dps: 140887.33392
+  tps: 115892.70931
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Dominator'sKnightlyBadge-93344"
+ value: {
+  dps: 140887.33392
+  tps: 115892.70931
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Dominator'sMendingBadge-93343"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sBadgeofConquest-84344"
+ value: {
+  dps: 144888.73867
+  tps: 118761.38493
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sBadgeofDominance-84488"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sBadgeofVictory-84490"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sEmblemofCruelty-84399"
+ value: {
+  dps: 141412.79788
+  tps: 116206.83546
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sEmblemofMeditation-84401"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sEmblemofTenacity-84400"
+ value: {
+  dps: 140889.64925
+  tps: 115930.6054
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sInsigniaofConquest-84349"
+ value: {
+  dps: 147891.94858
+  tps: 120437.60474
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sInsigniaofDominance-84489"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DreadfulGladiator'sInsigniaofVictory-84495"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-DurableBadgeoftheShieldwall-93350"
+ value: {
+  dps: 140887.33392
+  tps: 115892.70931
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EmblemofKypariZar-84077"
+ value: {
+  dps: 141505.27831
+  tps: 116150.26987
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EmblemoftheCatacombs-83733"
+ value: {
+  dps: 140928.38021
+  tps: 115904.7214
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EmptyFruitBarrel-81133"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 151033.53611
+  tps: 123010.80702
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 145405.05126
+  tps: 118817.03177
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 151017.2785
+  tps: 122960.60971
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 145405.17444
+  tps: 118817.15494
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 145405.05126
+  tps: 118817.03177
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 145405.05126
+  tps: 118817.03177
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 146055.41644
+  tps: 119287.21657
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 148275.16724
+  tps: 120703.9721
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EssenceofTerror-87175"
+ value: {
+  dps: 140458.99521
+  tps: 115169.12909
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FearwurmBadge-84074"
+ value: {
+  dps: 141513.60039
+  tps: 116294.16623
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FearwurmRelic-84070"
+ value: {
+  dps: 141766.9315
+  tps: 116474.11775
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FelsoulIdolofDestruction-101263"
+ value: {
+  dps: 141408.20942
+  tps: 116352.28553
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FelsoulStoneofDestruction-101266"
+ value: {
+  dps: 141588.59616
+  tps: 116546.28219
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Flamewaker'sBattlegear"
+ value: {
+  dps: 97932.59561
+  tps: 79572.66376
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FlashfrozenResinGlobule-100951"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FlashfrozenResinGlobule-81263"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FlashingSteelTalisman-81265"
+ value: {
+  dps: 146690.17068
+  tps: 119836.44244
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 147993.28598
+  tps: 120583.67345
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FortitudeoftheZandalari-94516"
+ value: {
+  dps: 141682.75662
+  tps: 116711.28594
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FortitudeoftheZandalari-95677"
+ value: {
+  dps: 141382.62936
+  tps: 116415.86124
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FortitudeoftheZandalari-96049"
+ value: {
+  dps: 141785.2097
+  tps: 116812.13373
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FortitudeoftheZandalari-96421"
+ value: {
+  dps: 141911.76938
+  tps: 116936.71041
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-FortitudeoftheZandalari-96793"
+ value: {
+  dps: 142026.27577
+  tps: 117049.42265
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 143050.71295
+  tps: 117453.97033
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Gerp'sPerfectArrow-87495"
+ value: {
+  dps: 146942.62744
+  tps: 120237.37825
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Gladiator'sPursuit"
+ value: {
+  dps: 151167.58401
+  tps: 120900.85552
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofConquest-100195"
+ value: {
+  dps: 149005.02518
+  tps: 121873.82597
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofConquest-100603"
+ value: {
+  dps: 149005.02518
+  tps: 121873.82597
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofConquest-102856"
+ value: {
+  dps: 149005.02518
+  tps: 121873.82597
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofConquest-103145"
+ value: {
+  dps: 149005.02518
+  tps: 121873.82597
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofDominance-100490"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofDominance-100576"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofDominance-102830"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofDominance-103308"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofVictory-100500"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofVictory-100579"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofVictory-102833"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sBadgeofVictory-103314"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofCruelty-100305"
+ value: {
+  dps: 142736.56727
+  tps: 117298.83507
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofCruelty-100626"
+ value: {
+  dps: 142736.56727
+  tps: 117298.83507
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofCruelty-102877"
+ value: {
+  dps: 142736.56727
+  tps: 117298.83507
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofCruelty-103210"
+ value: {
+  dps: 142736.56727
+  tps: 117298.83507
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofMeditation-100307"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofMeditation-100559"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofMeditation-102813"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofMeditation-103212"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofTenacity-100306"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofTenacity-100652"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofTenacity-102903"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sEmblemofTenacity-103211"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sInsigniaofConquest-103150"
+ value: {
+  dps: 154094.44741
+  tps: 125095.08492
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sInsigniaofDominance-103309"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-GrievousGladiator'sInsigniaofVictory-103319"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Hawkmaster'sTalon-89082"
+ value: {
+  dps: 147950.50565
+  tps: 121213.57581
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Heart-LesionDefenderIdol-100999"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Heart-LesionDefenderStone-101002"
+ value: {
+  dps: 141586.29798
+  tps: 116560.66989
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Heart-LesionIdolofBattle-100991"
+ value: {
+  dps: 141765.88
+  tps: 116490.02933
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Heart-LesionStoneofBattle-100990"
+ value: {
+  dps: 141568.88863
+  tps: 116538.40696
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-HeartofFire-81181"
+ value: {
+  dps: 140935.45181
+  tps: 115975.69029
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-HeartwarmerMedallion-93260"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-HelmbreakerMedallion-93261"
+ value: {
+  dps: 142093.14196
+  tps: 116613.22316
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 148275.16724
+  tps: 120703.9721
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-InsigniaofKypariZar-84078"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-IronBellyWok-89083"
+ value: {
+  dps: 141114.55183
+  tps: 115829.86152
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-IronProtectorTalisman-85181"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeBanditFigurine-86043"
+ value: {
+  dps: 147950.50565
+  tps: 121213.57581
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeBanditFigurine-86772"
+ value: {
+  dps: 147156.3521
+  tps: 120656.80048
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeCharioteerFigurine-86042"
+ value: {
+  dps: 141114.55183
+  tps: 115829.86152
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeCharioteerFigurine-86771"
+ value: {
+  dps: 141099.48795
+  tps: 115843.19689
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeCourtesanFigurine-86045"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeCourtesanFigurine-86774"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeMagistrateFigurine-86044"
+ value: {
+  dps: 141949.93301
+  tps: 116502.67666
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeMagistrateFigurine-86773"
+ value: {
+  dps: 141820.36969
+  tps: 116428.39684
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeWarlordFigurine-86046"
+ value: {
+  dps: 141213.16489
+  tps: 116201.50534
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-JadeWarlordFigurine-86775"
+ value: {
+  dps: 141064.69867
+  tps: 116060.80116
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-KnightlyBadgeoftheShieldwall-93349"
+ value: {
+  dps: 140887.33392
+  tps: 115892.70931
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-KnotofTenSongs-84073"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Kor'kronBookofHurting-92785"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Lao-Chin'sLiquidCourage-89079"
+ value: {
+  dps: 141213.16489
+  tps: 116201.50534
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-LeiShen'sFinalOrders-87072"
+ value: {
+  dps: 141182.86357
+  tps: 115856.58607
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-LessonsoftheDarkmaster-81268"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-LightdrinkerIdolofRage-101200"
+ value: {
+  dps: 148749.94156
+  tps: 121402.77101
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-LightdrinkerStoneofRage-101203"
+ value: {
+  dps: 148234.59558
+  tps: 121842.88004
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Lightning-ChargedBattlegear"
+ value: {
+  dps: 96429.92802
+  tps: 78756.47348
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-LightoftheCosmos-87065"
+ value: {
+  dps: 141182.86357
+  tps: 115856.58607
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 150268.84907
+  tps: 122629.58354
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
+ value: {
+  dps: 146221.31664
+  tps: 119786.78945
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sBadgeofConquest-91452"
+ value: {
+  dps: 145785.16223
+  tps: 119448.08962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sBadgeofDominance-84940"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sBadgeofDominance-91753"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sBadgeofVictory-84942"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sBadgeofVictory-91763"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sEmblemofCruelty-84936"
+ value: {
+  dps: 141765.88
+  tps: 116490.02933
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sEmblemofCruelty-91562"
+ value: {
+  dps: 141696.70421
+  tps: 116436.1757
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sEmblemofMeditation-84939"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sEmblemofMeditation-91564"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sEmblemofTenacity-84938"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sEmblemofTenacity-91563"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sInsigniaofConquest-91457"
+ value: {
+  dps: 149178.78644
+  tps: 121198.13942
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sInsigniaofDominance-91754"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MalevolentGladiator'sInsigniaofVictory-91768"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MarkoftheCatacombs-83731"
+ value: {
+  dps: 141902.71478
+  tps: 116721.38245
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MarkoftheHardenedGrunt-92783"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MedallionofMystifyingVapors-93257"
+ value: {
+  dps: 141300.94419
+  tps: 116284.6954
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MedallionoftheCatacombs-83734"
+ value: {
+  dps: 140658.22583
+  tps: 115702.80803
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MendingBadgeoftheShieldwall-93348"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MirrorScope-4700"
+ value: {
+  dps: 146186.5061
+  tps: 119449.28171
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MistdancerDefenderIdol-101089"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MistdancerDefenderStone-101087"
+ value: {
+  dps: 141577.71325
+  tps: 116548.20781
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MistdancerIdolofRage-101113"
+ value: {
+  dps: 148762.51473
+  tps: 121521.6705
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MistdancerStoneofRage-101117"
+ value: {
+  dps: 148170.78492
+  tps: 121795.14091
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MistdancerStoneofWisdom-101107"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MithrilWristwatch-87572"
+ value: {
+  dps: 141598.57753
+  tps: 116357.96289
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MountainsageIdolofDestruction-101069"
+ value: {
+  dps: 142065.97274
+  tps: 117037.17115
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-MountainsageStoneofDestruction-101072"
+ value: {
+  dps: 141582.61582
+  tps: 116546.59961
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-OathswornDefenderIdol-101303"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-OathswornDefenderStone-101306"
+ value: {
+  dps: 141546.00674
+  tps: 116537.2083
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-OathswornIdolofBattle-101295"
+ value: {
+  dps: 141765.88
+  tps: 116490.02933
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-OathswornStoneofBattle-101294"
+ value: {
+  dps: 141562.58737
+  tps: 116538.62555
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 150081.79971
+  tps: 122655.78757
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PouchofWhiteAsh-103639"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sBadgeofConquest-102659"
+ value: {
+  dps: 151737.13403
+  tps: 123945.0867
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sBadgeofConquest-103342"
+ value: {
+  dps: 151737.13403
+  tps: 123945.0867
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sBadgeofDominance-102633"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sBadgeofDominance-103505"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sBadgeofVictory-102636"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sBadgeofVictory-103511"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sEmblemofCruelty-102680"
+ value: {
+  dps: 143476.87707
+  tps: 117901.51897
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sEmblemofCruelty-103407"
+ value: {
+  dps: 143476.87707
+  tps: 117901.51897
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sEmblemofMeditation-102616"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sEmblemofMeditation-103409"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sEmblemofTenacity-102706"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sEmblemofTenacity-103408"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sInsigniaofConquest-103347"
+ value: {
+  dps: 158488.23569
+  tps: 128190.38495
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sInsigniaofDominance-103506"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-PridefulGladiator'sInsigniaofVictory-103516"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 143214.74942
+  tps: 117698.50731
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Qin-xi'sPolarizingSeal-87075"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RelicofChi-Ji-79330"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RelicofKypariZar-84075"
+ value: {
+  dps: 141941.71246
+  tps: 116680.69482
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RelicofNiuzao-79329"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RelicofXuen-79327"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RelicofXuen-79328"
+ value: {
+  dps: 151350.09089
+  tps: 123316.3994
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RelicofYu'lon-79331"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 186193.12649
+  tps: 149874.08219
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ResolveofNiuzao-103690"
+ value: {
+  dps: 141303.07756
+  tps: 116337.55589
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ResolveofNiuzao-103990"
+ value: {
+  dps: 141911.76938
+  tps: 116936.71041
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 149212.94333
+  tps: 121790.57637
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 149212.94333
+  tps: 121790.57637
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SI:7Operative'sManual-92784"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ScrollofReveredAncestors-89080"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SearingWords-81267"
+ value: {
+  dps: 149598.05045
+  tps: 121396.37011
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Shock-ChargerMedallion-93259"
+ value: {
+  dps: 141000.42462
+  tps: 115535.60811
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigilofCompassion-83736"
+ value: {
+  dps: 140658.22583
+  tps: 115702.80803
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigilofDevotion-83740"
+ value: {
+  dps: 142049.65746
+  tps: 116859.33049
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigilofFidelity-83737"
+ value: {
+  dps: 141506.84906
+  tps: 116169.92236
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigilofGrace-83738"
+ value: {
+  dps: 141103.93673
+  tps: 116168.66273
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigilofKypariZar-84076"
+ value: {
+  dps: 142171.58407
+  tps: 116972.32922
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigilofPatience-83739"
+ value: {
+  dps: 139925.49554
+  tps: 114980.99622
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SigiloftheCatacombs-83732"
+ value: {
+  dps: 141642.91558
+  tps: 116350.18785
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 147991.74607
+  tps: 120479.87966
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SkullrenderMedallion-93256"
+ value: {
+  dps: 142093.14196
+  tps: 116613.22316
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SpiritsoftheSun-87163"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SpringrainIdolofDestruction-101023"
+ value: {
+  dps: 141679.24165
+  tps: 116612.15258
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SpringrainIdolofRage-101009"
+ value: {
+  dps: 148986.17463
+  tps: 121560.86581
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SpringrainStoneofDestruction-101026"
+ value: {
+  dps: 141599.6256
+  tps: 116569.73036
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SpringrainStoneofRage-101012"
+ value: {
+  dps: 148212.49673
+  tps: 121825.08193
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SpringrainStoneofWisdom-101041"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Static-Caster'sMedallion-93254"
+ value: {
+  dps: 141000.42462
+  tps: 115535.60811
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SteadfastFootman'sMedallion-92782"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SteadfastTalismanoftheShado-PanAssault-94507"
+ value: {
+  dps: 141682.75662
+  tps: 116711.28594
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-StreamtalkerIdolofDestruction-101222"
+ value: {
+  dps: 141822.25468
+  tps: 116549.22781
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-StreamtalkerIdolofRage-101217"
+ value: {
+  dps: 148518.68325
+  tps: 121234.27025
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-StreamtalkerStoneofDestruction-101225"
+ value: {
+  dps: 141520.49123
+  tps: 116495.96637
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-StreamtalkerStoneofRage-101220"
+ value: {
+  dps: 148167.1376
+  tps: 121795.46544
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-StreamtalkerStoneofWisdom-101250"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-StuffofNightmares-87160"
+ value: {
+  dps: 141481.46645
+  tps: 116513.14969
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SunsoulDefenderIdol-101160"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SunsoulDefenderStone-101163"
+ value: {
+  dps: 141590.66226
+  tps: 116553.4631
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SunsoulIdolofBattle-101152"
+ value: {
+  dps: 141765.88
+  tps: 116490.02933
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SunsoulStoneofBattle-101151"
+ value: {
+  dps: 141562.6694
+  tps: 116524.30773
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SunsoulStoneofWisdom-101138"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 153420.76653
+  tps: 124883.59814
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SymboloftheCatacombs-83735"
+ value: {
+  dps: 142100.19254
+  tps: 116845.66329
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 152597.01966
+  tps: 124451.54932
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 153021.60745
+  tps: 124997.62601
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 150593.71274
+  tps: 122870.42291
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Thousand-YearPickledEgg-87573"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TrailseekerIdolofRage-101054"
+ value: {
+  dps: 148847.5423
+  tps: 121475.4281
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TrailseekerStoneofRage-101057"
+ value: {
+  dps: 148176.92517
+  tps: 121792.703
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofConquest-100043"
+ value: {
+  dps: 147043.78921
+  tps: 120401.85162
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofConquest-91099"
+ value: {
+  dps: 147043.78921
+  tps: 120401.85162
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofConquest-94373"
+ value: {
+  dps: 147043.78921
+  tps: 120401.85162
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofConquest-99772"
+ value: {
+  dps: 147043.78921
+  tps: 120401.85162
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofDominance-100016"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofDominance-91400"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofDominance-94346"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofDominance-99937"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofVictory-100019"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofVictory-91410"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofVictory-94349"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sBadgeofVictory-99943"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofCruelty-100066"
+ value: {
+  dps: 142017.72492
+  tps: 116696.1436
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofCruelty-91209"
+ value: {
+  dps: 142017.72492
+  tps: 116696.1436
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofCruelty-94396"
+ value: {
+  dps: 142017.72492
+  tps: 116696.1436
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofCruelty-99838"
+ value: {
+  dps: 142017.72492
+  tps: 116696.1436
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofMeditation-91211"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofMeditation-94329"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofMeditation-99840"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofMeditation-99990"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofTenacity-100092"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofTenacity-91210"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofTenacity-94422"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sEmblemofTenacity-99839"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sInsigniaofConquest-100026"
+ value: {
+  dps: 150730.22133
+  tps: 122514.59261
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sInsigniaofDominance-100152"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalGladiator'sInsigniaofVictory-100085"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 147453.9937
+  tps: 120052.51962
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 143200.20215
+  tps: 117877.61473
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-VaporshieldMedallion-93262"
+ value: {
+  dps: 141300.94419
+  tps: 116284.6954
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-VialofDragon'sBlood-87063"
+ value: {
+  dps: 141382.62936
+  tps: 116415.86124
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-VialofIchorousBlood-100963"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-VialofIchorousBlood-81264"
+ value: {
+  dps: 139914.537
+  tps: 114970.77172
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ViciousTalismanoftheShado-PanAssault-94511"
+ value: {
+  dps: 154368.37499
+  tps: 124649.28485
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-VisionofthePredator-81192"
+ value: {
+  dps: 141955.29382
+  tps: 116510.4513
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-VolatileTalismanoftheShado-PanAssault-94510"
+ value: {
+  dps: 140597.46094
+  tps: 115431.71817
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-WindsweptPages-81125"
+ value: {
+  dps: 146331.94296
+  tps: 119924.24356
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-WoundripperMedallion-93253"
+ value: {
+  dps: 149690.65902
+  tps: 122645.17876
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 139915.20429
+  tps: 114971.43901
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 150598.3407
+  tps: 122875.05087
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-YaungolSlayerBattlegear"
+ value: {
+  dps: 134716.06311
+  tps: 109782.60243
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Yu'lon'sBite-103987"
+ value: {
+  dps: 144192.31194
+  tps: 118225.93933
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 149792.95401
+  tps: 122028.15986
+ }
+}
+dps_results: {
+ key: "TestSurvival-Average-Default"
+ value: {
+  dps: 153750.39387
+  tps: 125293.76247
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 727799.47089
+  tps: 477399.55785
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 93909.15923
+  tps: 54808.25572
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 139124.76021
+  tps: 63214.4793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559996.56731
+  tps: 377204.9682
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 67205.58545
+  tps: 41755.27363
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 80652.83434
+  tps: 43423.33863
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 194402.79361
+  tps: 167093.17625
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 150274.69701
+  tps: 123052.25626
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 200823.7403
+  tps: 141987.81062
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 144518.75006
+  tps: 127454.52959
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111796.17284
+  tps: 94824.93944
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-DefaultTalents-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 126518.37774
+  tps: 98449.22677
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 727799.47089
+  tps: 477399.55785
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 93909.15923
+  tps: 54808.25572
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 139124.76021
+  tps: 63214.4793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559996.56731
+  tps: 377204.9682
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 67205.58545
+  tps: 41755.27363
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 80652.83434
+  tps: 43423.33863
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 189444.89004
+  tps: 161907.64721
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 145252.96306
+  tps: 118135.687
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 189510.46049
+  tps: 130213.52793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 141685.84705
+  tps: 124350.74876
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108184.13569
+  tps: 91081.43891
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 119177.5197
+  tps: 90834.7558
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 732243.63563
+  tps: 477399.55785
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 98297.19533
+  tps: 54808.25572
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144334.71541
+  tps: 63214.4793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 563547.00154
+  tps: 377204.9682
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 70574.53174
+  tps: 41755.27363
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 84415.98743
+  tps: 43423.33863
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 193756.45333
+  tps: 161907.64721
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 149480.7895
+  tps: 118135.687
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 194772.71644
+  tps: 130213.52793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 144991.37333
+  tps: 124350.74876
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111450.39382
+  tps: 91081.43891
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 123024.87638
+  tps: 90834.7558
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 727799.47089
+  tps: 477399.55785
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 93909.15923
+  tps: 54808.25572
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 139124.76021
+  tps: 63214.4793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559996.56731
+  tps: 377204.9682
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 67205.58545
+  tps: 41755.27363
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 80652.83434
+  tps: 43423.33863
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 190351.44077
+  tps: 162871.15126
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 145718.61125
+  tps: 118758.66302
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 198070.67177
+  tps: 138773.38509
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 141556.84334
+  tps: 124323.75279
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108762.22003
+  tps: 91679.71644
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 123921.1354
+  tps: 95763.85739
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 727799.47089
+  tps: 477399.55785
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 93909.15923
+  tps: 54808.25572
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 139124.76021
+  tps: 63214.4793
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559996.56731
+  tps: 377204.9682
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 67205.58545
+  tps: 41755.27363
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 80652.83434
+  tps: 43423.33863
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 190512.69794
+  tps: 163381.48792
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 146986.45436
+  tps: 119772.764
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 200513.72462
+  tps: 140755.8451
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 142675.22529
+  tps: 125466.23868
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 109722.98778
+  tps: 92710.26336
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-p1-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 125142.66771
+  tps: 97082.42778
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559718.06975
+  tps: 363790.88258
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69093.88761
+  tps: 39455.2956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 102710.00987
+  tps: 45659.17669
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 426916.67468
+  tps: 284657.02735
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49229.25365
+  tps: 29931.62515
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58735.56841
+  tps: 30735.83939
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 139693.109
+  tps: 118908.41138
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 106633.93118
+  tps: 86003.89101
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 145318.51643
+  tps: 99909.2638
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 102008.10081
+  tps: 89304.20514
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 77445.33858
+  tps: 64818.37135
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-DefaultTalents-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89052.71338
+  tps: 68190.15754
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559718.06975
+  tps: 363790.88258
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69093.88761
+  tps: 39455.2956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 102710.00987
+  tps: 45659.17669
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 426916.67468
+  tps: 284657.02735
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49229.25365
+  tps: 29931.62515
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58735.56841
+  tps: 30735.83939
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 135147.33771
+  tps: 114431.68525
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 102636.30918
+  tps: 82064.627
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 135347.99078
+  tps: 89944.01366
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 99474.03587
+  tps: 86628.72081
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 75071.10772
+  tps: 62187.09848
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 82772.55078
+  tps: 61421.47389
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 563146.47273
+  tps: 363790.88258
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 72427.24926
+  tps: 39455.2956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 106908.71522
+  tps: 45659.17669
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 429586.75955
+  tps: 284657.02735
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 51717.49078
+  tps: 29931.62515
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61591.43948
+  tps: 30735.83939
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 138362.1881
+  tps: 114431.68525
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 105862.94181
+  tps: 82064.627
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 139523.68585
+  tps: 89944.01366
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 101927.37209
+  tps: 86628.72081
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 77536.66671
+  tps: 62187.09848
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 85657.08034
+  tps: 61421.47389
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559718.06975
+  tps: 363790.88258
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69093.88761
+  tps: 39455.2956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 102710.00987
+  tps: 45659.17669
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 426916.67468
+  tps: 284657.02735
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49229.25365
+  tps: 29931.62515
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58735.56841
+  tps: 30735.83939
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 136668.61087
+  tps: 116016.64272
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 102704.65811
+  tps: 82308.06151
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 141427.22226
+  tps: 96634.52408
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 99020.67487
+  tps: 86471.07588
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 74566.14046
+  tps: 61985.50271
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 86231.789
+  tps: 65637.61373
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 559718.06975
+  tps: 363790.88258
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69093.88761
+  tps: 39455.2956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 102710.00987
+  tps: 45659.17669
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 426916.67468
+  tps: 284657.02735
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49229.25365
+  tps: 29931.62515
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58735.56841
+  tps: 30735.83939
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 135969.20352
+  tps: 115594.24698
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 103314.33829
+  tps: 82979.13158
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 143225.35866
+  tps: 98025.1818
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 99921.60975
+  tps: 87367.1192
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 75278.53418
+  tps: 62722.90956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 87460.79232
+  tps: 66897.91222
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 561179.52763
+  tps: 365723.76986
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69761.11842
+  tps: 40109.73473
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 103223.93218
+  tps: 46163.61174
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 428453.66225
+  tps: 286282.82163
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49703.45184
+  tps: 30477.45445
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58874.7862
+  tps: 31099.49045
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 144661.68779
+  tps: 124080.62202
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112463.24982
+  tps: 92072.81933
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 150241.05381
+  tps: 104993.64371
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 106536.51491
+  tps: 93972.06724
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 82275.17141
+  tps: 69600.34967
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92207.1705
+  tps: 71364.28492
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 561179.52763
+  tps: 365723.76986
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69761.11842
+  tps: 40109.73473
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 103223.93218
+  tps: 46163.61174
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 428453.66225
+  tps: 286282.82163
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49703.45184
+  tps: 30477.45445
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58874.7862
+  tps: 31099.49045
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 142027.25725
+  tps: 121338.9176
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108942.2359
+  tps: 88322.13067
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 143177.10178
+  tps: 97323.75741
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 103536.20949
+  tps: 90927.50901
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79716.35933
+  tps: 67129.47889
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 87121.80856
+  tps: 66255.32954
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 564581.04725
+  tps: 365723.76986
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 73102.4062
+  tps: 40109.73473
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107416.84831
+  tps: 46163.61174
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 431087.89977
+  tps: 286282.82163
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 52174.62935
+  tps: 30477.45445
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61645.76226
+  tps: 31099.49045
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 145210.41285
+  tps: 121338.9176
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112193.01626
+  tps: 88322.13067
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 147391.45246
+  tps: 97323.75741
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 105945.03125
+  tps: 90927.50901
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 82099.31932
+  tps: 67129.47889
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89904.56169
+  tps: 66255.32954
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 561179.52763
+  tps: 365723.76986
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69761.11842
+  tps: 40109.73473
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 103223.93218
+  tps: 46163.61174
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 428453.66225
+  tps: 286282.82163
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49703.45184
+  tps: 30477.45445
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58874.7862
+  tps: 31099.49045
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 141566.22051
+  tps: 121055.88769
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 109241.30388
+  tps: 88813.17742
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 149273.58927
+  tps: 103832.48751
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 103633.93938
+  tps: 91082.15906
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79555.13278
+  tps: 67031.45095
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89769.53987
+  tps: 69160.87613
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 561179.52763
+  tps: 365723.76986
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 69761.11842
+  tps: 40109.73473
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 103223.93218
+  tps: 46163.61174
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 428453.66225
+  tps: 286282.82163
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 49703.45184
+  tps: 30477.45445
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 58874.7862
+  tps: 31099.49045
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 141986.63881
+  tps: 121609.31107
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 109551.05058
+  tps: 89196.67242
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 150699.71693
+  tps: 105306.19697
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 104080.61804
+  tps: 91606.54376
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 80065.72878
+  tps: 67631.61418
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 91020.75436
+  tps: 70545.07478
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 737918.01497
+  tps: 482877.56041
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 95935.20848
+  tps: 55360.53667
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144459.19121
+  tps: 64234.17371
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 567764.51235
+  tps: 381693.00079
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 68562.177
+  tps: 42169.90294
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 83592.97577
+  tps: 44109.62881
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 198133.88625
+  tps: 169538.29048
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 153111.54471
+  tps: 124667.65142
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 207637.4703
+  tps: 145152.0592
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 147389.05777
+  tps: 129544.70111
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 113964.20661
+  tps: 96239.48846
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-DefaultTalents-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 131015.81705
+  tps: 101058.47169
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 737918.01497
+  tps: 482877.56041
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 95935.20848
+  tps: 55360.53667
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144459.19121
+  tps: 64234.17371
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 567764.51235
+  tps: 381693.00079
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 68562.177
+  tps: 42169.90294
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 83592.97577
+  tps: 44109.62881
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192978.4452
+  tps: 164153.8811
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 147930.24022
+  tps: 119585.48619
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 195702.97148
+  tps: 132702.35721
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 144426.08282
+  tps: 126291.94959
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 110221.05882
+  tps: 92351.96809
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 123200.40939
+  tps: 92925.12775
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 742530.90686
+  tps: 482877.56041
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 100493.75483
+  tps: 55360.53667
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 149943.12941
+  tps: 64234.17371
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 571467.31178
+  tps: 381693.00079
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 72078.93271
+  tps: 42169.90294
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 87583.67572
+  tps: 44109.62881
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 197453.5204
+  tps: 164153.8811
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 152318.2273
+  tps: 119585.48619
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 201240.25835
+  tps: 132702.35721
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 147864.47973
+  tps: 126291.94959
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 113619.81452
+  tps: 92351.96809
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 127280.08411
+  tps: 92925.12775
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 737918.01497
+  tps: 482877.56041
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 95935.20848
+  tps: 55360.53667
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144459.19121
+  tps: 64234.17371
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 567764.51235
+  tps: 381693.00079
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 68562.177
+  tps: 42169.90294
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 83592.97577
+  tps: 44109.62881
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 194003.8657
+  tps: 165244.02574
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 148439.29941
+  tps: 120277.05698
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 204661.80054
+  tps: 141748.76935
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 144415.5451
+  tps: 126377.47516
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 110878.52894
+  tps: 93035.2956
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 128206.21575
+  tps: 98168.43972
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 737918.01497
+  tps: 482877.56041
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 95935.20848
+  tps: 55360.53667
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144459.19121
+  tps: 64234.17371
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 567764.51235
+  tps: 381693.00079
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 68562.177
+  tps: 42169.90294
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 83592.97577
+  tps: 44109.62881
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 194165.42923
+  tps: 165756.53177
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 149757.02873
+  tps: 121325.98698
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 207265.53217
+  tps: 143825.92981
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 145481.58788
+  tps: 127477.10773
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111813.99297
+  tps: 94050.71361
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-p1-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 129457.08119
+  tps: 99507.53917
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 568244.43875
+  tps: 368589.6602
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 70755.58491
+  tps: 39937.38528
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107033.00785
+  tps: 46500.58493
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 433843.45958
+  tps: 288752.58933
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50335.309
+  tps: 30289.01749
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61174.20048
+  tps: 31326.99152
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 142723.53089
+  tps: 120907.95111
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108983.33641
+  tps: 87334.40269
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 150927.63905
+  tps: 102372.30293
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 104349.6161
+  tps: 91039.80612
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79158.44284
+  tps: 65932.12944
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-DefaultTalents-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92499.89272
+  tps: 70131.34786
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 568244.43875
+  tps: 368589.6602
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 70755.58491
+  tps: 39937.38528
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107033.00785
+  tps: 46500.58493
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 433843.45958
+  tps: 288752.58933
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50335.309
+  tps: 30289.01749
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61174.20048
+  tps: 31326.99152
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 137981.27133
+  tps: 116254.65295
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 104754.00304
+  tps: 83187.20812
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 140247.73611
+  tps: 91766.24167
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 101701.07286
+  tps: 88230.66902
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 76690.96938
+  tps: 63185.57776
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 85953.54064
+  tps: 63022.61031
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 571814.20604
+  tps: 368589.6602
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 74231.87263
+  tps: 39937.38528
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 111466.48937
+  tps: 46500.58493
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 436628.34742
+  tps: 288752.58933
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 52933.58017
+  tps: 30289.01749
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 64214.79
+  tps: 31326.99152
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 141323.45144
+  tps: 116254.65295
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108109.15192
+  tps: 83187.20812
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144662.20854
+  tps: 91766.24167
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 104256.449
+  tps: 88230.66902
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79258.81412
+  tps: 63185.57776
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 88996.6464
+  tps: 63022.61031
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 568244.43875
+  tps: 368589.6602
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 70755.58491
+  tps: 39937.38528
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107033.00785
+  tps: 46500.58493
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 433843.45958
+  tps: 288752.58933
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50335.309
+  tps: 30289.01749
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61174.20048
+  tps: 31326.99152
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 139647.51909
+  tps: 117969.82239
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 104918.44569
+  tps: 83525.71501
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 146817.19257
+  tps: 98927.32439
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 101258.73118
+  tps: 88098.40162
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 76215.6265
+  tps: 63041.15959
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89606.34269
+  tps: 67518.61638
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 568244.43875
+  tps: 368589.6602
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 70755.58491
+  tps: 39937.38528
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107033.00785
+  tps: 46500.58493
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 433843.45958
+  tps: 288752.58933
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50335.309
+  tps: 30289.01749
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61174.20048
+  tps: 31326.99152
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 138905.53521
+  tps: 117519.5373
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 105527.3844
+  tps: 84198.26311
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 148675.15252
+  tps: 100346.49161
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 102159.57097
+  tps: 89000.74829
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 76963.21545
+  tps: 63801.00068
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 90860.88036
+  tps: 68761.11644
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 569905.20656
+  tps: 370560.14118
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 71476.95038
+  tps: 40594.10566
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107897.49693
+  tps: 47089.11663
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 436038.59475
+  tps: 290791.13839
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50915.30104
+  tps: 30878.92597
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61508.98966
+  tps: 31749.6433
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 147965.82057
+  tps: 126301.05924
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 115051.28728
+  tps: 93602.69429
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 156523.76964
+  tps: 107932.1703
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 109131.58154
+  tps: 95923.80616
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 84206.03386
+  tps: 70886.43601
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-DefaultTalents-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 96259.36664
+  tps: 73768.72966
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 569905.20656
+  tps: 370560.14118
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 71476.95038
+  tps: 40594.10566
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107897.49693
+  tps: 47089.11663
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 436038.59475
+  tps: 290791.13839
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50915.30104
+  tps: 30878.92597
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61508.98966
+  tps: 31749.6433
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 145241.38212
+  tps: 123467.98317
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111382.37671
+  tps: 89692.62504
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 148821.99079
+  tps: 99633.55325
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 105983.22911
+  tps: 92724.41252
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 81556.30182
+  tps: 68326.58339
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 90788.34017
+  tps: 68219.37896
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 573446.10975
+  tps: 370560.14118
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 74958.43097
+  tps: 40594.10566
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 112341.819
+  tps: 47089.11663
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 438796.17326
+  tps: 290791.13839
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 53504.09081
+  tps: 30878.92597
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 64475.32491
+  tps: 31749.6433
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 148561.78299
+  tps: 123467.98317
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 114771.2011
+  tps: 89692.62504
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 153287.06136
+  tps: 99633.55325
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 108497.00689
+  tps: 92724.41252
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 84041.13028
+  tps: 68326.58339
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93738.94183
+  tps: 68219.37896
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 569905.20656
+  tps: 370560.14118
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 71476.95038
+  tps: 40594.10566
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107897.49693
+  tps: 47089.11663
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 436038.59475
+  tps: 290791.13839
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50915.30104
+  tps: 30878.92597
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61508.98966
+  tps: 31749.6433
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 144829.38425
+  tps: 123230.27873
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111718.89438
+  tps: 90230.15639
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 155437.37873
+  tps: 106638.70452
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 106178.73885
+  tps: 92982.94182
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 81445.83982
+  tps: 68285.43234
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93690.61313
+  tps: 71454.76266
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 569905.20656
+  tps: 370560.14118
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 71476.95038
+  tps: 40594.10566
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 107897.49693
+  tps: 47089.11663
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 436038.59475
+  tps: 290791.13839
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 50915.30104
+  tps: 30878.92597
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 61508.98966
+  tps: 31749.6433
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 145277.93629
+  tps: 123821.48232
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112066.08556
+  tps: 90658.42577
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 156940.83905
+  tps: 108194.05952
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 106567.3512
+  tps: 93452.40503
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 81939.68485
+  tps: 68873.18574
+ }
+}
+dps_results: {
+ key: "TestSurvival-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 94888.2166
+  tps: 72785.30932
+ }
+}
+dps_results: {
+ key: "TestSurvival-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 150699.37781
+  tps: 124488.90198
+ }
+}
