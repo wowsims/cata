@@ -40,6 +40,7 @@ func (garg *GargoylePet) GetPet() *core.Pet {
 }
 
 func (garg *GargoylePet) Initialize() {
+	garg.Pet.Initialize()
 	garg.registerGargoyleStrikeSpell()
 }
 

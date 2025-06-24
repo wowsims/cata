@@ -194,5 +194,5 @@ const (
 	GhoulSpellClaw int64 = 1 << iota
 
 	GhoulSpellLast
-	GhoulSpellsAll = DeathKnightSpellLast<<1 - 1
+	GhoulSpellsAll = GhoulSpellLast<<1 - 1
 )

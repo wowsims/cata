@@ -76,6 +76,8 @@ func (bloodworm *BloodwormPet) getBloodBurstProcChance() float64 {
 }
 
 func (bloodworm *BloodwormPet) Initialize() {
+	bloodworm.Pet.Initialize()
+
 	bloodworm.stackAura = bloodworm.GetOrRegisterAura(core.Aura{
 		Label:     "Blood Gorged" + bloodworm.Label,
 		ActionID:  core.ActionID{SpellID: 81277},

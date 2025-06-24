@@ -47,6 +47,8 @@ type RuneWeaponPet struct {
 }
 
 func (runeWeapon *RuneWeaponPet) Initialize() {
+	runeWeapon.Pet.Initialize()
+
 	runeWeapon.dkOwner.registerDrwFrostFever()
 	runeWeapon.dkOwner.registerDrwBloodPlague()
 	runeWeapon.AddCopySpell(BloodBoilActionID, runeWeapon.dkOwner.registerDrwBloodBoil())
