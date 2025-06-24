@@ -247,9 +247,7 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 func (pet *Pet) SetTimeoutAction(sim *Simulation, duration time.Duration) {
 	pet.timeoutAction = &PendingAction{
 		NextActionAt: sim.CurrentTime + duration,
-		OnAction: func(sim *Simulation) {
-			pet.Disable(sim)
-		},
+		OnAction:     pet.Disable,
 	}
 
 	sim.AddPendingAction(pet.timeoutAction)
@@ -402,15 +400,16 @@ func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPet
 		numHeartbeats := (sim.CurrentTime - env.heartbeatOffset) / PetUpdateInterval
 		nextHeartbeat := PetUpdateInterval * (numHeartbeats + 1) + env.heartbeatOffset
 
-		StartDelayedAction(sim, DelayedActionOptions{
-			DoAt:     nextHeartbeat,
-			Priority: ActionPriorityDOT,
+		pa := sim.GetConsumedPendingActionFromPool()
+		pa.NextActionAt = nextHeartbeat
+		pa.Priority = ActionPriorityDOT
 
-			OnAction: func(sim *Simulation) {
-				if pet.enabled {
-					inheritanceFunc(sim, pet)
-				}
-			},
-		})
+		pa.OnAction = func(sim *Simulation) {
+			if pet.enabled {
+				inheritanceFunc(sim, pet)
+			}
+		}
+
+		sim.AddPendingAction(pa)
 	}
 }
