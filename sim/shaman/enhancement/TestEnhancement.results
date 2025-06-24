@@ -2448,127 +2448,127 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 78936.99344
-  tps: 78605.79794
+  dps: 78879.22141
+  tps: 78464.18884
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 57779.37011
-  tps: 49457.5424
+  dps: 57770.09213
+  tps: 49378.92346
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 86830.24627
-  tps: 60609.49476
+  dps: 87103.03968
+  tps: 60592.26932
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 62380.62033
-  tps: 64724.15016
+  dps: 62453.54801
+  tps: 64757.04562
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 45833.12547
-  tps: 39951.99589
+  dps: 45806.51127
+  tps: 39895.70468
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 64815.76497
-  tps: 47348.73656
+  dps: 64907.09041
+  tps: 47325.07471
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 81740.1475
-  tps: 75331.95315
+  dps: 81915.29743
+  tps: 75419.93206
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54873.36873
-  tps: 43497.41844
+  dps: 54901.33965
+  tps: 43455.60486
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 93259.10019
-  tps: 53541.64374
+  dps: 93610.76223
+  tps: 53628.50454
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 64254.54559
-  tps: 62301.06765
+  dps: 64314.72175
+  tps: 62324.59519
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43750.63039
-  tps: 35449.68622
+  dps: 43768.40168
+  tps: 35375.03664
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEMPrimal-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 71327.96521
-  tps: 42787.07244
+  dps: 71724.72059
+  tps: 42791.44354
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 77904.65035
-  tps: 75679.05072
+  dps: 78058.50604
+  tps: 75739.03873
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 55403.61769
-  tps: 46017.32227
+  dps: 55407.76327
+  tps: 45954.09137
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 81312.8986
-  tps: 56627.16465
+  dps: 81577.47136
+  tps: 56659.10257
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 61038.28783
-  tps: 62102.59586
+  dps: 61058.73126
+  tps: 62100.86417
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43804.70809
-  tps: 36945.23013
+  dps: 43855.18912
+  tps: 36965.2292
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-preraid-TalentsEchoUnleashed-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61149.05524
-  tps: 43873.0979
+  dps: 61288.17301
+  tps: 43899.77324
  }
 }
 dps_results: {
