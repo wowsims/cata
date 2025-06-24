@@ -58,6 +58,7 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 	bwSpell := bmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: hunter.HunterSpellBestialWrath,
+		Flags:          core.SpellFlagReadinessTrinket,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
