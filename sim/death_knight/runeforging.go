@@ -201,9 +201,9 @@ func init() {
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					dmg := 0.0
 					if isMH {
-						dmg = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.02
+						dmg = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.03
 					} else {
-						dmg = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.02
+						dmg = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.03
 					}
 					spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit)
 				},
@@ -217,7 +217,7 @@ func init() {
 				return 1.0
 			}
 			stacks := vulnAuras.Get(attackTable.Defender).GetStacks()
-			return 1.0 + 0.02*float64(stacks)
+			return 1.0 + 0.03*float64(stacks)
 		}
 
 		vulnAuras = character.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
