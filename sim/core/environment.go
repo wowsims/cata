@@ -262,7 +262,7 @@ func (env *Environment) IsFinalized() bool {
 
 func (env *Environment) reset(sim *Simulation) {
 	// Randomize heartbeat timer for pet stat inheritance.
-	env.heartbeatOffset = DurationFromSeconds(5.0 * sim.RandomFloat("Pet Stat Inheritance"))
+	env.heartbeatOffset = env.PrepullStartTime() - time.Second * 5 + DurationFromSeconds(5.0 * sim.RandomFloat("Pet Stat Inheritance"))
 
 	// Reset primary targets damage taken for tracking health fights.
 	env.Encounter.DamageTaken = 0
