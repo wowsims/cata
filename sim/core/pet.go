@@ -245,11 +245,9 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 }
 
 func (pet *Pet) SetTimeoutAction(sim *Simulation, duration time.Duration) {
-	pet.timeoutAction = &PendingAction{
-		NextActionAt: sim.CurrentTime + duration,
-		OnAction:     pet.Disable,
-	}
-
+	pet.timeoutAction = sim.GetConsumedPendingActionFromPool()
+	pet.timeoutAction.NextActionAt = sim.CurrentTime + duration
+	pet.timeoutAction.OnAction = pet.Disable
 	sim.AddPendingAction(pet.timeoutAction)
 }
 

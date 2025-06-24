@@ -649,6 +649,11 @@ func (sim *Simulation) AddPendingAction(pa *PendingAction) {
 
 func (sim *Simulation) GetConsumedPendingActionFromPool() *PendingAction {
 	pa := sim.pendingActionPool.Get().(*PendingAction)
+	pa.NextActionAt = 0
+	pa.Priority = 0
+	pa.OnAction = nil
+	pa.CleanUp = nil
+	pa.cancelled = false
 	return pa
 }
 
