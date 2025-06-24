@@ -12,6 +12,8 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 		return
 	}
 
+	duration := core.TernaryDuration(bmHunter.CouldHaveSetBonus(hunter.YaunGolSlayersBattlegear, 4), 16, 10) * time.Second
+
 	bwCostMod := bmHunter.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		ClassMask:  hunter.HunterSpellsAll | hunter.HunterSpellsTalents,
@@ -31,7 +33,7 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 	bestialWrathPetAura := bmHunter.Pet.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
-		Duration: time.Second * 10,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bwPetDamageMod.Activate()
 		},
@@ -43,7 +45,7 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 	bestialWrathAura := bmHunter.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath",
 		ActionID: actionID,
-		Duration: time.Second * 10,
+		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bwDamageMod.Activate()
 			bwCostMod.Activate()
