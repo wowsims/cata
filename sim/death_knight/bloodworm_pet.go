@@ -90,6 +90,7 @@ func (bloodworm *BloodwormPet) Initialize() {
 		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 		DamageMultiplier: 1,
+		CritMultiplier:   bloodworm.dkOwner.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 	})
 

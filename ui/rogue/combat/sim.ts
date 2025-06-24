@@ -97,20 +97,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	playerIconInputs: [RogueInputs.LethalPoison()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.CritBuff, 
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.MasteryBuff,
 		BuffDebuffInputs.StatsBuff,
 		BuffDebuffInputs.AttackSpeedBuff,
-		
+
 		BuffDebuffInputs.MajorHasteBuff,
 		BuffDebuffInputs.StormLashTotem,
 		BuffDebuffInputs.Skullbanner,
 		BuffDebuffInputs.ShatteringThrow,
 		BuffDebuffInputs.TricksOfTheTrade,
 
-		BuffDebuffInputs.SpellDamageDebuff, 
-		BuffDebuffInputs.MajorArmorDebuff, 
+		BuffDebuffInputs.SpellDamageDebuff,
+		BuffDebuffInputs.MajorArmorDebuff,
 		BuffDebuffInputs.PhysicalDamageDebuff
 	],
 	excludeBuffDebuffInputs: [],
@@ -198,11 +198,13 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 				updateGearStatsModifier: (baseStats: Stats) => {
 					// Human/Orc racials for MH. Maxing Expertise for OH is a DPS loss when the MH matches the racial.
 					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
+					const ohWepType = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType;
 					const playerRace = player.getRace();
 					if (
-						(playerRace == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType == WeaponType.WeaponTypeMace)) ||
-						(playerRace == Race.RaceOrc && (mhWepType == WeaponType.WeaponTypeAxe || mhWepType == WeaponType.WeaponTypeFist)) ||
-						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword))
+						(playerRace == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType == WeaponType.WeaponTypeMace) && (ohWepType != WeaponType.WeaponTypeSword && ohWepType != WeaponType.WeaponTypeMace)) ||
+						(playerRace == Race.RaceOrc && (mhWepType == WeaponType.WeaponTypeAxe || mhWepType == WeaponType.WeaponTypeFist) && (ohWepType != WeaponType.WeaponTypeAxe && ohWepType != WeaponType.WeaponTypeFist)) ||
+						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword) && (ohWepType != WeaponType.WeaponTypeDagger && ohWepType != WeaponType.WeaponTypeSword)) ||
+						(playerRace == Race.RaceDwarf && mhWepType == WeaponType.WeaponTypeMace && ohWepType != WeaponType.WeaponTypeMace)
 					) {
 						return baseStats.addStat(Stat.StatExpertiseRating, 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 					}

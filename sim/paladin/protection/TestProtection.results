@@ -843,10 +843,19 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 124762.13155
-  tps: 862766.43051
-  dtps: 69649.28589
-  hps: 67425.4398
+  dps: 139774.92898
+  tps: 967971.57246
+  dtps: 51792.49742
+  hps: 78590.15323
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 140788.06097
+  tps: 975331.09831
+  dtps: 57118.85995
+  hps: 76626.794
  }
 }
 dps_results: {
@@ -1318,6 +1327,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 128539.78962
+  tps: 889567.50097
+  dtps: 61802.38964
+  hps: 70774.8937
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 133646.95946
@@ -1333,6 +1351,15 @@ dps_results: {
   tps: 919717.41361
   dtps: 61021.34061
   hps: 73562.53956
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 128389.25008
+  tps: 888700.33408
+  dtps: 60513.1193
+  hps: 70547.87731
  }
 }
 dps_results: {
@@ -1450,6 +1477,15 @@ dps_results: {
   tps: 888534.42057
   dtps: 60313.29671
   hps: 71362.74284
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 128363.55353
+  tps: 888520.50824
+  dtps: 61797.92125
+  hps: 71109.45631
  }
 }
 dps_results: {
@@ -2103,10 +2139,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 128965.16678
-  tps: 892731.80101
+  dps: 128978.88227
+  tps: 892827.8094
   dtps: 61811.22258
-  hps: 70532.89172
+  hps: 70532.70091
  }
 }
 dps_results: {
@@ -2767,6 +2803,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 134147.4468
+  tps: 928691.4251
+  dtps: 61807.45216
+  hps: 72471.34323
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 129055.74464
@@ -2890,6 +2935,24 @@ dps_results: {
   tps: 903787.15081
   dtps: 61797.05941
   hps: 71807.20136
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 128990.18104
+  tps: 892906.9008
+  dtps: 61802.08355
+  hps: 71375.4931
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 132873.83972
+  tps: 919736.16804
+  dtps: 60308.28468
+  hps: 73681.2667
  }
 }
 dps_results: {

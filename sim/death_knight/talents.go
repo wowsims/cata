@@ -101,7 +101,7 @@ func (dk *DeathKnight) registerPlagueLeech() {
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
-				Duration: time.Second * 90,
+				Duration: time.Second * 25,
 			},
 		},
 
@@ -119,7 +119,7 @@ func (dk *DeathKnight) registerPlagueLeech() {
 
 			dk.BloodPlagueSpell.Dot(target).Deactivate(sim)
 			dk.FrostFeverSpell.Dot(target).Deactivate(sim)
-			dk.RegenPseudoRandomPlagueLeechRunes(sim, spell, runeMetrics)
+			dk.ConvertAndRegenPlagueLeechRunes(sim, spell, runeMetrics)
 		},
 	})
 }
@@ -438,6 +438,10 @@ func (dk *DeathKnight) registerAsphyxiate() {
 
 // Drain vitality from an undead minion, healing the Death Knight for 50% of his maximum health and causing the minion to suffer damage equal to 50% of its maximum health.
 func (dk *DeathKnight) registerDeathPact() {
+	if !dk.Talents.DeathPact {
+		return
+	}
+
 	actionID := core.ActionID{SpellID: 48743}
 
 	spell := dk.RegisterSpell(core.SpellConfig{
@@ -673,7 +677,7 @@ func (dk *DeathKnight) registerBloodTap() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if dk.RegenPseudoRandomBloodTapRuneAsDeath(sim, spell, runeMetrics) {
+			if dk.ConvertAndRegenBloodTapRune(sim, spell, runeMetrics) {
 				bloodChargeAura.RemoveStacks(sim, 5)
 			}
 		},
@@ -735,7 +739,7 @@ func (dk *DeathKnight) registerRunicEmpowerment() {
 		ProcChance:     0.45,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.RegenRandomDepletedRune(sim, runeMetrics)
+			dk.RegenRunicEmpowermentRune(sim, runeMetrics)
 
 			// T13 4pc: Runic Empowerment has a 25% chance to also grant 710 mastery rating for 12 sec when activated.
 			if dk.T13Dps4pc.IsActive() && sim.Proc(0.25, "T13 4pc") {

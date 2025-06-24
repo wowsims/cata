@@ -27,9 +27,9 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagRanged,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
 		CritMultiplier:   hunter.DefaultCritMultiplier(),
@@ -53,6 +53,16 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != hunter.AutoAttacks.RangedAuto() {
 				return
 			}
+			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
+			if sim.RandomFloat("Wild Quiver") < procChance {
+				wqSpell.Cast(sim, result.Target)
+			}
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != hunter.AutoAttacks.RangedAuto() {
+				return
+			}
+
 			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)

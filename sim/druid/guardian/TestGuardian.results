@@ -69,10 +69,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 86923.60344
-  tps: 602218.85124
-  dtps: 59611.73071
-  hps: 21797.40387
+  dps: 86399.43532
+  tps: 598549.55556
+  dtps: 49948.27214
+  hps: 24486.32037
  }
 }
 dps_results: {
@@ -850,6 +850,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 88200.50531
+  tps: 611225.18575
+  dtps: 55317.25472
+  hps: 23097.98315
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-FearwurmBadge-84074"
  value: {
   dps: 86673.58517
@@ -1300,6 +1309,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 85240.95508
+  tps: 590654.27783
+  dtps: 55953.71775
+  hps: 22571.53866
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ImpassivePrimalDiamond"
  value: {
   dps: 90099.71428
@@ -1315,6 +1333,15 @@ dps_results: {
   tps: 618190.0285
   dtps: 55242.99065
   hps: 24228.37711
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 85197.17684
+  tps: 590536.24852
+  dtps: 55041.83011
+  hps: 22571.09869
  }
 }
 dps_results: {
@@ -1432,6 +1459,15 @@ dps_results: {
   tps: 590684.13371
   dtps: 55359.04749
   hps: 23150.06475
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 89360.77788
+  tps: 619085.38725
+  dtps: 55030.72841
+  hps: 26174.7481
  }
 }
 dps_results: {
@@ -2076,10 +2112,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 101416.1981
-  tps: 702805.41838
-  dtps: 50820.53486
-  hps: 27261.80197
+  dps: 101798.19432
+  tps: 705379.6894
+  dtps: 50619.79768
+  hps: 27604.82419
  }
 }
 dps_results: {
@@ -2740,6 +2776,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 87576.45384
+  tps: 606804.05078
+  dtps: 55684.50888
+  hps: 23977.06207
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-VaporshieldMedallion-93262"
  value: {
   dps: 85228.37696
@@ -2818,6 +2863,24 @@ dps_results: {
   tps: 617029.9859
   dtps: 54595.67513
   hps: 24676.64888
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 86464.6946
+  tps: 599074.49452
+  dtps: 55247.70337
+  hps: 22663.85129
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 89918.81324
+  tps: 622573.79825
+  dtps: 54591.81932
+  hps: 24419.70737
  }
 }
 dps_results: {

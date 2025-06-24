@@ -23,7 +23,7 @@ func (uhdk *UnholyDeathKnight) registerMastery() {
 
 	core.MakePermanent(uhdk.RegisterAura(core.Aura{
 		Label:    "Dreadblade" + uhdk.Label,
-		ActionID: core.ActionID{SpellID: 77514},
+		ActionID: core.ActionID{SpellID: 77515},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			masteryMultiplier := uhdk.getMasteryPercent(uhdk.GetStat(stats.MasteryRating))
