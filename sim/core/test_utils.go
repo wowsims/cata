@@ -236,8 +236,11 @@ func GetItemSwapGearSet(dir string, file string) ItemSwapSetCombo {
 	return ItemSwapSetCombo{Label: file, ItemSwap: ItemSwapFromJsonString(string(data))}
 }
 
-// GenerateTalentVariations creates talent variations by testing each talent once
 func GenerateTalentVariations(baseTalents string, baseGlyphs *proto.Glyphs) []TalentsCombo {
+	return GenerateTalentVariationsForRows(baseTalents, baseGlyphs, []int{0, 1, 2, 3, 4, 5})
+}
+
+func GenerateTalentVariationsForRows(baseTalents string, baseGlyphs *proto.Glyphs, rowsToVary []int) []TalentsCombo {
 	if len(baseTalents) != 6 {
 		log.Fatalf("Expected 6-digit talent string, got: %s", baseTalents)
 	}
@@ -245,7 +248,11 @@ func GenerateTalentVariations(baseTalents string, baseGlyphs *proto.Glyphs) []Ta
 	var combinations []TalentsCombo
 
 	baseRunes := []rune(baseTalents)
-	for row := 0; row < 6; row++ {
+	for _, row := range rowsToVary {
+		if row < 0 || row >= 6 {
+			log.Fatalf("Invalid row index: %d, must be between 0 and 5", row)
+		}
+
 		for choice := 0; choice < 3; choice++ {
 			if int(baseRunes[row]-'0') == choice {
 				continue

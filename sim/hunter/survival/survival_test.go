@@ -15,7 +15,7 @@ func init() {
 
 func TestSurvival(t *testing.T) {
 	var talentSets []core.TalentsCombo
-	talentSets = core.GenerateTalentVariations(SurvivalTalents, SurvivalDefaultGlyphs)
+	talentSets = core.GenerateTalentVariationsForRows(SurvivalTalents, SurvivalDefaultGlyphs, []int{4, 5})
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassHunter,
@@ -27,12 +27,12 @@ func TestSurvival(t *testing.T) {
 			core.GetGearSet("../../../ui/hunter/presets", "preraid"),
 			core.GetGearSet("../../../ui/hunter/presets", "preraid_celestial"),
 		},
-		Talents:     SurvivalTalents,
+		Talents:         SurvivalTalents,
 		OtherTalentSets: talentSets,
-		Glyphs:      SurvivalDefaultGlyphs,
-		Consumables: FullConsumesSpec,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
-		Rotation:    core.GetAplRotation("../../../ui/hunter/survival/apls", "sv"),
+		Glyphs:          SurvivalDefaultGlyphs,
+		Consumables:     FullConsumesSpec,
+		SpecOptions:     core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+		Rotation:        core.GetAplRotation("../../../ui/hunter/survival/apls", "sv"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/hunter/survival/apls", "aoe"),
 		},
@@ -97,8 +97,8 @@ var PlayerOptionsBasic = &proto.Player_SurvivalHunter{
 	SurvivalHunter: &proto.SurvivalHunter{
 		Options: &proto.SurvivalHunter_Options{
 			ClassOptions: &proto.HunterOptions{
-				PetType:           proto.HunterOptions_Wolf,
-				PetUptime:         1,
+				PetType:   proto.HunterOptions_Wolf,
+				PetUptime: 1,
 			},
 		},
 	},

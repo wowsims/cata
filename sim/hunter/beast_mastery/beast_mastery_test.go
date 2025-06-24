@@ -15,8 +15,7 @@ func init() {
 
 func TestBeastMastery(t *testing.T) {
 	var talentSets []core.TalentsCombo
-	talentSets = core.GenerateTalentVariations(BeastMasteryTalents, BeastMasteryDefaultGlyphs)
-
+	talentSets = core.GenerateTalentVariationsForRows(BeastMasteryTalents, BeastMasteryDefaultGlyphs, []int{4, 5})
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassHunter,
@@ -28,12 +27,12 @@ func TestBeastMastery(t *testing.T) {
 			core.GetGearSet("../../../ui/hunter/presets", "preraid"),
 			core.GetGearSet("../../../ui/hunter/presets", "preraid_celestial"),
 		},
-		Talents:     BeastMasteryTalents,
+		Talents:         BeastMasteryTalents,
 		OtherTalentSets: talentSets,
-		Glyphs:      BeastMasteryDefaultGlyphs,
-		Consumables: FullConsumesSpec,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
-		Rotation:    core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm"),
+		Glyphs:          BeastMasteryDefaultGlyphs,
+		Consumables:     FullConsumesSpec,
+		SpecOptions:     core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+		Rotation:        core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "aoe"),
 		},
@@ -99,8 +98,8 @@ var PlayerOptionsBasic = &proto.Player_BeastMasteryHunter{
 	BeastMasteryHunter: &proto.BeastMasteryHunter{
 		Options: &proto.BeastMasteryHunter_Options{
 			ClassOptions: &proto.HunterOptions{
-				PetType:    proto.HunterOptions_Wolf,
-				PetUptime:  1,
+				PetType:   proto.HunterOptions_Wolf,
+				PetUptime: 1,
 			},
 		},
 	},

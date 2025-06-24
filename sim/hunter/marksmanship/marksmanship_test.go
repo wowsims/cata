@@ -15,7 +15,7 @@ func init() {
 
 func TestMarksmanship(t *testing.T) {
 	var talentSets []core.TalentsCombo
-	talentSets = core.GenerateTalentVariations(MarksmanshipTalents, MarksmanshipDefaultGlyphs)
+	talentSets = core.GenerateTalentVariationsForRows(MarksmanshipTalents, MarksmanshipDefaultGlyphs, []int{4, 5})
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassHunter,
@@ -27,12 +27,12 @@ func TestMarksmanship(t *testing.T) {
 			core.GetGearSet("../../../ui/hunter/presets", "preraid"),
 			core.GetGearSet("../../../ui/hunter/presets", "preraid_celestial"),
 		},
-		Talents:     MarksmanshipTalents,
+		Talents:         MarksmanshipTalents,
 		OtherTalentSets: talentSets,
-		Glyphs:      MarksmanshipDefaultGlyphs,
-		Consumables: FullConsumesSpec,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
-		Rotation:    core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
+		Glyphs:          MarksmanshipDefaultGlyphs,
+		Consumables:     FullConsumesSpec,
+		SpecOptions:     core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+		Rotation:        core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "aoe"),
 		},
@@ -94,13 +94,12 @@ var MarksmanshipDefaultGlyphs = &proto.Glyphs{
 	Major3: int32(proto.HunterMajorGlyph_GlyphOfDeterrence),
 }
 
-
 var PlayerOptionsBasic = &proto.Player_MarksmanshipHunter{
 	MarksmanshipHunter: &proto.MarksmanshipHunter{
 		Options: &proto.MarksmanshipHunter_Options{
 			ClassOptions: &proto.HunterOptions{
-				PetType:           proto.HunterOptions_Wolf,
-				PetUptime:         1,
+				PetType:   proto.HunterOptions_Wolf,
+				PetUptime: 1,
 			},
 		},
 	},
