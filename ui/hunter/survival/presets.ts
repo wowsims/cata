@@ -15,7 +15,7 @@ import SvApl from './apls/sv.apl.json';
 // keep them in a separate file.
 
 export const PRERAID_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid', PreRaidGear);
-export const PRERAID_CELESTIAL_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid', PreRaidGearCelestial);
+export const PRERAID_CELESTIAL_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid (Celestial)', PreRaidGearCelestial);
 export const P1_PRESET_GEAR = PresetUtils.makePresetGear('P1', P1Gear);
 export const ROTATION_PRESET_SV = PresetUtils.makePresetAPLRotation('Single Target', SvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);

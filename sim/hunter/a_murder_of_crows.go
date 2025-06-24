@@ -12,13 +12,13 @@ func (hunter *Hunter) registerAMOCSpell() {
 	}
 
 	hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 131894},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskProc,
-		//ClassSpellMask: HunterSpellSerpentSting,
-		Flags:    core.SpellFlagAPL | core.SpellFlagApplyArmorReduction | core.SpellFlagRanged,
-		MinRange: 0,
-		MaxRange: 40,
+		ActionID:       core.ActionID{SpellID: 131894},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskProc,
+		ClassSpellMask: HunterSpellAMurderOfCrows,
+		Flags:          core.SpellFlagAPL | core.SpellFlagApplyArmorReduction | core.SpellFlagRanged,
+		MinRange:       0,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 60,
 		},
