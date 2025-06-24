@@ -139,7 +139,6 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerAMOCSpell()
 	hunter.registerBarrageSpell()
 	hunter.registerGlaiveTossSpell()
-	hunter.registerBarrageSpell()
 	hunter.registerFervorSpell()
 	hunter.RegisterDireBeastSpell()
 	hunter.RegisterStampedeSpell()
