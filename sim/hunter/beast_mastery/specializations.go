@@ -13,6 +13,7 @@ func (bmHunter *BeastMasteryHunter) ApplyTalents() {
 	bmHunter.applyGoForTheThroat()
 	bmHunter.applyCobraStrikes()
 	bmHunter.applyInvigoration()
+	bmHunter.applyBeastCleave()
 	bmHunter.Hunter.ApplyTalents()
 }
 
@@ -155,6 +156,70 @@ func (bmHunter *BeastMasteryHunter) applyInvigoration() {
 			if spell.Matches(hunter.HunterPetFocusDump) {
 				if sim.RandomFloat("Invigoration") < procChance {
 					bmHunter.AddFocus(sim, 20, focusMetrics)
+				}
+			}
+		},
+	})
+}
+
+func (bmHunter *BeastMasteryHunter) applyBeastCleave() {
+	if bmHunter.Pet == nil {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 115939}
+
+	var copyDamage float64
+	hitSpell := bmHunter.Pet.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		ClassSpellMask: hunter.HunterPetBeastCleaveHit,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: 0.75,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, copyDamage, spell.OutcomeAlwaysHit)
+		},
+	})
+
+	beastCleaveAura := core.MakeProcTriggerAura(&bmHunter.Pet.Unit, core.ProcTrigger{
+		Name:     "Beast Cleave",
+		ActionID: actionID,
+		Duration: time.Second * 4,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMelee,
+		Outcome:  core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if bmHunter.Env.GetNumTargets() < 2 || result.Damage <= 0 || spell.Matches(hunter.HunterPetBeastCleaveHit) {
+				return
+			}
+
+			// FIXME: This ignores target modifiers and assumes they are the same for the original target and the cleaved target
+			copyDamage = result.Damage / result.ArmorMultiplier
+
+			nextTarget := bmHunter.Env.NextTargetUnit(result.Target)
+			for nextTarget != nil && nextTarget.Index != result.Target.Index {
+				hitSpell.Cast(sim, nextTarget)
+				nextTarget = bmHunter.Env.NextTargetUnit(nextTarget)
+			}
+		},
+	})
+
+	bmHunter.RegisterAura(core.Aura{
+		Label:    "Beast Cleave",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(hunter.HunterSpellMultiShot) {
+				if beastCleaveAura.IsActive() {
+					beastCleaveAura.Refresh(sim)
+				} else {
+					beastCleaveAura.Activate(sim)
 				}
 			}
 		},
