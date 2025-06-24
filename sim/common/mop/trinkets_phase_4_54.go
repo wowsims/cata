@@ -102,7 +102,6 @@ func init() {
 			proto.Spec_SpecGuardianDruid:    145962,
 			proto.Spec_SpecRestorationDruid: 145963,
 			// Hunter
-			// Missing: Bestial Wrath
 			proto.Spec_SpecBeastMasteryHunter: 145964,
 			proto.Spec_SpecMarksmanshipHunter: 145965,
 			proto.Spec_SpecSurvivalHunter:     145966,
