@@ -460,7 +460,14 @@ func InferPhase(item *proto.UIItem) int32 {
 func processItems(instance *dbc.DBC, iconsMap map[int]string, names map[int]string, dropSources map[int][]*proto.DropSource, craftingSources map[int][]*proto.CraftedSource, repSources map[int][]*proto.RepSource, db *database.WowDatabase) {
 	sourceMap := make(map[string][]*proto.UIItemSource, len(instance.Items))
 	parsedItems := make([]*proto.UIItem, 0, len(instance.Items))
-	for _, item := range instance.Items {
+
+	sortedItemKeys := slices.Sorted(maps.Keys(instance.Items))
+	sortedItems := make([]dbc.Item, len(instance.Items))
+	for i, k := range sortedItemKeys {
+		sortedItems[i] = instance.Items[k]
+	}
+
+	for _, item := range sortedItems {
 		if item.Flags2&0x10 != 0 && (item.StatAlloc[0] > 0 && item.StatAlloc[0] < 600) {
 			continue
 		}

@@ -1237,6 +1237,7 @@ var StormLashSpellExceptions = map[int32]float64{
 	103103: 2.0, // Malefic Grasp
 	15407:  1.0, // Mind Flay
 	129197: 1.0, // Mind Flay - Insanity
+	120360: 1.0, // Barrage
 }
 
 // Source: https://www.wowhead.com/mop-classic/spell=120668/stormlash-totem#comments
