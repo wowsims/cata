@@ -196,15 +196,15 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			// an existing Lava Burst cast that is set to finish on
 			// this timestep will apply the cooldown *before* it gets
 			// reset by the Lava Surge proc.
-			pa := &core.PendingAction{
-				NextActionAt: sim.CurrentTime + time.Duration(1),
-				Priority:     core.ActionPriorityDOT,
+			pa := sim.GetConsumedPendingActionFromPool()
+			pa.NextActionAt = sim.CurrentTime + 1
+			pa.Priority = core.ActionPriorityDOT
 
-				OnAction: func(sim *core.Simulation) {
-					shaman.LavaBurst.CD.Reset()
-					procAura.Activate(sim)
-				},
+			pa.OnAction = func(sim *core.Simulation) {
+				shaman.LavaBurst.CD.Reset()
+				procAura.Activate(sim)
 			}
+
 			sim.AddPendingAction(pa)
 
 			// Additionally, trigger a rotational wait so that the agent has an

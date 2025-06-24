@@ -73,12 +73,14 @@ func (monk *Monk) registerCracklingJadeLightning() {
 					monk.ExtendGCDUntil(sim, sim.CurrentTime+monk.ChannelClipDelay)
 
 					// Deactivating within OnTick causes a panic since tickAction gets set to nil in the default OnExpire
-					sim.AddPendingAction(&core.PendingAction{
-						NextActionAt: sim.CurrentTime,
-						OnAction: func(sim *core.Simulation) {
-							dot.Deactivate(sim)
-						},
-					})
+					pa := sim.GetConsumedPendingActionFromPool()
+					pa.NextActionAt = sim.CurrentTime
+
+					pa.OnAction = func(sim *core.Simulation) {
+						dot.Deactivate(sim)
+					}
+
+					sim.AddPendingAction(pa)
 				}
 			},
 		},
