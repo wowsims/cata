@@ -20,7 +20,7 @@ Grievously wounds the target, reducing the effectiveness of any healing received
 var risingSunKickActionID = core.ActionID{SpellID: 130320}
 
 func risingSunKickDamageBonus(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-	if !spell.Matches(MonkSpellsAll) {
+	if !spell.Matches(MonkSpellsAll ^ MonkSpellTigerStrikes) {
 		return 1.0
 	}
 	return 1.2
@@ -58,13 +58,6 @@ func risingSunKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellC
 
 func (monk *Monk) registerRisingSunKick() {
 	chiMetrics := monk.NewChiMetrics(risingSunKickActionID)
-
-	risingSunKickDamageBonus := func(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-		if !spell.Matches(MonkSpellsAll) {
-			return 1.0
-		}
-		return 1.2
-	}
 
 	risingSunKickDebuff := monk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
@@ -113,7 +106,7 @@ func (pet *StormEarthAndFirePet) registerSEFRisingSunKick() {
 			Label:    fmt.Sprintf("Rising Sun Kick - Clone %s", target.Label),
 			ActionID: risingSunKickActionID.WithTag(SEFSpellID),
 			Duration: time.Second * 15,
-		}).AttachDDBC(DDBC_RisingSunKick, DDBC_Total, &pet.AttackTables, risingSunKickDamageBonus)
+		}).AttachDDBC(DDBC_RisingSunKickSEF, DDBC_Total, &pet.AttackTables, risingSunKickDamageBonus)
 	})
 
 	pet.RegisterSpell(risingSunKickSpellConfig(pet.owner, true, core.SpellConfig{
