@@ -70,6 +70,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonDoomguard(doomguardInfernalTimer)
 	warlock.registerSummonInfernal(doomguardInfernalTimer)
 	warlock.registerLifeTap()
+	warlock.registerEternalResolve()
 
 	// Fel Armor 10% Stamina
 	core.MakePermanent(
