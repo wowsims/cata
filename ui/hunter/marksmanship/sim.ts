@@ -129,25 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecMarksmanshipHunter>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 4) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_PRESET_MM.rotation.rotation!;
-		}
-	},
-
-	simpleRotation: (player: Player<Spec.SpecMarksmanshipHunter>, simple: MarksmanshipHunter_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
+		return Presets.ROTATION_PRESET_MM.rotation.rotation!;
 	},
 
 	raidSimPresets: [
