@@ -54,7 +54,7 @@ export class ConsumesPicker extends Component {
 		);
 		const potionsElem = potionsRef.value!;
 
-		const pots = this.getConsumables(ConsumableType.ConsumableTypePotion);
+		const pots = [...this.getConsumables(ConsumableType.ConsumableTypePotion), ...this.getConsumables(ConsumableType.ConsumableTypeExplosive)];
 		const prePotOptions = ConsumablesInputs.makeConsumableInput(pots, { consumesFieldName: 'prepotId' }, 'Prepop Potion');
 		const potionsOptions = ConsumablesInputs.makeConsumableInput(pots, { consumesFieldName: 'potId' }, 'Combat Potion');
 
