@@ -558,16 +558,10 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 
 func NewEquipmentSet(equipSpec EquipmentSpec) Equipment {
 	equipment := Equipment{}
-	isChallengeMode := false
 	for _, itemSpec := range equipSpec {
 		if itemSpec.ID != 0 {
 			equipment.EquipItem(NewItem(itemSpec))
-			isChallengeMode = itemSpec.ChallengeMode
 		}
-	}
-
-	if isChallengeMode {
-		equipment.ScaleForChallengeMode()
 	}
 
 	return equipment
@@ -605,54 +599,63 @@ func ItemSwapFromJsonString(jsonString string) *proto.ItemSwap {
 	return is
 }
 
-func (equipment *Equipment) Stats() stats.Stats {
+func (equipment *Equipment) Stats(spec proto.Spec) stats.Stats {
 	equipStats := stats.Stats{}
 
-	for _, item := range equipment {
-		equipStats = equipStats.Add(ItemEquipmentStats(item))
-	}
-	return equipStats
-}
-
-func (equipment *Equipment) ScaleForChallengeMode() {
 	statsGained := 0.0
 	divisor := 0.0
 	secondaries := []stats.Stat{stats.CritRating, stats.HasteRating, stats.MasteryRating, stats.DodgeRating, stats.ParryRating}
 
-	for idx := range equipment {
-		item := equipment.GetItemBySlot(proto.ItemSlot(idx))
-		if item.ScalingOptions == nil {
-			continue
+	fixedStats := []stats.Stat{stats.HitRating, stats.ExpertiseRating}
+	switch spec {
+	case proto.Spec_SpecElementalShaman,
+		proto.Spec_SpecShadowPriest,
+		proto.Spec_SpecBalanceDruid:
+		fixedStats = append(fixedStats, stats.Spirit)
+	}
+
+	isChallengeMode := false
+	fixedStatOverwrite := make([]float64, len(fixedStats))
+	for _, item := range equipment {
+		scaledItemStats := ItemEquipmentStats(item)
+
+		if item.ChallengeMode && item.ScalingOptions != nil {
+			isChallengeMode = true
+			baseItem := item
+			baseItem.ChallengeMode = false
+			baseItem.Stats = stats.FromProtoMap(baseItem.GetEffectiveScalingOptions().Stats)
+			baseItemStats := ItemEquipmentStats(baseItem)
+			for idx, stat := range fixedStats {
+				statsGained += baseItemStats[stat] - scaledItemStats[stat]
+				fixedStatOverwrite[idx] += baseItemStats[stat]
+			}
+
+			// sum up secondaries
+			for _, stat := range secondaries {
+				divisor += scaledItemStats[stat]
+			}
 		}
 
-		baseStats := stats.FromProtoMap(item.ScalingOptions[int32(proto.ItemLevelState_Base)].Stats)
-		for _, stat := range []stats.Stat{stats.HitRating, stats.ExpertiseRating} {
-			statsGained += baseStats[stat] - item.Stats[stat]
-		}
+		equipStats = equipStats.Add(scaledItemStats)
+	}
 
-		item.Stats[stats.HitRating] = baseStats[stats.HitRating]
-		item.Stats[stats.ExpertiseRating] = baseStats[stats.ExpertiseRating]
+	if isChallengeMode {
 
-		// sum up secondaries
+		// scale
+		dividend := divisor - statsGained
+		factor := dividend / divisor
+
+		// apply scaling
 		for _, stat := range secondaries {
-			divisor += item.Stats[stat]
+			equipStats[stat] = math.Round(equipStats[stat] * factor)
+		}
+
+		for idx := range fixedStatOverwrite {
+			equipStats[fixedStats[idx]] = fixedStatOverwrite[idx]
 		}
 	}
 
-	// scale
-	dividend := divisor - statsGained
-	factor := dividend / divisor
-
-	// apply scaling
-	for idx := range equipment {
-		item := equipment.GetItemBySlot(proto.ItemSlot(idx))
-		if item.ScalingOptions == nil {
-			continue
-		}
-		for _, stat := range secondaries {
-			item.Stats[stat] = math.Round(item.Stats[stat] * factor)
-		}
-	}
+	return equipStats
 }
 
 func ItemEquipmentStats(item Item) stats.Stats {
