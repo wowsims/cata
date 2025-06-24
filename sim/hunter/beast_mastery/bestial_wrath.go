@@ -14,7 +14,7 @@ func (bmHunter *BeastMasteryHunter) registerBestialWrathCD() {
 
 	bwCostMod := bmHunter.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  hunter.HunterSpellsAll,
+		ClassMask:  hunter.HunterSpellsAll | hunter.HunterSpellsTalents,
 		FloatValue: -0.5,
 	})
 	bwDamageMod := bmHunter.AddDynamicMod(core.SpellModConfig{
