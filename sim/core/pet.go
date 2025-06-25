@@ -126,9 +126,9 @@ func (pet *Pet) Initialize() {
 	}
 }
 
-func makeStatInheritanceFunc(statInheritance PetStatInheritance) PetStatInheritance {
+func makeStatInheritanceFunc(nonHitExpStatInheritance PetStatInheritance) PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		inheritedStats := statInheritance(ownerStats)
+		inheritedStats := nonHitExpStatInheritance(ownerStats)
 
 		hitRating := ownerStats[stats.HitRating]
 		expertiseRating := ownerStats[stats.ExpertiseRating]
@@ -388,8 +388,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 	}
 }
 
-func (pet *Pet) ChangeStatInheritance(statInheritance PetStatInheritance) {
-	pet.statInheritance = makeStatInheritanceFunc(statInheritance)
+func (pet *Pet) ChangeStatInheritance(nonHitExpStatInheritance PetStatInheritance) {
+	pet.statInheritance = makeStatInheritanceFunc(nonHitExpStatInheritance)
 }
 
 func (pet *Pet) GetInheritedStats() stats.Stats {
