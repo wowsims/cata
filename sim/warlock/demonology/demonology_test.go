@@ -48,7 +48,7 @@ func TestDemonology(t *testing.T) {
 		Race:             proto.Race_RaceOrc,
 		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
 		GearSet:          core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "preraid"),
-		Talents:          "231211",
+		Talents:          "231221",
 		Glyphs:           &proto.Glyphs{},
 		Consumables:      fullConsumesSpec,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: defaultDemonologyWarlock},
