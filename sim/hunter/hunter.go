@@ -57,11 +57,10 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
-	focusPerSecond := 5.0
+	focusPerSecond := 4.0
 
-	// TODO: Fix this to work with the new talent system.
-	// hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
-	hunter.EnableFocusBar(100, focusPerSecond, true, nil)
+	kindredSpritsBonusFocus := core.TernaryFloat64(hunter.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)
+	hunter.EnableFocusBar(100+kindredSpritsBonusFocus, focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -133,7 +132,6 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.RegisterLynxRushSpell()
 	hunter.registerSerpentStingSpell()
 	hunter.registerMultiShotSpell()
-	hunter.registerKillCommandSpell()
 	hunter.registerExplosiveTrapSpell()
 	hunter.registerCobraShotSpell()
 	hunter.registerRapidFireCD()
@@ -142,7 +140,6 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerAMOCSpell()
 	hunter.registerBarrageSpell()
 	hunter.registerGlaiveTossSpell()
-	hunter.registerBarrageSpell()
 	hunter.registerFervorSpell()
 	hunter.RegisterDireBeastSpell()
 	hunter.RegisterStampedeSpell()
@@ -238,13 +235,20 @@ const (
 	HunterSpellBestialWrath
 	HunterPetFocusDump
 	HunterPetDamage
+	HunterSpellFervor
+	HunterSpellDireBeast
+	HunterSpellAMurderOfCrows
+	HunterSpellLynxRush
+	HunterSpellGlaiveToss
 	HunterSpellBarrage
+	HunterSpellPowershot
 	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellMultiShot | HunterSpellAimedShot
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |
 		HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellExplosiveTrap | HunterSpellBlackArrow | HunterSpellMultiShot | HunterSpellAimedShot |
 		HunterSpellSerpentSting | HunterSpellKillShot | HunterSpellRapidFire | HunterSpellBestialWrath
+	HunterSpellsTalents = HunterSpellFervor | HunterSpellDireBeast | HunterSpellAMurderOfCrows | HunterSpellLynxRush | HunterSpellGlaiveToss | HunterSpellPowershot | HunterSpellBarrage
 )
 
 // Agent is a generic way to access underlying hunter on any of the agents.

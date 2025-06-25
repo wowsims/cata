@@ -22,17 +22,17 @@ func RegisterMarksmanshipHunter() {
 		},
 	)
 }
-func (hunter *MarksmanshipHunter) applyMastery() {
+func (mm *MarksmanshipHunter) applyMastery() {
 	actionID := core.ActionID{SpellID: 76659}
 
-	wqSpell := hunter.RegisterSpell(core.SpellConfig{
+	wqSpell := mm.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagRanged,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
-		CritMultiplier:   hunter.DefaultCritMultiplier(),
+		CritMultiplier:   mm.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
@@ -43,18 +43,28 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 		},
 	})
 
-	hunter.RegisterAura(core.Aura{
+	mm.RegisterAura(core.Aura{
 		Label:    "Wild Quiver Mastery",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != hunter.AutoAttacks.RangedAuto() {
+			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != mm.AutoAttacks.RangedAuto() {
 				return
 			}
-			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
+			procChance := (mm.CalculateMasteryPoints() + 8) * 0.02
 			if sim.RandomFloat("Wild Quiver") < procChance {
+				wqSpell.Cast(sim, result.Target)
+			}
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask != hunter.HunterSpellBarrage {
+				return
+			}
+
+			procChance := (mm.CalculateMasteryPoints() + 8) * 0.02
+			if sim.RandomFloat("Wild Quiver") < procChance/6 {
 				wqSpell.Cast(sim, result.Target)
 			}
 		},

@@ -194,16 +194,16 @@ func (action *APLActionStrictSequence) GetNextAction(sim *Simulation) *APLAction
 		if action.unit.GCD.IsReady(sim) {
 			action.advanceSequence()
 		} else {
-			pa := &PendingAction{
-				NextActionAt: action.unit.NextGCDAt(),
-				Priority:     ActionPriorityLow,
+			pa := sim.GetConsumedPendingActionFromPool()
+			pa.NextActionAt = action.unit.NextGCDAt()
+			pa.Priority = ActionPriorityLow
 
-				OnAction: func(sim *Simulation) {
-					if action.unit.Rotation.inSequence {
-						action.advanceSequence()
-					}
-				},
+			pa.OnAction = func(_ *Simulation) {
+				if action.unit.Rotation.inSequence {
+					action.advanceSequence()
+				}
 			}
+
 			sim.AddPendingAction(pa)
 			action.unit.SetRotationTimer(sim, pa.NextActionAt+time.Duration(1))
 		}

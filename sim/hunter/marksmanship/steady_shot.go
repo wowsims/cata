@@ -48,6 +48,9 @@ func (mm *MarksmanshipHunter) registerSteadyShotSpell() {
 			baseDamage += mm.GetBaseDamageFromCoeff(2.112)
 
 			intFocus := 14.0
+			if mm.HasActiveAura("Steady Focus") {
+				intFocus += 3
+			}
 			mm.AddFocus(sim, intFocus, ssMetrics)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)

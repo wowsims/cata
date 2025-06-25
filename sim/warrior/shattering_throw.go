@@ -22,15 +22,11 @@ func (war *Warrior) registerShatteringThrow() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 1500,
+				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
 				Duration: time.Minute * 5,
-			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				war.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, war.AutoAttacks.MH().SwingSpeed == war.AutoAttacks.OH().SwingSpeed)
 			},
 			IgnoreHaste: true,
 		},

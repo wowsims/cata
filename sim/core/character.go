@@ -365,6 +365,17 @@ func (character *Character) GetBaseStats() stats.Stats {
 	return character.baseStats
 }
 
+func (character *Character) GetParryRatingWithoutStrength() float64 {
+	parryRating := character.GetStat(stats.ParryRating)
+	strength := character.GetStat(stats.Strength)
+	baseStrength := character.GetBaseStats()[stats.Strength]
+
+	parryRating += baseStrength * StrengthToParryRating
+	parryRating -= strength * StrengthToParryRating
+
+	return parryRating
+}
+
 // Returns the crit multiplier for a spell.
 // https://web.archive.org/web/20081014064638/http://elitistjerks.com/f31/t12595-relentless_earthstorm_diamond_-_melee_only/p4/
 // https://github.com/TheGroxEmpire/TBC_DPS_Warrior_Sim/issues/30

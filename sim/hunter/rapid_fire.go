@@ -11,8 +11,6 @@ func (hunter *Hunter) registerRapidFireCD() {
 	actionID := core.ActionID{SpellID: 3045}
 
 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 53232})
-	var focusPA *core.PendingAction
-
 	hasteMultiplier := 1.4
 
 	rapidFireAura := hunter.RegisterAura(core.Aura{
@@ -20,9 +18,9 @@ func (hunter *Hunter) registerRapidFireCD() {
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
+			aura.Unit.MultiplyRangedHaste(sim, hasteMultiplier)
 
-			focusPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 3,
 				NumTicks: 5,
 				OnAction: func(sim *core.Simulation) {
@@ -34,8 +32,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			focusPA.Cancel(sim)
-			aura.Unit.MultiplyRangedSpeed(sim, 1/hasteMultiplier)
+			aura.Unit.MultiplyRangedHaste(sim, 1/hasteMultiplier)
 		},
 	})
 
@@ -49,7 +46,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

@@ -24,9 +24,6 @@ func (ele *ElementalShaman) registerShamanisticRageSpell() {
 		ClassSpellMask: shaman.SpellMaskShamanisticRage,
 		Flags:          core.SpellFlagReadinessTrinket,
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    ele.NewTimer(),

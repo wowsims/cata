@@ -1,22 +1,28 @@
-package druid
+package balance
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/druid"
 )
 
-func (druid *Druid) registerWildMushrooms() {
+const (
+	WildMushroomsBonusCoeff = 0.349
+	WildMushroomsCoeff      = 0.295
+	WildMushroomsVariance   = 0.19
+)
 
-	wildMushroomsStackAura := druid.GetOrRegisterAura(core.Aura{
-		Label:     "Wild Mushroom Stacks",
+func (moonkin *BalanceDruid) registerWildMushrooms() {
+
+	wildMushroomsStackAura := moonkin.GetOrRegisterAura(core.Aura{
+		Label:     "Wild Mushrooms (Tracker)",
 		ActionID:  core.ActionID{SpellID: 88747},
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
 	})
 
-	druid.WildMushrooms = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	moonkin.WildMushrooms = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 88747},
 		Flags:    core.SpellFlagAPL,
 
@@ -35,44 +41,43 @@ func (druid *Druid) registerWildMushrooms() {
 		},
 	})
 
-	wildMushroomsDamage := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	wildMushroomsDamage := moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 78777},
 		SpellSchool:      core.SpellSchoolNature,
 		Flags:            core.SpellFlagAoE | core.SpellFlagPassiveSpell,
 		ProcMask:         core.ProcMaskSpellDamage,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		ClassSpellMask:   DruidSpellWildMushroomDetonate,
-		CritMultiplier:   druid.DefaultCritMultiplier(),
-		BonusCoefficient: 0.6032,
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.9464, 0.19)
-			baseDamage := sim.Roll(min, max)
+		ClassSpellMask:   druid.DruidSpellWildMushroomDetonate,
+		CritMultiplier:   moonkin.DefaultCritMultiplier(),
+		BonusCoefficient: WildMushroomsBonusCoeff,
 
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				damage := moonkin.CalcAndRollDamageRange(sim, WildMushroomsCoeff, WildMushroomsVariance)
+				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
 
-	druid.WildMushroomsDetonate = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	moonkin.WildMushroomsDetonate = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 88751},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellWildMushroomDetonate,
-		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
+		ClassSpellMask: druid.DruidSpellWildMushroomDetonate,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPassiveSpell,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Timer:    druid.NewTimer(),
+				Timer:    moonkin.NewTimer(),
 				Duration: time.Second * 10,
 			},
 		},
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   druid.DefaultCritMultiplier(),
-		BonusCoefficient: 0.6032,
+		CritMultiplier:   moonkin.DefaultCritMultiplier(),
+		BonusCoefficient: WildMushroomsBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 
