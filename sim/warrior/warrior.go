@@ -33,6 +33,7 @@ const (
 	// Special attacks
 	SpellMaskSweepingStrikes
 	SpellMaskSweepingStrikesHit
+	SpellMaskSweepingStrikesNormalizedHit
 	SpellMaskCleave
 	SpellMaskColossusSmash
 	SpellMaskExecute
@@ -42,6 +43,7 @@ const (
 	SpellMaskRevenge
 	SpellMaskShatteringThrow
 	SpellMaskSlam
+	SpellMaskSweepingSlam
 	SpellMaskSunderArmor
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
@@ -94,10 +96,11 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
-	ColossusSmash *core.Spell
-	MortalStrike  *core.Spell
-	DeepWounds    *core.Spell
-	ShieldSlam    *core.Spell
+	ColossusSmash                   *core.Spell
+	MortalStrike                    *core.Spell
+	DeepWounds                      *core.Spell
+	ShieldSlam                      *core.Spell
+	SweepingStrikesNormalizedAttack *core.Spell
 
 	sharedShoutsCD   *core.Timer
 	sharedHSCleaveCD *core.Timer
@@ -106,14 +109,15 @@ type Warrior struct {
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
-	EnrageAura        *core.Aura
-	BerserkerRageAura *core.Aura
-	ShieldBlockAura   *core.Aura
-	LastStandAura     *core.Aura
-	RallyingCryAura   *core.Aura
-	VictoryRushAura   *core.Aura
-	SwordAndBoardAura *core.Aura
-	ShieldBarrierAura *core.DamageAbsorptionAura
+	SweepingStrikesAura *core.Aura
+	EnrageAura          *core.Aura
+	BerserkerRageAura   *core.Aura
+	ShieldBlockAura     *core.Aura
+	LastStandAura       *core.Aura
+	RallyingCryAura     *core.Aura
+	VictoryRushAura     *core.Aura
+	SwordAndBoardAura   *core.Aura
+	ShieldBarrierAura   *core.DamageAbsorptionAura
 
 	SkullBannerAura         *core.Aura
 	DemoralizingBannerAuras core.AuraArray
@@ -247,6 +251,17 @@ func (warrior *Warrior) GetRageMultiplier(target *core.Unit) float64 {
 	}
 
 	return 1.0
+}
+
+func (warrior *Warrior) CastNormalizedSweepingStrikesAttack(results []*core.SpellResult, sim *core.Simulation, target *core.Unit) {
+	if warrior.SweepingStrikesAura.IsActive() {
+		for _, result := range results {
+			if result.Landed() {
+				warrior.SweepingStrikesNormalizedAttack.Cast(sim, target)
+				break
+			}
+		}
+	}
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.
