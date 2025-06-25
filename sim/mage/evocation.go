@@ -61,7 +61,7 @@ func (mage *Mage) registerEvocation() {
 				manaRegenMulti *= 1.75
 			}
 			if mage.ArcaneChargesAura != nil && mage.ArcaneChargesAura.IsActive() {
-				manaRegenMulti *= 1 + float64(mage.ArcaneChargesAura.GetStacks())*0.25
+				manaRegenMulti *= 1 + float64(mage.ArcaneChargesAura.GetStacks())*0.25*mage.T15_4PC_ArcaneChargeEffect
 			}
 			spell.SelfHot().Apply(sim)
 			spell.SelfHot().TickOnce(sim)
