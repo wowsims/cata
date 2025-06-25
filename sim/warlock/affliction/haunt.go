@@ -82,7 +82,7 @@ func hauntDamageDoneByCasterHandler(sim *core.Simulation, spell *core.Spell, att
 		warlock.WarlockSpellMaleficGrasp |
 		warlock.WarlockSpellAgony |
 		warlock.WarlockSpellUnstableAffliction) {
-		return 1.4
+		return 1.35
 	}
 
 	return 1
