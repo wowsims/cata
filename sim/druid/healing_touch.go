@@ -33,6 +33,10 @@ func (druid *Druid) registerHealingTouchSpell() {
 			},
 		},
 
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
+
 		BonusCoefficient: HealingTouchBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
