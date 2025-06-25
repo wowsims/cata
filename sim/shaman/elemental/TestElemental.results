@@ -717,6 +717,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 122880.97021
+  tps: 92359.44154
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-FlashfrozenResinGlobule-100951"
  value: {
   dps: 122751.89559
@@ -805,6 +812,13 @@ dps_results: {
  value: {
   dps: 90797.47901
   tps: 68063.80541
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 122880.97021
+  tps: 92359.44154
  }
 }
 dps_results: {
@@ -1620,6 +1634,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 121815.79
+  tps: 91754.85965
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 120238.39155
+  tps: 90549.82096
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 118450.28373
@@ -2275,6 +2303,13 @@ dps_results: {
  value: {
   dps: 150241.32927
   tps: 112537.21547
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 157773.76243
+  tps: 125106.28031
  }
 }
 dps_results: {

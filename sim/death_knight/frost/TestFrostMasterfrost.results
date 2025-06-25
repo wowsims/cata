@@ -232,6 +232,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 167700.25629
+  tps: 156382.71981
+  hps: 1618.0695
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-FleetPrimalDiamond"
  value: {
   dps: 161428.44687
@@ -253,6 +261,14 @@ dps_results: {
   dps: 173675.22933
   tps: 161231.83792
   hps: 1554.10388
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 177538.09727
+  tps: 165463.17336
+  hps: 1615.50821
  }
 }
 dps_results: {
@@ -384,6 +400,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 161333.87589
+  tps: 150227.85254
+  hps: 1592.91085
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 169437.22623
+  tps: 157681.82034
+  hps: 1569.85923
+ }
+}
+dps_results: {
  key: "TestFrostMasterfrost-AllItems-Renataki'sSoulCharm-96741"
  value: {
   dps: 161658.50276
@@ -502,6 +534,14 @@ dps_results: {
   dps: 162997.89953
   tps: 151670.30724
   hps: 1562.02647
+ }
+}
+dps_results: {
+ key: "TestFrostMasterfrost-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 163106.65276
+  tps: 151869.84839
+  hps: 1621.90661
  }
 }
 dps_results: {

@@ -29,10 +29,7 @@ export const MISSING_ITEM_EFFECTS = [
     101135, // Sunsoul Idol of Wisdom
     101179, // Communal Idol of Wisdom
     101247, // Streamtalker Idol of Wisdom
-    102246, // Xing-Ho, Breath of Yu'lon
     102247, // Jina-Kang, Kindness of Chi-Ji
-    102248, // Fen-Yu, Fury of Xuen
-    102249, // Gong-Lu, Strength of Xuen
     102293, // Purified Bindings of Immerseus (N)
     102294, // Nazgrim's Burnished Insignia (N)
     102295, // Fusion-Fire Core (N)

@@ -703,6 +703,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSurvival-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 164279.16583
+  tps: 136140.42385
+ }
+}
+dps_results: {
  key: "TestSurvival-AllItems-Flamewaker'sBattlegear"
  value: {
   dps: 98287.51316
@@ -798,6 +805,13 @@ dps_results: {
  value: {
   dps: 150633.23974
   tps: 121487.29011
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 153123.52789
+  tps: 126966.39407
  }
 }
 dps_results: {
@@ -1620,6 +1634,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSurvival-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 156842.47225
+  tps: 128601.1911
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 144076.2178
+  tps: 118426.58324
+ }
+}
+dps_results: {
  key: "TestSurvival-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 139309.49911
@@ -2261,6 +2289,13 @@ dps_results: {
  value: {
   dps: 139309.49911
   tps: 115260.26834
+ }
+}
+dps_results: {
+ key: "TestSurvival-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 147294.89324
+  tps: 121294.10722
  }
 }
 dps_results: {

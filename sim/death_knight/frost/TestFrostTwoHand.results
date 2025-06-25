@@ -232,6 +232,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostTwoHand-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 169281.01889
+  tps: 156774.36848
+  hps: 2839.67617
+ }
+}
+dps_results: {
  key: "TestFrostTwoHand-AllItems-FleetPrimalDiamond"
  value: {
   dps: 162544.56569
@@ -253,6 +261,14 @@ dps_results: {
   dps: 172691.14201
   tps: 158730.43572
   hps: 2683.89688
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 178160.92273
+  tps: 164744.85879
+  hps: 2836.23205
  }
 }
 dps_results: {
@@ -384,6 +400,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrostTwoHand-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 161848.31295
+  tps: 149411.40169
+  hps: 2802.79574
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 168053.35537
+  tps: 154876.34303
+  hps: 2765.59334
+ }
+}
+dps_results: {
  key: "TestFrostTwoHand-AllItems-Renataki'sSoulCharm-96741"
  value: {
   dps: 162713.85328
@@ -509,6 +541,14 @@ dps_results: {
   dps: 162041.74407
   tps: 149356.15869
   hps: 2626.36452
+ }
+}
+dps_results: {
+ key: "TestFrostTwoHand-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 163228.37221
+  tps: 150696.61155
+  hps: 2837.23699
  }
 }
 dps_results: {

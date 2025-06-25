@@ -815,6 +815,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 174702.97245
+  tps: 164484.22697
+  hps: 8324.28039
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-Fire-CharmArmor"
  value: {
   dps: 150721.60376
@@ -924,6 +932,14 @@ dps_results: {
   dps: 153111.2056
   tps: 143084.89932
   hps: 8001.47202
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 169177.45322
+  tps: 159432.99268
+  hps: 8031.85644
  }
 }
 dps_results: {
@@ -1863,6 +1879,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestWindwalker-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 164794.17925
+  tps: 154351.82625
+  hps: 8346.66013
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 157582.48329
+  tps: 147727.67378
+  hps: 7955.24608
+ }
+}
+dps_results: {
  key: "TestWindwalker-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 147730.32516
@@ -2580,6 +2612,14 @@ dps_results: {
   dps: 148885.51505
   tps: 139404.50388
   hps: 7682.07458
+ }
+}
+dps_results: {
+ key: "TestWindwalker-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 157378.93284
+  tps: 147826.05665
+  hps: 7750.02153
  }
 }
 dps_results: {

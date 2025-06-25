@@ -703,6 +703,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMarksmanship-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 169794.78787
+  tps: 141856.47911
+ }
+}
+dps_results: {
  key: "TestMarksmanship-AllItems-Flamewaker'sBattlegear"
  value: {
   dps: 106408.69984
@@ -798,6 +805,13 @@ dps_results: {
  value: {
   dps: 155289.63507
   tps: 126338.19439
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 160970.66604
+  tps: 135251.03952
  }
 }
 dps_results: {
@@ -1620,6 +1634,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMarksmanship-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 163820.06327
+  tps: 135646.5493
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 152989.41534
+  tps: 127399.46385
+ }
+}
+dps_results: {
  key: "TestMarksmanship-AllItems-Qin-xi'sPolarizingSeal-87075"
  value: {
   dps: 147759.71644
@@ -2261,6 +2289,13 @@ dps_results: {
  value: {
   dps: 147759.71644
   tps: 123234.24456
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 155333.78098
+  tps: 129349.93751
  }
 }
 dps_results: {
