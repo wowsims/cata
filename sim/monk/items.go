@@ -8,7 +8,8 @@ import (
 
 // T14 - Windwalker
 var ItemSetBattlegearOfTheRedCrane = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of the Red Crane",
+	Name:                    "Battlegear of the Red Crane",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -29,7 +30,8 @@ var ItemSetBattlegearOfTheRedCrane = core.NewItemSet(core.ItemSet{
 
 // T14 - Brewmaster
 var ItemSetArmorOfTheRedCrane = core.NewItemSet(core.ItemSet{
-	Name: "Armor of the Red Crane",
+	Name:                    "Armor of the Red Crane",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			monk := agent.(MonkAgent).GetMonk()
@@ -67,7 +69,8 @@ var ItemSetArmorOfTheRedCrane = core.NewItemSet(core.ItemSet{
 
 // T15 - Windwalker
 var ItemSetFireCharmBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "Fire-Charm Battlegear",
+	Name:                    "Fire-Charm Battlegear",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			monk := agent.(MonkAgent).GetMonk()
@@ -100,7 +103,8 @@ var ItemSetFireCharmBattlegear = core.NewItemSet(core.ItemSet{
 
 // T15 - Brewmaster
 var ItemSetFireCharmArmor = core.NewItemSet(core.ItemSet{
-	Name: "Fire-Charm Armor",
+	Name:                    "Fire-Charm Armor",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			monk := agent.(MonkAgent).GetMonk()
@@ -153,7 +157,8 @@ var ItemSetFireCharmArmor = core.NewItemSet(core.ItemSet{
 
 // T16 - Windwalker
 var ItemSetBattlegearOfSevenSacredSeals = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of Seven Sacred Seals",
+	Name:                    "Battlegear of Seven Sacred Seals",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			monk := agent.(MonkAgent).GetMonk()
@@ -205,7 +210,8 @@ var ItemSetBattlegearOfSevenSacredSeals = core.NewItemSet(core.ItemSet{
 
 // T16 - Brewmaster
 var ItemSetArmorOfSevenSacredSeals = core.NewItemSet(core.ItemSet{
-	Name: "Armor of Seven Sacred Seals",
+	Name:                    "Armor of Seven Sacred Seals",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Not implemented as not having Black Ox statue

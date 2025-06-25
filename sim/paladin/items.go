@@ -9,8 +9,9 @@ import (
 )
 
 var ItemSetMistsGladiatorsVindication = core.NewItemSet(core.ItemSet{
-	ID:   1111,
-	Name: "Gladiator's Vindication",
+	ID:                      1111,
+	Name:                    "Gladiator's Vindication",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 		},
@@ -36,6 +37,10 @@ var ItemSetMistsGladiatorsVindication = core.NewItemSet(core.ItemSet{
 
 // Increases the range of your Judgment by 10 yards.
 func (paladin *Paladin) addMistsPvpGloves() {
+	if paladin.Env.IsChallengeMode {
+		return
+	}
+
 	paladin.RegisterPvPGloveMod(
 		[]int32{84419, 84834, 85027, 91269, 91270, 91622, 93528, 94343, 98844, 99871, 100013, 100365, 100573, 102630, 102827, 103243, 103440},
 		core.SpellModConfig{
@@ -52,7 +57,8 @@ func (paladin *Paladin) addMistsPvpGloves() {
 
 // Tier 14 Ret
 var ItemSetWhiteTigerBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "White Tiger Battlegear",
+	Name:                    "White Tiger Battlegear",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Increases the damage done by your Templar's Verdict ability by 15%.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -79,7 +85,8 @@ var ItemSetWhiteTigerBattlegear = core.NewItemSet(core.ItemSet{
 
 // Tier 14 Prot
 var ItemSetWhiteTigerPlate = core.NewItemSet(core.ItemSet{
-	Name: "White Tiger Plate",
+	Name:                    "White Tiger Plate",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Reduces the cooldown of your Ardent Defender ability by 60 sec.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -111,7 +118,8 @@ var ItemSetWhiteTigerPlate = core.NewItemSet(core.ItemSet{
 
 // Tier 14 Holy
 var ItemSetWhiteTigerVestments = core.NewItemSet(core.ItemSet{
-	Name: "White Tiger Vestments",
+	Name:                    "White Tiger Vestments",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Reduces the mana cost of your Holy Radiance spell by 10%.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -173,7 +181,8 @@ func (paladin *Paladin) registerHolyDamageTemplarsVerdict() *core.Spell {
 
 // Tier 15 Ret
 var ItemSetBattlegearOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of the Lightning Emperor",
+	Name:                    "Battlegear of the Lightning Emperor",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Your Exorcism causes your target to take 6% increased Holy damage from your attacks for 6 sec.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -233,7 +242,8 @@ var ItemSetBattlegearOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 
 // Tier 15 Prot
 var ItemSetPlateOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the Lightning Emperor",
+	Name:                    "Plate of the Lightning Emperor",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Casting Word of Glory or Eternal Flame also grants you 40% additional block chance for 5 sec per Holy Power.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -291,7 +301,8 @@ var ItemSetPlateOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 
 // Tier 15 Holy
 var ItemSetVestmentsOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
-	Name: "Vestments of the Lightning Emperor",
+	Name:                    "Vestments of the Lightning Emperor",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Increases the healing done by your Daybreak ability by 50%.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -324,7 +335,8 @@ var ItemSetVestmentsOfTheLightningEmperor = core.NewItemSet(core.ItemSet{
 
 // Tier 16 Ret
 var ItemSetBattlegearOfWingedTriumph = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of Winged Triumph",
+	Name:                    "Battlegear of Winged Triumph",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// When Art of War activates, all damage is increased by 5% for 6 sec.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -367,7 +379,8 @@ var ItemSetBattlegearOfWingedTriumph = core.NewItemSet(core.ItemSet{
 
 // Tier 16 Prot
 var ItemSetPlateOfWingedTriumph = core.NewItemSet(core.ItemSet{
-	Name: "Plate of Winged Triumph",
+	Name:                    "Plate of Winged Triumph",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// While Divine Protection is active, 75% of the damage taken is converted into a heal over time that activates when Divine Protection fades.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -466,7 +479,8 @@ var ItemSetPlateOfWingedTriumph = core.NewItemSet(core.ItemSet{
 
 // Tier 16 Holy
 var ItemSetVestmentsOfWingedTriumph = core.NewItemSet(core.ItemSet{
-	Name: "Vestments of Winged Triumph",
+	Name:                    "Vestments of Winged Triumph",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Infusion of Light also increases the healing done by Holy Light, Divine Light, and Holy Radiance by 25%.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
