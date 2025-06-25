@@ -59,33 +59,6 @@ func (runeWeapon *RuneWeaponPet) Initialize() {
 	runeWeapon.AddCopySpell(PestilenceActionID, runeWeapon.dkOwner.registerDrwPestilence())
 	runeWeapon.AddCopySpell(PlagueStrikeActionID, runeWeapon.dkOwner.registerDrwPlagueStrike())
 	runeWeapon.AddCopySpell(SoulReaperActionID.WithTag(1), runeWeapon.dkOwner.registerDrwSoulReaper())
-
-	runeWeapon.registerFirstHitDamageAura()
-}
-
-// The absolute first white hit doesn't get the -50% modifier.
-// Trying to abuse it by macroing e.g. DS and DRW together doesn't seem to work.
-func (runeWeapon *RuneWeaponPet) registerFirstHitDamageAura() {
-	var firstHitAura *core.Aura
-	firstHitAura = runeWeapon.RegisterAura(core.Aura{
-		Label:    "First Hit Penalty Bypass" + runeWeapon.Label,
-		Duration: core.SpellBatchWindow,
-
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-	}).AttachProcTrigger(core.ProcTrigger{
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMHAuto,
-
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			firstHitAura.Deactivate(sim)
-		},
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ProcMask:   core.ProcMaskMeleeMHAuto,
-		FloatValue: 1.0,
-	})
 }
 
 func (runeWeapon *RuneWeaponPet) DiseasesAreActive(target *core.Unit) bool {
@@ -188,9 +161,6 @@ func (runeWeapon *RuneWeaponPet) enable(sim *core.Simulation) {
 	runeWeapon.PseudoStats.DamageDealtMultiplier *= runeWeapon.drwDmgSnapshot
 	for i := range stats.SchoolLen {
 		runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] *= runeWeapon.drwSchoolDmgSnapshot[i]
-		if i == stats.SchoolIndexPhysical {
-			runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] *= 0.5
-		}
 	}
 }
 
@@ -198,9 +168,6 @@ func (runeWeapon *RuneWeaponPet) disable(sim *core.Simulation) {
 	// Clear snapshot damage multipliers
 	runeWeapon.PseudoStats.DamageDealtMultiplier /= runeWeapon.drwDmgSnapshot
 	for i := range stats.SchoolLen {
-		if i == stats.SchoolIndexPhysical {
-			runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] /= 0.5
-		}
 		runeWeapon.PseudoStats.SchoolDamageDealtMultiplier[i] /= runeWeapon.drwSchoolDmgSnapshot[i]
 	}
 	runeWeapon.drwSchoolDmgSnapshot = stats.NewSchoolFloatArray()
