@@ -455,20 +455,16 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 	aura.NewExclusiveEffect("SpellHaste%Buff", false, ExclusiveEffect{
 		Priority: spellHastePercent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 + ee.Priority)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 + ee.Priority)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / (1 + ee.Priority))
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / (1 + ee.Priority))
 		},
 	})
 }
 
 func MoonkinAura(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{
-		"Moonkin Aura",
-		ActionID{SpellID: 24907},
-		[]StatConfig{}})
-
+	aura := makeExclusiveBuff(unit, BuffConfig{"Moonkin Aura", ActionID{SpellID: 24907}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
@@ -690,10 +686,10 @@ func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, multiplier)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / multiplier)
 		},
 	})
 }

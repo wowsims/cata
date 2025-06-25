@@ -55,6 +55,7 @@ func (arcaneMage *ArcaneMage) GetMage() *mage.Mage {
 
 func (arcaneMage *ArcaneMage) Reset(sim *core.Simulation) {
 	arcaneMage.Mage.Reset(sim)
+	arcaneMage.arcaneMissileCritSnapshot = 0.0
 }
 
 func (arcane *ArcaneMage) Initialize() {
