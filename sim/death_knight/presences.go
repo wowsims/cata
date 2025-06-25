@@ -32,7 +32,8 @@ func (dk *DeathKnight) registerBloodPresence() {
 			dk.RemoveDynamicEquipScaling(sim, stats.Armor, 1.55)
 		},
 	}).AttachMultiplicativePseudoStatBuff(
-		&dk.PseudoStats.DamageTakenMultiplier, 0.9,
+		// 2025-06-24: Changed from 10% to 12% on the beta
+		&dk.PseudoStats.DamageTakenMultiplier, 0.88,
 	).AttachMultiplicativePseudoStatBuff(
 		&dk.PseudoStats.ThreatMultiplier, 7.0,
 	).AttachStatDependency(

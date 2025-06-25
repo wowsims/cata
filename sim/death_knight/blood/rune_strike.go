@@ -50,7 +50,7 @@ func (bdk *BloodDeathKnight) registerRuneStrike() {
 
 func (bdk *BloodDeathKnight) registerDrwRuneStrike() *core.Spell {
 	return bdk.RuneWeapon.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 62036},
+		ActionID:    RuneStrikeActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMH,
 		Flags:       core.SpellFlagMeleeMetrics,

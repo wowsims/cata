@@ -72,20 +72,17 @@ func (warlock *Warlock) NewFieryImp() *FieryImpPet {
 	baseStats := stats.Stats{stats.SpellCritPercent: 0} // rough guess, seems to only get crit from debuffs?
 
 	statInheritance := func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			// unclear what exactly the scaling is here, but seems to not miss(?)
-			stats.HitRating: ownerStats[stats.SpellHitPercent] * core.SpellHitRatingPerHitPercent,
-		}
+		return stats.Stats{}
 	}
 
 	imp := &FieryImpPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Fiery Imp",
-			Owner:           &warlock.Character,
-			BaseStats:       baseStats,
-			StatInheritance: statInheritance,
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                     "Fiery Imp",
+			Owner:                    &warlock.Character,
+			BaseStats:                baseStats,
+			NonHitExpStatInheritance: statInheritance,
+			EnabledOnStart:           false,
+			IsGuardian:               true,
 		}),
 	}
 

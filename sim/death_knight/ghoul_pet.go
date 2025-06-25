@@ -53,7 +53,7 @@ func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingC
 			Name:                            name,
 			Owner:                           &dk.Character,
 			BaseStats:                       stats.Stats{stats.AttackPower: -20},
-			StatInheritance:                 dk.ghoulStatInheritance(scalingCoef),
+			NonHitExpStatInheritance:        ghoulStatInheritance(scalingCoef),
 			EnabledOnStart:                  permanent,
 			IsGuardian:                      !permanent,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -116,22 +116,14 @@ func (ghoulPet *GhoulPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 }
 
-func (dk *DeathKnight) ghoulStatInheritance(apCoef float64) core.PetStatInheritance {
+func ghoulStatInheritance(apCoef float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		hitRating := ownerStats[stats.HitRating]
-		expertiseRating := ownerStats[stats.ExpertiseRating]
-		combined := (hitRating + expertiseRating) * 0.5
-
 		return stats.Stats{
 			stats.Armor:               ownerStats[stats.Armor],
 			stats.AttackPower:         ownerStats[stats.AttackPower] * apCoef,
-			stats.CritRating:          ownerStats[stats.CritRating],
-			stats.ExpertiseRating:     combined,
 			stats.HasteRating:         ownerStats[stats.HasteRating],
 			stats.Health:              ownerStats[stats.Health],
-			stats.HitRating:           combined,
 			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.Stamina:             ownerStats[stats.Stamina],
 		}
 	}
 }
@@ -202,5 +194,5 @@ const (
 	GhoulSpellClaw int64 = 1 << iota
 
 	GhoulSpellLast
-	GhoulSpellsAll = DeathKnightSpellLast<<1 - 1
+	GhoulSpellsAll = GhoulSpellLast<<1 - 1
 )

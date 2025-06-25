@@ -85,10 +85,7 @@ func applyRaceEffects(agent Agent) {
 			},
 		})
 	case proto.Race_RaceDraenei:
-		character.AddStats(stats.Stats{
-			stats.PhysicalHitPercent: 1,
-			stats.SpellHitPercent:    1,
-		})
+		character.AddStat(stats.HitRating, PhysicalHitRatingPerHitPercent)
 		character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.99
 
 		classSpellIDs := map[proto.Class]ActionID{
@@ -321,7 +318,7 @@ func applyRaceEffects(agent Agent) {
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				character.MultiplyAttackSpeed(sim, 1/1.2)
-				character.MultiplyCastSpeed(sim, 1 / 1.2)
+				character.MultiplyCastSpeed(sim, 1/1.2)
 			},
 		})
 

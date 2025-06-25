@@ -23,13 +23,9 @@ const (
 func (moonkin *BalanceDruid) newTreant() *BalanceTreant {
 	treant := &BalanceTreant{
 		DefaultTreantImpl: moonkin.NewDefaultTreant(druid.TreantConfig{
-			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
-				combinedHitExp := 0.5 * (ownerStats[stats.HitRating] + ownerStats[stats.ExpertiseRating])
-
+			NonHitExpStatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				return stats.Stats{
 					stats.Health:           0.4 * ownerStats[stats.Health],
-					stats.HitRating:        combinedHitExp,
-					stats.ExpertiseRating:  combinedHitExp,
 					stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
 					stats.SpellPower:       ownerStats[stats.SpellPower],
 					stats.HasteRating:      ownerStats[stats.HasteRating],
