@@ -7,7 +7,8 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl';
 import { Faction, ItemSlot, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCapType } from '../../core/proto/ui';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DruidInputs from '../inputs';
 import * as BalanceInputs from './inputs';
 import * as Presets from './presets';
@@ -45,12 +46,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T13PresetGear.gear,
+		gear: Presets.PreraidPresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.StandardEPWeights.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
+		})(),
+		softCapBreakpoints: (() => {
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
+				breakpoints: [...Presets.BALANCE_BREAKPOINTS.find(sc => sc.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets].map(
+					([_, value]) => value,
+				),
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0.53 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			});
+
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -86,15 +98,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		epWeights: [Presets.StandardEPWeights],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation, Presets.T13PresetRotation],
+		rotations: [Presets.StandardRotation],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
-		itemSwaps: [Presets.T13PresetItemSwapGear],
-		builds: [Presets.PresetBuildPreraid, Presets.PresetBuildT11, Presets.PresetBuildT12, Presets.PresetBuildT13],
+		gear: [Presets.PreraidPresetGear, Presets.T14PresetGear /*Presets.T15PresetGear, Presets.T16PresetGear*/],
+		builds: [Presets.PresetPreraidBuild, Presets.T14PresetBuild /*Presets.T15PresetBuild, Presets.T16PresetBuild*/],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.T13PresetRotation.rotation.rotation!;
+		return Presets.StandardRotation.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -112,10 +123,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.T13PresetGear.gear,
+					1: Presets.PreraidPresetGear.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.T13PresetGear.gear,
+					1: Presets.PreraidPresetGear.gear,
 				},
 			},
 		},
@@ -126,7 +137,23 @@ export class BalanceDruidSimUI extends IndividualSimUI<Spec.SpecBalanceDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBalanceDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				updateSoftCaps: softCaps => {
+					const gear = player.getGear();
+					const hasT144P = gear.getItemSetCount('Regalia of the Eternal Blossom') >= 4;
+
+					if (hasT144P) {
+						const softCapToModify = softCaps.find(sc => sc.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent));
+						if (softCapToModify) {
+							softCapToModify.breakpoints = [
+								...Presets.BALANCE_T14_4P_BREAKPOINTS.find(sc => sc.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets,
+							].map(([_, value]) => value);
+						}
+					}
+
+					return softCaps;
+				},
+			});
 		});
 	}
 }

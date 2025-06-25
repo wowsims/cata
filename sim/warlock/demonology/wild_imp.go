@@ -77,13 +77,15 @@ func (pet *WildImpPet) ExecuteCustomRotation(sim *core.Simulation) {
 			pet.Log(sim, "Wild Imp despawned.")
 		}
 
-		sim.AddPendingAction(&core.PendingAction{
-			NextActionAt: sim.CurrentTime,
-			Priority:     core.ActionPriorityAuto,
-			OnAction: func(sim *core.Simulation) {
-				pet.Disable(sim)
-			},
-		})
+		pa := sim.GetConsumedPendingActionFromPool()
+		pa.NextActionAt = sim.CurrentTime
+		pa.Priority = core.ActionPriorityAuto
+
+		pa.OnAction = func(sim *core.Simulation) {
+			pet.Disable(sim)
+		}
+
+		sim.AddPendingAction(pa)
 
 		return
 	}
@@ -174,12 +176,10 @@ func (demonology *DemonologyWarlock) registerWildImpPassive() {
 			trigger.Activate(sim)
 		}
 
-		triggerAction = &core.PendingAction{
-			NextActionAt: sim.CurrentTime + getCD(),
-			Priority:     core.ActionPriorityAuto,
-			OnAction:     controllerImpSpawn,
-		}
-
+		triggerAction = sim.GetConsumedPendingActionFromPool()
+		triggerAction.NextActionAt = sim.CurrentTime + getCD()
+		triggerAction.Priority = core.ActionPriorityAuto
+		triggerAction.OnAction = controllerImpSpawn
 		sim.AddPendingAction(triggerAction)
 	}
 
@@ -189,12 +189,10 @@ func (demonology *DemonologyWarlock) registerWildImpPassive() {
 			cd := time.Duration(sim.Roll(float64(time.Second), float64(getCD())))
 
 			// initially do random timer to simulate real world scenario more appropiate
-			triggerAction = &core.PendingAction{
-				NextActionAt: sim.CurrentTime + cd,
-				Priority:     core.ActionPriorityAuto,
-				OnAction:     controllerImpSpawn,
-			}
-
+			triggerAction = sim.GetConsumedPendingActionFromPool()
+			triggerAction.NextActionAt = sim.CurrentTime + cd
+			triggerAction.Priority = core.ActionPriorityAuto
+			triggerAction.OnAction = controllerImpSpawn
 			sim.AddPendingAction(triggerAction)
 		},
 	}))

@@ -263,30 +263,3 @@ func (druid *Druid) registerBearFormSpell() {
 		},
 	})
 }
-
-// func (druid *Druid) applyMoonkinForm() {
-// 	if !druid.InForm(Moonkin) || !druid.Talents.MoonkinForm {
-// 		return
-// 	}
-
-// 	druid.PseudoStats.DamageDealtMultiplier *= 1 + (float64(druid.Talents.MasterShapeshifter) * 0.02)
-// 	if druid.Talents.ImprovedMoonkinForm > 0 {
-// 		druid.AddStatDependency(stats.Spirit, stats.SpellPower, 0.1*float64(druid.Talents.ImprovedMoonkinForm))
-// 	}
-
-// 	manaMetrics := druid.NewManaMetrics(core.ActionID{SpellID: 24858})
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Moonkin Form",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.DidCrit() {
-// 				if druid.Moonfire.IsEqual(spell) || druid.Starfire.IsEqual(spell) || druid.Wrath.IsEqual(spell) {
-// 					druid.AddMana(sim, 0.02*druid.MaxMana(), manaMetrics)
-// 				}
-// 			}
-// 		},
-// 	})
-// }

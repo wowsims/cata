@@ -235,14 +235,20 @@ const (
 	HunterSpellBestialWrath
 	HunterPetFocusDump
 	HunterPetDamage
-	HunterSpellBarrage
+	HunterSpellFervor
+	HunterSpellDireBeast
 	HunterSpellAMurderOfCrows
+	HunterSpellLynxRush
+	HunterSpellGlaiveToss
+	HunterSpellBarrage
+	HunterSpellPowershot
 	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellMultiShot | HunterSpellAimedShot
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |
 		HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellExplosiveTrap | HunterSpellBlackArrow | HunterSpellMultiShot | HunterSpellAimedShot |
 		HunterSpellSerpentSting | HunterSpellKillShot | HunterSpellRapidFire | HunterSpellBestialWrath
+	HunterSpellsTalents = HunterSpellFervor | HunterSpellDireBeast | HunterSpellAMurderOfCrows | HunterSpellLynxRush | HunterSpellGlaiveToss | HunterSpellPowershot | HunterSpellBarrage
 )
 
 // Agent is a generic way to access underlying hunter on any of the agents.

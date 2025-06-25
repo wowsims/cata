@@ -20,14 +20,13 @@ func (shaman *Shaman) registerUnleashFlame() {
 
 				//Unleash flame applies to both direct damage and dot,
 				//As the 2 parts are separated we wait to deactivate the aura
-				pa := &core.PendingAction{
-					NextActionAt: sim.CurrentTime + time.Duration(1),
-					Priority:     core.ActionPriorityGCD,
+				pa := sim.GetConsumedPendingActionFromPool()
+				pa.NextActionAt = sim.CurrentTime + 1
 
-					OnAction: func(sim *core.Simulation) {
-						aura.Deactivate(sim)
-					},
+				pa.OnAction = func(sim *core.Simulation) {
+					aura.Deactivate(sim)
 				}
+
 				sim.AddPendingAction(pa)
 			}
 		},

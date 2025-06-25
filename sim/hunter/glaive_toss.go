@@ -16,6 +16,7 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 			ActionID:                 core.ActionID{SpellID: spellID},
 			SpellSchool:              core.SpellSchoolPhysical,
 			ProcMask:                 core.ProcMaskRangedSpecial,
+			ClassSpellMask:           HunterSpellGlaiveToss,
 			Flags:                    core.SpellFlagMeleeMetrics | core.SpellFlagRanged,
 			MissileSpeed:             18,
 			BonusCritPercent:         0,
@@ -68,13 +69,14 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 	secondGlaive := registerGlaive(120756)
 
 	hunter.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 117050},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskProc,
-		Flags:        core.SpellFlagAPL,
-		MaxRange:     40,
-		MissileSpeed: 15,
-		MinRange:     0,
+		ActionID:       core.ActionID{SpellID: 117050},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskProc,
+		ClassSpellMask: HunterSpellGlaiveToss,
+		Flags:          core.SpellFlagAPL,
+		MaxRange:       40,
+		MissileSpeed:   15,
+		MinRange:       0,
 		FocusCost: core.FocusCostOptions{
 			Cost: 15,
 		},

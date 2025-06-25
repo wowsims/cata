@@ -165,6 +165,7 @@ func (fb *focusBar) reset(sim *Simulation) {
 
 	fb.currentFocus = fb.maxFocus
 	fb.hasteRatingMultiplier = 1.0 + fb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
+	fb.focusRegenMultiplier = 1.0
 
 	if fb.unit.Type != PetUnit {
 		fb.enable(sim, sim.Environment.PrepullStartTime())

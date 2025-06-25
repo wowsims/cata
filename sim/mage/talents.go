@@ -71,6 +71,10 @@ func (mage *Mage) registerPresenceOfMind() {
 			pomSpell.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// Pyroblast and FFB are handeled separately because they can be instant cast through another aura
+			if spell.Matches(MageSpellPyroblast | MageSpellFrostfireBolt) {
+				return
+			}
 			if !spell.Matches(MageSpellsAll ^ (MageSpellInstantCast | MageSpellEvocation)) {
 				return
 			}
