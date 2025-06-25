@@ -17,7 +17,6 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 	hasGlyph := fire.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfInfernoBlast)
 	extraTargets := core.Ternary(hasGlyph, 4, 3)
 	numTargets := len(fire.Env.Encounter.TargetUnits) - 1
-	igniteSpellID := int32(12846)
 
 	fire.InfernoBlast = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 108853},
@@ -46,40 +45,62 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 		BonusCritPercent: 100,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			mainTarget := target
 			debuffState := map[int32]core.DotState{}
 			dotRefs := []**core.Spell{&fire.Pyroblast.RelatedDotSpell, &fire.Combustion.RelatedDotSpell, &fire.Ignite}
+			var igniteRef *core.Dot
 
 			for _, spellRef := range dotRefs {
-				dot := (*spellRef).Dot(target)
-				if dot.IsActive() {
+				dot := (*spellRef).Dot(mainTarget)
+				if dot != nil && dot.IsActive() {
 					debuffState[dot.ActionID.SpellID] = dot.SaveState(sim)
+					if dot.Spell.Matches(mage.MageSpellIgnite) {
+						igniteRef = dot
+					}
 				}
 			}
 
-			baseDamage := fire.CalcAndRollDamageRange(sim, infernoBlastScaling, infernoBlastVariance)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			fire.HandleHeatingUp(sim, spell, result)
-
-			currTarget := target
-
 			for range min(extraTargets, numTargets) {
-				currTarget = fire.Env.NextTargetUnit(currTarget)
+				aoeTarget := fire.Env.NextTargetUnit(target)
 				for _, spellRef := range dotRefs {
-					dot := (*spellRef).Dot(currTarget)
+					dot := (*spellRef).Dot(aoeTarget)
 					state, ok := debuffState[dot.ActionID.SpellID]
 					if !ok {
 						// not stored, was not active
 						continue
 					}
-					oldDamage := 0.0
-					if dot.ActionID.SpellID == igniteSpellID && dot.IsActive() {
-						oldDamage = dot.SnapshotBaseDamage * float64(dot.BaseTickCount)
+					if dot.Spell.Matches(mage.MageSpellIgnite) {
+						currentTargetHasIgnite := dot.IsActive() // Storing this here so we can do the common steps without overwriting how it was for the checks.
+						newDamage := igniteRef.OutstandingDmg()
+						currentDamage := dot.OutstandingDmg()
+						totalDamage := currentDamage + newDamage
+
+						// Current Target has Ignite so add the Ignite bank from the main target
+						// and then follow the default renew logic
+						if currentTargetHasIgnite {
+							newTickCount := dot.BaseTickCount + 1
+							damagePerTick := totalDamage / float64(newTickCount)
+							dot.SnapshotBaseDamage = damagePerTick
+							dot.Apply(sim)
+						} else {
+							// Current Target does not have so Ignite bank from the main target
+							// and then start a 2 tick (4s) ignite if the Ignite being spread is less than 1 second, otherwise 3 (6s)
+							newTickCount := dot.BaseTickCount + core.TernaryInt32(igniteRef.RemainingDuration(sim) < time.Second, 0, 1)
+							damagePerTick := totalDamage / float64(newTickCount)
+							dot.SnapshotBaseDamage = damagePerTick
+							dot.CopyDotAndApply(sim, igniteRef)
+						}
+						dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
+						continue
 					}
-					(*spellRef).Proc(sim, currTarget)
+					(*spellRef).Proc(sim, aoeTarget)
 					dot.RestoreState(state, sim)
-					dot.SnapshotBaseDamage += oldDamage
 				}
 			}
+
+			baseDamage := fire.CalcAndRollDamageRange(sim, infernoBlastScaling, infernoBlastVariance)
+			result := spell.CalcAndDealDamage(sim, mainTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			fire.HandleHeatingUp(sim, spell, result)
 		},
 	})
 }
