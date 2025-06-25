@@ -78,7 +78,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.SVDefaultOptions,
+		specOptions: Presets.MMDefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			blessingOfKings: true,
@@ -122,39 +122,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
 		builds: [Presets.PRERAID_PRESET, Presets.PRERAID_PRESET_CELESTIAL, Presets.P1_PRESET],
 		gear: [Presets.PRERAID_PRESET_GEAR, Presets.PRERAID_CELESTIAL_PRESET_GEAR, Presets.P1_PRESET_GEAR],
 	},
 
 	autoRotation: (player: Player<Spec.SpecMarksmanshipHunter>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 4) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_PRESET_SV.rotation.rotation!;
-		}
-	},
-
-	simpleRotation: (player: Player<Spec.SpecMarksmanshipHunter>, simple: MarksmanshipHunter_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
+		return Presets.ROTATION_PRESET_MM.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecMarksmanshipHunter,
 			talents: Presets.DefaultTalents.data,
-			specOptions: Presets.SVDefaultOptions,
+			specOptions: Presets.MMDefaultOptions,
 
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {

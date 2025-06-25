@@ -50,15 +50,13 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			shaman.FireElemental.Disable(sim)
 			if sim.CurrentTime < 0 {
 				dropTime := sim.CurrentTime
-				pa := &core.PendingAction{
-					NextActionAt: 0,
-					Priority:     core.ActionPriorityGCD,
+				pa := sim.GetConsumedPendingActionFromPool()
 
-					OnAction: func(sim *core.Simulation) {
-						spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, dropTime.Minutes())
-						spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
-					},
+				pa.OnAction = func(sim *core.Simulation) {
+					spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, dropTime.Minutes())
+					spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 				}
+
 				sim.AddPendingAction(pa)
 			} else {
 				spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, 0)

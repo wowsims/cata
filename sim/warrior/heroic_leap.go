@@ -23,7 +23,7 @@ func (warrior *Warrior) registerHeroicLeap() {
 				Duration: time.Second * 45,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, warrior.AutoAttacks.MH().SwingSpeed == warrior.AutoAttacks.OH().SwingSpeed)
+				warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime)
 			},
 			IgnoreHaste: true,
 		},

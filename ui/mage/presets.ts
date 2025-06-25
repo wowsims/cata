@@ -1,4 +1,4 @@
-import { Debuffs, Profession, PseudoStat, RaidBuffs } from '../core/proto/common';
+import { Debuffs,  PseudoStat, RaidBuffs } from '../core/proto/common';
 import { UnitStat, UnitStatPresets } from '../core/proto_utils/stats';
 
 export const LIVING_BOMB_BREAKPOINTS: UnitStatPresets = {

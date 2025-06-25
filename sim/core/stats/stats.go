@@ -390,8 +390,7 @@ type PseudoStats struct {
 	BonusOHDps     float64
 	BonusRangedDps float64
 
-	DisableDWMissPenalty bool    // Used by Heroic Strike and Cleave
-	IncreasedMissChance  float64 // Insect Swarm and Scorpid Sting
+	DisableDWMissPenalty bool // Used by Heroic Strike and Cleave
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 

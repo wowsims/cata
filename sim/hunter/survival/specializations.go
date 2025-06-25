@@ -31,6 +31,12 @@ func (survival *SurvivalHunter) applyLNL() {
 		Duration: time.Second * 10,
 	}
 
+	lnlCostMod := survival.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  hunter.HunterSpellExplosiveShot,
+		FloatValue: -100,
+	})
+
 	lnlAura := survival.RegisterAura(core.Aura{
 		Icd:       &icd,
 		Label:     "Lock and Load Proc",
@@ -38,14 +44,10 @@ func (survival *SurvivalHunter) applyLNL() {
 		Duration:  time.Second * 12,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if survival.ExplosiveShot != nil {
-				survival.ExplosiveShot.Cost.PercentModifier -= 100
-			}
+			lnlCostMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if survival.ExplosiveShot != nil {
-				survival.ExplosiveShot.Cost.PercentModifier += 100
-			}
+			lnlCostMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == survival.ExplosiveShot {
