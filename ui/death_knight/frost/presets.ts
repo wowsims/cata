@@ -49,14 +49,13 @@ export const P1_2H_OBLITERATE_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 1.0,
 			[Stat.StatHitRating]: 0.87,
 			[Stat.StatExpertiseRating]: 0.87,
-			[Stat.StatMasteryRating]: 0.65,
-			[Stat.StatCritRating]: 0.46,
-			[Stat.StatHasteRating]: 0.37,
+			[Stat.StatMasteryRating]: 0.35,
+			[Stat.StatCritRating]: 0.44,
+			[Stat.StatHasteRating]: 0.39,
 			[Stat.StatAttackPower]: 0.37,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.2,
-			[PseudoStat.PseudoStatOffHandDps]: 0,
+			[PseudoStat.PseudoStatMainHandDps]: 2.95,
 		},
 	),
 );
@@ -66,16 +65,16 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 1.0,
-			[Stat.StatHitRating]: 0.54,
-			[Stat.StatExpertiseRating]: 0.54,
-			[Stat.StatCritRating]: 0.51,
-			[Stat.StatMasteryRating]: 0.51,
-			[Stat.StatAttackPower]: 0.38,
-			[Stat.StatHasteRating]: 0.37,
+			[Stat.StatHitRating]: 0.8,
+			[Stat.StatExpertiseRating]: 0.8,
+			[Stat.StatMasteryRating]: 0.48,
+			[Stat.StatHasteRating]: 0.38,
+			[Stat.StatAttackPower]: 0.37,
+			[Stat.StatCritRating]: 0.35,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.06,
-			[PseudoStat.PseudoStatOffHandDps]: 0.5,
+			[PseudoStat.PseudoStatMainHandDps]: 1.47,
+			[PseudoStat.PseudoStatOffHandDps]: 0.7,
 		},
 	),
 );

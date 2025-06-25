@@ -455,10 +455,10 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 	aura.NewExclusiveEffect("SpellHaste%Buff", false, ExclusiveEffect{
 		Priority: spellHastePercent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 + ee.Priority)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1+ee.Priority)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / (1 + ee.Priority))
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1/(1+ee.Priority))
 		},
 	})
 }
@@ -689,7 +689,7 @@ func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 			ee.Aura.Unit.MultiplyCastSpeed(sim, multiplier)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1/multiplier)
 		},
 	})
 }
@@ -1230,7 +1230,7 @@ var StormLashSpellExceptions = map[int32]float64{
 	1120:   2.0, // Drain Soul
 	403:    2.0, // Lightning Bolt
 	51505:  2.0, // Lava Burst
-	103103: 2.0, // Malefic Grasp
+	103103: 1.0, // Malefic Grasp
 	15407:  1.0, // Mind Flay
 	129197: 1.0, // Mind Flay - Insanity
 	120360: 1.0, // Barrage

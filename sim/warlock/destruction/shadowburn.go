@@ -41,7 +41,7 @@ func (destruction *DestructionWarlock) registerShadowBurnSpell() {
 			}
 
 			pa := sim.GetConsumedPendingActionFromPool()
-			pa.NextActionAt = sim.CurrentTime + time.Second * 5
+			pa.NextActionAt = sim.CurrentTime + time.Second*5
 			pa.Priority = core.ActionPriorityAuto
 
 			pa.OnAction = func(sim *core.Simulation) {

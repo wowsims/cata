@@ -110,7 +110,7 @@ func (moonkin *BalanceDruid) registerNaturesGrace() {
 			moonkin.MultiplyCastSpeed(sim, 1.15)
 		},
 		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-			moonkin.MultiplyCastSpeed(sim, 1 / 1.15)
+			moonkin.MultiplyCastSpeed(sim, 1/1.15)
 		},
 	})
 

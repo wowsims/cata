@@ -21,7 +21,7 @@ func (dk *DeathKnight) NewBloodwormPet(_ int) *BloodwormPet {
 			Name:                            "Bloodworm",
 			Owner:                           &dk.Character,
 			BaseStats:                       stats.Stats{},
-			StatInheritance:                 dk.bloodwormStatInheritance(),
+			NonHitExpStatInheritance:        bloodwormStatInheritance,
 			EnabledOnStart:                  false,
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -76,6 +76,8 @@ func (bloodworm *BloodwormPet) getBloodBurstProcChance() float64 {
 }
 
 func (bloodworm *BloodwormPet) Initialize() {
+	bloodworm.Pet.Initialize()
+
 	bloodworm.stackAura = bloodworm.GetOrRegisterAura(core.Aura{
 		Label:     "Blood Gorged" + bloodworm.Label,
 		ActionID:  core.ActionID{SpellID: 81277},
@@ -154,22 +156,11 @@ func (bloodworm *BloodwormPet) disable(sim *core.Simulation) {
 	bloodworm.stackAura.Deactivate(sim)
 }
 
-func (dk *DeathKnight) bloodwormStatInheritance() core.PetStatInheritance {
-	return func(ownerStats stats.Stats) stats.Stats {
-		hitRating := ownerStats[stats.HitRating]
-		expertiseRating := ownerStats[stats.ExpertiseRating]
-		combined := (hitRating + expertiseRating) * 0.5
-
-		return stats.Stats{
-			stats.Armor:               ownerStats[stats.Armor],
-			stats.AttackPower:         ownerStats[stats.AttackPower] * 0.55,
-			stats.CritRating:          ownerStats[stats.CritRating],
-			stats.ExpertiseRating:     combined,
-			stats.HasteRating:         ownerStats[stats.HasteRating],
-			stats.Health:              ownerStats[stats.Health] * 0.15,
-			stats.HitRating:           combined,
-			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
-			stats.Stamina:             ownerStats[stats.Stamina] * 0.15,
-		}
+func bloodwormStatInheritance(ownerStats stats.Stats) stats.Stats {
+	return stats.Stats{
+		stats.AttackPower:         ownerStats[stats.AttackPower] * 0.55,
+		stats.HasteRating:         ownerStats[stats.HasteRating],
+		stats.Health:              ownerStats[stats.Health] * 0.15,
+		stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 	}
 }

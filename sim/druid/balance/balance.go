@@ -84,8 +84,6 @@ func (moonkin *BalanceDruid) Initialize() {
 
 	moonkin.RegisterBalancePassives()
 	moonkin.RegisterBalanceSpells()
-
-	moonkin.ApplyGlyphs()
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {

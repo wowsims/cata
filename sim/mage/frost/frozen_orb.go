@@ -56,14 +56,7 @@ type FrozenOrb struct {
 
 func createFrozenOrbInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-
-		hitRating := ownerStats[stats.HitRating]
-		expertiseRating := ownerStats[stats.ExpertiseRating]
-		combinedHitExp := (hitRating + expertiseRating) * 0.5
-
 		return stats.Stats{
-			stats.HitRating:        combinedHitExp,
-			stats.ExpertiseRating:  combinedHitExp,
 			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
 			stats.SpellPower:       ownerStats[stats.SpellPower],
 		}
@@ -75,12 +68,12 @@ func (frost *FrostMage) NewFrozenOrb() *FrozenOrb {
 	frozenOrbBaseStats := stats.Stats{}
 	frozenOrb := &FrozenOrb{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Frozen Orb",
-			Owner:           &frost.Character,
-			BaseStats:       frozenOrbBaseStats,
-			StatInheritance: createFrozenOrbInheritance(),
-			EnabledOnStart:  false,
-			IsGuardian:      false,
+			Name:                     "Frozen Orb",
+			Owner:                    &frost.Character,
+			BaseStats:                frozenOrbBaseStats,
+			NonHitExpStatInheritance: createFrozenOrbInheritance(),
+			EnabledOnStart:           false,
+			IsGuardian:               false,
 		}),
 		mageOwner: frost,
 		TickCount: 0,

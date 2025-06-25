@@ -14,7 +14,7 @@ var ItemSetBattlegearOfTheRedCrane = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
 				ClassMask: MonkSpellFistsOfFury,
-				TimeValue: 5 * time.Second,
+				TimeValue: -5 * time.Second,
 			}).ExposeToAPL(123149)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
