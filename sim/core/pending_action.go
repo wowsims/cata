@@ -36,6 +36,7 @@ type PendingAction struct {
 
 	cancelled bool
 	consumed  bool
+	canPool   bool // Flags the PA as safe to use in shared object pools.
 }
 
 func (pa *PendingAction) IsConsumed() bool {

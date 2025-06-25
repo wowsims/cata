@@ -347,7 +347,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	character.AddDynamicEquipStats(sim, statsToSwap)
 
 	if !isPrepull && !isReset && weaponSlotSwapped {
-		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime)
 		character.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
 		character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
 	}

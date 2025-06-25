@@ -1,11 +1,11 @@
-package druid
+package balance
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/druid"
 )
 
 /*
@@ -15,6 +15,7 @@ import (
 type EclipseEnergy byte
 
 const (
+	NoEnergy            EclipseEnergy = 0
 	SolarEnergy         EclipseEnergy = 1
 	LunarEnergy         EclipseEnergy = 2
 	SolarAndLunarEnergy               = SolarEnergy | LunarEnergy
@@ -30,17 +31,18 @@ const (
 
 type EclipseCallback func(eclipse Eclipse, gained bool, sim *core.Simulation)
 type eclipseEnergyBar struct {
-	druid            *Druid
+	moonkin          *BalanceDruid
 	lunarEnergy      float64
 	solarEnergy      float64
 	currentEclipse   Eclipse
 	gainMask         EclipseEnergy // which energy the unit is currently allowed to accumulate
+	previousGainMask EclipseEnergy // used to restore gain mask after CA
 	eclipseCallbacks []EclipseCallback
 	eclipseTrigger   func(spell *core.Spell) bool // used to deactivate eclipse spells
 }
 
 func (eb *eclipseEnergyBar) reset() {
-	if eb.druid == nil {
+	if eb.moonkin == nil {
 		return
 	}
 
@@ -48,65 +50,122 @@ func (eb *eclipseEnergyBar) reset() {
 	eb.solarEnergy = 0
 
 	// in neutral state we can gain both
-	eb.gainMask = SolarEnergy | LunarEnergy
+	eb.gainMask = SolarAndLunarEnergy
 	eb.currentEclipse = NoEclipse
 }
 
-func (druid *Druid) EnableEclipseBar() {
-	druid.eclipseEnergyBar = eclipseEnergyBar{
-		druid:            druid,
-		gainMask:         SolarEnergy | LunarEnergy,
-		eclipseCallbacks: druid.eclipseEnergyBar.eclipseCallbacks,
+func (eb *eclipseEnergyBar) resetWithMask(gainMask EclipseEnergy) {
+	eb.reset()
+	eb.gainMask = gainMask
+}
+
+func (moonkin *BalanceDruid) EnableEclipseBar() {
+	moonkin.eclipseEnergyBar = eclipseEnergyBar{
+		moonkin:          moonkin,
+		gainMask:         SolarAndLunarEnergy,
+		eclipseCallbacks: moonkin.eclipseEnergyBar.eclipseCallbacks,
 	}
 }
 
-func getEclipseMasteryBonus(masteryPoints float64) float64 {
-	return (16 + masteryPoints*2) / 100
+func (moonkin *BalanceDruid) SuspendEclipseBar() {
+	moonkin.eclipseEnergyBar.previousGainMask = moonkin.eclipseEnergyBar.gainMask
+	moonkin.eclipseEnergyBar.resetWithMask(NoEnergy)
 }
 
-func (druid *Druid) RegisterEclipseAuras() {
-	baselineEclipsePct := 0.25
-	initialEclipseMasteryBonus := getEclipseMasteryBonus(druid.GetMasteryPoints())
+func (moonkin *BalanceDruid) RestoreEclipseBar() {
+	moonkin.eclipseEnergyBar.resetWithMask(moonkin.eclipseEnergyBar.previousGainMask)
+}
 
-	lunarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
+func (moonkin *BalanceDruid) ActivateEclipse(eclipse Eclipse, sim *core.Simulation) {
+	moonkin.eclipseEnergyBar.invokeCallback(eclipse, true, sim)
+}
+
+func (moonkin *BalanceDruid) DeactivateEclipse(eclipse Eclipse, sim *core.Simulation) {
+	moonkin.eclipseEnergyBar.invokeCallback(eclipse, false, sim)
+}
+
+func getEclipseMasteryBonus(masteryPoints float64) float64 {
+	return (15 + masteryPoints*2) / 100
+}
+
+func (moonkin *BalanceDruid) RegisterEclipseAuras() {
+	manaMetrics := moonkin.NewManaMetrics(core.ActionID{SpellID: 79577 /* Eclipse */})
+
+	baselineEclipsePct := 0.15
+	initialEclipseMasteryBonus := getEclipseMasteryBonus(moonkin.GetMasteryPoints())
+
+	lunarSpellMod := moonkin.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane,
+		ProcMask:   core.ProcMaskSpellDamage,
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
 	})
 
-	solarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
+	solarSpellMod := moonkin.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolNature,
+		ProcMask:   core.ProcMaskSpellDamage,
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
 	})
 
-	lunarEclipse := druid.RegisterAura(core.Aura{
+	moonkin.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		if !moonkin.IsInEclipse() {
+			return
+		}
+
+		masteryBonusDiff := getEclipseMasteryBonus(newMastery) - getEclipseMasteryBonus(oldMastery)
+
+		if lunarSpellMod.IsActive {
+			lunarSpellMod.UpdateFloatValue(lunarSpellMod.GetFloatValue() + core.MasteryRatingToMasteryPoints(masteryBonusDiff))
+		} else if solarSpellMod.IsActive {
+			solarSpellMod.UpdateFloatValue(solarSpellMod.GetFloatValue() + core.MasteryRatingToMasteryPoints(masteryBonusDiff))
+		}
+	})
+
+	lunarEclipse := moonkin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 48518},
 		Label:    "Eclipse (Lunar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(druid.GetMasteryPoints()))
+			if moonkin.DreamOfCenarius.IsActive() {
+				baselineEclipsePct += 0.25
+				moonkin.DreamOfCenarius.Deactivate(sim)
+			}
+
+			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
 			lunarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			baselineEclipsePct = 0.15
 			lunarSpellMod.Deactivate()
 		},
 	})
 
-	solarEclipse := druid.RegisterAura(core.Aura{
+	solarEclipse := moonkin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 48517},
 		Label:    "Eclipse (Solar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			solarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(druid.GetMasteryPoints()))
+			if moonkin.DreamOfCenarius.IsActive() {
+				baselineEclipsePct += 0.25
+				moonkin.DreamOfCenarius.Deactivate(sim)
+			}
+
+			solarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
 			solarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			baselineEclipsePct = 0.15
 			solarSpellMod.Deactivate()
 		},
 	})
 
-	druid.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+	moonkin.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+		if gained {
+			// Moonkins are energized for 50% maximum mana every time they enter eclipse.
+			moonkin.AddMana(sim, moonkin.MaxMana()*0.5, manaMetrics)
+		}
+
 		if eclipse == LunarEclipse {
 			if gained {
 				lunarEclipse.Activate(sim)
@@ -123,11 +182,11 @@ func (druid *Druid) RegisterEclipseAuras() {
 	})
 }
 
-func (druid *Druid) RegisterEclipseEnergyGainAura() {
-	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 89265})
-	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 89265})
+func (moonkin *BalanceDruid) RegisterEclipseEnergyGainAura() {
+	solarMetric := moonkin.NewSolarEnergyMetrics(core.ActionID{SpellID: 89265})
+	lunarMetric := moonkin.NewLunarEnergyMetrics(core.ActionID{SpellID: 89265})
 
-	druid.RegisterAura(core.Aura{
+	moonkin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 89265},
 		Label:    "Eclipse Energy",
 		Duration: core.NeverExpires,
@@ -135,76 +194,37 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 			aura.Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			var eclipseEnergyMultiplier float64 = 1.0
 
-			if druid.canEuphoriaProc(spell) && druid.hasEuphoriaProcced(sim) {
-				eclipseEnergyMultiplier = 2
-			}
-
-			if energyGain := druid.GetSpellEclipseEnergy(spell.ClassSpellMask, druid.currentEclipse != NoEclipse); energyGain != 0 {
+			if energyGain := moonkin.GetSpellEclipseEnergy(spell.ClassSpellMask, moonkin.currentEclipse != NoEclipse); energyGain != 0 {
 				switch spell.ClassSpellMask {
-				case DruidSpellStarfire:
-					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric, spell)
-				case DruidSpellWrath:
-					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric, spell)
-				case DruidSpellStarsurge:
-					if druid.CanGainEnergy(SolarEnergy) {
-						druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
+				case druid.DruidSpellStarfire:
+					moonkin.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
+				case druid.DruidSpellWrath:
+					moonkin.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
+				case druid.DruidSpellStarsurge:
+					if moonkin.CanGainEnergy(SolarAndLunarEnergy) {
+						moonkin.AddEclipseEnergy(energyGain, LunarEnergy, sim, solarMetric, spell)
 					} else {
-						druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
+						moonkin.AddEclipseEnergy(energyGain, SolarEnergy, sim, lunarMetric, spell)
 					}
-				case DruidSpellMoonfire: // Moonfire (under the effect of Lunar Shower)
-					druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
-				case DruidSpellSunfire: // Sunfire (under the effect of Lunar Shower)
-					druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
 				}
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// chekc if trigger is supposed to handle spell hit, then clear
-			if druid.eclipseTrigger != nil && druid.eclipseTrigger(spell) {
-				druid.eclipseTrigger = nil
+			if moonkin.eclipseTrigger != nil && moonkin.eclipseTrigger(spell) {
+				moonkin.eclipseTrigger = nil
 			}
 		},
 	})
 }
 
-func (druid *Druid) hasEuphoriaProcced(sim *core.Simulation) bool {
-	return sim.Proc(0.12*float64(druid.Talents.Euphoria), fmt.Sprintf("Euphoria %d/2", druid.Talents.Euphoria))
+func (moonkin *BalanceDruid) HasEclipseBar() bool {
+	return moonkin.eclipseEnergyBar.moonkin != nil
 }
 
-func (druid *Druid) canEuphoriaProc(spell *core.Spell) bool {
-	if druid.Talents.Euphoria == 0 {
-		return false
-	}
-
-	if druid.currentEclipse != NoEclipse {
-		return false
-	}
-
-	if spell.ClassSpellMask != DruidSpellStarfire && spell.ClassSpellMask != DruidSpellWrath {
-		return false
-	}
-
-	if druid.Talents.Euphoria == 1 {
-		return true
-	}
-
-	if druid.Talents.Euphoria == 2 {
-		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 && druid.CurrentLunarEnergy() == 0 {
-			return true
-		}
-
-		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 && druid.CurrentSolarEnergy() == 0 {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (druid *Druid) HasEclipseBar() bool {
-	return druid.eclipseEnergyBar.druid != nil
+func (moonkin *BalanceDruid) IsInEclipse() bool {
+	return moonkin.currentEclipse != NoEclipse
 }
 
 func (eb *eclipseEnergyBar) AddEclipseCallback(callback EclipseCallback) {
@@ -212,7 +232,7 @@ func (eb *eclipseEnergyBar) AddEclipseCallback(callback EclipseCallback) {
 }
 
 func (eb *eclipseEnergyBar) AddEclipseEnergy(amount float64, kind EclipseEnergy, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) {
-	if eb.druid == nil {
+	if eb.moonkin == nil {
 		return
 	}
 
@@ -243,6 +263,11 @@ func (eb *eclipseEnergyBar) CanGainEnergy(kind EclipseEnergy) bool {
 	return eb.gainMask&kind > 0
 }
 
+func (eb *eclipseEnergyBar) StoreGainMaskAndSuspend() {
+	eb.previousGainMask = eb.gainMask
+	eb.gainMask = NoEnergy
+}
+
 // spends the given amount of energy and returns how much energy remains
 // this might be added to the solar energy
 func (eb *eclipseEnergyBar) spendLunarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) float64 {
@@ -256,7 +281,7 @@ func (eb *eclipseEnergyBar) spendLunarEnergy(amount float64, sim *core.Simulatio
 	eb.lunarEnergy -= spend
 
 	if sim.Log != nil {
-		eb.druid.Log(sim, "Spent %0.0f lunar energy from %s (%0.0f --> %0.0f) of %0.0f total.", spend, metrics.ActionID, old, eb.lunarEnergy, 100.0)
+		eb.moonkin.Log(sim, "Spent %0.0f lunar energy from %s (%0.0f --> %0.0f) of %0.0f total.", spend, metrics.ActionID, old, eb.lunarEnergy, 100.0)
 	}
 
 	if eb.lunarEnergy == 0 {
@@ -281,7 +306,7 @@ func (eb *eclipseEnergyBar) addLunarEnergy(amount float64, sim *core.Simulation,
 	eb.lunarEnergy += gain
 
 	if sim.Log != nil {
-		eb.druid.Log(sim, "Gained %0.0f lunar energy from %s (%0.0f --> %0.0f) of %0.0f total.", gain, metrics.ActionID, old, eb.lunarEnergy, 100.0)
+		eb.moonkin.Log(sim, "Gained %0.0f lunar energy from %s (%0.0f --> %0.0f) of %0.0f total.", gain, metrics.ActionID, old, eb.lunarEnergy, 100.0)
 	}
 
 	if eb.lunarEnergy == 100 {
@@ -305,7 +330,7 @@ func (eb *eclipseEnergyBar) SetEclipse(eclipse Eclipse, sim *core.Simulation, sp
 		eb.invokeCallback(eclipse, true, sim)
 		eb.currentEclipse = eclipse
 	} else {
-		if spell.ClassSpellMask&DruidSpellWrath > 0 {
+		if spell.Matches(druid.DruidSpellWrath) {
 			eb.eclipseTrigger = func(triggerSpell *core.Spell) bool {
 				if spell.ClassSpellMask == triggerSpell.ClassSpellMask && !(triggerSpell.ProcMask&core.ProcMaskSpellProc > 0) {
 					eb.invokeCallback(eb.currentEclipse, false, sim)
@@ -352,7 +377,7 @@ func (eb *eclipseEnergyBar) spendSolarEnergy(amount float64, sim *core.Simulatio
 	eb.solarEnergy -= spend
 
 	if sim.Log != nil {
-		eb.druid.Log(sim, "Spent %0.0f solar energy from %s (%0.0f --> %0.0f) of %0.0f total.", spend, metrics.ActionID, old, eb.solarEnergy, 100.0)
+		eb.moonkin.Log(sim, "Spent %0.0f solar energy from %s (%0.0f --> %0.0f) of %0.0f total.", spend, metrics.ActionID, old, eb.solarEnergy, 100.0)
 	}
 
 	if eb.solarEnergy == 0 {
@@ -377,7 +402,7 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	eb.solarEnergy += gain
 
 	if sim.Log != nil {
-		eb.druid.Log(sim, "Gained %0.0f solar energy from %s (%0.0f --> %0.0f) of %0.0f total.", gain, metrics.ActionID, old, eb.solarEnergy, 100.0)
+		eb.moonkin.Log(sim, "Gained %0.0f solar energy from %s (%0.0f --> %0.0f) of %0.0f total.", gain, metrics.ActionID, old, eb.solarEnergy, 100.0)
 	}
 
 	if eb.solarEnergy == 100 {
@@ -387,10 +412,10 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	metrics.AddEvent(amount, gain)
 }
 
-func (unit *Druid) NewSolarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *BalanceDruid) NewSolarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeSolarEnergy)
 }
 
-func (unit *Druid) NewLunarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *BalanceDruid) NewLunarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeLunarEnergy)
 }

@@ -343,7 +343,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 				},
 
 				ModifyCast: func(sim *Simulation, spell *Spell, cast *Cast) {
-					spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+					spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime)
 					spell.Unit.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
 				},
 			},
