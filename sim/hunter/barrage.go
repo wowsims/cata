@@ -52,16 +52,10 @@ func (hunter *Hunter) registerBarrageSpell() {
 					dmg *= 2
 				}
 
-				dot.Snapshot(target, dmg)
+				dot.SnapshotPhysical(target, dmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeRangedHitAndCritSnapshot)
-
-				if result.DidCrit() {
-					dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
-				} else {
-					dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
-				}
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
