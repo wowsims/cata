@@ -229,6 +229,11 @@ func (effect *SpellEffect) GetScalingValue(ilvl int) float64 {
 		return float64(dbcInstance.RandomPropertiesByIlvl[ilvl][proto.ItemQuality_ItemQualityEpic][0])
 	}
 	spell := dbcInstance.Spells[effect.SpellID]
+	if spell.ScalesFromItemLevel > 0 {
+		// If item scales from a fixed ilvl we get rand prop points
+		return float64(dbcInstance.RandomPropertiesByIlvl[int(spell.ScalesFromItemLevel)][proto.ItemQuality_ItemQualityEpic][0])
+	}
+
 	// if not we get class scaling based on the spell
 	scale := effect.ScalingClass()
 	return dbcInstance.SpellScalings[min(spell.MaxScalingLevel, BASE_LEVEL)].Values[scale]
@@ -276,6 +281,10 @@ func (effect *SpellEffect) ParseStatEffect(scalesWithIlvl bool, ilvl int) *stats
 		school := SpellSchool(effect.EffectMiscValues[0])
 		for schoolType, stat := range SpellSchoolToStat {
 			if school.Has(schoolType) && stat > -1 {
+				if effect.Coefficient != 0 && scalesWithIlvl {
+					effectStats[stat] = effect.CalcCoefficientStatValue(ilvl)
+					break
+				}
 				effectStats[stat] += float64(effect.EffectBasePoints)
 			}
 		}
