@@ -14,10 +14,7 @@ type HunterPet struct {
 
 	hunterOwner *Hunter
 
-	CobraStrikesAura     *core.Aura
-	KillCommandAura      *core.Aura
-	FrenzyStacksSnapshot float64
-	FrenzyAura           *core.Aura
+	FrenzyAura *core.Aura
 
 	specialAbility *core.Spell
 	KillCommand    *core.Spell
@@ -29,13 +26,15 @@ type HunterPet struct {
 	wolverineBite    *core.Spell
 	frostStormBreath *core.Spell
 	hasOwnerCooldown bool
+
+	WHFocusIncreaseMod *core.SpellMod
+	WHDamageMod        *core.SpellMod
 }
 
 func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 	conf := core.PetConfig{
 		Name:                            "Stampede",
 		Owner:                           &hunter.Character,
-		BaseStats:                       hunterPetBaseStats,
 		StatInheritance:                 hunter.makeStatInheritance(),
 		EnabledOnStart:                  false,
 		IsGuardian:                      false,
@@ -53,7 +52,7 @@ func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
 			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
 			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
-			SwingSpeed:     1.8,
+			SwingSpeed:     2,
 		},
 		AutoSwingMelee: true,
 		ProcMask:       core.ProcMaskEmpty,
@@ -67,7 +66,6 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	conf := core.PetConfig{
 		Name:                            "Dire Beast Pet",
 		Owner:                           &hunter.Character,
-		BaseStats:                       hunterPetBaseStats,
 		StatInheritance:                 hunter.makeStatInheritance(),
 		EnabledOnStart:                  false,
 		IsGuardian:                      true,
@@ -84,22 +82,23 @@ func (hunter *Hunter) NewDireBeastPet() *HunterPet {
 	focusMetrics := hunter.NewFocusMetrics(dbActionID)
 	direBeastPet.EnableAutoAttacks(direBeastPet, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  hunter.ClassSpellScaling * 0.25,
-			BaseDamageMax:  hunter.ClassSpellScaling * 0.25,
-			CritMultiplier: 2,
-			SwingSpeed:     1.8,
+			BaseDamageMin:     hunter.ClassSpellScaling,
+			BaseDamageMax:     hunter.ClassSpellScaling,
+			CritMultiplier:    2,
+			SwingSpeed:        2,
+			AttackPowerPerDPS: 7,
 		},
 		AutoSwingMelee: true,
 		ProcMask:       core.ProcMaskEmpty,
 	})
-	direBeastPet.ApplyTalents()
+
 	hunter.AddPet(direBeastPet)
 	core.MakeProcTriggerAura(&direBeastPet.Unit, core.ProcTrigger{
 		Name:       "Dire Beast",
 		ActionID:   core.ActionID{ItemID: 120679},
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcChance: 1,
-		ProcMask:   core.ProcMaskMelee,
+		SpellFlags: core.SpellFlagMeleeMetrics,
 		Outcome:    core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hunter.AddFocus(sim, 5, focusMetrics)
@@ -119,7 +118,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	conf := core.PetConfig{
 		Name:                            petConfig.Name,
 		Owner:                           &hunter.Character,
-		BaseStats:                       hunterPetBaseStats,
 		StatInheritance:                 hunter.makeStatInheritance(),
 		EnabledOnStart:                  true,
 		IsGuardian:                      false,
@@ -148,11 +146,16 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		FloatValue: 1,
 	})
 
-	// Active at start
+	// Store modifiers for reset
+	hp.WHFocusIncreaseMod = WHFocusIncreaseMod
+	hp.WHDamageMod = WHDamageMod
+
+	// Active at start - will be controlled by focus bar callback
 	WHFocusIncreaseMod.Activate()
 	WHDamageMod.Activate()
 
-	hp.EnableFocusBar(100+(core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
+	kindredSpritsBonusFocus := core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)
+	hp.EnableFocusBar(100+kindredSpritsBonusFocus, baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
 		if focus >= 50 {
 			WHFocusIncreaseMod.Activate()
 			WHDamageMod.Activate()
@@ -162,22 +165,15 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		}
 	})
 
-	atkSpd := 1.8
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  hp.hunterOwner.ClassSpellScaling * 0.25,
 			BaseDamageMax:  hp.hunterOwner.ClassSpellScaling * 0.25,
 			CritMultiplier: 2,
-			SwingSpeed:     atkSpd,
+			SwingSpeed:     2,
 		},
 		AutoSwingMelee: true,
 	})
-
-	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
-
-	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Strength, stats.RangedAttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/324.72)
 
 	hunter.AddPet(hp)
 	return hp
@@ -214,8 +210,15 @@ func (hp *HunterPet) Initialize() {
 	hp.registerRabidCD()
 }
 
-func (hp *HunterPet) Reset(_ *core.Simulation) {
+func (hp *HunterPet) Reset(sim *core.Simulation) {
 	hp.uptimePercent = min(1, max(0, hp.hunterOwner.Options.PetUptime))
+
+	// Reset modifiers to initial state based on starting focus
+	if hp.WHFocusIncreaseMod != nil && hp.WHDamageMod != nil {
+		// Start with modifiers active (assuming pet starts with full focus)
+		hp.WHFocusIncreaseMod.Activate()
+		hp.WHDamageMod.Activate()
+	}
 }
 
 func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
@@ -262,15 +265,6 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	} else {
 		_ = hp.specialAbility.Cast(sim, target) || hp.focusDump.Cast(sim, target)
 	}
-}
-
-var hunterPetBaseStats = stats.Stats{
-	stats.Agility:     438,
-	stats.Strength:    476,
-	stats.AttackPower: -20, // Apparently pets and warriors have a AP penalty.
-
-	// Add 1.8% because pets aren't affected by that component of crit suppression.
-	stats.PhysicalCritPercent: 3.2 + 1.8,
 }
 
 const PetExpertiseRatingScale = 3.25 * core.PhysicalHitRatingPerHitPercent
