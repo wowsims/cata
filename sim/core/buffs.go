@@ -324,6 +324,7 @@ func HornOfWinterAura(unit *Unit, asExternal bool) *Aura {
 
 	baseAura.OnReset = nil
 	baseAura.Duration = time.Minute * 5
+	baseAura.BuildPhase = CharacterBuildPhaseNone
 	return baseAura
 }
 
@@ -342,6 +343,7 @@ func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 
 	baseAura.OnReset = nil
 	baseAura.Duration = time.Minute * 5
+	baseAura.BuildPhase = CharacterBuildPhaseNone
 	return baseAura
 }
 
@@ -757,7 +759,7 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 		return
 	}
 
-	ufAura := UnholyFrenzyAura(&agent.GetCharacter().Unit, -1)
+	ufAura := UnholyFrenzyAura(&agent.GetCharacter().Unit, -1, func() bool { return false })
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -777,19 +779,22 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 		numUnholyFrenzy)
 }
 
-func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
+func UnholyFrenzyAura(character *Unit, actionTag int32, has2pT14 func() bool) *Aura {
 	actionID := ActionID{SpellID: 49016, Tag: actionTag}
 
+	var activeMultiplier float64
+	// TODO: Should also lose 2% max hp every 3 sec.
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "UnholyFrenzy-" + actionID.String(),
 		Tag:      UnholyFrenzyAuraTag,
 		ActionID: actionID,
 		Duration: UnholyFrenzyDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1.2)
+			activeMultiplier = TernaryFloat64(has2pT14(), 1.3, 1.2)
+			aura.Unit.MultiplyAttackSpeed(sim, activeMultiplier)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.2)
+			aura.Unit.MultiplyAttackSpeed(sim, 1/activeMultiplier)
 		},
 	})
 

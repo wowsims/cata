@@ -24,6 +24,9 @@ const DefaultAttackPowerPerDPS = 14.0
 // Updated based on formulas supplied by InDebt on WoWSims Discord
 const EnemyAutoAttackAPCoefficient = 1.0 / (14.0 * 177.0)
 
+// Used by Protection Warriors, Protection Paladins and Blood Death Knights
+const StrengthToParryRating = (1 / 951.158596) * ParryRatingPerParryPercent
+
 // IDs for items used in core
 // const ()
 

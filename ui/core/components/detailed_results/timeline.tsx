@@ -613,7 +613,9 @@ export class Timeline extends ResultComponent {
 		// Don't add a row for buffs that were already visualized in a cast row or are prioritized.
 		const buffsToShow = buffsById.filter(auraUptimeLogs =>
 			playerCastsByAbility.findIndex(
-				casts => auraUptimeLogs[0].actionId && (casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
+				casts =>
+					auraUptimeLogs[0].actionId &&
+					(casts[0].actionId!.equalsIgnoringTag(auraUptimeLogs[0].actionId) || auraAsResource.includes(auraUptimeLogs[0].actionId.anyId())),
 			),
 		);
 		if (buffsToShow.length > 0) {
@@ -1267,6 +1269,13 @@ const auraAsResource = [
 
 	// Monk
 	124255, // Stagger
+	128938, // Elusive Brew - Stacks
+	115308, // Elusive Brew - Active
+	1247279, // Tiger Eye Brew - Stacks
+	1247275, // Tiger Eye Brew - Active
+
+	// Mage
+	148022, // Icicle
 ];
 
 // Hard-coded spell categories for controlling rotation ordering.
@@ -1418,6 +1427,8 @@ const idToCategoryMap: Record<number, number> = {
 	[47610]: SPELL_ACTION_CATEGORY + 0.02, // Frostfire Bolt
 	[42897]: SPELL_ACTION_CATEGORY + 0.02, // Arcane Blast
 	[42833]: SPELL_ACTION_CATEGORY + 0.02, // Fireball
+	[10]: SPELL_ACTION_CATEGORY + 0.021, // Blizzard - Cast
+	[42208]: SPELL_ACTION_CATEGORY + 0.022, // Blizzard - Tick
 	[42859]: SPELL_ACTION_CATEGORY + 0.03, // Scorch
 	[42891]: SPELL_ACTION_CATEGORY + 0.1, // Pyroblast
 	[42846]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
@@ -1466,6 +1477,9 @@ const idToCategoryMap: Record<number, number> = {
 	[2458]: DEFAULT_ACTION_CATEGORY + 0.1, // Berserker Stance
 
 	// Death Knight
+	[49998]: MELEE_ACTION_CATEGORY + 0.01, // Death Strike
+	[45470]: MELEE_ACTION_CATEGORY + 0.02, // Death Strike (Heal)
+	[77535]: MELEE_ACTION_CATEGORY + 0.03, // Blood Shield
 	[51425]: MELEE_ACTION_CATEGORY + 0.05, // Obliterate
 	[55268]: MELEE_ACTION_CATEGORY + 0.1, // Frost strike
 	[49930]: MELEE_ACTION_CATEGORY + 0.15, // Blood strike
@@ -1478,6 +1492,10 @@ const idToCategoryMap: Record<number, number> = {
 	[57623]: MELEE_ACTION_CATEGORY + 0.25, // HoW
 	[59131]: MELEE_ACTION_CATEGORY + 0.3, // Icy touch
 	[49921]: MELEE_ACTION_CATEGORY + 0.3, // Plague strike
+	[114866]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[130735]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[130736]: MELEE_ACTION_CATEGORY + 0.31, // Soul Reaper
+	[114867]: MELEE_ACTION_CATEGORY + 0.32, // Soul Reaper (Tick)
 	[51271]: MELEE_ACTION_CATEGORY + 0.35, // UA
 	[45529]: MELEE_ACTION_CATEGORY + 0.35, // BT
 	[47568]: MELEE_ACTION_CATEGORY + 0.35, // ERW
@@ -1516,7 +1534,7 @@ const idToCategoryMap: Record<number, number> = {
 	[123986]: SPELL_ACTION_CATEGORY + 0.01, // Chi Burst
 	[148135]: SPELL_ACTION_CATEGORY + 0.011, // Chi Burst (Damage)
 	[130654]: SPELL_ACTION_CATEGORY + 0.012, // Chi Burst (Heal)
-	[116740]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
+	[1247275]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
 	[115399]: SPELL_ACTION_CATEGORY + 0.03, // Chi Brew
 	[115288]: SPELL_ACTION_CATEGORY + 0.04, // Energizing Brew
 	[126456]: SPELL_ACTION_CATEGORY + 0.05, // Fortifying Brew

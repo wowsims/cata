@@ -31,6 +31,7 @@ const (
 )
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult, isPeriodic bool)
+type DynamicHealingTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
 
 type GetSpellPowerValue func(spell *Spell) float64
 type GetAttackPowerValue func(spell *Spell) float64
@@ -145,10 +146,11 @@ type Unit struct {
 
 	cdTimers []*Timer
 
-	AttackTables                []*AttackTable
-	DynamicDamageTakenModifiers []DynamicDamageTakenModifier
-	Blockhandler                func(sim *Simulation, spell *Spell, result *SpellResult)
-	avoidanceParams             DiminishingReturnsConstants
+	AttackTables                 []*AttackTable
+	DynamicDamageTakenModifiers  []DynamicDamageTakenModifier
+	DynamicHealingTakenModifiers []DynamicHealingTakenModifier
+	Blockhandler                 func(sim *Simulation, spell *Spell, result *SpellResult)
+	avoidanceParams              DiminishingReturnsConstants
 
 	GCD *Timer
 
@@ -281,6 +283,13 @@ func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier)
 		panic("Already finalized, cannot add dynamic damage taken modifier!")
 	}
 	unit.DynamicDamageTakenModifiers = append(unit.DynamicDamageTakenModifiers, ddtm)
+}
+
+func (unit *Unit) AddDynamicHealingTakenModifier(dhtm DynamicHealingTakenModifier) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, cannot add dynamic healing taken modifier!")
+	}
+	unit.DynamicHealingTakenModifiers = append(unit.DynamicHealingTakenModifiers, dhtm)
 }
 
 func (unit *Unit) AddOnMasteryStatChanged(omsc OnMasteryStatChanged) {
@@ -548,10 +557,17 @@ func (unit *Unit) updateRangedAttackSpeed() {
 	}
 }
 
+// Used for "Ranged attack speed" effects like Steady Focus and Serpent's Swiftness
 func (unit *Unit) MultiplyRangedSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
 	unit.updateRangedAttackSpeed()
 	unit.AutoAttacks.UpdateSwingTimers(sim)
+}
+
+// Used for "Ranged haste" effects that modify both attack speed and focus regen, like Rapid Fire and Focus Fire
+func (unit *Unit) MultiplyRangedHaste(sim *Simulation, amount float64) {
+	unit.MultiplyRangedSpeed(sim, amount)
+	unit.MultiplyResourceRegenSpeed(sim, amount)
 }
 
 func (unit *Unit) updateAttackSpeed() {
@@ -787,6 +803,7 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 			EncounterOnly:   spell.Flags.Matches(SpellFlagEncounterOnly),
 			HasCastTime:     spell.DefaultCast.CastTime > 0,
 			IsFriendly:      spell.Flags.Matches(SpellFlagHelpful),
+			HasExpectedTick: spell.expectedTickDamageInternal != nil,
 		}
 	})
 

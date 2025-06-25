@@ -1,6 +1,7 @@
 package enhancement
 
 import (
+	"math"
 	"strconv"
 	"time"
 
@@ -64,7 +65,6 @@ func (enh *EnhancementShaman) NewSpiritWolf(index int) *SpiritWolf {
 	})
 
 	spiritWolf.OnPetEnable = func(sim *core.Simulation) {
-		spiritWolf.EnableDynamicStats(spiritWolf.shamanOwner.makeStatInheritance())
 	}
 
 	enh.AddPet(spiritWolf)
@@ -80,7 +80,7 @@ func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
 		hitExpRating := (ownerHitRating + ownerExpertiseRating) / 2
-		critPercent := max(ownerPhysicalCritPercent, ownerSpellCritPercent)
+		critPercent := core.TernaryFloat64(math.Abs(ownerPhysicalCritPercent) > math.Abs(ownerSpellCritPercent), ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		return stats.Stats{
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,

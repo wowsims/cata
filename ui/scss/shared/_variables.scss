@@ -58,6 +58,7 @@ $multi-spell-school-colors: (
 	spellfrost: linear-gradient(90deg, map-get($spell-school-colors, arcane), map-get($spell-school-colors, frost)),
 	frostfire: linear-gradient(90deg, map-get($spell-school-colors, frost), map-get($spell-school-colors, fire)),
 	shadowfrost: linear-gradient(90deg, map-get($spell-school-colors, shadow), map-get($spell-school-colors, frost)),
+	plague: linear-gradient(90deg, map-get($spell-school-colors, shadow), map-get($spell-school-colors, nature)),
 );
 
 $theme-colors: map-merge($theme-colors, $spell-school-colors);

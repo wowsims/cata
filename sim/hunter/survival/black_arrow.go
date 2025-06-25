@@ -10,12 +10,12 @@ import (
 func (svHunter *SurvivalHunter) registerBlackArrowSpell() {
 	actionID := core.ActionID{SpellID: 3674}
 
-	svHunter.Hunter.BlackArrow = svHunter.Hunter.RegisterSpell(core.SpellConfig{
+	svHunter.Hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: hunter.HunterSpellBlackArrow,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,
 		},

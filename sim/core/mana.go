@@ -15,7 +15,11 @@ type manaBar struct {
 	unit     *Unit
 	BaseMana float64
 
-	currentMana          float64
+	currentMana float64
+
+	manaRegenMultiplier float64
+	hasteEffectsRegen   bool
+
 	manaCombatMetrics    *ResourceMetrics
 	manaNotCombatMetrics *ResourceMetrics
 	JowManaMetrics       *ResourceMetrics
@@ -27,7 +31,6 @@ type manaBar struct {
 	// For keeping track of OOM status.
 	waitingForMana          float64
 	waitingForManaStartTime time.Duration
-	hasteEffectsRegen       bool
 }
 
 // EnableManaBar will setup caster stat dependencies (int->mana and int->spellcrit)
@@ -64,6 +67,7 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 
 	character.BaseMana = character.GetBaseStats()[stats.Mana]
 	character.Unit.manaBar.unit = &character.Unit
+	character.Unit.manaBar.manaRegenMultiplier = 1.0
 }
 
 func (unit *Unit) HasManaBar() bool {
@@ -174,6 +178,8 @@ func (unit *Unit) ManaRegenPerSecondWhileCombat() float64 {
 	}
 	regenRate += spiritRegenRate
 
+	regenRate *= unit.manaRegenMultiplier
+
 	return regenRate
 }
 
@@ -182,7 +188,13 @@ func (unit *Unit) ManaRegenPerSecondWhileCombat() float64 {
 func (unit *Unit) ManaRegenPerSecondWhileNotCombat() float64 {
 	regenRate := unit.MP5ManaRegenPerSecond()
 
+	if unit.manaBar.hasteEffectsRegen {
+		regenRate *= unit.TotalSpellHasteMultiplier()
+	}
+
 	regenRate += unit.SpiritManaRegenPerSecond() * unit.PseudoStats.SpiritRegenMultiplier
+
+	regenRate *= unit.manaRegenMultiplier
 
 	return regenRate
 }
@@ -190,6 +202,15 @@ func (unit *Unit) ManaRegenPerSecondWhileNotCombat() float64 {
 func (unit *Unit) UpdateManaRegenRates() {
 	unit.manaTickWhileCombat = unit.ManaRegenPerSecondWhileCombat() * 2
 	unit.manaTickWhileNotCombat = unit.ManaRegenPerSecondWhileNotCombat() * 2
+}
+
+func (unit *Unit) MultiplyManaRegenSpeed(sim *Simulation, multiplier float64) {
+	unit.manaRegenMultiplier *= multiplier
+	unit.UpdateManaRegenRates()
+}
+
+func (unit *Unit) HasteEffectsManaRegen() {
+	unit.manaBar.hasteEffectsRegen = true
 }
 
 // Applies 1 'tick' of mana regen, which worth 2s of regeneration based on mp5/int/spirit/etc.
@@ -277,6 +298,9 @@ func (mb *manaBar) reset() {
 	}
 
 	mb.currentMana = mb.unit.MaxMana()
+
+	mb.manaRegenMultiplier = 1.0
+
 	mb.waitingForMana = 0
 	mb.waitingForManaStartTime = 0
 }

@@ -231,11 +231,11 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 	})
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-		Name:           "Unleashed Fury",
-		ActionID:       core.ActionID{SpellID: 117012},
-		Callback:       core.CallbackOnApplyEffects,
-		ClassSpellMask: SpellMaskUnleashElements,
-		ProcChance:     1.0,
+		Name:            "Unleashed Fury",
+		MetricsActionID: core.ActionID{SpellID: 117012},
+		Callback:        core.CallbackOnApplyEffects,
+		ClassSpellMask:  SpellMaskUnleashElements,
+		ProcChance:      1.0,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			switch shaman.SelfBuffs.ImbueMH {
 			case proto.ShamanImbue_FlametongueWeapon:

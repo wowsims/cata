@@ -14,8 +14,8 @@ func applyConsumeEffects(agent Agent) {
 	if consumables == nil {
 		return
 	}
-	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 80, 0)
-	alchemyBattleElixirBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 40, 0)
+	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 320, 0)
+	alchemyBattleElixirBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 240, 0)
 	if consumables.FlaskId != 0 {
 		flask := ConsumablesByID[consumables.FlaskId]
 		if flask.Stats[stats.Strength] > 0 {
@@ -126,6 +126,14 @@ func (character *Character) HasAlchStone() bool {
 func makePotionActivationSpell(potionId int32, character *Character, potionCD *Timer) MajorCooldown {
 	potion := ConsumablesByID[potionId]
 	mcd := makePotionActivationSpellInternal(potion, character, potionCD)
+	potionCdTime := time.Minute
+
+	// Kafa Press has a 10minute CD
+	// Currently there's no better way to check this
+	if potion.Id == 86125 {
+		potionCdTime = time.Minute * 10
+	}
+
 	if mcd.Spell != nil {
 		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
 		// placeholder action instead of specific potion spells, in APL prepull. This
@@ -135,7 +143,7 @@ func makePotionActivationSpell(potionId int32, character *Character, potionCD *T
 		mcd.Spell.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 			oldApplyEffects(sim, target, spell)
 			if sim.CurrentTime < 0 {
-				potionCD.Set(sim.CurrentTime + time.Minute)
+				potionCD.Set(sim.CurrentTime + potionCdTime)
 
 				character.UpdateMajorCooldowns()
 			}

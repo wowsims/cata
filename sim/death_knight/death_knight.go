@@ -9,17 +9,10 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const (
-	HitCapRatio             = 17.0 / 8.0 // 2.125
-	ExpertiseCapRatio       = 6.5 / 8.0  // 0.8125
-	PetExpertiseRatingScale = ExpertiseCapRatio * (4 * core.ExpertisePerQuarterPercentReduction)
-)
-
 // Damage Done By Caster setup
 const (
-	DDBC_MercilessCombat   int = 0
-	DDBC_EbonPlaguebringer     = iota
-	DDBC_RuneOfRazorice
+	DDBC_MercilessCombat int = 0
+	DDBC_RuneOfRazorice      = iota
 
 	DDBC_Total
 )
@@ -31,12 +24,6 @@ type DeathKnightInputs struct {
 	UnholyFrenzyTarget *proto.UnitReference
 
 	StartingRunicPower float64
-	PetUptime          float64
-
-	// Rotation Vars
-	UseAMS            bool
-	AvgAMSSuccessRate float64
-	AvgAMSHit         float64
 
 	Spec proto.Spec
 }
@@ -45,35 +32,57 @@ type DeathKnight struct {
 	core.Character
 	Talents *proto.DeathKnightTalents
 
-	ClassSpellScaling float64
-
 	Inputs DeathKnightInputs
 
 	// Pets
-	// Ghoul      *GhoulPet
-	// Gargoyle   *GargoylePet
-	// ArmyGhoul  []*GhoulPet
-	// RuneWeapon *RuneWeaponPet
-	Bloodworm []*BloodwormPet
+	Ghoul           *GhoulPet
+	Gargoyle        *GargoylePet
+	ArmyGhoul       []*GhoulPet
+	FallenZandalari []*GhoulPet
+	RuneWeapon      *RuneWeaponPet
+	Bloodworm       []*BloodwormPet
+
+	BloodPresenceSpell  *core.Spell
+	FrostPresenceSpell  *core.Spell
+	UnholyPresenceSpell *core.Spell
+
+	PestilenceSpell *core.Spell
+	RuneTapSpell    *core.Spell
+
+	ConversionAura             *core.Aura
+	MightOfTheFrozenWastesAura *core.Aura
+	ThreatOfThassarianAura     *core.Aura
+	BoneShieldAura             *core.Aura
+	BoneWallAura               *core.Aura
+	PillarOfFrostAura          *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
-	EbonPlagueAura   core.AuraArray
 	ScarletFeverAura core.AuraArray
-
-	// T12 spell
-	BurningBloodSpell *core.Spell
 
 	// Runic power decay, used during pre pull
 	RunicPowerDecayAura *core.Aura
 
 	// Cached Gurthalak tentacles
 
+	// T12 spell
+	BurningBloodSpell *core.Spell
+
 	// Item sets
 	T12Tank4pc *core.Aura
 	T13Dps2pc  *core.Aura
 	T13Dps4pc  *core.Aura
+	T14Dps4pc  *core.Aura
+
+	// Used for T13 Tank 4pc
+	VampiricBloodBonusHealth float64
+
+	// Modified by T14 Tank 4pc
+	deathStrikeHealingMultiplier float64
+
+	// Modified by T15 Dps 4pc
+	soulReaper45Percent bool
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -83,60 +92,36 @@ func (dk *DeathKnight) GetCharacter() *core.Character {
 func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
-// func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-// 	if dk.Talents.AbominationsMight > 0 {
-// 		raidBuffs.AbominationsMight = true
-// 	}
-
-// 	if dk.Talents.ImprovedIcyTalons {
-// 		raidBuffs.IcyTalons = true
-// 	}
-
-// 	// TODO: Make horn of winter dynamic
-// 	raidBuffs.HornOfWinter = true
-// }
-
-func (dk *DeathKnight) ApplyTalents() {
-	// dk.ApplyBloodTalents()
-	// dk.ApplyFrostTalents()
-	// dk.ApplyUnholyTalents()
-
-	// dk.ApplyGlyphs()
+func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	if dk.Spec != proto.Spec_SpecBloodDeathKnight {
+		raidBuffs.UnholyAura = true
+	}
 }
 
 func (dk *DeathKnight) Initialize() {
-	// dk.registerPresences()
-	// dk.registerFrostFever()
-	// dk.registerBloodPlague()
-	// dk.registerOutbreak()
-	// dk.registerHornOfWinterSpell()
-	// dk.registerIcyTouchSpell()
-	// dk.registerPlagueStrikeSpell()
-	// dk.registerDeathCoilSpell()
-	// dk.registerDeathAndDecaySpell()
-	// dk.registerFesteringStrikeSpell()
-	// dk.registerEmpowerRuneWeaponSpell()
-	// dk.registerUnholyFrenzySpell()
-	// dk.registerSummonGargoyleSpell()
-	// dk.registerArmyOfTheDeadSpell()
-	// dk.registerRaiseDeadSpell()
-	// dk.registerBloodTapSpell()
-	// dk.registerObliterateSpell()
-	// dk.registerHowlingBlastSpell()
-	// dk.registerPillarOfFrostSpell()
-	// dk.registerPestilenceSpell()
-	// dk.registerBloodBoilSpell()
-	// dk.registerRuneStrikeSpell()
-	// dk.registerDeathStrikeSpell()
-	// dk.registerRuneTapSpell()
-	// dk.registerVampiricBloodSpell()
-	// dk.registerIceboundFortitudeSpell()
-	// dk.registerBoneShieldSpell()
-	// dk.registerDancingRuneWeaponSpell()
-	// dk.registerDeathPactSpell()
-	// dk.registerAntiMagicShellSpell()
-	// dk.registerRunicPowerDecay()
-	// dk.registerBloodStrikeSpell()
+	dk.registerAntiMagicShell()
+	dk.registerArmyOfTheDead()
+	dk.registerBloodBoil()
+	dk.registerBloodPlague()
+	dk.registerDeathAndDecay()
+	dk.registerDeathCoil()
+	dk.registerDeathStrike()
+	dk.registerEmpowerRuneWeapon()
+	dk.registerFrostFever()
+	dk.registerGlyphs()
+	dk.registerHornOfWinter()
+	dk.registerIceboundFortitude()
+	dk.registerIcyTouch()
+	dk.registerOutbreak()
+	dk.registerPestilence()
+	dk.registerPlagueStrike()
+	dk.registerPresences()
+	// If talented as permanent pet skip this spell
+	if dk.Inputs.Spec != proto.Spec_SpecUnholyDeathKnight {
+		dk.registerRaiseDead()
+	}
+	dk.registerRunicPowerDecay()
+	dk.registerSoulReaper()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -151,15 +136,12 @@ func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 
 func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string, deathRuneConvertSpellId int32) *DeathKnight {
 	dk := &DeathKnight{
-		Character:         *character,
-		Talents:           &proto.DeathKnightTalents{},
-		Inputs:            inputs,
-		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
+		Character: *character,
+		Talents:   &proto.DeathKnightTalents{},
+		Inputs:    inputs,
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents)
 
-	// TODO: Fix this to work with the new talent system.
-	// maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
 	maxRunicPower := 100.0
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 
@@ -189,44 +171,33 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		},
 	)
 
-	// Runic Focus
-	dk.AddStat(stats.SpellHitPercent, 9)
-
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	dk.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[dk.Class])
 
-	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*0.27)
-	dk.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)
+	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*core.StrengthToParryRating) // Does not apply to base Strength
+	dk.AddStatDependency(stats.Strength, stats.ParryRating, core.StrengthToParryRating)
 
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	dk.PseudoStats.CanParry = true
 
 	// 	// Base dodge unaffected by Diminishing Returns
-	dk.PseudoStats.BaseDodgeChance += 0.05
-	dk.PseudoStats.BaseParryChance += 0.05
+	dk.PseudoStats.BaseDodgeChance += 0.03
+	dk.PseudoStats.BaseParryChance += 0.03
 
-	// if dk.Talents.SummonGargoyle {
-	// 	dk.Gargoyle = dk.NewGargoyle()
-	// }
+	dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
 
-	// dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
+	dk.ArmyGhoul = make([]*GhoulPet, 8)
+	for i := range 8 {
+		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet()
+	}
 
-	// dk.ArmyGhoul = make([]*GhoulPet, 8)
-	// for i := 0; i < 8; i++ {
-	// 	dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
-	// }
-
-	// if dk.Talents.BloodParasite > 0 {
-	// 	dk.Bloodworm = make([]*BloodwormPet, 5)
-	// 	for i := 0; i < 5; i++ {
-	// 		dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-	// 	}
-	// }
-
-	// if dk.Talents.DancingRuneWeapon {
-	// 	dk.RuneWeapon = dk.NewRuneWeapon()
-	// }
+	if dk.CouldHaveSetBonus(ItemSetBattleplateOfTheAllConsumingMaw, 2) {
+		dk.FallenZandalari = make([]*GhoulPet, 10)
+		for i := range 10 {
+			dk.FallenZandalari[i] = dk.NewFallenZandalariPet()
+		}
+	}
 
 	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
 		MainHand:       dk.WeaponFromMainHand(dk.DefaultCritMultiplier()),
@@ -234,60 +205,9 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		AutoSwingMelee: true,
 	})
 
+	dk.deathStrikeHealingMultiplier = 0.2
+
 	return dk
-}
-
-func (dk *DeathKnight) registerRunicPowerDecay() {
-	decayMetrics := dk.NewRunicPowerMetrics(core.ActionID{OtherID: proto.OtherAction_OtherActionPrepull})
-
-	// TODO: Fix this to work with the new talent system.
-	// Base decay rate is about 1.25/s
-	// For some reason Butchery works out of combat which reduces this by 1/5 or 2/5 respectively
-	// decayRate := []float64{1.25, 1.05, 0.85}[dk.Talents.Butchery]
-	decayRate := 1.25
-
-	var decay *core.PendingAction
-	dk.RunicPowerDecayAura = dk.GetOrRegisterAura(core.Aura{
-		Label:    "Runic Power Decay",
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if sim.CurrentTime >= 0 || dk.CurrentRunicPower() <= 0 {
-				dk.RunicPowerDecayAura.Deactivate(sim)
-				return
-			}
-
-			dk.SpendRunicPower(sim, decayRate, decayMetrics)
-
-			decay = &core.PendingAction{
-				Priority:     core.ActionPriorityPrePull,
-				NextActionAt: sim.CurrentTime + time.Second,
-				OnAction: func(sim *core.Simulation) {
-					if dk.CurrentRunicPower() <= 0 {
-						aura.Deactivate(sim)
-						return
-					}
-
-					dk.SpendRunicPower(sim, decayRate, decayMetrics)
-
-					nextTick := sim.CurrentTime + time.Second
-					if nextTick >= 0 {
-						aura.Deactivate(sim)
-						return
-					}
-
-					decay.NextActionAt = nextTick
-					sim.AddPendingAction(decay)
-				},
-			}
-
-			sim.AddPendingAction(decay)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if decay != nil {
-				decay.Cancel(sim)
-			}
-		},
-	})
 }
 
 func (dk *DeathKnight) GetDeathKnight() *DeathKnight {
@@ -299,46 +219,57 @@ type DeathKnightAgent interface {
 }
 
 const (
-	DeathKnightSpellFlagNone int64 = 0
-	DeathKnightSpellIcyTouch int64 = 1 << iota
+	DeathKnightSpellFlagNone      int64 = 0
+	DeathKnightSpellAntiMagicZone int64 = 1 << iota
+	DeathKnightSpellArmyOfTheDead
+	DeathKnightSpellBloodBoil
+	DeathKnightSpellBloodPlague
+	DeathKnightSpellBloodPresence
+	DeathKnightSpellBloodStrike
+	DeathKnightSpellBloodTap
+	DeathKnightSpellBoneShield
+	DeathKnightSpellConversion
+	DeathKnightSpellDancingRuneWeapon
+	DeathKnightSpellDarkCommand
+	DeathKnightSpellDarkTransformation
+	DeathKnightSpellDeathAndDecay
 	DeathKnightSpellDeathCoil
 	DeathKnightSpellDeathCoilHeal
-	DeathKnightSpellDeathAndDecay
-	DeathKnightSpellOutbreak
-	DeathKnightSpellEmpowerRuneWeapon
-	DeathKnightSpellUnholyFrenzy
-	DeathKnightSpellDarkTransformation
-	DeathKnightSpellSummonGargoyle
-	DeathKnightSpellArmyOfTheDead
-	DeathKnightSpellRaiseDead
-	DeathKnightSpellBloodTap
-	DeathKnightSpellObliterate
-	DeathKnightSpellFrostStrike
-	DeathKnightSpellRuneStrike
-	DeathKnightSpellPlagueStrike
-	DeathKnightSpellFesteringStrike
-	DeathKnightSpellScourgeStrike
-	DeathKnightSpellScourgeStrikeShadow
-	DeathKnightSpellHeartStrike
+	DeathKnightSpellDeathPact
+	DeathKnightSpellDeathSiphon
 	DeathKnightSpellDeathStrike
 	DeathKnightSpellDeathStrikeHeal
+	DeathKnightSpellEmpowerRuneWeapon
+	DeathKnightSpellFesteringStrike
 	DeathKnightSpellFrostFever
-	DeathKnightSpellBloodPlague
-	DeathKnightSpellHowlingBlast
+	DeathKnightSpellFrostPresence
+	DeathKnightSpellFrostStrike
+	DeathKnightSpellHeartStrike
 	DeathKnightSpellHornOfWinter
-	DeathKnightSpellPillarOfFrost
-	DeathKnightSpellPestilence
-	DeathKnightSpellBloodBoil
-	DeathKnightSpellRuneTap
-	DeathKnightSpellVampiricBlood
+	DeathKnightSpellHowlingBlast
 	DeathKnightSpellIceboundFortitude
-	DeathKnightSpellBoneShield
-	DeathKnightSpellDancingRuneWeapon
-	DeathKnightSpellDeathPact
+	DeathKnightSpellIcyTouch
+	DeathKnightSpellLichborne
+	DeathKnightSpellObliterate
+	DeathKnightSpellOutbreak
+	DeathKnightSpellPestilence
+	DeathKnightSpellPillarOfFrost
+	DeathKnightSpellPlagueLeech
+	DeathKnightSpellPlagueStrike
+	DeathKnightSpellRaiseDead
+	DeathKnightSpellRuneStrike
+	DeathKnightSpellRuneTap
+	DeathKnightSpellScourgeStrike
+	DeathKnightSpellScourgeStrikeShadow
+	DeathKnightSpellSoulReaper
+	DeathKnightSpellSummonGargoyle
 	DeathKnightSpellUnholyBlight
-	DeathKnightSpellBloodStrike
+	DeathKnightSpellUnholyFrenzy
+	DeathKnightSpellUnholyPresence
+	DeathKnightSpellVampiricBlood
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
+	DeathKnightSpellSuddenDoom         // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains
 
 	DeathKnightSpellLast

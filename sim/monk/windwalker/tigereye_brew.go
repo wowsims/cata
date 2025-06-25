@@ -8,8 +8,8 @@ import (
 )
 
 func (ww *WindwalkerMonk) registerTigereyeBrew() {
-	buffActionID := core.ActionID{SpellID: 116740}
-	stackActionID := core.ActionID{SpellID: 125195}
+	buffActionID := core.ActionID{SpellID: 1247275}
+	stackActionID := core.ActionID{SpellID: 1247279}
 
 	ww.Monk.RegisterOnChiSpent(func(sim *core.Simulation, chiSpent int32) {
 		accumulatedChi := ww.outstandingChi + chiSpent
@@ -88,6 +88,7 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			buffAura.Deactivate(sim)
 			buffAura.Activate(sim)
 		},
 

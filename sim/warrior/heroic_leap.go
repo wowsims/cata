@@ -13,7 +13,7 @@ func (war *Warrior) registerHeroicLeap() {
 		ActionID:       core.ActionID{SpellID: 6544},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskHeroicLeap,
 
 		Cast: core.CastConfig{

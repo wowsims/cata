@@ -17,6 +17,7 @@ func (enh *EnhancementShaman) registerFeralSpirit() {
 	enh.FeralSpirit = enh.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 51533},
 		ClassSpellMask: shaman.SpellMaskFeralSpirit,
+		Flags:          core.SpellFlagReadinessTrinket,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 12,

@@ -124,6 +124,7 @@ func MakeDefaultEncounterCombos() []EncounterCombo {
 				ExecuteProportion_20: 0.2,
 				ExecuteProportion_25: 0.25,
 				ExecuteProportion_35: 0.35,
+				ExecuteProportion_45: 0.45,
 				ExecuteProportion_90: 0.90,
 				Targets: []*proto.Target{
 					DefaultTarget,
@@ -137,6 +138,7 @@ func MakeDefaultEncounterCombos() []EncounterCombo {
 				ExecuteProportion_20: 0.2,
 				ExecuteProportion_25: 0.25,
 				ExecuteProportion_35: 0.35,
+				ExecuteProportion_45: 0.45,
 				ExecuteProportion_90: 0.90,
 				Targets: []*proto.Target{
 					DefaultTarget,
@@ -150,6 +152,7 @@ func MakeDefaultEncounterCombos() []EncounterCombo {
 				ExecuteProportion_20: 0.2,
 				ExecuteProportion_25: 0.25,
 				ExecuteProportion_35: 0.35,
+				ExecuteProportion_45: 0.45,
 				ExecuteProportion_90: 0.90,
 				Targets:              multipleTargets,
 			},
@@ -164,6 +167,7 @@ func MakeSingleTargetEncounter(variation float64) *proto.Encounter {
 		ExecuteProportion_20: 0.2,
 		ExecuteProportion_25: 0.25,
 		ExecuteProportion_35: 0.35,
+		ExecuteProportion_45: 0.45,
 		ExecuteProportion_90: 0.90,
 		Targets: []*proto.Target{
 			NewDefaultTarget(),

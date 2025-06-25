@@ -32,7 +32,7 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 
 	subRogue.ShadowDance = subRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: rogue.RogueSpellShadowDance,
 
 		Cast: core.CastConfig{

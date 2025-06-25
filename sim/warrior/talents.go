@@ -105,7 +105,7 @@ func (war *Warrior) registerDragonRoar() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: SpellMaskDragonRoar,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreArmor | core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -254,7 +254,7 @@ func (war *Warrior) registerShockwave() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		ClassSpellMask: SpellMaskShockwave,
-		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAoE | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -304,7 +304,7 @@ func (war *Warrior) registerAvatar() {
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskAvatar,
 
 		Cast: core.CastConfig{
@@ -367,7 +367,7 @@ func (war *Warrior) registerBloodbath() {
 		ActionID:       spellActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: SpellMaskBloodbath,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ProcMask:       core.ProcMaskEmpty,
 
 		Cast: core.CastConfig{
@@ -424,7 +424,7 @@ func (war *Warrior) registerStormBolt() {
 		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagReadinessTrinket,
 		ClassSpellMask: SpellMaskStormBolt,
 		MaxRange:       30,
 

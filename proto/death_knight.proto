@@ -76,77 +76,32 @@ enum DeathKnightMinorGlyph {
 // END GENERATED
 message DeathKnightOptions {
 	double starting_runic_power = 1;
-	double pet_uptime = 2;
 }
 
 message BloodDeathKnight {
-	message Rotation {
-		enum Opener {
-			Regular = 0;
-			Threat = 1;
-		}
-
-		enum OptimizationSetting {
-			Hps = 0;
-			Tps = 1;
-		}
-
-		enum BloodSpell {
-			BloodStrike = 0;
-			BloodBoil = 1;
-			HeartStrike = 2;
-		}
-
-		enum BloodTapPrio {
-			Defensive = 0;
-			Offensive = 1;
-		}
-
-		enum Presence {
-			Blood = 0;
-			Frost = 1;
-			Unholy = 2;
-		}
-
-		Opener opener = 1;
-		OptimizationSetting optimization_setting = 2;
-		BloodSpell blood_spell = 3;
-		Presence presence = 4;
-		BloodTapPrio blood_tap_prio = 5;
-	}
-	Rotation rotation = 1;
+	message Rotation {}
 
 	message Options {
 		DeathKnightOptions class_options = 1;
-		double defensive_delay = 2;
-		bool drw_pesti_apply = 3;
 	}
 	Options options = 3;
 }
 
 message FrostDeathKnight {
-	message Rotation {
-	}
+	message Rotation {}
 
 	message Options {
 		DeathKnightOptions class_options = 1;
-		bool use_ams = 2;
-		double avg_ams_success_rate = 3;
-		double avg_ams_hit = 4;
 	}
 	Options options = 3;
 }
 
 message UnholyDeathKnight {
-	message Rotation {
-	}
+	message Rotation {}
 
 	message Options {
 		DeathKnightOptions class_options = 1;
 		UnitReference unholy_frenzy_target = 2;
-		bool use_ams = 3;
-		double avg_ams_success_rate = 4;
-		double avg_ams_hit = 5;
 	}
 	Options options = 3;
 }
