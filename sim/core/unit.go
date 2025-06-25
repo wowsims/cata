@@ -388,9 +388,9 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 		}
 	}
 
-	for _, pet := range unit.DynamicStatsPets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.DynamicStatsPets, func(sim *Simulation, pet *Pet) {
 		pet.addOwnerStats(sim, bonus)
-	}
+	})
 }
 
 func (unit *Unit) EnableDynamicStatDep(sim *Simulation, dep *stats.StatDependency) {
@@ -488,12 +488,12 @@ func (unit *Unit) updateCastSpeed() {
 		unit.OnCastSpeedChanged[i](oldCastSpeed, newCastSpeed)
 	}
 }
-func (unit *Unit) MultiplyCastSpeed(amount float64) {
+func (unit *Unit) MultiplyCastSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 
-	for _, pet := range unit.DynamicCastSpeedPets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.DynamicCastSpeedPets, func(_ *Simulation, pet *Pet) {
 		pet.dynamicCastSpeedInheritance(amount)
-	}
+	})
 
 	unit.updateCastSpeed()
 }
@@ -539,12 +539,12 @@ func (unit *Unit) updateMeleeAttackSpeed() {
 // MultiplyMeleeSpeed will alter the attack speed multiplier and change swing speed of all autoattack swings in progress.
 func (unit *Unit) MultiplyMeleeSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
-
 	unit.updateMeleeAttackSpeed()
 
-	for _, pet := range unit.DynamicMeleeSpeedPets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.DynamicMeleeSpeedPets, func(_ *Simulation, pet *Pet) {
 		pet.dynamicMeleeSpeedInheritance(amount)
-	}
+	})
+
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
@@ -557,10 +557,17 @@ func (unit *Unit) updateRangedAttackSpeed() {
 	}
 }
 
+// Used for "Ranged attack speed" effects like Steady Focus and Serpent's Swiftness
 func (unit *Unit) MultiplyRangedSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
 	unit.updateRangedAttackSpeed()
 	unit.AutoAttacks.UpdateSwingTimers(sim)
+}
+
+// Used for "Ranged haste" effects that modify both attack speed and focus regen, like Rapid Fire and Focus Fire
+func (unit *Unit) MultiplyRangedHaste(sim *Simulation, amount float64) {
+	unit.MultiplyRangedSpeed(sim, amount)
+	unit.MultiplyResourceRegenSpeed(sim, amount)
 }
 
 func (unit *Unit) updateAttackSpeed() {
@@ -597,9 +604,9 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 	unit.updateAttackSpeed()
 	unit.updateMeleeAndRangedHaste()
 
-	for _, pet := range unit.DynamicMeleeSpeedPets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.DynamicMeleeSpeedPets, func(_ *Simulation, pet *Pet) {
 		pet.dynamicMeleeSpeedInheritance(amount)
-	}
+	})
 
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
@@ -614,9 +621,9 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 		unit.MultiplyEnergyRegenSpeed(sim, amount)
 	}
 
-	for _, pet := range unit.RegenInheritancePets {
+	unit.Env.triggerDelayedPetInheritance(sim, unit.RegenInheritancePets, func(sim *Simulation, pet *Pet) {
 		pet.MultiplyResourceRegenSpeed(sim, amount)
-	}
+	})
 }
 
 func (unit *Unit) AddBonusRangedHitPercent(percentage float64) {

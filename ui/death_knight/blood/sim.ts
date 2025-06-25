@@ -52,6 +52,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		[
 			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
@@ -80,11 +81,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
 			blessingOfKings: true,
 			blessingOfMight: true,
 			bloodlust: true,
 			elementalOath: true,
+			leaderOfThePack: true,
 			powerWordFortitude: true,
 			serpentsSwiftness: true,
 			trueshotAura: true,
@@ -108,8 +109,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.SpellHasteBuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.SpellHasteBuff],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [

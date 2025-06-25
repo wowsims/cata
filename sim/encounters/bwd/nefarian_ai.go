@@ -134,7 +134,7 @@ func (ai *NefarianAddAI) registerSpells() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.SetStacks(sim, 1)
-			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-aura.Unit.AutoAttacks.MainhandSwingSpeed()+1, false)
+			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-aura.Unit.AutoAttacks.MainhandSwingSpeed()+1)
 
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 4,
@@ -148,7 +148,7 @@ func (ai *NefarianAddAI) registerSpells() {
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+time.Second*26, false)
+			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+time.Second*26)
 		},
 	})
 

@@ -324,6 +324,7 @@ func HornOfWinterAura(unit *Unit, asExternal bool) *Aura {
 
 	baseAura.OnReset = nil
 	baseAura.Duration = time.Minute * 5
+	baseAura.BuildPhase = CharacterBuildPhaseNone
 	return baseAura
 }
 
@@ -342,6 +343,7 @@ func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 
 	baseAura.OnReset = nil
 	baseAura.Duration = time.Minute * 5
+	baseAura.BuildPhase = CharacterBuildPhaseNone
 	return baseAura
 }
 
@@ -453,10 +455,10 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 	aura.NewExclusiveEffect("SpellHaste%Buff", false, ExclusiveEffect{
 		Priority: spellHastePercent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 + ee.Priority)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 + ee.Priority)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / (1 + ee.Priority))
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / (1 + ee.Priority))
 		},
 	})
 }
@@ -684,10 +686,10 @@ func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, multiplier)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / multiplier)
 		},
 	})
 }
@@ -1231,6 +1233,7 @@ var StormLashSpellExceptions = map[int32]float64{
 	103103: 2.0, // Malefic Grasp
 	15407:  1.0, // Mind Flay
 	129197: 1.0, // Mind Flay - Insanity
+	120360: 1.0, // Barrage
 }
 
 // Source: https://www.wowhead.com/mop-classic/spell=120668/stormlash-totem#comments

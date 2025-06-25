@@ -1,24 +1,24 @@
-package hunter
+package beast_mastery
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/hunter"
 )
 
-func (hunter *Hunter) registerKillCommandSpell() {
-	if hunter.Pet == nil || hunter.Spec != proto.Spec_SpecBeastMasteryHunter {
+func (bmHunter *BeastMasteryHunter) registerKillCommandSpell() {
+	if bmHunter.Pet == nil {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 34026}
 
-	hunter.RegisterSpell(core.SpellConfig{
+	bmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMelee,
-		ClassSpellMask: HunterSpellKillCommand,
+		ClassSpellMask: hunter.HunterSpellKillCommand,
 		Flags:          core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
@@ -29,16 +29,16 @@ func (hunter *Hunter) registerKillCommandSpell() {
 				GCD: time.Second,
 			},
 			CD: core.Cooldown{
-				Timer:    hunter.NewTimer(),
+				Timer:    bmHunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.DefaultCritMultiplier(),
+		CritMultiplier:           bmHunter.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if hunter.Pet != nil && hunter.Pet.KillCommand != nil {
-				hunter.Pet.KillCommand.Cast(sim, target)
+			if bmHunter.Pet != nil && bmHunter.Pet.KillCommand != nil {
+				bmHunter.Pet.KillCommand.Cast(sim, target)
 			}
 		},
 	})

@@ -17,12 +17,16 @@ const GCDDefault = time.Millisecond * 1500
 const BossGCD = time.Millisecond * 1620
 const MaxSpellQueueWindow = time.Millisecond * 400
 const SpellBatchWindow = time.Millisecond * 10
+const PetUpdateInterval = time.Millisecond * 5250
 const MaxMeleeRange = 5.0 // in yards
 
 const DefaultAttackPowerPerDPS = 14.0
 
 // Updated based on formulas supplied by InDebt on WoWSims Discord
 const EnemyAutoAttackAPCoefficient = 1.0 / (14.0 * 177.0)
+
+// Used by Protection Warriors, Protection Paladins and Blood Death Knights
+const StrengthToParryRating = (1 / 951.158596) * ParryRatingPerParryPercent
 
 // IDs for items used in core
 // const ()

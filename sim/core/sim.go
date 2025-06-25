@@ -10,6 +10,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/wowsims/mop/sim/core/proto"
@@ -33,10 +34,11 @@ type Simulation struct {
 	testRands map[string]Rand
 
 	// Current Simulation State
-	pendingActions []*PendingAction
-	CurrentTime    time.Duration // duration that has elapsed in the sim since starting
-	Duration       time.Duration // Duration of current iteration
-	NeedsInput     bool          // Sim is in interactive mode and needs input
+	pendingActions    []*PendingAction
+	pendingActionPool *sync.Pool
+	CurrentTime       time.Duration // duration that has elapsed in the sim since starting
+	Duration          time.Duration // Duration of current iteration
+	NeedsInput        bool          // Sim is in interactive mode and needs input
 
 	ProgressReport func(*proto.ProgressMetrics)
 	Signals        simsignals.Signals
@@ -204,6 +206,14 @@ func newSimWithEnv(env *Environment, simOptions *proto.SimOptions, signals simsi
 		testRands: make(map[string]Rand),
 
 		Signals: signals,
+
+		pendingActionPool: &sync.Pool{
+			New: func() any {
+				return &PendingAction{
+					canPool: true,
+				}
+			},
+		},
 	}
 }
 
@@ -522,7 +532,13 @@ func (sim *Simulation) Step() bool {
 	if pa.cancelled {
 		return false
 	}
+
 	pa.OnAction(sim)
+
+	if pa.canPool {
+		sim.pendingActionPool.Put(pa)
+	}
+
 	return false
 }
 
@@ -629,6 +645,16 @@ func (sim *Simulation) AddPendingAction(pa *PendingAction) {
 	//	sim.Log("Adding action at end for time %s", pa.NextActionAt)
 	//}
 	sim.pendingActions = append(sim.pendingActions, pa)
+}
+
+func (sim *Simulation) GetConsumedPendingActionFromPool() *PendingAction {
+	pa := sim.pendingActionPool.Get().(*PendingAction)
+	pa.NextActionAt = 0
+	pa.Priority = 0
+	pa.OnAction = nil
+	pa.CleanUp = nil
+	pa.cancelled = false
+	return pa
 }
 
 func (sim *Simulation) RegisterExecutePhaseCallback(callback func(sim *Simulation, isExecute int32)) {

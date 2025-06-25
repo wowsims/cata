@@ -1,0 +1,4827 @@
+character_stats_results: {
+ key: "TestMarksmanship-CharacterStats-Default"
+ value: {
+  final_stats: 177.45
+  final_stats: 20478.9375
+  final_stats: 22600.6
+  final_stats: 191.1
+  final_stats: 195
+  final_stats: 2550
+  final_stats: 8556
+  final_stats: 3452
+  final_stats: 2566
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6296
+  final_stats: 45229.6625
+  final_stats: 61060.04438
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 25425
+  final_stats: 0
+  final_stats: 462811.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7.5
+  final_stats: 15.04706
+  final_stats: 33.98925
+  final_stats: 19.26
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 156649.28485
+  tps: 129596.88514
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-AlacrityofXuen-103989"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ArcaneBadgeoftheShieldwall-93347"
+ value: {
+  dps: 150789.02122
+  tps: 125575.65814
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ArrowflightMedallion-93258"
+ value: {
+  dps: 156383.95689
+  tps: 129325.69545
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 160455.00383
+  tps: 129048.58046
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BadJuju-96781"
+ value: {
+  dps: 163343.6861
+  tps: 134909.86071
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BadgeofKypariZar-84079"
+ value: {
+  dps: 150503.46791
+  tps: 125322.88015
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BattlegearoftheSaurokStalker"
+ value: {
+  dps: 145211.02865
+  tps: 118648.53617
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BlossomofPureSnow-89081"
+ value: {
+  dps: 150155.16114
+  tps: 124687.57096
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BraidofTenSongs-84072"
+ value: {
+  dps: 150221.27759
+  tps: 125071.639
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Brawler'sStatue-87571"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BreathoftheHydra-96827"
+ value: {
+  dps: 151577.60978
+  tps: 126103.23132
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BroochofMunificentDeeds-87500"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BrutalTalismanoftheShado-PanAssault-94508"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 155492.8962
+  tps: 128718.62953
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 153874.85017
+  tps: 127020.00449
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CarbonicCarbuncle-81138"
+ value: {
+  dps: 149985.1137
+  tps: 124571.91235
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Cha-Ye'sEssenceofBrilliance-96888"
+ value: {
+  dps: 150904.72985
+  tps: 125433.24887
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CharmofTenSongs-84071"
+ value: {
+  dps: 151084.21996
+  tps: 125634.49962
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CommunalIdolofDestruction-101168"
+ value: {
+  dps: 150401.10405
+  tps: 125384.17984
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CommunalStoneofDestruction-101171"
+ value: {
+  dps: 149978.77895
+  tps: 125044.63484
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CommunalStoneofWisdom-101183"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ContemplationofChi-Ji-103688"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ContemplationofChi-Ji-103988"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Coren'sColdChromiumCoaster-87574"
+ value: {
+  dps: 153225.08673
+  tps: 126808.43607
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CoreofDecency-87497"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sBadgeofConquest-93419"
+ value: {
+  dps: 152054.43452
+  tps: 125844.80794
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sBadgeofDominance-93600"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sBadgeofVictory-93606"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sEmblemofCruelty-93485"
+ value: {
+  dps: 149073.17032
+  tps: 123906.9597
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sEmblemofMeditation-93487"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sEmblemofTenacity-93486"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sInsigniaofConquest-93424"
+ value: {
+  dps: 153805.73016
+  tps: 127145.07659
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sInsigniaofDominance-93601"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedDreadfulGladiator'sInsigniaofVictory-93611"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sBadgeofConquest-98755"
+ value: {
+  dps: 152865.01748
+  tps: 126400.73635
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sBadgeofDominance-98910"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sBadgeofVictory-98912"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sEmblemofCruelty-98811"
+ value: {
+  dps: 149386.69464
+  tps: 124156.07468
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sEmblemofMeditation-98813"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sEmblemofTenacity-98812"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sInsigniaofConquest-98760"
+ value: {
+  dps: 155003.47835
+  tps: 128076.56333
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sInsigniaofDominance-98911"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CraftedMalevolentGladiator'sInsigniaofVictory-98917"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CurseofHubris-102307"
+ value: {
+  dps: 152642.57374
+  tps: 126238.10872
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CurseofHubris-104649"
+ value: {
+  dps: 153535.39016
+  tps: 126917.25745
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CurseofHubris-104898"
+ value: {
+  dps: 152023.38344
+  tps: 125777.3432
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CurseofHubris-105147"
+ value: {
+  dps: 151564.89018
+  tps: 125483.11611
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CurseofHubris-105396"
+ value: {
+  dps: 153138.68117
+  tps: 126630.46689
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CurseofHubris-105645"
+ value: {
+  dps: 153848.88237
+  tps: 127105.64883
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-CutstitcherMedallion-93255"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Daelo'sFinalWords-87496"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 156298.45726
+  tps: 129293.79534
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DarkmistVortex-87172"
+ value: {
+  dps: 148000.78975
+  tps: 122795.6431
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DeadeyeBadgeoftheShieldwall-93346"
+ value: {
+  dps: 152958.78909
+  tps: 126887.67303
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 154130.10234
+  tps: 127253.77385
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DisciplineofXuen-103986"
+ value: {
+  dps: 158596.03518
+  tps: 131581.50008
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Dominator'sArcaneBadge-93342"
+ value: {
+  dps: 150789.02122
+  tps: 125575.65814
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Dominator'sDeadeyeBadge-93341"
+ value: {
+  dps: 152958.78909
+  tps: 126887.67303
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Dominator'sDurableBadge-93345"
+ value: {
+  dps: 148726.41981
+  tps: 123697.17069
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Dominator'sKnightlyBadge-93344"
+ value: {
+  dps: 148726.41981
+  tps: 123697.17069
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Dominator'sMendingBadge-93343"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sBadgeofConquest-84344"
+ value: {
+  dps: 152054.43452
+  tps: 125844.80794
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sBadgeofDominance-84488"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sBadgeofVictory-84490"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sEmblemofCruelty-84399"
+ value: {
+  dps: 149073.17032
+  tps: 123906.9597
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sEmblemofMeditation-84401"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sEmblemofTenacity-84400"
+ value: {
+  dps: 147909.14207
+  tps: 123025.52437
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sInsigniaofConquest-84349"
+ value: {
+  dps: 153983.08504
+  tps: 127268.29264
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sInsigniaofDominance-84489"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DreadfulGladiator'sInsigniaofVictory-84495"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-DurableBadgeoftheShieldwall-93350"
+ value: {
+  dps: 148726.41981
+  tps: 123697.17069
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EmblemofKypariZar-84077"
+ value: {
+  dps: 151116.86427
+  tps: 125862.42108
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EmblemoftheCatacombs-83733"
+ value: {
+  dps: 149327.55508
+  tps: 124197.04773
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EmptyFruitBarrel-81133"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 156779.48248
+  tps: 129532.87574
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 152246.48416
+  tps: 126237.29454
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 156827.9787
+  tps: 129579.52852
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 152246.48416
+  tps: 126237.29454
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 152246.48416
+  tps: 126237.29454
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 152246.48416
+  tps: 126237.29454
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 153104.2399
+  tps: 126705.7006
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 154130.10234
+  tps: 127253.77385
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EssenceofTerror-87175"
+ value: {
+  dps: 147884.83779
+  tps: 122831.98525
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FearwurmBadge-84074"
+ value: {
+  dps: 151353.74413
+  tps: 125867.35445
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FearwurmRelic-84070"
+ value: {
+  dps: 150255.42153
+  tps: 125099.66706
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FelsoulIdolofDestruction-101263"
+ value: {
+  dps: 150147.03117
+  tps: 125070.95887
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FelsoulStoneofDestruction-101266"
+ value: {
+  dps: 148951.91579
+  tps: 124067.70086
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Flamewaker'sBattlegear"
+ value: {
+  dps: 106167.29867
+  tps: 88143.74342
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FlashfrozenResinGlobule-100951"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FlashfrozenResinGlobule-81263"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FlashingSteelTalisman-81265"
+ value: {
+  dps: 153942.99681
+  tps: 126738.67019
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 154799.95499
+  tps: 127913.76423
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FortitudeoftheZandalari-94516"
+ value: {
+  dps: 149702.18398
+  tps: 124769.03873
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FortitudeoftheZandalari-95677"
+ value: {
+  dps: 150459.6771
+  tps: 125538.94391
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FortitudeoftheZandalari-96049"
+ value: {
+  dps: 149430.28874
+  tps: 124396.9398
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FortitudeoftheZandalari-96421"
+ value: {
+  dps: 150011.58659
+  tps: 125067.8754
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-FortitudeoftheZandalari-96793"
+ value: {
+  dps: 151078.43666
+  tps: 126083.63317
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 151721.74269
+  tps: 126079.17389
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Gerp'sPerfectArrow-87495"
+ value: {
+  dps: 154237.81649
+  tps: 127234.48948
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Gladiator'sPursuit"
+ value: {
+  dps: 155625.74169
+  tps: 126242.20405
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofConquest-100195"
+ value: {
+  dps: 155682.87339
+  tps: 128353.63925
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofConquest-100603"
+ value: {
+  dps: 155682.87339
+  tps: 128353.63925
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofConquest-102856"
+ value: {
+  dps: 155682.87339
+  tps: 128353.63925
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofConquest-103145"
+ value: {
+  dps: 155682.87339
+  tps: 128353.63925
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofDominance-100490"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofDominance-100576"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofDominance-102830"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofDominance-103308"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofVictory-100500"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofVictory-100579"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofVictory-102833"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sBadgeofVictory-103314"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofCruelty-100305"
+ value: {
+  dps: 150298.12336
+  tps: 124911.8334
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofCruelty-100626"
+ value: {
+  dps: 150298.12336
+  tps: 124911.8334
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofCruelty-102877"
+ value: {
+  dps: 150298.12336
+  tps: 124911.8334
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofCruelty-103210"
+ value: {
+  dps: 150298.12336
+  tps: 124911.8334
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofMeditation-100307"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofMeditation-100559"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofMeditation-102813"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofMeditation-103212"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofTenacity-100306"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofTenacity-100652"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofTenacity-102903"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sEmblemofTenacity-103211"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sInsigniaofConquest-103150"
+ value: {
+  dps: 159030.75636
+  tps: 130866.67151
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sInsigniaofDominance-103309"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-GrievousGladiator'sInsigniaofVictory-103319"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Hawkmaster'sTalon-89082"
+ value: {
+  dps: 155699.7904
+  tps: 128712.59268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Heart-LesionDefenderIdol-100999"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Heart-LesionDefenderStone-101002"
+ value: {
+  dps: 149344.87277
+  tps: 124395.25528
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Heart-LesionIdolofBattle-100991"
+ value: {
+  dps: 149504.70589
+  tps: 124254.57693
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Heart-LesionStoneofBattle-100990"
+ value: {
+  dps: 150143.43111
+  tps: 125133.94437
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-HeartofFire-81181"
+ value: {
+  dps: 148637.54192
+  tps: 123731.23496
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-HeartwarmerMedallion-93260"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-HelmbreakerMedallion-93261"
+ value: {
+  dps: 150263.47146
+  tps: 124754.55528
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 154130.10234
+  tps: 127253.77385
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-InsigniaofKypariZar-84078"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-IronBellyWok-89083"
+ value: {
+  dps: 149969.16099
+  tps: 124420.30631
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-IronProtectorTalisman-85181"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeBanditFigurine-86043"
+ value: {
+  dps: 155699.7904
+  tps: 128712.59268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeBanditFigurine-86772"
+ value: {
+  dps: 154375.37509
+  tps: 127651.84718
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeCharioteerFigurine-86042"
+ value: {
+  dps: 149969.16099
+  tps: 124420.30631
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeCharioteerFigurine-86771"
+ value: {
+  dps: 149361.05975
+  tps: 123903.90909
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeCourtesanFigurine-86045"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeCourtesanFigurine-86774"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeMagistrateFigurine-86044"
+ value: {
+  dps: 150155.16114
+  tps: 124687.57096
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeMagistrateFigurine-86773"
+ value: {
+  dps: 149797.05566
+  tps: 124407.67389
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeWarlordFigurine-86046"
+ value: {
+  dps: 149457.48243
+  tps: 124524.72508
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-JadeWarlordFigurine-86775"
+ value: {
+  dps: 148636.81017
+  tps: 123719.36505
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-KnightlyBadgeoftheShieldwall-93349"
+ value: {
+  dps: 148726.41981
+  tps: 123697.17069
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-KnotofTenSongs-84073"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Kor'kronBookofHurting-92785"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Lao-Chin'sLiquidCourage-89079"
+ value: {
+  dps: 149457.48243
+  tps: 124524.72508
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-LeiShen'sFinalOrders-87072"
+ value: {
+  dps: 149791.577
+  tps: 124520.93273
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-LessonsoftheDarkmaster-81268"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-LightdrinkerIdolofRage-101200"
+ value: {
+  dps: 156931.39423
+  tps: 130078.9026
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-LightdrinkerStoneofRage-101203"
+ value: {
+  dps: 154330.16533
+  tps: 128060.61887
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Lightning-ChargedBattlegear"
+ value: {
+  dps: 106111.49401
+  tps: 88793.59478
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-LightoftheCosmos-87065"
+ value: {
+  dps: 149791.577
+  tps: 124520.93273
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 156298.45726
+  tps: 129293.79534
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
+ value: {
+  dps: 153182.83339
+  tps: 126615.47777
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sBadgeofConquest-91452"
+ value: {
+  dps: 152865.01748
+  tps: 126400.73635
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sBadgeofDominance-84940"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sBadgeofDominance-91753"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sBadgeofVictory-84942"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sBadgeofVictory-91763"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sEmblemofCruelty-84936"
+ value: {
+  dps: 149504.70589
+  tps: 124254.57693
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sEmblemofCruelty-91562"
+ value: {
+  dps: 149386.69464
+  tps: 124156.07468
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sEmblemofMeditation-84939"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sEmblemofMeditation-91564"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sEmblemofTenacity-84938"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sEmblemofTenacity-91563"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sInsigniaofConquest-91457"
+ value: {
+  dps: 154865.55175
+  tps: 127899.28691
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sInsigniaofDominance-91754"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MalevolentGladiator'sInsigniaofVictory-91768"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MarkoftheCatacombs-83731"
+ value: {
+  dps: 150080.19532
+  tps: 125009.76628
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MarkoftheHardenedGrunt-92783"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MedallionofMystifyingVapors-93257"
+ value: {
+  dps: 149117.86797
+  tps: 124255.81241
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MedallionoftheCatacombs-83734"
+ value: {
+  dps: 148293.22659
+  tps: 123540.36665
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MendingBadgeoftheShieldwall-93348"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MirrorScope-4700"
+ value: {
+  dps: 153058.37992
+  tps: 126926.97801
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MistdancerDefenderIdol-101089"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MistdancerDefenderStone-101087"
+ value: {
+  dps: 150254.52657
+  tps: 125242.09098
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MistdancerIdolofRage-101113"
+ value: {
+  dps: 156689.27709
+  tps: 129894.15875
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MistdancerStoneofRage-101117"
+ value: {
+  dps: 155995.79552
+  tps: 129683.84836
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MistdancerStoneofWisdom-101107"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MithrilWristwatch-87572"
+ value: {
+  dps: 149246.17075
+  tps: 124037.81189
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MountainsageIdolofDestruction-101069"
+ value: {
+  dps: 149994.84232
+  tps: 124862.28314
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-MountainsageStoneofDestruction-101072"
+ value: {
+  dps: 149904.92692
+  tps: 125076.96215
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-OathswornDefenderIdol-101303"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-OathswornDefenderStone-101306"
+ value: {
+  dps: 149331.75168
+  tps: 124362.06897
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-OathswornIdolofBattle-101295"
+ value: {
+  dps: 149504.70589
+  tps: 124254.57693
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-OathswornStoneofBattle-101294"
+ value: {
+  dps: 149075.56517
+  tps: 124161.83073
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 156831.32686
+  tps: 129845.12898
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PouchofWhiteAsh-103639"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sBadgeofConquest-102659"
+ value: {
+  dps: 158065.63499
+  tps: 129963.49999
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sBadgeofConquest-103342"
+ value: {
+  dps: 158065.63499
+  tps: 129963.49999
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sBadgeofDominance-102633"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sBadgeofDominance-103505"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sBadgeofVictory-102636"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sBadgeofVictory-103511"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sEmblemofCruelty-102680"
+ value: {
+  dps: 151306.31956
+  tps: 125766.0534
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sEmblemofCruelty-103407"
+ value: {
+  dps: 151306.31956
+  tps: 125766.0534
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sEmblemofMeditation-102616"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sEmblemofMeditation-103409"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sEmblemofTenacity-102706"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sEmblemofTenacity-103408"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sInsigniaofConquest-103347"
+ value: {
+  dps: 162963.44075
+  tps: 133703.86528
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sInsigniaofDominance-103506"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-PridefulGladiator'sInsigniaofVictory-103516"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 150904.72985
+  tps: 125433.24887
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Qin-xi'sPolarizingSeal-87075"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RelicofChi-Ji-79330"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RelicofKypariZar-84075"
+ value: {
+  dps: 147997.22815
+  tps: 122741.83398
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RelicofNiuzao-79329"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RelicofXuen-79327"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RelicofXuen-79328"
+ value: {
+  dps: 157391.42193
+  tps: 129906.96816
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RelicofYu'lon-79331"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 186645.19574
+  tps: 151450.04198
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ResolveofNiuzao-103690"
+ value: {
+  dps: 149828.44266
+  tps: 124847.91844
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ResolveofNiuzao-103990"
+ value: {
+  dps: 150011.58659
+  tps: 125067.8754
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 155492.8962
+  tps: 128718.62953
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 155492.8962
+  tps: 128718.62953
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SI:7Operative'sManual-92784"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ScrollofReveredAncestors-89080"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SearingWords-81267"
+ value: {
+  dps: 156195.93691
+  tps: 128710.64612
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Shock-ChargerMedallion-93259"
+ value: {
+  dps: 148957.15852
+  tps: 123686.9305
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigilofCompassion-83736"
+ value: {
+  dps: 148293.22659
+  tps: 123540.36665
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigilofDevotion-83740"
+ value: {
+  dps: 149320.03959
+  tps: 124261.55969
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigilofFidelity-83737"
+ value: {
+  dps: 149263.02854
+  tps: 123841.72549
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigilofGrace-83738"
+ value: {
+  dps: 150963.77662
+  tps: 125962.22217
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigilofKypariZar-84076"
+ value: {
+  dps: 150347.26443
+  tps: 125228.85117
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigilofPatience-83739"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SigiloftheCatacombs-83732"
+ value: {
+  dps: 150560.24534
+  tps: 125285.11356
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 153874.85017
+  tps: 127020.00449
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SkullrenderMedallion-93256"
+ value: {
+  dps: 150263.47146
+  tps: 124754.55528
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SpiritsoftheSun-87163"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SpringrainIdolofDestruction-101023"
+ value: {
+  dps: 150533.09945
+  tps: 125260.85415
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SpringrainIdolofRage-101009"
+ value: {
+  dps: 156907.42094
+  tps: 130032.93166
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SpringrainStoneofDestruction-101026"
+ value: {
+  dps: 149452.44155
+  tps: 124731.49632
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SpringrainStoneofRage-101012"
+ value: {
+  dps: 155041.3774
+  tps: 128855.46559
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SpringrainStoneofWisdom-101041"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Static-Caster'sMedallion-93254"
+ value: {
+  dps: 148957.15852
+  tps: 123686.9305
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SteadfastFootman'sMedallion-92782"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SteadfastTalismanoftheShado-PanAssault-94507"
+ value: {
+  dps: 149702.18398
+  tps: 124769.03873
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-StreamtalkerIdolofDestruction-101222"
+ value: {
+  dps: 150238.08315
+  tps: 125079.63483
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-StreamtalkerIdolofRage-101217"
+ value: {
+  dps: 156852.2202
+  tps: 130084.67804
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-StreamtalkerStoneofDestruction-101225"
+ value: {
+  dps: 148439.29181
+  tps: 123650.17318
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-StreamtalkerStoneofRage-101220"
+ value: {
+  dps: 155758.54987
+  tps: 129638.22424
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-StreamtalkerStoneofWisdom-101250"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-StuffofNightmares-87160"
+ value: {
+  dps: 150144.21796
+  tps: 125131.96423
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SunsoulDefenderIdol-101160"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SunsoulDefenderStone-101163"
+ value: {
+  dps: 148859.1298
+  tps: 124117.49141
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SunsoulIdolofBattle-101152"
+ value: {
+  dps: 149504.70589
+  tps: 124254.57693
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SunsoulStoneofBattle-101151"
+ value: {
+  dps: 149555.93823
+  tps: 124768.31877
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SunsoulStoneofWisdom-101138"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 158636.8598
+  tps: 130895.76259
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SymboloftheCatacombs-83735"
+ value: {
+  dps: 149770.97531
+  tps: 124647.48078
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 159036.02537
+  tps: 131261.1245
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 160704.74824
+  tps: 132736.92369
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 156649.28485
+  tps: 129596.88514
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Thousand-YearPickledEgg-87573"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TrailseekerIdolofRage-101054"
+ value: {
+  dps: 157017.02115
+  tps: 130103.78573
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TrailseekerStoneofRage-101057"
+ value: {
+  dps: 155902.95708
+  tps: 129805.46162
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofConquest-100043"
+ value: {
+  dps: 153900.65693
+  tps: 127117.13855
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofConquest-91099"
+ value: {
+  dps: 153900.65693
+  tps: 127117.13855
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofConquest-94373"
+ value: {
+  dps: 153900.65693
+  tps: 127117.13855
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofConquest-99772"
+ value: {
+  dps: 153900.65693
+  tps: 127117.13855
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofDominance-100016"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofDominance-91400"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofDominance-94346"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofDominance-99937"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofVictory-100019"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofVictory-91410"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofVictory-94349"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sBadgeofVictory-99943"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofCruelty-100066"
+ value: {
+  dps: 149743.97094
+  tps: 124444.06934
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofCruelty-91209"
+ value: {
+  dps: 149743.97094
+  tps: 124444.06934
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofCruelty-94396"
+ value: {
+  dps: 149743.97094
+  tps: 124444.06934
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofCruelty-99838"
+ value: {
+  dps: 149743.97094
+  tps: 124444.06934
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofMeditation-91211"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofMeditation-94329"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofMeditation-99840"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofMeditation-99990"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofTenacity-100092"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofTenacity-91210"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofTenacity-94422"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sEmblemofTenacity-99839"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sInsigniaofConquest-100026"
+ value: {
+  dps: 156474.15846
+  tps: 129064.85185
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sInsigniaofDominance-100152"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalGladiator'sInsigniaofVictory-100085"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 153204.97233
+  tps: 126449.62502
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 151646.9055
+  tps: 126405.18875
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-VaporshieldMedallion-93262"
+ value: {
+  dps: 149117.86797
+  tps: 124255.81241
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-VialofDragon'sBlood-87063"
+ value: {
+  dps: 150459.6771
+  tps: 125538.94391
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-VialofIchorousBlood-100963"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-VialofIchorousBlood-81264"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ViciousTalismanoftheShado-PanAssault-94511"
+ value: {
+  dps: 160797.48646
+  tps: 132041.48788
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-VisionofthePredator-81192"
+ value: {
+  dps: 148446.22313
+  tps: 123272.54085
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-VolatileTalismanoftheShado-PanAssault-94510"
+ value: {
+  dps: 148340.60901
+  tps: 123434.95241
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-WindsweptPages-81125"
+ value: {
+  dps: 153754.83544
+  tps: 127047.60884
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-WoundripperMedallion-93253"
+ value: {
+  dps: 156383.95689
+  tps: 129325.69545
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 147753.58193
+  tps: 122887.5714
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 156649.28485
+  tps: 129596.88514
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-YaungolSlayerBattlegear"
+ value: {
+  dps: 141706.13344
+  tps: 117466.9042
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-Yu'lon'sBite-103987"
+ value: {
+  dps: 149559.22119
+  tps: 123745.98487
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 155636.52122
+  tps: 128372.60383
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Average-Default"
+ value: {
+  dps: 159530.70393
+  tps: 131468.75392
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 266045.42996
+  tps: 244600.58268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 62098.8003
+  tps: 42539.29445
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 90219.03044
+  tps: 48013.76017
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 189954.18171
+  tps: 176799.63213
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42188.42564
+  tps: 29840.05838
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 49396.95302
+  tps: 29713.49399
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 162875.54119
+  tps: 135903.38533
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 156346.65307
+  tps: 129770.70467
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 221547.115
+  tps: 163445.54877
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 117970.24884
+  tps: 101099.54603
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 114712.19786
+  tps: 98031.35688
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-DefaultTalents-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 132278.15329
+  tps: 105475.39972
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 266045.42996
+  tps: 244600.58268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 62098.8003
+  tps: 42539.29445
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 90219.03044
+  tps: 48013.76017
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 189954.18171
+  tps: 176799.63213
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42188.42564
+  tps: 29840.05838
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 49396.95302
+  tps: 29713.49399
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 156567.73229
+  tps: 129524.73323
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 152556.23393
+  tps: 125700.86267
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 213376.07128
+  tps: 154782.66118
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 112655.07583
+  tps: 95715.06144
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 110850.39253
+  tps: 94261.29323
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 127655.11481
+  tps: 100625.22697
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 269156.20288
+  tps: 244600.58268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 65041.8746
+  tps: 42539.29445
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93771.47329
+  tps: 48013.76017
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192389.02571
+  tps: 176799.63213
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 44502.10606
+  tps: 29840.05838
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 52011.94814
+  tps: 29713.49399
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 160521.04107
+  tps: 129524.73323
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 156556.29868
+  tps: 125700.86267
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 218175.34791
+  tps: 154782.66118
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 115816.40573
+  tps: 95715.06144
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 113953.12663
+  tps: 94261.29323
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 131317.50779
+  tps: 100625.22697
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 266045.42996
+  tps: 244600.58268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 62098.8003
+  tps: 42539.29445
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 90219.03044
+  tps: 48013.76017
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 189954.18171
+  tps: 176799.63213
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42188.42564
+  tps: 29840.05838
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 49396.95302
+  tps: 29713.49399
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 156982.06695
+  tps: 129906.61407
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 152163.01939
+  tps: 125455.57785
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 213993.70758
+  tps: 155428.87048
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 114941.30075
+  tps: 98215.19179
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111221.59259
+  tps: 94690.48866
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 125892.18958
+  tps: 99574.56227
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 266045.42996
+  tps: 244600.58268
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 62098.8003
+  tps: 42539.29445
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 90219.03044
+  tps: 48013.76017
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 189954.18171
+  tps: 176799.63213
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42188.42564
+  tps: 29840.05838
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 49396.95302
+  tps: 29713.49399
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 156982.06695
+  tps: 129906.61407
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 152163.01939
+  tps: 125455.57785
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 213993.70758
+  tps: 155428.87048
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 114941.30075
+  tps: 98215.19179
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111221.59259
+  tps: 94690.48866
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-p1-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 125892.18958
+  tps: 99574.56227
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 181263.04921
+  tps: 165003.29496
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42371.4745
+  tps: 27483.70891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 62964.17173
+  tps: 31081.19828
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 126628.46118
+  tps: 116545.73381
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28257.59817
+  tps: 19080.47293
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 32690.73795
+  tps: 18391.0507
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 112086.39084
+  tps: 91652.30105
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108072.12965
+  tps: 87836.37905
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 149099.58189
+  tps: 105167.12133
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 79206.6833
+  tps: 66696.20791
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 77915.4486
+  tps: 65516.92613
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-DefaultTalents-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 91429.74951
+  tps: 71434.71613
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 181263.04921
+  tps: 165003.29496
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42371.4745
+  tps: 27483.70891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 62964.17173
+  tps: 31081.19828
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 126628.46118
+  tps: 116545.73381
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28257.59817
+  tps: 19080.47293
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 32690.73795
+  tps: 18391.0507
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 106536.39981
+  tps: 86050.42103
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 104650.05973
+  tps: 84320.35279
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 144374.03565
+  tps: 100223.6214
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 76443.10338
+  tps: 63816.78837
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 75035.39554
+  tps: 62533.6844
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 86461.06299
+  tps: 66300.19064
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 183696.90508
+  tps: 165003.29496
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 44573.40494
+  tps: 27483.70891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 65545.32617
+  tps: 31081.19828
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 128486.87421
+  tps: 116545.73381
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 29941.54722
+  tps: 19080.47293
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34492.47694
+  tps: 18391.0507
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 109585.06745
+  tps: 86050.42103
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 107670.0682
+  tps: 84320.35279
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 147935.08369
+  tps: 100223.6214
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 78758.94343
+  tps: 63816.78837
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 77329.07292
+  tps: 62533.6844
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89051.24808
+  tps: 66300.19064
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 181263.04921
+  tps: 165003.29496
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42371.4745
+  tps: 27483.70891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 62964.17173
+  tps: 31081.19828
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 126628.46118
+  tps: 116545.73381
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28257.59817
+  tps: 19080.47293
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 32690.73795
+  tps: 18391.0507
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 108116.84773
+  tps: 87874.78376
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 106225.31776
+  tps: 86048.38025
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 145634.82976
+  tps: 101324.01812
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 76896.69491
+  tps: 64414.67479
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 74740.65351
+  tps: 62421.67682
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89246.92758
+  tps: 69254.91135
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 181263.04921
+  tps: 165003.29496
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42371.4745
+  tps: 27483.70891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 62964.17173
+  tps: 31081.19828
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 126628.46118
+  tps: 116545.73381
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28257.59817
+  tps: 19080.47293
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 32690.73795
+  tps: 18391.0507
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 108116.84773
+  tps: 87874.78376
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 106225.31776
+  tps: 86048.38025
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 145634.82976
+  tps: 101324.01812
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 76896.69491
+  tps: 64414.67479
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 74740.65351
+  tps: 62421.67682
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89246.92758
+  tps: 69254.91135
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 186156.612
+  tps: 170251.9422
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 44032.70287
+  tps: 29229.10234
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 64721.18298
+  tps: 32850.57861
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 132109.51956
+  tps: 122321.64712
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 29891.91694
+  tps: 20756.17995
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34687.54435
+  tps: 20103.23021
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 118868.18459
+  tps: 98612.37102
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 114655.48842
+  tps: 94700.60827
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 161288.15935
+  tps: 117206.22694
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 84332.2313
+  tps: 71915.24552
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 81866.73188
+  tps: 69586.34082
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-DefaultTalents-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 95873.99779
+  tps: 76059.21737
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 186156.612
+  tps: 170251.9422
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 44032.70287
+  tps: 29229.10234
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 64721.18298
+  tps: 32850.57861
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 132109.51956
+  tps: 122321.64712
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 29891.91694
+  tps: 20756.17995
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34687.54435
+  tps: 20103.23021
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 114428.81709
+  tps: 94072.23795
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 110366.32809
+  tps: 90169.53762
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 152671.43112
+  tps: 108073.3077
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 81510.11579
+  tps: 69230.78439
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79644.4156
+  tps: 67422.42891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92152.33383
+  tps: 72126.88482
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 188515.63829
+  tps: 170251.9422
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 46261.92664
+  tps: 29229.10234
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 67356.59994
+  tps: 32850.57861
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 133943.18369
+  tps: 122321.64712
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 31589.00343
+  tps: 20756.17995
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 36544.09879
+  tps: 20103.23021
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 117443.80855
+  tps: 94072.23795
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 113348.43477
+  tps: 90169.53762
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 156252.07284
+  tps: 108073.3077
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 83782.0416
+  tps: 69230.78439
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 81931.11272
+  tps: 67422.42891
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 94681.75673
+  tps: 72126.88482
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 186156.612
+  tps: 170251.9422
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 44032.70287
+  tps: 29229.10234
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 64721.18298
+  tps: 32850.57861
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 132109.51956
+  tps: 122321.64712
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 29891.91694
+  tps: 20756.17995
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34687.54435
+  tps: 20103.23021
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 115703.46034
+  tps: 95565.37298
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112398.40936
+  tps: 92467.25922
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 154376.73249
+  tps: 110663.04849
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 81331.18568
+  tps: 68959.40419
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79240.77258
+  tps: 67056.04764
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92722.34981
+  tps: 73095.98477
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 186156.612
+  tps: 170251.9422
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 44032.70287
+  tps: 29229.10234
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 64721.18298
+  tps: 32850.57861
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 132109.51956
+  tps: 122321.64712
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 29891.91694
+  tps: 20756.17995
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34687.54435
+  tps: 20103.23021
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 115703.46034
+  tps: 95565.37298
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112398.40936
+  tps: 92467.25922
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 154376.73249
+  tps: 110663.04849
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 81331.18568
+  tps: 68959.40419
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79240.77258
+  tps: 67056.04764
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Dwarf-preraid_celestial-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92722.34981
+  tps: 73095.98477
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 269141.91317
+  tps: 246693.42181
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 63307.62174
+  tps: 42825.78757
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93610.98006
+  tps: 48572.38436
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192231.53011
+  tps: 178446.82776
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42999.5982
+  tps: 30045.94184
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 51326.74342
+  tps: 30059.77965
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 165659.74213
+  tps: 137373.60513
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 158899.88489
+  tps: 131027.51925
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 227968.46856
+  tps: 165814.13702
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 119959.21284
+  tps: 102266.11291
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 116521.36034
+  tps: 99025.63439
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-DefaultTalents-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 136049.18039
+  tps: 107103.09844
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 269141.91317
+  tps: 246693.42181
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 63307.62174
+  tps: 42825.78757
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93610.98006
+  tps: 48572.38436
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192231.53011
+  tps: 178446.82776
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42999.5982
+  tps: 30045.94184
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 51326.74342
+  tps: 30059.77965
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 159225.61395
+  tps: 130861.56989
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 154996.07562
+  tps: 126829.28958
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 219668.66563
+  tps: 156985.54041
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 114484.49781
+  tps: 96722.42546
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112505.72233
+  tps: 95108.32317
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 131141.42896
+  tps: 101951.90984
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 272369.57491
+  tps: 246693.42181
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 66362.74252
+  tps: 42825.78757
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 97337.91667
+  tps: 48572.38436
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 194768.55057
+  tps: 178446.82776
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 45410.90099
+  tps: 30045.94184
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 54101.50599
+  tps: 30059.77965
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 163330.90381
+  tps: 130861.56989
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 159150.28618
+  tps: 126829.28958
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 224715.29416
+  tps: 156985.54041
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 117775.29381
+  tps: 96722.42546
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 115734.69307
+  tps: 95108.32317
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 135016.50662
+  tps: 101951.90984
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 269141.91317
+  tps: 246693.42181
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 63307.62174
+  tps: 42825.78757
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93610.98006
+  tps: 48572.38436
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192231.53011
+  tps: 178446.82776
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42999.5982
+  tps: 30045.94184
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 51326.74342
+  tps: 30059.77965
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 159665.6229
+  tps: 131259.81272
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 154639.65099
+  tps: 126625.66814
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 220234.36154
+  tps: 157569.51792
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 116873.28533
+  tps: 99326.38488
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112951.238
+  tps: 95605.76614
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 129466.38375
+  tps: 101028.73225
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 269141.91317
+  tps: 246693.42181
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 63307.62174
+  tps: 42825.78757
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 93610.98006
+  tps: 48572.38436
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192231.53011
+  tps: 178446.82776
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 42999.5982
+  tps: 30045.94184
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 51326.74342
+  tps: 30059.77965
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 159665.6229
+  tps: 131259.81272
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 154639.65099
+  tps: 126625.66814
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 220234.36154
+  tps: 157569.51792
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 116873.28533
+  tps: 99326.38488
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112951.238
+  tps: 95605.76614
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-p1-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 129466.38375
+  tps: 101028.73225
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 183744.46714
+  tps: 166701.07275
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 43346.8705
+  tps: 27719.1592
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 65730.75174
+  tps: 31532.25574
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 128413.02251
+  tps: 117824.18426
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28909.93329
+  tps: 19246.03617
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34231.85439
+  tps: 18647.77664
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 114360.45771
+  tps: 92860.30443
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 110170.01955
+  tps: 88880.00439
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 154283.40007
+  tps: 107016.18972
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 80702.46389
+  tps: 67533.80075
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 79280.37584
+  tps: 66230.55509
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-DefaultTalents-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 94431.3805
+  tps: 72713.025
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 183744.46714
+  tps: 166701.07275
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 43346.8705
+  tps: 27719.1592
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 65730.75174
+  tps: 31532.25574
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 128413.02251
+  tps: 117824.18426
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28909.93329
+  tps: 19246.03617
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34231.85439
+  tps: 18647.77664
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 108663.94145
+  tps: 87108.37371
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 106604.8976
+  tps: 85222.63906
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 149357.70408
+  tps: 101878.30222
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 77937.86996
+  tps: 64654.13548
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 76394.37266
+  tps: 63237.7351
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 89286.2465
+  tps: 67383.66632
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 186268.93546
+  tps: 166701.07275
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 45632.45789
+  tps: 27719.1592
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 68444.22432
+  tps: 31532.25574
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 130351.79506
+  tps: 117824.18426
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 30670.06652
+  tps: 19246.03617
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 36152.33132
+  tps: 18647.77664
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 111839.71055
+  tps: 87108.37371
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 109746.37955
+  tps: 85222.63906
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 153116.20874
+  tps: 101878.30222
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 80357.10169
+  tps: 64654.13548
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 78792.74485
+  tps: 63237.7351
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92039.38171
+  tps: 67383.66632
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 183744.46714
+  tps: 166701.07275
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 43346.8705
+  tps: 27719.1592
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 65730.75174
+  tps: 31532.25574
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 128413.02251
+  tps: 117824.18426
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28909.93329
+  tps: 19246.03617
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34231.85439
+  tps: 18647.77664
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 110278.74803
+  tps: 88985.65347
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108247.88997
+  tps: 87011.96855
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 150737.73571
+  tps: 103064.08495
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 78361.11047
+  tps: 65230.09996
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 76063.92865
+  tps: 63100.87749
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92131.00787
+  tps: 70404.02059
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 183744.46714
+  tps: 166701.07275
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 43346.8705
+  tps: 27719.1592
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 65730.75174
+  tps: 31532.25574
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 128413.02251
+  tps: 117824.18426
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 28909.93329
+  tps: 19246.03617
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 34231.85439
+  tps: 18647.77664
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 110278.74803
+  tps: 88985.65347
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108247.88997
+  tps: 87011.96855
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 150737.73571
+  tps: 103064.08495
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 78361.11047
+  tps: 65230.09996
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 76063.92865
+  tps: 63100.87749
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 92131.00787
+  tps: 70404.02059
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 188844.18491
+  tps: 172122.85322
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 45059.72791
+  tps: 29482.12446
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 67665.3079
+  tps: 33348.85108
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 134102.36265
+  tps: 123796.76301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 30585.84548
+  tps: 20941.8803
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 36353.50804
+  tps: 20388.93301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 121393.54593
+  tps: 100008.09517
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 116945.54828
+  tps: 95882.3257
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 166988.20938
+  tps: 119326.06975
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 86022.83113
+  tps: 72913.63148
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 83393.07273
+  tps: 70431.36664
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-DefaultTalents-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 99124.1203
+  tps: 77470.95836
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 188844.18491
+  tps: 172122.85322
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 45059.72791
+  tps: 29482.12446
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 67665.3079
+  tps: 33348.85108
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 134102.36265
+  tps: 123796.76301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 30585.84548
+  tps: 20941.8803
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 36353.50804
+  tps: 20388.93301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 116762.60754
+  tps: 95277.84809
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112506.02739
+  tps: 91193.86833
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 158145.12277
+  tps: 109941.65556
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 83132.17039
+  tps: 70160.49338
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 81105.64881
+  tps: 68196.80692
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 95296.82524
+  tps: 73424.66649
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 191294.97414
+  tps: 172122.85322
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 47377.78841
+  tps: 29482.12446
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 70442.81567
+  tps: 33348.85108
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 136016.12461
+  tps: 123796.76301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 32360.98196
+  tps: 20941.8803
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 38339.80319
+  tps: 20388.93301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 119905.00175
+  tps: 95277.84809
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 115615.43575
+  tps: 91193.86833
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 161940.35743
+  tps: 109941.65556
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 85514.52629
+  tps: 70160.49338
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 83502.25101
+  tps: 68196.80692
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row5_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 97993.64124
+  tps: 73424.66649
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 188844.18491
+  tps: 172122.85322
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 45059.72791
+  tps: 29482.12446
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 67665.3079
+  tps: 33348.85108
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 134102.36265
+  tps: 123796.76301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 30585.84548
+  tps: 20941.8803
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 36353.50804
+  tps: 20388.93301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 118089.80743
+  tps: 96831.61934
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 114596.48319
+  tps: 93559.92589
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 159877.43437
+  tps: 112623.21498
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 82959.47186
+  tps: 69904.33613
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 80730.95236
+  tps: 67871.36991
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent0-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 95859.22422
+  tps: 74391.58801
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 188844.18491
+  tps: 172122.85322
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 45059.72791
+  tps: 29482.12446
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 67665.3079
+  tps: 33348.85108
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 134102.36265
+  tps: 123796.76301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 30585.84548
+  tps: 20941.8803
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 36353.50804
+  tps: 20388.93301
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 118089.80743
+  tps: 96831.61934
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 114596.48319
+  tps: 93559.92589
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-mm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 159877.43437
+  tps: 112623.21498
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 82959.47186
+  tps: 69904.33613
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 80730.95236
+  tps: 67871.36991
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-Settings-Orc-preraid_celestial-Row6_Talent2-Basic-mm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 95859.22422
+  tps: 74391.58801
+ }
+}
+dps_results: {
+ key: "TestMarksmanship-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 157679.79122
+  tps: 131792.15352
+ }
+}

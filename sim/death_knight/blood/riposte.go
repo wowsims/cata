@@ -28,7 +28,7 @@ func (bdk *BloodDeathKnight) registerRiposte() {
 		ICD:      time.Second * 1,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			bonusCrit := math.Round((bdk.GetStat(stats.DodgeRating) + bdk.GetStat(stats.ParryRating)) * 0.75)
+			bonusCrit := math.Round((bdk.GetStat(stats.DodgeRating) + bdk.GetParryRatingWithoutStrength()) * 0.75)
 			riposteAura.Activate(sim)
 			riposteAura.SetStacks(sim, int32(bonusCrit))
 		},

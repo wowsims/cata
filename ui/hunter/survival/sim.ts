@@ -5,7 +5,7 @@ import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLListItem, APLRotation } from '../../core/proto/apl';
+import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { SurvivalHunter_Rotation } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
@@ -120,25 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 4) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_PRESET_SV.rotation.rotation!;
-		}
-	},
-
-	simpleRotation: (player: Player<Spec.SpecSurvivalHunter>, simple: SurvivalHunter_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
+		return Presets.ROTATION_PRESET_SV.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -146,7 +128,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			spec: Spec.SpecSurvivalHunter,
 			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.SVDefaultOptions,
-
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

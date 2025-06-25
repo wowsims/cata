@@ -74,11 +74,7 @@ func (fb *focusBar) FocusRegenPerTick() float64 {
 }
 
 func (fb *focusBar) FocusRegenPerSecond() float64 {
-	if fb.isPlayer {
-		return fb.baseFocusPerSecond * fb.getTotalRegenMultiplier()
-	} else {
-		return fb.baseFocusPerSecond
-	}
+	return fb.baseFocusPerSecond * fb.getTotalRegenMultiplier()
 }
 
 func (fb *focusBar) TimeToTargetFocus(targetFocus float64) time.Duration {
@@ -169,6 +165,7 @@ func (fb *focusBar) reset(sim *Simulation) {
 
 	fb.currentFocus = fb.maxFocus
 	fb.hasteRatingMultiplier = 1.0 + fb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
+	fb.focusRegenMultiplier = 1.0
 
 	if fb.unit.Type != PetUnit {
 		fb.enable(sim, sim.Environment.PrepullStartTime())

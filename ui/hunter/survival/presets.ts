@@ -4,9 +4,9 @@ import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/p
 import { HunterMajorGlyph as MajorGlyph, HunterOptions_PetType as PetType, SurvivalHunter_Options as HunterOptions } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import P1Gear from '../presets/p1.json';
-import PreRaidGear from '../presets/preraid.json';
-import PreRaidGearCelestial from '../presets/preraid_celestial.json';
+import P1Gear from '../presets/p1.gear.json';
+import PreRaidGear from '../presets/preraid.gear.json';
+import PreRaidGearCelestial from '../presets/preraid_celestial.gear.json';
 import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
 
@@ -15,7 +15,7 @@ import SvApl from './apls/sv.apl.json';
 // keep them in a separate file.
 
 export const PRERAID_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid', PreRaidGear);
-export const PRERAID_CELESTIAL_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid', PreRaidGearCelestial);
+export const PRERAID_CELESTIAL_PRESET_GEAR = PresetUtils.makePresetGear('Pre-raid (Celestial)', PreRaidGearCelestial);
 export const P1_PRESET_GEAR = PresetUtils.makePresetGear('P1', P1Gear);
 export const ROTATION_PRESET_SV = PresetUtils.makePresetAPLRotation('Single Target', SvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
