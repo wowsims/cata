@@ -122,6 +122,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		EnabledOnStart:                  true,
 		IsGuardian:                      false,
 		HasDynamicMeleeSpeedInheritance: true,
+		HasResourceRegenInheritance:     true,
 	}
 	hp := &HunterPet{
 		Pet:         core.NewPet(conf),
@@ -191,6 +192,7 @@ func (hp *HunterPet) Initialize() {
 	if !hp.isPrimary {
 		return
 	}
+	hp.Pet.Initialize()
 	cfg := DefaultPetConfigs[hp.hunterOwner.Options.PetType]
 	// Primary active ability (often a cooldown)
 	if cfg.SpecialAbility != Unknown {

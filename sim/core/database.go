@@ -488,6 +488,7 @@ func NewItem(itemSpec ItemSpec) Item {
 	item.ChallengeMode = itemSpec.ChallengeMode
 	scalingOptions := item.GetEffectiveScalingOptions()
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
+
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
 	item.RandPropPoints = scalingOptions.RandPropPoints
@@ -564,6 +565,7 @@ func NewEquipmentSet(equipSpec EquipmentSpec) Equipment {
 			equipment.EquipItem(NewItem(itemSpec))
 		}
 	}
+
 	return equipment
 }
 
@@ -599,16 +601,72 @@ func ItemSwapFromJsonString(jsonString string) *proto.ItemSwap {
 	return is
 }
 
-func (equipment *Equipment) Stats() stats.Stats {
+func (equipment *Equipment) Stats(spec proto.Spec) stats.Stats {
 	equipStats := stats.Stats{}
 
-	for _, item := range equipment {
-		equipStats = equipStats.Add(ItemEquipmentStats(item))
+	statsGained := 0.0
+	divisor := 0.0
+	secondaries := []stats.Stat{stats.CritRating, stats.HasteRating, stats.MasteryRating, stats.DodgeRating, stats.ParryRating}
+
+	fixedStats := []stats.Stat{stats.HitRating, stats.ExpertiseRating}
+	switch spec {
+	case proto.Spec_SpecElementalShaman,
+		proto.Spec_SpecShadowPriest,
+		proto.Spec_SpecBalanceDruid:
+		fixedStats = append(fixedStats, stats.Spirit)
 	}
+
+	isChallengeMode := false
+	fixedStatOverwrite := make([]float64, len(fixedStats))
+	for _, item := range equipment {
+		scaledBaseStats := ItemEquipmentBaseStats(item)
+
+		if item.ChallengeMode && item.ScalingOptions != nil {
+			isChallengeMode = true
+			baseItem := item
+			baseItem.ChallengeMode = false
+			baseItem.Stats = stats.FromProtoMap(baseItem.GetEffectiveScalingOptions().Stats)
+			baseItemStats := ItemEquipmentBaseStats(baseItem)
+			for idx, stat := range fixedStats {
+				statsGained += baseItemStats[stat] - scaledBaseStats[stat]
+				fixedStatOverwrite[idx] += baseItemStats[stat]
+			}
+
+			// sum up secondaries
+			for _, stat := range secondaries {
+				divisor += scaledBaseStats[stat]
+			}
+		}
+
+		equipStats = equipStats.Add(scaledBaseStats)
+	}
+
+	if isChallengeMode {
+
+		// scale
+		dividend := divisor - statsGained
+		factor := dividend / divisor
+
+		// apply scaling
+		for _, stat := range secondaries {
+			equipStats[stat] = math.Round(equipStats[stat] * factor)
+		}
+
+		for idx := range fixedStatOverwrite {
+			equipStats[fixedStats[idx]] = fixedStatOverwrite[idx]
+		}
+	}
+
+	// Add Enchants and Gems at the end as they're not scaled
+	for _, item := range equipment {
+		equipStats = equipStats.Add(ItemEquipmentGemAndEnchantStats(item))
+	}
+
 	return equipStats
 }
 
-func ItemEquipmentStats(item Item) stats.Stats {
+// Returns the base stats on the equipment. That is all stats without Gems / Enchants
+func ItemEquipmentBaseStats(item Item) stats.Stats {
 	equipStats := stats.Stats{}
 
 	if item.ID == 0 {
@@ -636,6 +694,15 @@ func ItemEquipmentStats(item Item) stats.Stats {
 		equipStats = equipStats.Add(reforgingChanges)
 	}
 
+	return equipStats
+}
+
+func ItemEquipmentGemAndEnchantStats(item Item) stats.Stats {
+	if item.ID == 0 {
+		return stats.Stats{}
+	}
+
+	equipStats := stats.Stats{}
 	equipStats = equipStats.Add(item.Enchant.Stats)
 
 	for _, gem := range item.Gems {

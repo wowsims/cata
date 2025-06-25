@@ -374,10 +374,10 @@ func (hp *HunterPet) registerRabidCD() {
 		ActionID: actionID,
 		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hp.MultiplyAttackSpeed(sim, 1.7)
+			hp.MultiplyMeleeSpeed(sim, 1.7)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hp.MultiplyAttackSpeed(sim, 1/1.7)
+			hp.MultiplyMeleeSpeed(sim, 1/1.7)
 		},
 	})
 

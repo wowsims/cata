@@ -27,12 +27,12 @@ func (hp *HunterPet) ApplySpikedCollar() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, critDep)
 			basicAttackDamageMod.Activate()
-			hp.MultiplyAttackSpeed(sim, 1.1)
+			hp.MultiplyMeleeSpeed(sim, 1.1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.DisableDynamicStatDep(sim, critDep)
 			basicAttackDamageMod.Deactivate()
-			hp.MultiplyAttackSpeed(sim, 1/1.1)
+			hp.MultiplyMeleeSpeed(sim, 1/1.1)
 		},
 	}))
 }

@@ -13,9 +13,9 @@ func (hunter *Hunter) registerAMOCSpell() {
 
 	// Add a spell modifier that reduces cooldown by 50% during execute phase
 	executePhaseMod := hunter.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  HunterSpellAMurderOfCrows,
-		FloatValue: -0.5,
-		Kind:       core.SpellMod_Cooldown_Multiplier,
+		ClassMask: HunterSpellAMurderOfCrows,
+		TimeValue: -60 * time.Second,
+		Kind:      core.SpellMod_Cooldown_Flat,
 	})
 
 	hunter.RegisterResetEffect(func(sim *core.Simulation) {

@@ -1091,13 +1091,7 @@ func LoadSpellIcons(dbHelper *DBHelper) (map[int]SpellIcon, error) {
   sm.SpellID,
   sm.SpellIconFileDataID,
   (
-    (sm.Attributes_4 & 0x00001000) <> 0
-    OR EXISTS (
-      SELECT 1
-      FROM SpellEffect se
-      WHERE se.SpellID = sm.SpellID
-        AND se.Effect = 6
-    ) OR (ss.AuraDescription_lang != '' and ss.AuraDescription_lang is not null)
+    (ss.AuraDescription_lang != '' and ss.AuraDescription_lang is not null)
   ) AS HasBuff,
   sn.Name_lang
 FROM SpellMisc sm
