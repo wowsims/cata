@@ -88,7 +88,8 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 							newTickCount := dot.BaseTickCount + core.TernaryInt32(igniteRef.RemainingDuration(sim) < time.Second, 0, 1)
 							damagePerTick := totalDamage / float64(newTickCount)
 							dot.SnapshotBaseDamage = damagePerTick
-							dot.CopyDotAndApply(sim, igniteRef)
+							dot.BaseTickCount = newTickCount
+							dot.Apply(sim)
 						}
 						dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 						continue
