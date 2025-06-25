@@ -73,7 +73,7 @@ func (fireElemental *FireElemental) enable(isGuardian bool) func(*core.Simulatio
 	return func(sim *core.Simulation) {
 		if fireElemental.empowerAutocast {
 			if fireElemental.Empower.Cast(sim, &fireElemental.shamanOwner.Unit) {
-				fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt(), false)
+				fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt())
 			}
 		}
 	}
@@ -133,7 +133,7 @@ func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.U
 		return false
 	}
 	// all spell casts reset the elemental's swing timer
-	fireElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime, false)
+	fireElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime)
 	return true
 }
 

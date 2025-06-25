@@ -68,7 +68,7 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
 
-			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:     "Item - Warrior T15 DPS 2P Bonus",
 				ActionID: core.ActionID{SpellID: 138120},
 				ICD:      250 * time.Millisecond,
@@ -114,7 +114,7 @@ var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
-			war.T15Tank2P = core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			war.T15Tank2P = setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Victorious -  T15 Protection 2P Bonus",
 				ActionID:       core.ActionID{SpellID: 138279},
 				ClassSpellMask: SpellMaskRevenge | SpellMaskShieldSlam,
@@ -147,7 +147,7 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 			actionID := core.ActionID{SpellID: 144438}
 			rageMetrics := war.NewRageMetrics(actionID)
 
-			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:     "Colossal Rage",
 				ActionID: actionID,
 				ProcMask: core.ProcMaskMeleeSpecial,
@@ -192,7 +192,7 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Death Sentence - Trigger",
 				ActionID:       core.ActionID{SpellID: 144442},
 				ClassSpellMask: SpellMaskMortalStrike | SpellMaskBloodthirst,

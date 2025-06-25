@@ -625,14 +625,16 @@ func (monk *Monk) registerPowerStrikes() {
 			// Orbs spawn ~4 yards away, simulate movement to grab the sphere.
 			moveDuration := core.DurationFromSeconds(4.0 / monk.GetMovementSpeed())
 			monk.MoveDuration(moveDuration, sim)
-			sim.AddPendingAction(&core.PendingAction{
-				NextActionAt: sim.CurrentTime + moveDuration,
-				OnAction: func(sim *core.Simulation) {
-					monk.ChiSphereAura.RemoveStack(sim)
-					chiSphereUseAura.Deactivate(sim)
-					monk.AddChi(sim, spell, 1, chiSphereChiMetrics)
-				},
-			})
+			pa := sim.GetConsumedPendingActionFromPool()
+			pa.NextActionAt = sim.CurrentTime + moveDuration
+
+			pa.OnAction = func(sim *core.Simulation) {
+				monk.ChiSphereAura.RemoveStack(sim)
+				chiSphereUseAura.Deactivate(sim)
+				monk.AddChi(sim, spell, 1, chiSphereChiMetrics)
+			}
+
+			sim.AddPendingAction(pa)
 		},
 	})
 
@@ -648,19 +650,22 @@ func (monk *Monk) registerPowerStrikes() {
 	monk.RegisterResetEffect(func(sim *core.Simulation) {
 		// Start at a random time
 		startAt := sim.RandomFloat("Power Strikes Start") * 20.0
-		sim.AddPendingAction(&core.PendingAction{
-			NextActionAt: core.DurationFromSeconds(startAt),
-			OnAction: func(sim *core.Simulation) {
-				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period:          time.Second * 20,
-					Priority:        core.ActionPriorityLow,
-					TickImmediately: true,
-					OnAction: func(sim *core.Simulation) {
-						monk.PowerStrikesAura.Activate(sim)
-					},
-				})
-			},
-		})
+		pa := sim.GetConsumedPendingActionFromPool()
+		pa.NextActionAt = core.DurationFromSeconds(startAt)
+
+		pa.OnAction = func(sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:          time.Second * 20,
+				Priority:        core.ActionPriorityLow,
+				TickImmediately: true,
+
+				OnAction: func(sim *core.Simulation) {
+					monk.PowerStrikesAura.Activate(sim)
+				},
+			})
+		}
+
+		sim.AddPendingAction(pa)
 	})
 }
 

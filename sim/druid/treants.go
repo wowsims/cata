@@ -73,14 +73,14 @@ func (druid *Druid) NewDefaultTreant(config TreantConfig) *DefaultTreantImpl {
 	treant.OnPetEnable = func(sim *core.Simulation) {
 		// Treant spawns in front of boss but moves behind after first swing.
 		treant.PseudoStats.InFrontOfTarget = true
+		pa := sim.GetConsumedPendingActionFromPool()
+		pa.NextActionAt = sim.CurrentTime + time.Millisecond*500
 
-		sim.AddPendingAction(&core.PendingAction{
-			NextActionAt: sim.CurrentTime + time.Millisecond*500,
+		pa.OnAction = func(_ *core.Simulation) {
+			treant.PseudoStats.InFrontOfTarget = false
+		}
 
-			OnAction: func(_ *core.Simulation) {
-				treant.PseudoStats.InFrontOfTarget = false
-			},
-		})
+		sim.AddPendingAction(pa)
 	}
 
 	return treant

@@ -40,13 +40,15 @@ func (destruction *DestructionWarlock) registerShadowBurnSpell() {
 				destruction.BurningEmbers.Spend(sim, core.TernaryInt32(destruction.T15_2pc.IsActive(), 8, 10), spell.ActionID)
 			}
 
-			sim.AddPendingAction(&core.PendingAction{
-				NextActionAt: sim.CurrentTime + time.Second*5,
-				Priority:     core.ActionPriorityAuto,
-				OnAction: func(sim *core.Simulation) {
-					destruction.AddMana(sim, destruction.MaxMana()*0.15, manaMetric)
-				},
-			})
+			pa := sim.GetConsumedPendingActionFromPool()
+			pa.NextActionAt = sim.CurrentTime + time.Second*5
+			pa.Priority = core.ActionPriorityAuto
+
+			pa.OnAction = func(sim *core.Simulation) {
+				destruction.AddMana(sim, destruction.MaxMana()*0.15, manaMetric)
+			}
+
+			sim.AddPendingAction(pa)
 		},
 	})
 }

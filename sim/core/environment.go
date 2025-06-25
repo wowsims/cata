@@ -45,6 +45,9 @@ type Environment struct {
 	postFinalizeEffects []PostFinalizeEffect
 
 	prepullActions []PrepullAction
+
+	// Used to model variation in pet stat inheritance
+	heartbeatOffset time.Duration
 }
 
 func NewEnvironment(raidProto *proto.Raid, encounterProto *proto.Encounter, runFakePrepull bool) (*Environment, *proto.RaidStats, *proto.EncounterStats) {
@@ -258,6 +261,9 @@ func (env *Environment) IsFinalized() bool {
 }
 
 func (env *Environment) reset(sim *Simulation) {
+	// Randomize heartbeat timer for pet stat inheritance.
+	env.heartbeatOffset = env.PrepullStartTime() - PetUpdateInterval + DurationFromSeconds(PetUpdateInterval.Seconds()*sim.RandomFloat("Pet Stat Inheritance"))
+
 	// Reset primary targets damage taken for tracking health fights.
 	env.Encounter.DamageTaken = 0
 
