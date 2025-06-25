@@ -40,9 +40,10 @@ func (moonkin *BalanceDruid) registerCelestialAlignmentSpell() {
 	})
 
 	moonkin.CelestialAlignment = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolArcane,
-		Flags:       core.SpellFlagAPL,
+		ActionID:        actionID,
+		SpellSchool:     core.SpellSchoolArcane,
+		Flags:           core.SpellFlagAPL,
+		RelatedSelfBuff: celestialAlignmentAura,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -54,8 +55,8 @@ func (moonkin *BalanceDruid) registerCelestialAlignmentSpell() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			celestialAlignmentAura.Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			spell.RelatedSelfBuff.Activate(sim)
 		},
 	})
 
