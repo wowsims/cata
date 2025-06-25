@@ -106,11 +106,11 @@ func (moonkin *BalanceDruid) registerNaturesGrace() {
 		Label:    "Nature's Grace",
 		ActionID: core.ActionID{SpellID: 16886},
 		Duration: time.Second * 15,
-		OnGain: func(_ *core.Aura, _ *core.Simulation) {
-			moonkin.MultiplyCastSpeed(1.15)
+		OnGain: func(_ *core.Aura, sim *core.Simulation) {
+			moonkin.MultiplyCastSpeed(sim, 1.15)
 		},
-		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
-			moonkin.MultiplyCastSpeed(1 / 1.15)
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
+			moonkin.MultiplyCastSpeed(sim, 1 / 1.15)
 		},
 	})
 
