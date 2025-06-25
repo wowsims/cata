@@ -38,7 +38,7 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		ClassSpellMask: mage.MageSpellArcaneMissilesTick,
 		MissileSpeed:   20,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.28, // https://www.wowhead.com/mop-classic/news/guardian-druid-and-arcane-mage-buffed-additional-mists-of-pandaria-class-changes-377468
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: arcaneMissilesCoefficient,
@@ -77,6 +77,9 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 					arcane.ArcaneChargesAura.AddStack(sim)
 				},
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					if arcane.T16_4pc != nil && arcane.T16_4pc.IsActive() && sim.Proc(0.15, "Item - Mage T16 4P Bonus") {
+						return
+					}
 					arcane.ArcaneChargesAura.Deactivate(sim)
 				},
 			},

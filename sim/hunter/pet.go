@@ -26,6 +26,9 @@ type HunterPet struct {
 	wolverineBite    *core.Spell
 	frostStormBreath *core.Spell
 	hasOwnerCooldown bool
+
+	WHFocusIncreaseMod *core.SpellMod
+	WHDamageMod        *core.SpellMod
 }
 
 func (hunter *Hunter) NewStampedePet(index int) *HunterPet {
@@ -119,6 +122,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		EnabledOnStart:                  true,
 		IsGuardian:                      false,
 		HasDynamicMeleeSpeedInheritance: true,
+		HasResourceRegenInheritance:     true,
 	}
 	hp := &HunterPet{
 		Pet:         core.NewPet(conf),
@@ -143,7 +147,11 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		FloatValue: 1,
 	})
 
-	// Active at start
+	// Store modifiers for reset
+	hp.WHFocusIncreaseMod = WHFocusIncreaseMod
+	hp.WHDamageMod = WHDamageMod
+
+	// Active at start - will be controlled by focus bar callback
 	WHFocusIncreaseMod.Activate()
 	WHDamageMod.Activate()
 
@@ -184,6 +192,7 @@ func (hp *HunterPet) Initialize() {
 	if !hp.isPrimary {
 		return
 	}
+	hp.Pet.Initialize()
 	cfg := DefaultPetConfigs[hp.hunterOwner.Options.PetType]
 	// Primary active ability (often a cooldown)
 	if cfg.SpecialAbility != Unknown {
@@ -203,8 +212,15 @@ func (hp *HunterPet) Initialize() {
 	hp.registerRabidCD()
 }
 
-func (hp *HunterPet) Reset(_ *core.Simulation) {
+func (hp *HunterPet) Reset(sim *core.Simulation) {
 	hp.uptimePercent = min(1, max(0, hp.hunterOwner.Options.PetUptime))
+
+	// Reset modifiers to initial state based on starting focus
+	if hp.WHFocusIncreaseMod != nil && hp.WHDamageMod != nil {
+		// Start with modifiers active (assuming pet starts with full focus)
+		hp.WHFocusIncreaseMod.Activate()
+		hp.WHDamageMod.Activate()
+	}
 }
 
 func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {

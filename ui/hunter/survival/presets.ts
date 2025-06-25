@@ -4,9 +4,9 @@ import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/p
 import { HunterMajorGlyph as MajorGlyph, HunterOptions_PetType as PetType, SurvivalHunter_Options as HunterOptions } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import P1Gear from '../presets/p1.json';
-import PreRaidGear from '../presets/preraid.json';
-import PreRaidGearCelestial from '../presets/preraid_celestial.json';
+import P1Gear from '../presets/p1.gear.json';
+import PreRaidGear from '../presets/preraid.gear.json';
+import PreRaidGearCelestial from '../presets/preraid_celestial.gear.json';
 import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
 

@@ -11,6 +11,22 @@ func (hunter *Hunter) registerAMOCSpell() {
 		return
 	}
 
+	// Add a spell modifier that reduces cooldown by 50% during execute phase
+	executePhaseMod := hunter.AddDynamicMod(core.SpellModConfig{
+		ClassMask: HunterSpellAMurderOfCrows,
+		TimeValue: -60 * time.Second,
+		Kind:      core.SpellMod_Cooldown_Flat,
+	})
+
+	hunter.RegisterResetEffect(func(sim *core.Simulation) {
+		executePhaseMod.Deactivate()
+		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, executePhase int32) {
+			if executePhase == 20 {
+				executePhaseMod.Activate()
+			}
+		})
+	})
+
 	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 131894},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -57,15 +73,10 @@ func (hunter *Hunter) registerAMOCSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-			if !sim.IsExecutePhase20() {
-				spell.CD.Duration = time.Minute * 2
-			}
+
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt: sim.CurrentTime + (time.Second * 2),
 				OnAction: func(sim *core.Simulation) {
-					if sim.IsExecutePhase20() {
-						spell.CD.Duration = time.Second * 30
-					}
 					if result.Landed() {
 						spell.Dot(target).Apply(sim)
 					}

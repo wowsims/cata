@@ -1,18 +1,14 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
-import {
-	BeastMasteryHunter_Options as BeastMasteryOptions,
-	HunterMajorGlyph as MajorGlyph,
-	HunterOptions_PetType as PetType,
-} from '../../core/proto/hunter';
+import { BeastMasteryHunter_Options as BeastMasteryOptions, HunterMajorGlyph as MajorGlyph, HunterOptions_PetType as PetType } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
+import P1Gear from '../presets/p1.gear.json';
+import PreRaidGear from '../presets/preraid.gear.json';
+import PreRaidGearCelestial from '../presets/preraid_celestial.gear.json';
 import AoeApl from './apls/aoe.apl.json';
 import BmApl from './apls/bm.apl.json';
-import P1Gear from '../presets/p1.json';
-import PreRaidGear from '../presets/preraid.json';
-import PreRaidGearCelestial from '../presets/preraid_celestial.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to

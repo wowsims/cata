@@ -152,7 +152,7 @@ func (ai *BalerocAI) randomizeAutoTiming(sim *core.Simulation) {
 	// synchronizing with damage events.
 	swingDur := ai.Target.AutoAttacks.MainhandSwingSpeed()
 	randomAutoOffset := core.DurationFromSeconds(sim.RandomFloat("Melee Timing") * swingDur.Seconds() / 2)
-	ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-swingDur+randomAutoOffset, true)
+	ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-swingDur+randomAutoOffset)
 }
 
 func (ai *BalerocAI) Reset(sim *core.Simulation) {
@@ -275,7 +275,7 @@ func (ai *BalerocAI) registerBlades() {
 
 	sharedBladeCastHandler := func(sim *core.Simulation) {
 		// First, schedule a swing timer reset to fire on cast completion.
-		ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+bladeCastTime, true)
+		ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+bladeCastTime)
 
 		// Then delay the off-hand until the aura expires.
 		swingDur := ai.Target.AutoAttacks.MainhandSwingSpeed()

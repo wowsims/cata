@@ -15,10 +15,12 @@ var YaunGolSlayersBattlegear = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.05,
 			})
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
-				ClassMask:  HunterSpellKillCommand,
-				FloatValue: 0.15,
+				Kind:              core.SpellMod_DamageDone_Pct,
+				ClassMask:         HunterSpellKillCommand,
+				ShouldApplyToPets: true,
+				FloatValue:        0.15,
 			})
+
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  HunterSpellChimeraShot,

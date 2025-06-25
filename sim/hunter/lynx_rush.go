@@ -15,9 +15,10 @@ func (hunter *Hunter) RegisterLynxRushSpell() {
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
-		ProcMask:    core.ProcMaskProc,
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagMeleeMetrics,
+		ClassSpellMask: HunterSpellLynxRush,
+		ProcMask:       core.ProcMaskProc,
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagMeleeMetrics,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:     "Lynx Rush",

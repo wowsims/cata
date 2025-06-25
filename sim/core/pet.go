@@ -21,7 +21,7 @@ type OnPetEnable func(sim *Simulation)
 type OnPetDisable func(sim *Simulation)
 
 type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
-type PetMeleeSpeedInheritance func(amount float64)
+type PetSpeedInheritance func(amount float64)
 
 type PetConfig struct {
 	Name                            string
@@ -52,12 +52,11 @@ type Pet struct {
 	statInheritance        PetStatInheritance
 	dynamicStatInheritance PetStatInheritance
 	inheritedStats         stats.Stats
-	inheritanceDelay       time.Duration
 
 	// In MoP pets inherit their owners melee speed and cast speed
 	// rather than having auras such as Heroism being applied to them.
-	dynamicMeleeSpeedInheritance PetMeleeSpeedInheritance
-	dynamicCastSpeedInheritance  PetMeleeSpeedInheritance
+	dynamicMeleeSpeedInheritance PetSpeedInheritance
+	dynamicCastSpeedInheritance  PetSpeedInheritance
 
 	// If true the pet will automatically inherit the owner's melee speed
 	hasDynamicMeleeSpeedInheritance bool
@@ -176,19 +175,8 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		pet.reset(sim, petAgent)
 	}
 
-	if pet.inheritanceDelay > 0 {
-		sim.AddPendingAction(&PendingAction{
-			NextActionAt: sim.CurrentTime + pet.inheritanceDelay,
-			OnAction: func(sim *Simulation) {
-				pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
-				pet.AddStatsDynamic(sim, pet.inheritedStats)
-			},
-		})
-	} else {
-		pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
-		pet.AddStatsDynamic(sim, pet.inheritedStats)
-	}
-
+	pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
+	pet.AddStatsDynamic(sim, pet.inheritedStats)
 	pet.Owner.DynamicStatsPets = append(pet.Owner.DynamicStatsPets, pet)
 	pet.dynamicStatInheritance = pet.statInheritance
 
@@ -211,30 +199,15 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 
 	if pet.hasDynamicCastSpeedInheritance {
 		pet.enableDynamicCastSpeed(func(amount float64) {
-			pet.MultiplyCastSpeed(amount)
+			pet.MultiplyCastSpeed(sim, amount)
 		})
 	}
 
 	pet.SetGCDTimer(sim, max(0, sim.CurrentTime+pet.startAttackDelay, sim.CurrentTime))
-	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
-		pet.AutoAttacks.EnableAutoSwing(sim)
-	} else {
-		previousAutoSwingMelee := pet.AutoAttacks.AutoSwingMelee
-		previousAutoSwingRanged := pet.AutoAttacks.AutoSwingRanged
-		if pet.startAttackDelay > 0 {
-			pet.AutoAttacks.AutoSwingMelee = false
-			pet.AutoAttacks.AutoSwingRanged = false
-		}
-		sim.AddPendingAction(&PendingAction{
-			NextActionAt: max(0, sim.CurrentTime+pet.startAttackDelay),
-			OnAction: func(sim *Simulation) {
-				pet.AutoAttacks.AutoSwingMelee = previousAutoSwingMelee
-				pet.AutoAttacks.AutoSwingRanged = previousAutoSwingRanged
-				if pet.enabled {
-					pet.AutoAttacks.EnableAutoSwing(sim)
-				}
-			},
-		})
+	pet.AutoAttacks.EnableAutoSwing(sim)
+
+	if (sim.CurrentTime < 0) || (pet.startAttackDelay > 0) {
+		pet.AutoAttacks.StopMeleeUntil(sim, max(0, sim.CurrentTime + pet.startAttackDelay) - pet.AutoAttacks.MainhandSwingSpeed())
 	}
 
 	if sim.Log != nil {
@@ -246,13 +219,17 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	sim.addTracker(&pet.auraTracker)
 
 	if pet.HasFocusBar() {
+		// make sure to reset it to refresh focus
+		pet.focusBar.reset(sim)
 		pet.focusBar.enable(sim, sim.CurrentTime)
+		pet.focusBar.focusRegenMultiplier *= pet.Owner.PseudoStats.AttackSpeedMultiplier
 	}
 
 	if pet.HasEnergyBar() {
 		// make sure to reset it to refresh energy
 		pet.energyBar.reset(sim)
 		pet.energyBar.enable(sim, sim.CurrentTime)
+		pet.energyBar.energyRegenMultiplier *= pet.Owner.PseudoStats.AttackSpeedMultiplier
 	}
 }
 
@@ -264,18 +241,13 @@ func (pet *Pet) EnableWithStartAttackDelay(sim *Simulation, petAgent PetAgent, s
 // Helper for enabling a pet that will expire after a certain duration.
 func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuration time.Duration) {
 	pet.Enable(sim, petAgent)
-
 	pet.SetTimeoutAction(sim, petDuration)
 }
 
 func (pet *Pet) SetTimeoutAction(sim *Simulation, duration time.Duration) {
-	pet.timeoutAction = &PendingAction{
-		NextActionAt: sim.CurrentTime + duration,
-		OnAction: func(sim *Simulation) {
-			pet.Disable(sim)
-		},
-	}
-
+	pet.timeoutAction = sim.GetConsumedPendingActionFromPool()
+	pet.timeoutAction.NextActionAt = sim.CurrentTime + duration
+	pet.timeoutAction.OnAction = pet.Disable
 	sim.AddPendingAction(pet.timeoutAction)
 }
 
@@ -292,14 +264,14 @@ func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 }
 
 // Enables and possibly updates how the pet inherits its owner's melee speed.
-func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetSpeedInheritance) {
 	if pet.hasDynamicMeleeSpeedInheritance {
 		panic("To use custom EnableDynamicMeleeSpeed remove hasDynamicMeleeSpeedInheritance from the Pet constructor")
 	}
 	pet.enableDynamicMeleeSpeed(inheritance)
 }
 
-func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicMeleeSpeedPets, pet) {
 		pet.Owner.DynamicMeleeSpeedPets = append(pet.Owner.DynamicMeleeSpeedPets, pet)
 		inheritance(pet.Owner.PseudoStats.MeleeSpeedMultiplier)
@@ -309,14 +281,14 @@ func (pet *Pet) enableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
 }
 
 // Enables and possibly updates how the pet inherits its owner's cast speed.
-func (pet *Pet) EnableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) EnableDynamicCastSpeed(inheritance PetSpeedInheritance) {
 	if pet.hasDynamicCastSpeedInheritance {
 		panic("To use custom EnableDynamicCastSpeed remove hasDynamicCastSpeedInheritance from the Pet constructor")
 	}
 	pet.enableDynamicCastSpeed(inheritance)
 }
 
-func (pet *Pet) enableDynamicCastSpeed(inheritance PetMeleeSpeedInheritance) {
+func (pet *Pet) enableDynamicCastSpeed(inheritance PetSpeedInheritance) {
 	if !slices.Contains(pet.Owner.DynamicCastSpeedPets, pet) {
 		pet.Owner.DynamicCastSpeedPets = append(pet.Owner.DynamicCastSpeedPets, pet)
 		inheritance(pet.Owner.PseudoStats.CastSpeedMultiplier)
@@ -328,12 +300,6 @@ func (pet *Pet) enableResourceRegenInheritance() {
 	if !slices.Contains(pet.Owner.RegenInheritancePets, pet) {
 		pet.Owner.RegenInheritancePets = append(pet.Owner.RegenInheritancePets, pet)
 	}
-}
-
-// Some pets, i.E. Shadowfiend only inherit their owners stat after a brief period of time
-// Causing initial attacks and abilities to not be scaled
-func (pet *Pet) DelayInitialInheritance(time time.Duration) {
-	pet.inheritanceDelay = time
 }
 
 func (pet *Pet) Disable(sim *Simulation) {
@@ -377,15 +343,15 @@ func (pet *Pet) Disable(sim *Simulation) {
 
 	pet.CancelGCDTimer(sim)
 	pet.focusBar.disable(sim)
+	pet.energyBar.disable(sim)
 	pet.AutoAttacks.CancelAutoSwing(sim)
 	pet.enabled = false
 
 	// If a pet is immediately re-summoned it might try to use GCD, so we need to clear it.
 	pet.Hardcast = Hardcast{}
 
-	if pet.timeoutAction != nil {
+	if (pet.timeoutAction != nil) && !pet.timeoutAction.consumed {
 		pet.timeoutAction.Cancel(sim)
-		pet.timeoutAction = nil
 	}
 
 	if pet.OnPetDisable != nil {
@@ -422,3 +388,26 @@ func (pet *Pet) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (pet *Pet) AddPartyBuffs(_ *proto.PartyBuffs) {}
 func (pet *Pet) ApplyTalents()                     {}
 func (pet *Pet) OnGCDReady(_ *Simulation)          {}
+
+func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPets []*Pet, inheritanceFunc func(*Simulation, *Pet)) {
+	for _, pet := range dynamicPets {
+		if !pet.IsEnabled() {
+			continue
+		}
+
+		numHeartbeats := (sim.CurrentTime - env.heartbeatOffset) / PetUpdateInterval
+		nextHeartbeat := PetUpdateInterval * (numHeartbeats + 1) + env.heartbeatOffset
+
+		pa := sim.GetConsumedPendingActionFromPool()
+		pa.NextActionAt = nextHeartbeat
+		pa.Priority = ActionPriorityDOT
+
+		pa.OnAction = func(sim *Simulation) {
+			if pet.enabled {
+				inheritanceFunc(sim, pet)
+			}
+		}
+
+		sim.AddPendingAction(pa)
+	}
+}

@@ -35,6 +35,9 @@ func (hunter *Hunter) registerBarrageSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Barrage-" + hunter.Label,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.AutoAttacks.DelayRangedUntil(sim, aura.ExpiresAt())
+				},
 			},
 			NumberOfTicks:        16,
 			TickLength:           200 * time.Millisecond,
@@ -48,6 +51,7 @@ func (hunter *Hunter) registerBarrageSpell() {
 				if target == mainTarget {
 					dmg *= 2
 				}
+
 				dot.Snapshot(target, dmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
