@@ -464,11 +464,7 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 }
 
 func MoonkinAura(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{
-		"Moonkin Aura",
-		ActionID{SpellID: 24907},
-		[]StatConfig{}})
-
+	aura := makeExclusiveBuff(unit, BuffConfig{"Moonkin Aura", ActionID{SpellID: 24907}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }

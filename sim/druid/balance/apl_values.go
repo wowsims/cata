@@ -1,11 +1,11 @@
-package druid
+package balance
 
 import (
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-func (druid *Druid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
+func (druid *BalanceDruid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_CurrentSolarEnergy:
 		return druid.newValueCurrentSolarEnergy(config.GetCurrentSolarEnergy(), config.Uuid)
@@ -20,10 +20,10 @@ func (druid *Druid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) c
 
 type APLValueCurrentSolarEnergy struct {
 	core.DefaultAPLValueImpl
-	druid *Druid
+	druid *BalanceDruid
 }
 
-func (druid *Druid) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy, uuid *proto.UUID) core.APLValue {
+func (druid *BalanceDruid) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy, uuid *proto.UUID) core.APLValue {
 	return &APLValueCurrentSolarEnergy{
 		druid: druid,
 	}
@@ -43,10 +43,10 @@ func (value *APLValueCurrentSolarEnergy) String() string {
 
 type APLValueCurrentLunarEnergy struct {
 	core.DefaultAPLValueImpl
-	druid *Druid
+	druid *BalanceDruid
 }
 
-func (druid *Druid) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy, uuid *proto.UUID) core.APLValue {
+func (druid *BalanceDruid) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy, uuid *proto.UUID) core.APLValue {
 	return &APLValueCurrentLunarEnergy{
 		druid: druid,
 	}
@@ -61,13 +61,13 @@ func (value *APLValueCurrentLunarEnergy) GetInt(sim *core.Simulation) int32 {
 }
 
 func (value *APLValueCurrentLunarEnergy) String() string {
-	return "Current Solar Energy"
+	return "Current Lunar Energy"
 }
 
 type APLValueCurrentEclipsePhase struct {
 	core.DefaultAPLValueImpl
 	phase proto.APLValueEclipsePhase
-	druid *Druid
+	druid *BalanceDruid
 }
 
 func (value *APLValueCurrentEclipsePhase) Type() proto.APLValueType {
@@ -90,7 +90,7 @@ func (value *APLValueCurrentEclipsePhase) String() string {
 	return "Current Eclipse Phase"
 }
 
-func (druid *Druid) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase, uuid *proto.UUID) core.APLValue {
+func (druid *BalanceDruid) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase, uuid *proto.UUID) core.APLValue {
 	return &APLValueCurrentEclipsePhase{
 		druid: druid,
 		phase: config.EclipsePhase,

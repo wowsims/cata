@@ -2056,6 +2056,33 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-RegaliaoftheEternalBlossom"
+ value: {
+  dps: 78227.40415
+  tps: 542055.31124
+  dtps: 53195.35956
+  hps: 20329.08563
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RegaliaoftheHauntedForest"
+ value: {
+  dps: 79927.42794
+  tps: 553605.73137
+  dtps: 51763.54015
+  hps: 23205.99778
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RegaliaoftheShatteredVale"
+ value: {
+  dps: 82160.66459
+  tps: 570325.38159
+  dtps: 51456.97956
+  hps: 26001.45301
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-RelicofChi-Ji-79330"
  value: {
   dps: 85232.43232
@@ -2907,7 +2934,7 @@ dps_results: {
   dps: 89350.50055
   tps: 618225.31812
   dtps: 54589.53868
-  hps: 24434.36121
+  hps: 24434.35949
  }
 }
 dps_results: {
