@@ -817,9 +817,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 165860.75237
-  tps: 155896.95991
-  hps: 7811.23446
+  dps: 166477.93935
+  tps: 156395.10738
+  hps: 7897.41023
  }
 }
 dps_results: {
@@ -937,9 +937,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 161015.68455
-  tps: 151530.12844
-  hps: 7546.05104
+  dps: 163085.28713
+  tps: 153446.62474
+  hps: 7595.42287
  }
 }
 dps_results: {
@@ -1881,17 +1881,17 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 154446.03326
-  tps: 144612.12258
-  hps: 7807.83076
+  dps: 155116.17693
+  tps: 145189.03458
+  hps: 7763.27891
  }
 }
 dps_results: {
  key: "TestWindwalker-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 147453.7027
-  tps: 138105.0096
-  hps: 7415.78119
+  dps: 148678.17014
+  tps: 139231.17987
+  hps: 7370.62193
  }
 }
 dps_results: {
@@ -2617,9 +2617,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 148726.06971
-  tps: 139516.69335
-  hps: 7361.23362
+  dps: 149205.21329
+  tps: 139913.52944
+  hps: 7355.57282
  }
 }
 dps_results: {

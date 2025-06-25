@@ -705,8 +705,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 82573.90622
-  tps: 52733.88047
+  dps: 83897.13644
+  tps: 52773.27809
  }
 }
 dps_results: {
@@ -796,8 +796,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 82573.90622
-  tps: 52733.88047
+  dps: 83897.13644
+  tps: 52773.27809
  }
 }
 dps_results: {
@@ -1615,15 +1615,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 80633.15672
-  tps: 51675.0322
+  dps: 81416.54612
+  tps: 51752.17633
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 79197.52301
-  tps: 50893.01058
+  dps: 80061.30237
+  tps: 50990.44839
  }
 }
 dps_results: {
@@ -2301,8 +2301,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 118423.11996
-  tps: 86289.54647
+  dps: 118335.01372
+  tps: 85222.30436
  }
 }
 dps_results: {

@@ -234,9 +234,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 144232.40362
-  tps: 107212.92586
-  hps: 1976.00085
+  dps: 144309.31772
+  tps: 107429.31639
+  hps: 1977.00579
  }
 }
 dps_results: {
@@ -266,9 +266,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 154324.43986
-  tps: 114342.14333
-  hps: 1975.8545
+  dps: 154438.96187
+  tps: 114874.39936
+  hps: 1971.98108
  }
 }
 dps_results: {
@@ -402,17 +402,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 136749.78277
-  tps: 100401.75104
-  hps: 1940.55466
+  dps: 137124.24263
+  tps: 100848.98726
+  hps: 1948.87715
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 143395.37284
-  tps: 105183.29969
-  hps: 1907.51838
+  dps: 143650.57549
+  tps: 105573.25569
+  hps: 1915.84087
  }
 }
 dps_results: {
@@ -546,9 +546,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 137994.91048
-  tps: 101112.79471
-  hps: 1983.3184
+  dps: 138473.56621
+  tps: 101709.90404
+  hps: 1966.52707
  }
 }
 dps_results: {

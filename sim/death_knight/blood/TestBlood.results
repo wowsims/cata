@@ -267,10 +267,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 122350.19403
-  tps: 782247.20117
-  dtps: 98886.98092
-  hps: 92482.55797
+  dps: 122133.47694
+  tps: 780965.16033
+  dtps: 98709.58757
+  hps: 91889.75111
  }
 }
 dps_results: {
@@ -303,10 +303,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 126048.91035
-  tps: 799515.83355
-  dtps: 96032.19165
-  hps: 91527.31213
+  dps: 125891.69034
+  tps: 799986.79369
+  dtps: 96022.50683
+  hps: 91302.44481
  }
 }
 dps_results: {
@@ -456,19 +456,19 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 116369.6169
-  tps: 739005.77602
-  dtps: 96282.3723
-  hps: 90563.19411
+  dps: 116295.88413
+  tps: 739712.58626
+  dtps: 96297.53021
+  hps: 90514.11822
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 119079.20601
-  tps: 756773.08088
-  dtps: 92431.46327
-  hps: 89310.5497
+  dps: 119053.80386
+  tps: 756224.39128
+  dtps: 92708.71889
+  hps: 89263.46396
  }
 }
 dps_results: {
@@ -627,10 +627,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 116706.5819
-  tps: 741476.51226
-  dtps: 98829.78613
-  hps: 92637.84901
+  dps: 116539.95599
+  tps: 741421.09913
+  dtps: 98854.83721
+  hps: 92489.76924
  }
 }
 dps_results: {
