@@ -85,27 +85,27 @@ func (moonkin *BalanceDruid) DeactivateEclipse(eclipse Eclipse, sim *core.Simula
 }
 
 func getEclipseMasteryBonus(masteryPoints float64) float64 {
-	return (15 + masteryPoints*2) / 100
+	return (15.0 + (8.0 * 1.875) + (masteryPoints * 1.875)) / 100
 }
 
 func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 	manaMetrics := moonkin.NewManaMetrics(core.ActionID{SpellID: 79577 /* Eclipse */})
 
-	baselineEclipsePct := 0.15
-	initialEclipseMasteryBonus := getEclipseMasteryBonus(moonkin.GetMasteryPoints())
+	docEclipseMasteryBonus := 0.0
+	eclipseMasteryBonus := getEclipseMasteryBonus(moonkin.GetMasteryPoints())
 
 	lunarSpellMod := moonkin.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane,
 		ProcMask:   core.ProcMaskSpellDamage,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
+		FloatValue: docEclipseMasteryBonus + eclipseMasteryBonus,
 	})
 
 	solarSpellMod := moonkin.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolNature,
 		ProcMask:   core.ProcMaskSpellDamage,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
+		FloatValue: docEclipseMasteryBonus + eclipseMasteryBonus,
 	})
 
 	moonkin.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
@@ -113,12 +113,12 @@ func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 			return
 		}
 
-		masteryBonusDiff := getEclipseMasteryBonus(newMastery) - getEclipseMasteryBonus(oldMastery)
+		masteryBonusDiff := core.MasteryRatingToMasteryPoints(newMastery) - core.MasteryRatingToMasteryPoints(oldMastery)
 
 		if lunarSpellMod.IsActive {
-			lunarSpellMod.UpdateFloatValue(lunarSpellMod.GetFloatValue() + core.MasteryRatingToMasteryPoints(masteryBonusDiff))
+			lunarSpellMod.UpdateFloatValue(lunarSpellMod.GetFloatValue() + getEclipseMasteryBonus(masteryBonusDiff))
 		} else if solarSpellMod.IsActive {
-			solarSpellMod.UpdateFloatValue(solarSpellMod.GetFloatValue() + core.MasteryRatingToMasteryPoints(masteryBonusDiff))
+			solarSpellMod.UpdateFloatValue(solarSpellMod.GetFloatValue() + getEclipseMasteryBonus(masteryBonusDiff))
 		}
 	})
 
@@ -128,15 +128,15 @@ func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if moonkin.DreamOfCenarius.IsActive() {
-				baselineEclipsePct += 0.25
+				docEclipseMasteryBonus = 0.25
 				moonkin.DreamOfCenarius.Deactivate(sim)
 			}
 
-			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
+			lunarSpellMod.UpdateFloatValue(docEclipseMasteryBonus + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
 			lunarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			baselineEclipsePct = 0.15
+			docEclipseMasteryBonus = 0.0
 			lunarSpellMod.Deactivate()
 		},
 	})
@@ -147,15 +147,15 @@ func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if moonkin.DreamOfCenarius.IsActive() {
-				baselineEclipsePct += 0.25
+				docEclipseMasteryBonus = 0.25
 				moonkin.DreamOfCenarius.Deactivate(sim)
 			}
 
-			solarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
+			solarSpellMod.UpdateFloatValue(docEclipseMasteryBonus + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
 			solarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			baselineEclipsePct = 0.15
+			docEclipseMasteryBonus = 0.0
 			solarSpellMod.Deactivate()
 		},
 	})

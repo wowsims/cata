@@ -22,7 +22,7 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecBloodDeathKnight, 6.25],
 	[Spec.SpecFrostDeathKnight, 2.0],
 	[Spec.SpecUnholyDeathKnight, 2.5],
-	[Spec.SpecBalanceDruid, 2.0],
+	[Spec.SpecBalanceDruid, 1.875],
 	[Spec.SpecFeralDruid, 3.125],
 	[Spec.SpecGuardianDruid, 2.0],
 	[Spec.SpecRestorationDruid, 1.25],

@@ -39,9 +39,13 @@ func (druid *Druid) registerHealingTouchSpell() {
 
 		BonusCoefficient: HealingTouchBonusCoeff,
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if target.IsOpponent(&druid.Unit) {
+				target = &druid.Unit
+			}
+
 			baseHealing := druid.CalcAndRollDamageRange(sim, HealingTouchCoeff, HealingTouchVariance)
-			spell.CalcAndDealHealing(sim, spell.Unit, baseHealing, spell.OutcomeHealingCrit)
+			spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 		},
 	})
 }
