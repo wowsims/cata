@@ -617,26 +617,26 @@ func (equipment *Equipment) Stats(spec proto.Spec) stats.Stats {
 	isChallengeMode := false
 	fixedStatOverwrite := make([]float64, len(fixedStats))
 	for _, item := range equipment {
-		scaledItemStats := ItemEquipmentStats(item)
+		scaledBaseStats := ItemEquipmentBaseStats(item)
 
 		if item.ChallengeMode && item.ScalingOptions != nil {
 			isChallengeMode = true
 			baseItem := item
 			baseItem.ChallengeMode = false
 			baseItem.Stats = stats.FromProtoMap(baseItem.GetEffectiveScalingOptions().Stats)
-			baseItemStats := ItemEquipmentStats(baseItem)
+			baseItemStats := ItemEquipmentBaseStats(baseItem)
 			for idx, stat := range fixedStats {
-				statsGained += baseItemStats[stat] - scaledItemStats[stat]
+				statsGained += baseItemStats[stat] - scaledBaseStats[stat]
 				fixedStatOverwrite[idx] += baseItemStats[stat]
 			}
 
 			// sum up secondaries
 			for _, stat := range secondaries {
-				divisor += scaledItemStats[stat]
+				divisor += scaledBaseStats[stat]
 			}
 		}
 
-		equipStats = equipStats.Add(scaledItemStats)
+		equipStats = equipStats.Add(scaledBaseStats)
 	}
 
 	if isChallengeMode {
@@ -655,10 +655,16 @@ func (equipment *Equipment) Stats(spec proto.Spec) stats.Stats {
 		}
 	}
 
+	// Add Enchants and Gems at the end as they're not scaled
+	for _, item := range equipment {
+		equipStats = equipStats.Add(ItemEquipmentGemAndEnchantStats(item))
+	}
+
 	return equipStats
 }
 
-func ItemEquipmentStats(item Item) stats.Stats {
+// Returns the base stats on the equipment. That is all stats without Gems / Enchants
+func ItemEquipmentBaseStats(item Item) stats.Stats {
 	equipStats := stats.Stats{}
 
 	if item.ID == 0 {
@@ -686,6 +692,15 @@ func ItemEquipmentStats(item Item) stats.Stats {
 		equipStats = equipStats.Add(reforgingChanges)
 	}
 
+	return equipStats
+}
+
+func ItemEquipmentGemAndEnchantStats(item Item) stats.Stats {
+	if item.ID == 0 {
+		return stats.Stats{}
+	}
+
+	equipStats := stats.Stats{}
 	equipStats = equipStats.Add(item.Enchant.Stats)
 
 	for _, gem := range item.Gems {
