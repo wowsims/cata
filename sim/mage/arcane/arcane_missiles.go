@@ -38,7 +38,7 @@ func (arcane *ArcaneMage) registerArcaneMissilesSpell() {
 		ClassSpellMask: mage.MageSpellArcaneMissilesTick,
 		MissileSpeed:   20,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 * 1.28, // https://www.wowhead.com/mop-classic/news/guardian-druid-and-arcane-mage-buffed-additional-mists-of-pandaria-class-changes-377468
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: arcaneMissilesCoefficient,

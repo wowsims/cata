@@ -31,7 +31,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 * 1.29, // Arcane Blast damage increased by 29% -  https://eu.forums.blizzard.com/en/wow/t/mists-of-pandaria-classic-development-notes-updated-20-june/571162/13
+		DamageMultiplier: 1 * 1.37, // Arcane Blast damage increased by 37% -  https://www.wowhead.com/mop-classic/news/guardian-druid-and-arcane-mage-buffed-additional-mists-of-pandaria-class-changes-377468
 		CritMultiplier:   arcane.DefaultCritMultiplier(),
 		BonusCoefficient: arcaneBlastCoefficient,
 		ThreatMultiplier: 1,
