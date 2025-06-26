@@ -102,7 +102,7 @@ var ChanceOfDeathAuraLabel = "Chance of Death"
 
 func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel) {
 	character.Unit.Metrics.isTanking = false
-	for _, target := range character.Env.Encounter.TargetUnits {
+	for _, target := range character.Env.Encounter.AllTargetUnits {
 		if (target.CurrentTarget == &character.Unit) || (target.SecondaryTarget == &character.Unit) {
 			character.Unit.Metrics.isTanking = true
 		}
@@ -194,7 +194,7 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 
 	if absorbFrac > 0 {
 		absorbShield = character.NewDamageAbsorptionAura("Healing Model Absorb Shield", healingModelActionID, NeverExpires, func(_ *Unit) float64 {
-			return max(absorbShield.ShieldStrength, healPerTick * absorbFrac)
+			return max(absorbShield.ShieldStrength, healPerTick*absorbFrac)
 		})
 	}
 
@@ -216,7 +216,7 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 
 			if healPerTick > 0 {
 				// Execute the direct portion of the heal
-				character.GainHealth(sim, healPerTick * (1.0 - absorbFrac), healthMetrics)
+				character.GainHealth(sim, healPerTick*(1.0-absorbFrac), healthMetrics)
 
 				// Turn the remainder into an absorb shield
 				if absorbShield != nil {

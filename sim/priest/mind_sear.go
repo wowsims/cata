@@ -24,7 +24,7 @@ func (priest *Priest) getMindSearTickSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := priest.ClassSpellScaling * 0.23
-		for _, aoeTarget := range sim.Encounter.TargetUnits {
+		for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 
 			// Calc spell damage but deal as periodic for metric purposes
 			result := spell.CalcDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCritNoHitCounter)

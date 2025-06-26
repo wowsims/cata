@@ -23,7 +23,7 @@ func (druid *Druid) registerHurricaneSpell() {
 			damage := 0.327 * druid.ClassSpellScaling
 			damage *= sim.Encounter.AOECapMultiplier()
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

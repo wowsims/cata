@@ -56,14 +56,14 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 					Priority:     core.ActionPriorityGCD,
 
 					OnAction: func(sim *core.Simulation) {
-						spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, dropTime.Minutes())
-						spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+						spell.Dot(sim.Encounter.ActiveTargetUnits[0]).BaseTickCount = searingTickCount(shaman, dropTime.Minutes())
+						spell.Dot(sim.Encounter.ActiveTargetUnits[0]).Apply(sim)
 					},
 				}
 				sim.AddPendingAction(pa)
 			} else {
-				spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, 0)
-				spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+				spell.Dot(sim.Encounter.ActiveTargetUnits[0]).BaseTickCount = searingTickCount(shaman, 0)
+				spell.Dot(sim.Encounter.ActiveTargetUnits[0]).Apply(sim)
 			}
 			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Duration(duration)*time.Second
@@ -101,14 +101,14 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			BonusCoefficient: 0.06700000167,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				results := make([]*core.SpellResult, shaman.Env.GetNumTargets())
+				results := make([]*core.SpellResult, shaman.Env.ActiveTargetCount())
 				baseDamage := shaman.CalcScalingSpellDmg(0.26699998975)
 				aoeMult := sim.Encounter.AOECapMultiplier()
 				dot.Spell.DamageMultiplier *= aoeMult
-				for i, aoeTarget := range sim.Encounter.TargetUnits {
+				for i, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					results[i] = dot.Spell.CalcPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
-				for i := range sim.Encounter.TargetUnits {
+				for i := range sim.Encounter.ActiveTargetUnits {
 					dot.Spell.DealPeriodicDamage(sim, results[i])
 				}
 				dot.Spell.DamageMultiplier /= aoeMult

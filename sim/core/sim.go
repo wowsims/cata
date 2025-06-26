@@ -471,7 +471,7 @@ func (sim *Simulation) Cleanup() {
 	for _, unit := range sim.Raid.AllUnits {
 		unit.Metrics.doneIteration(unit, sim)
 	}
-	for _, target := range sim.Encounter.TargetUnits {
+	for _, target := range sim.Encounter.AllTargetUnits {
 		target.Metrics.doneIteration(target, sim)
 	}
 }

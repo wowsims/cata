@@ -43,7 +43,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 			baseDamage := 303.0 + 0.228*spell.MeleeAttackPower()
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 				if result.Landed() {
 					warrior.ThunderClapAuras.Get(aoeTarget).Activate(sim)

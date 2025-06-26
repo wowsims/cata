@@ -249,7 +249,7 @@ func (warrior *Warrior) applyBloodAndThunder() {
 		},
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// B&T resnapshots all of the rends it applies and will overwrite "better" rends on any target the TC hits
-			for _, target := range sim.Encounter.TargetUnits {
+			for _, target := range sim.Encounter.ActiveTargetUnits {
 				rend := warrior.Rend.Dot(target)
 				lastAppliedTime = int64(sim.CurrentTime)
 

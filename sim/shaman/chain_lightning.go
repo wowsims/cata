@@ -8,10 +8,10 @@ import (
 )
 
 func (shaman *Shaman) registerChainLightningSpell() {
-	numHits := min(core.TernaryInt32(shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning), 5, 3), shaman.Env.GetNumTargets())
+	maxHits := min(core.TernaryInt32(shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning), 5, 3), shaman.Env.TotalTargetCount())
 	shaman.ChainLightning = shaman.newChainLightningSpell(false)
-	shaman.ChainLightningOverloads = []*core.Spell{}
-	for i := int32(0); i < numHits; i++ {
+	shaman.ChainLightningOverloads = make([]*core.Spell, 0, maxHits)
+	for range maxHits {
 		shaman.ChainLightningOverloads = append(shaman.ChainLightningOverloads, shaman.newChainLightningSpell(true))
 	}
 }
@@ -32,7 +32,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		spellConfig.DamageMultiplier *= 0.90
 		numHits += 2
 	}
-	numHits = min(numHits, shaman.Env.GetNumTargets())
+	numHits = min(numHits, shaman.Env.ActiveTargetCount())
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		bounceReduction := core.TernaryFloat64(shaman.DungeonSet3.IsActive() && !isElementalOverload, 0.83, 0.7)
@@ -45,7 +45,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 			results[hitIndex] = shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
 
-			curTarget = sim.Environment.NextTargetUnit(curTarget)
+			curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 			spell.DamageMultiplier *= bounceReduction
 		}
 

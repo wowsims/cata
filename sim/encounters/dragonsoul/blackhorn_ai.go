@@ -151,10 +151,10 @@ func (ai *BlackhornAI) Initialize(target *core.Target, config *proto.Target) {
 
 	if ai.isBoss {
 		ai.BossUnit = &target.Unit
-		ai.AddUnit = &target.NextTarget().Unit
+		ai.AddUnit = &target.NextActiveTarget().Unit
 	} else {
 		ai.AddUnit = &target.Unit
-		ai.BossUnit = &target.NextTarget().Unit
+		ai.BossUnit = &target.NextActiveTarget().Unit
 	}
 
 	ai.MainTank = ai.BossUnit.CurrentTarget

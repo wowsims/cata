@@ -11,9 +11,10 @@ import (
 type Encounter struct {
 	Duration          time.Duration
 	DurationVariation time.Duration
-	Targets           []*Target
+	AllTargets        []*Target
 	ActiveTargets     []*Target
-	TargetUnits       []*Unit
+	AllTargetUnits    []*Unit
+	ActiveTargetUnits []*Unit
 
 	ExecuteProportion_20 float64
 	ExecuteProportion_25 float64
@@ -34,6 +35,7 @@ type Encounter struct {
 func NewEncounter(options *proto.Encounter) Encounter {
 	options.ExecuteProportion_25 = max(options.ExecuteProportion_25, options.ExecuteProportion_20)
 	options.ExecuteProportion_35 = max(options.ExecuteProportion_35, options.ExecuteProportion_25)
+	totalTargetCount := max(len(options.Targets), 1)
 
 	encounter := Encounter{
 		Duration:             DurationFromSeconds(options.Duration),
@@ -42,22 +44,35 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		ExecuteProportion_25: max(options.ExecuteProportion_25, 0),
 		ExecuteProportion_35: max(options.ExecuteProportion_35, 0),
 		ExecuteProportion_90: max(options.ExecuteProportion_90, 0),
-		Targets:              []*Target{},
-		ActiveTargets:        []*Target{},
+		AllTargets:           make([]*Target, 0, totalTargetCount),
+		ActiveTargets:        make([]*Target, 0, totalTargetCount),
+		AllTargetUnits:       make([]*Unit, 0, totalTargetCount),
+		ActiveTargetUnits:    make([]*Unit, 0, totalTargetCount),
 	}
+
 	for targetIndex, targetOptions := range options.Targets {
 		target := NewTarget(targetOptions, int32(targetIndex))
-		encounter.Targets = append(encounter.Targets, target)
-		encounter.ActiveTargets = append(encounter.ActiveTargets, target)
-		encounter.TargetUnits = append(encounter.TargetUnits, &target.Unit)
+		encounter.AllTargets = append(encounter.AllTargets, target)
+		encounter.AllTargetUnits = append(encounter.AllTargetUnits, &target.Unit)
+
+		if target.IsEnabled() {
+			encounter.ActiveTargets = append(encounter.ActiveTargets, target)
+			encounter.ActiveTargetUnits = append(encounter.ActiveTargetUnits, &target.Unit)
+		}
 	}
-	if len(encounter.Targets) == 0 {
+
+	if len(encounter.AllTargets) == 0 {
 		// Add a dummy target. The only case where targets aren't specified is when
 		// computing character stats, and targets won't matter there.
 		target := NewTarget(&proto.Target{}, 0)
-		encounter.Targets = append(encounter.Targets, target)
+		encounter.AllTargets = append(encounter.AllTargets, target)
 		encounter.ActiveTargets = append(encounter.ActiveTargets, target)
-		encounter.TargetUnits = append(encounter.TargetUnits, &target.Unit)
+		encounter.AllTargetUnits = append(encounter.AllTargetUnits, &target.Unit)
+		encounter.ActiveTargetUnits = append(encounter.ActiveTargetUnits, &target.Unit)
+	}
+
+	if len(encounter.ActiveTargets) == 0 {
+		panic("At least one target must be active at the start of the simulation!")
 	}
 
 	// If UseHealth is set, we use the sum of targets health. After creating the targets to make sure stat modifications are done
@@ -85,25 +100,22 @@ func (encounter *Encounter) AOECapMultiplier() float64 {
 	return encounter.aoeCapMultiplier
 }
 func (encounter *Encounter) updateAOECapMultiplier() {
-	encounter.aoeCapMultiplier = min(10/float64(len(encounter.Targets)), 1)
+	encounter.aoeCapMultiplier = min(10/float64(len(encounter.ActiveTargets)), 1)
 }
 
 func (encounter *Encounter) doneIteration(sim *Simulation) {
-	for i := range encounter.Targets {
-		target := encounter.Targets[i]
+	for _, target := range encounter.AllTargets {
 		target.doneIteration(sim)
 	}
 }
 
 func (encounter *Encounter) GetMetricsProto() *proto.EncounterMetrics {
 	metrics := &proto.EncounterMetrics{
-		Targets: make([]*proto.UnitMetrics, len(encounter.Targets)),
+		Targets: make([]*proto.UnitMetrics, len(encounter.AllTargets)),
 	}
 
-	i := 0
-	for _, target := range encounter.Targets {
-		metrics.Targets[i] = target.GetMetricsProto()
-		i++
+	for idx, target := range encounter.AllTargets {
+		metrics.Targets[idx] = target.GetMetricsProto()
 	}
 
 	return metrics
@@ -112,8 +124,6 @@ func (encounter *Encounter) GetMetricsProto() *proto.EncounterMetrics {
 // Target is an enemy/boss that can be the target of player attacks/spells.
 type Target struct {
 	Unit
-
-	IsActive bool
 
 	AI TargetAI
 }
@@ -138,8 +148,8 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
 			ReactionTime:          time.Millisecond * 1620,
+			enabled:               true,
 		},
-		IsActive: true,
 	}
 	defaultRaidBossLevel := int32(CharacterLevel + 3)
 	target.GCD = target.NewTimer()
@@ -180,12 +190,20 @@ func (target *Target) Reset(sim *Simulation) {
 	}
 }
 
-func (target *Target) NextTarget() *Target {
+func (target *Target) NextActiveTarget() *Target {
 	nextIndex := target.Index + 1
-	if nextIndex >= target.Env.GetNumTargets() {
+
+	if nextIndex >= target.Env.TotalTargetCount() {
 		nextIndex = 0
 	}
-	return target.Env.GetTarget(nextIndex)
+
+	nextTarget := target.Env.GetTargetByIndex(nextIndex)
+
+	if nextTarget.IsEnabled() {
+		return nextTarget
+	} else {
+		return nextTarget.NextActiveTarget()
+	}
 }
 
 func (target *Target) GetMetricsProto() *proto.UnitMetrics {

@@ -271,8 +271,8 @@ func (ai *MagmawAI) registerSpells() {
 			}
 
 			// TODO: Move this to an APL Action
-			if !isIndividualSim && ai.Target.Env.GetNumTargets() > 1 {
-				addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+			if !isIndividualSim && ai.Target.Env.ActiveTargetCount() > 1 {
+				addTarget := ai.Target.Env.NextActiveTargetUnit(&ai.Target.Unit)
 				if addTarget.CurrentTarget != nil {
 					// Swap Tanks
 					addTank := addTarget.CurrentTarget
@@ -293,8 +293,8 @@ func (ai *MagmawAI) registerSpells() {
 						ai.Target.CurrentTarget = nil
 
 						// Set add target
-						if ai.Target.Env.GetNumTargets() > 1 {
-							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+						if ai.Target.Env.ActiveTargetCount() > 1 {
+							addTarget := ai.Target.Env.NextActiveTargetUnit(&ai.Target.Unit)
 							tankUnit.CurrentTarget = addTarget
 
 							addTarget.CurrentTarget = tankUnit
@@ -308,8 +308,8 @@ func (ai *MagmawAI) registerSpells() {
 						tankUnit.CurrentTarget = &ai.Target.Unit
 
 						// Remove add target
-						if ai.Target.Env.GetNumTargets() > 1 {
-							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+						if ai.Target.Env.ActiveTargetCount() > 1 {
+							addTarget := ai.Target.Env.NextActiveTargetUnit(&ai.Target.Unit)
 							addTarget.AutoAttacks.CancelAutoSwing(sim)
 							addTarget.CurrentTarget = nil
 						}

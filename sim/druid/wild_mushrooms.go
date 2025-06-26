@@ -50,7 +50,7 @@ func (druid *Druid) registerWildMushrooms() {
 			baseDamage := sim.Roll(min, max)
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

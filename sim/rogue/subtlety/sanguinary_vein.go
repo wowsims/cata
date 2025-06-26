@@ -54,7 +54,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 
 	subRogue.RegisterPrepullAction(-1, func(sim *core.Simulation) {
 		if subRogue.Options.AssumeBleedActive {
-			for _, target := range subRogue.Env.Encounter.TargetUnits {
+			for _, target := range subRogue.Env.Encounter.AllTargetUnits {
 				aura := svDebuffArray.Get(target)
 				aura.Duration = core.NeverExpires
 				aura.Activate(sim)

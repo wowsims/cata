@@ -34,7 +34,7 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Damage <= 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || war.Env.GetNumTargets() < 2 {
+			if result.Damage <= 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || war.Env.ActiveTargetCount() < 2 {
 				return
 			}
 
@@ -47,7 +47,7 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg /= result.ResistanceMultiplier
 
-			ssHit.Cast(sim, war.Env.NextTargetUnit(result.Target))
+			ssHit.Cast(sim, war.Env.NextActiveTargetUnit(result.Target))
 			ssHit.SpellMetrics[result.Target.UnitIndex].Casts--
 		},
 	})

@@ -64,7 +64,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 		BonusCoefficient: 1.00,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				baseDamage := sim.Roll(453, 537) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -96,7 +96,7 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// TODO is this the right affect should it be Capped?
 				// TODO these are approximation, from base SP
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					//baseDamage *= sim.Encounter.AOECapMultiplier()
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, 102, dot.Spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
 				}

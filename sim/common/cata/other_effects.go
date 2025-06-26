@@ -44,7 +44,7 @@ func init() {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
-						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+						spreadTarget := sim.Encounter.ActiveTargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.ActiveTargetUnits))))]
 
 						// refresh dot on next step - refreshing potentially on aura expire
 						// which will cause nasty things to happen
@@ -85,7 +85,7 @@ func init() {
 
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
-						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+						spreadTarget := sim.Encounter.ActiveTargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.ActiveTargetUnits))))]
 						spreadDot.Dot(spreadTarget).Apply(sim) // refresh self on
 					}
 				},
@@ -149,7 +149,7 @@ func init() {
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, storedMana, spell.OutcomeMagicHitAndCrit)
 				}
 				character.AddMana(sim, storedMana, manaMetric)
@@ -947,8 +947,6 @@ func init() {
 		fetishItemID := []int32{77982, 77210, 78002}[version]
 		core.NewItemEffect(fetishItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
-			numTargets := character.Env.GetNumTargets()
-
 			actionID := core.ActionID{SpellID: []int32{109753, 107998, 109755}[version]}
 			minDmg := []float64{8029, 9063, 10230}[version]
 			maxDmg := []float64{12044, 13594, 15345}[version]
@@ -965,12 +963,13 @@ func init() {
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					numTargets := sim.Environment.ActiveTargetCount()
 					results := make([]*core.SpellResult, numTargets)
 
-					for idx := int32(0); idx < numTargets; idx++ {
+					for idx, target := range sim.Environment.GetActiveTargets() {
 						baseDamage := sim.Roll(minDmg, maxDmg) +
 							apMod*spell.MeleeAttackPower()
-						results[idx] = spell.CalcDamage(sim, sim.Environment.GetTargetUnit(idx), baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+						results[idx] = spell.CalcDamage(sim, &target.Unit, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 					}
 
 					for idx := int32(0); idx < numTargets; idx++ {
@@ -999,8 +998,6 @@ func init() {
 		cunningItemID := []int32{77980, 77208, 78000}[version]
 		core.NewItemEffect(cunningItemID, func(agent core.Agent, _ proto.ItemLevelState) {
 			character := agent.GetCharacter()
-			numTargets := character.Env.GetNumTargets()
-
 			actionID := core.ActionID{SpellID: []int32{109798, 108005, 109800}[version]}
 			minDmg := []float64{2498, 2820, 3183}[version]
 			maxDmg := []float64{3747, 4230, 4774}[version]
@@ -1021,10 +1018,11 @@ func init() {
 				BonusCoefficient: spMod,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					numTargets := sim.Environment.ActiveTargetCount()
 					results := make([]*core.SpellResult, numTargets)
 
-					for idx := int32(0); idx < numTargets; idx++ {
-						results[idx] = spell.CalcDamage(sim, sim.Environment.GetTargetUnit(idx), sim.Roll(minDmg, maxDmg), spell.OutcomeMagicCrit)
+					for idx, target := range sim.Environment.GetActiveTargets() {
+						results[idx] = spell.CalcDamage(sim, &target.Unit, sim.Roll(minDmg, maxDmg), spell.OutcomeMagicCrit)
 					}
 
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
@@ -1322,7 +1320,7 @@ func init() {
 					AffectedByCastSpeed: false,
 
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						for _, aoeTarget := range sim.Encounter.TargetUnits {
+						for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 							result := dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, tickDamage, dot.Spell.OutcomeMagicCritNoHitCounter)
 
 							if result.DidCrit() {

@@ -9,8 +9,8 @@ import (
 
 func (warrior *Warrior) RegisterWhirlwindSpell() {
 	actionID := core.ActionID{SpellID: 1680}
-	numHits := warrior.Env.GetNumTargets() // Whirlwind is uncapped in Cata
-	results := make([]*core.SpellResult, numHits)
+	maxHits := warrior.Env.TotalTargetCount() // Whirlwind is uncapped in Cata
+	results := make([]*core.SpellResult, maxHits)
 
 	var whirlwindOH *core.Spell
 	if warrior.AutoAttacks.IsDualWielding && warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypeStaff &&
@@ -30,17 +30,16 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				curTarget := target
+				numHits := sim.Environment.ActiveTargetCount()
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := 0.65 * spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 					results[hitIndex] = whirlwindOH.CalcDamage(sim, curTarget, baseDamage, whirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
+					curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 				}
 
-				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					whirlwindOH.DealDamage(sim, results[hitIndex])
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			},
 		})
@@ -78,6 +77,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
+			numHits := sim.Environment.ActiveTargetCount()
 			numLandedHits := 0
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := 0.65 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
@@ -86,13 +86,11 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 					numLandedHits++
 				}
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 			}
 
-			curTarget = target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
 			if numLandedHits >= 4 {

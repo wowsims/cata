@@ -290,7 +290,7 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 					return
 				}
 
-				for _, target := range druid.Env.Encounter.TargetUnits {
+				for _, target := range druid.Env.Encounter.AllTargetUnits {
 					spell.Dot(target).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 						if setBonusAura.IsActive() {
 							t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Activate(sim)
