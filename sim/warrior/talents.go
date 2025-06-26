@@ -153,6 +153,8 @@ func (war *Warrior) registerBladestorm() {
 		damageMultiplier *= 1.33
 	}
 
+	results := make([]*core.SpellResult, war.Env.GetNumTargets())
+
 	mhSpell := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID.WithTag(1), // Real Spell ID: 50622
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -164,9 +166,15 @@ func (war *Warrior) registerBladestorm() {
 		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, enemyTarget := range sim.Encounter.ActiveTargets {
+			for i, enemyTarget := range sim.Encounter.ActiveTargets {
 				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-				spell.CalcAndDealDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				results[i] = spell.CalcDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			}
+
+			war.CastNormalizedSweepingStrikesAttack(results, sim, target)
+
+			for _, result := range results {
+				spell.DealDamage(sim, result)
 			}
 		},
 	})
