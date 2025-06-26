@@ -148,7 +148,7 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
 			ReactionTime:          time.Millisecond * 1620,
-			enabled:               true,
+			enabled:               !options.DisabledAtStart,
 		},
 	}
 	defaultRaidBossLevel := int32(CharacterLevel + 3)

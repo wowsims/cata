@@ -2641,8 +2641,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 88381.80371
-  tps: 46974.92248
+  dps: 88277.98836
+  tps: 46871.10713
  }
 }
 dps_results: {
@@ -2662,8 +2662,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 61889.70488
-  tps: 31604.6082
+  dps: 61825.67231
+  tps: 31540.57564
  }
 }
 dps_results: {
@@ -2683,8 +2683,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p4_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 135988.71644
-  tps: 80429.84087
+  dps: 135851.89603
+  tps: 80293.02046
  }
 }
 dps_results: {
@@ -2704,8 +2704,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p4_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 98564.78697
-  tps: 56119.80398
+  dps: 98479.76401
+  tps: 56034.78102
  }
 }
 dps_results: {
@@ -2725,8 +2725,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 88454.34561
-  tps: 46997.32067
+  dps: 88352.70832
+  tps: 46895.68337
  }
 }
 dps_results: {
@@ -2746,8 +2746,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 62140.08469
-  tps: 31724.62297
+  dps: 62076.28098
+  tps: 31660.81926
  }
 }
 dps_results: {
@@ -2767,8 +2767,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Worgen-p4_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 136637.91161
-  tps: 80733.38131
+  dps: 136508.95664
+  tps: 80604.42634
  }
 }
 dps_results: {
@@ -2788,8 +2788,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Worgen-p4_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 99014.58772
-  tps: 56294.14257
+  dps: 98932.18127
+  tps: 56211.73612
  }
 }
 dps_results: {

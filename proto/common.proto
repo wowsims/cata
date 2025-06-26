@@ -835,6 +835,9 @@ message Target {
 	// Used in tank swap AIs.
 	int32 second_tank_index = 100;
 
+        // Used in dynamic target AIs.
+        bool disabled_at_start = 101;
+
 	// Custom Target AI parameters
 	repeated TargetInput target_inputs = 18;
 }
