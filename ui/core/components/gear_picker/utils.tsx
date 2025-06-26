@@ -29,7 +29,7 @@ export function getEmptySlotIconUrl(slot: ItemSlot): string {
 }
 
 export const createHeroicLabel = () => {
-	return <span className="heroic-label">[H]</span>;
+	return <small className="heroic-label">(Heroic)</small>;
 };
 
 export const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: number) => {
