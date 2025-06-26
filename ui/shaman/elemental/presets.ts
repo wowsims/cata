@@ -4,16 +4,13 @@ import {
 	ElementalShaman_Options as ElementalShamanOptions,
 	FeleAutocastSettings,
 	ShamanMajorGlyph,
-	ShamanMinorGlyph,
 	ShamanShield,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import AoEApl from './apls/aoe.apl.json';
 import CleaveApl from './apls/cleave.apl.json';
-import PEApl from './apls/pe.apl.json';
-import UFApl from './apls/uf.apl.json';
-import EBApl from './apls/eb.apl.json';
+import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
@@ -24,9 +21,7 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
 
-export const ROTATION_PRESET_UF = PresetUtils.makePresetAPLRotation('Default', UFApl);
-export const ROTATION_PRESET_EB = PresetUtils.makePresetAPLRotation('Elemental Blast', EBApl);
-export const ROTATION_PRESET_PE = PresetUtils.makePresetAPLRotation('Primal Elementalist', PEApl);
+export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_CLEAVE = PresetUtils.makePresetAPLRotation('Cleave', CleaveApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE (3+)', AoEApl);
 
@@ -132,7 +127,7 @@ const ENCOUNTER_AOE = PresetUtils.makePresetEncounter(
 
 export const P1_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('Default', {
 	talents: StandardTalents,
-	rotation: ROTATION_PRESET_UF,
+	rotation: ROTATION_PRESET_DEFAULT,
 	encounter: ENCOUNTER_SINGLE_TARGET,
 	epWeights: EP_PRESET_DEFAULT,
 });
