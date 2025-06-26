@@ -830,6 +830,7 @@ func ScanConsumable(rows *sql.Rows) (dbc.Consumable, error) {
 		&itemEffectsStr,
 		&consumable.ElixirType,
 		&consumable.Duration,
+		&consumable.CooldownDuration,
 	)
 	if err != nil {
 		return consumable, fmt.Errorf("scanning consumable data: %w", err)
@@ -879,7 +880,8 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 					WHEN sp.Description_lang LIKE '%Battle Elixir%' THEN 2
 					ELSE 0
 				END AS ElixirType,
-				COALESCE(sd.Duration, 0) as Duration
+				COALESCE(sd.Duration, 0) as Duration,
+				COALESCE(ie.CoolDownMSec, 0) as CooldownDuration
 			FROM Item i
 			JOIN ItemSparse s ON i.ID = s.ID
 			LEFT JOIN ItemEffect ie ON i.ID = ie.ParentItemID
@@ -887,7 +889,7 @@ func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consum
 			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
 			LEFT JOIN SpellMisc sm ON ie.SpellId = sm.SpellID
 			LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 85 OR i.ID = 22788 OR i.ID = 13442)
+			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 85 OR i.ID = 22788 OR i.ID = 13442) OR i.ID = 86125
 			AND s.Display_lang != ''
 			AND s.Display_lang NOT LIKE '%Test%'
 			AND s.Display_lang NOT LIKE 'QA%'

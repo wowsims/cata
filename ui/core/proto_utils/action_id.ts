@@ -935,7 +935,19 @@ export class ActionId {
 				break;
 			case 'Alter Time':
 				if (tag == 1) {
-					name += " (Restore)"
+					name += ' (Restore)';
+				}
+				break;
+			case 'Glaive Toss':
+				if (tag == 1) {
+					name += ' (Glaive 1)';
+				} else if (tag == 2) {
+					name += ' (Glaive 2)';
+				}
+				break;
+			case 'Serpent Sting':
+				if (tag == 1) {
+					name += ' (Improved)';
 				}
 				break;
 			default:
@@ -1203,6 +1215,9 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 2818, tag: 2 }), { spellId: 113780 }], // Rogue - Deadly Poison - Hit
 	[JSON.stringify({ spellId: 121411, tag: 7 }), { spellId: 122233 }], // Rogue - Crimson Tempest - DoT
 	[JSON.stringify({ spellId: 121471, tag: 1 }), { spellId: 121473 }], // Rogue - Shadow Blade
+	[JSON.stringify({ spellId: 117050, tag: 1 }), { spellId: 120755 }], // Hunter - Glaive Toss (Glaive 1)
+	[JSON.stringify({ spellId: 117050, tag: 2 }), { spellId: 120756 }], // Hunter - Glaive Toss (Glaive 2)
+	[JSON.stringify({ spellId: 1978, tag: 1 }), { spellId: 82834 }], // Hunter - Serpent Sting
 
 	// Off-Hand attacks
 	[JSON.stringify({ spellId: 49998, tag: 2 }), { spellId: 66188 }], // Death Knight - Death Strike Off-Hand

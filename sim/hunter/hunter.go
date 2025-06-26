@@ -235,6 +235,7 @@ const (
 	HunterSpellBestialWrath
 	HunterPetFocusDump
 	HunterPetDamage
+	HunterPetBeastCleaveHit
 	HunterSpellFervor
 	HunterSpellDireBeast
 	HunterSpellAMurderOfCrows

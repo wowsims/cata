@@ -40,10 +40,11 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DemonologyTalentsDefaultP1 = {
 	name: 'Default P1',
 	data: SavedTalents.create({
-		talentsString: '231211',
+		talentsString: '231221',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
+			major3: MajorGlyph.GlyphOfImpSwarm,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),
 	}),
