@@ -144,7 +144,7 @@ func makeStatInheritanceFunc(nonHitExpStatInheritance PetStatInheritance) PetSta
 // Updates the stats for this pet in response to a stat change on the owner.
 // addedStats is the amount of stats added to the owner (will be negative if the
 // owner lost stats).
-func (pet *Pet) addOwnerStats(sim *Simulation, addedStats stats.Stats) {
+func (pet *Pet) AddOwnerStats(sim *Simulation, addedStats stats.Stats) {
 	inheritedChange := pet.dynamicStatInheritance(addedStats)
 
 	pet.inheritedStats.AddInplace(&inheritedChange)
@@ -409,7 +409,7 @@ func (pet *Pet) AddPartyBuffs(_ *proto.PartyBuffs) {}
 func (pet *Pet) ApplyTalents()                     {}
 func (pet *Pet) OnGCDReady(_ *Simulation)          {}
 
-func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPets []*Pet, inheritanceFunc func(*Simulation, *Pet)) {
+func (env *Environment) TriggerDelayedPetInheritance(sim *Simulation, dynamicPets []*Pet, inheritanceFunc func(*Simulation, *Pet)) {
 	for _, pet := range dynamicPets {
 		if !pet.IsEnabled() {
 			continue
