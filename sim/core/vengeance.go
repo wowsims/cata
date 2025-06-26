@@ -9,7 +9,7 @@ import (
 
 const VengeanceScaling = 0.018 // Might be reverted to 0.015 in a later patch
 
-func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura) {
+func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura) *Aura {
 	// First register the exposed Vengeance buff Aura, which we will model
 	// as discrete stacks with 1 AP granted per stack for ease of tracking
 	// in the timeline and APLs.
@@ -113,4 +113,6 @@ func (character *Character) RegisterVengeance(spellID int32, requiredAura *Aura)
 	} else {
 		requiredAura.AttachProcTrigger(vengeanceTrigger)
 	}
+
+	return buffAura.Aura
 }
