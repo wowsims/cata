@@ -9,7 +9,8 @@ import (
 
 // T14 - DPS
 var ItemSetBattleplateOfResoundingRings = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of Resounding Rings",
+	Name:                    "Battleplate of Resounding Rings",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -34,7 +35,8 @@ var ItemSetBattleplateOfResoundingRings = core.NewItemSet(core.ItemSet{
 
 // T14 - Tank
 var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
-	Name: "Plate of Resounding Rings",
+	Name:                    "Plate of Resounding Rings",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -63,7 +65,8 @@ var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
 
 // T15 - DPS
 var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of the Last Mogu",
+	Name:                    "Battleplate of the Last Mogu",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
@@ -110,7 +113,8 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 
 // T15 - Tank
 var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the Last Mogu",
+	Name:                    "Plate of the Last Mogu",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
@@ -140,7 +144,8 @@ var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
 
 // T16 - DPS
 var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of the Prehistoric Marauder",
+	Name:                    "Battleplate of the Prehistoric Marauder",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
@@ -211,7 +216,8 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 
 // T16 - Tank
 var ItemSetPlateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the Prehistoric Marauder",
+	Name:                    "Plate of the Prehistoric Marauder",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// TODO: You heal for 30% of all damage blocked with a shield

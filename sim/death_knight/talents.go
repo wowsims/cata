@@ -473,7 +473,11 @@ func (dk *DeathKnight) registerDeathPact() {
 			spell.CalcAndDealHealing(sim, spell.Unit, healthGain, spell.OutcomeHealing)
 			dk.Ghoul.RemoveHealth(sim, dk.Ghoul.MaxHealth()*0.5)
 			if dk.Ghoul.CurrentHealth() <= 0 {
-				dk.Ghoul.Disable(sim)
+				if dk.RaiseDeadAura != nil {
+					dk.RaiseDeadAura.Deactivate(sim)
+				} else {
+					dk.Ghoul.Disable(sim)
+				}
 			}
 		},
 	})

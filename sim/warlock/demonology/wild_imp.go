@@ -38,7 +38,7 @@ func (demonology *DemonologyWarlock) buildWildImp(counter int) *WildImpPet {
 			Name:                            "Wild Imp",
 			Owner:                           &demonology.Character,
 			BaseStats:                       stats.Stats{stats.Health: 48312.8, stats.Armor: 19680},
-			StatInheritance:                 demonology.SimplePetStatInheritanceWithScale(0),
+			NonHitExpStatInheritance:        demonology.SimplePetStatInheritanceWithScale(0),
 			EnabledOnStart:                  false,
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,

@@ -11,7 +11,8 @@ import (
 // (2) Set: Increases the damage done by your Lightning Bolt spell by 5%.
 // (4) Set: Your Rolling Thunder ability now grants 2 Lightning Shield charges each time it triggers.
 var ItemSetRegaliaOfTheFirebird = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Firebird",
+	Name:                    "Regalia of the Firebird",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -32,7 +33,8 @@ var ItemSetRegaliaOfTheFirebird = core.NewItemSet(core.ItemSet{
 // (2) Set: Your Lightning Bolt, Chain Lighting, and Lava Beam hits have a 10% chance to cause a Lightning Strike at the target's location, dealing 32375 to 37625 Nature damage divided among all non-crowd controlled targets within 10 yards.
 // (4) Set: The cooldown of your Ascendance is reduced by 1 sec each time you cast Lava Burst.
 var ItemSetRegaliaOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Witch Doctor",
+	Name:                    "Regalia of the Witch Doctor",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -88,7 +90,8 @@ var ItemSetRegaliaOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
 // (2) Set: Fulmination increases all Fire and Nature damage dealt to that target from the Shaman by 4% for 2 sec per Lightning Shield charge consumed.
 // (4) Set: Your Lightning Bolt and Chain Lightning spells have a chance to summon a Lightning Elemental to fight by your side for 10 sec.
 var ItemSetCelestialHarmonyRegalia = core.NewItemSet(core.ItemSet{
-	Name: "Celestial Harmony Regalia",
+	Name:                    "Celestial Harmony Regalia",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -147,7 +150,8 @@ var ItemSetCelestialHarmonyRegalia = core.NewItemSet(core.ItemSet{
 // (2) Set: Increases the damage done by your Lava Lash ability by 15%.
 // (4) Set: Increases the critical strike chance bonus from your Stormstrike ability by an additional 15%.
 var ItemSetBattlegearOfTheFirebird = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of the Firebird",
+	Name:                    "Battlegear of the Firebird",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -168,7 +172,8 @@ var ItemSetBattlegearOfTheFirebird = core.NewItemSet(core.ItemSet{
 // (2) Set: Your Stormstrike also grants you 2 additional charges of Maelstrom Weapon.
 // (4) Set: The cooldown of your Feral Spirits is reduced by 8 sec each time Windfury Weapon is triggered.
 var ItemSetBattlegearOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of the Witch Doctor",
+	Name:                    "Battlegear of the Witch Doctor",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -202,7 +207,8 @@ var ItemSetBattlegearOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
 // 2 pieces: For 10 sec after using Unleash Elements, your attacks have a chance to unleash a random weapon imbue.
 // 4 pieces: When Flame Shock deals periodic damage, you have a 5% chance to gain 5 stacks of Searing Flames and reset the cooldown of Lava Lash.
 var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "Celestial Harmony Battlegear",
+	Name:                    "Celestial Harmony Battlegear",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -261,7 +267,8 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 // (2) Set: Increases the chance to trigger your Maelstrom Weapon talent by 20%.
 // (4) Set: While your weapon is imbued with Flametongue Weapon, your attacks also slow the target's movement speed by 50% for 3 sec.
 var ItemSetGladiatorsEarthshaker = core.NewItemSet(core.ItemSet{
-	Name: "Gladiator's Earthshaker",
+	Name:                    "Gladiator's Earthshaker",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()

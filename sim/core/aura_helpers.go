@@ -519,7 +519,7 @@ func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
 	})
 
 	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
-		parentAura.Unit.MultiplyCastSpeed(sim, 1 / multiplier)
+		parentAura.Unit.MultiplyCastSpeed(sim, 1/multiplier)
 	})
 
 	return parentAura

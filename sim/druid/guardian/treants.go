@@ -15,15 +15,11 @@ type GuardianTreant struct {
 func (bear *GuardianDruid) newTreant() *GuardianTreant {
 	treant := &GuardianTreant{
 		DefaultTreantImpl: bear.NewDefaultTreant(druid.TreantConfig{
-			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
-				combinedHitExp := 0.5 * (ownerStats[stats.HitRating] + ownerStats[stats.ExpertiseRating])
-
+			NonHitExpStatInheritance: func(ownerStats stats.Stats) stats.Stats {
 				return stats.Stats{
 					stats.Health:              0.4 * ownerStats[stats.Health],
 					stats.Armor:               4 * ownerStats[stats.Armor],
 					stats.AttackPower:         1.2 * ownerStats[stats.AttackPower],
-					stats.HitRating:           combinedHitExp,
-					stats.ExpertiseRating:     combinedHitExp,
 					stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 				}
 			},

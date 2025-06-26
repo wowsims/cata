@@ -19,26 +19,10 @@ type GargoylePet struct {
 func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 	gargoyle := &GargoylePet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:      "Gargoyle",
-			Owner:     &dk.Character,
-			BaseStats: stats.Stats{},
-			StatInheritance: func(ownerStats stats.Stats) stats.Stats {
-				hitRating := ownerStats[stats.HitRating]
-				expertiseRating := ownerStats[stats.ExpertiseRating]
-				combined := (hitRating + expertiseRating) * 0.5
-
-				return stats.Stats{
-					stats.Armor:            ownerStats[stats.Armor],
-					stats.CritRating:       ownerStats[stats.CritRating],
-					stats.ExpertiseRating:  combined,
-					stats.HasteRating:      ownerStats[stats.HasteRating],
-					stats.Health:           ownerStats[stats.Health],
-					stats.HitRating:        combined,
-					stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-					stats.SpellPower:       ownerStats[stats.AttackPower] * 0.7,
-					stats.Stamina:          ownerStats[stats.Stamina],
-				}
-			},
+			Name:                           "Gargoyle",
+			Owner:                          &dk.Character,
+			BaseStats:                      stats.Stats{},
+			NonHitExpStatInheritance:       gargoyleStatInheritance,
 			EnabledOnStart:                 false,
 			IsGuardian:                     true,
 			HasDynamicCastSpeedInheritance: true,
@@ -56,6 +40,7 @@ func (garg *GargoylePet) GetPet() *core.Pet {
 }
 
 func (garg *GargoylePet) Initialize() {
+	garg.Pet.Initialize()
 	garg.registerGargoyleStrikeSpell()
 }
 
@@ -75,6 +60,15 @@ func (garg *GargoylePet) ExecuteCustomRotation(sim *core.Simulation) {
 		}
 
 		garg.GargoyleStrike.Cast(sim, garg.CurrentTarget)
+	}
+}
+
+func gargoyleStatInheritance(ownerStats stats.Stats) stats.Stats {
+	return stats.Stats{
+		stats.HasteRating:      ownerStats[stats.HasteRating],
+		stats.Health:           ownerStats[stats.Health],
+		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+		stats.SpellPower:       ownerStats[stats.AttackPower] * 0.7,
 	}
 }
 

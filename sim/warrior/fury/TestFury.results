@@ -192,6 +192,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 147441.52381
+  tps: 94386.93656
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-FleetPrimalDiamond"
  value: {
   dps: 140280.01216
@@ -210,6 +217,13 @@ dps_results: {
  value: {
   dps: 149640.30832
   tps: 93253.9133
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 154225.71926
+  tps: 100213.12864
  }
 }
 dps_results: {
@@ -297,6 +311,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 140979.77638
+  tps: 88927.31392
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 144065.693
+  tps: 90813.32715
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-Renataki'sSoulCharm-96741"
  value: {
   dps: 139949.09209
@@ -367,6 +395,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 141245.39134
+  tps: 89180.10613
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-YaungolFireCarrier-86518"
  value: {
   dps: 142309.18972
@@ -390,7 +425,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Troll-p1_fury_smf-DefaultTalents-Basic-default-FullBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 345592.36295
+  dps: 345580.06189
   tps: 227910.93901
  }
 }
@@ -411,7 +446,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Troll-p1_fury_smf-DefaultTalents-Basic-default-NoBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 276142.10316
+  dps: 276098.06039
   tps: 173825.67598
  }
 }
@@ -474,7 +509,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Troll-p1_fury_tg-DefaultTalents-Basic-default-FullBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 378524.07202
+  dps: 378520.97512
   tps: 256566.52517
  }
 }
@@ -495,7 +530,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Troll-p1_fury_tg-DefaultTalents-Basic-default-NoBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 296353.74034
+  dps: 296320.40415
   tps: 186500.30264
  }
 }
@@ -558,7 +593,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Worgen-p1_fury_smf-DefaultTalents-Basic-default-FullBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 355128.98081
+  dps: 355097.38775
   tps: 229460.54147
  }
 }
@@ -579,7 +614,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Worgen-p1_fury_smf-DefaultTalents-Basic-default-NoBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 275080.63408
+  dps: 275053.65816
   tps: 174583.29666
  }
 }
@@ -642,7 +677,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Worgen-p1_fury_tg-DefaultTalents-Basic-default-FullBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 383295.69997
+  dps: 383270.45955
   tps: 253899.15434
  }
 }
@@ -663,7 +698,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Settings-Worgen-p1_fury_tg-DefaultTalents-Basic-default-NoBuffs-5.0yards-LongMultiTarget"
  value: {
-  dps: 297601.61809
+  dps: 297579.99316
   tps: 195408.22838
  }
 }

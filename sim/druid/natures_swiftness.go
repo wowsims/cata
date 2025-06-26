@@ -11,24 +11,6 @@ func (druid *Druid) registerNaturesSwiftness() {
 	cdTimer := druid.NewTimer()
 	cd := time.Minute * 1
 
-	castTimeModConfig := core.SpellModConfig{
-		ClassMask:  DruidHealingNonInstantSpells,
-		Kind:       core.SpellMod_CastTime_Pct,
-		FloatValue: -1,
-	}
-
-	resourceCostModConfig := core.SpellModConfig{
-		ClassMask:  DruidHealingNonInstantSpells,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-	}
-
-	healingPowerModConfig := core.SpellModConfig{
-		ClassMask:  DruidHealingNonInstantSpells,
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.5,
-	}
-
 	nsAura := druid.RegisterAura(core.Aura{
 		Label:    "Nature's Swiftness",
 		ActionID: actionID,
@@ -37,12 +19,23 @@ func (druid *Druid) registerNaturesSwiftness() {
 			if !spell.Matches(DruidSpellHealingTouch) {
 				return
 			}
-
 			aura.Deactivate(sim)
 			cdTimer.Set(sim.CurrentTime + cd)
 			druid.UpdateMajorCooldowns()
 		},
-	}).AttachSpellMod(castTimeModConfig).AttachSpellMod(resourceCostModConfig).AttachSpellMod(healingPowerModConfig)
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  DruidHealingNonInstantSpells,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  DruidHealingNonInstantSpells,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  DruidHealingNonInstantSpells,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.5,
+	})
 
 	druid.NaturesSwiftness = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:        actionID,

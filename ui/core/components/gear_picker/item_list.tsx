@@ -114,7 +114,6 @@ export default class ItemList<T extends ItemListType> {
 		this.currentFilters = this.player.sim.getFilters();
 
 		const selected = label === currentTab;
-		const itemLabel = label === SelectorModalTabs.Reforging ? 'Reforge' : 'Item';
 
 		const sortByIlvl = (event: MouseEvent) => {
 			event.preventDefault();
@@ -135,7 +134,7 @@ export default class ItemList<T extends ItemListType> {
 		const show2hWeaponRef = ref<HTMLDivElement>();
 		const modalListRef = ref<HTMLUListElement>();
 		const removeButtonRef = ref<HTMLButtonElement>();
-		const compareLabelRef = ref<HTMLElement>();
+		const compareLabelRef = ref<HTMLHeadingElement>();
 
 		const showEPOptions = ![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot);
 
@@ -158,30 +157,29 @@ export default class ItemList<T extends ItemListType> {
 					</button>
 				</div>
 				<div className="selector-modal-list-labels">
-					<span className="item-label">
-						<small>{itemLabel}</small>
-					</span>
-					{label === SelectorModalTabs.Items && (
-						<label className="source-label">
-							<small>Source</small>
-						</label>
-					)}
 					{(label === SelectorModalTabs.Items || label === SelectorModalTabs.Upgrades) && (
-						<label className="ilvl-label interactive" onclick={sortByIlvl}>
-							<small>ILvl</small>
-						</label>
+						<h6 className="ilvl-label interactive" onclick={sortByIlvl}>ILvl</h6>
 					)}
-					{showEPOptions && (
-						<span className="ep-label interactive" onclick={sortByEP}>
-							<small>EP</small>
-							<i className="fa-solid fa-plus-minus fa-2xs"></i>
-							<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
-								<i className="far fa-question-circle fa-lg"></i>
-							</button>
-						</span>
-					)}
-					<span className="favorite-label"></span>
-					<span ref={compareLabelRef} className="compare-label hide"></span>
+					<h6 className="item-label">
+						{
+							label === SelectorModalTabs.Items ? "Item" :
+							label === SelectorModalTabs.Enchants ? "Enchant" :
+							[SelectorModalTabs.Gem1, SelectorModalTabs.Gem2, SelectorModalTabs.Gem3].includes(label as SelectorModalTabs) ? "Gem" :
+							label === SelectorModalTabs.Reforging ? "Reforge" :
+							label === SelectorModalTabs.Upgrades ? "Upgrade" :
+							label === SelectorModalTabs.Tinkers ? "Tinker" : ""
+						}
+					</h6>
+					{label === SelectorModalTabs.Items && <h6 className="source-label">Source</h6>}
+					<h6 className="ep-label interactive" onclick={sortByEP}>
+						<span>EP</span>
+						<i className="fa-solid fa-plus-minus fa-2xs" />
+						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
+							<i className="far fa-question-circle fa-lg" />
+						</button>
+					</h6>
+					<h6 className="favorite-label" />
+					<h6 ref={compareLabelRef} className="compare-label hide" />
 				</div>
 				<ul ref={modalListRef} className="selector-modal-list"></ul>
 			</div>
@@ -482,6 +480,9 @@ export default class ItemList<T extends ItemListType> {
 
 		const listItemElem = (
 			<li className={`selector-modal-list-item ${equippedItemID === itemData.id ? 'active' : ''}`} dataset={{ idx: item.idx.toString() }}>
+				{(this.label === SelectorModalTabs.Items || this.label === SelectorModalTabs.Upgrades) && (
+					<div className="selector-modal-list-item-ilvl-container">{itemData.ilvl || (itemData.item as unknown as Item).ilvl}</div>
+				)}
 				<div className="selector-modal-list-label-cell gap-1" ref={labelCellElem}>
 					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
@@ -493,9 +494,6 @@ export default class ItemList<T extends ItemListType> {
 				</div>
 				{this.label === SelectorModalTabs.Items && (
 					<div className="selector-modal-list-item-source-container">{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}</div>
-				)}
-				{(this.label === SelectorModalTabs.Items || this.label === SelectorModalTabs.Upgrades) && (
-					<div className="selector-modal-list-item-ilvl-container">{itemData.ilvl || (itemData.item as unknown as Item).ilvl}</div>
 				)}
 				{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) && (
 					<div className="selector-modal-list-item-ep">

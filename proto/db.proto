@@ -73,4 +73,5 @@ message SimGem {
 	string name = 2;
 	GemColor color = 3;
 	repeated double stats = 4;
+	bool disabled_in_challenge_mode = 5;
 }

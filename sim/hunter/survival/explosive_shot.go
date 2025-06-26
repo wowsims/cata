@@ -45,7 +45,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickMagicCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -72,7 +72,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 					}
 
 					// Tick before outstanding damage is added
-					dot.Snapshot(target, baseDamage+outstandingDamage)
+					dot.SnapshotPhysical(target, baseDamage+outstandingDamage)
 
 					dot.Apply(sim)
 					spell.DealDamage(sim, result)

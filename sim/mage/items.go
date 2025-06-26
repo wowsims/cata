@@ -9,7 +9,8 @@ import (
 
 // T14
 var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Burning Scroll",
+	Name:                    "Regalia of the Burning Scroll",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Increases the damage done by your Arcane Missiles spell by 7%,
 		// increases the damage done by your Pyroblast spell by 8%, and increases the damage done by your Ice Lance spell by 12%.
@@ -51,7 +52,8 @@ var ItemSetRegaliaOfTheBurningScroll = core.NewItemSet(core.ItemSet{
 
 // T15
 var ItemSetRegaliaOfTheChromaticHydra = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Chromatic Hydra",
+	Name:                    "Regalia of the Chromatic Hydra",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// When Alter Time expires, you gain 1800 Haste, Crit, and Mastery for 30 sec.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -104,7 +106,8 @@ var ItemSetRegaliaOfTheChromaticHydra = core.NewItemSet(core.ItemSet{
 
 // T16
 var ItemSetChronomancerRegalia = core.NewItemSet(core.ItemSet{
-	Name: "Chronomancer Regalia",
+	Name:                    "Chronomancer Regalia",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Arcane Missiles causes your next Arcane Blast within 10 sec to cost 25% less mana, stacking up to 4 times.
 		// Consuming Brain Freeze increases the damage of your next Ice Lance, Frostbolt, Frostfire Bolt, or Cone of Cold by 20%.

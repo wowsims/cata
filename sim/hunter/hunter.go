@@ -116,6 +116,7 @@ func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
 func (hunter *Hunter) ApplyTalents() {
 	hunter.applyThrillOfTheHunt()
 	hunter.ApplyHotfixes()
+	hunter.addBloodthirstyGloves()
 
 	if hunter.Pet != nil {
 

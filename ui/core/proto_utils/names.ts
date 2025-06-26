@@ -163,6 +163,7 @@ export const spellSchoolNames: Map<number, string> = new Map([
 	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
 	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
 	[SpellSchool.Nature + SpellSchool.Shadow, 'Plague'],
+	[SpellSchool.Fire + SpellSchool.Nature, 'Firestorm'],
 ]);
 
 export const shortSecondaryStatNames: Map<Stat, string> = new Map([

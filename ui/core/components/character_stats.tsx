@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { Spec, Stat } from '../proto/common.js';
+import { HandType, ItemSlot, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getStatName, masterySpellIDs, masterySpellNames } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
@@ -20,6 +20,8 @@ export class CharacterStats extends Component {
 	readonly valueElems: Array<HTMLTableCellElement>;
 	readonly meleeCritCapValueElem: HTMLTableCellElement | undefined;
 	masteryElem: HTMLTableCellElement | undefined;
+	hasRacialHitBonus = false;
+	hasRacialExpertiseBonus = false;
 
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
@@ -93,16 +95,87 @@ export class CharacterStats extends Component {
 		});
 	}
 
+	private hasRacialHitOrExpBonus(): [boolean, boolean] {
+		const mh = this.player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item;
+		const race = this.player.getRace();
+		switch (race) {
+			case Race.RaceDraenei:
+				return [true, false];
+			case Race.RaceDwarf:
+			case Race.RaceTroll:
+				if (
+					mh &&
+					(mh.rangedWeaponType === RangedWeaponType.RangedWeaponTypeBow ||
+						mh.rangedWeaponType === RangedWeaponType.RangedWeaponTypeCrossbow ||
+						mh.rangedWeaponType === RangedWeaponType.RangedWeaponTypeGun ||
+						mh.weaponType === WeaponType.WeaponTypeMace)
+				) {
+					return [false, true];
+				}
+				break;
+			case Race.RaceGnome:
+				if (
+					mh &&
+					mh.handType === HandType.HandTypeOneHand &&
+					(mh.weaponType === WeaponType.WeaponTypeSword || mh.weaponType === WeaponType.WeaponTypeDagger)
+				) {
+					return [false, true];
+				}
+				break;
+			case Race.RaceHuman:
+				if (mh && (mh.weaponType === WeaponType.WeaponTypeSword || mh.weaponType === WeaponType.WeaponTypeMace)) {
+					return [false, true];
+				}
+				break;
+			case Race.RaceOrc:
+				if (mh && (mh.weaponType === WeaponType.WeaponTypeAxe || mh.weaponType === WeaponType.WeaponTypeFist)) {
+					return [false, true];
+				}
+				break;
+		}
+
+		return [false, false];
+	}
+
+	private convertRacialBonuses(stats: Stats): Stats {
+		if (this.hasRacialExpertiseBonus) {
+			return this.convertRacialExpertiseRating(stats);
+		} else if (this.hasRacialHitBonus) {
+			return this.convertRacialHitRating(stats);
+		}
+
+		return stats;
+	}
+
+	private convertRacialExpertiseRating(stats: Stats): Stats {
+		return stats.addStat(Stat.StatExpertiseRating, Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * -4);
+	}
+
+	private convertRacialHitRating(stats: Stats): Stats {
+		return stats.addStat(Stat.StatHitRating, -Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT);
+	}
+
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
 		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
+		const [hasRacialHitBonus, hasRacialExpertiseBonus] = this.hasRacialHitOrExpBonus();
+		this.hasRacialHitBonus = hasRacialHitBonus;
+		this.hasRacialExpertiseBonus = hasRacialExpertiseBonus;
 
-		const baseStats = Stats.fromProto(playerStats.baseStats);
-		const gearStats = Stats.fromProto(playerStats.gearStats);
-		const talentsStats = Stats.fromProto(playerStats.talentsStats);
-		const buffsStats = Stats.fromProto(playerStats.buffsStats);
-		const consumesStats = Stats.fromProto(playerStats.consumesStats);
+		const baseStats = this.convertRacialBonuses(Stats.fromProto(playerStats.baseStats));
+		const gearStats = this.convertRacialBonuses(Stats.fromProto(playerStats.gearStats));
+		const talentsStats = this.convertRacialBonuses(Stats.fromProto(playerStats.talentsStats));
+		const buffsStats = this.convertRacialBonuses(Stats.fromProto(playerStats.buffsStats));
+		const consumesStats = this.convertRacialBonuses(Stats.fromProto(playerStats.consumesStats));
 		const bonusStats = player.getBonusStats();
+
+		let finalStats = this.convertRacialBonuses(Stats.fromProto(playerStats.finalStats))
+			.add(statMods.base || new Stats())
+			.add(statMods.gear || new Stats())
+			.add(statMods.talents || new Stats())
+			.add(statMods.buffs || new Stats())
+			.add(statMods.consumes || new Stats())
+			.add(statMods.final || new Stats());
 
 		let baseDelta = baseStats.add(statMods.base || new Stats());
 		let gearDelta = gearStats
@@ -112,14 +185,6 @@ export class CharacterStats extends Component {
 		let talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents || new Stats());
 		let buffsDelta = buffsStats.subtract(talentsStats).add(statMods.buffs || new Stats());
 		let consumesDelta = consumesStats.subtract(buffsStats).add(statMods.consumes || new Stats());
-
-		let finalStats = Stats.fromProto(playerStats.finalStats)
-			.add(statMods.base || new Stats())
-			.add(statMods.gear || new Stats())
-			.add(statMods.talents || new Stats())
-			.add(statMods.buffs || new Stats())
-			.add(statMods.consumes || new Stats())
-			.add(statMods.final || new Stats());
 
 		if (this.overwriteDisplayStats) {
 			const statOverwrites = this.overwriteDisplayStats(this.player);
@@ -171,6 +236,9 @@ export class CharacterStats extends Component {
 					break;
 				case Spec.SpecWindwalkerMonk:
 					customBonus = [3.5, 0];
+					break;
+				case Spec.SpecBalanceDruid:
+					customBonus = [15.0];
 					break;
 			}
 
@@ -301,6 +369,8 @@ export class CharacterStats extends Component {
 
 		if (unitStat.equalsStat(Stat.StatMasteryRating) && includeBase) {
 			derivedPercentOrPointsValue = derivedPercentOrPointsValue! + this.player.getBaseMastery();
+		} else if (unitStat.equalsStat(Stat.StatExpertiseRating) && includeBase && this.hasRacialExpertiseBonus) {
+			derivedPercentOrPointsValue = derivedPercentOrPointsValue! + 1;
 		}
 
 		const hideRootRating = rootRatingValue === null || (rootRatingValue === 0 && derivedPercentOrPointsValue !== null);

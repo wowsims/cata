@@ -24,10 +24,12 @@ type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
 type PetSpeedInheritance func(amount float64)
 
 type PetConfig struct {
-	Name                            string
-	Owner                           *Character
-	BaseStats                       stats.Stats
-	StatInheritance                 PetStatInheritance
+	Name      string
+	Owner     *Character
+	BaseStats stats.Stats
+	// Hit and Expertise are always inherited by combining the owners physical hit and expertise, then halving it
+	// For casters this will automatically give spell hit cap at 7.5% physical hit and exp
+	NonHitExpStatInheritance        PetStatInheritance
 	EnabledOnStart                  bool
 	IsGuardian                      bool
 	HasDynamicMeleeSpeedInheritance bool
@@ -101,7 +103,7 @@ func NewPet(config PetConfig) Pet {
 			baseStats:  config.BaseStats,
 		},
 		Owner:                           config.Owner,
-		statInheritance:                 config.StatInheritance,
+		statInheritance:                 makeStatInheritanceFunc(config.NonHitExpStatInheritance),
 		hasDynamicMeleeSpeedInheritance: config.HasDynamicMeleeSpeedInheritance,
 		hasDynamicCastSpeedInheritance:  config.HasDynamicCastSpeedInheritance,
 		hasResourceRegenInheritance:     config.HasResourceRegenInheritance,
@@ -121,6 +123,21 @@ func NewPet(config PetConfig) Pet {
 func (pet *Pet) Initialize() {
 	if pet.hasResourceRegenInheritance {
 		pet.enableResourceRegenInheritance()
+	}
+}
+
+func makeStatInheritanceFunc(nonHitExpStatInheritance PetStatInheritance) PetStatInheritance {
+	return func(ownerStats stats.Stats) stats.Stats {
+		inheritedStats := nonHitExpStatInheritance(ownerStats)
+
+		hitRating := ownerStats[stats.HitRating]
+		expertiseRating := ownerStats[stats.ExpertiseRating]
+		combined := (hitRating + expertiseRating) * 0.5
+
+		inheritedStats[stats.HitRating] = combined
+		inheritedStats[stats.ExpertiseRating] = combined
+
+		return inheritedStats
 	}
 }
 
@@ -183,6 +200,9 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	//reset current mana after applying stats
 	pet.manaBar.reset()
 
+	//reset current health after applying stats
+	pet.healthBar.reset(sim)
+
 	// Call onEnable callbacks before enabling auto swing
 	// to not have to reorder PAs multiple times
 	pet.enabled = true
@@ -207,7 +227,7 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	pet.AutoAttacks.EnableAutoSwing(sim)
 
 	if (sim.CurrentTime < 0) || (pet.startAttackDelay > 0) {
-		pet.AutoAttacks.StopMeleeUntil(sim, max(0, sim.CurrentTime + pet.startAttackDelay) - pet.AutoAttacks.MainhandSwingSpeed())
+		pet.AutoAttacks.StopMeleeUntil(sim, max(0, sim.CurrentTime+pet.startAttackDelay)-pet.AutoAttacks.MainhandSwingSpeed())
 	}
 
 	if sim.Log != nil {
@@ -368,8 +388,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 	}
 }
 
-func (pet *Pet) ChangeStatInheritance(statInheritance PetStatInheritance) {
-	pet.statInheritance = statInheritance
+func (pet *Pet) ChangeStatInheritance(nonHitExpStatInheritance PetStatInheritance) {
+	pet.statInheritance = makeStatInheritanceFunc(nonHitExpStatInheritance)
 }
 
 func (pet *Pet) GetInheritedStats() stats.Stats {
@@ -396,7 +416,7 @@ func (env *Environment) triggerDelayedPetInheritance(sim *Simulation, dynamicPet
 		}
 
 		numHeartbeats := (sim.CurrentTime - env.heartbeatOffset) / PetUpdateInterval
-		nextHeartbeat := PetUpdateInterval * (numHeartbeats + 1) + env.heartbeatOffset
+		nextHeartbeat := PetUpdateInterval*(numHeartbeats+1) + env.heartbeatOffset
 
 		pa := sim.GetConsumedPendingActionFromPool()
 		pa.NextActionAt = nextHeartbeat

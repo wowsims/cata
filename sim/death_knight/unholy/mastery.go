@@ -14,11 +14,17 @@ func (uhdk *UnholyDeathKnight) registerMastery() {
 		ClassMask: death_knight.DeathKnightSpellScourgeStrikeShadow,
 	})
 
+	gargoyleMod := uhdk.Gargoyle.AddDynamicMod(core.SpellModConfig{
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolShadow,
+	})
+
 	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
 		oldMasteryMultiplier := uhdk.getMasteryPercent(oldMastery)
 		newMasteryMultiplier := uhdk.getMasteryPercent(newMastery)
 		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= (1.0 + newMasteryMultiplier) / (1.0 + oldMasteryMultiplier)
 		masteryMod.UpdateFloatValue(newMasteryMultiplier)
+		gargoyleMod.UpdateFloatValue(newMasteryMultiplier)
 	})
 
 	core.MakePermanent(uhdk.RegisterAura(core.Aura{
@@ -30,9 +36,12 @@ func (uhdk *UnholyDeathKnight) registerMastery() {
 			uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.0 + masteryMultiplier
 			masteryMod.UpdateFloatValue(masteryMultiplier)
 			masteryMod.Activate()
+			gargoyleMod.UpdateFloatValue(masteryMultiplier)
+			gargoyleMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			masteryMod.Deactivate()
+			gargoyleMod.Deactivate()
 		},
 	}))
 }
