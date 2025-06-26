@@ -23,17 +23,16 @@ export const P1_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 4.49,
-			[Stat.StatArmor]: 0.03,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 0.94,
-			[Stat.StatHasteRating]: 2.4,
-			[Stat.StatHitRating]: 2.6,
-			[Stat.StatCritRating]: 1.43 + 0.69,
-			[Stat.StatMasteryRating]: 1.65,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatHitRating]: 0.73,
+			[Stat.StatExpertiseRating]: 0.73,
+			[Stat.StatCritRating]: 0.47,
+			[Stat.StatHasteRating]: 0.43,
+			[Stat.StatMasteryRating]: 0.4,
+			[Stat.StatAttackPower]: 0.3,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 6.13,
+			[PseudoStat.PseudoStatMainHandDps]: 0.8,
 		},
 	),
 );
@@ -48,7 +47,7 @@ export const DefaultTalents = {
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major3: DeathKnightMajorGlyph.GlyphOfOutbreak,
+			major3: DeathKnightMajorGlyph.GlyphOfLoudHorn,
 			minor1: DeathKnightMinorGlyph.GlyphOfArmyOfTheDead,
 			minor2: DeathKnightMinorGlyph.GlyphOfTranquilGrip,
 			minor3: DeathKnightMinorGlyph.GlyphOfDeathsEmbrace,

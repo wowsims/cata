@@ -111,9 +111,11 @@ func (dk *DeathKnight) registerUnholyPresence() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyAttackSpeed(sim, hasteMulti)
+			dk.MultiplyCastSpeed(sim, hasteMulti)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyAttackSpeed(sim, 1/hasteMulti)
+			dk.MultiplyCastSpeed(sim, 1/hasteMulti)
 		},
 	}).NewMovementSpeedEffect(0.15)
 	presenceAura.Aura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})

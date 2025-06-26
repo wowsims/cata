@@ -75,7 +75,7 @@ func (affliction *AfflictionWarlock) registerAgony() {
 
 			// Always compare fully stacked agony damage
 			if useSnapshot {
-				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedSnapshotCrit)
 				result.Damage *= 10
 				result.Damage /= dot.TickPeriod().Seconds()
 				return result
