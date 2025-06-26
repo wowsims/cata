@@ -9,7 +9,7 @@ import (
 
 func (hunter *Hunter) registerExplosiveTrapSpell() {
 	bonusPeriodicDamageMultiplier := core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 0.30, 0)
-
+	cooldown := core.Ternary(hunter.Spec == proto.Spec_SpecSurvivalHunter, 24*time.Second, 30*time.Second)
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 13812},
 		SpellSchool:    core.SpellSchoolFire,
@@ -26,7 +26,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 30,
+				Duration: cooldown,
 			},
 		},
 

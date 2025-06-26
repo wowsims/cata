@@ -39,10 +39,10 @@ func (hunter *Hunter) registerBarrageSpell() {
 					hunter.AutoAttacks.DelayRangedUntil(sim, aura.ExpiresAt())
 				},
 			},
-			NumberOfTicks:        16,
-			TickLength:           200 * time.Millisecond,
-			AffectedByCastSpeed:  true,
-			HasteReducesDuration: true,
+			NumberOfTicks:         16,
+			TickLength:            200 * time.Millisecond,
+			AffectedByRangedSpeed: true,
+			HasteReducesDuration:  true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dmg := hunter.AutoAttacks.
