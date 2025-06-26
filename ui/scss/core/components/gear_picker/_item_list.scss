@@ -25,7 +25,6 @@
 	display: flex;
 	padding-right: 0.5rem;
 	margin-right: var(--spacer-3);
-	margin-bottom: var(--spacer-2);
 	font-size: 1.125rem;
 	justify-content: space-between; // Ensures labels are evenly spaced
 	gap: var(--spacer-3);
@@ -132,8 +131,7 @@
 	.selector-modal-list-item-link {
 		display: flex;
 		align-items: center;
-		flex-grow: 1;
-		flex-shrink: 1;
+		min-width: 10vw;
 	}
 
 	.selector-modal-list-label-cell {
@@ -160,6 +158,7 @@
 
 .selector-modal-list-item-ilvl-container {
 	width: var(--ilvl-cell-width);
+	text-align: center;
 }
 
 .selector-modal-list-item-source-container {
