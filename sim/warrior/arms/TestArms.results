@@ -192,6 +192,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 152085.4061
+  tps: 104168.31623
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-FleetPrimalDiamond"
  value: {
   dps: 143154.8331
@@ -210,6 +217,13 @@ dps_results: {
  value: {
   dps: 152776.11844
   tps: 101885.49871
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 160279.36382
+  tps: 109647.93218
  }
 }
 dps_results: {
@@ -297,6 +311,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 143913.46115
+  tps: 96818.25052
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 148978.0874
+  tps: 99825.08991
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-Renataki'sSoulCharm-96741"
  value: {
   dps: 142779.76958
@@ -357,6 +385,13 @@ dps_results: {
  value: {
   dps: 142140.07057
   tps: 94771.51483
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 143450.6321
+  tps: 96238.06283
  }
 }
 dps_results: {

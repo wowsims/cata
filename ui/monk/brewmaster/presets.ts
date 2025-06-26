@@ -67,7 +67,7 @@ export const DefaultTalents = {
 };
 
 export const DungeonTalents = {
-	name: 'Raid',
+	name: 'Dungeon',
 	data: SavedTalents.create({
 		talentsString: '213321',
 		glyphs: Glyphs.create({
@@ -87,10 +87,10 @@ export const DefaultOptions = BrewmasterMonkOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId: 76084, // Flask of Spring Blossoms
+	foodId: 74648, // Sea Mist Rice Noodles
+	potId: 76089, // Virmen's Bite
+	prepotId: 76089, // Virmen's Bite
 });
 
 export const OtherDefaults = {

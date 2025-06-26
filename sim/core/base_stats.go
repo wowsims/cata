@@ -150,7 +150,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 		stats.Spirit:            113,
 		stats.Stamina:           151,
 		stats.AttackPower:       float64(CharacterLevel)*2.0 - 20,
-		stats.RangedAttackPower: float64(CharacterLevel)*2.0 - 10,
+		stats.RangedAttackPower: float64(CharacterLevel)*2.0 - 20,
 	},
 	proto.Class_ClassRogue: {
 		stats.Health:      146663,

@@ -52,6 +52,9 @@ func (bm *BrewmasterMonk) registerAvertHarm() {
 	bm.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeSurvival,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return bm.CurrentHealthPercent() < 0.4 && !bm.FortifyingBrewAura.IsActive()
+		},
 	})
 
 }

@@ -21,7 +21,7 @@ func (priest *Priest) NewMindBender() *MindBender {
 			Name:                            "Mindbender",
 			Owner:                           &priest.Character,
 			BaseStats:                       baseStats,
-			StatInheritance:                 priest.mindbenderStatInheritance(),
+			NonHitExpStatInheritance:        priest.mindbenderStatInheritance(),
 			IsGuardian:                      false,
 			EnabledOnStart:                  false,
 			HasDynamicMeleeSpeedInheritance: true,

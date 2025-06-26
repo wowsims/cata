@@ -10,12 +10,12 @@ import (
 func (arcane *ArcaneMage) registerArcaneCharges() {
 	abDamageMod := arcane.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellArcaneBlast | mage.MageSpellArcaneBarrage | mage.MageSpellArcaneMissilesTick,
-		FloatValue: 0.5,
+		FloatValue: 0.5 * arcane.T15_4PC_ArcaneChargeEffect,
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := arcane.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellArcaneBlast,
-		FloatValue: 1.5,
+		FloatValue: 1.5 * arcane.T15_4PC_ArcaneChargeEffect,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
@@ -34,8 +34,8 @@ func (arcane *ArcaneMage) registerArcaneCharges() {
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			stacks := float64(newStacks)
-			abDamageMod.UpdateFloatValue(.5 * stacks)
-			abCostMod.UpdateFloatValue(1.5 * stacks)
+			abDamageMod.UpdateFloatValue(.5 * arcane.T15_4PC_ArcaneChargeEffect * stacks)
+			abCostMod.UpdateFloatValue(1.5 * arcane.T15_4PC_ArcaneChargeEffect * stacks)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(mage.MageSpellArcaneBarrage | mage.MageSpellEvocation) {

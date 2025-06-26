@@ -83,7 +83,7 @@ func (dk *DeathKnight) registerGlyphOfDancingRuneWeapon() {
 		}).AttachMultiplicativePseudoStatBuff(
 			&dk.PseudoStats.ThreatMultiplier, 2.0,
 		).AttachMultiplicativePseudoStatBuff(
-			&dk.RuneWeapon.PseudoStats.DamageDealtMultiplier, -0.25,
+			&dk.RuneWeapon.PseudoStats.DamageDealtMultiplier, 0.75,
 		)
 
 		spell.RelatedSelfBuff.AttachDependentAura(glyphAura)

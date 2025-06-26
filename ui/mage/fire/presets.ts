@@ -5,58 +5,30 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import FireApl from './apls/fire.apl.json';
 //import FireAoeApl from './apls/fire_aoe.apl.json';
-import P1FireBisGear from './gear_sets/p1_fire.gear.json';
-import P3FireBisGear from './gear_sets/p3_fire.gear.json';
-import P3FirePrebisGear from './gear_sets/p3_fire_prebis.gear.json';
-import P4FireBisGear from './gear_sets/p4_fire.gear.json';
-import ItemSwapP4 from './gear_sets/p4_fire_item_swap.gear.json';
+import P1FireBisGear from './gear_sets/p1_bis.gear.json';
+import P1FirePrebisGear from './gear_sets/p1_prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear);
-export const FIRE_P3_PREBIS = PresetUtils.makePresetGear('P3 Pre-raid', P3FirePrebisGear);
-export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear);
-export const FIRE_P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4FireBisGear);
+export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear);
+export const PREBIS_PRESET = PresetUtils.makePresetGear('P3 Pre-raid', P1FirePrebisGear);
 
-export const P1DefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 470000,
-	combustLastMomentLustPercentage: 115000,
-	combustNoLustPercentage: 225000,
-});
-
-export const P3TrollDefaultSimpleRotation = FireMage_Rotation.create({
+export const P1TrollDefaultSimpleRotation = FireMage_Rotation.create({
 	combustThreshold: 515000,
 	combustLastMomentLustPercentage: 140000,
 	combustNoLustPercentage: 260000,
 });
 
-export const P3NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 370000,
-	combustLastMomentLustPercentage: 140000,
-	combustNoLustPercentage: 275000,
+export const P1NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
+	combustThreshold: 470000,
+	combustLastMomentLustPercentage: 115000,
+	combustNoLustPercentage: 225000,
 });
 
-export const P4TrollDefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 715000,
-	combustLastMomentLustPercentage: 150000,
-	combustNoLustPercentage: 300000,
-});
-
-export const P4NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 515000,
-	combustLastMomentLustPercentage: 150000,
-	combustNoLustPercentage: 300000,
-});
-
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Haste', ItemSwapP4);
-
-export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
-export const P3_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P3 - Default', Spec.SpecFireMage, P3TrollDefaultSimpleRotation);
-export const P3_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P3 - Not Troll', Spec.SpecFireMage, P3NoTrollDefaultSimpleRotation);
-export const P4_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P4 - Default', Spec.SpecFireMage, P4TrollDefaultSimpleRotation);
-export const P4_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P4 - Not Troll', Spec.SpecFireMage, P4NoTrollDefaultSimpleRotation);
+export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1TrollDefaultSimpleRotation);
+export const P1_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P1 - Not Troll', Spec.SpecFireMage, P1NoTrollDefaultSimpleRotation);
 
 //export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFireMage, DefaultSimpleRotation);
 export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('APL', FireApl);
@@ -79,11 +51,14 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FireTalents = {
 	name: 'Fire',
 	data: SavedTalents.create({
-		talentsString: '212111',
+		talentsString: '111122',
 		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfEvocation,
-			minor1: MinorGlyph.GlyphOfMirrorImage,
-			minor3: MinorGlyph.GlyphOfTheMonkey,
+			major1: MajorGlyph.GlyphOfCombustion,
+			major2: MajorGlyph.GlyphOfInfernoBlast,
+			major3: MajorGlyph.GlyphOfManaGem,
+			minor1: MinorGlyph.GlyphOfMomentum,
+			minor2: MinorGlyph.GlyphOfMirrorImage,
+			minor3: MinorGlyph.GlyphOfTheUnboundElemental
 		}),
 	}),
 };
@@ -93,10 +68,10 @@ export const DefaultFireOptions = MageOptions.create({
 });
 
 export const DefaultFireConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, // Flask of the Warm Sun
+	foodId: 74650, // Mogu Fish Stew
+	potId: 76093, // Potion of the Jade Serpent
+	prepotId: 76093, // Potion of the Jade Serpent
 });
 
 export const OtherDefaults = {
@@ -105,7 +80,7 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const FIRE_BREAKPOINTS: UnitStatPresets = {
+export const COMBUSTION_BREAKPOINT: UnitStatPresets = {
 	unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
 	presets: new Map([
 		['11-tick - Combust', 4.986888],
@@ -130,35 +105,55 @@ export const FIRE_BREAKPOINTS: UnitStatPresets = {
 	]),
 };
 
-export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
+export const GLYPHED_COMBUSTION_BREAKPOINT: UnitStatPresets = {
+	unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+	presets: new Map([
+		['21-tick - Combust (Glyph)', 2.511543],
+		['22-tick - Combust (Glyph)', 7.469114],
+		['23-tick - Combust (Glyph)', 12.549253],
+		['24-tick - Combust (Glyph)', 17.439826],
+		['25-tick - Combust (Glyph)', 22.473989],
+		['26-tick - Combust (Glyph)', 27.469742],
+		['27-tick - Combust (Glyph)', 32.538122],
+		['28-tick - Combust (Glyph)', 37.457064],
+		['29-tick - Combust (Glyph)', 42.551695],
+		['30-tick - Combust (Glyph)', 47.601498],
+		['31-tick - Combust (Glyph)', 52.555325],
+		['32-tick - Combust (Glyph)', 57.604438],
+		['33-tick - Combust (Glyph)', 62.469563],
+		['34-tick - Combust (Glyph)', 67.364045],
+		['35-tick - Combust (Glyph)', 72.562584],
+		['36-tick - Combust (Glyph)', 77.462321],
+		['37-tick - Combust (Glyph)', 82.648435],
+		['38-tick - Combust (Glyph)', 87.44146],
+		['39-tick - Combust (Glyph)', 92.492819],
+	]),
+};
+
+export const P1_PREBIS_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Pre-BIS (Troll)', {
 	race: Race.RaceTroll,
-	gear: FIRE_P1_PRESET,
+	gear: PREBIS_PRESET,
 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
 	epWeights: DEFAULT_EP_PRESET,
 });
 
-export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default (Troll)', {
-	race: Race.RaceTroll,
-	gear: FIRE_P3_PRESET,
-	rotation: P3_SIMPLE_ROTATION_DEFAULT,
+export const P1_PREBIS_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - Pre-BIS (Worgen)', {
+	race: Race.RaceWorgen,
+	gear: PREBIS_PRESET,
+	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
 	epWeights: DEFAULT_EP_PRESET,
 });
 
-export const P3_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P3 - Default (Worgen)', {
-	race: Race.RaceWorgen,
-	gear: FIRE_P3_PRESET,
-	rotation: P3_SIMPLE_ROTATION_NO_TROLL,
+export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - BIS (Troll)', {
+	race: Race.RaceTroll,
+	gear: P1_BIS_PRESET,
+	rotation: P1_SIMPLE_ROTATION_DEFAULT,
 	epWeights: DEFAULT_EP_PRESET,
 });
 
-export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - Default (Troll)', {
-	race: Race.RaceTroll,
-	gear: FIRE_P4_PRESET,
-	rotation: P4_SIMPLE_ROTATION_DEFAULT,
-});
-
-export const P4_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P4 - Default (Worgen)', {
+export const P1_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - BIS (Worgen)', {
 	race: Race.RaceWorgen,
-	gear: FIRE_P4_PRESET,
-	rotation: P4_SIMPLE_ROTATION_NO_TROLL,
+	gear: P1_BIS_PRESET,
+	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
+	epWeights: DEFAULT_EP_PRESET,
 });

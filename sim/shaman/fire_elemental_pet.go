@@ -33,7 +33,7 @@ func (shaman *Shaman) NewFireElemental(isGuardian bool) *FireElemental {
 			Name:                            core.Ternary(isGuardian, "Greater Fire Elemental", "Primal Fire Elemental"),
 			Owner:                           &shaman.Character,
 			BaseStats:                       shaman.fireElementalBaseStats(isGuardian),
-			StatInheritance:                 shaman.fireElementalStatInheritance(isGuardian),
+			NonHitExpStatInheritance:        shaman.fireElementalStatInheritance(isGuardian),
 			EnabledOnStart:                  false,
 			IsGuardian:                      isGuardian,
 			HasDynamicCastSpeedInheritance:  true,
@@ -73,7 +73,7 @@ func (fireElemental *FireElemental) enable(isGuardian bool) func(*core.Simulatio
 	return func(sim *core.Simulation) {
 		if fireElemental.empowerAutocast {
 			if fireElemental.Empower.Cast(sim, &fireElemental.shamanOwner.Unit) {
-				fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt(), false)
+				fireElemental.AutoAttacks.StopMeleeUntil(sim, fireElemental.Empower.Hot(&fireElemental.shamanOwner.Unit).ExpiresAt())
 			}
 		}
 	}
@@ -133,7 +133,7 @@ func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.U
 		return false
 	}
 	// all spell casts reset the elemental's swing timer
-	fireElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime, false)
+	fireElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime)
 	return true
 }
 
@@ -146,12 +146,9 @@ func (shaman *Shaman) fireElementalBaseStats(isGuardian bool) stats.Stats {
 
 func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerHitRating := ownerStats[stats.HitRating]
-		ownerExpertiseRating := ownerStats[stats.ExpertiseRating]
 		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
-		hitExpRating := (ownerHitRating + ownerExpertiseRating) / 2
 		critPercent := core.TernaryFloat64(math.Abs(ownerPhysicalCritPercent) > math.Abs(ownerSpellCritPercent), ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
@@ -160,8 +157,6 @@ func (shaman *Shaman) fireElementalStatInheritance(isGuardian bool) core.PetStat
 			stats.Stamina:    ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 0.75, 0.75*1.2),
 			stats.SpellPower: power * core.TernaryFloat64(isGuardian, FireElementalSpellPowerScaling, FireElementalSpellPowerScaling*1.8),
 
-			stats.HitRating:           hitExpRating,
-			stats.ExpertiseRating:     hitExpRating,
 			stats.SpellCritPercent:    critPercent,
 			stats.PhysicalCritPercent: critPercent,
 			stats.HasteRating:         ownerHasteRating,

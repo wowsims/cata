@@ -14,7 +14,8 @@ func (hunter *Hunter) registerFervorSpell() {
 
 	focusMetrics := hunter.NewFocusMetrics(actionID)
 	fervorSpell := hunter.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
+		ClassSpellMask: HunterSpellFervor,
+		ActionID:       actionID,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},

@@ -47,9 +47,10 @@ type Dot struct {
 	SnapshotCritChance         float64
 	SnapshotAttackerMultiplier float64
 
-	BaseTickCount  int32 // base tick count without haste applied
-	remainingTicks int32
-	tmpExtraTicks  int32 // extra ticks that are added during the runtime of the dot
+	BaseTickCount          int32 // base tick count without haste applied
+	remainingTicks         int32
+	tmpExtraTicks          int32   // extra ticks that are added during the runtime of the dot
+	BaseDurationMultiplier float64 // Some effects extend the BaseDuration - i.E. 50% - the DoTs will be subject to normal DoT fitting for base duration extend
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -118,7 +119,7 @@ func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 	nextTick := dot.TimeUntilNextTick(sim)
 
 	dot.tickPeriod = dot.CalcTickPeriod()
-	dot.remainingTicks = dot.BaseTickCount
+	dot.remainingTicks = dot.calculateTickCount(dot.BaseDuration(), dot.BaseTickLength)
 	if dot.affectedByCastSpeed && !dot.hasteReducesDuration {
 		dot.remainingTicks = dot.HastedTickCount()
 	}
@@ -151,20 +152,20 @@ func (dot *Dot) TimeUntilNextTick(sim *Simulation) time.Duration {
 	return dot.NextTickAt() - sim.CurrentTime
 }
 
-func (dot *Dot) calculateHastedTickCount(baseDuration time.Duration, tickPeriod time.Duration) int32 {
+func (dot *Dot) calculateTickCount(baseDuration time.Duration, tickPeriod time.Duration) int32 {
 	return int32(math.RoundToEven(float64(baseDuration) / float64(tickPeriod)))
 }
 
 // Returns the total amount of ticks with the snapshotted haste
 func (dot *Dot) HastedTickCount() int32 {
-	return dot.calculateHastedTickCount(dot.BaseDuration(), dot.tickPeriod)
+	return dot.calculateTickCount(dot.BaseDuration(), dot.tickPeriod)
 }
 
 func (dot *Dot) ExpectedTickCount() int32 {
 	tickCount := dot.BaseTickCount
 	if dot.affectedByCastSpeed && !dot.hasteReducesDuration {
 		tickPeriod := dot.CalcTickPeriod()
-		tickCount = dot.calculateHastedTickCount(dot.BaseDuration(), tickPeriod)
+		tickCount = dot.calculateTickCount(dot.BaseDuration(), tickPeriod)
 	}
 	return tickCount
 }
@@ -186,7 +187,7 @@ func (dot *Dot) OutstandingDmg() float64 {
 }
 
 func (dot *Dot) BaseDuration() time.Duration {
-	return time.Duration(dot.BaseTickCount) * dot.BaseTickLength
+	return time.Duration(float64(dot.BaseTickCount) * float64(dot.BaseTickLength) * dot.BaseDurationMultiplier)
 }
 
 // Adds a tick to the current active dot and extends it's duration
@@ -395,8 +396,8 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		hasteReducesDuration: config.HasteReducesDuration,
 		isChanneled:          config.Spell.Flags.Matches(SpellFlagChanneled),
 
-		BonusCoefficient: config.BonusCoefficient,
-
+		BonusCoefficient:         config.BonusCoefficient,
+		BaseDurationMultiplier:   1,
 		PeriodicDamageMultiplier: config.PeriodicDamageMultiplier,
 	}
 
@@ -453,6 +454,9 @@ func (dot *Dot) RestoreState(state DotState, sim *Simulation) {
 	dot.tickPeriod = state.TickPeriod
 	dot.remainingTicks = state.TicksRemaining
 	dot.tmpExtraTicks = state.ExtraTicks
+	dot.SnapshotBaseDamage = state.SnapshotBaseDamage
+	dot.SnapshotAttackerMultiplier = state.SnapshotAttackerMultiplier
+	dot.SnapshotCritChance = state.SnapshotCritChance
 	dot.Aura.RestoreState(state.AuraState, sim)
 
 	// recreate with new period, resetting the next tick.

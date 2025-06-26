@@ -57,6 +57,8 @@ message Consumable {
 	string icon = 6;
 	//In seconds
 	int32 buff_duration = 7;
+	//In seconds
+	int32 cooldown_duration = 9;
 	repeated int32 effect_ids = 8;
 }
 
@@ -71,4 +73,5 @@ message SimGem {
 	string name = 2;
 	GemColor color = 3;
 	repeated double stats = 4;
+	bool disabled_in_challenge_mode = 5;
 }

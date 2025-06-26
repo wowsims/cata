@@ -51,7 +51,7 @@ func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) cor
 				spell.SetMetricsSplit(shaman.MaelstromWeaponAura.GetStacks())
 				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
 				if sim.CurrentTime+castTime > shaman.AutoAttacks.NextAttackAt() {
-					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime)
 				}
 			},
 		},

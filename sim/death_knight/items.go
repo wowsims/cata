@@ -10,8 +10,9 @@ import (
 
 // T14 DPS
 var ItemSetBattlegearOfTheLostCatacomb = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of the Lost Catacomb",
-	ID:   1123,
+	Name:                    "Battlegear of the Lost Catacomb",
+	ID:                      1123,
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Your Obliterate, Frost Strike, and Scourge Strike deal 4% increased damage.
@@ -41,8 +42,9 @@ var ItemSetBattlegearOfTheLostCatacomb = core.NewItemSet(core.ItemSet{
 
 // T14 Tank
 var ItemSetPlateOfTheLostCatacomb = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the Lost Catacomb",
-	ID:   1124,
+	Name:                    "Plate of the Lost Catacomb",
+	ID:                      1124,
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Reduces the cooldown of your Vampiric Blood ability by 20 sec.
@@ -70,8 +72,9 @@ var ItemSetPlateOfTheLostCatacomb = core.NewItemSet(core.ItemSet{
 
 // T15 DPS
 var ItemSetBattleplateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of the All-Consuming Maw",
-	ID:   1152,
+	Name:                    "Battleplate of the All-Consuming Maw",
+	ID:                      1152,
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Your attacks have a chance to raise the spirit of a fallen Zandalari as your Death Knight minion for 15 sec.
@@ -130,8 +133,9 @@ var ItemSetBattleplateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
 
 // T15 Tank
 var ItemSetPlateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the All-Consuming Maw",
-	ID:   1151,
+	Name:                    "Plate of the All-Consuming Maw",
+	ID:                      1151,
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Reduces the cooldown of your Rune Tap ability by 10 sec and removes its Rune cost.
@@ -180,8 +184,9 @@ var ItemSetPlateOfTheAllConsumingMaw = core.NewItemSet(core.ItemSet{
 
 // T16 DPS
 var ItemSetBattleplateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of Cyclopean Dread",
-	ID:   1200,
+	Name:                    "Battleplate of Cyclopean Dread",
+	ID:                      1200,
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Killing Machine and Sudden Doom grant 500 Haste or Mastery, whichever is highest, for [Dark Transformation: 15 / (Hands * 2 + 4)] sec, stacking up to 10 times.
@@ -287,8 +292,9 @@ var ItemSetBattleplateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
 
 // T16 Tank
 var ItemSetPlateOfCyclopeanDread = core.NewItemSet(core.ItemSet{
-	Name: "Plate of Cyclopean Dread",
-	ID:   1201,
+	Name:                    "Plate of Cyclopean Dread",
+	ID:                      1201,
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Every 10 Heart Strikes, Rune Strikes, Death Coils, Soul Reapers, or Blood Boils will add one charge to your next Bone Shield.

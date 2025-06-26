@@ -45,6 +45,12 @@ type Environment struct {
 	postFinalizeEffects []PostFinalizeEffect
 
 	prepullActions []PrepullAction
+
+	// Used to model variation in pet stat inheritance
+	heartbeatOffset time.Duration
+
+	// Whether the current environment is simulating a Challenge Mode fight
+	IsChallengeMode bool
 }
 
 func NewEnvironment(raidProto *proto.Raid, encounterProto *proto.Encounter, runFakePrepull bool) (*Environment, *proto.RaidStats, *proto.EncounterStats) {
@@ -102,6 +108,16 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 
 			if targetProto.SecondTankIndex != targetProto.TankIndex {
 				env.setupTankTarget(target, targetProto.SecondTankIndex, raidProto.Tanks, false, tankTargetSet)
+			}
+		}
+	}
+
+	// Check for Challenge Mode
+	for _, party := range raidProto.Parties {
+		for _, playerOrPet := range party.Players {
+			if playerOrPet.ChallengeMode {
+				env.IsChallengeMode = true
+				break
 			}
 		}
 	}
@@ -258,6 +274,9 @@ func (env *Environment) IsFinalized() bool {
 }
 
 func (env *Environment) reset(sim *Simulation) {
+	// Randomize heartbeat timer for pet stat inheritance.
+	env.heartbeatOffset = env.PrepullStartTime() - PetUpdateInterval + DurationFromSeconds(PetUpdateInterval.Seconds()*sim.RandomFloat("Pet Stat Inheritance"))
+
 	// Reset primary targets damage taken for tracking health fights.
 	env.Encounter.DamageTaken = 0
 

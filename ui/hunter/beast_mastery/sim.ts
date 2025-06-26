@@ -1,6 +1,7 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -33,25 +34,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
 	warnings: [],
-
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStamina,
-		Stat.StatIntellect,
 		Stat.StatAgility,
 		Stat.StatRangedAttackPower,
 		Stat.StatHitRating,
 		Stat.StatCritRating,
 		Stat.StatHasteRating,
-		Stat.StatMP5,
 		Stat.StatMasteryRating,
+		Stat.StatExpertiseRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMasteryRating],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatRangedHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecBeastMasteryHunter>) => {
@@ -67,30 +66,41 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.BM_P3_PRESET.gear,
+		gear: Presets.P1_PRESET_GEAR.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
-			return hitCap;
+			return new Stats()
+				.withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5)
+				.withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 		})(),
+
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
-		talents: Presets.BeastMasteryTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.BMDefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			blessingOfKings: true,
+			trueshotAura: true,
+			leaderOfThePack: true,
+			blessingOfMight: true,
+			commandingShout: true,
+			unholyAura: true,
+			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// faerieFire: true,
-			// curseOfElements: true,
-			// savageCombat: true,
-			// bloodFrenzy: true,
+			weakenedArmor: true,
+			physicalVulnerability: true,
+			curseOfElements: true,
 		}),
 	},
 
@@ -100,11 +110,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	rotationInputs: BMInputs.BMRotationConfig,
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.MajorArmorDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [HunterInputs.PetUptime(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [HunterInputs.PetUptime(), HunterInputs.GlaiveTossChance(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -112,88 +122,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P3_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BeastMasteryTalents],
+		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_BM, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.BM_P3_PRESET, Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET],
+		builds: [Presets.PRERAID_PRESET, Presets.PRERAID_PRESET_CELESTIAL, Presets.P1_PRESET],
+		gear: [Presets.PRERAID_PRESET_GEAR, Presets.PRERAID_CELESTIAL_PRESET_GEAR, Presets.P1_PRESET_GEAR],
 	},
 
 	autoRotation: (player: Player<Spec.SpecBeastMasteryHunter>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 4) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_PRESET_BM.rotation.rotation!;
-		}
-	},
-
-	simpleRotation: (player: Player<Spec.SpecBeastMasteryHunter>, simple: BeastMasteryHunter_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		const combatPot = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
-		);
-
-		const serpentSting = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${
-				simple.multiDotSerpentSting ? 3 : 1
-			},"maxOverlap":{"const":{"val":"0ms"}}}}`,
-		);
-		const scorpidSting = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":3043},"maxOverlap":{"const":{"val":"0ms"}}}},"castSpell":{"spellId":{"spellId":3043}}}`,
-		);
-		const trapWeave = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":49067}}}}},"castSpell":{"spellId":{"tag":1,"spellId":49067}}}`,
-		);
-		const volley = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":58434}}}`);
-		const killShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":61006}}}`);
-		const aimedShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49050}}}`);
-		const multiShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49048}}}`);
-		const steadyShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49052}}}`);
-
-		if (simple.type == RotationType.Aoe) {
-			actions.push(
-				...([
-					combatPot,
-					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
-					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
-					simple.trapWeave ? trapWeave : null,
-					volley,
-				].filter(a => a) as Array<APLAction>),
-			);
-		} else {
-			actions.push(
-				...([
-					combatPot,
-					killShot,
-					simple.trapWeave ? trapWeave : null,
-					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
-					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
-					aimedShot,
-					multiShot,
-					steadyShot,
-				].filter(a => a) as Array<APLAction>),
-			);
-		}
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
+		return Presets.ROTATION_PRESET_BM.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecBeastMasteryHunter,
-			talents: Presets.BeastMasteryTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.BMDefaultOptions,
+
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -203,10 +151,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.BM_PRERAID_PRESET.gear,
+					1: Presets.PRERAID_CELESTIAL_PRESET_GEAR.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.BM_PRERAID_PRESET.gear,
+					1: Presets.PRERAID_CELESTIAL_PRESET_GEAR.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -221,12 +169,6 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
-					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
-						return Presets.P1_EP_PRESET.epWeights;
-					}
-					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
-						return Presets.P3_EP_PRESET.epWeights;
-					}
 					return Presets.P1_EP_PRESET.epWeights;
 				},
 			});

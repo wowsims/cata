@@ -45,11 +45,11 @@ func (shaman *Shaman) ApplyElementalMastery() {
 		ActionID: eleMasterActionID,
 		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(1.3)
+			shaman.MultiplyCastSpeed(sim, 1.3)
 			shaman.MultiplyAttackSpeed(sim, 1.3)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(1 / 1.3)
+			shaman.MultiplyCastSpeed(sim, 1/1.3)
 			shaman.MultiplyAttackSpeed(sim, 1/1.3)
 		},
 	})

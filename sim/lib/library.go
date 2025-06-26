@@ -135,10 +135,11 @@ func getDatabase(itemIds *int32, numItems int32, enchantIds *int32, numEnchants 
 	for i, gemId := range gids {
 		gem := core.GemsByID[gemId]
 		simDB.Gems[i] = &proto.SimGem{
-			Id:    gem.ID,
-			Name:  gem.Name,
-			Color: gem.Color,
-			Stats: gem.Stats[:],
+			Id:                      gem.ID,
+			Name:                    gem.Name,
+			Color:                   gem.Color,
+			Stats:                   gem.Stats[:],
+			DisabledInChallengeMode: gem.DisabledInChallengeMode,
 		}
 	}
 	out, err := protojson.Marshal(simDB)

@@ -63,10 +63,11 @@ func init() {
 
 	for i, gem := range db.Gems {
 		simDB.Gems[i] = &proto.SimGem{
-			Id:    gem.Id,
-			Name:  gem.Name,
-			Color: gem.Color,
-			Stats: gem.Stats,
+			Id:                      gem.Id,
+			Name:                    gem.Name,
+			Color:                   gem.Color,
+			Stats:                   gem.Stats,
+			DisabledInChallengeMode: gem.DisabledInChallengeMode,
 		}
 	}
 

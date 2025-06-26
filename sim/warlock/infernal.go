@@ -74,7 +74,7 @@ func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 			Name:                            "Infernal",
 			Owner:                           &warlock.Character,
 			BaseStats:                       baseStats,
-			StatInheritance:                 inheritance,
+			NonHitExpStatInheritance:        inheritance,
 			EnabledOnStart:                  false,
 			IsGuardian:                      true,
 			HasDynamicMeleeSpeedInheritance: true,

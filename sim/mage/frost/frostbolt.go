@@ -44,12 +44,17 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 			damageMultiplier := core.TernaryFloat64(hasSplitBolts, 0.4, 1.0)
 
 			spell.DamageMultiplier *= damageMultiplier
-			for range numberOfBolts {
+			results := make([]*core.SpellResult, numberOfBolts)
+
+			for idx := range numberOfBolts {
 				baseDamage := frostMage.CalcAndRollDamageRange(sim, frostboltScale, frostboltVariance)
-				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-				if result.Landed() {
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				if results[idx].Landed() {
 					frostMage.ProcFingersOfFrost(sim, spell)
 				}
+			}
+
+			for _, result := range results {
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 					if result.Landed() {
@@ -57,6 +62,7 @@ func (frostMage *FrostMage) registerFrostboltSpell() {
 					}
 				})
 			}
+
 			spell.DamageMultiplier /= damageMultiplier
 		},
 	})
