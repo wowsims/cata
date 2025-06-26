@@ -10,7 +10,7 @@ character_stats_results: {
   final_stats: 552
   final_stats: 512
   final_stats: 2555
-  final_stats: 2804
+  final_stats: 2804.00009
   final_stats: 14140.63264
   final_stats: 15919
   final_stats: 27865.64
@@ -627,8 +627,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 122087.19903
-  tps: 738875.42995
+  dps: 122094.08747
+  tps: 738923.64908
   dtps: 96775.37067
   hps: 90138.08345
  }

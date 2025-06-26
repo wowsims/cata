@@ -178,6 +178,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 
 	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*core.StrengthToParryRating) // Does not apply to base Strength
 	dk.AddStatDependency(stats.Strength, stats.ParryRating, core.StrengthToParryRating)
+	dk.AddStatDependency(stats.Agility, stats.DodgeRating, 0.1/10000.0/100.0)
 
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
