@@ -22,20 +22,13 @@ func TestMarksmanship(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet: core.GetGearSet("../../../ui/hunter/presets", "p1"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/hunter/presets", "preraid"),
-			core.GetGearSet("../../../ui/hunter/presets", "preraid_celestial"),
-		},
+		GearSet:         core.GetGearSet("../../../ui/hunter/presets", "p1"),
 		Talents:         MarksmanshipTalents,
 		OtherTalentSets: talentSets,
 		Glyphs:          MarksmanshipDefaultGlyphs,
 		Consumables:     FullConsumesSpec,
 		SpecOptions:     core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:        core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "aoe"),
-		},
 
 		ItemFilter:       ItemFilter,
 		StartingDistance: 5.1,
