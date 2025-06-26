@@ -1,6 +1,7 @@
 package monk
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -18,36 +19,11 @@ Grievously wounds the target, reducing the effectiveness of any healing received
 
 var risingSunKickActionID = core.ActionID{SpellID: 130320}
 
-func risingSunKickDebuff(monk *Monk, isSEFClone bool) core.AuraArray {
-
-	risingSunKickDamageBonus := func(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-		if !spell.Matches(MonkSpellsAll) {
-			return 1.0
-		}
-		return 1.2
+func risingSunKickDamageBonus(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
+	if !spell.Matches(MonkSpellsAll ^ MonkSpellTigerStrikes) {
+		return 1.0
 	}
-
-	config := core.Aura{
-		ActionID: risingSunKickActionID,
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, _ *core.Simulation) {
-			core.EnableDamageDoneByCaster(DDBC_RisingSunKick, DDBC_Total, aura.Unit.AttackTables[aura.Unit.UnitIndex], risingSunKickDamageBonus)
-		},
-		OnExpire: func(aura *core.Aura, _ *core.Simulation) {
-			core.DisableDamageDoneByCaster(DDBC_RisingSunKick, aura.Unit.AttackTables[aura.Unit.UnitIndex])
-		},
-	}
-
-	if isSEFClone {
-		config.ActionID = config.ActionID.WithTag(SEFSpellID)
-	}
-
-	risingSunKickDebuff := monk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		config.Label = "Rising Sun Kick" + target.Label
-		return target.GetOrRegisterAura(config)
-	})
-
-	return risingSunKickDebuff
+	return 1.2
 }
 
 func risingSunKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellConfig) core.SpellConfig {
@@ -83,7 +59,13 @@ func risingSunKickSpellConfig(monk *Monk, isSEFClone bool, overrides core.SpellC
 func (monk *Monk) registerRisingSunKick() {
 	chiMetrics := monk.NewChiMetrics(risingSunKickActionID)
 
-	risingSunKickDebuff := risingSunKickDebuff(monk, false)
+	risingSunKickDebuff := monk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    fmt.Sprintf("Rising Sun Kick %s", target.Label),
+			ActionID: risingSunKickActionID,
+			Duration: time.Second * 15,
+		}).AttachDDBC(DDBC_RisingSunKick, DDBC_Total, &monk.AttackTables, risingSunKickDamageBonus)
+	})
 
 	monk.RegisterSpell(risingSunKickSpellConfig(monk, false, core.SpellConfig{
 		Cast: core.CastConfig{
@@ -118,7 +100,14 @@ func (monk *Monk) registerRisingSunKick() {
 }
 
 func (pet *StormEarthAndFirePet) registerSEFRisingSunKick() {
-	risingSunKickDebuff := risingSunKickDebuff(pet.owner, true)
+
+	risingSunKickDebuff := pet.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    fmt.Sprintf("Rising Sun Kick - Clone %s", target.Label),
+			ActionID: risingSunKickActionID.WithTag(SEFSpellID),
+			Duration: time.Second * 15,
+		}).AttachDDBC(DDBC_RisingSunKickSEF, DDBC_Total, &pet.AttackTables, risingSunKickDamageBonus)
+	})
 
 	pet.RegisterSpell(risingSunKickSpellConfig(pet.owner, true, core.SpellConfig{
 		Cast: core.CastConfig{

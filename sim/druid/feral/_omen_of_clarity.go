@@ -14,13 +14,6 @@ func (druid *Druid) applyOmenOfClarity() {
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice([]*DruidSpell{
-				// Balance
-				druid.Starfire,
-				druid.Wrath,
-				druid.Hurricane,
-				druid.WildMushrooms,
-				druid.ForceOfNature,
-				druid.Starsurge,
 
 				// Feral
 				druid.DemoralizingRoar,
@@ -81,15 +74,7 @@ func (druid *Druid) applyOmenOfClarity() {
 			}
 
 			// https://github.com/JamminL/wotlk-classic-bugs/issues/66#issuecomment-1182017571
-			if druid.HurricaneTickSpell.IsEqual(spell) {
-				curCastTickSpeed := spell.CurDot().TickPeriod().Seconds() / 10
-				hurricaneCoeff := 1.0 - (7.0 / 9.0)
-				spellCoeff := hurricaneCoeff * curCastTickSpeed
-				chanceToProc := ((1.5 / 60) * 3.5) * spellCoeff
-				if sim.Proc(chanceToProc, "Clearcasting") {
-					druid.ProcOoc(sim)
-				}
-			} else if druid.AutoAttacks.PPMProc(sim, 3.5, core.ProcMaskMeleeWhiteHit, "Omen of Clarity", spell) { // Melee
+			if druid.AutoAttacks.PPMProc(sim, 3.5, core.ProcMaskMeleeWhiteHit, "Omen of Clarity", spell) { // Melee
 				druid.ProcOoc(sim)
 			} else if spell.Flags.Matches(SpellFlagOmenTrigger) { // Spells
 				// Heavily based on comment here
@@ -102,17 +87,8 @@ func (druid *Druid) applyOmenOfClarity() {
 				}
 
 				chanceToProc := (castTime / 60) * 3.5
-				if druid.Typhoon.IsEqual(spell) { // Add Typhoon
-					chanceToProc *= 0.25
-				} else if druid.Moonfire.IsEqual(spell) { // Add Moonfire
-					chanceToProc *= 0.076
-				} else if druid.WildMushroomsDetonate.IsEqual(spell) {
-					// Wild Mushroom: Detonate seems to have an 'almost' guaranteed chance to proc
-					// setting to 0.5 to be safe
-					chanceToProc = 0.5
-				} else {
-					chanceToProc *= 0.666
-				}
+				chanceToProc *= 0.666
+
 				if sim.Proc(chanceToProc, "Clearcasting") {
 					druid.ProcOoc(sim)
 				}

@@ -157,10 +157,10 @@ func castSpeedReductionAura(target *Unit, label string, spellID int32, multiplie
 	aura.NewExclusiveEffect("CastSpdReduction", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, 1/multiplier)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(sim, multiplier)
 		},
 	})
 	return aura

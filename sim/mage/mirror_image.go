@@ -64,18 +64,11 @@ func (mage *Mage) NewMirrorImage() *MirrorImage {
 	hasGlyph := mage.HasMinorGlyph(proto.MageMinorGlyph_GlyphOfMirrorImage)
 
 	mirrorImageStatInheritance := func(ownerStats stats.Stats) stats.Stats {
-
-		hitRating := ownerStats[stats.HitRating]
-		expertiseRating := ownerStats[stats.ExpertiseRating]
-		combinedHitExp := (hitRating + expertiseRating) * 0.5
-
 		return stats.Stats{
 			stats.Stamina:          ownerStats[stats.Stamina],
 			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.05,
 			stats.HasteRating:      ownerStats[stats.HasteRating],
 			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-			stats.HitRating:        combinedHitExp,
-			stats.ExpertiseRating:  combinedHitExp,
 		}
 	}
 
@@ -85,12 +78,12 @@ func (mage *Mage) NewMirrorImage() *MirrorImage {
 
 	mirrorImage := &MirrorImage{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Mirror Image",
-			Owner:           &mage.Character,
-			BaseStats:       mirrorImageBaseStats,
-			StatInheritance: mirrorImageStatInheritance,
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                     "Mirror Image",
+			Owner:                    &mage.Character,
+			BaseStats:                mirrorImageBaseStats,
+			NonHitExpStatInheritance: mirrorImageStatInheritance,
+			EnabledOnStart:           false,
+			IsGuardian:               true,
 		}),
 		mageOwner: mage,
 		hasGlyph:  hasGlyph,
@@ -250,12 +243,12 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 
 	abDamageMod := mi.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageMirrorImageSpellArcaneBlast,
-		FloatValue: .5,
+		FloatValue: .5 * mi.mageOwner.T15_4PC_ArcaneChargeEffect,
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := mi.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageMirrorImageSpellArcaneBlast,
-		FloatValue: 1.5,
+		FloatValue: 1.5 * mi.mageOwner.T15_4PC_ArcaneChargeEffect,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
@@ -274,8 +267,8 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			stacks := float64(newStacks)
-			abDamageMod.UpdateFloatValue(0.5 * stacks)
-			abCostMod.UpdateFloatValue(1.5 * stacks)
+			abDamageMod.UpdateFloatValue(0.5 * stacks * mi.mageOwner.T15_4PC_ArcaneChargeEffect)
+			abCostMod.UpdateFloatValue(1.5 * stacks * mi.mageOwner.T15_4PC_ArcaneChargeEffect)
 		},
 	})
 }

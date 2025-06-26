@@ -20,6 +20,7 @@ type Consumable struct {
 	ItemEffects        []int           // Item effect IDs
 	ElixirType         int
 	Duration           int // In milliseconds
+	CooldownDuration   int // In milliseconds
 }
 
 func (c *Consumable) ToMap() map[string]interface{} {
@@ -40,13 +41,14 @@ func (c *Consumable) ToMap() map[string]interface{} {
 // ToProto converts the Consumable to a proto representation.
 func (c *Consumable) ToProto() *proto.Consumable {
 	return &proto.Consumable{
-		Id:            int32(c.Id),
-		Type:          c.GetConsumableType(),
-		Stats:         c.GetStatModifiers().ToProtoArray(),
-		Name:          c.Name,
-		BuffsMainStat: false, // Todo: Should be food currently, might be more in MoP, figure out how to tell
-		BuffDuration:  int32(c.Duration / 1000),
-		EffectIds:     c.GetNonStatEffectIds(),
+		Id:               int32(c.Id),
+		Type:             c.GetConsumableType(),
+		Stats:            c.GetStatModifiers().ToProtoArray(),
+		Name:             c.Name,
+		BuffsMainStat:    false, // Todo: Should be food currently, might be more in MoP, figure out how to tell
+		BuffDuration:     int32(c.Duration / 1000),
+		CooldownDuration: int32(c.CooldownDuration / 1000),
+		EffectIds:        c.GetNonStatEffectIds(),
 	}
 }
 func (c *Consumable) GetConsumableType() proto.ConsumableType {
@@ -101,7 +103,7 @@ func (consumable *Consumable) GetStatModifiers() *stats.Stats {
 		if effect.ID != 0 {
 			if spellEffects, ok := dbcInstance.SpellEffects[effect.SpellID]; ok {
 				for _, spellEffect := range spellEffects {
-					stat := spellEffect.ParseStatEffect(false, 0)
+					stat := spellEffect.ParseStatEffect(spellEffect.Coefficient != 0, 0)
 					stats.AddInplace(stat)
 				}
 			}

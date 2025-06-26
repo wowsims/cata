@@ -236,7 +236,7 @@ func (ai *BlackhornAI) registerDevastate() {
 			}
 
 			// Devastate resets swing timer whether or not it landed
-			spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+			spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime)
 		},
 	})
 

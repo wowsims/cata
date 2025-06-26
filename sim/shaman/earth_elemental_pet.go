@@ -25,7 +25,7 @@ func (shaman *Shaman) NewEarthElemental(isGuardian bool) *EarthElemental {
 			Name:                            core.Ternary(isGuardian, "Greater Earth Elemental", "Primal Earth Elemental"),
 			Owner:                           &shaman.Character,
 			BaseStats:                       shaman.earthElementalBaseStats(isGuardian),
-			StatInheritance:                 shaman.earthElementalStatInheritance(isGuardian),
+			NonHitExpStatInheritance:        shaman.earthElementalStatInheritance(isGuardian),
 			EnabledOnStart:                  false,
 			IsGuardian:                      isGuardian,
 			HasDynamicMeleeSpeedInheritance: true,
@@ -96,7 +96,7 @@ func (earthElemental *EarthElemental) TryCast(sim *core.Simulation, target *core
 		return false
 	}
 	// all spell casts reset the elemental's swing timer
-	earthElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime, false)
+	earthElemental.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+spell.CurCast.CastTime)
 	return true
 }
 
@@ -108,12 +108,9 @@ func (shaman *Shaman) earthElementalBaseStats(isGuardian bool) stats.Stats {
 
 func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerHitRating := ownerStats[stats.HitRating]
-		ownerExpertiseRating := ownerStats[stats.ExpertiseRating]
 		ownerSpellCritPercent := ownerStats[stats.SpellCritPercent]
 		ownerPhysicalCritPercent := ownerStats[stats.PhysicalCritPercent]
 		ownerHasteRating := ownerStats[stats.HasteRating]
-		hitExpRating := (ownerHitRating + ownerExpertiseRating) / 2
 		critPercent := core.TernaryFloat64(math.Abs(ownerPhysicalCritPercent) > math.Abs(ownerSpellCritPercent), ownerPhysicalCritPercent, ownerSpellCritPercent)
 
 		power := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecEnhancementShaman, ownerStats[stats.AttackPower]*0.65, ownerStats[stats.SpellPower])
@@ -122,8 +119,6 @@ func (shaman *Shaman) earthElementalStatInheritance(isGuardian bool) core.PetSta
 			stats.Stamina:     ownerStats[stats.Stamina] * core.TernaryFloat64(isGuardian, 1, 1.5),
 			stats.AttackPower: power * core.TernaryFloat64(isGuardian, EarthElementalSpellPowerScaling, EarthElementalSpellPowerScaling*1.8),
 
-			stats.HitRating:           hitExpRating,
-			stats.ExpertiseRating:     hitExpRating,
 			stats.SpellCritPercent:    critPercent,
 			stats.PhysicalCritPercent: critPercent,
 			stats.HasteRating:         ownerHasteRating,

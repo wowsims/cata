@@ -32,7 +32,8 @@ func (dk *DeathKnight) registerBloodPresence() {
 			dk.RemoveDynamicEquipScaling(sim, stats.Armor, 1.55)
 		},
 	}).AttachMultiplicativePseudoStatBuff(
-		&dk.PseudoStats.DamageTakenMultiplier, 0.9,
+		// 2025-06-24: Changed from 10% to 12% on the beta
+		&dk.PseudoStats.DamageTakenMultiplier, 0.88,
 	).AttachMultiplicativePseudoStatBuff(
 		&dk.PseudoStats.ThreatMultiplier, 7.0,
 	).AttachStatDependency(
@@ -110,9 +111,11 @@ func (dk *DeathKnight) registerUnholyPresence() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyAttackSpeed(sim, hasteMulti)
+			dk.MultiplyCastSpeed(sim, hasteMulti)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyAttackSpeed(sim, 1/hasteMulti)
+			dk.MultiplyCastSpeed(sim, 1/hasteMulti)
 		},
 	}).NewMovementSpeedEffect(0.15)
 	presenceAura.Aura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})

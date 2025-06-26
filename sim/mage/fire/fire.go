@@ -3,8 +3,12 @@ package fire
 import (
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/mage"
+)
+
+const (
+	DDBC_Pyromaniac int = iota
+	DDBC_Total
 )
 
 func RegisterFireMage() {
@@ -37,6 +41,15 @@ func NewFireMage(character *core.Character, options *proto.Player) *FireMage {
 
 type FireMage struct {
 	*mage.Mage
+
+	Combustion   *core.Spell
+	Ignite       *core.Spell
+	Pyroblast    *core.Spell
+	InfernoBlast *core.Spell
+
+	pyromaniacAuras core.AuraArray
+
+	combustionDotEstimate int32
 }
 
 func (fireMage *FireMage) GetMage() *mage.Mage {
@@ -50,38 +63,21 @@ func (fireMage *FireMage) Reset(sim *core.Simulation) {
 func (fireMage *FireMage) Initialize() {
 	fireMage.Mage.Initialize()
 
+	fireMage.registerPassives()
+	fireMage.registerSpells()
+}
+
+func (fireMage *FireMage) registerPassives() {
+	fireMage.registerMastery()
+	fireMage.registerCriticalMass()
+	fireMage.registerPyromaniac()
+}
+
+func (fireMage *FireMage) registerSpells() {
+	fireMage.registerCombustionSpell()
+	fireMage.registerFireballSpell()
+	fireMage.registerInfernoBlastSpell()
+	fireMage.registerDragonsBreathSpell()
 	fireMage.registerPyroblastSpell()
-}
-
-func (fireMage *FireMage) GetMasteryBonus() float64 {
-	return (22.4 + 2.8*fireMage.GetMasteryPoints()) / 100
-}
-
-func (fireMage *FireMage) ApplyTalents() {
-	fireMage.Mage.ApplyTalents()
-
-	// Fire Specialization Bonus
-	fireMage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.25
-
-	fireMastery := fireMage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellFireMastery, // Ignite is done inside
-		FloatValue: fireMage.GetMasteryBonus(),
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	fireMage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		fireMastery.UpdateFloatValue(fireMage.GetMasteryBonus())
-	})
-
-	core.MakePermanent(fireMage.GetOrRegisterAura(core.Aura{
-		Label:    "Flashburn",
-		ActionID: core.ActionID{SpellID: 76595},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			fireMastery.UpdateFloatValue(fireMage.GetMasteryBonus())
-			fireMastery.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fireMastery.Deactivate()
-		},
-	}))
+	fireMage.registerScorchSpell()
 }

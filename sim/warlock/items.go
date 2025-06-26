@@ -72,20 +72,17 @@ func (warlock *Warlock) NewFieryImp() *FieryImpPet {
 	baseStats := stats.Stats{stats.SpellCritPercent: 0} // rough guess, seems to only get crit from debuffs?
 
 	statInheritance := func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			// unclear what exactly the scaling is here, but seems to not miss(?)
-			stats.HitRating: ownerStats[stats.SpellHitPercent] * core.SpellHitRatingPerHitPercent,
-		}
+		return stats.Stats{}
 	}
 
 	imp := &FieryImpPet{
 		Pet: core.NewPet(core.PetConfig{
-			Name:            "Fiery Imp",
-			Owner:           &warlock.Character,
-			BaseStats:       baseStats,
-			StatInheritance: statInheritance,
-			EnabledOnStart:  false,
-			IsGuardian:      true,
+			Name:                     "Fiery Imp",
+			Owner:                    &warlock.Character,
+			BaseStats:                baseStats,
+			NonHitExpStatInheritance: statInheritance,
+			EnabledOnStart:           false,
+			IsGuardian:               true,
 		}),
 	}
 
@@ -267,7 +264,8 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 
 // T14
 var ItemSetShaSkinRegalia = core.NewItemSet(core.ItemSet{
-	Name: "Sha-Skin Regalia",
+	Name:                    "Sha-Skin Regalia",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -304,7 +302,8 @@ var ItemSetShaSkinRegalia = core.NewItemSet(core.ItemSet{
 
 // T15
 var ItemSetRegaliaOfTheThousandfeldHells = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Thousandfold Hells",
+	Name:                    "Regalia of the Thousandfold Hells",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
@@ -340,7 +339,8 @@ var ItemSetRegaliaOfTheThousandfeldHells = core.NewItemSet(core.ItemSet{
 
 // T16
 var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Horned Nightmare",
+	Name:                    "Regalia of the Horned Nightmare",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()

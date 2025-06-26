@@ -208,13 +208,21 @@ export class ReforgeOptimizer {
 					button.classList.add('loading');
 					button.disabled = true;
 				}
+
+				const wasCM = simUI.player.getChallengeModeEnabled()
 				try {
 					performance.mark('reforge-optimization-start');
+					if (wasCM) {
+						simUI.player.setChallengeModeEnabled(TypedEvent.nextEventID(), false)
+					}
 					await this.optimizeReforges();
 					this.onReforgeDone();
 				} catch (error) {
 					this.onReforgeError(error);
 				} finally {
+					if (wasCM) {
+						simUI.player.setChallengeModeEnabled(TypedEvent.nextEventID(), true)
+					}
 					performance.mark('reforge-optimization-end');
 					if (isDevMode())
 						console.log(

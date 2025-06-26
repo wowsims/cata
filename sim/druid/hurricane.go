@@ -6,21 +6,26 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+const (
+	HurricaneBonusCoeff = 0.31
+	HurricaneCoeff      = 0.31
+)
+
 func (druid *Druid) registerHurricaneSpell() {
 	druid.HurricaneTickSpell = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 42231},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellProc,
-		Flags:          core.SpellFlagAoE | SpellFlagOmenTrigger,
+		Flags:          core.SpellFlagAoE,
 		ClassSpellMask: DruidSpellHurricane,
 
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.095,
+		BonusCoefficient: HurricaneBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.327 * druid.ClassSpellScaling
+			damage := druid.CalcScalingSpellDmg(HurricaneCoeff)
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
@@ -36,8 +41,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		ClassSpellMask: DruidSpellHurricane,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 81,
-			PercentModifier: 100,
+			BaseCostPercent: 50.3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

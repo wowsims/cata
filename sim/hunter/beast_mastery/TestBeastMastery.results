@@ -1,0 +1,2762 @@
+character_stats_results: {
+ key: "TestBeastMastery-CharacterStats-Default"
+ value: {
+  final_stats: 177.45
+  final_stats: 20478.9375
+  final_stats: 22600.6
+  final_stats: 191.1
+  final_stats: 195
+  final_stats: 2550
+  final_stats: 8556
+  final_stats: 3452
+  final_stats: 2566
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6296
+  final_stats: 45229.6625
+  final_stats: 61060.04438
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 25425
+  final_stats: 0
+  final_stats: 462811.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7.5
+  final_stats: 15.04706
+  final_stats: 33.98925
+  final_stats: 19.26
+  final_stats: 0
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-AgilePrimalDiamond"
+ value: {
+  dps: 158630.37808
+  tps: 75015.86165
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-AlacrityofXuen-103989"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ArcaneBadgeoftheShieldwall-93347"
+ value: {
+  dps: 146924.15607
+  tps: 71117.83189
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ArrowflightMedallion-93258"
+ value: {
+  dps: 157431.19202
+  tps: 74723.76029
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-AssuranceofConsequence-105472"
+ value: {
+  dps: 172502.96137
+  tps: 78909.33493
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-AusterePrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BadJuju-96781"
+ value: {
+  dps: 166051.83254
+  tps: 76317.65851
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BadgeofKypariZar-84079"
+ value: {
+  dps: 149587.65638
+  tps: 71170.8445
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BattlegearoftheSaurokStalker"
+ value: {
+  dps: 147713.43152
+  tps: 70261.12577
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BlossomofPureSnow-89081"
+ value: {
+  dps: 149329.10847
+  tps: 71643.32736
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BraidofTenSongs-84072"
+ value: {
+  dps: 149314.7102
+  tps: 71241.77704
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Brawler'sStatue-87571"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BreathoftheHydra-96827"
+ value: {
+  dps: 148825.17595
+  tps: 71229.88072
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BroochofMunificentDeeds-87500"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BrutalTalismanoftheShado-PanAssault-94508"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-BurningPrimalDiamond"
+ value: {
+  dps: 157428.85287
+  tps: 74394.2296
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CapacitivePrimalDiamond"
+ value: {
+  dps: 156693.08296
+  tps: 73452.05006
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CarbonicCarbuncle-81138"
+ value: {
+  dps: 148699.25419
+  tps: 71569.70624
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Cha-Ye'sEssenceofBrilliance-96888"
+ value: {
+  dps: 150306.59787
+  tps: 72020.89843
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CharmofTenSongs-84071"
+ value: {
+  dps: 149574.97603
+  tps: 71607.56791
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CommunalIdolofDestruction-101168"
+ value: {
+  dps: 149504.05052
+  tps: 70658.093
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CommunalStoneofDestruction-101171"
+ value: {
+  dps: 150039.25064
+  tps: 70815.88613
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CommunalStoneofWisdom-101183"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ContemplationofChi-Ji-103688"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ContemplationofChi-Ji-103988"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Coren'sColdChromiumCoaster-87574"
+ value: {
+  dps: 153012.21098
+  tps: 72994.88417
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CoreofDecency-87497"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CourageousPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sBadgeofConquest-93419"
+ value: {
+  dps: 152844.56048
+  tps: 72575.10859
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sBadgeofDominance-93600"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sBadgeofVictory-93606"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sEmblemofCruelty-93485"
+ value: {
+  dps: 148067.9526
+  tps: 71133.15924
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sEmblemofMeditation-93487"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sEmblemofTenacity-93486"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sInsigniaofConquest-93424"
+ value: {
+  dps: 155125.92964
+  tps: 73686.43323
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sInsigniaofDominance-93601"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedDreadfulGladiator'sInsigniaofVictory-93611"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sBadgeofConquest-98755"
+ value: {
+  dps: 153772.86968
+  tps: 73032.57942
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sBadgeofDominance-98910"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sBadgeofVictory-98912"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sEmblemofCruelty-98811"
+ value: {
+  dps: 148497.43507
+  tps: 71264.45705
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sEmblemofMeditation-98813"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sEmblemofTenacity-98812"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sInsigniaofConquest-98760"
+ value: {
+  dps: 156725.65011
+  tps: 74050.83833
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sInsigniaofDominance-98911"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CraftedMalevolentGladiator'sInsigniaofVictory-98917"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CurseofHubris-102307"
+ value: {
+  dps: 151887.57348
+  tps: 72587.32907
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CurseofHubris-104649"
+ value: {
+  dps: 152260.14306
+  tps: 72830.88074
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CurseofHubris-104898"
+ value: {
+  dps: 151073.68531
+  tps: 72271.16244
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CurseofHubris-105147"
+ value: {
+  dps: 150672.05706
+  tps: 72125.10086
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CurseofHubris-105396"
+ value: {
+  dps: 152255.14547
+  tps: 72664.54194
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CurseofHubris-105645"
+ value: {
+  dps: 152667.64235
+  tps: 72955.5287
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-CutstitcherMedallion-93255"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Daelo'sFinalWords-87496"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DarkglowEmbroidery(Rank3)-4893"
+ value: {
+  dps: 158696.57274
+  tps: 74790.1641
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DarkmistVortex-87172"
+ value: {
+  dps: 148644.49284
+  tps: 70915.11947
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DeadeyeBadgeoftheShieldwall-93346"
+ value: {
+  dps: 154342.18182
+  tps: 72697.79174
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DelicateVialoftheSanguinaire-96895"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DestructivePrimalDiamond"
+ value: {
+  dps: 157061.07159
+  tps: 73621.00571
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DisciplineofXuen-103986"
+ value: {
+  dps: 165374.93536
+  tps: 76127.96179
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Dominator'sArcaneBadge-93342"
+ value: {
+  dps: 146924.15607
+  tps: 71117.83189
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Dominator'sDeadeyeBadge-93341"
+ value: {
+  dps: 154342.18182
+  tps: 72697.79174
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Dominator'sDurableBadge-93345"
+ value: {
+  dps: 148628.701
+  tps: 70596.8585
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Dominator'sKnightlyBadge-93344"
+ value: {
+  dps: 148628.701
+  tps: 70596.8585
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Dominator'sMendingBadge-93343"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sBadgeofConquest-84344"
+ value: {
+  dps: 152844.56048
+  tps: 72575.10859
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sBadgeofDominance-84488"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sBadgeofVictory-84490"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sEmblemofCruelty-84399"
+ value: {
+  dps: 148067.9526
+  tps: 71133.15924
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sEmblemofMeditation-84401"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sEmblemofTenacity-84400"
+ value: {
+  dps: 148241.95064
+  tps: 70519.14138
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sInsigniaofConquest-84349"
+ value: {
+  dps: 155069.17294
+  tps: 73581.91482
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sInsigniaofDominance-84489"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DreadfulGladiator'sInsigniaofVictory-84495"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-DurableBadgeoftheShieldwall-93350"
+ value: {
+  dps: 148628.701
+  tps: 70596.8585
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EffulgentPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EmberPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EmblemofKypariZar-84077"
+ value: {
+  dps: 148459.7914
+  tps: 71702.92062
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EmblemoftheCatacombs-83733"
+ value: {
+  dps: 149228.70521
+  tps: 70722.2109
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EmptyFruitBarrel-81133"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
+ value: {
+  dps: 159383.91244
+  tps: 75185.30932
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-Colossus-4445"
+ value: {
+  dps: 153687.58321
+  tps: 72765.36133
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-DancingSteel-4444"
+ value: {
+  dps: 159511.87705
+  tps: 74987.36408
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-JadeSpirit-4442"
+ value: {
+  dps: 153687.92913
+  tps: 72765.70725
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-River'sSong-4446"
+ value: {
+  dps: 153688.47114
+  tps: 72766.24926
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-SpiritofConquest-5124"
+ value: {
+  dps: 153687.65998
+  tps: 72765.43809
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnchantWeapon-Windsong-4441"
+ value: {
+  dps: 154153.38055
+  tps: 73048.93718
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EnigmaticPrimalDiamond"
+ value: {
+  dps: 157061.07159
+  tps: 73621.00571
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EssenceofTerror-87175"
+ value: {
+  dps: 147663.41248
+  tps: 70637.97942
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EternalPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-EvilEyeofGalakras-105491"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FabledFeatherofJi-Kun-96842"
+ value: {
+  dps: 146544.83398
+  tps: 70334.99755
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FearwurmBadge-84074"
+ value: {
+  dps: 149402.8188
+  tps: 71765.52618
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FearwurmRelic-84070"
+ value: {
+  dps: 148851.82339
+  tps: 71293.45275
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FelsoulIdolofDestruction-101263"
+ value: {
+  dps: 150082.0253
+  tps: 70743.50607
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FelsoulStoneofDestruction-101266"
+ value: {
+  dps: 150282.49805
+  tps: 70842.73444
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Fen-Yu,FuryofXuen-102248"
+ value: {
+  dps: 173673.69498
+  tps: 83702.73803
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Flamewaker'sBattlegear"
+ value: {
+  dps: 102366.97472
+  tps: 52743.21778
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FlashfrozenResinGlobule-100951"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FlashfrozenResinGlobule-81263"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FlashingSteelTalisman-81265"
+ value: {
+  dps: 153717.45084
+  tps: 72757.9282
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FleetPrimalDiamond"
+ value: {
+  dps: 157179.49087
+  tps: 73289.81515
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ForlornPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FortitudeoftheZandalari-94516"
+ value: {
+  dps: 149622.73424
+  tps: 70669.34883
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FortitudeoftheZandalari-95677"
+ value: {
+  dps: 149100.21886
+  tps: 70612.50741
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FortitudeoftheZandalari-96049"
+ value: {
+  dps: 149801.10294
+  tps: 70688.75252
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FortitudeoftheZandalari-96421"
+ value: {
+  dps: 150021.44075
+  tps: 70712.7218
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-FortitudeoftheZandalari-96793"
+ value: {
+  dps: 150220.79401
+  tps: 70734.40828
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GazeoftheTwins-96915"
+ value: {
+  dps: 150416.54427
+  tps: 72271.6525
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Gerp'sPerfectArrow-87495"
+ value: {
+  dps: 154930.25386
+  tps: 73827.83762
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Gladiator'sPursuit"
+ value: {
+  dps: 160476.499
+  tps: 74971.21042
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Gong-Lu,StrengthofXuen-102249"
+ value: {
+  dps: 162199.58015
+  tps: 78823.61774
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofConquest-100195"
+ value: {
+  dps: 157402.58713
+  tps: 74594.8241
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofConquest-100603"
+ value: {
+  dps: 157402.58713
+  tps: 74594.8241
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofConquest-102856"
+ value: {
+  dps: 157402.58713
+  tps: 74594.8241
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofConquest-103145"
+ value: {
+  dps: 157402.58713
+  tps: 74594.8241
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofDominance-100490"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofDominance-100576"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofDominance-102830"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofDominance-103308"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofVictory-100500"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofVictory-100579"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofVictory-102833"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sBadgeofVictory-103314"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofCruelty-100305"
+ value: {
+  dps: 149678.25865
+  tps: 71856.89627
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofCruelty-100626"
+ value: {
+  dps: 149678.25865
+  tps: 71856.89627
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofCruelty-102877"
+ value: {
+  dps: 149678.25865
+  tps: 71856.89627
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofCruelty-103210"
+ value: {
+  dps: 149678.25865
+  tps: 71856.89627
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofMeditation-100307"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofMeditation-100559"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofMeditation-102813"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofMeditation-103212"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofTenacity-100306"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofTenacity-100652"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofTenacity-102903"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sEmblemofTenacity-103211"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sInsigniaofConquest-103150"
+ value: {
+  dps: 162057.96021
+  tps: 76142.66067
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sInsigniaofDominance-103309"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-GrievousGladiator'sInsigniaofVictory-103319"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Hawkmaster'sTalon-89082"
+ value: {
+  dps: 155832.84133
+  tps: 74010.89327
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Heart-LesionDefenderIdol-100999"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Heart-LesionDefenderStone-101002"
+ value: {
+  dps: 150179.29741
+  tps: 70832.96495
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Heart-LesionIdolofBattle-100991"
+ value: {
+  dps: 148556.93031
+  tps: 71306.5436
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Heart-LesionStoneofBattle-100990"
+ value: {
+  dps: 150082.10612
+  tps: 70840.30541
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-HeartofFire-81181"
+ value: {
+  dps: 148321.69194
+  tps: 70527.81598
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-HeartwarmerMedallion-93260"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-HelmbreakerMedallion-93261"
+ value: {
+  dps: 149612.80002
+  tps: 71712.34377
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Horridon'sLastGasp-96757"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ImpassivePrimalDiamond"
+ value: {
+  dps: 157061.07159
+  tps: 73621.00571
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-IndomitablePrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-InscribedBagofHydra-Spawn-96828"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-InsigniaofKypariZar-84078"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-IronBellyWok-89083"
+ value: {
+  dps: 148809.59852
+  tps: 71237.37718
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-IronProtectorTalisman-85181"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeBanditFigurine-86043"
+ value: {
+  dps: 155832.84133
+  tps: 74010.89327
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeBanditFigurine-86772"
+ value: {
+  dps: 155545.12095
+  tps: 73669.70642
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeCharioteerFigurine-86042"
+ value: {
+  dps: 148809.59852
+  tps: 71237.37718
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeCharioteerFigurine-86771"
+ value: {
+  dps: 149353.35417
+  tps: 71291.47514
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeCourtesanFigurine-86045"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeCourtesanFigurine-86774"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeMagistrateFigurine-86044"
+ value: {
+  dps: 149329.10847
+  tps: 71643.32736
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeMagistrateFigurine-86773"
+ value: {
+  dps: 148980.79057
+  tps: 71518.78036
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeWarlordFigurine-86046"
+ value: {
+  dps: 149326.85527
+  tps: 70684.74561
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-JadeWarlordFigurine-86775"
+ value: {
+  dps: 149008.73841
+  tps: 70644.69949
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Ji-Kun'sRisingWinds-96843"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-KnightlyBadgeoftheShieldwall-93349"
+ value: {
+  dps: 148628.701
+  tps: 70596.8585
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-KnotofTenSongs-84073"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Kor'kronBookofHurting-92785"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Lao-Chin'sLiquidCourage-89079"
+ value: {
+  dps: 149326.85527
+  tps: 70684.74561
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-LeiShen'sFinalOrders-87072"
+ value: {
+  dps: 148976.15382
+  tps: 71264.31084
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-LessonsoftheDarkmaster-81268"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-LightdrinkerIdolofRage-101200"
+ value: {
+  dps: 157481.3119
+  tps: 73980.51832
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-LightdrinkerStoneofRage-101203"
+ value: {
+  dps: 157337.5954
+  tps: 73609.13947
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Lightning-ChargedBattlegear"
+ value: {
+  dps: 100851.94238
+  tps: 52508.19189
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-LightoftheCosmos-87065"
+ value: {
+  dps: 148976.15382
+  tps: 71264.31084
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-LightweaveEmbroidery(Rank3)-4892"
+ value: {
+  dps: 158696.57274
+  tps: 74790.1641
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sBadgeofConquest-84934"
+ value: {
+  dps: 154310.34197
+  tps: 73258.4052
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sBadgeofConquest-91452"
+ value: {
+  dps: 153772.86968
+  tps: 73032.57942
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sBadgeofDominance-84940"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sBadgeofDominance-91753"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sBadgeofVictory-84942"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sBadgeofVictory-91763"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sEmblemofCruelty-84936"
+ value: {
+  dps: 148556.93031
+  tps: 71306.5436
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sEmblemofCruelty-91562"
+ value: {
+  dps: 148497.43507
+  tps: 71264.45705
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sEmblemofMeditation-84939"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sEmblemofMeditation-91564"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sEmblemofTenacity-84938"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sEmblemofTenacity-91563"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sInsigniaofConquest-91457"
+ value: {
+  dps: 156657.27987
+  tps: 73993.12844
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sInsigniaofDominance-91754"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MalevolentGladiator'sInsigniaofVictory-91768"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MarkoftheCatacombs-83731"
+ value: {
+  dps: 149288.40129
+  tps: 71107.17535
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MarkoftheHardenedGrunt-92783"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MedallionofMystifyingVapors-93257"
+ value: {
+  dps: 149514.93896
+  tps: 70708.42251
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MedallionoftheCatacombs-83734"
+ value: {
+  dps: 147839.04721
+  tps: 70475.31185
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MendingBadgeoftheShieldwall-93348"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MirrorScope-4700"
+ value: {
+  dps: 154512.54237
+  tps: 73338.48911
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MistdancerDefenderIdol-101089"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MistdancerDefenderStone-101087"
+ value: {
+  dps: 150054.23342
+  tps: 70782.11891
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MistdancerIdolofRage-101113"
+ value: {
+  dps: 157101.11055
+  tps: 73715.90752
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MistdancerStoneofRage-101117"
+ value: {
+  dps: 157074.60303
+  tps: 73552.50977
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MistdancerStoneofWisdom-101107"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MithrilWristwatch-87572"
+ value: {
+  dps: 148307.45003
+  tps: 71196.42426
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MountainsageIdolofDestruction-101069"
+ value: {
+  dps: 149398.98722
+  tps: 71131.02809
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-MountainsageStoneofDestruction-101072"
+ value: {
+  dps: 150143.62823
+  tps: 70799.76717
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-OathswornDefenderIdol-101303"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-OathswornDefenderStone-101306"
+ value: {
+  dps: 149925.367
+  tps: 70792.97094
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-OathswornIdolofBattle-101295"
+ value: {
+  dps: 148556.9716
+  tps: 71306.58489
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-OathswornStoneofBattle-101294"
+ value: {
+  dps: 150125.08966
+  tps: 70805.09363
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PhaseFingers-4697"
+ value: {
+  dps: 158842.39334
+  tps: 74810.64678
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PouchofWhiteAsh-103639"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PowerfulPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PriceofProgress-81266"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sBadgeofConquest-102659"
+ value: {
+  dps: 160575.22903
+  tps: 75875.80194
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sBadgeofConquest-103342"
+ value: {
+  dps: 160575.22903
+  tps: 75875.80194
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sBadgeofDominance-102633"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sBadgeofDominance-103505"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sBadgeofVictory-102636"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sBadgeofVictory-103511"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sEmblemofCruelty-102680"
+ value: {
+  dps: 150273.59326
+  tps: 72015.13503
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sEmblemofCruelty-103407"
+ value: {
+  dps: 150273.59326
+  tps: 72015.13503
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sEmblemofMeditation-102616"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sEmblemofMeditation-103409"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sEmblemofTenacity-102706"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sEmblemofTenacity-103408"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sInsigniaofConquest-103347"
+ value: {
+  dps: 166914.43706
+  tps: 78121.04281
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sInsigniaofDominance-103506"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-PridefulGladiator'sInsigniaofVictory-103516"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Primordius'TalismanofRage-96873"
+ value: {
+  dps: 150306.49633
+  tps: 72020.79689
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Qian-Le,CourageofNiuzao-102245"
+ value: {
+  dps: 167446.67109
+  tps: 77539.80169
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
+ value: {
+  dps: 153952.17979
+  tps: 71896.86203
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Qin-xi'sPolarizingSeal-87075"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RelicofChi-Ji-79330"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RelicofKypariZar-84075"
+ value: {
+  dps: 149173.35667
+  tps: 71663.2676
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RelicofNiuzao-79329"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RelicofXuen-79327"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RelicofXuen-79328"
+ value: {
+  dps: 159124.84952
+  tps: 75223.3681
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RelicofYu'lon-79331"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Renataki'sSoulCharm-96741"
+ value: {
+  dps: 197644.3651
+  tps: 90730.13985
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ResolveofNiuzao-103690"
+ value: {
+  dps: 148961.72081
+  tps: 70597.44101
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ResolveofNiuzao-103990"
+ value: {
+  dps: 150021.44075
+  tps: 70712.7218
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ReverberatingPrimalDiamond"
+ value: {
+  dps: 157428.85287
+  tps: 74394.2296
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-RevitalizingPrimalDiamond"
+ value: {
+  dps: 157428.85287
+  tps: 74394.2296
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SI:7Operative'sManual-92784"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ScrollofReveredAncestors-89080"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SearingWords-81267"
+ value: {
+  dps: 156428.92943
+  tps: 74079.89978
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Shock-ChargerMedallion-93259"
+ value: {
+  dps: 148811.9922
+  tps: 71068.63458
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigilofCompassion-83736"
+ value: {
+  dps: 147839.04721
+  tps: 70475.31185
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigilofDevotion-83740"
+ value: {
+  dps: 149502.93495
+  tps: 71066.20468
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigilofFidelity-83737"
+ value: {
+  dps: 148756.4068
+  tps: 71043.63628
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigilofGrace-83738"
+ value: {
+  dps: 149318.7685
+  tps: 71106.81986
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigilofKypariZar-84076"
+ value: {
+  dps: 149367.23287
+  tps: 71195.00048
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigilofPatience-83739"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SigiloftheCatacombs-83732"
+ value: {
+  dps: 149253.15528
+  tps: 71581.84397
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SinisterPrimalDiamond"
+ value: {
+  dps: 156693.08296
+  tps: 73452.05006
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SkullrenderMedallion-93256"
+ value: {
+  dps: 149612.80002
+  tps: 71712.34377
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SpiritsoftheSun-87163"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SpringrainIdolofDestruction-101023"
+ value: {
+  dps: 149657.88838
+  tps: 71060.69046
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SpringrainIdolofRage-101009"
+ value: {
+  dps: 157480.4686
+  tps: 73773.13302
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SpringrainStoneofDestruction-101026"
+ value: {
+  dps: 150042.31355
+  tps: 70798.3169
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SpringrainStoneofRage-101012"
+ value: {
+  dps: 157228.85334
+  tps: 73547.44894
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SpringrainStoneofWisdom-101041"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Static-Caster'sMedallion-93254"
+ value: {
+  dps: 148811.9922
+  tps: 71068.63458
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SteadfastFootman'sMedallion-92782"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SteadfastTalismanoftheShado-PanAssault-94507"
+ value: {
+  dps: 149622.73424
+  tps: 70669.34883
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-StreamtalkerIdolofDestruction-101222"
+ value: {
+  dps: 150064.89031
+  tps: 70911.20855
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-StreamtalkerIdolofRage-101217"
+ value: {
+  dps: 157458.37011
+  tps: 73920.22685
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-StreamtalkerStoneofDestruction-101225"
+ value: {
+  dps: 150068.82914
+  tps: 70843.66699
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-StreamtalkerStoneofRage-101220"
+ value: {
+  dps: 157154.69333
+  tps: 73600.46147
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-StreamtalkerStoneofWisdom-101250"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-StuffofNightmares-87160"
+ value: {
+  dps: 149272.2922
+  tps: 70631.22627
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SunsoulDefenderIdol-101160"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SunsoulDefenderStone-101163"
+ value: {
+  dps: 150229.30444
+  tps: 70836.48643
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SunsoulIdolofBattle-101152"
+ value: {
+  dps: 148556.9716
+  tps: 71306.58489
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SunsoulStoneofBattle-101151"
+ value: {
+  dps: 150097.89517
+  tps: 70770.3023
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SunsoulStoneofWisdom-101138"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SwordguardEmbroidery(Rank3)-4894"
+ value: {
+  dps: 161940.74909
+  tps: 75995.3527
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SymboloftheCatacombs-83735"
+ value: {
+  dps: 149425.21533
+  tps: 71015.95327
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-SynapseSprings(MarkII)-4898"
+ value: {
+  dps: 162069.35959
+  tps: 76120.47275
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TalismanofBloodlust-96864"
+ value: {
+  dps: 161835.46541
+  tps: 76507.24579
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TheGloamingBlade-88149"
+ value: {
+  dps: 158630.37808
+  tps: 75015.86165
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Thousand-YearPickledEgg-87573"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TrailseekerIdolofRage-101054"
+ value: {
+  dps: 157602.0412
+  tps: 73914.7511
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TrailseekerStoneofRage-101057"
+ value: {
+  dps: 157172.44833
+  tps: 73530.10418
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofConquest-100043"
+ value: {
+  dps: 155018.78619
+  tps: 73626.1784
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofConquest-91099"
+ value: {
+  dps: 155018.78619
+  tps: 73626.1784
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofConquest-94373"
+ value: {
+  dps: 155018.78619
+  tps: 73626.1784
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofConquest-99772"
+ value: {
+  dps: 155018.78619
+  tps: 73626.1784
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofDominance-100016"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofDominance-91400"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofDominance-94346"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofDominance-99937"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofVictory-100019"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofVictory-91410"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofVictory-94349"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sBadgeofVictory-99943"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofCruelty-100066"
+ value: {
+  dps: 148910.36945
+  tps: 71404.15339
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofCruelty-91209"
+ value: {
+  dps: 148910.36945
+  tps: 71404.15339
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofCruelty-94396"
+ value: {
+  dps: 148910.36945
+  tps: 71404.15339
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofCruelty-99838"
+ value: {
+  dps: 148910.36945
+  tps: 71404.15339
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofMeditation-91211"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofMeditation-94329"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofMeditation-99840"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofMeditation-99990"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofTenacity-100092"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofTenacity-91210"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofTenacity-94422"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sEmblemofTenacity-99839"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sInsigniaofConquest-100026"
+ value: {
+  dps: 158497.22446
+  tps: 74936.44841
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sInsigniaofDominance-100152"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalGladiator'sInsigniaofVictory-100085"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-TyrannicalPrimalDiamond"
+ value: {
+  dps: 156208.44794
+  tps: 73183.42771
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-UnerringVisionofLeiShen-96930"
+ value: {
+  dps: 150179.26663
+  tps: 71929.46839
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-VaporshieldMedallion-93262"
+ value: {
+  dps: 149514.93896
+  tps: 70708.42251
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-VialofDragon'sBlood-87063"
+ value: {
+  dps: 149100.21886
+  tps: 70612.50741
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-VialofIchorousBlood-100963"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-VialofIchorousBlood-81264"
+ value: {
+  dps: 146544.30027
+  tps: 70334.46384
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ViciousTalismanoftheShado-PanAssault-94511"
+ value: {
+  dps: 163473.82548
+  tps: 77435.10864
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-VisionofthePredator-81192"
+ value: {
+  dps: 148108.25418
+  tps: 71226.61333
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-VolatileTalismanoftheShado-PanAssault-94510"
+ value: {
+  dps: 147455.43983
+  tps: 70767.75185
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-WindsweptPages-81125"
+ value: {
+  dps: 154989.93282
+  tps: 73365.47843
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-WoundripperMedallion-93253"
+ value: {
+  dps: 157431.19202
+  tps: 74723.76029
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Wushoolay'sFinalChoice-96785"
+ value: {
+  dps: 146544.19873
+  tps: 70334.3623
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Xing-Ho,BreathofYu'lon-102246"
+ value: {
+  dps: 156699.17401
+  tps: 73218.63564
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-YaungolFireCarrier-86518"
+ value: {
+  dps: 158630.37808
+  tps: 75015.86165
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-YaungolSlayerBattlegear"
+ value: {
+  dps: 143300.66612
+  tps: 67617.2018
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-Yu'lon'sBite-103987"
+ value: {
+  dps: 150611.89782
+  tps: 72169.4612
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-AllItems-ZenAlchemistStone-75274"
+ value: {
+  dps: 158146.6033
+  tps: 73872.54649
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Average-Default"
+ value: {
+  dps: 162809.96896
+  tps: 76024.4346
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-DefaultTalents-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 188276.44211
+  tps: 103909.86727
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-DefaultTalents-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 157466.67754
+  tps: 75127.55738
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-DefaultTalents-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 218986.1764
+  tps: 90677.60029
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-DefaultTalents-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 137092.58654
+  tps: 81287.21246
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-DefaultTalents-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 113757.53057
+  tps: 58264.91014
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-DefaultTalents-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 130302.80843
+  tps: 61369.80398
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent0-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 178899.85907
+  tps: 95439.2436
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent0-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 149179.61068
+  tps: 65608.57642
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent0-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 203942.7783
+  tps: 73188.15495
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent0-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 130891.90855
+  tps: 75273.86146
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent0-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 106461.01081
+  tps: 51421.35255
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent0-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 120685.55044
+  tps: 51536.43346
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent2-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 187060.92122
+  tps: 95439.2436
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent2-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 157354.9744
+  tps: 65608.57642
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent2-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 214477.49175
+  tps: 73188.15495
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent2-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 136578.55995
+  tps: 75273.86146
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent2-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112048.23041
+  tps: 51421.35255
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row5_Talent2-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 127235.70554
+  tps: 51536.43346
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent0-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 181948.85991
+  tps: 98413.31272
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent0-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 153010.95991
+  tps: 69878.50628
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent0-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 214812.60651
+  tps: 86145.64143
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent0-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 134041.81415
+  tps: 77977.85461
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent0-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 108531.23504
+  tps: 54155.85818
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent0-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 126004.33426
+  tps: 58874.91876
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent2-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 185129.79046
+  tps: 101449.44206
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent2-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 152948.04794
+  tps: 71462.11063
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent2-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 214150.01549
+  tps: 88284.81991
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent2-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 133830.45637
+  tps: 78468.10115
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent2-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 109318.84237
+  tps: 55255.0365
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Dwarf-p1-Row6_Talent2-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 126685.5367
+  tps: 59784.96954
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-DefaultTalents-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 193283.9179
+  tps: 105414.66267
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-DefaultTalents-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 161911.65426
+  tps: 76155.18196
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-DefaultTalents-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 228026.45451
+  tps: 92314.56986
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-DefaultTalents-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 140819.94435
+  tps: 82647.89823
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-DefaultTalents-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 116953.28024
+  tps: 59107.35575
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-DefaultTalents-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 135972.46419
+  tps: 62611.53559
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent0-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 183629.26109
+  tps: 96687.18194
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent0-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 153368.46984
+  tps: 66308.21798
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent0-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 212801.91697
+  tps: 74491.07482
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent0-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 134423.63405
+  tps: 76397.35826
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent0-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 109446.40466
+  tps: 52047.49629
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent0-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 126142.59227
+  tps: 52613.85671
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent2-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 192114.30799
+  tps: 96687.18194
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent2-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 161863.30935
+  tps: 66308.21798
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent2-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 223868.69001
+  tps: 74491.07482
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent2-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 140354.51818
+  tps: 76397.35826
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent2-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 115276.36072
+  tps: 52047.49629
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row5_Talent2-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 133084.29897
+  tps: 52613.85671
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent0-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 186876.24117
+  tps: 99854.96186
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent0-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 157360.59513
+  tps: 70818.06903
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent0-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 223808.75384
+  tps: 87769.84474
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent0-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 137711.98833
+  tps: 79258.47329
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent0-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 111692.70396
+  tps: 54946.86291
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent0-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 131597.32101
+  tps: 60114.34256
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent2-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 190109.11113
+  tps: 102978.96737
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent2-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 157271.50058
+  tps: 72419.3216
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent2-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 223073.84124
+  tps: 89955.98634
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent2-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
+ value: {
+  dps: 137494.92481
+  tps: 79736.72837
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent2-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
+ value: {
+  dps: 112411.34663
+  tps: 56046.41766
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-Settings-Orc-p1-Row6_Talent2-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
+ value: {
+  dps: 132289.38343
+  tps: 61076.76173
+ }
+}
+dps_results: {
+ key: "TestBeastMastery-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 158918.33855
+  tps: 75878.58049
+ }
+}

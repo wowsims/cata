@@ -591,21 +591,21 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 	})
 }
 
-// Takes in the SpellResult for the triggering spell, and returns the damage per
-// tick of a *fresh* Ignite triggered by that spell. Roll-over damage
+// Takes in the SpellResult for the triggering spell, and returns the total damage
+// of a *fresh* Ignite triggered by that spell. Roll-over damage
 // calculations for existing Ignites are handled internally.
 type IgniteDamageCalculator func(result *core.SpellResult) float64
 
 type IgniteConfig struct {
 	ActionID           core.ActionID
 	ClassSpellMask     int64
+	SpellSchool        core.SpellSchool
 	DisableCastMetrics bool
 	DotAuraLabel       string
 	DotAuraTag         string
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
 	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
-	SpellSchool        core.SpellSchool
 	NumberOfTicks      int32
 	TickLength         time.Duration
 	ParentAura         *core.Aura
@@ -651,8 +651,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 			AffectedByCastSpeed: false,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-				dot.Spell.DealPeriodicDamage(sim, result)
+				dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
 			},
 		},
 

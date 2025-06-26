@@ -9,7 +9,8 @@ import (
 
 // T14 - DPS
 var ItemSetBattleplateOfResoundingRings = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of Resounding Rings",
+	Name:                    "Battleplate of Resounding Rings",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -34,7 +35,8 @@ var ItemSetBattleplateOfResoundingRings = core.NewItemSet(core.ItemSet{
 
 // T14 - Tank
 var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
-	Name: "Plate of Resounding Rings",
+	Name:                    "Plate of Resounding Rings",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -63,12 +65,13 @@ var ItemSetPlateOfResoundingRings = core.NewItemSet(core.ItemSet{
 
 // T15 - DPS
 var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of the Last Mogu",
+	Name:                    "Battleplate of the Last Mogu",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
 
-			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:     "Item - Warrior T15 DPS 2P Bonus",
 				ActionID: core.ActionID{SpellID: 138120},
 				ICD:      250 * time.Millisecond,
@@ -110,11 +113,12 @@ var ItemSetBattleplateOfTheLastMogu = core.NewItemSet(core.ItemSet{
 
 // T15 - Tank
 var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the Last Mogu",
+	Name:                    "Plate of the Last Mogu",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
-			war.T15Tank2P = core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			war.T15Tank2P = setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Victorious -  T15 Protection 2P Bonus",
 				ActionID:       core.ActionID{SpellID: 138279},
 				ClassSpellMask: SpellMaskRevenge | SpellMaskShieldSlam,
@@ -140,14 +144,15 @@ var ItemSetPlaceOfTheLastMogu = core.NewItemSet(core.ItemSet{
 
 // T16 - DPS
 var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
-	Name: "Battleplate of the Prehistoric Marauder",
+	Name:                    "Battleplate of the Prehistoric Marauder",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			war := agent.(WarriorAgent).GetWarrior()
 			actionID := core.ActionID{SpellID: 144438}
 			rageMetrics := war.NewRageMetrics(actionID)
 
-			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:     "Colossal Rage",
 				ActionID: actionID,
 				ProcMask: core.ProcMaskMeleeSpecial,
@@ -192,7 +197,7 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Death Sentence - Trigger",
 				ActionID:       core.ActionID{SpellID: 144442},
 				ClassSpellMask: SpellMaskMortalStrike | SpellMaskBloodthirst,
@@ -211,7 +216,8 @@ var ItemSetBattleplateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
 
 // T16 - Tank
 var ItemSetPlateOfThePrehistoricMarauder = core.NewItemSet(core.ItemSet{
-	Name: "Plate of the Prehistoric Marauder",
+	Name:                    "Plate of the Prehistoric Marauder",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// TODO: You heal for 30% of all damage blocked with a shield

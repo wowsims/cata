@@ -55,6 +55,7 @@ type DeathKnight struct {
 	BoneShieldAura             *core.Aura
 	BoneWallAura               *core.Aura
 	PillarOfFrostAura          *core.Aura
+	RaiseDeadAura              *core.Aura
 
 	// Diseases
 	FrostFeverSpell  *core.Spell

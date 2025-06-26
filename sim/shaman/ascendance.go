@@ -67,11 +67,10 @@ func (shaman *Shaman) registerAscendanceSpell() {
 			} else {
 				shaman.LavaBurst.CD.Reset()
 			}
-			pa := &core.PendingAction{
-				NextActionAt: aura.ExpiresAt(),
-				Priority:     core.ActionPriorityGCD,
-				OnAction:     func(sim *core.Simulation) {},
-			}
+
+			pa := sim.GetConsumedPendingActionFromPool()
+			pa.NextActionAt = aura.ExpiresAt()
+			pa.OnAction = func(sim *core.Simulation) {}
 			sim.AddPendingAction(pa)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

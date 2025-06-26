@@ -3,8 +3,13 @@ package balance
 import (
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/druid"
+)
+
+const (
+	WrathBaseEnergyGain     float64 = 15
+	StarsurgeBaseEnergyGain float64 = 20
+	StarfireBaseEnergyGain  float64 = 20
 )
 
 func RegisterBalanceDruid() {
@@ -29,9 +34,12 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	selfBuffs := druid.SelfBuffs{}
 
 	moonkin := &BalanceDruid{
-		Druid:   druid.New(character, druid.Moonkin, selfBuffs, options.TalentsString),
-		Options: balanceOptions.Options,
+		Druid:            druid.New(character, druid.Moonkin, selfBuffs, options.TalentsString),
+		Options:          balanceOptions.Options,
+		EclipseEnergyMap: make(EclipseEnergyMap),
 	}
+
+	moonkin.registerTreants()
 
 	moonkin.SelfBuffs.InnervateTarget = &proto.UnitReference{}
 	if balanceOptions.Options.ClassOptions.InnervateTarget != nil {
@@ -41,14 +49,26 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	return moonkin
 }
 
-type BalanceOnUseTrinket struct {
-	Cooldown *core.MajorCooldown
-	Stat     stats.Stat
-}
-
 type BalanceDruid struct {
 	*druid.Druid
+	eclipseEnergyBar
 	Options *proto.BalanceDruid_Options
+
+	EclipseEnergyMap EclipseEnergyMap
+
+	AstralCommunion      *druid.DruidSpell
+	AstralStorm          *druid.DruidSpell
+	AstralStormTickSpell *druid.DruidSpell
+	CelestialAlignment   *druid.DruidSpell
+	ChosenOfElune        *druid.DruidSpell
+	Starfall             *druid.DruidSpell
+	Starfire             *druid.DruidSpell
+	Sunfire              *druid.DruidSpell
+	Starsurge            *druid.DruidSpell
+
+	AstralInsight   *core.Aura // Soul of the Forest
+	DreamOfCenarius *core.Aura
+	NaturesGrace    *core.Aura
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
@@ -58,53 +78,32 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
 
-	moonkin.RegisterBalanceSpells()
+	moonkin.EnableEclipseBar()
+	moonkin.RegisterEclipseAuras()
+	moonkin.RegisterEclipseEnergyGainAura()
 
-	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
-	// 	moonkin.Env.RegisterPreFinalizeEffect(func() {
-	// 		core.ApplyFixedUptimeAura(moonkin.OwlkinFrenzyAura, float64(moonkin.Options.OkfUptime), time.Second*5, 0)
-	// 	})
-	// }
+	moonkin.RegisterBalancePassives()
+	moonkin.RegisterBalanceSpells()
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {
+	moonkin.Druid.ApplyTalents()
 
-	// moonkin.EnableEclipseBar()
-	// moonkin.RegisterEclipseAuras()
-	// moonkin.RegisterEclipseEnergyGainAura()
+	moonkin.ApplyBalanceTalents()
+}
 
-	// Moonfury passive
-	moonkin.RegisterAura(
-		core.Aura{
-			Label:    "Moonfury",
-			Duration: core.NeverExpires,
-			ActionID: core.ActionID{
-				SpellID: 16913,
-			},
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-		},
-	)
-
-	moonkin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  druid.DruidSpellWrath | druid.DruidSpellStarfire | druid.DruidSpellStarsurge | druid.DruidSpellStarfall | druid.DruidSpellDoT,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
-		FloatValue: 1.0,
-	})
-
-	moonkin.AddStaticMod(core.SpellModConfig{
-		School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-		ClassMask:  druid.DruidSpellsAll,
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.1,
-	})
-
-	// Apply druid talents
-	// moonkin.Druid.ApplyTalents()
+func (moonkin *BalanceDruid) RegisterBalanceSpells() {
+	moonkin.registerSunfireSpell()
+	moonkin.registerStarfireSpell()
+	moonkin.registerStarsurgeSpell()
+	moonkin.registerStarfallSpell()
+	moonkin.registerAstralCommunionSpell()
+	moonkin.registerCelestialAlignmentSpell()
+	moonkin.registerAstralStormSpell()
+	moonkin.registerWildMushrooms()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
+	moonkin.eclipseEnergyBar.reset()
 	moonkin.Druid.Reset(sim)
-	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
 }

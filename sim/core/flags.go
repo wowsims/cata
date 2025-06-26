@@ -213,6 +213,7 @@ const (
 	SpellSchoolShadowFlame SpellSchool = SpellSchoolFire | SpellSchoolShadow
 	SpellSchoolShadowFrost SpellSchool = SpellSchoolFrost | SpellSchoolShadow
 	SpellSchoolPlague      SpellSchool = SpellSchoolNature | SpellSchoolShadow
+	SpellSchoolFirestorm   SpellSchool = SpellSchoolFire | SpellSchoolNature
 )
 
 // Returns whether there is any overlap between the given masks.

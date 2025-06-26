@@ -42,7 +42,7 @@ func (enh *EnhancementShaman) registerFeralSpirit() {
 
 			// https://github.com/JamminL/wotlk-classic-bugs/issues/280
 			// instant casts (e.g. shocks) usually don't reset a shaman's swing timer
-			enh.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+			enh.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime)
 		},
 	})
 

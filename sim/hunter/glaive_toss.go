@@ -11,12 +11,13 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 		return
 	}
 
-	registerGlaive := func(spellID int32) *core.Spell {
+	registerGlaive := func(spellID int32, tag int32) *core.Spell {
 		return hunter.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{SpellID: spellID},
+			ActionID:                 core.ActionID{SpellID: 117050}.WithTag(tag),
 			SpellSchool:              core.SpellSchoolPhysical,
 			ProcMask:                 core.ProcMaskRangedSpecial,
-			Flags:                    core.SpellFlagMeleeMetrics | core.SpellFlagRanged,
+			ClassSpellMask:           HunterSpellGlaiveToss,
+			Flags:                    core.SpellFlagMeleeMetrics | core.SpellFlagRanged | core.SpellFlagPassiveSpell,
 			MissileSpeed:             18,
 			BonusCritPercent:         0,
 			DamageMultiplierAdditive: 1,
@@ -64,17 +65,18 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 		})
 	}
 
-	firstGlaive := registerGlaive(120755)
-	secondGlaive := registerGlaive(120756)
+	firstGlaive := registerGlaive(120755, 1)
+	secondGlaive := registerGlaive(120756, 2)
 
 	hunter.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 117050},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskProc,
-		Flags:        core.SpellFlagAPL,
-		MaxRange:     40,
-		MissileSpeed: 15,
-		MinRange:     0,
+		ActionID:       core.ActionID{SpellID: 117050},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskProc,
+		ClassSpellMask: HunterSpellGlaiveToss,
+		Flags:          core.SpellFlagAPL,
+		MaxRange:       40,
+		MissileSpeed:   15,
+		MinRange:       0,
 		FocusCost: core.FocusCostOptions{
 			Cost: 15,
 		},
@@ -92,6 +94,8 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
+
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				firstGlaive.Cast(sim, target)
 				secondGlaive.Cast(sim, target)
