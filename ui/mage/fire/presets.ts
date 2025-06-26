@@ -130,30 +130,30 @@ export const GLYPHED_COMBUSTION_BREAKPOINT: UnitStatPresets = {
 	]),
 };
 
-export const P1_PREBIS_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Pre-BIS (Troll)', {
-	race: Race.RaceTroll,
-	gear: PREBIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_DEFAULT,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PREBIS_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Pre-BIS (Troll)', {
+// 	race: Race.RaceTroll,
+// 	gear: PREBIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
 
-export const P1_PREBIS_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - Pre-BIS (Worgen)', {
-	race: Race.RaceWorgen,
-	gear: PREBIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PREBIS_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - Pre-BIS (Worgen)', {
+// 	race: Race.RaceWorgen,
+// 	gear: PREBIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
 
-export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - BIS (Troll)', {
-	race: Race.RaceTroll,
-	gear: P1_BIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_DEFAULT,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - BIS (Troll)', {
+// 	race: Race.RaceTroll,
+// 	gear: P1_BIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
 
-export const P1_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - BIS (Worgen)', {
-	race: Race.RaceWorgen,
-	gear: P1_BIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - BIS (Worgen)', {
+// 	race: Race.RaceWorgen,
+// 	gear: P1_BIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
