@@ -6,7 +6,8 @@ import (
 
 // T14 Balance
 var ItemSetRegaliaOfTheEternalBloosom = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Eternal Blossom",
+	Name:                    "Regalia of the Eternal Blossom",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			// Your Starfall deals 20% additional damage.
@@ -29,7 +30,8 @@ var ItemSetRegaliaOfTheEternalBloosom = core.NewItemSet(core.ItemSet{
 
 // T15 Balance
 var ItemSetRegaliaOfTheHauntedForest = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Haunted Forest",
+	Name:                    "Regalia of the Haunted Forest",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			// Increases the critical strike chance of Starsurge by 10%.
@@ -47,8 +49,9 @@ var ItemSetRegaliaOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 
 // T16 Balance
 var ItemSetRegaliaOfTheShatteredVale = core.NewItemSet(core.ItemSet{
-	ID:   1197,
-	Name: "Regalia of the Shattered Vale",
+	ID:                      1197,
+	DisabledInChallengeMode: true,
+	Name:                    "Regalia of the Shattered Vale",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Arcane spells cast while in Lunar Eclipse will shoot a single Lunar Bolt at the target. Nature spells cast while in a Solar Eclipse will shoot a single Solar Bolt at the target.

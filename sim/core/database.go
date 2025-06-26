@@ -259,18 +259,20 @@ func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 }
 
 type Gem struct {
-	ID    int32
-	Name  string
-	Stats stats.Stats
-	Color proto.GemColor
+	ID                      int32
+	Name                    string
+	Stats                   stats.Stats
+	Color                   proto.GemColor
+	DisabledInChallengeMode bool
 }
 
 func GemFromProto(pData *proto.SimGem) Gem {
 	return Gem{
-		ID:    pData.Id,
-		Name:  pData.Name,
-		Stats: stats.FromProtoArray(pData.Stats),
-		Color: pData.Color,
+		ID:                      pData.Id,
+		Name:                    pData.Name,
+		Stats:                   stats.FromProtoArray(pData.Stats),
+		Color:                   pData.Color,
+		DisabledInChallengeMode: pData.DisabledInChallengeMode,
 	}
 }
 
@@ -706,8 +708,13 @@ func ItemEquipmentGemAndEnchantStats(item Item) stats.Stats {
 	equipStats = equipStats.Add(item.Enchant.Stats)
 
 	for _, gem := range item.Gems {
+		if gem.DisabledInChallengeMode && item.ChallengeMode {
+			continue
+		}
+
 		equipStats = equipStats.Add(gem.Stats)
 	}
+
 	// Check socket bonus
 	if len(item.GemSockets) > 0 && len(item.Gems) >= len(item.GemSockets) {
 		allMatch := true

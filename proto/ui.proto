@@ -245,6 +245,7 @@ message UIGem {
 	ItemQuality quality = 7;
 	bool unique = 8;
 	Profession required_profession = 9;
+	bool disabled_in_challenge_mode = 10;
 }
 
 message IconData {

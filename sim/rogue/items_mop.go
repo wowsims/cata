@@ -9,7 +9,8 @@ import (
 )
 
 var Tier14 = core.NewItemSet(core.ItemSet{
-	Name: "Battlegear of the Thousandfold Blades",
+	Name:                    "Battlegear of the Thousandfold Blades",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage done by your Venomous Wounds ability by 20%,
@@ -45,7 +46,8 @@ var Tier14 = core.NewItemSet(core.ItemSet{
 })
 
 var Tier15 = core.NewItemSet(core.ItemSet{
-	Name: "Nine-Tail Battlegear",
+	Name:                    "Nine-Tail Battlegear",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the duration of your finishing moves as if you had used an additional combo point, up to a maximum of 6 combo points.
@@ -94,7 +96,8 @@ var Tier15 = core.NewItemSet(core.ItemSet{
 })
 
 var Tier16 = core.NewItemSet(core.ItemSet{
-	Name: "Barbed Assassin Battlegear",
+	Name:                    "Barbed Assassin Battlegear",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// When you generate a combo point from Revealing Strike's effect, Honor Among Thieves, or Seal Fate

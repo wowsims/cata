@@ -264,7 +264,8 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 
 // T14
 var ItemSetShaSkinRegalia = core.NewItemSet(core.ItemSet{
-	Name: "Sha-Skin Regalia",
+	Name:                    "Sha-Skin Regalia",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -301,7 +302,8 @@ var ItemSetShaSkinRegalia = core.NewItemSet(core.ItemSet{
 
 // T15
 var ItemSetRegaliaOfTheThousandfeldHells = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Thousandfold Hells",
+	Name:                    "Regalia of the Thousandfold Hells",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
@@ -337,7 +339,8 @@ var ItemSetRegaliaOfTheThousandfeldHells = core.NewItemSet(core.ItemSet{
 
 // T16
 var ItemSetRegaliaOfTheHornedNightmare = core.NewItemSet(core.ItemSet{
-	Name: "Regalia of the Horned Nightmare",
+	Name:                    "Regalia of the Horned Nightmare",
+	DisabledInChallengeMode: true,
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
