@@ -32,9 +32,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
-	consumableStats: [Stat.StatAgility, Stat.StatStamina, Stat.StatArmor, Stat.StatBonusArmor, Stat.StatAttackPower, Stat.StatDodgeRating],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
+	consumableStats: [
+		Stat.StatAgility,
+		Stat.StatBonusArmor,
+		Stat.StatStamina,
+		Stat.StatArmor,
+		Stat.StatAttackPower,
+		Stat.StatDodgeRating,
+		Stat.StatParryRating,
+		Stat.StatHitRating,
+		Stat.StatHasteRating,
+		Stat.StatCritRating,
+		Stat.StatExpertiseRating,
+		Stat.StatMasteryRating,
+	],
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
