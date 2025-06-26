@@ -29,9 +29,8 @@ type ArmsWarrior struct {
 
 	Options *proto.ArmsWarrior_Options
 
-	TasteForBloodAura   *core.Aura
-	SweepingStrikesAura *core.Aura
-	SuddenDeathAura     *core.Aura
+	TasteForBloodAura *core.Aura
+	SuddenDeathAura   *core.Aura
 }
 
 func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarrior {

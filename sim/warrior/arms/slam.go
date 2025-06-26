@@ -15,7 +15,7 @@ func (war *ArmsWarrior) registerSlam() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete,
-		ClassSpellMask: warrior.SpellMaskSlam,
+		ClassSpellMask: warrior.SpellMaskSweepingSlam,
 		MinRange:       2,
 
 		DamageMultiplier: 0.35,
