@@ -246,6 +246,9 @@ func init() {
 	// Synapse Springs
 	core.NewEnchantEffect(4898, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
+		if !character.HasProfession(proto.Profession_Engineering) {
+			return
+		}
 
 		bonus := stats.Stats{}
 		bonus[character.GetHighestStatType([]stats.Stat{
@@ -274,6 +277,9 @@ func init() {
 	// Phase Fingers
 	core.NewEnchantEffect(4697, func(agent core.Agent, _ proto.ItemLevelState) {
 		character := agent.GetCharacter()
+		if !character.HasProfession(proto.Profession_Engineering) {
+			return
+		}
 
 		core.RegisterTemporaryStatsOnUseCD(character,
 			"Phase Fingers",
