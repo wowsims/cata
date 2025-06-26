@@ -3,25 +3,24 @@ package protection
 import (
 	"time"
 
+	"github.com/wowsims/mop/sim/common/shared"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/warrior"
 )
 
 func (war *ProtectionWarrior) registerUnwaveringSentinel() {
-	staminaDep := war.NewDynamicMultiplyStat(stats.Stamina, 1.15)
-
 	core.MakePermanent(war.GetOrRegisterAura(core.Aura{
 		Label:    "Unwavering Sentinel",
 		ActionID: core.ActionID{SpellID: 29144},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			war.ApplyDynamicEquipScaling(sim, stats.Armor, 0.25)
+			war.ApplyDynamicEquipScaling(sim, stats.Armor, 1.25)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.RemoveDynamicEquipScaling(sim, stats.Armor, 0.25)
+			war.RemoveDynamicEquipScaling(sim, stats.Armor, 1.25)
 		},
 	}).AttachStatDependency(
-		staminaDep,
+		war.NewDynamicMultiplyStat(stats.Stamina, 1.15),
 	).AttachAdditivePseudoStatBuff(
 		&war.PseudoStats.ReducedCritTakenChance, 0.06,
 	).AttachSpellMod(core.SpellModConfig{
@@ -66,24 +65,15 @@ func (war *ProtectionWarrior) registerSwordAndBoard() {
 	})
 }
 
-func (war *ProtectionWarrior) registerRiposte() {
-	var critRating float64
-
+func (war *ProtectionWarrior) registerUltimatum() {
 	aura := war.GetOrRegisterAura(core.Aura{
 		Label:    "Ultimatum",
 		ActionID: core.ActionID{SpellID: 122510},
 		Duration: 10 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			critRating := (war.GetStat(stats.DodgeRating) + war.GetParryRatingWithoutStrength()) * 0.75
-			war.AddStatDynamic(sim, stats.CritRating, critRating)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.AddStatDynamic(sim, stats.CritRating, -critRating)
-		},
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
 		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
+		FloatValue: -2,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
 		Kind:       core.SpellMod_BonusCrit_Percent,
@@ -94,6 +84,11 @@ func (war *ProtectionWarrior) registerRiposte() {
 		Name:           "Ultimatum - Consume",
 		ClassSpellMask: warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
 		Callback:       core.CallbackOnSpellHitDealt,
+
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return spell.CurCast.Cost <= 0
+		},
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			aura.Deactivate(sim)
 		},
@@ -109,4 +104,8 @@ func (war *ProtectionWarrior) registerRiposte() {
 			aura.Activate(sim)
 		},
 	})
+}
+
+func (war *ProtectionWarrior) registerRiposte() {
+	shared.RegisterRiposteEffect(&war.Character, 145674, 145672)
 }
