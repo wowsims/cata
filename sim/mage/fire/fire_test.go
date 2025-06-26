@@ -3,13 +3,14 @@ package fire
 import (
 	"testing"
 
-	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/common"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
 	RegisterFireMage()
+	common.RegisterAllEffects()
 }
 
 func TestFire(t *testing.T) {

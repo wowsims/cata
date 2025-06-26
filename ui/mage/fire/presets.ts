@@ -12,8 +12,8 @@ import P1FirePrebisGear from './gear_sets/p1_prebis.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear);
-export const PREBIS_PRESET = PresetUtils.makePresetGear('P3 Pre-raid', P1FirePrebisGear);
+export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 BiS', P1FireBisGear);
+export const PREBIS_PRESET = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear);
 
 export const P1TrollDefaultSimpleRotation = FireMage_Rotation.create({
 	combustThreshold: 515000,

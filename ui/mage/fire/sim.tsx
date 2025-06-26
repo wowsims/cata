@@ -4,8 +4,8 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation } from '../../core/proto/apl';
-import { Cooldowns, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
+import { APLRotation, APLRotation_Type } from '../../core/proto/apl';
+import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { MageMajorGlyph } from '../../core/proto/mage';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatExpertiseRating],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
