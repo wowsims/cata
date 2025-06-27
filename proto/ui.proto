@@ -275,14 +275,11 @@ enum SourceFilterOption {
 
 enum RaidFilterOption {
 	RaidUnknown = 0;
-	RaidIcecrownCitadel = 1;
-	RaidRubySanctum = 2;
-	RaidBlackwingDescent = 3;
-	RaidTheBastionOfTwilight = 4;
-	RaidBaradinHold = 5;
-	RaidThroneOfTheFourWinds = 6;
-	RaidFirelands = 7;
-	RaidDragonSoul = 8;
+	RaidMogushanVaults = 1;
+	RaidHeartOfFear = 2;
+	RaidTerraceOfEndlessSpring = 3;
+	RaidThroneOfThunder = 4;
+	RaidSiegeOfOrgrimmar = 5;
 }
 
 // NextIndex: 24

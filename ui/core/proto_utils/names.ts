@@ -264,14 +264,11 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 ]);
 export const raidNames: Map<RaidFilterOption, string> = new Map([
 	[RaidFilterOption.RaidUnknown, 'Unknown'],
-	[RaidFilterOption.RaidIcecrownCitadel, 'Icecrown Citadel'],
-	[RaidFilterOption.RaidRubySanctum, 'Ruby Sanctum'],
-	[RaidFilterOption.RaidBlackwingDescent, 'Blackwing Descent'],
-	[RaidFilterOption.RaidTheBastionOfTwilight, 'The Bastion of Twilight'],
-	[RaidFilterOption.RaidBaradinHold, 'Baradin Hold'],
-	[RaidFilterOption.RaidThroneOfTheFourWinds, 'Throne of the Four Winds'],
-	[RaidFilterOption.RaidFirelands, 'Firelands'],
-	[RaidFilterOption.RaidDragonSoul, 'Dragon Soul'],
+	[RaidFilterOption.RaidMogushanVaults, 'Mogu\'shan Vaults'],
+	[RaidFilterOption.RaidHeartOfFear, 'Heart of Fear'],
+	[RaidFilterOption.RaidTerraceOfEndlessSpring, 'Terrace of Endless Spring'],
+	[RaidFilterOption.RaidThroneOfThunder, 'Throne of Thunder'],
+	[RaidFilterOption.RaidSiegeOfOrgrimmar, 'Siege of Orgrimmar'],
 ]);
 
 export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
