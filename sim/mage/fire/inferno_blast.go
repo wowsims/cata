@@ -57,6 +57,9 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 					if dot.Spell.Matches(mage.MageSpellIgnite) {
 						igniteRef = dot
 					}
+				} else if dot != nil {
+					// Clear stored state if dot is not active to prevent stale state
+					delete(debuffState, dot.ActionID.SpellID)
 				}
 			}
 
@@ -71,34 +74,24 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 						continue
 					}
 					if dot.Spell.Matches(mage.MageSpellIgnite) {
-						// Only spread Ignite if the main target has an active Ignite
-						if igniteRef == nil {
-							continue
-						}
 						currentTargetHasIgnite := dot.IsActive() // Storing this here so we can do the common steps without overwriting how it was for the checks.
 						newDamage := igniteRef.OutstandingDmg()
 						currentDamage := dot.OutstandingDmg()
 						totalDamage := currentDamage + newDamage
 
-						// Current Target has Ignite so add the Ignite bank from the main target
-						// and then follow the default renew logic
+						// Current Target has Ignite - always results in 6 second (3 tick) Ignite
 						if currentTargetHasIgnite {
-							newTickCount := dot.BaseTickCount + 1
-							damagePerTick := totalDamage / float64(newTickCount)
-							dot.SnapshotBaseDamage = damagePerTick
+							dot.Deactivate(sim)
+							dot.SnapshotBaseDamage = totalDamage / 3.0 // Always 3 ticks worth of damage
 							dot.Apply(sim)
+							dot.AddTick() // Extend from 4s to 6s (2 ticks to 3 ticks)
 						} else {
-							// Current Target does not have Ignite so start a new one
-							// Base Ignite is 2 ticks (4s). If main target has less than 1s remaining, use 2 ticks, otherwise 3 ticks
-							baseTickCount := int32(2) // Default Ignite tick count
-							extraTicks := core.TernaryInt32(igniteRef.RemainingDuration(sim) < time.Second, 0, 1)
-							totalTickCount := baseTickCount + extraTicks
-							damagePerTick := totalDamage / float64(totalTickCount)
-							dot.SnapshotBaseDamage = damagePerTick
+							// Current Target does NOT have Ignite - duration depends on main target's remaining time
+							tickCount := core.TernaryInt32(igniteRef.RemainingDuration(sim) < time.Second, 2, 3)
+							dot.SnapshotBaseDamage = totalDamage / float64(tickCount)
 							dot.Apply(sim)
-							// Add extra ticks if needed
-							for i := int32(0); i < extraTicks; i++ {
-								dot.AddTick()
+							if tickCount == 3 {
+								dot.AddTick() // Extend from 4s to 6s only if needed
 							}
 						}
 						dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
