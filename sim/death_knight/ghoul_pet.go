@@ -68,6 +68,8 @@ func (dk *DeathKnight) newGhoulPetInternal(name string, permanent bool, scalingC
 
 	dk.SetupGhoul(ghoulPet, scalingCoef)
 
+	dk.AllGhoulPets = append(dk.AllGhoulPets, ghoulPet)
+
 	return ghoulPet
 }
 

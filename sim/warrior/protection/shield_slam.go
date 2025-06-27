@@ -19,10 +19,6 @@ func (war *ProtectionWarrior) registerShieldSlam() {
 		ClassSpellMask: warrior.SpellMaskShieldSlam,
 		MaxRange:       core.MaxMeleeRange,
 
-		RageCost: core.RageCostOptions{
-			Cost:   20,
-			Refund: 0.8,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

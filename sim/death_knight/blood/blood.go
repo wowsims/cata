@@ -93,7 +93,35 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate, 86537)
 
 	// Vengeance
-	bdk.RegisterVengeance(93099, nil)
+	vengeanceAura := bdk.RegisterVengeance(93099, nil)
+	vengeanceAura.ApplyOnStacksChange(func(_ *core.Aura, sim *core.Simulation, oldVengeance int32, newVengeance int32) {
+		vengeanceDiff := oldVengeance - newVengeance
+		if vengeanceDiff == 0 {
+			return
+		}
+
+		invertedAPChange := bdk.ApplyStatDependencies(stats.Stats{stats.AttackPower: float64(vengeanceDiff)})
+		bdk.Env.TriggerDelayedPetInheritance(sim, bdk.GetAllActiveGhoulPets(), func(sim *core.Simulation, pet *core.Pet) {
+			pet.AddOwnerStats(sim, invertedAPChange)
+		})
+	})
+
+	for _, ghoul := range bdk.AllGhoulPets {
+		oldOnPetEnable := ghoul.OnPetEnable
+		ghoul.OnPetEnable = func(sim *core.Simulation) {
+			if oldOnPetEnable != nil {
+				oldOnPetEnable(sim)
+			}
+
+			vengeanceStacks := vengeanceAura.GetStacks()
+			if vengeanceStacks == 0 {
+				return
+			}
+
+			invertedAPChange := bdk.ApplyStatDependencies(stats.Stats{stats.AttackPower: -float64(vengeanceStacks)})
+			ghoul.AddOwnerStats(sim, invertedAPChange)
+		}
+	}
 }
 
 func (bdk *BloodDeathKnight) Reset(sim *core.Simulation) {

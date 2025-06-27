@@ -80,7 +80,6 @@ func (garg *GargoylePet) registerGargoyleStrikeSpell() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD:      core.GCDMin,
 				CastTime: time.Millisecond * 2000,
 			},
 		},

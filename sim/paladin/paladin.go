@@ -164,6 +164,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 
 	paladin.AddStat(stats.ParryRating, -paladin.GetBaseStats()[stats.Strength]*core.StrengthToParryRating) // Does not apply to base Strength
 	paladin.AddStatDependency(stats.Strength, stats.ParryRating, core.StrengthToParryRating)
+	paladin.AddStatDependency(stats.Agility, stats.DodgeRating, 0.1/10000.0/100.0)
 
 	paladin.PseudoStats.BaseBlockChance += 0.03
 	paladin.PseudoStats.BaseDodgeChance += 0.03

@@ -189,8 +189,6 @@ var ItemAllowList = map[int32]struct{}{
 	2140: {},
 	2505: {},
 
-	12590: {}, // Felstriker
-
 	//Shaman Dungeon Set 3 Tidefury
 	27510: {}, // Tidefury Gauntlets
 	27802: {}, // Tidefury Shoulderguards
@@ -200,23 +198,9 @@ var ItemAllowList = map[int32]struct{}{
 
 	29309: {}, // Band of the Eternal Restorer
 
-	29996: {}, // Rod of the Sun King
-
-	31026: {}, // Slayer's Handguards
-	31027: {}, // Slayer's Helm
-	31028: {}, // Slayer's Chestguard
-	31029: {}, // Slayer's Legguards
-	31030: {}, // Slayer's Shoulderpads
-	34448: {}, // Slayer's Bracers
-	34558: {}, // Slayer's Belt
-	34575: {}, // Slayer's Boots
-
 	34677: {}, // Shattered Sun Pendant of Restoration
 
 	45703: {}, // Spark of Hope
-
-	49982: {}, // Heartpierce N
-	50641: {}, // Heartpierce H
 }
 
 // Keep these sorted by item ID.
