@@ -809,37 +809,37 @@ message TargetInput {
 }
 
 message Target {
-	// The in-game NPC ID.
-	int32 id = 14;
-	string name = 15;
+        // The in-game NPC ID.
+        int32 id = 14;
+        string name = 15;
 
-	int32 level = 4;
-	MobType mob_type = 3;
-	repeated double stats = 5;
+        int32 level = 4;
+        MobType mob_type = 3;
+        repeated double stats = 5;
 
-	// Auto attack parameters.
-	double min_base_damage = 7;
-	double damage_spread = 19; // replaces tight_enemy_damage
-	double swing_speed = 8;
-	bool dual_wield = 9;
-	bool dual_wield_penalty = 10;
-	bool parry_haste = 12;
-	bool suppress_dodge = 16; // Sunwell Radiance
-	SpellSchool spell_school = 13; // Allows elemental attacks.
+        // Auto attack parameters.
+        double min_base_damage = 7;
+        double damage_spread = 19; // replaces tight_enemy_damage
+        double swing_speed = 8;
+        bool dual_wield = 9;
+        bool dual_wield_penalty = 10;
+        bool parry_haste = 12;
+        bool suppress_dodge = 16; // Sunwell Radiance
+        SpellSchool spell_school = 13; // Allows elemental attacks.
 
-	// Index in Raid.tanks indicating the player tanking this mob at the
-	// start of each pull.
-	// -1 or invalid index indicates not being tanked.
-	int32 tank_index = 6;
+        // Index in Raid.tanks indicating the player tanking this mob at the
+        // start of each pull.
+        // -1 or invalid index indicates not being tanked.
+        int32 tank_index = 6;
 
-	// Used in tank swap AIs.
-	int32 second_tank_index = 100;
+        // Used in tank swap AIs.
+        int32 second_tank_index = 100;
 
         // Used in dynamic target AIs.
         bool disabled_at_start = 101;
 
-	// Custom Target AI parameters
-	repeated TargetInput target_inputs = 18;
+        // Custom Target AI parameters
+        repeated TargetInput target_inputs = 18;
 }
 
 message Encounter {

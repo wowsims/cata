@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"strconv"
 	"time"
 
@@ -103,6 +104,35 @@ func (encounter *Encounter) updateAOECapMultiplier() {
 	encounter.aoeCapMultiplier = min(10/float64(len(encounter.ActiveTargets)), 1)
 }
 
+func (encounter *Encounter) addActiveTarget(target *Target) {
+	if !slices.Contains(encounter.AllTargets, target) {
+		panic("Target was not defined during the construction phase of the encounter!")
+	}
+
+	if slices.Contains(encounter.ActiveTargets, target) {
+		panic("Target is already present in active target list!")
+	}
+
+	encounter.ActiveTargets = append(encounter.ActiveTargets, target)
+	encounter.ActiveTargetUnits = append(encounter.ActiveTargetUnits, &target.Unit)
+	encounter.updateAOECapMultiplier()
+}
+
+func (encounter *Encounter) removeInactiveTarget(target *Target) {
+	if len(encounter.ActiveTargets) == 1 {
+		panic("Cannot remove the only active target in the simulation!")
+	}
+
+	if idx := slices.Index(encounter.ActiveTargets, target); idx != -1 {
+		encounter.ActiveTargets = removeBySwappingToBack(encounter.ActiveTargets, idx)
+		encounter.ActiveTargetUnits = removeBySwappingToBack(encounter.ActiveTargetUnits, idx)
+	} else {
+		panic("Target is not present in active target list!")
+	}
+
+	encounter.updateAOECapMultiplier()
+}
+
 func (encounter *Encounter) doneIteration(sim *Simulation) {
 	for _, target := range encounter.AllTargets {
 		target.doneIteration(sim)
@@ -184,10 +214,67 @@ func (target *Target) Reset(sim *Simulation) {
 	target.Unit.reset(sim, nil)
 	target.CurrentTarget = target.defaultTarget
 
+	if !target.IsEnabled() && (target.CurrentTarget != nil) {
+		target.CurrentTarget.CurrentTarget = &target.NextActiveTarget().Unit
+		target.CurrentTarget = nil
+	}
+
 	target.SetGCDTimer(sim, 0)
+
 	if target.AI != nil {
 		target.AI.Reset(sim)
 	}
+}
+
+func (target *Target) Enable(sim *Simulation) {
+	if target.defaultTarget != nil {
+		target.defaultTarget.CurrentTarget = &target.Unit
+		target.CurrentTarget = target.defaultTarget
+	}
+
+	target.AutoAttacks.EnableAutoSwing(sim)
+
+	// Randomize GCD and swing timings to prevent fake APL-Haste couplings.
+	target.ExtendGCDUntil(sim, sim.CurrentTime+DurationFromSeconds(sim.RandomFloat("Specials Timing")*BossGCD.Seconds()))
+	target.AutoAttacks.RandomizeMeleeTiming(sim)
+
+	if !target.IsEnabled() {
+		target.enabled = true
+		sim.Encounter.addActiveTarget(target)
+	}
+}
+
+func (sim *Simulation) EnableTargetUnit(targetUnit *Unit) {
+	if targetUnit.Type != EnemyUnit {
+		panic("Unit is not an enemy target!")
+	}
+
+	sim.Encounter.AllTargets[targetUnit.Index].Enable(sim)
+}
+
+func (target *Target) Disable(sim *Simulation) {
+	if !target.IsEnabled() {
+		return
+	}
+
+	target.CancelGCDTimer(sim)
+	target.AutoAttacks.CancelAutoSwing(sim)
+	target.enabled = false
+	sim.Encounter.removeInactiveTarget(target)
+	target.auraTracker.expireAll(sim)
+
+	if target.CurrentTarget != nil {
+		target.CurrentTarget.CurrentTarget = &target.NextActiveTarget().Unit
+		target.CurrentTarget = nil
+	}
+}
+
+func (sim *Simulation) DisableTargetUnit(targetUnit *Unit) {
+	if targetUnit.Type != EnemyUnit {
+		panic("Unit is not an enemy target!")
+	}
+
+	sim.Encounter.AllTargets[targetUnit.Index].Disable(sim)
 }
 
 func (target *Target) NextActiveTarget() *Target {
