@@ -60,16 +60,21 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 				}
 			}
 
+			currentTarget := target
 			for range min(extraTargets, numTargets) {
-				aoeTarget := fire.Env.NextTargetUnit(target)
+				currentTarget = fire.Env.NextTargetUnit(currentTarget)
 				for _, spellRef := range dotRefs {
-					dot := (*spellRef).Dot(aoeTarget)
+					dot := (*spellRef).Dot(currentTarget)
 					state, ok := debuffState[dot.ActionID.SpellID]
 					if !ok {
 						// not stored, was not active
 						continue
 					}
 					if dot.Spell.Matches(mage.MageSpellIgnite) {
+						// Only spread Ignite if the main target has an active Ignite
+						if igniteRef == nil {
+							continue
+						}
 						currentTargetHasIgnite := dot.IsActive() // Storing this here so we can do the common steps without overwriting how it was for the checks.
 						newDamage := igniteRef.OutstandingDmg()
 						currentDamage := dot.OutstandingDmg()
@@ -83,18 +88,23 @@ func (fire *FireMage) registerInfernoBlastSpell() {
 							dot.SnapshotBaseDamage = damagePerTick
 							dot.Apply(sim)
 						} else {
-							// Current Target does not have so Ignite bank from the main target
-							// and then start a 2 tick (4s) ignite if the Ignite being spread is less than 1 second, otherwise 3 (6s)
-							newTickCount := dot.BaseTickCount + core.TernaryInt32(igniteRef.RemainingDuration(sim) < time.Second, 0, 1)
-							damagePerTick := totalDamage / float64(newTickCount)
+							// Current Target does not have Ignite so start a new one
+							// Base Ignite is 2 ticks (4s). If main target has less than 1s remaining, use 2 ticks, otherwise 3 ticks
+							baseTickCount := int32(2) // Default Ignite tick count
+							extraTicks := core.TernaryInt32(igniteRef.RemainingDuration(sim) < time.Second, 0, 1)
+							totalTickCount := baseTickCount + extraTicks
+							damagePerTick := totalDamage / float64(totalTickCount)
 							dot.SnapshotBaseDamage = damagePerTick
-							dot.BaseTickCount = newTickCount
 							dot.Apply(sim)
+							// Add extra ticks if needed
+							for i := int32(0); i < extraTicks; i++ {
+								dot.AddTick()
+							}
 						}
 						dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 						continue
 					}
-					(*spellRef).Proc(sim, aoeTarget)
+					(*spellRef).Proc(sim, currentTarget)
 					dot.RestoreState(state, sim)
 				}
 			}

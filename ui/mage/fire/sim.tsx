@@ -4,8 +4,8 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation } from '../../core/proto/apl';
-import { Cooldowns, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
+import { APLRotation, APLRotation_Type } from '../../core/proto/apl';
+import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { MageMajorGlyph } from '../../core/proto/mage';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatExpertiseRating],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
@@ -125,12 +125,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	presets: {
 		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.P1_SIMPLE_ROTATION_DEFAULT, Presets.P1_SIMPLE_ROTATION_NO_TROLL, Presets.FIRE_ROTATION_PRESET_DEFAULT],
+		rotations: [Presets.P1_SIMPLE_ROTATION_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PREBIS_PRESET, Presets.P1_BIS_PRESET],
-		builds: [Presets.P1_PRESET_BUILD, Presets.P1_PRESET_BUILD_NO_TROLL],
 	},
 
 	autoRotation: (): APLRotation => {
