@@ -510,6 +510,10 @@ func (unit *Unit) ApplyRangedSpeed(dur time.Duration) time.Duration {
 	return time.Duration(float64(dur) / unit.TotalRangedHasteMultiplier())
 }
 
+func (unit *Unit) ApplyRealHaste(dur time.Duration) time.Duration {
+	return time.Duration(float64(dur) / unit.TotalRealHasteMultiplier())
+}
+
 func (unit *Unit) TotalMeleeHasteMultiplier() float64 {
 	return unit.PseudoStats.AttackSpeedMultiplier * unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
