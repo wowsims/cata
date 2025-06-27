@@ -1,5 +1,4 @@
-import { REPO_NAME } from '../constants/other';
-import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
+import { SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';
 import { SimUI } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
@@ -70,19 +69,20 @@ const tabs: Tab[] = [
 	},
 ];
 
-export abstract class DetailedResults extends Component {
-	protected readonly simUI: SimUI | null;
+export class DetailedResults extends Component {
+	protected readonly simUI: SimUI;
 	protected latestRun: SimRunData | null = null;
 
 	private currentSimResult: SimResult | null = null;
 	private resultsEmitter: TypedEvent<SimResultData | null> = new TypedEvent<SimResultData | null>();
 	private resultsFilter: ResultsFilter;
-	private rootDiv: HTMLElement;
+	private rootDiv: Element;
 
-	constructor(parent: HTMLElement, simUI: SimUI | null, cssScheme: string) {
+	constructor(parent: HTMLElement, simUI: SimUI, simResultsManager: RaidSimResultsManager) {
 		super(parent, 'detailed-results-manager-root');
 
-		this.rootElem.appendChild(
+		const simOnceBtn = <button className="detailed-results-1-iteration-button btn btn-primary">Sim 1 Iteration</button>;
+		this.rootDiv = (
 			<div className="dr-root dr-no-results">
 				<div className="dr-toolbar">
 					<div className="results-filter"></div>
@@ -122,11 +122,11 @@ export abstract class DetailedResults extends Component {
 							<div className="damage-metrics" />
 						</div>
 						{/* <div className="dr-row single-player-only">
-							<div className="melee-metrics" />
-						</div>
-						<div className="dr-row single-player-only">
-							<div className="spell-metrics" />
-						</div> */}
+				<div className="melee-metrics" />
+			</div>
+			<div className="dr-row single-player-only">
+				<div className="spell-metrics" />
+			</div> */}
 						<div className="dr-row dps-histogram" />
 					</div>
 					<div id="healingTab" className="tab-pane dr-tab-content healing-content fade">
@@ -177,12 +177,18 @@ export abstract class DetailedResults extends Component {
 						</div>
 					</div>
 				</div>
-			</div>,
+			</div>
 		);
-		this.rootDiv = this.rootElem.querySelector('.dr-root')!;
-		this.simUI = simUI;
 
-		this.simUI?.sim.settingsChangeEmitter.on(async () => await this.updateSettings());
+		this.rootElem.appendChild(
+			<>
+				<div className="detailed-results-controls-div">{simOnceBtn}</div>
+				{this.rootDiv}
+			</>,
+		);
+
+		this.simUI = simUI;
+		this.simUI.sim.settingsChangeEmitter.on(() => this.updateSettings());
 
 		// Allow styling the sticky toolbar
 		const toolbar = document.querySelector<HTMLElement>('.dr-toolbar')!;
@@ -258,7 +264,6 @@ export abstract class DetailedResults extends Component {
 
 		const timeline = new Timeline({
 			parent: this.rootElem.querySelector('.timeline')!,
-			cssScheme: cssScheme,
 			resultsEmitter: this.resultsEmitter,
 		});
 
@@ -269,13 +274,12 @@ export abstract class DetailedResults extends Component {
 
 		new LogRunner({
 			parent: this.rootElem.querySelector('.log')!,
-			cssScheme: cssScheme,
 			resultsEmitter: this.resultsEmitter,
 		});
 
-		this.rootElem.classList.add('hide-threat-metrics', 'hide-threat-metrics');
+		this.rootElem.classList.add('hide-threat-metrics');
 
-		this.resultsFilter.changeEmitter.on(() => this.updateResults());
+		this.resultsFilter.changeEmitter.on(async () => await this.updateResults(this.latestRun));
 
 		this.resultsEmitter.on((_, resultData) => {
 			if (resultData?.filter.player || resultData?.filter.player === 0) {
@@ -286,35 +290,44 @@ export abstract class DetailedResults extends Component {
 				this.rootDiv.classList.remove('single-player');
 			}
 		});
+
+		simOnceBtn.addEventListener('click', () => this.simUI.runSimOnce());
+
+		simResultsManager.currentChangeEmitter.on(async () => {
+			const runData = simResultsManager.getRunData();
+			if (runData) {
+				this.updateSettings();
+				await this.updateResults(runData);
+			}
+		});
 	}
 
-	abstract postMessage(update: DetailedResultsUpdate): Promise<void>;
+	private updateSettings() {
+		const settings = this.simUI.sim.toProto();
+		if (settings.showDamageMetrics) {
+			this.rootElem.classList.remove('hide-damage-metrics');
+		} else {
+			this.rootElem.classList.add('hide-damage-metrics');
+			const damageTabEl = document.getElementById('damageTab')!;
+			const healingTabEl = document.getElementById('healingTab')!;
+			if (damageTabEl.classList.contains('active')) {
+				damageTabEl.classList.remove('active', 'show');
+				healingTabEl.classList.add('active', 'show');
 
-	protected async setSimRunData(simRunData: SimRunData) {
+				const toolbar = document.getElementsByClassName('dr-toolbar')[0] as HTMLElement;
+				toolbar.querySelector('.damage-metrics')?.children[0].classList.remove('active');
+				toolbar.querySelector('.healing-metrics')?.children[0].classList.add('active');
+			}
+		}
+		this.rootElem.classList[settings.showThreatMetrics ? 'remove' : 'add']('hide-threat-metrics');
+		this.rootElem.classList[settings.showHealingMetrics ? 'remove' : 'add']('hide-healing-metrics');
+		this.rootElem.classList[settings.showExperimental ? 'remove' : 'add']('hide-experimental');
+	}
+
+	private async updateResults(simRunData: SimRunData | null) {
 		this.latestRun = simRunData;
-		await this.postMessage(
-			DetailedResultsUpdate.create({
-				data: {
-					oneofKind: 'runData',
-					runData: simRunData,
-				},
-			}),
-		);
-	}
+		this.currentSimResult = await SimResult.fromProto(simRunData?.run || SimRun.create());
 
-	protected async updateSettings() {
-		if (!this.simUI) return;
-		await this.postMessage(
-			DetailedResultsUpdate.create({
-				data: {
-					oneofKind: 'settings',
-					settings: this.simUI.sim.toProto(),
-				},
-			}),
-		);
-	}
-
-	private updateResults() {
 		const eventID = TypedEvent.nextEventID();
 		if (this.currentSimResult == null) {
 			this.rootDiv.classList.add('dr-no-results');
@@ -327,108 +340,5 @@ export abstract class DetailedResults extends Component {
 				filter: this.resultsFilter.getFilter(),
 			});
 		}
-	}
-
-	protected async handleMessage(data: DetailedResultsUpdate) {
-		switch (data.data.oneofKind) {
-			case 'runData':
-				const runData = data.data.runData;
-				this.currentSimResult = await SimResult.fromProto(runData.run || SimRun.create());
-				this.updateResults();
-				break;
-			case 'settings':
-				const settings = data.data.settings;
-				if (settings.showDamageMetrics) {
-					this.rootElem.classList.remove('hide-damage-metrics');
-				} else {
-					this.rootElem.classList.add('hide-damage-metrics');
-					const damageTabEl = document.getElementById('damageTab')!;
-					const healingTabEl = document.getElementById('healingTab')!;
-					if (damageTabEl.classList.contains('active')) {
-						damageTabEl.classList.remove('active', 'show');
-						healingTabEl.classList.add('active', 'show');
-
-						const toolbar = document.getElementsByClassName('dr-toolbar')[0] as HTMLElement;
-						toolbar.querySelector('.damage-metrics')?.children[0].classList.remove('active');
-						toolbar.querySelector('.healing-metrics')?.children[0].classList.add('active');
-					}
-				}
-				this.rootElem.classList[settings.showThreatMetrics ? 'remove' : 'add']('hide-threat-metrics');
-				this.rootElem.classList[settings.showHealingMetrics ? 'remove' : 'add']('hide-healing-metrics');
-				this.rootElem.classList[settings.showExperimental ? 'remove' : 'add']('hide-experimental');
-				break;
-		}
-	}
-}
-
-export class WindowedDetailedResults extends DetailedResults {
-	constructor(parent: HTMLElement) {
-		super(parent, null, new URLSearchParams(window.location.search).get('cssScheme') ?? '');
-
-		window.addEventListener('message', async event => await this.handleMessage(DetailedResultsUpdate.fromJson(event.data)));
-
-		this.rootElem.insertAdjacentHTML('beforeend', `<div class="sim-bg"></div>`);
-	}
-
-	async postMessage(update: DetailedResultsUpdate): Promise<void> {
-		await this.handleMessage(update);
-	}
-}
-
-export class EmbeddedDetailedResults extends DetailedResults {
-	private tabWindow: Window | null = null;
-
-	constructor(parent: HTMLElement, simUI: SimUI, simResultsManager: RaidSimResultsManager) {
-		super(parent, simUI, simUI.cssScheme);
-
-		const newTabBtn = (
-			<div className="detailed-results-controls-div">
-				<button className="detailed-results-new-tab-button btn btn-primary">View in Separate Tab</button>
-				<button className="detailed-results-1-iteration-button btn btn-primary">Sim 1 Iteration</button>
-			</div>
-		);
-
-		this.rootElem.prepend(newTabBtn);
-
-		const url = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/detailed_results/index.html`);
-		url.searchParams.append('cssClass', simUI.cssClass);
-
-		if (simUI.isIndividualSim()) {
-			url.searchParams.append('isIndividualSim', '');
-			this.rootElem.classList.add('individual-sim');
-		}
-
-		const newTabButton = this.rootElem.querySelector('.detailed-results-new-tab-button');
-		newTabButton?.addEventListener('click', () => {
-			if (this.tabWindow == null || this.tabWindow.closed) {
-				this.tabWindow = window.open(url.href, 'Detailed Results');
-				this.tabWindow!.addEventListener('load', async () => {
-					if (this.latestRun) {
-						await Promise.all([this.updateSettings(), this.setSimRunData(this.latestRun)]);
-					}
-				});
-			} else {
-				this.tabWindow.focus();
-			}
-		});
-
-		const simButton = this.rootElem.querySelector('.detailed-results-1-iteration-button');
-		simButton?.addEventListener('click', () => {
-			(window.opener || window.parent)!.postMessage('runOnce', '*');
-		});
-
-		simResultsManager.currentChangeEmitter.on(async () => {
-			const runData = simResultsManager.getRunData();
-			if (runData) {
-				await Promise.all([this.updateSettings(), this.setSimRunData(runData)]);
-			}
-		});
-	}
-
-	async postMessage(update: DetailedResultsUpdate) {
-		if (this.tabWindow) {
-			this.tabWindow.postMessage(DetailedResultsUpdate.toJson(update), '*');
-		}
-		await this.handleMessage(update);
 	}
 }
