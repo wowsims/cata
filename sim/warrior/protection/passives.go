@@ -66,31 +66,34 @@ func (war *ProtectionWarrior) registerSwordAndBoard() {
 }
 
 func (war *ProtectionWarrior) registerUltimatum() {
-	aura := war.GetOrRegisterAura(core.Aura{
+	war.UltimatumAura = war.GetOrRegisterAura(core.Aura{
 		Label:    "Ultimatum",
 		ActionID: core.ActionID{SpellID: 122510},
 		Duration: 10 * time.Second,
-	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -2,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			war.HeroicStrikeCleaveCostMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if !war.InciteAura.IsActive() {
+				war.HeroicStrikeCleaveCostMod.Deactivate()
+			}
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
 		Kind:       core.SpellMod_BonusCrit_Percent,
 		FloatValue: 100,
-	})
-
-	aura.AttachProcTrigger(core.ProcTrigger{
+	}).AttachProcTrigger(core.ProcTrigger{
 		Name:           "Ultimatum - Consume",
 		ClassSpellMask: warrior.SpellMaskHeroicStrike | warrior.SpellMaskCleave,
-		Callback:       core.CallbackOnSpellHitDealt,
+		Callback:       core.CallbackOnCastComplete,
 
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
 			return spell.CurCast.Cost <= 0
 		},
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			aura.Deactivate(sim)
+			war.UltimatumAura.Deactivate(sim)
 		},
 	})
 
@@ -101,7 +104,7 @@ func (war *ProtectionWarrior) registerUltimatum() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeCrit,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			aura.Activate(sim)
+			war.UltimatumAura.Activate(sim)
 		},
 	})
 }

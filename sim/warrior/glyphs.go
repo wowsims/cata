@@ -68,23 +68,31 @@ func (war *Warrior) applyMajorGlyphs() {
 	if war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfIncite) {
 		actionID := core.ActionID{SpellID: 122016}
 
-		inciteAura := war.RegisterAura(core.Aura{
+		war.InciteAura = war.RegisterAura(core.Aura{
 			Label:     "Incite",
 			ActionID:  actionID,
 			Duration:  10 * time.Second,
 			MaxStacks: 3,
-		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
-			Kind:       core.SpellMod_PowerCost_Pct,
-			FloatValue: -2,
-		})
 
-		core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				war.HeroicStrikeCleaveCostMod.Activate()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if !war.UltimatumAura.IsActive() {
+					war.HeroicStrikeCleaveCostMod.Deactivate()
+				}
+			},
+		}).AttachProcTrigger(core.ProcTrigger{
 			Name:           "Incite - Consume",
 			ClassSpellMask: SpellMaskHeroicStrike | SpellMaskCleave,
-			Callback:       core.CallbackOnCastComplete,
+			Callback:       core.CallbackOnSpellHitDealt,
+
+			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+				return spell.CurCast.Cost <= 0 && !war.UltimatumAura.IsActive()
+			},
+
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				inciteAura.RemoveStack(sim)
+				war.InciteAura.RemoveStack(sim)
 			},
 		})
 
@@ -93,7 +101,8 @@ func (war *Warrior) applyMajorGlyphs() {
 			ClassSpellMask: SpellMaskDemoralizingShout,
 			Callback:       core.CallbackOnCastComplete,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				inciteAura.Activate(sim)
+				war.InciteAura.Activate(sim)
+				war.InciteAura.SetStacks(sim, 3)
 			},
 		})
 	}
