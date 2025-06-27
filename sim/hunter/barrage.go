@@ -39,12 +39,12 @@ func (hunter *Hunter) registerBarrageSpell() {
 					hunter.AutoAttacks.DelayRangedUntil(sim, aura.ExpiresAt())
 				},
 			},
-			NumberOfTicks:         16,
-			TickLength:            200 * time.Millisecond,
-			AffectedByRangedSpeed: true,
-			HasteReducesDuration:  true,
+			NumberOfTicks:        16,
+			TickLength:           200 * time.Millisecond,
+			AffectedByRealHaste:  true,
+			HasteReducesDuration: true,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dmg := hunter.AutoAttacks.
 					Ranged().
 					CalculateNormalizedWeaponDamage(sim, dot.Spell.RangedAttackPower()) * 0.2
@@ -52,10 +52,7 @@ func (hunter *Hunter) registerBarrageSpell() {
 					dmg *= 2
 				}
 
-				dot.SnapshotPhysical(target, dmg)
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				dot.Spell.CalcAndDealDamage(sim, target, dmg, dot.Spell.OutcomeRangedHitAndCrit)
 			},
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
