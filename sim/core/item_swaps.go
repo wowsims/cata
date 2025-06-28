@@ -393,10 +393,9 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull b
 		// depending on the updated DW status after the swap.
 		if character.AutoAttacks.AutoSwingMelee {
 			weapon := character.WeaponFromOffHand(swap.ohCritMultiplier)
-			isCurrentlyDualWielding := character.AutoAttacks.IsDualWielding
 			character.AutoAttacks.SetOH(weapon)
-			if !isPrepull && !isCurrentlyDualWielding {
-				character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
+			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
+			if !isReset {
 				character.AutoAttacks.EnableMeleeSwing(sim)
 			}
 			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
