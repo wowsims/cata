@@ -27,6 +27,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
+	gemStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 
 	defaults: {
 		// Default equipped gear.
@@ -50,6 +51,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			leaderOfThePack: true,
 			serpentsSwiftness: true,
 			bloodlust: true,
+			skullBannerCount: 2,
+			stormlashTotemCount: 4,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
@@ -91,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.TalentsAoE],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_UF, Presets.ROTATION_PRESET_AOE, Presets.ROTATION_PRESET_CLEAVE],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE, Presets.ROTATION_PRESET_CLEAVE],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 
@@ -103,13 +106,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 		if (numTargets>2) return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
 		if (numTargets==2) return Presets.ROTATION_PRESET_CLEAVE.rotation.rotation!;
-	
-		const talents = _player.getTalents()
 
-		if(talents.unleashedFury) return Presets.ROTATION_PRESET_UF.rotation.rotation!;
-		if(talents.elementalBlast) return Presets.ROTATION_PRESET_EB.rotation.rotation!;
-
-		return Presets.ROTATION_PRESET_PE.rotation.rotation!;
+		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [

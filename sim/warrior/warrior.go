@@ -90,6 +90,8 @@ type Warrior struct {
 	Stance              Stance
 	CriticalBlockChance []float64 // Can be gained as non-prot via certain talents and spells
 
+	HeroicStrikeCleaveCostMod *core.SpellMod
+
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
 	BattleStance    *core.Spell
@@ -109,6 +111,8 @@ type Warrior struct {
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
+	InciteAura          *core.Aura
+	UltimatumAura       *core.Aura
 	SweepingStrikesAura *core.Aura
 	EnrageAura          *core.Aura
 	BerserkerRageAura   *core.Aura
@@ -223,6 +227,12 @@ func NewWarrior(character *core.Character, options *proto.WarriorOptions, talent
 	warrior.PseudoStats.BaseParryChance += 0.03
 	warrior.PseudoStats.BaseBlockChance += 0.03
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
+
+	warrior.HeroicStrikeCleaveCostMod = warrior.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -2,
+	})
 
 	return warrior
 }

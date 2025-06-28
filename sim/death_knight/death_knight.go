@@ -39,6 +39,7 @@ type DeathKnight struct {
 	Gargoyle        *GargoylePet
 	ArmyGhoul       []*GhoulPet
 	FallenZandalari []*GhoulPet
+	AllGhoulPets    []*GhoulPet
 	RuneWeapon      *RuneWeaponPet
 	Bloodworm       []*BloodwormPet
 
@@ -177,6 +178,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 
 	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*core.StrengthToParryRating) // Does not apply to base Strength
 	dk.AddStatDependency(stats.Strength, stats.ParryRating, core.StrengthToParryRating)
+	dk.AddStatDependency(stats.Agility, stats.DodgeRating, 0.1/10000.0/100.0)
 
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
@@ -209,6 +211,16 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	dk.deathStrikeHealingMultiplier = 0.2
 
 	return dk
+}
+
+func (dk *DeathKnight) GetAllActiveGhoulPets() []*core.Pet {
+	activePets := make([]*core.Pet, 0, len(dk.AllGhoulPets))
+	for _, pet := range dk.AllGhoulPets {
+		if pet.IsActive() {
+			activePets = append(activePets, pet.GetPet())
+		}
+	}
+	return activePets
 }
 
 func (dk *DeathKnight) GetDeathKnight() *DeathKnight {

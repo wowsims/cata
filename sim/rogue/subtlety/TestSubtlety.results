@@ -66,13 +66,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-BlackfangBattleweave"
- value: {
-  dps: 56560.57634
-  tps: 39874.13247
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-BurningPrimalDiamond"
  value: {
   dps: 74453.16811
@@ -192,27 +185,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-FangsoftheFather"
- value: {
-  dps: 63857.68742
-  tps: 45009.16142
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Fear-77945"
- value: {
-  dps: 63743.68703
-  tps: 44877.58315
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Felstriker-12590"
- value: {
-  dps: 75294.2059
-  tps: 53053.38546
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
   dps: 88086.92409
@@ -241,38 +213,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-Gladiator'sVestments"
- value: {
-  dps: 94751.17217
-  tps: 66779.40445
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Golad,TwilightofAspects-77949"
- value: {
-  dps: 65649.0193
-  tps: 46241.14961
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
   dps: 81988.24324
   tps: 57799.01243
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Heartpierce-49982"
- value: {
-  dps: 75294.2059
-  tps: 53053.38546
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Heartpierce-50641"
- value: {
-  dps: 75294.2059
-  tps: 53053.38546
  }
 }
 dps_results: {
@@ -304,24 +248,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-JawsofRetribution"
- value: {
-  dps: 58143.97213
-  tps: 40950.31612
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
   dps: 71317.32449
   tps: 50247.19981
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-MawofOblivion"
- value: {
-  dps: 59822.36176
-  tps: 42139.30379
  }
 }
 dps_results: {
@@ -402,13 +332,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-Slayer'sArmor"
- value: {
-  dps: 39613.65072
-  tps: 27911.09636
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-SynapseSprings(MarkII)-4898"
  value: {
   dps: 77987.27791
@@ -430,13 +353,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-TheSleeper-77947"
- value: {
-  dps: 64598.52397
-  tps: 45484.12164
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-TyrannicalPrimalDiamond"
  value: {
   dps: 73563.18255
@@ -448,13 +364,6 @@ dps_results: {
  value: {
   dps: 73452.08709
   tps: 51756.40652
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-VestmentsoftheDarkPhoenix"
- value: {
-  dps: 57690.11234
-  tps: 40659.7039
  }
 }
 dps_results: {

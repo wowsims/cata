@@ -39,7 +39,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.29319
+  weights: 0.28669
   weights: 0
   weights: 0
   weights: 0
@@ -65,470 +65,379 @@ stat_weights_results: {
 dps_results: {
  key: "TestAssassination-AllItems-AgilePrimalDiamond"
  value: {
-  dps: 74519.95624
-  tps: 52383.22183
+  dps: 74721.54401
+  tps: 52546.0787
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 79458.66531
-  tps: 55793.60289
+  dps: 78979.5721
+  tps: 55484.05615
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-AusterePrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-BarbedAssassinBattlegear"
  value: {
-  dps: 87465.08104
-  tps: 61553.23159
+  dps: 87892.5482
+  tps: 61845.62726
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-BattlegearoftheThousandfoldBlades"
  value: {
-  dps: 78635.36077
-  tps: 55325.33348
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-BlackfangBattleweave"
- value: {
-  dps: 56342.93729
-  tps: 39602.12582
+  dps: 78885.46528
+  tps: 55497.28278
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-BurningPrimalDiamond"
  value: {
-  dps: 73623.07303
-  tps: 51752.17816
+  dps: 73876.82052
+  tps: 51951.86273
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-CapacitivePrimalDiamond"
  value: {
-  dps: 73504.38528
-  tps: 51666.84266
+  dps: 73327.16928
+  tps: 51566.48911
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-CourageousPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-DelicateVialoftheSanguinaire-96895"
  value: {
-  dps: 70711.07814
-  tps: 49704.3383
+  dps: 70993.90952
+  tps: 49923.96771
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-DestructivePrimalDiamond"
  value: {
-  dps: 73573.96861
-  tps: 51711.88212
+  dps: 73470.73115
+  tps: 51664.05334
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EffulgentPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EmberPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnchantWeapon-BloodyDancingSteel-5125"
  value: {
-  dps: 74878.42222
-  tps: 52637.7336
+  dps: 75243.2104
+  tps: 52916.80715
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnchantWeapon-Colossus-4445"
  value: {
-  dps: 71416.81718
-  tps: 50215.65883
+  dps: 71844.02992
+  tps: 50539.12117
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnchantWeapon-JadeSpirit-4442"
  value: {
-  dps: 71416.81718
-  tps: 50215.65883
+  dps: 71844.02992
+  tps: 50539.12117
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnchantWeapon-River'sSong-4446"
  value: {
-  dps: 71416.81718
-  tps: 50215.65883
+  dps: 71844.02992
+  tps: 50539.12117
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnchantWeapon-SpiritofConquest-5124"
  value: {
-  dps: 71416.81718
-  tps: 50215.65883
+  dps: 71844.02992
+  tps: 50539.12117
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnchantWeapon-Windsong-4441"
  value: {
-  dps: 72071.67551
-  tps: 50697.38587
+  dps: 72160.40728
+  tps: 50762.81827
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EnigmaticPrimalDiamond"
  value: {
-  dps: 73573.96861
-  tps: 51711.88212
+  dps: 73470.73115
+  tps: 51664.05334
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EternalPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 72209.57545
-  tps: 50728.5828
+  dps: 72507.07103
+  tps: 50960.42202
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-FabledFeatherofJi-Kun-96842"
  value: {
-  dps: 82605.33964
-  tps: 58019.59617
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-FangsoftheFather"
- value: {
-  dps: 62973.75494
-  tps: 44279.79646
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Fear-77945"
- value: {
-  dps: 64115.02719
-  tps: 45057.43009
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Felstriker-12590"
- value: {
-  dps: 74519.95624
-  tps: 52383.22183
+  dps: 83239.93839
+  tps: 58479.89293
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Fen-Yu,FuryofXuen-102248"
  value: {
-  dps: 87686.19222
-  tps: 61679.90448
+  dps: 87240.8037
+  tps: 61377.12652
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-FleetPrimalDiamond"
  value: {
-  dps: 73453.9339
-  tps: 51633.8439
+  dps: 73717.64321
+  tps: 51840.41845
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ForlornPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-GazeoftheTwins-96915"
  value: {
-  dps: 75468.93494
-  tps: 53035.00335
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Gladiator'sVestments"
- value: {
-  dps: 92783.05307
-  tps: 65247.70864
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Golad,TwilightofAspects-77949"
- value: {
-  dps: 66111.7057
-  tps: 46479.94015
+  dps: 75864.224
+  tps: 53323.43643
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Gong-Lu,StrengthofXuen-102249"
  value: {
-  dps: 82302.79503
-  tps: 57891.41172
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Heartpierce-49982"
- value: {
-  dps: 74519.95624
-  tps: 52383.22183
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Heartpierce-50641"
- value: {
-  dps: 74519.95624
-  tps: 52383.22183
+  dps: 82289.89236
+  tps: 57890.77529
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Horridon'sLastGasp-96757"
  value: {
-  dps: 70711.07814
-  tps: 49704.3383
+  dps: 70993.90952
+  tps: 49923.96771
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ImpassivePrimalDiamond"
  value: {
-  dps: 73573.96861
-  tps: 51711.88212
+  dps: 73470.73115
+  tps: 51664.05334
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-IndomitablePrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-InscribedBagofHydra-Spawn-96828"
  value: {
-  dps: 70711.07814
-  tps: 49704.3383
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-JawsofRetribution"
- value: {
-  dps: 58788.80911
-  tps: 41309.91134
+  dps: 70993.90952
+  tps: 49923.96771
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Ji-Kun'sRisingWinds-96843"
  value: {
-  dps: 71551.73439
-  tps: 50308.48314
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-MawofOblivion"
- value: {
-  dps: 60203.16736
-  tps: 42314.24364
+  dps: 71487.83538
+  tps: 50261.62098
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Nine-TailBattlegear"
  value: {
-  dps: 86405.78505
-  tps: 60615.72599
+  dps: 86631.9833
+  tps: 60771.16044
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-PhaseFingers-4697"
  value: {
-  dps: 74303.02223
-  tps: 52229.19869
+  dps: 74502.07285
+  tps: 52390.25418
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-PowerfulPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-PriceofProgress-81266"
  value: {
-  dps: 70711.07814
-  tps: 49704.3383
+  dps: 70993.90952
+  tps: 49923.96771
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Primordius'TalismanofRage-96873"
  value: {
-  dps: 76288.63823
-  tps: 53610.01554
+  dps: 76758.73121
+  tps: 53966.85914
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Qian-Le,CourageofNiuzao-102245"
  value: {
-  dps: 81874.63972
-  tps: 57550.79669
+  dps: 81899.32372
+  tps: 57581.36335
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Qian-Ying,FortitudeofNiuzao-102250"
  value: {
-  dps: 76103.09115
-  tps: 53491.1056
+  dps: 76309.72032
+  tps: 53650.3265
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Renataki'sSoulCharm-96741"
  value: {
-  dps: 101895.92709
-  tps: 71518.17107
+  dps: 101408.12895
+  tps: 71170.4392
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ReverberatingPrimalDiamond"
  value: {
-  dps: 73982.77145
-  tps: 52004.82908
+  dps: 74239.65664
+  tps: 52206.83938
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-RevitalizingPrimalDiamond"
  value: {
-  dps: 73623.07303
-  tps: 51752.17816
+  dps: 73876.82052
+  tps: 51951.86273
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-SinisterPrimalDiamond"
  value: {
-  dps: 73504.38528
-  tps: 51666.84266
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Slayer'sArmor"
- value: {
-  dps: 39326.25871
-  tps: 27644.14923
+  dps: 73327.16928
+  tps: 51566.48911
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-SynapseSprings(MarkII)-4898"
  value: {
-  dps: 76027.06572
-  tps: 53407.2438
+  dps: 76352.43377
+  tps: 53658.76258
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-TalismanofBloodlust-96864"
  value: {
-  dps: 79866.60256
-  tps: 56172.3606
+  dps: 80381.56034
+  tps: 56543.67207
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-TheGloamingBlade-88149"
  value: {
-  dps: 74519.95624
-  tps: 52383.22183
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-TheSleeper-77947"
- value: {
-  dps: 65180.36147
-  tps: 45819.96214
+  dps: 74721.54401
+  tps: 52546.0787
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-TyrannicalPrimalDiamond"
  value: {
-  dps: 72915.21072
-  tps: 51251.35044
+  dps: 73172.91601
+  tps: 51453.66214
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-UnerringVisionofLeiShen-96930"
  value: {
-  dps: 72785.52682
-  tps: 51177.19686
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-VestmentsoftheDarkPhoenix"
- value: {
-  dps: 56911.81049
-  tps: 39994.68981
+  dps: 73937.13895
+  tps: 51994.56334
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Wushoolay'sFinalChoice-96785"
  value: {
-  dps: 71556.51555
-  tps: 50299.94868
+  dps: 71833.05285
+  tps: 50504.80202
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Xing-Ho,BreathofYu'lon-102246"
  value: {
-  dps: 74798.49424
-  tps: 52628.81132
+  dps: 75030.37847
+  tps: 52790.41847
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ZenAlchemistStone-75274"
  value: {
-  dps: 77826.14249
-  tps: 54642.10996
+  dps: 77449.47931
+  tps: 54397.74433
  }
 }
 dps_results: {
  key: "TestAssassination-Average-Default"
  value: {
-  dps: 74589.97661
-  tps: 52467.07951
+  dps: 74727.55314
+  tps: 52563.95763
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-preraid_assassination-Assassination-assassination-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74519.95624
-  tps: 52383.22183
+  dps: 74721.54401
+  tps: 52546.0787
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-preraid_assassination-Assassination-assassination-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 74519.95624
-  tps: 52383.22183
+  dps: 74721.54401
+  tps: 52546.0787
  }
 }
 dps_results: {
@@ -541,15 +450,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Human-preraid_assassination-Assassination-assassination-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49758.50557
-  tps: 35328.53896
+  dps: 49923.91231
+  tps: 35445.97774
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-preraid_assassination-Assassination-assassination-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 49758.50557
-  tps: 35328.53896
+  dps: 49923.91231
+  tps: 35445.97774
  }
 }
 dps_results: {
@@ -562,15 +471,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Orc-preraid_assassination-Assassination-assassination-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 76222.93459
-  tps: 53537.94437
+  dps: 76439.54319
+  tps: 53713.41412
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-preraid_assassination-Assassination-assassination-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 76222.93459
-  tps: 53537.94437
+  dps: 76439.54319
+  tps: 53713.41412
  }
 }
 dps_results: {
@@ -583,15 +492,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Orc-preraid_assassination-Assassination-assassination-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 50903.23174
-  tps: 36141.29453
+  dps: 51098.89387
+  tps: 36280.21465
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-preraid_assassination-Assassination-assassination-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 50903.23174
-  tps: 36141.29453
+  dps: 51098.89387
+  tps: 36280.21465
  }
 }
 dps_results: {
@@ -604,7 +513,7 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 70939.43216
-  tps: 49880.80067
+  dps: 70969.4463
+  tps: 49898.29357
  }
 }

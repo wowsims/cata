@@ -54,6 +54,9 @@ func (mm *MarksmanshipHunter) applyMastery() {
 				return
 			}
 			procChance := (mm.CalculateMasteryPoints() + 8) * 0.02
+			if spell.ClassSpellMask == hunter.HunterSpellBarrage {
+				procChance = procChance / 6
+			}
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
 			}

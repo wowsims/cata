@@ -77,6 +77,7 @@ func (war *ProtectionWarrior) registerPassives() {
 	war.registerUnwaveringSentinel()
 	war.registerBastionOfDefense()
 	war.registerSwordAndBoard()
+	war.registerUltimatum()
 	war.registerRiposte()
 
 	// Vengeance

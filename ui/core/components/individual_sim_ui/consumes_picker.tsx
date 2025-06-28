@@ -2,7 +2,7 @@ import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { ConsumableType } from '../../proto/common';
+import { Class, ConsumableType, Spec } from '../../proto/common';
 import { Consumable } from '../../proto/db';
 import { Database } from '../../proto_utils/database';
 import { TypedEvent } from '../../typed_event';
@@ -54,7 +54,10 @@ export class ConsumesPicker extends Component {
 		);
 		const potionsElem = potionsRef.value!;
 
-		const pots = this.getConsumables(ConsumableType.ConsumableTypePotion);
+		let pots = this.getConsumables(ConsumableType.ConsumableTypePotion);
+		if (this.simUI.player.getClass() !== Class.ClassWarrior && this.simUI.player.getSpec() !== Spec.SpecGuardianDruid) {
+			pots = pots.filter(pot => pot.id !== 13442);
+		}
 		const prePotOptions = ConsumablesInputs.makeConsumableInput(pots, { consumesFieldName: 'prepotId' }, 'Prepop Potion');
 		const potionsOptions = ConsumablesInputs.makeConsumableInput(pots, { consumesFieldName: 'potId' }, 'Combat Potion');
 
