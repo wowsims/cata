@@ -9,7 +9,7 @@ import (
 
 func (druid *Druid) registerMaulSpell() {
 	flatBaseDamage := 34.0
-	numHits := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMaul) && druid.Env.GetNumTargets() > 1, 2, 1)
+	maxHits := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMaul), 2, 1)
 	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
@@ -39,6 +39,7 @@ func (druid *Druid) registerMaulSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatBaseDamage + 0.19*spell.MeleeAttackPower()
+			numHits := min(maxHits, druid.Env.ActiveTargetCount())
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
@@ -59,7 +60,7 @@ func (druid *Druid) registerMaulSpell() {
 					spell.IssueRefund(sim)
 				}
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 			}
 		},
 	})

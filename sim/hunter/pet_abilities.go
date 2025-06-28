@@ -307,7 +307,7 @@ func (hp *HunterPet) newFrostStormBreath() *core.Spell {
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					frostStormTickSpell.Cast(sim, aoeTarget)
 				}
 			},
@@ -339,7 +339,7 @@ func (hp *HunterPet) newDemoralizingScreech() *core.Spell {
 		School:  core.SpellSchoolPhysical,
 		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					debuffs.Get(aoeTarget).Activate(sim)
 				}
 			}

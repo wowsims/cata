@@ -62,7 +62,7 @@ func (druid *Druid) registerThrashBearSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatBaseDamage + 0.0982*spell.MeleeAttackPower()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				perTargetDamage := (baseDamage + (sim.RandomFloat("Thrash") * damageSpread)) * sim.Encounter.AOECapMultiplier()
 				if druid.BleedCategories.Get(aoeTarget).AnyActive() {
 					perTargetDamage *= 1.3

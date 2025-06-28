@@ -41,7 +41,7 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 			frostFeverActive := dk.FrostFeverSpell.Dot(target).IsActive()
 			bloodPlagueActive := dk.BloodPlagueSpell.Dot(target).IsActive()
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				result := spell.CalcAndDealOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
 
 				if aoeTarget == target {

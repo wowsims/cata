@@ -79,7 +79,7 @@ func (mage *Mage) ApplyFireTalents() {
 			ClassSpellMask: MageSpellBlastWave,
 			ICD:            time.Millisecond * 1,
 			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-				return len(spell.Unit.Env.Encounter.Targets) >= 2
+				return len(spell.Unit.Env.Encounter.ActiveTargets) >= 2
 			},
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				flameStrikeCopy := spell.Unit.GetSpell(core.ActionID{SpellID: 88148, Tag: 1})
@@ -280,7 +280,7 @@ func (mage *Mage) applyPyromaniac() {
 		},
 	})
 
-	if len(mage.Env.Encounter.TargetUnits) < 3 {
+	if len(mage.Env.Encounter.AllTargetUnits) < 3 {
 		return
 	}
 
@@ -291,7 +291,7 @@ func (mage *Mage) applyPyromaniac() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast, mage.Combustion}
 			activeDotTargets := 0
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				for _, spells := range dotSpells {
 					if spells.Dot(aoeTarget).IsActive() {
 						activeDotTargets++
@@ -331,7 +331,7 @@ func (mage *Mage) applyMoltenFury() {
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 35 {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.AllTargetUnits {
 					moltenFuryAuras.Get(aoeTarget).Activate(sim)
 				}
 			}
@@ -398,7 +398,7 @@ func (mage *Mage) applyImpact() {
 
 				originalTarget := mage.CurrentTarget
 
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					if aoeTarget == originalTarget {
 						continue
 					}

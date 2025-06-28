@@ -98,6 +98,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			}
 		}
 
+		if (target.Type != PlayerUnit) && !target.IsEnabled() {
+			return spell.castFailureHelper(sim, "target disabled")
+		}
+
 		if spell.Flags.Matches(SpellFlagSwapped) {
 			return spell.castFailureHelper(sim, "spell attached to an un-equipped item")
 		}
@@ -228,6 +232,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 	return func(sim *Simulation, target *Unit) bool {
+		if (target.Type != PlayerUnit) && !target.IsEnabled() {
+			return spell.castFailureHelper(sim, "target disabled")
+		}
+
 		if spell.Flags.Matches(SpellFlagSwapped) {
 			return spell.castFailureHelper(sim, "spell attached to an un-equipped item")
 		}

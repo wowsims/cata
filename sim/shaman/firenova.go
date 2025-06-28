@@ -32,21 +32,21 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.164,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([][]*core.SpellResult, shaman.Env.GetNumTargets())
+			results := make([][]*core.SpellResult, shaman.Env.ActiveTargetCount())
 			baseDamage := shaman.CalcAndRollDamageRange(sim, 0.78500002623, 0.11200000346)
-			for i, aoeTarget := range sim.Encounter.TargetUnits {
+			for i, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
-					results[i] = make([]*core.SpellResult, shaman.Env.GetNumTargets())
-					for j, newTarget := range sim.Encounter.TargetUnits {
+					results[i] = make([]*core.SpellResult, shaman.Env.ActiveTargetCount())
+					for j, newTarget := range sim.Encounter.ActiveTargetUnits {
 						if newTarget != aoeTarget {
 							results[i][j] = spell.CalcDamage(sim, newTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 						}
 					}
 				}
 			}
-			for i, aoeTarget := range sim.Encounter.TargetUnits {
+			for i, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
-					for j, newTarget := range sim.Encounter.TargetUnits {
+					for j, newTarget := range sim.Encounter.ActiveTargetUnits {
 						if newTarget != aoeTarget {
 							spell.DealDamage(sim, results[i][j])
 						}
@@ -55,7 +55,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 			}
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
 					return true
 				}

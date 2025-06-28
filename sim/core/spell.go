@@ -414,7 +414,7 @@ func (spell *Spell) CurDamagePerCast() float64 {
 	} else {
 		casts := int32(0)
 		damage := 0.0
-		for _, opponent := range spell.Unit.GetOpponents() {
+		for _, opponent := range spell.Unit.GetAllOpponents() {
 			casts += spell.SpellMetrics[opponent.UnitIndex].Casts
 			damage += spell.SpellMetrics[opponent.UnitIndex].TotalDamage
 		}
@@ -511,6 +511,10 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
+	if (target.Type != PlayerUnit) && !target.IsEnabled() {
+		return false
+	}
+
 	if spell.Flags.Matches(SpellFlagSwapped) {
 		//if sim.Log != nil {
 		//	sim.Log("Cant cast because of item swap")
@@ -602,9 +606,8 @@ func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 }
 
 func (spell *Spell) ApplyAOEThreatIgnoreMultipliers(threatAmount float64) {
-	numTargets := spell.Unit.Env.GetNumTargets()
-	for i := int32(0); i < numTargets; i++ {
-		spell.SpellMetrics[i].TotalThreat += threatAmount
+	for _, target := range spell.Unit.Env.GetActiveTargets() {
+		spell.SpellMetrics[target.UnitIndex].TotalThreat += threatAmount
 	}
 }
 func (spell *Spell) ApplyAOEThreat(threatAmount float64) {

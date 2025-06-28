@@ -94,7 +94,6 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 	aoeMinDamage, aoeMaxDamage :=
 		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.70800000429, 0.40000000596)
 
-	numTargets := paladin.Env.GetNumTargets()
 	actionId := core.ActionID{SpellID: 53595}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 
@@ -120,11 +119,11 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.RollWithLabel(aoeMinDamage, aoeMaxDamage, "Hammer of the Righteous"+paladin.Label) +
 				0.18000000715*spell.MeleeAttackPower()
+			numTargets := sim.Environment.ActiveTargetCount()
 			results := make([]*core.SpellResult, numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicCrit)
+			for idx, currentTarget := range sim.Environment.GetActiveTargets() {
+				results[idx] = spell.CalcDamage(sim, &currentTarget.Unit, baseDamage, spell.OutcomeMagicCrit)
 			}
 
 			for idx := int32(0); idx < numTargets; idx++ {

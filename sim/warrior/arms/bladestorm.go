@@ -12,8 +12,8 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 		return
 	}
 	actionID := core.ActionID{SpellID: 46924}
-	numHits := war.Env.GetNumTargets() // 1 hit per target
-	results := make([]*core.SpellResult, numHits)
+	maxHits := war.Env.TotalTargetCount() // 1 hit per target
+	results := make([]*core.SpellResult, maxHits)
 
 	bladestorm := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -50,15 +50,14 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 				target := war.CurrentTarget
 				spell := dot.Spell
 				curTarget := target
+				numHits := sim.Environment.ActiveTargetCount()
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := 1.5 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 					results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
+					curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 				}
-				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					spell.DealDamage(sim, results[hitIndex])
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			},
 		},

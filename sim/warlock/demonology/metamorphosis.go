@@ -104,7 +104,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				baseDmg := demonology.CalcScalingSpellDmg(0.58899998665) * sim.Encounter.AOECapMultiplier()
 
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)
 				}
 			},

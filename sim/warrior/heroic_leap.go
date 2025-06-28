@@ -8,8 +8,8 @@ import (
 
 func (warrior *Warrior) RegisterHeroicLeap() {
 
-	numHits := warrior.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numHits)
+	maxHits := warrior.Env.TotalTargetCount()
+	results := make([]*core.SpellResult, maxHits)
 
 	warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6544},
@@ -40,10 +40,11 @@ func (warrior *Warrior) RegisterHeroicLeap() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1 + 0.5*spell.MeleeAttackPower()
 			curTarget := target
+			numHits := sim.Environment.ActiveTargetCount()
 
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 			}
 
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

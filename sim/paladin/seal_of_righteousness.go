@@ -7,13 +7,13 @@ import (
 )
 
 func (paladin *Paladin) registerSealOfRighteousness() {
-	var numTargets int32
+	var maxTargets int32
 	if paladin.Talents.SealsOfCommand {
-		numTargets = paladin.Env.GetNumTargets()
+		maxTargets = paladin.Env.TotalTargetCount()
 	} else {
-		numTargets = 1
+		maxTargets = 1
 	}
-	results := make([]*core.SpellResult, numTargets)
+	results := make([]*core.SpellResult, maxTargets)
 
 	// Judgement of Righteousness cast on Judgement
 	paladin.JudgementOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
@@ -74,12 +74,12 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		baseDamage := paladin.GetMHWeapon().SwingSpeed *
 			(0.022*spell.SpellPower() + 0.011*spell.MeleeAttackPower())
 
-		for idx := int32(0); idx < numTargets; idx++ {
+		for idx, targetUnit := range sim.Encounter.ActiveTargetUnits {
 			// can't miss if melee swing landed, but can crit
-			results[idx] = spell.CalcDamage(sim, sim.Environment.GetTargetUnit(idx), baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			results[idx] = spell.CalcDamage(sim, targetUnit, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		}
 
-		for idx := int32(0); idx < numTargets; idx++ {
+		for idx := range sim.Encounter.ActiveTargetUnits {
 			spell.DealDamage(sim, results[idx])
 		}
 	})

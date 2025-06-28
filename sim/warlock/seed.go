@@ -23,7 +23,7 @@ func (warlock *Warlock) registerSeed() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := warlock.CalcAndRollDamageRange(sim, 0.76560002565, 0.15000000596) * sim.Encounter.AOECapMultiplier()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 			}
 		},

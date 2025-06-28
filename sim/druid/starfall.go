@@ -12,7 +12,7 @@ func (druid *Druid) registerStarfallSpell() {
 		return
 	}
 
-	numberOfTicks := core.TernaryInt32(druid.Env.GetNumTargets() > 1, 20, 10)
+	numberOfTicks := core.TernaryInt32(druid.Env.TotalTargetCount() > 1, 20, 10)
 	tickLength := time.Second
 
 	starfallTickSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{

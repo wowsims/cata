@@ -122,7 +122,7 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.278 * ffo.mageOwner.ClassSpellScaling
-			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+			randomTarget := sim.Encounter.ActiveTargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.ActiveTargetUnits))))]
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 			ffo.TickCount += 1
 			if ffo.TickCount == 15 {

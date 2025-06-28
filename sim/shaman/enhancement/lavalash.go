@@ -63,9 +63,9 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 
 				if flameShockDot != nil && flameShockDot.IsActive() {
 					numberSpread := 0
-					maxTargets := min(4, len(sim.Encounter.TargetUnits))
+					maxTargets := min(4, len(sim.Encounter.ActiveTargetUnits))
 
-					validTargets := core.FilterSlice(sim.Encounter.TargetUnits, func(unit *core.Unit) bool {
+					validTargets := core.FilterSlice(sim.Encounter.ActiveTargetUnits, func(unit *core.Unit) bool {
 						dot := enh.FlameShock.Dot(unit)
 						return dot == nil || !dot.IsActive()
 					})

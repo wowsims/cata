@@ -25,7 +25,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 		},
 	})
 
-	extraHit := warrior.Talents.ImprovedRevenge > 0 && warrior.Env.GetNumTargets() > 1
+	canExtraHit := (warrior.Talents.ImprovedRevenge > 0) && (warrior.Env.TotalTargetCount() > 1)
 	extraHitMult := 0.5 * float64(warrior.Talents.ImprovedRevenge)
 
 	warrior.Revenge = warrior.RegisterSpell(core.SpellConfig{
@@ -67,8 +67,8 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 				spell.IssueRefund(sim)
 			}
 
-			if extraHit {
-				otherTarget := sim.Environment.NextTargetUnit(target)
+			if canExtraHit && (sim.Environment.ActiveTargetCount() > 1) {
+				otherTarget := sim.Environment.NextActiveTargetUnit(target)
 				// TODO: Reimplement using scaling coefficients and variance once those stats are available
 				baseDamage := sim.Roll(1618.3, 1977.92) + ap
 				spell.CalcAndDealDamage(sim, otherTarget, baseDamage*extraHitMult, spell.OutcomeMeleeSpecialHitAndCrit)

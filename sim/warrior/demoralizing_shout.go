@@ -31,7 +31,7 @@ func (warrior *Warrior) RegisterDemoralizingShoutSpell() {
 		FlatThreatBonus:  63.2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				result := spell.CalcAndDealOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
 				if result.Landed() {
 					warrior.DemoralizingShoutAuras.Get(aoeTarget).Activate(sim)

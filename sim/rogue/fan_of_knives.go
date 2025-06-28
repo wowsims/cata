@@ -20,7 +20,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		ThreatMultiplier: 1,
 	})
 
-	results := make([]*core.SpellResult, len(rogue.Env.Encounter.TargetUnits))
+	results := make([]*core.SpellResult, len(rogue.Env.Encounter.AllTargetUnits))
 	poisonProcModifier := []float64{0.0, 0.33, 0.67, 1.0}[rogue.Talents.VilePoisons]
 
 	rogue.FanOfKnives = rogue.RegisterSpell(core.SpellConfig{
@@ -43,14 +43,14 @@ func (rogue *Rogue) registerFanOfKnives() {
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			for i, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower(aoeTarget))
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 
-				results[i] = fokSpell.CalcDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)
+				results[aoeTarget.Index] = fokSpell.CalcDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)
 			}
-			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				fokSpell.DealDamage(sim, results[i])
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
+				fokSpell.DealDamage(sim, results[aoeTarget.Index])
 
 				if rogue.Talents.VilePoisons > 0 {
 					mhProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeMH, rogue.Options.MhImbue, proto.ItemSlot_ItemSlotMainHand, rogue)

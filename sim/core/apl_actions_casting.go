@@ -142,13 +142,13 @@ func (rot *APLRotation) newActionMultidot(config *proto.APLActionMultidot) APLAc
 	}
 
 	maxDots := config.MaxDots
-	numTargets := unit.Env.GetNumTargets()
+	maxTargets := unit.Env.TotalTargetCount()
 	if spell.Flags.Matches(SpellFlagHelpful) {
-		numTargets = int32(len(unit.Env.Raid.AllPlayerUnits))
+		maxTargets = int32(len(unit.Env.Raid.AllPlayerUnits))
 	}
-	if numTargets < maxDots {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Encounter only has %d targets. Using that for Max Dots instead of %d", numTargets, maxDots)
-		maxDots = numTargets
+	if maxTargets < maxDots {
+		rot.ValidationMessage(proto.LogLevel_Warning, "Encounter only has %d targets. Using that for Max Dots instead of %d", maxTargets, maxDots)
+		maxDots = maxTargets
 	}
 
 	return &APLActionMultidot{
@@ -177,7 +177,7 @@ func (action *APLActionMultidot) IsReady(sim *Simulation) bool {
 		}
 	} else {
 		for i := int32(0); i < action.maxDots; i++ {
-			target := sim.Encounter.TargetUnits[i]
+			target := sim.Encounter.AllTargetUnits[i]
 			dot := action.spell.Dot(target)
 			if (!dot.IsActive() || dot.RemainingDuration(sim) < maxOverlap) && action.spell.CanCastOrQueue(sim, target) {
 				action.nextTarget = target
@@ -228,10 +228,8 @@ func (rot *APLRotation) newActionStrictMultidot(config *proto.APLActionStrictMul
 		targets = unit.Env.Raid.AllPlayerUnits
 		numTargets = int32(len(targets))
 	} else {
-		numTargets = unit.Env.GetNumTargets()
-		targets = MapSlice(unit.Env.ActiveTargetUnits(), func(target *Target) *Unit {
-			return &target.Unit
-		})
+		numTargets = unit.Env.TotalTargetCount()
+		targets = unit.Env.Encounter.AllTargetUnits
 	}
 	if numTargets < maxDots {
 		rot.ValidationMessage(proto.LogLevel_Warning, "Encounter only has %d targets. Using that for Max Dots instead of %d", numTargets, maxDots)

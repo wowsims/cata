@@ -41,7 +41,7 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 		BonusCoefficient: 0.76499998569,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				baseDamage := sim.Encounter.AOECapMultiplier() *
 					warlock.CalcAndRollDamageRange(sim, 0.48500001431, 0.11999999732)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -146,7 +146,7 @@ func (infernal *InfernalPet) Initialize() {
 				warlockSP := infernal.owner.Unit.GetStat(stats.SpellPower)
 				baseDmg := (40 + warlockSP*0.2) * sim.Encounter.AOECapMultiplier()
 
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)
 				}
 			},

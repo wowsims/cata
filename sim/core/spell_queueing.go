@@ -80,6 +80,17 @@ func (spell *Spell) CanQueue(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
+	if (target.Type != PlayerUnit) && !target.IsEnabled() {
+		return false
+	}
+
+	if spell.Flags.Matches(SpellFlagSwapped) {
+		//if sim.Log != nil {
+		//	sim.Log("Cant cast because of item swap")
+		//}
+		return false
+	}
+
 	// Same extra cast conditions apply as if we were casting right now
 	if spell.ExtraCastCondition != nil && !spell.ExtraCastCondition(sim, target) {
 		return false

@@ -61,7 +61,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 			baseDamage := demonology.CalcAndRollDamageRange(sim, 1.59300005436, 0.16599999368)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				for _, target := range sim.Encounter.TargetUnits {
+				for _, target := range sim.Encounter.ActiveTargetUnits {
 					curseOfGuldanAuras.Get(target).Activate(sim)
 				}
 			}
