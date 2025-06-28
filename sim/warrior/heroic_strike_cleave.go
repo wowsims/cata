@@ -119,7 +119,7 @@ func (war *Warrior) registerCleaveSpell() {
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 
-			war.CastNormalizedSweepingStrikesAttack(results, sim, target)
+			war.CastNormalizedSweepingStrikesAttack(results, sim)
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)

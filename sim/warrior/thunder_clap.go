@@ -44,7 +44,7 @@ func (war *Warrior) registerThunderClap() {
 				results[i] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			}
 
-			war.CastNormalizedSweepingStrikesAttack(results, sim, target)
+			war.CastNormalizedSweepingStrikesAttack(results, sim)
 
 			for _, result := range results {
 				if result.Landed() {
