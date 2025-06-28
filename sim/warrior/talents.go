@@ -171,7 +171,7 @@ func (war *Warrior) registerBladestorm() {
 				results[i] = spell.CalcDamage(sim, &enemyTarget.Unit, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 
-			war.CastNormalizedSweepingStrikesAttack(results, sim, target)
+			war.CastNormalizedSweepingStrikesAttack(results, sim)
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
@@ -226,6 +226,7 @@ func (war *Warrior) registerBladestorm() {
 			TickLength:    time.Second * 1,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				mhSpell.Cast(sim, target)
+
 				if war.OffHand() != nil && war.OffHand().WeaponType != proto.WeaponType_WeaponTypeUnknown {
 					ohSpell.Cast(sim, target)
 				}

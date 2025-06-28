@@ -70,7 +70,7 @@ func (war *Warrior) registerWhirlwind() {
 				results[i] = spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 
-			war.CastNormalizedSweepingStrikesAttack(results, sim, target)
+			war.CastNormalizedSweepingStrikesAttack(results, sim)
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
