@@ -12,7 +12,7 @@ import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
 const getEPDefaults = (_: Player<Spec.SpecProtectionPaladin>) => {
-	return Presets.P1_EP_PRESET.epWeights;
+	return Presets.P1_BALANCED_EP_PRESET.epWeights;
 };
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
@@ -92,10 +92,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_GEAR_PRESET.gear,
+		gear: Presets.P1_BALANCED_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		// Values for now are pre-Cata initial WAG
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P1_BALANCED_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats();
@@ -178,14 +178,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_BALANCED_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.APL_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_GEAR_PRESET],
-		builds: [Presets.P1_BUILD_PRESET],
+		gear: [Presets.P1_BALANCED_GEAR_PRESET],
+		builds: [Presets.P1_BALANCED_BUILD_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
@@ -206,10 +206,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_GEAR_PRESET.gear,
+					1: Presets.P1_BALANCED_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_GEAR_PRESET.gear,
+					1: Presets.P1_BALANCED_GEAR_PRESET.gear,
 				},
 			},
 		},

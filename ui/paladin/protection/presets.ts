@@ -6,19 +6,19 @@ import { PaladinMajorGlyph, PaladinMinorGlyph, PaladinSeal, ProtectionPaladin_Op
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1_Gear from './gear_sets/p1.gear.json';
+import P1_Balanced_Gear from './gear_sets/p1-balanced.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1_Gear);
+export const P1_BALANCED_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1_Balanced_Gear);
 
 export const APL_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const P1_BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1 - Balanced',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.14,
@@ -49,7 +49,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '112222',
+		talentsString: '313213',
 		glyphs: Glyphs.create({
 			major1: PaladinMajorGlyph.GlyphOfFocusedShield,
 			major2: PaladinMajorGlyph.GlyphOfTheAlabasterShield,
@@ -60,9 +60,9 @@ export const DefaultTalents = {
 	}),
 };
 
-export const P1_BUILD_PRESET = PresetUtils.makePresetBuild('P1', {
-	gear: P1_GEAR_PRESET,
-	epWeights: P1_EP_PRESET,
+export const P1_BALANCED_BUILD_PRESET = PresetUtils.makePresetBuild('P1 - Balanced', {
+	gear: P1_BALANCED_GEAR_PRESET,
+	epWeights: P1_BALANCED_EP_PRESET,
 	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAuto,
 });
@@ -82,7 +82,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Blacksmithing,
-	profession2: Profession.Enchanting,
+	profession2: Profession.Engineering,
 	distanceFromTarget: 5,
 	iterationCount: 25000,
 };

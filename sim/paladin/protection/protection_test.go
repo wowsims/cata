@@ -18,7 +18,7 @@ func TestProtection(t *testing.T) {
 		Class: proto.Class_ClassPaladin,
 		Race:  proto.Race_RaceBloodElf,
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1"),
+		GearSet:     core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1-balanced"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumables: FullConsumesSpec,
@@ -56,7 +56,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
-				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1").GearSet,
+				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "p1-balanced").GearSet,
 				Consumables:    FullConsumesSpec,
 				Spec:           SealOfInsight,
 				Glyphs:         StandardGlyphs,
@@ -81,7 +81,7 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var StandardTalents = "112222"
+var StandardTalents = "313213"
 var StandardGlyphs = &proto.Glyphs{
 	Major1: int32(proto.PaladinMajorGlyph_GlyphOfFocusedShield),
 	Major2: int32(proto.PaladinMajorGlyph_GlyphOfTheAlabasterShield),
