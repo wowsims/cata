@@ -15,8 +15,8 @@ func init() {
 func TestFrostMasterfrost(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassDeathKnight,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
+		Race:       proto.Race_RaceTroll,
+		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceWorgen},
 
 		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1.masterfrost"),
 		Talents:     DefaultTalents,
@@ -32,8 +32,8 @@ func TestFrostMasterfrost(t *testing.T) {
 func TestFrostTwoHand(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassDeathKnight,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
+		Race:       proto.Race_RaceTroll,
+		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceWorgen},
 
 		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1.2h-obliterate"),
 		Talents:     DefaultTalents,
