@@ -25,6 +25,8 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskCrusaderStrike,
 
+		MaxRange: core.MaxMeleeRange,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 15,
 		},

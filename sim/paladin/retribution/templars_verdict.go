@@ -16,6 +16,8 @@ func (ret *RetributionPaladin) registerTemplarsVerdict() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: paladin.SpellMaskTemplarsVerdict,
 
+		MaxRange: core.MaxMeleeRange,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
