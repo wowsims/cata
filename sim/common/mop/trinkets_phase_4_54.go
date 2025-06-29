@@ -64,6 +64,7 @@ func init() {
 					},
 				})
 
+				aura.Icd = triggerAura.Icd
 				eligibleSlots := character.ItemSwap.EligibleSlotsForItem(itemID)
 				character.AddStatProcBuff(itemID, aura, false, eligibleSlots)
 				character.ItemSwap.RegisterProcWithSlots(itemID, triggerAura, eligibleSlots)

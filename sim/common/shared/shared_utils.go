@@ -478,6 +478,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			},
 		})
 
+		procAura.Icd = triggerAura.Icd
 		character.AddStatProcBuff(config.ItemID, procAura, false, eligibleSlotsForItem)
 		character.ItemSwap.RegisterProcWithSlots(config.ItemID, triggerAura, eligibleSlotsForItem)
 	})
