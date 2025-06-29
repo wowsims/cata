@@ -64,7 +64,6 @@ func (fdk *FrostDeathKnight) Initialize() {
 	fdk.registerThreatOfThassarian()
 
 	fdk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
-		println(sim.CurrentTime.String(), fdk.MainHand().ID, fdk.OffHand().ID)
 		if fdk.HasMHWeapon() && fdk.HasOHWeapon() {
 			fdk.MightOfTheFrozenWastesAura.Deactivate(sim)
 			fdk.ThreatOfThassarianAura.Activate(sim)
