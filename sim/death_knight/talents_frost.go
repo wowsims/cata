@@ -238,14 +238,8 @@ func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
 		return
 	}
 
-	dk.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
-		ProcMask:   core.ProcMaskMelee,
-	})
-
 	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 81331})
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+	aura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:       "Might of the Frozen Wastes",
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMeleeWhiteHit,
@@ -254,6 +248,18 @@ func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			dk.AddRunicPower(sim, 10, rpMetric)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
+		ProcMask:   core.ProcMaskMelee,
+	})
+
+	dk.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, is proto.ItemSlot) {
+		if mh := dk.GetMHWeapon(); mh != nil && mh.HandType == proto.HandType_HandTypeTwoHand {
+			aura.Activate(sim)
+		} else {
+			aura.Deactivate(sim)
+		}
 	})
 }
 
