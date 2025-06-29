@@ -8,8 +8,8 @@ import (
 var HeartStrikeActionID = core.ActionID{SpellID: 55050}
 
 func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
-	numHits := min(3, dk.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	maxHits := min(3, dk.Env.TotalTargetCount())
+	results := make([]*core.SpellResult, maxHits)
 
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       HeartStrikeActionID,
@@ -38,8 +38,9 @@ func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
 			baseDamage := dk.ClassSpellScaling*0.72799998522 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
+			numHits := min(maxHits, sim.Environment.ActiveTargetCount())
 			currentTarget := target
-			for idx := int32(0); idx < numHits; idx++ {
+			for idx := range numHits {
 				targetDamage := baseDamage * dk.GetDiseaseMulti(currentTarget, 1.0, 0.15)
 
 				results[idx] = spell.CalcDamage(sim, currentTarget, targetDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -48,11 +49,11 @@ func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
 				}
 
 				spell.DamageMultiplier *= 0.75
-				currentTarget = dk.Env.NextTargetUnit(currentTarget)
+				currentTarget = dk.Env.NextActiveTargetUnit(currentTarget)
 			}
 
-			for _, result := range results {
-				spell.DealDamage(sim, result)
+			for idx := range numHits {
+				spell.DealDamage(sim, results[idx])
 				spell.DamageMultiplier /= 0.75
 			}
 		},
@@ -60,8 +61,8 @@ func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
 }
 
 func (dk *BloodDeathKnight) registerDrwHeartStrikeSpell() *core.Spell {
-	numHits := min(3, dk.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	maxHits := min(3, dk.Env.TotalTargetCount())
+	results := make([]*core.SpellResult, maxHits)
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    HeartStrikeActionID,
 		SpellSchool: core.SpellSchoolPhysical,
@@ -72,6 +73,7 @@ func (dk *BloodDeathKnight) registerDrwHeartStrikeSpell() *core.Spell {
 			baseDamage := dk.ClassSpellScaling*0.72799998522 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
+			numHits := min(maxHits, dk.Env.ActiveTargetCount())
 			currentTarget := target
 			for idx := int32(0); idx < numHits; idx++ {
 				targetDamage := baseDamage * dk.RuneWeapon.GetDiseaseMulti(currentTarget, 1.0, 0.15)
@@ -79,11 +81,11 @@ func (dk *BloodDeathKnight) registerDrwHeartStrikeSpell() *core.Spell {
 				results[idx] = spell.CalcDamage(sim, currentTarget, targetDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 				spell.DamageMultiplier *= 0.75
-				currentTarget = dk.Env.NextTargetUnit(currentTarget)
+				currentTarget = dk.Env.NextActiveTargetUnit(currentTarget)
 			}
 
-			for _, result := range results {
-				spell.DealDamage(sim, result)
+			for idx := range numHits {
+				spell.DealDamage(sim, results[idx])
 				spell.DamageMultiplier /= 0.75
 			}
 		},

@@ -86,10 +86,10 @@ func (value *APLValueNumberTargets) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueNumberTargets) GetInt(sim *Simulation) int32 {
-	return sim.GetNumTargets()
+	return sim.ActiveTargetCount()
 }
 func (value *APLValueNumberTargets) String() string {
-	return "Num Targets"
+	return "Num Active Targets"
 }
 
 type APLValueIsExecutePhase struct {

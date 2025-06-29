@@ -169,7 +169,7 @@ func (ai *NefarianAddAI) registerSpells() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, addUnit := range sim.Encounter.TargetUnits {
+			for _, addUnit := range sim.Encounter.ActiveTargetUnits {
 				empowerAura := addUnit.GetAuraByID(empowerActionID)
 
 				// Assume that the tank is always pre-moving adds before the spark hits them, so that Empower is never refreshed on already active adds.

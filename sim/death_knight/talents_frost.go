@@ -111,7 +111,7 @@ func (dk *DeathKnight) applyMercilessCombat() {
 	dk.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 35 {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.AllTargetUnits {
 					debuffs.Get(aoeTarget).Activate(sim)
 				}
 			}

@@ -54,8 +54,8 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 
 func (warrior *Warrior) RegisterCleaveSpell() {
 	targets := core.TernaryInt32(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfCleaving), 3, 2)
-	numHits := min(targets, warrior.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	maxHits := min(targets, warrior.Env.TotalTargetCount())
+	results := make([]*core.SpellResult, maxHits)
 
 	warrior.Cleave = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 845},
@@ -86,17 +86,16 @@ func (warrior *Warrior) RegisterCleaveSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
+			numHits := min(maxHits, sim.Environment.ActiveTargetCount())
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := 6 + (spell.MeleeAttackPower() * 0.45)
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 			}
 
-			curTarget = target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 		},
 	})

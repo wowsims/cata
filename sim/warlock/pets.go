@@ -264,7 +264,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 				baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 				baseDmg += pet.Owner.CalcScalingSpellDmg(0.1155000031) + 0.231*spell.MeleeAttackPower()
 
-				for _, target := range sim.Encounter.TargetUnits {
+				for _, target := range sim.Encounter.ActiveTargetUnits {
 					spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				}
 			},
@@ -278,8 +278,6 @@ func (pet *WarlockPet) registerFelstormSpell() {
 }
 
 func (pet *WarlockPet) registerLegionStrikeSpell() {
-	numberOfTargets := pet.Env.GetNumTargets()
-
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30213},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -306,9 +304,9 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			baseDmg += pet.Owner.CalcScalingSpellDmg(0.1439999938) + 0.264*spell.MeleeAttackPower()
-			baseDmg /= float64(numberOfTargets)
+			baseDmg /= float64(sim.Environment.ActiveTargetCount())
 
-			for _, target := range sim.Encounter.TargetUnits {
+			for _, target := range sim.Encounter.ActiveTargetUnits {
 				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 		},

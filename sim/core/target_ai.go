@@ -56,7 +56,7 @@ func (target *Target) GetCharacter() *Character          { return nil }
 func (target *Target) Initialize()                       {}
 
 func (target *Target) ExecuteCustomRotation(sim *Simulation) {
-	if target.AI != nil {
+	if (target.AI != nil) && target.IsEnabled() {
 		target.AI.ExecuteCustomRotation(sim)
 	}
 }

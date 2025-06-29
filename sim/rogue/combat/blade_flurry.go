@@ -41,7 +41,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 			comRogue.ApplyAdditiveEnergyRegenBonus(sim, -energyReduction)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if sim.GetNumTargets() < 2 {
+			if sim.ActiveTargetCount() < 2 {
 				return
 			}
 			if result.Damage == 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) {
@@ -55,7 +55,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg = result.Damage / result.ResistanceMultiplier
 
-			bfTarget := comRogue.Env.NextTargetUnit(result.Target)
+			bfTarget := comRogue.Env.NextActiveTargetUnit(result.Target)
 			bfHit.Cast(sim, bfTarget)
 		},
 	})

@@ -139,8 +139,8 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 
 	ancientFuryMinDamage, ancientFuryMaxDamage :=
 		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.23659999669, 0.30000001192)
-	numTargets := paladin.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numTargets)
+	maxTargets := paladin.Env.TotalTargetCount()
+	results := make([]*core.SpellResult, maxTargets)
 
 	ancientFury := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 86704},
@@ -168,11 +168,11 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 			// Deals X Holy damage per application of Ancient Power,
 			// divided evenly among all targets within 10 yards.
 			baseDamage *= float64(paladin.AncientPowerAura.GetStacks())
+			numTargets := sim.Environment.ActiveTargetCount()
 			baseDamage /= float64(numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for idx, currentTarget := range sim.Environment.GetActiveTargets() {
+				results[idx] = spell.CalcDamage(sim, &currentTarget.Unit, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 
 			for idx := int32(0); idx < numTargets; idx++ {

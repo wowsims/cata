@@ -211,11 +211,11 @@ func (unit *Unit) IsOpponent(other *Unit) bool {
 	return (unit.Type == EnemyUnit) != (other.Type == EnemyUnit)
 }
 
-func (unit *Unit) GetOpponents() []*Unit {
+func (unit *Unit) GetAllOpponents() []*Unit {
 	if unit.Type == EnemyUnit {
 		return unit.Env.Raid.AllUnits
 	} else {
-		return unit.Env.Encounter.TargetUnits
+		return unit.Env.Encounter.AllTargetUnits
 	}
 }
 
@@ -563,7 +563,10 @@ func (unit *Unit) finalize() {
 }
 
 func (unit *Unit) reset(sim *Simulation, _ Agent) {
-	unit.enabled = true
+	if unit.Type != EnemyUnit {
+		unit.enabled = true
+	}
+
 	unit.resetCDs(sim)
 	unit.Hardcast.Expires = startingCDTime
 	unit.ChanneledDot = nil

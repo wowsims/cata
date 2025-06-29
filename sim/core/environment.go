@@ -57,7 +57,7 @@ func NewEnvironment(raidProto *proto.Raid, encounterProto *proto.Encounter, runF
 	env.finalize(raidProto, encounterProto, raidStats, runFakePrepull)
 
 	encounterStats := &proto.EncounterStats{}
-	for _, target := range env.Encounter.Targets {
+	for _, target := range env.Encounter.AllTargets {
 		encounterStats.Targets = append(encounterStats.Targets, &proto.TargetStats{
 			Metadata: target.GetMetadata(),
 		})
@@ -75,7 +75,7 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 
 	env.Raid.updatePlayersAndPets()
 
-	env.AllUnits = append(env.Encounter.TargetUnits, env.Raid.AllUnits...)
+	env.AllUnits = append(env.Encounter.AllTargetUnits, env.Raid.AllUnits...)
 
 	for unitIndex, unit := range env.AllUnits {
 		unit.Env = env
@@ -83,19 +83,19 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	}
 
 	for _, unit := range env.Raid.AllUnits {
-		unit.CurrentTarget = env.Encounter.TargetUnits[0]
+		unit.CurrentTarget = env.Encounter.ActiveTargetUnits[0]
 	}
 
 	// Apply extra debuffs from raid.
-	if raidProto.Debuffs != nil && len(env.Encounter.TargetUnits) > 0 {
-		for targetIdx, targetUnit := range env.Encounter.TargetUnits {
+	if raidProto.Debuffs != nil && len(env.Encounter.AllTargetUnits) > 0 {
+		for targetIdx, targetUnit := range env.Encounter.AllTargetUnits {
 			applyDebuffEffects(targetUnit, targetIdx, raidProto.Debuffs, raidProto)
 		}
 	}
 
 	tankTargetSet := map[*Unit]bool{}
 	// Assign target-of-target using Tanks field.
-	for _, target := range env.Encounter.Targets {
+	for _, target := range env.Encounter.AllTargets {
 		if target.Index < int32(len(encounterProto.Targets)) {
 			targetProto := encounterProto.Targets[target.Index]
 			env.setupTankTarget(target, targetProto.TankIndex, raidProto.Tanks, true, tankTargetSet)
@@ -111,7 +111,7 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 
 // The initialization phase.
 func (env *Environment) initialize(raidProto *proto.Raid, encounterProto *proto.Encounter) *proto.RaidStats {
-	for _, target := range env.Encounter.Targets {
+	for _, target := range env.Encounter.AllTargets {
 		if target.Index < int32(len(encounterProto.Targets)) {
 			target.initialize(encounterProto.Targets[target.Index])
 		} else {
@@ -144,7 +144,7 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 	}
 	env.preFinalizeEffects = nil
 
-	for _, target := range env.Encounter.Targets {
+	for _, target := range env.Encounter.AllTargets {
 		target.finalize()
 		if target.AI != nil {
 			target.Rotation = target.newCustomRotation()
@@ -263,7 +263,7 @@ func (env *Environment) reset(sim *Simulation) {
 
 	// Targets need to be reset before the raid, so that players can check for
 	// the presence of permanent target auras in their Reset handlers.
-	for _, target := range env.Encounter.Targets {
+	for _, target := range env.Encounter.AllTargets {
 		target.Reset(sim)
 	}
 
@@ -275,25 +275,28 @@ func (env *Environment) GetMaxDuration() time.Duration {
 	return env.BaseDuration + env.DurationVariation
 }
 
-func (env *Environment) GetNumTargets() int32 {
+func (env *Environment) ActiveTargetCount() int32 {
 	return int32(len(env.Encounter.ActiveTargets))
 }
+func (env *Environment) TotalTargetCount() int32 {
+	return int32(len(env.Encounter.AllTargets))
+}
 
-func (env *Environment) ActiveTargetUnits() []*Target {
+func (env *Environment) GetActiveTargets() []*Target {
 	return env.Encounter.ActiveTargets
 }
 
-func (env *Environment) GetTarget(index int32) *Target {
-	return env.Encounter.Targets[index]
+func (env *Environment) GetTargetByIndex(index int32) *Target {
+	return env.Encounter.AllTargets[index]
 }
-func (env *Environment) GetTargetUnit(index int32) *Unit {
-	return &env.Encounter.Targets[index].Unit
+func (env *Environment) GetTargetUnitByIndex(index int32) *Unit {
+	return env.Encounter.AllTargetUnits[index]
 }
-func (env *Environment) NextTarget(target *Unit) *Target {
-	return env.Encounter.Targets[target.Index].NextTarget()
+func (env *Environment) NextActiveTarget(target *Unit) *Target {
+	return env.Encounter.AllTargets[target.Index].NextActiveTarget()
 }
-func (env *Environment) NextTargetUnit(target *Unit) *Unit {
-	return &env.NextTarget(target).Unit
+func (env *Environment) NextActiveTargetUnit(target *Unit) *Unit {
+	return &env.NextActiveTarget(target).Unit
 }
 func (env *Environment) GetAgentFromUnit(unit *Unit) Agent {
 	raidAgent := env.Raid.GetPlayerFromUnit(unit)
@@ -301,7 +304,7 @@ func (env *Environment) GetAgentFromUnit(unit *Unit) Agent {
 		return raidAgent
 	}
 
-	for _, target := range env.Encounter.Targets {
+	for _, target := range env.Encounter.AllTargets {
 		if unit == &target.Unit {
 			return target
 		}
@@ -341,8 +344,8 @@ func (env *Environment) GetUnit(ref *proto.UnitReference, contextUnit *Unit) *Un
 			return nil
 		}
 	case proto.UnitReference_Target:
-		if int(ref.Index) < len(env.Encounter.TargetUnits) {
-			return env.Encounter.TargetUnits[ref.Index]
+		if int(ref.Index) < len(env.Encounter.AllTargetUnits) {
+			return env.Encounter.AllTargetUnits[ref.Index]
 		} else {
 			return nil
 		}

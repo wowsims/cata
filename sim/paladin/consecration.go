@@ -55,7 +55,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 				baseDamage := consAvgDamage +
 					0.0270000007*dot.Spell.MeleeAttackPower() +
 					0.0270000007*dot.Spell.SpellPower()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
 			},

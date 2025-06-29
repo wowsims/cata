@@ -9,7 +9,6 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 	warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
 
 	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSunderArmor)
-	numTargets := warrior.Env.GetNumTargets()
 	config := core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7386},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -45,8 +44,8 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 		if result.Landed() {
 			warrior.TryApplySunderArmorEffect(sim, target)
 			// https://www.wowhead.com/cata/item=43427/glyph-of-sunder-armor - also applies to devastate in cata
-			if hasGlyph && numTargets > 1 {
-				nextTarget := warrior.Env.NextTargetUnit(target)
+			if hasGlyph && (warrior.Env.ActiveTargetCount() > 1) {
+				nextTarget := warrior.Env.NextActiveTargetUnit(target)
 				warrior.TryApplySunderArmorEffect(sim, nextTarget)
 			}
 		} else {

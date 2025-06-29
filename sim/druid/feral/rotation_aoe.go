@@ -8,7 +8,7 @@ import (
 
 func (cat *FeralDruid) calcExpectedSwipeDamage(sim *core.Simulation) (float64, float64) {
 	expectedSwipeDamage := 0.0
-	for _, aoeTarget := range sim.Encounter.TargetUnits {
+	for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 		expectedSwipeDamage += cat.SwipeCat.ExpectedInitialDamage(sim, aoeTarget)
 	}
 	swipeDPE := expectedSwipeDamage / cat.SwipeCat.DefaultCast.Cost
@@ -76,7 +76,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	rakeTarget := cat.CurrentTarget
 	rakeDot := cat.Rake.CurDot()
 
-	for _, aoeTarget := range sim.Encounter.TargetUnits {
+	for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 		rakeDot = cat.Rake.Dot(aoeTarget)
 		canRakeTarget := !rakeDot.IsActive() || ((rakeDot.RemainingDuration(sim) < rakeDot.BaseTickLength) && (!isClearcast || (rakeDot.RemainingDuration(sim) < time.Second)))
 
@@ -106,7 +106,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	mangleTarget := cat.CurrentTarget
 	bleedAura := cat.bleedAura
 
-	for _, aoeTarget := range sim.Encounter.TargetUnits {
+	for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 		rakeDot = cat.Rake.Dot(aoeTarget)
 		bleedAura = aoeTarget.GetExclusiveEffectCategory(core.BleedEffectCategory).GetActiveAura()
 		canMangleTarget := rakeDot.IsActive() && !bleedAura.IsActive()
@@ -177,7 +177,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 		nextAction = min(nextAction, cat.SavageRoarAura.ExpiresAt())
 	}
 
-	for _, aoeTarget := range sim.Encounter.TargetUnits {
+	for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 		rakeDot = cat.Rake.Dot(aoeTarget)
 		rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.BaseTickLength)
 

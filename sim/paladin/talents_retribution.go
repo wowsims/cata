@@ -221,7 +221,6 @@ func (paladin *Paladin) applyDivineStorm() {
 		return
 	}
 
-	numTargets := paladin.Env.GetNumTargets()
 	actionId := core.ActionID{SpellID: 53385}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 
@@ -254,12 +253,12 @@ func (paladin *Paladin) applyDivineStorm() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := 0
+			numTargets := sim.Environment.ActiveTargetCount()
 			results := make([]*core.SpellResult, numTargets)
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
+			for idx, currentTarget := range sim.Environment.GetActiveTargets() {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcDamage(sim, &currentTarget.Unit, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				if result.Landed() {
 					numHits += 1
 				}

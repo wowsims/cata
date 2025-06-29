@@ -354,7 +354,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 				baseDamage := 5006 * sim.Encounter.AOECapMultiplier()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
 			},

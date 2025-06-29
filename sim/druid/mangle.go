@@ -10,7 +10,6 @@ import (
 func (druid *Druid) registerMangleBearSpell() {
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
-	maxHits := min(druid.Env.GetNumTargets(), 3)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 33878},
@@ -41,6 +40,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			maxHits := min(druid.Env.ActiveTargetCount(), 3)
 			numHits := core.TernaryInt32(druid.BerserkAura.IsActive(), maxHits, 1)
 			curTarget := target
 
@@ -54,7 +54,7 @@ func (druid *Druid) registerMangleBearSpell() {
 					spell.IssueRefund(sim)
 				}
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				curTarget = sim.Environment.NextActiveTargetUnit(curTarget)
 			}
 
 			if druid.BerserkAura.IsActive() {

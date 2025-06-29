@@ -61,7 +61,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 1.318 * mage.ClassSpellScaling
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 			}
 
@@ -156,7 +156,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 
 			damage := fo.mageOwner.CalcAndRollDamageRange(sim, 0.278, 0.25)
-			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+			randomTarget := sim.Encounter.ActiveTargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.ActiveTargetUnits))))]
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 
 			fo.TickCount += 1

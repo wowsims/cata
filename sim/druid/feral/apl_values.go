@@ -161,7 +161,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	// Keep up Sunder debuff if not provided externally. Do this here since FF can be
 	// cast while moving.
 	if cat.Rotation.MaintainFaerieFire {
-		for _, aoeTarget := range sim.Encounter.TargetUnits {
+		for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 			if cat.ShouldFaerieFire(sim, aoeTarget) {
 				cat.FaerieFire.CastOrQueue(sim, aoeTarget)
 			}

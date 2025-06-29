@@ -40,7 +40,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.542 * mage.ClassSpellScaling
 			damage *= sim.Encounter.AOECapMultiplier()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
+			for _, aoeTarget := range sim.Encounter.ActiveTargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 				if iceShardsProcApplication != nil {
 					iceShardsProcApplication.Cast(sim, aoeTarget)
