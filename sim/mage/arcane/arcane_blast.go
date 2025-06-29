@@ -27,7 +27,7 @@ func (arcane *ArcaneMage) registerArcaneBlastSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: time.Millisecond * 2000,
 			},
 		},
 
