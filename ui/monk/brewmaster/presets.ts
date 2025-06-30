@@ -4,10 +4,11 @@ import { BrewmasterMonk_Options as BrewmasterMonkOptions, MonkMajorGlyph, MonkMi
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1BISBalanced2HGear from './gear_sets/p1_bis_balanced_2h.gear.json';
-import P1BISBalancedDWGear from './gear_sets/p1_bis_balanced_dw.gear.json';
-import P1BISOffensive2HGear from './gear_sets/p1_bis_offensive_2h.gear.json';
-import P1BISOffensiveDWGear from './gear_sets/p1_bis_offensive_dw.gear.json';
+import OffensiveApl from './apls/offensive.apl.json';
+import P1BIS2HGear from './gear_sets/p1_bis_2h.gear.json';
+import P1BISDWGear from './gear_sets/p1_bis_dw.gear.json';
+import P1BISTierless2HGear from './gear_sets/p1_bis_tierless_2h.gear.json';
+import P1BISTierlessDWGear from './gear_sets/p1_bis_tierless_dw.gear.json';
 import P1PreBISPoorGear from './gear_sets/p1_prebis_poor.gear.json';
 import P1PreBISRichGear from './gear_sets/p1_prebis_rich.gear.json';
 
@@ -18,13 +19,14 @@ import P1PreBISRichGear from './gear_sets/p1_prebis_rich.gear.json';
 export const P1_PREBIS_RICH_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 💰', P1PreBISRichGear);
 export const P1_PREBIS_POOR_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS 📉', P1PreBISPoorGear);
 
-export const P1_BIS_BALANCED_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS DW (Balanced)', P1BISBalancedDWGear);
-export const P1_BIS_BALANCED_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS 2H (Balanced)', P1BISBalanced2HGear);
+export const P1_BIS_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS DW', P1BISDWGear);
+export const P1_BIS_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS 2H', P1BIS2HGear);
 
-export const P1_BIS_OFFENSIVE_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS DW (Offensive)', P1BISOffensiveDWGear);
-export const P1_BIS_OFFENSIVE_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS 2H (Offensive)', P1BISOffensive2HGear);
+export const P1_BIS_TIERLESS_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS DW (no-Tier)', P1BISTierlessDWGear);
+export const P1_BIS_TIERLESS_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS 2H (no-Tier)', P1BISTierless2HGear);
 
 export const ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const ROTATION_OFFENSIVE_PRESET = PresetUtils.makePresetAPLRotation('Offensive', OffensiveApl);
 
 // Preset options for EP weights
 export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -33,9 +35,9 @@ export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
 		{
 			[Stat.StatAgility]: 3.61,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 3.11,
+			[Stat.StatCritRating]: 3.57,
 			[Stat.StatHitRating]: 6.26,
-			[Stat.StatHasteRating]: 3.57,
+			[Stat.StatHasteRating]: 3.08,
 			[Stat.StatMasteryRating]: 1.60,
 			[Stat.StatDodgeRating]: 0.24,
 			[Stat.StatParryRating]: 0.36,
