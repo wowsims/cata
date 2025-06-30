@@ -32,10 +32,10 @@
 	display: none;
 }
 
-.individual-sim .single-player-only {
+.individual-sim-ui .single-player-only {
 	display: initial;
 }
-.individual-sim .all-players-only {
+.individual-sim-ui .all-players-only {
 	display: none;
 }
 
@@ -127,7 +127,7 @@
 	align-items: center;
 }
 
-.individual-sim .player-filter-root {
+.individual-sim-ui .player-filter-root {
 	display: none !important;
 }
 

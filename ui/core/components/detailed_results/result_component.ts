@@ -11,7 +11,6 @@ export interface SimResultData {
 export interface ResultComponentConfig {
 	parent: HTMLElement;
 	rootCssClass?: string;
-	cssScheme?: string | null;
 	resultsEmitter: TypedEvent<SimResultData | null>;
 }
 

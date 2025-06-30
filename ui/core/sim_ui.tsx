@@ -187,14 +187,6 @@ export abstract class SimUI extends Component {
 		socialsContainer.appendChild(SocialLinks.buildPatreonLink());
 
 		this.simTabContentsContainer = this.rootElem.querySelector('.sim-main.tab-content') as HTMLElement;
-
-		if (!this.isWithinRaidSim) {
-			window.addEventListener('message', async event => {
-				if (event.data == 'runOnce') {
-					this.runSimOnce();
-				}
-			});
-		}
 	}
 
 	addNoticeForLocalSim() {
