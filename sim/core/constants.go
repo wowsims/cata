@@ -26,7 +26,12 @@ const DefaultAttackPowerPerDPS = 14.0
 const EnemyAutoAttackAPCoefficient = 1.0 / (14.0 * 177.0)
 
 // Used by Protection Warriors, Protection Paladins and Blood Death Knights
-const StrengthToParryRating = (1 / 951.158596) * ParryRatingPerParryPercent
+const StrengthToParryPercent = 1 / 95115.8596
+const StrengthToParryRating = StrengthToParryPercent * 100 * ParryRatingPerParryPercent
+
+// Used by Monks and Druids
+const AgilityToDodgePercent = 1 / 95115.8596
+const AgilityToDodgeRating = AgilityToDodgePercent * 100 * DodgeRatingPerDodgePercent
 
 // IDs for items used in core
 // const ()
