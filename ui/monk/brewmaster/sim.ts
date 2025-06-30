@@ -23,6 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	epStats: [
 		Stat.StatAgility,
 		Stat.StatAttackPower,
+		Stat.StatStamina,
 		Stat.StatHitRating,
 		Stat.StatExpertiseRating,
 		Stat.StatCritRating,
@@ -64,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+		gear: Presets.P1_BIS_DW_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -140,15 +141,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents, Presets.DungeonTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET],
+		rotations: [Presets.ROTATION_PRESET, Presets.ROTATION_OFFENSIVE_PRESET],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.P1_PREBIS_RICH_GEAR_PRESET,
 			Presets.P1_PREBIS_POOR_GEAR_PRESET,
-			Presets.P1_BIS_BALANCED_DW_GEAR_PRESET,
-			Presets.P1_BIS_BALANCED_2H_GEAR_PRESET,
-			Presets.P1_BIS_OFFENSIVE_DW_GEAR_PRESET,
-			Presets.P1_BIS_OFFENSIVE_2H_GEAR_PRESET,
+			Presets.P1_BIS_DW_GEAR_PRESET,
+			Presets.P1_BIS_2H_GEAR_PRESET,
+			Presets.P1_BIS_TIERLESS_DW_GEAR_PRESET,
+			Presets.P1_BIS_TIERLESS_2H_GEAR_PRESET,
 		],
 	},
 
@@ -170,16 +171,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
-					2: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
-					3: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
-					4: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_DW_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_DW_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_DW_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_DW_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
-					2: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
-					3: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
-					4: Presets.P1_BIS_BALANCED_DW_GEAR_PRESET.gear,
+					1: Presets.P1_BIS_DW_GEAR_PRESET.gear,
+					2: Presets.P1_BIS_DW_GEAR_PRESET.gear,
+					3: Presets.P1_BIS_DW_GEAR_PRESET.gear,
+					4: Presets.P1_BIS_DW_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
