@@ -244,6 +244,16 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	monk.PseudoStats.CanParry = true
 	monk.PseudoStats.BaseParryChance += 0.03
 	monk.PseudoStats.BaseDodgeChance += 0.03
+
+	// Base Agility to Dodge is not affected by Diminishing Returns
+	baseAgility := monk.GetBaseStats()[stats.Agility]
+	monk.PseudoStats.BaseDodgeChance += baseAgility * core.AgilityToDodgePercent
+	monk.AddStat(stats.DodgeRating, -baseAgility*core.AgilityToDodgeRating) // Does not apply to base Agility
+	monk.AddStatDependency(stats.Agility, stats.DodgeRating, core.AgilityToDodgeRating)
+	monk.AddStatDependency(stats.Strength, stats.ParryRating, 0.1/10000.0/100.0)
+
+	monk.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
+
 	monk.XuenPet = monk.NewXuen()
 
 	monk.EnableEnergyBar(core.EnergyBarOptions{
@@ -257,8 +267,6 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 		OffHand:        monk.WeaponFromOffHand(0),
 		AutoSwingMelee: true,
 	})
-
-	monk.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
 
 	monk.HandType = monk.GetHandType()
 
