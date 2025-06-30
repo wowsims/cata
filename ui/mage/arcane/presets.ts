@@ -10,8 +10,8 @@ import ArcanePreBisGear from './gear_sets/prebis.gear.json';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-export const P1_BIS_PRESET = PresetUtils.makePresetGear('Pre-BIS', ArcanePreBisGear);
-export const PREBIS_PRESET = PresetUtils.makePresetGear('BIS', P1ArcaneBisGear);
+export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS', ArcanePreBisGear);
+export const PREBIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArcaneBisGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Arcane', ArcaneApl);
 

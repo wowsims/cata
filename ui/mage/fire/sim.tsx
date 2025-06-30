@@ -90,8 +90,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Default consumes settings.
 		consumables: Presets.DefaultFireConsumables,
 		// Default rotation settings.
-		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.P1TrollDefaultSimpleRotation,
+		// rotationType: APLRotation_Type.TypeSimple,
+		// simpleRotation: Presets.P1TrollDefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.
@@ -108,7 +108,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: FireInputs.MageRotationConfig,
+	// rotationInputs: FireInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
@@ -125,7 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	presets: {
 		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.P1_SIMPLE_ROTATION_DEFAULT],
+		rotations: [Presets.FIRE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
@@ -134,7 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	autoRotation: (): APLRotation => {
 		// return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		return Presets.P1_SIMPLE_ROTATION_DEFAULT.rotation.rotation!;
+		return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	// simpleRotation: (player, simple): APLRotation => {

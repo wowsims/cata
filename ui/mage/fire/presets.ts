@@ -12,23 +12,23 @@ import P1FirePrebisGear from './gear_sets/p1_prebis.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 BiS', P1FireBisGear);
-export const PREBIS_PRESET = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear);
+export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1FireBisGear);
+export const PREBIS_PRESET = PresetUtils.makePresetGear('P1 - Pre-BIS', P1FirePrebisGear);
 
-export const P1TrollDefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 515000,
-	combustLastMomentLustPercentage: 140000,
-	combustNoLustPercentage: 260000,
-});
+// export const P1TrollDefaultSimpleRotation = FireMage_Rotation.create({
+// 	combustThreshold: 515000,
+// 	combustLastMomentLustPercentage: 140000,
+// 	combustNoLustPercentage: 260000,
+// });
 
-export const P1NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 470000,
-	combustLastMomentLustPercentage: 115000,
-	combustNoLustPercentage: 225000,
-});
+// export const P1NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
+// 	combustThreshold: 470000,
+// 	combustLastMomentLustPercentage: 115000,
+// 	combustNoLustPercentage: 225000,
+// });
 
-export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1TrollDefaultSimpleRotation);
-export const P1_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P1 - Not Troll', Spec.SpecFireMage, P1NoTrollDefaultSimpleRotation);
+// export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1TrollDefaultSimpleRotation);
+// export const P1_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P1 - Not Troll', Spec.SpecFireMage, P1NoTrollDefaultSimpleRotation);
 
 //export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFireMage, DefaultSimpleRotation);
 export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('APL', FireApl);
@@ -37,12 +37,12 @@ export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('A
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.33,
+		[Stat.StatIntellect]: 1.37,
 		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatHitRating]: 1.09,
-		[Stat.StatCritRating]: 0.62,
-		[Stat.StatHasteRating]: 0.82,
-		[Stat.StatMasteryRating]: 0.46,
+		[Stat.StatHitRating]: 1.21,
+		[Stat.StatCritRating]: 0.88,
+		[Stat.StatHasteRating]: 0.73,
+		[Stat.StatMasteryRating]: 0.73,
 	}),
 );
 
