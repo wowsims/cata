@@ -12,8 +12,8 @@ import P1FirePrebisGear from './gear_sets/p1_prebis.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear);
-export const PREBIS_PRESET = PresetUtils.makePresetGear('P3 Pre-raid', P1FirePrebisGear);
+export const P1_BIS_PRESET = PresetUtils.makePresetGear('P1 BiS', P1FireBisGear);
+export const PREBIS_PRESET = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear);
 
 export const P1TrollDefaultSimpleRotation = FireMage_Rotation.create({
 	combustThreshold: 515000,
@@ -130,30 +130,30 @@ export const GLYPHED_COMBUSTION_BREAKPOINT: UnitStatPresets = {
 	]),
 };
 
-export const P1_PREBIS_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Pre-BIS (Troll)', {
-	race: Race.RaceTroll,
-	gear: PREBIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_DEFAULT,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PREBIS_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Pre-BIS (Troll)', {
+// 	race: Race.RaceTroll,
+// 	gear: PREBIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
 
-export const P1_PREBIS_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - Pre-BIS (Worgen)', {
-	race: Race.RaceWorgen,
-	gear: PREBIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PREBIS_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - Pre-BIS (Worgen)', {
+// 	race: Race.RaceWorgen,
+// 	gear: PREBIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
 
-export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - BIS (Troll)', {
-	race: Race.RaceTroll,
-	gear: P1_BIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_DEFAULT,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - BIS (Troll)', {
+// 	race: Race.RaceTroll,
+// 	gear: P1_BIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
 
-export const P1_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - BIS (Worgen)', {
-	race: Race.RaceWorgen,
-	gear: P1_BIS_PRESET,
-	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
-	epWeights: DEFAULT_EP_PRESET,
-});
+// export const P1_PRESET_BUILD_NO_TROLL = PresetUtils.makePresetBuild('P1 - BIS (Worgen)', {
+// 	race: Race.RaceWorgen,
+// 	gear: P1_BIS_PRESET,
+// 	rotation: P1_SIMPLE_ROTATION_NO_TROLL,
+// 	epWeights: DEFAULT_EP_PRESET,
+// });
