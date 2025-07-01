@@ -165,7 +165,7 @@ export class ActionId {
 
 	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		const  url = mopItemsOverrides.includes(id) ? new URL(`https://wowhead.com/mop-classic/${langPrefix}item=${id}`) : new URL(`https://wowhead.com/cata/${langPrefix}item=${id}`);
+		const  url = new URL(`https://wowhead.com/cata/${langPrefix}item=${id}`);
 		url.searchParams.set('level', String(CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
@@ -1020,5 +1020,3 @@ export const buffAuraToSpellIdMap: Record<number, ActionId> = {
 	96229: ActionId.fromSpellId(82174), // Synapse Springs - Str
 	96230: ActionId.fromSpellId(82174), // Synapse Springs - Int
 };
-
-export const mopItemsOverrides = [248747, 248748, 248749, 248750, 248751, 248752]

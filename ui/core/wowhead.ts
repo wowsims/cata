@@ -1,6 +1,5 @@
 import { getLanguageCode } from './constants/lang';
 import { CHARACTER_LEVEL } from './constants/mechanics';
-import { mopItemsOverrides } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
 
 export type WowheadTooltipItemParams = {
@@ -125,10 +124,6 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 		}
 		if (options.transmogId) {
 			params.set('transmog', String(options.transmogId));
-		}
-		//wowhead does not have the midsummer items on their cata site. Currently only on the mop site
-		if (mopItemsOverrides.includes(options.itemId)) {
-			params.set('domain', `${langPrefix}mop-classic`);
 		}
 	}
 
