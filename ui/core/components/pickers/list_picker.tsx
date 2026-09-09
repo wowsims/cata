@@ -66,6 +66,12 @@ interface ListDragData<ModObject, ItemType> {
 
 let curDragData: ListDragData<any, any> | null = null;
 
+// The sim formats user-authored APL group and variable names into its validation strings, and
+// tippy's global `allowHTML: true` renders the tooltip as markup, so a shared rotation could
+// otherwise script the page.
+const HTML_ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, character => HTML_ESCAPES[character]);
+
 export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<ItemType>> {
 	readonly config: ListPickerConfig<ModObject, ItemType>;
 	private readonly itemsDiv: HTMLElement;
@@ -622,7 +628,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 						`
 						<p>${this.logLevelDisplayData.get(logLevel)?.header}</p>
 						<ul>
-							${validations.map(v => `<li>${v}</li>`).join('')}
+							${validations.map(v => `<li>${escapeHtml(v)}</li>`).join('')}
 						</ul>
 					`;
 				}
